@@ -1,0 +1,355 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DE5EC2AF1F8C214E0041DB03 /* Loader.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE5EC2AE1F8C214E0041DB03 /* Loader.mm */; };
+		DE5EC2B21F8D312D0041DB03 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE5EC2B11F8D312D0041DB03 /* CoreGraphics.framework */; };
+		DED204221F8FAFCB000C75CE /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED204211F8FAFCB000C75CE /* Metal.framework */; };
+		F435F5F21F5D4C5700F8DB6A /* Drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F435F5F01F5D4C5700F8DB6A /* Drawer.cpp */; };
+		F435F5F51F5D4C6200F8DB6A /* CommonLib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F435F5F31F5D4C6200F8DB6A /* CommonLib.cpp */; };
+		F435F5F81F5D4C7F00F8DB6A /* Loader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F435F5F61F5D4C7F00F8DB6A /* Loader.cpp */; };
+		F49D2D511F5D4F0000DDF068 /* Drawer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F49D2D501F5D4F0000DDF068 /* Drawer.mm */; };
+		F4F9C11C1FC549A100876739 /* RenderAPI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F9C11B1FC549A100876739 /* RenderAPI.cpp */; };
+		F4F9C11F1FC552C200876739 /* RenderAPI_OpenGL2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F9C11D1FC552C200876739 /* RenderAPI_OpenGL2.cpp */; };
+		F4F9C1201FC552C200876739 /* RenderAPI_OpenGLCoreES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4F9C11E1FC552C200876739 /* RenderAPI_OpenGLCoreES.cpp */; };
+		F4F9C1221FC552E700876739 /* RenderAPI_Metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F9C1211FC552E700876739 /* RenderAPI_Metal.mm */; };
+		F4F9C12F1FC5A8DD00876739 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4F9C12E1FC5A8DB00876739 /* OpenGL.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		DE5EC2AE1F8C214E0041DB03 /* Loader.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Loader.mm; path = ../Loader/Loader.mm; sourceTree = "<group>"; };
+		DE5EC2B11F8D312D0041DB03 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		DED204211F8FAFCB000C75CE /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		F435F5DE1F5D4B9A00F8DB6A /* PictureLoaderNativePlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PictureLoaderNativePlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		F435F5E11F5D4B9A00F8DB6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F435F5F01F5D4C5700F8DB6A /* Drawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Drawer.cpp; path = ../Drawer/Drawer.cpp; sourceTree = "<group>"; };
+		F435F5F11F5D4C5700F8DB6A /* Drawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Drawer.h; path = ../Drawer/Drawer.h; sourceTree = "<group>"; };
+		F435F5F31F5D4C6200F8DB6A /* CommonLib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CommonLib.cpp; path = ../CommonLib/CommonLib.cpp; sourceTree = "<group>"; };
+		F435F5F41F5D4C6200F8DB6A /* CommonLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommonLib.h; path = ../CommonLib/CommonLib.h; sourceTree = "<group>"; };
+		F435F5F61F5D4C7F00F8DB6A /* Loader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Loader.cpp; path = ../Loader/Loader.cpp; sourceTree = "<group>"; };
+		F435F5F71F5D4C7F00F8DB6A /* Loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Loader.h; path = ../Loader/Loader.h; sourceTree = "<group>"; };
+		F49D2D501F5D4F0000DDF068 /* Drawer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Drawer.mm; path = ../Drawer/Drawer.mm; sourceTree = "<group>"; };
+		F4F9C11A1FC549A000876739 /* RenderAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RenderAPI.h; path = ../Drawer/RenderAPI.h; sourceTree = "<group>"; };
+		F4F9C11B1FC549A100876739 /* RenderAPI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RenderAPI.cpp; path = ../Drawer/RenderAPI.cpp; sourceTree = "<group>"; };
+		F4F9C11D1FC552C200876739 /* RenderAPI_OpenGL2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RenderAPI_OpenGL2.cpp; path = ../Drawer/RenderAPI_OpenGL2.cpp; sourceTree = "<group>"; };
+		F4F9C11E1FC552C200876739 /* RenderAPI_OpenGLCoreES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RenderAPI_OpenGLCoreES.cpp; path = ../Drawer/RenderAPI_OpenGLCoreES.cpp; sourceTree = "<group>"; };
+		F4F9C1211FC552E700876739 /* RenderAPI_Metal.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RenderAPI_Metal.mm; path = ../Drawer/RenderAPI_Metal.mm; sourceTree = "<group>"; };
+		F4F9C12E1FC5A8DB00876739 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F435F5DB1F5D4B9A00F8DB6A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DED204221F8FAFCB000C75CE /* Metal.framework in Frameworks */,
+				DE5EC2B21F8D312D0041DB03 /* CoreGraphics.framework in Frameworks */,
+				F4F9C12F1FC5A8DD00876739 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DE5EC2B01F8D312D0041DB03 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F4F9C12E1FC5A8DB00876739 /* OpenGL.framework */,
+				DED204211F8FAFCB000C75CE /* Metal.framework */,
+				DE5EC2B11F8D312D0041DB03 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F435F5D51F5D4B9A00F8DB6A = {
+			isa = PBXGroup;
+			children = (
+				F435F5EF1F5D4C3300F8DB6A /* Loader */,
+				F435F5EE1F5D4C2800F8DB6A /* CommonLib */,
+				F435F5ED1F5D4C1800F8DB6A /* Drawer */,
+				F435F5E01F5D4B9A00F8DB6A /* PictureLoaderNativePlugin */,
+				F435F5DF1F5D4B9A00F8DB6A /* Products */,
+				DE5EC2B01F8D312D0041DB03 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F435F5DF1F5D4B9A00F8DB6A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F435F5DE1F5D4B9A00F8DB6A /* PictureLoaderNativePlugin.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F435F5E01F5D4B9A00F8DB6A /* PictureLoaderNativePlugin */ = {
+			isa = PBXGroup;
+			children = (
+				F435F5E11F5D4B9A00F8DB6A /* Info.plist */,
+			);
+			path = PictureLoaderNativePlugin;
+			sourceTree = "<group>";
+		};
+		F435F5ED1F5D4C1800F8DB6A /* Drawer */ = {
+			isa = PBXGroup;
+			children = (
+				F4F9C1211FC552E700876739 /* RenderAPI_Metal.mm */,
+				F4F9C11D1FC552C200876739 /* RenderAPI_OpenGL2.cpp */,
+				F4F9C11E1FC552C200876739 /* RenderAPI_OpenGLCoreES.cpp */,
+				F4F9C11B1FC549A100876739 /* RenderAPI.cpp */,
+				F4F9C11A1FC549A000876739 /* RenderAPI.h */,
+				F435F5F01F5D4C5700F8DB6A /* Drawer.cpp */,
+				F435F5F11F5D4C5700F8DB6A /* Drawer.h */,
+				F49D2D501F5D4F0000DDF068 /* Drawer.mm */,
+			);
+			name = Drawer;
+			sourceTree = "<group>";
+		};
+		F435F5EE1F5D4C2800F8DB6A /* CommonLib */ = {
+			isa = PBXGroup;
+			children = (
+				F435F5F31F5D4C6200F8DB6A /* CommonLib.cpp */,
+				F435F5F41F5D4C6200F8DB6A /* CommonLib.h */,
+			);
+			name = CommonLib;
+			sourceTree = "<group>";
+		};
+		F435F5EF1F5D4C3300F8DB6A /* Loader */ = {
+			isa = PBXGroup;
+			children = (
+				DE5EC2AE1F8C214E0041DB03 /* Loader.mm */,
+				F435F5F61F5D4C7F00F8DB6A /* Loader.cpp */,
+				F435F5F71F5D4C7F00F8DB6A /* Loader.h */,
+			);
+			name = Loader;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F435F5DD1F5D4B9A00F8DB6A /* PictureLoaderNativePlugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F435F5E41F5D4B9A00F8DB6A /* Build configuration list for PBXNativeTarget "PictureLoaderNativePlugin" */;
+			buildPhases = (
+				F435F5DA1F5D4B9A00F8DB6A /* Sources */,
+				F435F5DB1F5D4B9A00F8DB6A /* Frameworks */,
+				F435F5DC1F5D4B9A00F8DB6A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PictureLoaderNativePlugin;
+			productName = PictureLoaderNativePlugin;
+			productReference = F435F5DE1F5D4B9A00F8DB6A /* PictureLoaderNativePlugin.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F435F5D61F5D4B9A00F8DB6A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "Toshiyuki Mori";
+				TargetAttributes = {
+					F435F5DD1F5D4B9A00F8DB6A = {
+						CreatedOnToolsVersion = 8.3;
+						DevelopmentTeam = 9E4G6D46Z9;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F435F5D91F5D4B9A00F8DB6A /* Build configuration list for PBXProject "PictureLoaderNativePlugin" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = F435F5D51F5D4B9A00F8DB6A;
+			productRefGroup = F435F5DF1F5D4B9A00F8DB6A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F435F5DD1F5D4B9A00F8DB6A /* PictureLoaderNativePlugin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F435F5DC1F5D4B9A00F8DB6A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F435F5DA1F5D4B9A00F8DB6A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F49D2D511F5D4F0000DDF068 /* Drawer.mm in Sources */,
+				F4F9C1221FC552E700876739 /* RenderAPI_Metal.mm in Sources */,
+				F435F5F51F5D4C6200F8DB6A /* CommonLib.cpp in Sources */,
+				F4F9C1201FC552C200876739 /* RenderAPI_OpenGLCoreES.cpp in Sources */,
+				F4F9C11C1FC549A100876739 /* RenderAPI.cpp in Sources */,
+				F435F5F81F5D4C7F00F8DB6A /* Loader.cpp in Sources */,
+				F4F9C11F1FC552C200876739 /* RenderAPI_OpenGL2.cpp in Sources */,
+				DE5EC2AF1F8C214E0041DB03 /* Loader.mm in Sources */,
+				F435F5F21F5D4C5700F8DB6A /* Drawer.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F435F5E21F5D4B9A00F8DB6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		F435F5E31F5D4B9A00F8DB6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		F435F5E51F5D4B9A00F8DB6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9E4G6D46Z9;
+				INFOPLIST_FILE = PictureLoaderNativePlugin/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = UTJ.PictureLoaderNativePlugin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		F435F5E61F5D4B9A00F8DB6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = 9E4G6D46Z9;
+				INFOPLIST_FILE = PictureLoaderNativePlugin/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = UTJ.PictureLoaderNativePlugin;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F435F5D91F5D4B9A00F8DB6A /* Build configuration list for PBXProject "PictureLoaderNativePlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F435F5E21F5D4B9A00F8DB6A /* Debug */,
+				F435F5E31F5D4B9A00F8DB6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F435F5E41F5D4B9A00F8DB6A /* Build configuration list for PBXNativeTarget "PictureLoaderNativePlugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F435F5E51F5D4B9A00F8DB6A /* Debug */,
+				F435F5E61F5D4B9A00F8DB6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F435F5D61F5D4B9A00F8DB6A /* Project object */;
+}

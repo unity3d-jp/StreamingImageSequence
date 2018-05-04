@@ -42,4 +42,6 @@ _out/
 external/
 ipch/
 
+Adobe\ After\ Effects\ Auto-Save/
+.DS_Store
 StreamingAssets*
