@@ -13,14 +13,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_NextId: 0
   m_Tracks:
-  - {fileID: 114864636452354242}
-  - {fileID: 114412814856717782}
+  - {fileID: 114327062496350274}
+  - {fileID: 114200739938220932}
   m_FixedDuration: 0
   m_EditorSettings:
     m_Framerate: 60
   m_DurationMode: 0
   m_Version: 0
---- !u!114 &114412814856717782
+--- !u!114 &114200739938220932
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -43,7 +43,7 @@ MonoBehaviour:
     m_Asset: {fileID: 11400000, guid: d8be1b00b9e427b4da1700b5d2f88260, type: 2}
     m_Duration: 0.9333333373069763
     m_TimeScale: 1
-    m_ParentTrack: {fileID: 114412814856717782}
+    m_ParentTrack: {fileID: 114200739938220932}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: 0
@@ -108,29 +108,7 @@ MonoBehaviour:
     m_DisplayName: MovieProxyPlayableAsset
     m_Version: 1
   m_Version: 1
---- !u!114 &114848855089492888
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
-  m_Name: MovieProxyPlayableAsset
-  m_EditorClassIdentifier: 
-  Version: 0
-  Resolution:
-    Width: 0
-    Height: 0
-  QuadSize:
-    sizX: 0
-    sizY: 0
-  Folder: 
-  m_displayOnClipsOnly: 0
-  Pictures: []
-  m_loadingIndex: -1
---- !u!114 &114864636452354242
+--- !u!114 &114327062496350274
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -153,7 +131,7 @@ MonoBehaviour:
     m_Asset: {fileID: 11400000, guid: 8c323e0406140964e908c0b3b58250ca, type: 2}
     m_Duration: 1.9333332777023315
     m_TimeScale: 1
-    m_ParentTrack: {fileID: 114864636452354242}
+    m_ParentTrack: {fileID: 114327062496350274}
     m_EaseInDuration: 0
     m_EaseOutDuration: 0
     m_BlendInDuration: 0
@@ -218,7 +196,29 @@ MonoBehaviour:
     m_DisplayName: MovieProxyPlayableAsset
     m_Version: 1
   m_Version: 1
---- !u!114 &114872396354997640
+--- !u!114 &114331955472603444
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_Name: MovieProxyPlayableAsset
+  m_EditorClassIdentifier: 
+  Version: 0
+  Resolution:
+    Width: 0
+    Height: 0
+  QuadSize:
+    sizX: 0
+    sizY: 0
+  Folder: 
+  m_displayOnClipsOnly: 0
+  Pictures: []
+  m_loadingIndex: -1
+--- !u!114 &114361684351849680
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

@@ -139,7 +139,7 @@ public class JstimelineImporter : ScriptedImporter
                     FileUtil.CopyFileOrDirectory(strAbsFilePathSrc, strAbsFilePathDst);
                 }
 
-                trackMovieContainer.Folder = strDstFolder;
+                trackMovieContainer.Folder = Path.Combine(strStreamingAssets, strFootageName).Replace("\\", "/");
 
             }
 
@@ -207,6 +207,7 @@ public class JstimelineImporter : ScriptedImporter
 
         if ( ctx == null )
         {
+            AssetDatabase.Refresh();
             // cause crash if this is called inside of OnImportAsset()
             UnityEditor.EditorApplication.delayCall += () => {
                 Selection.activeGameObject = directorGo;
