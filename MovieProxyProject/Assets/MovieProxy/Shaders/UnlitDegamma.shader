@@ -1,4 +1,4 @@
-﻿Shader "Unlit/Degamma"
+﻿Shader "MovieProxy/Degamma"
 {
 	Properties
 	{
