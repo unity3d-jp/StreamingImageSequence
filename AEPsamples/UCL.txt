@@ -1,0 +1,6 @@
+License
+
+This sample is provided under Unity-Chan License 2.0 terms.
+Please refer to the following link for information regarding the Unity-Chan License.
+English:  http://unity-chan.com/contents/guideline_en/
+Japanese: http://unity-chan.com/contents/guideline/
