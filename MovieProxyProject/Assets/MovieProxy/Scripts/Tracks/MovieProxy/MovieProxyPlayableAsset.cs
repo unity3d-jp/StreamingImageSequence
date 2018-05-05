@@ -35,7 +35,7 @@ public class MovieProxyPlayableAsset : PlayableAsset, ITimelineClipAsset
         public MovieProxyPlayableAssetParam.StPicResolution Resolution;
         public MovieProxyPlayableAssetParam.StQuadSize QuadSize;
         public string Folder;
-        public bool m_displayOnClipsOnly = false;
+        public bool m_displayOnClipsOnly;
         public string[] Pictures;
         private bool[] LoadRequested;
         public int m_loadingIndex = -1;

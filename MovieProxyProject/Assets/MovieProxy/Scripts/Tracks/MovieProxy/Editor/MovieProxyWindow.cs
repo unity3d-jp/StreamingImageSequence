@@ -49,13 +49,14 @@ namespace UTJTimelineUtil
         public Vector2 m_scrollPosition = Vector2.zero;
 
  
-
+        /*
         [MenuItem("Window/MovieProxy")]
 
         public static void ShowWindow()
         {
             EditorWindow.GetWindow(typeof(MovieProxyWindow));
         }
+        */
 
 
 

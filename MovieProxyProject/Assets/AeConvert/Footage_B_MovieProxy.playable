@@ -19,7 +19,7 @@ MonoBehaviour:
     sizX: 0
     sizY: 0
   Folder: C:/devel/MyProject/MovieProxy/MovieProxyProject/Assets/StreamingAssets/Footage_B
-  m_displayOnClipsOnly: 0
+  m_displayOnClipsOnly: 1
   Pictures:
   - B_00000.png
   - B_00001.png

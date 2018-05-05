@@ -18,7 +18,7 @@ public class JstimelineImporter : ScriptedImporter
         CreateTimeline(ctx.assetPath,null );
     }
 
-    [MenuItem("CustomMenu/Import AE Timeline")]
+    [MenuItem("Movie Proxy/Samples/Import AE Timeline")]
     static void CreateTimeline()
     {
         string strPath = EditorUtility.OpenFilePanel("Open File", "", "jstimeline");
@@ -148,13 +148,12 @@ public class JstimelineImporter : ScriptedImporter
 
             var proxyAsset = ScriptableObject.CreateInstance<MovieProxyPlayableAsset>();
             proxyAsset.SetParam(trackMovieContainer);
-
+            proxyAsset.m_displayOnClipsOnly = true;
             var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(strNewFolderPath, strFootageName + "_MovieProxy.playable"));
             AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
 
             var movieTrack = asset.CreateTrack<MovieProxyTrack>(null, strFootageName);
             var clip = movieTrack.CreateDefaultClip();
-            proxyAsset.m_displayOnClipsOnly = true;
             clip.asset = proxyAsset;
             clip.start = track.Start;
             clip.duration = track.Duration;
