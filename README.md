@@ -1,3 +1,4 @@
+
 README.md
 # Movie Proxy
 
@@ -17,9 +18,10 @@ Only works on PC and Mac.
 Basic Usage:
 Add MovieProxyTrack.
 See the following video.
-https://youtu.be/mjeYpuM5PR4
+https://youtu.be/mlRbwqJ74CM
+
 
 #### How to use the sample.
+https://youtu.be/4og6rgQdb3c
 
-TBD
 
