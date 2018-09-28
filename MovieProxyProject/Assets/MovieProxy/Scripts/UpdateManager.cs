@@ -419,6 +419,16 @@ namespace UTJTimelineUtil
 
             type = val.GetType();
             info = type.GetProperty("currentDirector", bf);
+
+            // newer than 2018.3?
+            if ( info == null )
+            {
+                info = type.GetProperty("masterSequence",bf);
+                val = info.GetValue(val, null);
+
+                type = val.GetType();
+                info = type.GetProperty("director", bf);
+            }
             val = info.GetValue(val, null);
 
             return val as PlayableDirector;
