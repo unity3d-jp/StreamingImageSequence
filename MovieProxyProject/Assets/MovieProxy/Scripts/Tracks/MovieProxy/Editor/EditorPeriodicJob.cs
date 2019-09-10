@@ -177,7 +177,8 @@ namespace UTJTimelineUtil
             var type = timeLineWindow.GetType();
             var info = type.GetProperty("treeView", bf);
             var treeview = info.GetValue(timeLineWindow, null);
-
+#if UNITY_2019_2_OR_NEWER
+#else
             // Get tracksBounds
             info = type.GetProperty("tracksBounds", bf);
             Rect trackbounds = (Rect)info.GetValue(timeLineWindow, null);
@@ -246,6 +247,7 @@ namespace UTJTimelineUtil
                   PluginUtil.HideOverwrapWindow(clip.asset.GetInstanceID());
                 }
             }
+#endif
         }
 
 
