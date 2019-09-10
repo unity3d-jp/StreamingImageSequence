@@ -15,7 +15,7 @@ namespace UTJTimelineUtil
     public class PictureFileImporter
     {
 
-        static string versionString = "MovieProxy version 0.2.0";
+        static string versionString = "MovieProxy version 0.2.1";
 
         [MenuItem("Movie Proxy/Create Clip")]
         static void RegisterFilesAndCreateMovieProxy()
