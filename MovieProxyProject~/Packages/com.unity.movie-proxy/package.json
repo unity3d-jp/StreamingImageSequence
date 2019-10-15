@@ -3,7 +3,9 @@
     "name": "com.unity.movie-proxy",
     "unity": "2019.2",
     "version": "0.0.1-preview",
-    "dependencies": {},
+    "dependencies": {
+        "com.unity.timeline": "1.1.0"
+    },
     "description": "Movie Proxy is a plug-in for Unity Timeline to use sequential pictures without making Unity 2D Sprites",
     "author": "Unity Technology Japan",
     "contributors": [

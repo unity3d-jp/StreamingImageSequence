@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEngine.Playables;
 using UnityEngine.Assertions;
 using System.Text.RegularExpressions;
-using UTJTimelineUtil;
+
 namespace UTJTimelineUtil
 {
 

@@ -4,12 +4,10 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.Timeline;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using UnityEngine.Assertions;
 using System;
-using UTJTimelineUtil;
 
 namespace UTJTimelineUtil
 { 

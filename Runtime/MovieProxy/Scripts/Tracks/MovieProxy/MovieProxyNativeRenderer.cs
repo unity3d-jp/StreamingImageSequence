@@ -5,7 +5,9 @@ using System.Collections.Generic;
 using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
-using UTJTimelineUtil;
+
+namespace UTJTimelineUtil
+{
 
 //[ExecuteInEditMode]
 public class MovieProxyNativeRenderer : MonoBehaviour {
@@ -61,7 +63,6 @@ public class MovieProxyNativeRenderer : MonoBehaviour {
         }
     }
 
-
-
+}
 
 }
