@@ -89,37 +89,37 @@ namespace UTJTimelineUtil
 
 #elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 		// Impremented in Loader dll
-		[DllImport("PictureLoaderNativePlugin", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public extern static IntPtr LoadAndAlloc([MarshalAs(UnmanagedType.LPStr)]string fileName);
 
 
-		[DllImport("PictureLoaderNativePlugin", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public extern static void NativeFree(IntPtr ptr);
 
-		[DllImport("PictureLoaderNativePlugin", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public extern static  IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out StReadResult tResult);
 
 		// Impremented in Drawer dll
-		[DllImport("PictureLoaderNativePlugin", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public extern static void SetNativeTexturePtr(IntPtr Texture, UInt32 uWidth, UInt32 height, Int32 sObjectID);
 
-		[DllImport("PictureLoaderNativePlugin", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public extern static void SetLoadedTexture([MarshalAs(UnmanagedType.LPStr)]string fileName, Int32 sObjectID);
 
-		[DllImport("PictureLoaderNativePlugin", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public extern static void ResetLoadedTexture(Int32 sObjectID);
 
-		[DllImport("PictureLoaderNativePlugin", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public extern static void ResetAllLoadedTexture();
-		[DllImport("PictureLoaderNativePlugin", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public static extern IntPtr GetRenderEventFunc();
 
 
-		[DllImport("PictureLoaderNativePlugin", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public extern static void ResetPlugin();
-		[DllImport("PictureLoaderNativePlugin", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public extern static void  DoneResetPlugin();
-		[DllImport("PictureLoaderNativePlugin", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
 		public extern static int   IsPluginResetting();
 
 		public static  IntPtr TestDraw(int posX, int posY)
