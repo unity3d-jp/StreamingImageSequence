@@ -1,6 +1,6 @@
 //
 //  Loader.mm
-//  PictureLoaderNativePlugin
+//  Project
 //
 //  Created by Hiroki Omae on 2017/10/10.
 //  Copyright © 2017 Unity Technologies. All rights reserved.

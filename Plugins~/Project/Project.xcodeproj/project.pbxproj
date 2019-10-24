@@ -25,7 +25,7 @@
 		DE5EC2AE1F8C214E0041DB03 /* Loader.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Loader.mm; path = ../Loader/Loader.mm; sourceTree = "<group>"; };
 		DE5EC2B11F8D312D0041DB03 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		DED204211F8FAFCB000C75CE /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
-		F435F5DE1F5D4B9A00F8DB6A /* PictureLoaderNativePlugin.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PictureLoaderNativePlugin.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		F435F5DE1F5D4B9A00F8DB6A /* Project.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Project.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		F435F5E11F5D4B9A00F8DB6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F435F5F01F5D4C5700F8DB6A /* Drawer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Drawer.cpp; path = ../Drawer/Drawer.cpp; sourceTree = "<group>"; };
 		F435F5F11F5D4C5700F8DB6A /* Drawer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Drawer.h; path = ../Drawer/Drawer.h; sourceTree = "<group>"; };
@@ -72,7 +72,7 @@
 				F435F5EF1F5D4C3300F8DB6A /* Loader */,
 				F435F5EE1F5D4C2800F8DB6A /* CommonLib */,
 				F435F5ED1F5D4C1800F8DB6A /* Drawer */,
-				F435F5E01F5D4B9A00F8DB6A /* PictureLoaderNativePlugin */,
+				F435F5E01F5D4B9A00F8DB6A /* Project */,
 				F435F5DF1F5D4B9A00F8DB6A /* Products */,
 				DE5EC2B01F8D312D0041DB03 /* Frameworks */,
 			);
@@ -81,17 +81,17 @@
 		F435F5DF1F5D4B9A00F8DB6A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F435F5DE1F5D4B9A00F8DB6A /* PictureLoaderNativePlugin.bundle */,
+				F435F5DE1F5D4B9A00F8DB6A /* Project.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F435F5E01F5D4B9A00F8DB6A /* PictureLoaderNativePlugin */ = {
+		F435F5E01F5D4B9A00F8DB6A /* Project */ = {
 			isa = PBXGroup;
 			children = (
 				F435F5E11F5D4B9A00F8DB6A /* Info.plist */,
 			);
-			path = PictureLoaderNativePlugin;
+			path = Project;
 			sourceTree = "<group>";
 		};
 		F435F5ED1F5D4C1800F8DB6A /* Drawer */ = {
@@ -131,9 +131,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F435F5DD1F5D4B9A00F8DB6A /* PictureLoaderNativePlugin */ = {
+		F435F5DD1F5D4B9A00F8DB6A /* Project */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F435F5E41F5D4B9A00F8DB6A /* Build configuration list for PBXNativeTarget "PictureLoaderNativePlugin" */;
+			buildConfigurationList = F435F5E41F5D4B9A00F8DB6A /* Build configuration list for PBXNativeTarget "Project" */;
 			buildPhases = (
 				F435F5DA1F5D4B9A00F8DB6A /* Sources */,
 				F435F5DB1F5D4B9A00F8DB6A /* Frameworks */,
@@ -143,9 +143,9 @@
 			);
 			dependencies = (
 			);
-			name = PictureLoaderNativePlugin;
-			productName = PictureLoaderNativePlugin;
-			productReference = F435F5DE1F5D4B9A00F8DB6A /* PictureLoaderNativePlugin.bundle */;
+			name = Project;
+			productName = Project;
+			productReference = F435F5DE1F5D4B9A00F8DB6A /* Project.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -164,7 +164,7 @@
 					};
 				};
 			};
-			buildConfigurationList = F435F5D91F5D4B9A00F8DB6A /* Build configuration list for PBXProject "PictureLoaderNativePlugin" */;
+			buildConfigurationList = F435F5D91F5D4B9A00F8DB6A /* Build configuration list for PBXProject "Project" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -176,7 +176,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F435F5DD1F5D4B9A00F8DB6A /* PictureLoaderNativePlugin */,
+				F435F5DD1F5D4B9A00F8DB6A /* Project */,
 			);
 		};
 /* End PBXProject section */
@@ -305,9 +305,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9E4G6D46Z9;
-				INFOPLIST_FILE = PictureLoaderNativePlugin/Info.plist;
+				INFOPLIST_FILE = Project/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = UTJ.PictureLoaderNativePlugin;
+				PRODUCT_BUNDLE_IDENTIFIER = UTJ.Project;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = bundle;
@@ -319,9 +319,9 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 9E4G6D46Z9;
-				INFOPLIST_FILE = PictureLoaderNativePlugin/Info.plist;
+				INFOPLIST_FILE = Project/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
-				PRODUCT_BUNDLE_IDENTIFIER = UTJ.PictureLoaderNativePlugin;
+				PRODUCT_BUNDLE_IDENTIFIER = UTJ.Project;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				WRAPPER_EXTENSION = bundle;
@@ -331,7 +331,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F435F5D91F5D4B9A00F8DB6A /* Build configuration list for PBXProject "PictureLoaderNativePlugin" */ = {
+		F435F5D91F5D4B9A00F8DB6A /* Build configuration list for PBXProject "Project" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F435F5E21F5D4B9A00F8DB6A /* Debug */,
@@ -340,7 +340,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F435F5E41F5D4B9A00F8DB6A /* Build configuration list for PBXNativeTarget "PictureLoaderNativePlugin" */ = {
+		F435F5E41F5D4B9A00F8DB6A /* Build configuration list for PBXNativeTarget "Project" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F435F5E51F5D4B9A00F8DB6A /* Debug */,

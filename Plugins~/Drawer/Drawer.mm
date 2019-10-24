@@ -1,6 +1,6 @@
 //
 //  Drawer.m
-//  PictureLoaderNativePlugin
+//  Project
 //
 //  Created by Toshiyuki Mori on 2017/09/04.
 //  Copyright © 2017 Unity Technologies. All rights reserved.
