@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEngine.Playables;
 using System.Text.RegularExpressions;
 using UnityEngine.UI;
-using UTJTimelineUtil;
+using Unity.MovieProxy;
 
 [ScriptedImporter(1, "jstimeline")]
 public class JstimelineImporter : ScriptedImporter
@@ -18,7 +18,7 @@ public class JstimelineImporter : ScriptedImporter
         CreateTimeline(ctx.assetPath,null );
     }
 
-    [MenuItem("Movie Proxy/Samples/Import AE Timeline")]
+    [MenuItem("Movie Proxy Sample/Import AE Timeline")]
     static void CreateTimeline()
     {
         string strPath = EditorUtility.OpenFilePanel("Open File", "", "jstimeline");

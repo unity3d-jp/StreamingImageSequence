@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace UTJTimelineUtil
+namespace Unity.MovieProxy
 {
     public class LoaderPeriodicJob : PeriodicJob
     {

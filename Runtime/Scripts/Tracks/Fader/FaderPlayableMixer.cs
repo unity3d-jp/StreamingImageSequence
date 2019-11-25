@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace UTJTimelineUtil
+namespace Unity.MovieProxy
 {
     // A behaviour that is attached to a playable
     public class FaderPlayableMixer : PlayableBehaviour

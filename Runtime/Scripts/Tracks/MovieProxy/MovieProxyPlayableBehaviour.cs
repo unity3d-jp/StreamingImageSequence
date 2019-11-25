@@ -14,7 +14,7 @@ using UnityEngine.Timeline;
 using UnityEditor;
 #endif
 
-namespace UTJTimelineUtil
+namespace Unity.MovieProxy
 {
 
     // A behaviour that is attached to a playable

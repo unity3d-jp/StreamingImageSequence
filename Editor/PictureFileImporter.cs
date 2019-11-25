@@ -9,7 +9,7 @@ using UnityEngine.Playables;
 using UnityEngine.Assertions;
 using System.Text.RegularExpressions;
 
-namespace UTJTimelineUtil
+namespace Unity.MovieProxy
 {
 
     public class PictureFileImporter
@@ -17,7 +17,7 @@ namespace UTJTimelineUtil
 
         static string versionString = "MovieProxy version 0.2.1";
 
-        [MenuItem("Movie Proxy/Create Clip")]
+        [MenuItem("Edit/Movie Proxy/Create Clip", false, 1)]
         static void RegisterFilesAndCreateMovieProxy()
         {
             importPictureFiles(PictureFileImporterParam.Mode.StereamingAssets);
@@ -117,7 +117,7 @@ namespace UTJTimelineUtil
 
         /*
 
-        [MenuItem("Movie Proxy/Create MovieProxy/Register files")]
+        [MenuItem("Edit/Movie Proxy/Create MovieProxy/Register files", false, 6)]
         static void ImportAndCreateSpriteAnimation()
         {
             importPictureFiles(PictureFileImporterParam.Mode.SpriteAnimation);
@@ -125,12 +125,12 @@ namespace UTJTimelineUtil
         }
         */
 
-        [MenuItem("Movie Proxy/Reset")]
+        [MenuItem("Edit/Movie Proxy/Reset",false,50)]
         static void Reset()
         {
             UpdateManager.ResetPlugin();
         }
-        [MenuItem("Movie Proxy/Show version")]
+        [MenuItem("Edit/Movie Proxy/Show version",false,51)]
         static void ShowVersion()
         {
             Debug.Log(versionString);
