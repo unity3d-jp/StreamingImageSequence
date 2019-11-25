@@ -18,7 +18,7 @@ namespace Unity.MovieProxy
         static List<Object> orgList;
         static TimelineAsset newAsset;
         static PlayableDirector newPlayableDirector; 
-        [MenuItem("Edit/Convert MovieProxy to SpriteAnimation")]
+        [MenuItem("Edit/Movie Proxy/Convert MovieProxy to SpriteAnimation", false, 5)]
         static private void ConvertToSpriteAnimation()
         {
 
