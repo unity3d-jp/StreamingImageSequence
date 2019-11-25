@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
-namespace UTJTimelineUtil
+namespace Unity.MovieProxy
 {
 
     [System.Serializable]

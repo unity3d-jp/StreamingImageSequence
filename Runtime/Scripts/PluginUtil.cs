@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Runtime.InteropServices;
 
-namespace UTJTimelineUtil
+namespace Unity.MovieProxy
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 8)]
     public struct StReadResult

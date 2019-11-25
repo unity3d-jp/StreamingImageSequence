@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.Assertions;
 using System.IO;
 
-namespace UTJTimelineUtil
+namespace Unity.MovieProxy
 {
 
     public class PictureFileImportWindow : EditorWindow

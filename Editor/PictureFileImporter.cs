@@ -9,7 +9,7 @@ using UnityEngine.Playables;
 using UnityEngine.Assertions;
 using System.Text.RegularExpressions;
 
-namespace UTJTimelineUtil
+namespace Unity.MovieProxy
 {
 
     public class PictureFileImporter

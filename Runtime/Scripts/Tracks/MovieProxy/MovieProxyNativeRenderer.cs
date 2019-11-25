@@ -6,7 +6,7 @@ using System;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace UTJTimelineUtil
+namespace Unity.MovieProxy
 {
 
 //[ExecuteInEditMode]

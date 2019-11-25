@@ -10,7 +10,7 @@ using UnityEngine.Assertions;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace UTJTimelineUtil
+namespace Unity.MovieProxy
 { 
 
     public class MovieProxyToSpriteAnimation  {

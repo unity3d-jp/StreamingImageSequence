@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
-namespace UTJTimelineUtil
+namespace Unity.MovieProxy
 { 
     [TrackClipType(typeof(MovieProxyPlayableAsset))]
     [TrackBindingType(typeof(MovieProxyNativeRenderer))]

@@ -9,7 +9,7 @@ using UnityEngine.Playables;
 using UnityEngine.Assertions;
 using System;
 
-namespace UTJTimelineUtil
+namespace Unity.MovieProxy
 { 
     public class MovieProxyWindow : EditorWindow
     {
