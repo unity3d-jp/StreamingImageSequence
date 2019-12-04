@@ -85,7 +85,7 @@ public class JstimelineImporter : ScriptedImporter
             }
             string strFootageName = Path.GetFileNameWithoutExtension(strFootagePath);
             string strJsonFootage = File.ReadAllText(strFootagePath);
-            MovieProxyPlayableAssetParam trackMovieContainer = JsonUtility.FromJson<MovieProxyPlayableAssetParam>(strJsonFootage);
+            StreamingImageSequencePlayableAssetParam trackMovieContainer = JsonUtility.FromJson<StreamingImageSequencePlayableAssetParam>(strJsonFootage);
 
 
 

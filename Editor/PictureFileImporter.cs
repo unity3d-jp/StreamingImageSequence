@@ -182,7 +182,7 @@ namespace UnityEditor.StreamingImageSequence
             }
 
             /// ceate assets
-            MovieProxyPlayableAssetParam trackMovieContainer = new MovieProxyPlayableAssetParam();
+            StreamingImageSequencePlayableAssetParam trackMovieContainer = new StreamingImageSequencePlayableAssetParam();
             trackMovieContainer.Pictures = new string[param.files.Length];
             for (int ii = 0; ii < param.files.Length; ii++)
             {

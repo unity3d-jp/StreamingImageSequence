@@ -32,8 +32,8 @@ public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipA
         }
 
         public int Version;
-        public MovieProxyPlayableAssetParam.StPicResolution Resolution;
-        public MovieProxyPlayableAssetParam.StQuadSize QuadSize;
+        public StreamingImageSequencePlayableAssetParam.StPicResolution Resolution;
+        public StreamingImageSequencePlayableAssetParam.StQuadSize QuadSize;
         public string Folder;
         public bool m_displayOnClipsOnly;
         public string[] Pictures;
@@ -63,7 +63,7 @@ public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipA
             m_loadingIndex = -1;
             Util.Log("StreamingImageSequencePlayableAsset");
         }
-        public void SetParam(MovieProxyPlayableAssetParam param)
+        public void SetParam(StreamingImageSequencePlayableAssetParam param)
         {
             Version = param.Version;
             Resolution = param.Resolution;
@@ -276,30 +276,6 @@ public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipA
 
 
     }
-
-    [System.Serializable]
-    public class MovieProxyPlayableAssetParam
-    {
-        [System.Serializable]
-        public struct StPicResolution
-        {
-            public int Width;
-            public int Height;
-        };
-        [System.Serializable]
-        public struct StQuadSize
-        {
-            public float sizX;
-            public float sizY;
-        }
-        public int Version;
-        public StPicResolution Resolution;
-        public StQuadSize QuadSize;
-        public string Folder;
-        public string[] Pictures;
-    }
-
-
 
 
 }
