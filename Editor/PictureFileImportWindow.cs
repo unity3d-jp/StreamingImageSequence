@@ -178,7 +178,7 @@ namespace UnityEditor.StreamingImageSequence
             GUILayout.Space(8);
             EditorGUI.BeginDisabledGroup(m_importerParam.DoNotCopy);
             EditorGUILayout.LabelField("Copy to:", GUILayout.Width(120));
-            EditorGUILayout.TextField(m_importerParam.strDstFolder);
+            m_importerParam.strDstFolder = EditorGUILayout.TextField(m_importerParam.strDstFolder);
             if (GUILayout.Button("...", GUILayout.Width(40)))
             {
 
