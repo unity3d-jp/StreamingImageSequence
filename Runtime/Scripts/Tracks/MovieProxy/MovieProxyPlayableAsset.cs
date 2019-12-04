@@ -82,11 +82,13 @@ public class MovieProxyPlayableAsset : PlayableAsset, ITimelineClipAsset
             return ScriptPlayable<MovieProxyPlayableBehaviour>.Create(graph,bh);
         }
 
-        internal void LoadRequest(bool isDirectorIdle)
-        {
-            if (LoadRequested == null)
-            {
-                LoadRequested = new bool[Pictures.Length];
+        internal void LoadRequest(bool isDirectorIdle) {
+            if (null == Pictures)
+                return;
+
+            int numPictures = Pictures.Length;
+            if (LoadRequested == null && numPictures > 0) {
+                LoadRequested = new bool[numPictures];
             }
 
             // request loading while editor is idle.

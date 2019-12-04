@@ -118,6 +118,9 @@ namespace Unity.StreamingImageSequence
                 }*/
 
                 MovieProxyPlayableAsset asset = (MovieProxyPlayableAsset)clip.asset;
+                if (null == asset.Pictures)
+                    continue;
+
                 int length = asset.Pictures.Length;
                 if (m_MovieProxyPlayableAssetToColorArray.ContainsKey(asset))
                 {
