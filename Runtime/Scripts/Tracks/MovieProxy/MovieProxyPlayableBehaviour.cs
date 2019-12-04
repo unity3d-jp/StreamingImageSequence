@@ -40,7 +40,7 @@ namespace UnityEngine.StreamingImageSequence
         {
             var asset = m_clip.asset as StreamingImageSequencePlayableAsset;
 
-            string strOverridePath = asset.Folder;
+            string strOverridePath = asset.GetFolder();
 
             if (strOverridePath != null && strOverridePath != "")
             {

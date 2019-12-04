@@ -200,7 +200,7 @@ namespace UnityEditor.StreamingImageSequence
                     
                     Sprite[] sprites = new Sprite[movieProxyAsset.Pictures.Length];
 
-                    string strSrcFolder = Path.Combine(UpdateManager.GetProjectFolder(), movieProxyAsset.Folder).Replace("\\", "/");
+                    string strSrcFolder = Path.Combine(UpdateManager.GetProjectFolder(), movieProxyAsset.GetFolder()).Replace("\\", "/");
                     string strDistFolder = GetDistinationFolder(movieProxyAsset.Pictures[0] );
                     for (int ii = 0; ii < movieProxyAsset.Pictures.Length; ii++)
                     {

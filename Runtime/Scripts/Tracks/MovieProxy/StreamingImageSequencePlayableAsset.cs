@@ -14,9 +14,9 @@ using UnityEditor;
 
 namespace UnityEngine.StreamingImageSequence
 { 
-[System.Serializable]
-public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
-{
+    [System.Serializable]
+    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
+    {
         [System.Serializable]
         public struct StPicResolution
         {
@@ -34,12 +34,13 @@ public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipA
         public int Version;
         public StreamingImageSequencePlayableAssetParam.StPicResolution Resolution;
         public StreamingImageSequencePlayableAssetParam.StQuadSize QuadSize;
-        public string Folder;
         public bool m_displayOnClipsOnly;
         public string[] Pictures;
         private bool[] LoadRequested;
         public int m_loadingIndex = -1;
 		private int m_sLastIndex = -1;
+
+        public string GetFolder() { return m_folder; }
 
         internal void Reset()
         {
@@ -63,13 +64,14 @@ public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipA
             m_loadingIndex = -1;
             Util.Log("StreamingImageSequencePlayableAsset");
         }
+         
         public void SetParam(StreamingImageSequencePlayableAssetParam param)
         {
             Version = param.Version;
             Resolution = param.Resolution;
             QuadSize = param.QuadSize;
             Pictures = param.Pictures;
-            Folder = param.Folder;
+            m_folder = param.Folder;
         }
 
 
@@ -245,9 +247,10 @@ public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipA
 			m_sLastIndex = index;
             return isAlreadySet;
         }
-         public  string GetCompleteFilePath(string filePath)
+
+        public  string GetCompleteFilePath(string filePath)
         {
-            string strOverridePath = Folder;
+            string strOverridePath = m_folder;
 
             if (strOverridePath != null && strOverridePath != "")
             {
@@ -273,7 +276,8 @@ public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipA
             return filePath;
         }
 
-
+//---------------------------------------------------------------------------------------------------------------------
+        private string m_folder;
 
     }
 
