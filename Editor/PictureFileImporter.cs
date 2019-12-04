@@ -202,9 +202,7 @@ namespace UnityEditor.StreamingImageSequence {
             SpriteAnimation,
         }
 
-        public string strExtension;
         public string strAssetName;
-        public Match match;
         public string[] files;
         public string strDstFolder;
         public string strSrcFolder;

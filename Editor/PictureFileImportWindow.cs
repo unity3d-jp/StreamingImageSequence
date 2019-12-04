@@ -24,9 +24,9 @@ namespace UnityEditor.StreamingImageSequence
 
             string strExtension = Path.GetExtension(path).ToLower();
             if (strExtension == "." + PictureFileImporter.PNG_EXTENSION.ToLower()) {
-                param.strExtension = PictureFileImporter.PNG_EXTENSION;
+                strExtension = PictureFileImporter.PNG_EXTENSION;
             } else if (strExtension == "." + PictureFileImporter.TGA_EXTENSION.ToLower()) {
-                param.strExtension = PictureFileImporter.TGA_EXTENSION;
+                strExtension = PictureFileImporter.TGA_EXTENSION;
             }
 
             var strFileneWithoutExtention = Path.GetFileNameWithoutExtension(path);
@@ -43,19 +43,19 @@ namespace UnityEditor.StreamingImageSequence
             var matches = regNumbers.Matches(strFileneWithoutExtention);
             Assert.IsTrue(matches.Count > 0);
 
-            param.match = null;
+            Match foundMatch = null;
             foreach (Match match in matches)
             {
-                param.match = match;
+                foundMatch = match;
             }
 
-            Assert.IsTrue(param.match != null);
+            Assert.IsTrue(foundMatch != null);
 
-            var parsed = int.Parse(param.match.Value);
+            var parsed = int.Parse(foundMatch.Value);
             int periodIndex = strFileneWithoutExtention.Length;
-            int digits = param.match.Value.Length;
+            int digits = foundMatch.Value.Length;
             param.strSrcFolder = Path.GetDirectoryName(path);
-            var strBaseName = strFileneWithoutExtention.Substring(0, param.match.Index);
+            var strBaseName = strFileneWithoutExtention.Substring(0, foundMatch.Index);
 
 
             // create copy destination path
@@ -75,15 +75,21 @@ namespace UnityEditor.StreamingImageSequence
 
             param.strDstFolder = Path.Combine(strDistFolder, param.strAssetName).Replace("\\", "/");
 
+            //enumerate files and sort
+            var txtFiles = Directory.EnumerateFiles(param.strSrcFolder, "*.png", SearchOption.AllDirectories);
+
+            foreach (string currentFile in txtFiles)
+            {
+                Debug.Log(currentFile);
+            }
 
 
-            /// making list of the files and copy them.
             List<string> strNames = new List<string>();
 
             for (; ; )
             {
                 string strZero = string.Format("{0:D" + digits + "}", parsed++);
-                string strFileName = strBaseName + strZero + "." + param.strExtension;
+                string strFileName = strBaseName + strZero + "." + strExtension;
                 strFileName = strFileName.Replace("\\", "/");
                 string curFilePath = Path.Combine(param.strSrcFolder, strFileName).Replace("\\", "/");
                 if (!File.Exists(curFilePath))
