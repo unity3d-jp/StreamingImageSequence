@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Timeline;
-using UnityEditor;
-using UnityEngine.Playables;
-using UnityEngine.Assertions;
+﻿using System.IO;
 using System.Text.RegularExpressions;
+using UnityEngine;
 using UnityEngine.StreamingImageSequence;
+using UnityEngine.UI;
 
-namespace UnityEditor.StreamingImageSequence
-{
+namespace UnityEditor.StreamingImageSequence {
 
     public class PictureFileImporter
     {
+
+        public const string PNG_EXTENSION = "png";
+        public const string TGA_EXTENSION = "tga";
 
         static string versionString = "MovieProxy version 0.2.1";
 
@@ -24,101 +19,14 @@ namespace UnityEditor.StreamingImageSequence
         {
             importPictureFiles(PictureFileImporterParam.Mode.StereamingAssets);
         }
-        static void importPictureFiles(PictureFileImporterParam.Mode mode)
-        {
-            PictureFileImporterParam param = new PictureFileImporterParam();
 
-            string strPath = EditorUtility.OpenFilePanel("Open File", "", param.strExtensionPng + "," + param.strExtentionTga);
-            if (String.IsNullOrEmpty(strPath)) {
+        static void importPictureFiles(PictureFileImporterParam.Mode importerMode) {
+            string path = EditorUtility.OpenFilePanel("Open File", "", PNG_EXTENSION + "," + TGA_EXTENSION);
+            if (string.IsNullOrEmpty(path)) {
                 return;
             }
 
-            string strExtension = Path.GetExtension(strPath).ToLower();
-            if (strExtension == "." + param.strExtensionPng.ToLower())
-            {
-                param.strExtension = param.strExtensionPng;
-            }
-            else if (strExtension == "." + param.strExtentionTga.ToLower())
-            {
-                param.strExtension = param.strExtentionTga;
-            }
-
-            var strFileneWithoutExtention = Path.GetFileNameWithoutExtension(strPath);
-            if (!Regex.IsMatch(strFileneWithoutExtention, @"\d+$"))
-            {
-                Debug.LogError(@"Input doesn't include number.");
-                return;
-            }
-
-
-
-            /// cehck Importing file name
-            var regNumbers = new Regex(@"\d+$");
-            var matches = regNumbers.Matches(strFileneWithoutExtention);
-            Assert.IsTrue(matches.Count > 0);
-
-            param.match = null;
-            foreach (Match match in matches)
-            {
-                param.match = match;
-            }
-
-            Assert.IsTrue(param.match != null);
-
-            var parsed = int.Parse(param.match.Value);
-            int periodIndex = strFileneWithoutExtention.Length;
-            int digits = param.match.Value.Length;
-            param.strSrcFolder = Path.GetDirectoryName(strPath);
-            var strBaseName = strFileneWithoutExtention.Substring(0, param.match.Index);
-
-
-            /// create copy destination path
-
-
-            var strDistFolder = Application.streamingAssetsPath;
-            if (mode == PictureFileImporterParam.Mode.SpriteAnimation)
-            {
-                strDistFolder = Application.dataPath;
-            }
-            if (!Directory.Exists(strDistFolder))
-            {
-                Directory.CreateDirectory(strDistFolder);
-            }
-
-            param.strAssetName = strBaseName;
-            if (param.strAssetName.EndsWith("_") || param.strAssetName.EndsWith("-"))
-            {
-                param.strAssetName = param.strAssetName.Substring(0, param.strAssetName.Length - 1);
-            }
-
-            param.strDstFolder = Path.Combine(strDistFolder, param.strAssetName).Replace("\\", "/");
-
-
-
-            /// making list of the files and copy them.
-            List<string> strNames = new List<string>();
-
-            for (; ; )
-            {
-                string strZero = string.Format("{0:D" + digits + "}", parsed++);
-                string strFileName = strBaseName + strZero + "." + param.strExtension;
-                strFileName = strFileName.Replace("\\", "/");
-                string path = Path.Combine(param.strSrcFolder, strFileName).Replace("\\", "/");
-                if (!File.Exists(path))
-                {
-                    break;
-                }
-                strNames.Add(strFileName);
-            }
-
-            param.files = new string[strNames.Count];
-            for (int ii = 0; ii < strNames.Count; ii++)
-            {
-                param.files[ii] = strNames[ii];
-            }
-            param.mode = mode;
-            PictureFileImportWindow.Init(param);
-
+            PictureFileImportWindow.Init(importerMode, path);
         }
 
         /*
@@ -294,8 +202,6 @@ namespace UnityEditor.StreamingImageSequence
             SpriteAnimation,
         }
 
-        public readonly string strExtensionPng = "png";
-        public readonly string strExtentionTga = "tga";
         public string strExtension;
         public string strAssetName;
         public Match match;

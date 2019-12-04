@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEditor;
 using System.Collections;
 using UnityEngine.Assertions;
 using System.IO;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace UnityEditor.StreamingImageSequence
 {
@@ -12,13 +15,93 @@ namespace UnityEditor.StreamingImageSequence
     {
         static PictureFileImporterParam m_importerParam;
         static Vector2 m_scrollPos;
-        public static void Init(PictureFileImporterParam importer)
+
+        public static void Init(PictureFileImporterParam.Mode importerMode, string path)
         {
-            Assert.IsTrue(importer != null);
+            Assert.IsFalse(string.IsNullOrEmpty(path));
 
-            m_importerParam = importer;
+            PictureFileImporterParam param = new PictureFileImporterParam();
+
+            string strExtension = Path.GetExtension(path).ToLower();
+            if (strExtension == "." + PictureFileImporter.PNG_EXTENSION.ToLower()) {
+                param.strExtension = PictureFileImporter.PNG_EXTENSION;
+            } else if (strExtension == "." + PictureFileImporter.TGA_EXTENSION.ToLower()) {
+                param.strExtension = PictureFileImporter.TGA_EXTENSION;
+            }
+
+            var strFileneWithoutExtention = Path.GetFileNameWithoutExtension(path);
+            if (!Regex.IsMatch(strFileneWithoutExtention, @"\d+$"))
+            {
+                Debug.LogError(@"Input doesn't include number.");
+                return;
+            }
+
+
+
+            /// cehck Importing file name
+            var regNumbers = new Regex(@"\d+$");
+            var matches = regNumbers.Matches(strFileneWithoutExtention);
+            Assert.IsTrue(matches.Count > 0);
+
+            param.match = null;
+            foreach (Match match in matches)
+            {
+                param.match = match;
+            }
+
+            Assert.IsTrue(param.match != null);
+
+            var parsed = int.Parse(param.match.Value);
+            int periodIndex = strFileneWithoutExtention.Length;
+            int digits = param.match.Value.Length;
+            param.strSrcFolder = Path.GetDirectoryName(path);
+            var strBaseName = strFileneWithoutExtention.Substring(0, param.match.Index);
+
+
+            // create copy destination path
+            var strDistFolder = Application.streamingAssetsPath;
+            if (importerMode == PictureFileImporterParam.Mode.SpriteAnimation) {
+                strDistFolder = Application.dataPath;
+            }
+
+            if (!Directory.Exists(strDistFolder)) {
+                Directory.CreateDirectory(strDistFolder);
+            }
+
+            param.strAssetName = strBaseName;
+            if (param.strAssetName.EndsWith("_") || param.strAssetName.EndsWith("-")) {
+                param.strAssetName = param.strAssetName.Substring(0, param.strAssetName.Length - 1);
+            }
+
+            param.strDstFolder = Path.Combine(strDistFolder, param.strAssetName).Replace("\\", "/");
+
+
+
+            /// making list of the files and copy them.
+            List<string> strNames = new List<string>();
+
+            for (; ; )
+            {
+                string strZero = string.Format("{0:D" + digits + "}", parsed++);
+                string strFileName = strBaseName + strZero + "." + param.strExtension;
+                strFileName = strFileName.Replace("\\", "/");
+                string curFilePath = Path.Combine(param.strSrcFolder, strFileName).Replace("\\", "/");
+                if (!File.Exists(curFilePath))
+                {
+                    break;
+                }
+                strNames.Add(strFileName);
+            }
+
+            param.files = new string[strNames.Count];
+            for (int ii = 0; ii < strNames.Count; ii++)
+            {
+                param.files[ii] = strNames[ii];
+            }
+            param.mode = importerMode;
+
+            m_importerParam = param;
             InitWindow();
-
         }
 
         private void OnDisable()
