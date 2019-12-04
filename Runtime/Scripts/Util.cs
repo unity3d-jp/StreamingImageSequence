@@ -10,7 +10,7 @@ using UnityEngine.Timeline;
 using UnityEditor;
 #endif
 
-namespace Unity.StreamingImageSequence
+namespace UnityEngine.StreamingImageSequence
 {
 
 

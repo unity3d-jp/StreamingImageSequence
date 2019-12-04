@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 #endif
 
-namespace Unity.StreamingImageSequence
+namespace UnityEngine.StreamingImageSequence
 {
     
 #if UNITY_EDITOR

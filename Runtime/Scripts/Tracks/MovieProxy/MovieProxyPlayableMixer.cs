@@ -14,7 +14,7 @@ using UnityEngine.Timeline;
 using UnityEditor;
 #endif
 
-namespace Unity.StreamingImageSequence
+namespace UnityEngine.StreamingImageSequence
 {
 
     // A behaviour that is attached to a playable

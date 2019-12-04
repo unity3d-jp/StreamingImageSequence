@@ -8,8 +8,9 @@ using UnityEditor;
 using UnityEngine.Playables;
 using UnityEngine.Assertions;
 using System.Text.RegularExpressions;
+using UnityEngine.StreamingImageSequence;
 
-namespace Unity.StreamingImageSequence
+namespace UnityEditor.StreamingImageSequence
 {
 
     public class PictureFileImporter

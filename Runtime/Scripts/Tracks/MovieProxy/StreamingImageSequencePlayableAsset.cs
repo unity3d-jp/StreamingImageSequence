@@ -12,7 +12,7 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-namespace Unity.StreamingImageSequence
+namespace UnityEngine.StreamingImageSequence
 { 
 [System.Serializable]
 public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset

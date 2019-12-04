@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
-namespace Unity.StreamingImageSequence
+namespace UnityEngine.StreamingImageSequence
 {
 
     [System.Serializable]

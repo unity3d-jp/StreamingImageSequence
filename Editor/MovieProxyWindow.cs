@@ -8,8 +8,9 @@ using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using UnityEngine.Assertions;
 using System;
+using UnityEngine.StreamingImageSequence;
 
-namespace Unity.StreamingImageSequence
+namespace UnityEditor.StreamingImageSequence
 { 
     public class MovieProxyWindow : EditorWindow
     {

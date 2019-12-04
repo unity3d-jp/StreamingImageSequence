@@ -7,8 +7,9 @@ using System.Reflection;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
+using UnityEngine.StreamingImageSequence;
 
-namespace Unity.StreamingImageSequence
+namespace UnityEditor.StreamingImageSequence
 {
 #if UNITY_EDITOR
     [InitializeOnLoad]

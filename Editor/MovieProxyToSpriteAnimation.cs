@@ -9,8 +9,9 @@ using UnityEditor.Animations;
 using UnityEngine.Assertions;
 using System.IO;
 using System.Text.RegularExpressions;
+using UnityEngine.StreamingImageSequence;
 
-namespace Unity.StreamingImageSequence
+namespace UnityEditor.StreamingImageSequence
 { 
 
     public class MovieProxyToSpriteAnimation  {

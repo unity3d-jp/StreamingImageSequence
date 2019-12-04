@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.Assertions;
 using System.IO;
 
-namespace Unity.StreamingImageSequence
+namespace UnityEditor.StreamingImageSequence
 {
 
     public class PictureFileImportWindow : EditorWindow

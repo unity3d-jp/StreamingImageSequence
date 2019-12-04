@@ -6,8 +6,9 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Assertions;
 using System.IO;
+using UnityEngine.StreamingImageSequence;
 
-namespace Unity.StreamingImageSequence
+namespace UnityEditor.StreamingImageSequence
 {
 
 

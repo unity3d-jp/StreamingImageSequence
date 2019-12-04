@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace Unity.StreamingImageSequence
+namespace UnityEngine.StreamingImageSequence
 {
     // A behaviour that is attached to a playable
     public class FaderPlayableBehaviour : PlayableBehaviour

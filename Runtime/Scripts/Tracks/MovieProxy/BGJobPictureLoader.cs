@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using System.IO;
 
-namespace Unity.StreamingImageSequence
+namespace UnityEngine.StreamingImageSequence
 {
 
 

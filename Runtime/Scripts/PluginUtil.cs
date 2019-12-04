@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using System.Runtime.InteropServices;
 
-namespace Unity.StreamingImageSequence
+namespace UnityEngine.StreamingImageSequence
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 8)]
     public struct StReadResult
