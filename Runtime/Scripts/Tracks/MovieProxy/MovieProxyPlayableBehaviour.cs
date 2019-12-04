@@ -23,7 +23,7 @@ namespace Unity.StreamingImageSequence
     {
         static string strPorjectFolder = null;
 
-		internal TimelineClip m_clip;
+		internal TimelineClip m_clip = null;
         public MovieProxyPlayableBehaviour()
         {
             if (strPorjectFolder == null)
