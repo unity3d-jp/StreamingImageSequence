@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
 using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence {
@@ -42,10 +43,17 @@ namespace UnityEditor.StreamingImageSequence {
                     if (evt.type == EventType.DragPerform) {
                         DragAndDrop.AcceptDrag ();
              
-                        foreach (string dragged_object in DragAndDrop.paths) {
+                        if (DragAndDrop.paths.Length <= 0)
+                            break;
 
-                            Debug.Log(dragged_object);
+                        //We only accept one dragged path here
+                        string folder = DragAndDrop.paths[0];
+                        FileAttributes attr = File.GetAttributes(folder);
+
+                        if (!attr.HasFlag(FileAttributes.Directory)) {
+                            folder = Path.GetDirectoryName(folder);
                         }
+                        PictureFileImportWindow.Init(PictureFileImporterParam.Mode.StereamingAssets, folder);
                     }
                     break;
                 default:
