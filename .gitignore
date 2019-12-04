@@ -31,8 +31,8 @@ Plugin/_build_*
 *.dblite
 excons.cache
 
-MovieProxyProject~/*.csproj
-MovieProxyProject~/*.sln
+StreamingImageSequence~/*.csproj
+StreamingImageSequence~/*.sln
 .vs/
 Library/
 Temp/
