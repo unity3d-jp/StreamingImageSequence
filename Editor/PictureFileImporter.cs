@@ -17,7 +17,7 @@ namespace UnityEditor.StreamingImageSequence {
         [MenuItem("Edit/Movie Proxy/Create Clip", false, 1)]
         static void RegisterFilesAndCreateMovieProxy()
         {
-            ImportPictureFiles(PictureFileImporterParam.Mode.StereamingAssets);
+            ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets);
         }
 
         static void ImportPictureFiles(PictureFileImporterParam.Mode importerMode) {
@@ -60,7 +60,7 @@ namespace UnityEditor.StreamingImageSequence {
             {
 
                 string dstFolder = param.strDstFolder.Replace("\\", "/");
-                if (param.mode == PictureFileImporterParam.Mode.StereamingAssets)
+                if (param.mode == PictureFileImporterParam.Mode.StreamingAssets)
                 {
                     if (dstFolder.StartsWith(Application.dataPath) && !dstFolder.StartsWith(Path.Combine(Application.dataPath, "StreamingAssets").Replace("\\", "/")))
                     {
@@ -198,7 +198,7 @@ namespace UnityEditor.StreamingImageSequence {
     {
         public enum Mode
         {
-            StereamingAssets,
+            StreamingAssets,
             SpriteAnimation,
         }
 

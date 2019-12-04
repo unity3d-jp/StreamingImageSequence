@@ -23,7 +23,6 @@ namespace UnityEditor.StreamingImageSequence {
         private void DrawFolderField() {
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel("Folder");
-            //GUI.skin.button.wordWrap = false;
             EditorGUILayout.SelectableLabel(m_asset.GetFolder(),
                 EditorStyles.objectField, GUILayout.Height(EditorGUIUtility.singleLineHeight)
             );
@@ -53,7 +52,7 @@ namespace UnityEditor.StreamingImageSequence {
                         if (!attr.HasFlag(FileAttributes.Directory)) {
                             folder = Path.GetDirectoryName(folder);
                         }
-                        PictureFileImportWindow.Init(PictureFileImporterParam.Mode.StereamingAssets, folder);
+                        PictureFileImportWindow.Init(PictureFileImporterParam.Mode.StreamingAssets, folder);
                     }
                     break;
                 default:
