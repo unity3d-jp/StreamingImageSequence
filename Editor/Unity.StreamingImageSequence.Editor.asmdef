@@ -1,9 +1,12 @@
 {
-    "name": "Unity.MovieProxy",
+    "name": "Unity.StreamingImageSequence.Editor",
     "references": [
+        "GUID:83bf442171810a04381b4d745b2fdb72",
         "GUID:f06555f75b070af458a003d92f9efb00"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

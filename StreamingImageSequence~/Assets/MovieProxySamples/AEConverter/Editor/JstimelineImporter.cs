@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEngine.Playables;
 using System.Text.RegularExpressions;
 using UnityEngine.UI;
-using Unity.MovieProxy;
+using Unity.StreamingImageSequence;
 
 [ScriptedImporter(1, "jstimeline")]
 public class JstimelineImporter : ScriptedImporter

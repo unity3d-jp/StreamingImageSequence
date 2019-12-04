@@ -12,7 +12,7 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-namespace Unity.MovieProxy
+namespace Unity.StreamingImageSequence
 { 
 [System.Serializable]
 public class MovieProxyPlayableAsset : PlayableAsset, ITimelineClipAsset

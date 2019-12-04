@@ -9,7 +9,7 @@ using UnityEngine.Playables;
 using UnityEngine.Assertions;
 using System;
 
-namespace Unity.MovieProxy
+namespace Unity.StreamingImageSequence
 { 
     public class MovieProxyWindow : EditorWindow
     {

@@ -4,7 +4,7 @@ using System.Collections;
 using UnityEngine.Assertions;
 using System.IO;
 
-namespace Unity.MovieProxy
+namespace Unity.StreamingImageSequence
 {
 
     public class PictureFileImportWindow : EditorWindow

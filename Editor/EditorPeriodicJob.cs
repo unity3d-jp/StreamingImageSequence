@@ -8,7 +8,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
 
-namespace Unity.MovieProxy
+namespace Unity.StreamingImageSequence
 {
 #if UNITY_EDITOR
     [InitializeOnLoad]

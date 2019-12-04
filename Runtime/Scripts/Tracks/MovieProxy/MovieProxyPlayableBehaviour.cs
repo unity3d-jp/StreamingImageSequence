@@ -14,7 +14,7 @@ using UnityEngine.Timeline;
 using UnityEditor;
 #endif
 
-namespace Unity.MovieProxy
+namespace Unity.StreamingImageSequence
 {
 
     // A behaviour that is attached to a playable
