@@ -256,14 +256,14 @@ namespace Unity.StreamingImageSequence
                 AnimationUtility.SetObjectReferenceCurve(newClip, curveBinding, Keyframes);
                 AssetDatabase.CreateAsset(newClip, Path.Combine(param.strDstFolder, "Animation.anim").Replace("\\", "/"));
 
-                //            var proxyAsset = ScriptableObject.CreateInstance<MovieProxyPlayableAsset>(); //new MovieProxyPlayableAsset(trackMovieContainer);
+                //            var proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>(); //new StreamingImageSequencePlayableAsset(trackMovieContainer);
                 //            proxyAsset.SetParam(trackMovieContainer);
                 //            var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_MovieProxy.playable").Replace("\\", "/"));*/
                 AssetDatabase.Refresh();
             }
             else
             {
-                var proxyAsset = ScriptableObject.CreateInstance<MovieProxyPlayableAsset>(); //new MovieProxyPlayableAsset(trackMovieContainer);
+                var proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>(); //new StreamingImageSequencePlayableAsset(trackMovieContainer);
                 proxyAsset.SetParam(trackMovieContainer);
                 var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_MovieProxy.playable").Replace("\\", "/"));
 

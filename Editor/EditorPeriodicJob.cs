@@ -16,7 +16,7 @@ namespace Unity.StreamingImageSequence
     public class EditorPeriodicJob : PeriodicJob
     {
  
-        static Dictionary<MovieProxyPlayableAsset, BGJobCacheParam> m_MovieProxyPlayableAssetToColorArray = new Dictionary<MovieProxyPlayableAsset, BGJobCacheParam>();
+        static Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam> m_MovieProxyPlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
 
         static EditorPeriodicJob()
         {
@@ -30,7 +30,7 @@ namespace Unity.StreamingImageSequence
 
         private  void Reinitialize()
         {
-            m_MovieProxyPlayableAssetToColorArray = new Dictionary<MovieProxyPlayableAsset, BGJobCacheParam>();
+            m_MovieProxyPlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
         }
         public override void Initialize()
         {
@@ -103,9 +103,9 @@ namespace Unity.StreamingImageSequence
 
                 // You might want to use "as" rather than compare type.
                 // "as" sometimes fail on first importing time for project.
-                if (clip.asset.GetType() != typeof(MovieProxyPlayableAsset))
+                if (clip.asset.GetType() != typeof(StreamingImageSequencePlayableAsset))
                 {
-                    Debug.LogError("MovieProxyPlayableAsset is broken:" + clip.asset.name);
+                    Debug.LogError("StreamingImageSequencePlayableAsset is broken:" + clip.asset.name);
                     continue;
 
                 }
@@ -113,11 +113,11 @@ namespace Unity.StreamingImageSequence
                 /*
                 if (clip.asset == null)
                 {
-                    Debug.LogError("MovieProxyPlayableAsset on " + clip.displayName + " is broken.");
+                    Debug.LogError("StreamingImageSequencePlayableAsset on " + clip.displayName + " is broken.");
                     continue;
                 }*/
 
-                MovieProxyPlayableAsset asset = (MovieProxyPlayableAsset)clip.asset;
+                StreamingImageSequencePlayableAsset asset = (StreamingImageSequencePlayableAsset)clip.asset;
                 if (null == asset.Pictures)
                     continue;
 
@@ -219,7 +219,7 @@ namespace Unity.StreamingImageSequence
                 info = type.GetProperty("clip", bf);
                 var clip = info.GetValue(obj, null) as UnityEngine.Timeline.TimelineClip;
                 var assetType = clip.asset.GetType();
-                if (assetType != typeof(MovieProxyPlayableAsset))
+                if (assetType != typeof(StreamingImageSequencePlayableAsset))
                 {
                     continue;
                 }

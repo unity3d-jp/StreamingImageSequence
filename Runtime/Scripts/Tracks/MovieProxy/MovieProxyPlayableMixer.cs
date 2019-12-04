@@ -71,7 +71,7 @@ namespace Unity.StreamingImageSequence
             if (!m_IsTexSet)
             {
                 Assert.IsTrue(clip != null);
-                var asset = clip.asset as MovieProxyPlayableAsset;
+                var asset = clip.asset as StreamingImageSequencePlayableAsset;
                 m_IsTexSet = asset.SetTexture(m_BoundGameObject, 0, false, m_IsTexSet);
             }
         }
@@ -161,7 +161,7 @@ namespace Unity.StreamingImageSequence
             {
 
                 var clip = enumulator.Current;
-                 var asset = clip.asset as MovieProxyPlayableAsset;
+                 var asset = clip.asset as StreamingImageSequencePlayableAsset;
                 float count = asset.Pictures.Length;
                 int index = 0;
                 var clipDuration = clip.duration;
@@ -237,7 +237,7 @@ namespace Unity.StreamingImageSequence
 
         private void ProcessInAdvanceLoading(double time, TimelineClip clip, int index)
         {
-            var asset = clip.asset as MovieProxyPlayableAsset;
+            var asset = clip.asset as StreamingImageSequencePlayableAsset;
             int count = asset.Pictures.Length;
 
 

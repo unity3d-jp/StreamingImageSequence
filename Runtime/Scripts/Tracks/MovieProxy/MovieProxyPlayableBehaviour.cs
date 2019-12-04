@@ -38,7 +38,7 @@ namespace Unity.StreamingImageSequence
 
         private string GetCompleteFilePath(string filePath)
         {
-            var asset = m_clip.asset as MovieProxyPlayableAsset;
+            var asset = m_clip.asset as StreamingImageSequencePlayableAsset;
 
             string strOverridePath = asset.Folder;
 

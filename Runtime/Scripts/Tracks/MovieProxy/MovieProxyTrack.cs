@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 namespace Unity.StreamingImageSequence
 { 
-    [TrackClipType(typeof(MovieProxyPlayableAsset))]
+    [TrackClipType(typeof(StreamingImageSequencePlayableAsset))]
     [TrackBindingType(typeof(MovieProxyNativeRenderer))]
     [TrackMediaType(TimelineAsset.MediaType.Script)]
     [TrackColor(0.776f, 0.263f, 0.09f)]

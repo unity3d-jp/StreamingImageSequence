@@ -194,7 +194,7 @@ namespace Unity.StreamingImageSequence
                     {
                         animator = go.AddComponent<Animator>();
                     }
-                    var movieProxyAsset = srcClip.asset as MovieProxyPlayableAsset;
+                    var movieProxyAsset = srcClip.asset as StreamingImageSequencePlayableAsset;
 
                     
                     Sprite[] sprites = new Sprite[movieProxyAsset.Pictures.Length];

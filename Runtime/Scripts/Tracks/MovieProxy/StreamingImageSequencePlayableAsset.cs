@@ -15,7 +15,7 @@ using UnityEditor;
 namespace Unity.StreamingImageSequence
 { 
 [System.Serializable]
-public class MovieProxyPlayableAsset : PlayableAsset, ITimelineClipAsset
+public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
 {
         [System.Serializable]
         public struct StPicResolution
@@ -58,10 +58,10 @@ public class MovieProxyPlayableAsset : PlayableAsset, ITimelineClipAsset
 
 
 
-        public MovieProxyPlayableAsset()
+        public StreamingImageSequencePlayableAsset()
         {
             m_loadingIndex = -1;
-            Util.Log("MovieProxyPlayableAsset");
+            Util.Log("StreamingImageSequencePlayableAsset");
         }
         public void SetParam(MovieProxyPlayableAssetParam param)
         {

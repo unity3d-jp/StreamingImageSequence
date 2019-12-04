@@ -146,7 +146,7 @@ public class JstimelineImporter : ScriptedImporter
 
 
 
-            var proxyAsset = ScriptableObject.CreateInstance<MovieProxyPlayableAsset>();
+            var proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
             proxyAsset.SetParam(trackMovieContainer);
             proxyAsset.m_displayOnClipsOnly = true;
             var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(strNewFolderPath, strFootageName + "_MovieProxy.playable"));
