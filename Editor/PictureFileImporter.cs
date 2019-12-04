@@ -206,7 +206,6 @@ namespace UnityEditor.StreamingImageSequence {
         public string[] files;
         public string strDstFolder;
         public string strSrcFolder;
-        public bool IsSelectingFolder;
         public bool DoNotCopy;
         public Mode mode;
     }

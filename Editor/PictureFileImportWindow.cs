@@ -112,7 +112,7 @@ namespace UnityEditor.StreamingImageSequence
 
         private void OnDisable()
         {
-            if (m_importerParam.IsSelectingFolder)
+            if (m_isSelectingFolder)
             {
                 UnityEditor.EditorApplication.delayCall += () =>
                 {
@@ -137,7 +137,7 @@ namespace UnityEditor.StreamingImageSequence
                 return;
             }
 
-            m_importerParam.IsSelectingFolder = false;
+            m_isSelectingFolder = false;
             Rect rect = new Rect(0, 0, Screen.width, Screen.height);
             Rect rect2 = new Rect(2, 2, Screen.width - 4, Screen.height - 4);
             EditorGUI.DrawRect(rect, Color.gray);
@@ -190,7 +190,7 @@ namespace UnityEditor.StreamingImageSequence
 
                 if (Directory.Exists(m_importerParam.strDstFolder))
                 {
-                    m_importerParam.IsSelectingFolder = true;
+                    m_isSelectingFolder = true;
                     m_importerParam.strDstFolder = EditorUtility.OpenFolderPanel("Choose folder to copy", m_importerParam.strDstFolder, null);
                 }
             }
@@ -217,6 +217,6 @@ namespace UnityEditor.StreamingImageSequence
             EditorGUILayout.EndVertical();
         }
 
-
+        private bool m_isSelectingFolder;
     }
-}
+} //end namespace
