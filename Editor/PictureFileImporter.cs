@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -28,6 +29,10 @@ namespace UnityEditor.StreamingImageSequence
             PictureFileImporterParam param = new PictureFileImporterParam();
 
             string strPath = EditorUtility.OpenFilePanel("Open File", "", param.strExtensionPng + "," + param.strExtentionTga);
+            if (String.IsNullOrEmpty(strPath)) {
+                return;
+            }
+
             string strExtension = Path.GetExtension(strPath).ToLower();
             if (strExtension == "." + param.strExtensionPng.ToLower())
             {
