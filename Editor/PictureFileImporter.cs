@@ -17,10 +17,10 @@ namespace UnityEditor.StreamingImageSequence {
         [MenuItem("Edit/Movie Proxy/Create Clip", false, 1)]
         static void RegisterFilesAndCreateMovieProxy()
         {
-            importPictureFiles(PictureFileImporterParam.Mode.StereamingAssets);
+            ImportPictureFiles(PictureFileImporterParam.Mode.StereamingAssets);
         }
 
-        static void importPictureFiles(PictureFileImporterParam.Mode importerMode) {
+        static void ImportPictureFiles(PictureFileImporterParam.Mode importerMode) {
             string path = EditorUtility.OpenFilePanel("Open File", "", PNG_EXTENSION + "," + TGA_EXTENSION);
             if (string.IsNullOrEmpty(path)) {
                 return;
