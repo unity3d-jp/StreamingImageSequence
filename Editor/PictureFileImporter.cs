@@ -26,7 +26,7 @@ namespace UnityEditor.StreamingImageSequence {
                 return;
             }
 
-            PictureFileImportWindow.Init(importerMode, path);
+            PictureFileImportWindow.Init(importerMode, path, null);
         }
 
         /*
@@ -49,7 +49,7 @@ namespace UnityEditor.StreamingImageSequence {
         {
             Debug.Log(versionString);
         }
-        public static void import(PictureFileImporterParam param)
+        public static void Import(PictureFileImporterParam param)
         {
             if (param.DoNotCopy)
             {
@@ -177,11 +177,15 @@ namespace UnityEditor.StreamingImageSequence {
             }
             else
             {
-                var proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>(); //new StreamingImageSequencePlayableAsset(trackMovieContainer);
-                proxyAsset.SetParam(trackMovieContainer);
-                var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_MovieProxy.playable").Replace("\\", "/"));
+                //StreamingAsset
+                StreamingImageSequencePlayableAsset proxyAsset = param.TargetAsset;
+                if (null == proxyAsset) {
+                    proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>(); 
+                    var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_MovieProxy.playable").Replace("\\", "/"));
+                    AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
+                }
 
-                AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
+                proxyAsset.SetParam(trackMovieContainer);
                 if (!param.DoNotCopy)
                 {
                     AssetDatabase.Refresh();
@@ -208,5 +212,6 @@ namespace UnityEditor.StreamingImageSequence {
         public string strSrcFolder;
         public bool DoNotCopy;
         public Mode mode;
+        public StreamingImageSequencePlayableAsset TargetAsset = null;
     }
 }

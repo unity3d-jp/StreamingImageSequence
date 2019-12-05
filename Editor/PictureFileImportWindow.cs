@@ -30,7 +30,9 @@ namespace UnityEditor.StreamingImageSequence
 
         /// <param name="importerMode"> Importer mode: StreamingAssets or SpriteAnimation</param>
         /// <param name="path"> Can be a directory path or a file path</param>
-        public static void Init(PictureFileImporterParam.Mode importerMode, string path) {
+        public static void Init(PictureFileImporterParam.Mode importerMode, string path, 
+                StreamingImageSequencePlayableAsset targetAsset) 
+        {
             Assert.IsFalse(string.IsNullOrEmpty(path));
 
             //Convert path to folder here
@@ -67,11 +69,13 @@ namespace UnityEditor.StreamingImageSequence
             string assetName =  EstimateAssetName(fileNames[0]);
 
             // set dest folder
-            string destFolder = Application.streamingAssetsPath;
+            string rootDestFolder = Application.streamingAssetsPath;
             if (importerMode == PictureFileImporterParam.Mode.SpriteAnimation) {
-                destFolder = Application.dataPath;
+                rootDestFolder = Application.dataPath;
             }
-            destFolder = Path.Combine(destFolder, assetName).Replace("\\", "/");
+
+
+            string destFolder = Path.Combine(rootDestFolder, assetName).Replace("\\", "/");
 
             //Set importer param
             m_importerParam.strAssetName = assetName ;
@@ -79,8 +83,18 @@ namespace UnityEditor.StreamingImageSequence
             m_importerParam.strSrcFolder = folder;
             m_importerParam.strDstFolder = destFolder;
             m_importerParam.mode = importerMode;
+            m_importerParam.DoNotCopy = false;
+            m_importerParam.TargetAsset = targetAsset;
 
-            InitWindow();
+            string fullSrcPath = Path.GetFullPath(folder).Replace("\\", "/");
+
+            if (fullSrcPath.StartsWith(rootDestFolder)) {
+                //Import immediately if the assets are already under Unity
+                m_importerParam.DoNotCopy = true;
+                PictureFileImporter.Import(m_importerParam);
+            } else {
+                InitWindow();
+            }
         }
 
         private void OnDisable()
@@ -178,7 +192,7 @@ namespace UnityEditor.StreamingImageSequence
             GUILayout.Space(320 / 2);
             if (GUILayout.Button("OK"))
             {
-                PictureFileImporter.import(m_importerParam);
+                PictureFileImporter.Import(m_importerParam);
                 this.Close();
             }
 
