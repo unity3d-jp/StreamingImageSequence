@@ -14,7 +14,7 @@ namespace UnityEditor.StreamingImageSequence
     public class PictureFileImportWindow : EditorWindow {
 
         void OnEnable() {
-            m_headerStyle = new GUIStyle(GUI.skin.label) {
+            m_headerStyle = new GUIStyle(EditorStyles.label) {
                 fontSize = 18,
                 fontStyle = FontStyle.Bold
             };
