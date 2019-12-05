@@ -13,100 +13,60 @@ namespace UnityEditor.StreamingImageSequence
     public class PictureFileImportWindow : EditorWindow
 
     {
-        static PictureFileImporterParam m_importerParam;
         static Vector2 m_scrollPos;
 
-        public static void Init(PictureFileImporterParam.Mode importerMode, string path)
-        {
+        /// <param name="importerMode"> Importer mode: StreamingAssets or SpriteAnimation</param>
+        /// <param name="path"> Can be a directory path or a file path</param>
+        public static void Init(PictureFileImporterParam.Mode importerMode, string path) {
             Assert.IsFalse(string.IsNullOrEmpty(path));
 
-            PictureFileImporterParam param = new PictureFileImporterParam();
-
-            string strExtension = Path.GetExtension(path).ToLower();
-            if (strExtension == "." + PictureFileImporter.PNG_EXTENSION.ToLower()) {
-                strExtension = PictureFileImporter.PNG_EXTENSION;
-            } else if (strExtension == "." + PictureFileImporter.TGA_EXTENSION.ToLower()) {
-                strExtension = PictureFileImporter.TGA_EXTENSION;
+            //Convert path to folder here
+            string folder = path;
+            FileAttributes attr = File.GetAttributes(path);
+            if (!attr.HasFlag(FileAttributes.Directory)) {
+                folder = Path.GetDirectoryName(folder);
             }
 
-            var strFileneWithoutExtention = Path.GetFileNameWithoutExtension(path);
-            if (!Regex.IsMatch(strFileneWithoutExtention, @"\d+$"))
-            {
-                Debug.LogError(@"Input doesn't include number.");
+            if (string.IsNullOrEmpty(folder)) {
+                Debug.LogError(@"Folder is empty. Path: " + path);
                 return;
             }
 
-
-
-            /// cehck Importing file name
-            var regNumbers = new Regex(@"\d+$");
-            var matches = regNumbers.Matches(strFileneWithoutExtention);
-            Assert.IsTrue(matches.Count > 0);
-
-            Match foundMatch = null;
-            foreach (Match match in matches)
-            {
-                foundMatch = match;
-            }
-
-            Assert.IsTrue(foundMatch != null);
-
-            var parsed = int.Parse(foundMatch.Value);
-            int periodIndex = strFileneWithoutExtention.Length;
-            int digits = foundMatch.Value.Length;
-            param.strSrcFolder = Path.GetDirectoryName(path);
-            var strBaseName = strFileneWithoutExtention.Substring(0, foundMatch.Index);
-
-
-            // create copy destination path
-            var strDistFolder = Application.streamingAssetsPath;
-            if (importerMode == PictureFileImporterParam.Mode.SpriteAnimation) {
-                strDistFolder = Application.dataPath;
-            }
-
-            if (!Directory.Exists(strDistFolder)) {
-                Directory.CreateDirectory(strDistFolder);
-            }
-
-            param.strAssetName = strBaseName;
-            if (param.strAssetName.EndsWith("_") || param.strAssetName.EndsWith("-")) {
-                param.strAssetName = param.strAssetName.Substring(0, param.strAssetName.Length - 1);
-            }
-
-            param.strDstFolder = Path.Combine(strDistFolder, param.strAssetName).Replace("\\", "/");
-
-            //enumerate files and sort
-            var txtFiles = Directory.EnumerateFiles(param.strSrcFolder, "*.png", SearchOption.AllDirectories);
-
-            foreach (string currentFile in txtFiles)
-            {
-                Debug.Log(currentFile);
-            }
-
-
-            List<string> strNames = new List<string>();
-
-            for (; ; )
-            {
-                string strZero = string.Format("{0:D" + digits + "}", parsed++);
-                string strFileName = strBaseName + strZero + "." + strExtension;
-                strFileName = strFileName.Replace("\\", "/");
-                string curFilePath = Path.Combine(param.strSrcFolder, strFileName).Replace("\\", "/");
-                if (!File.Exists(curFilePath))
-                {
-                    break;
+            //Enumerate all files with the supported extensions and sort
+            List<string> fileNames = new List<string>();
+            string[] extensions = {
+                "*." + PictureFileImporter.PNG_EXTENSION, 
+                "*." + PictureFileImporter.TGA_EXTENSION,
+            };
+            foreach (string ext in extensions) {
+                IEnumerable<string> files = Directory.EnumerateFiles(folder, ext, SearchOption.AllDirectories);
+                foreach (string filePath in files) {
+                    fileNames.Add(Path.GetFileName(filePath));
                 }
-                strNames.Add(strFileName);
             }
-
-            param.files = new string[strNames.Count];
-            for (int ii = 0; ii < strNames.Count; ii++)
-            {
-                param.files[ii] = strNames[ii];
+            if (fileNames.Count <= 0) {
+                Debug.LogError(@"No files in folder:: " + folder);
+                return;
             }
-            param.mode = importerMode;
+            fileNames.Sort(FileNameComparer);
 
-            m_importerParam = param;
+            //Estimate the asset name. Use the filename without numbers at the end
+            string assetName =  EstimateAssetName(fileNames[0]);
+
+            // set dest folder
+            string destFolder = Application.streamingAssetsPath;
+            if (importerMode == PictureFileImporterParam.Mode.SpriteAnimation) {
+                destFolder = Application.dataPath;
+            }
+            destFolder = Path.Combine(destFolder, assetName).Replace("\\", "/");
+
+            //Set importer param
+            m_importerParam.strAssetName = assetName ;
+            m_importerParam.files = fileNames;
+            m_importerParam.strSrcFolder = folder;
+            m_importerParam.strDstFolder = destFolder;
+            m_importerParam.mode = importerMode;
+
             InitWindow();
         }
 
@@ -149,11 +109,10 @@ namespace UnityEditor.StreamingImageSequence
             GUILayout.Label("Following files should be copied.");
             GUI.skin.label.fontSize = 0;
             GUILayout.Space(8);
-            m_scrollPos =
-             EditorGUILayout.BeginScrollView(m_scrollPos, GUILayout.Width(Screen.width - 4));
+            m_scrollPos = EditorGUILayout.BeginScrollView(m_scrollPos, GUILayout.Width(Screen.width - 4));
             if (m_importerParam.files != null)
             {
-                for (int ii = 0; ii < m_importerParam.files.Length; ii++)
+                for (int ii = 0; ii < m_importerParam.files.Count; ii++)
                 {
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(16);
@@ -188,8 +147,7 @@ namespace UnityEditor.StreamingImageSequence
             if (GUILayout.Button("...", GUILayout.Width(40)))
             {
 
-                if (Directory.Exists(m_importerParam.strDstFolder))
-                {
+                if (Directory.Exists(m_importerParam.strDstFolder)) {
                     m_isSelectingFolder = true;
                     m_importerParam.strDstFolder = EditorUtility.OpenFolderPanel("Choose folder to copy", m_importerParam.strDstFolder, null);
                 }
@@ -217,6 +175,33 @@ namespace UnityEditor.StreamingImageSequence
             EditorGUILayout.EndVertical();
         }
 
+//---------------------------------------------------------------------------------------------------------------------
+        internal static string EstimateAssetName(string fullFilePath) {
+            string ret = Path.GetFileNameWithoutExtension(fullFilePath);
+            // Find the last number sequence that is not followed by a number sequence
+            Regex r = new Regex(@"(\d+)(?!.*\d)", RegexOptions.IgnoreCase);
+            Match m = ASSET_NAME_REGEX.Match(ret);
+            if (m.Success) {
+                ret = ret.Substring(0, m.Index);
+            }
+
+            //Fallback: just get the directory name. For example, if the fileName is 00000.png
+            if (string.IsNullOrEmpty(ret)) {
+                ret = Path.GetFileName(Path.GetDirectoryName(fullFilePath));
+            }
+
+            return ret;
+        }
+
+//---------------------------------------------------------------------------------------------------------------------
+
+        private static int FileNameComparer(string x, string y) {
+            return string.Compare(x, y, StringComparison.InvariantCultureIgnoreCase);
+        }
+//---------------------------------------------------------------------------------------------------------------------
         private bool m_isSelectingFolder;
+        private static readonly Regex ASSET_NAME_REGEX = new Regex(@"[^a-zA-Z]*(\d+)(?!.*\d)", RegexOptions.IgnoreCase); 
+        static PictureFileImporterParam m_importerParam = new PictureFileImporterParam();
+
     }
 } //end namespace

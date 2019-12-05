@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.StreamingImageSequence;
@@ -8,7 +9,6 @@ namespace UnityEditor.StreamingImageSequence {
 
     public class PictureFileImporter
     {
-
         public const string PNG_EXTENSION = "png";
         public const string TGA_EXTENSION = "tga";
 
@@ -82,7 +82,7 @@ namespace UnityEditor.StreamingImageSequence {
                     Directory.CreateDirectory(param.strDstFolder);
                 }
 
-                for (int ii = 0; ii < param.files.Length; ii++)
+                for (int ii = 0; ii < param.files.Count; ii++)
                 {
                     string strAbsFilePathDst = Path.Combine(param.strDstFolder, param.files[ii]).Replace("\\", "/");
                     if (File.Exists(strAbsFilePathDst))
@@ -96,8 +96,8 @@ namespace UnityEditor.StreamingImageSequence {
 
             /// ceate assets
             StreamingImageSequencePlayableAssetParam trackMovieContainer = new StreamingImageSequencePlayableAssetParam();
-            trackMovieContainer.Pictures = new string[param.files.Length];
-            for (int ii = 0; ii < param.files.Length; ii++)
+            trackMovieContainer.Pictures = new string[param.files.Count];
+            for (int ii = 0; ii < param.files.Count; ii++)
             {
                 trackMovieContainer.Pictures[ii] = param.files[ii];
             }
@@ -119,8 +119,8 @@ namespace UnityEditor.StreamingImageSequence {
 
             if (param.mode == PictureFileImporterParam.Mode.SpriteAnimation)
             {
-                Sprite[] sprites = new Sprite[param.files.Length];
-                for (int ii = 0; ii < param.files.Length; ii++)
+                Sprite[] sprites = new Sprite[param.files.Count];
+                for (int ii = 0; ii < param.files.Count; ii++)
                 {
                     string strAssetPath = Path.Combine(param.strDstFolder, param.files[ii]).Replace("\\", "/");
 
@@ -148,11 +148,11 @@ namespace UnityEditor.StreamingImageSequence {
 
                 settings.boolValue = true;
                 serializedClip.ApplyModifiedProperties();
-                ObjectReferenceKeyframe[] Keyframes = new ObjectReferenceKeyframe[param.files.Length];
+                ObjectReferenceKeyframe[] Keyframes = new ObjectReferenceKeyframe[param.files.Count];
                 EditorCurveBinding curveBinding = new EditorCurveBinding();
 
 
-                for (int ii = 0; ii < param.files.Length; ii++)
+                for (int ii = 0; ii < param.files.Count; ii++)
                 {
                     Keyframes[ii] = new ObjectReferenceKeyframe();
                     Keyframes[ii].time = 0.25F * ii;
@@ -203,7 +203,7 @@ namespace UnityEditor.StreamingImageSequence {
         }
 
         public string strAssetName;
-        public string[] files;
+        public List<string> files;
         public string strDstFolder;
         public string strSrcFolder;
         public bool DoNotCopy;

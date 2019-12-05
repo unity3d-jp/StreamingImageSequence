@@ -22,7 +22,7 @@ namespace UnityEditor.StreamingImageSequence {
 //---------------------------------------------------------------------------------------------------------------------
         private void DrawFolderField() {
             EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel("Folder");
+            EditorGUILayout.PrefixLabel("Folder (drag and drop)");
             EditorGUILayout.SelectableLabel(m_asset.GetFolder(),
                 EditorStyles.objectField, GUILayout.Height(EditorGUIUtility.singleLineHeight)
             );
@@ -45,14 +45,7 @@ namespace UnityEditor.StreamingImageSequence {
                         if (DragAndDrop.paths.Length <= 0)
                             break;
 
-                        //We only accept one dragged path here
-                        string folder = DragAndDrop.paths[0];
-                        FileAttributes attr = File.GetAttributes(folder);
-
-                        if (!attr.HasFlag(FileAttributes.Directory)) {
-                            folder = Path.GetDirectoryName(folder);
-                        }
-                        PictureFileImportWindow.Init(PictureFileImporterParam.Mode.StreamingAssets, folder);
+                        PictureFileImportWindow.Init(PictureFileImporterParam.Mode.StreamingAssets, DragAndDrop.paths[0]);
                     }
                     break;
                 default:
