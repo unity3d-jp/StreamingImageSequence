@@ -6,6 +6,7 @@ using UnityEngine.Assertions;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence
 {
@@ -45,7 +46,7 @@ namespace UnityEditor.StreamingImageSequence
                 }
             }
             if (fileNames.Count <= 0) {
-                Debug.LogError(@"No files in folder:: " + folder);
+                EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER, @"No files in folder:: " + folder,"OK");
                 return;
             }
             fileNames.Sort(FileNameComparer);
