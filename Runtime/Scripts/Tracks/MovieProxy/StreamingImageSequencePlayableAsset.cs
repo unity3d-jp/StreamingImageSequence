@@ -252,9 +252,9 @@ namespace UnityEngine.StreamingImageSequence
         {
             string strOverridePath = m_folder;
 
-            if (strOverridePath != null && strOverridePath != "")
+            if (!string.IsNullOrEmpty(strOverridePath))
             {
-                filePath = Path.Combine(strOverridePath, Path.GetFileName(filePath)).Replace("\\", "/");
+                filePath = Path.Combine(strOverridePath, filePath).Replace("\\", "/");
 
             }
 
@@ -262,22 +262,11 @@ namespace UnityEngine.StreamingImageSequence
             {
                 filePath = Path.Combine(UpdateManager.GetProjectFolder(), filePath).Replace("\\", "/");
             }
-            else
-            {
-                string strStreamingAssets = "Assets/StreamingAssets";
-                if (strOverridePath != null && strOverridePath.StartsWith(strStreamingAssets))
-                {
-                    string rest = strOverridePath.Substring(strStreamingAssets.Length + 1, strOverridePath.Length - strStreamingAssets.Length - 1);
-                    string dir = UpdateManager.GetStreamingAssetPath();
-                    string dir2 = Path.Combine(dir, rest);
-                    filePath = Path.Combine(dir2, Path.GetFileName(filePath)).Replace("\\", "/");
-                }
-            }
             return filePath;
         }
 
 //---------------------------------------------------------------------------------------------------------------------
-        private string m_folder;
+        [SerializeField] private string m_folder;
 
     }
 

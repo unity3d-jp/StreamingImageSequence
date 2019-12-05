@@ -77,29 +77,25 @@ namespace UnityEditor.StreamingImageSequence {
                     }
                 }
 
-                if (!Directory.Exists(param.strDstFolder))
+                foreach (string relPath in param.RelativeFilePaths)
                 {
-                    Directory.CreateDirectory(param.strDstFolder);
-                }
-
-                for (int ii = 0; ii < param.files.Count; ii++)
-                {
-                    string strAbsFilePathDst = Path.Combine(param.strDstFolder, param.files[ii]).Replace("\\", "/");
+                    string strAbsFilePathDst = Path.Combine(param.strDstFolder, relPath).Replace("\\", "/");
                     if (File.Exists(strAbsFilePathDst))
                     {
                         File.Delete(strAbsFilePathDst);
                     }
-                    string strAbsFilePathSrc = Path.Combine(param.strSrcFolder, param.files[ii]).Replace("\\", "/");
+                    string strAbsFilePathSrc = Path.Combine(param.strSrcFolder, relPath).Replace("\\", "/");
+                    Directory.CreateDirectory(Path.GetDirectoryName(strAbsFilePathDst));//make sure dir exists
                     FileUtil.CopyFileOrDirectory(strAbsFilePathSrc, strAbsFilePathDst);
                 }
             }
 
-            /// ceate assets
+            // create assets
             StreamingImageSequencePlayableAssetParam trackMovieContainer = new StreamingImageSequencePlayableAssetParam();
-            trackMovieContainer.Pictures = new string[param.files.Count];
-            for (int ii = 0; ii < param.files.Count; ii++)
+            trackMovieContainer.Pictures = new string[param.RelativeFilePaths.Count];
+            for (int ii = 0; ii < param.RelativeFilePaths.Count; ii++)
             {
-                trackMovieContainer.Pictures[ii] = param.files[ii];
+                trackMovieContainer.Pictures[ii] = param.RelativeFilePaths[ii];
             }
 
             ///   if possible, convert folder names to relative path.
@@ -119,10 +115,10 @@ namespace UnityEditor.StreamingImageSequence {
 
             if (param.mode == PictureFileImporterParam.Mode.SpriteAnimation)
             {
-                Sprite[] sprites = new Sprite[param.files.Count];
-                for (int ii = 0; ii < param.files.Count; ii++)
+                Sprite[] sprites = new Sprite[param.RelativeFilePaths.Count];
+                for (int ii = 0; ii < param.RelativeFilePaths.Count; ii++)
                 {
-                    string strAssetPath = Path.Combine(param.strDstFolder, param.files[ii]).Replace("\\", "/");
+                    string strAssetPath = Path.Combine(param.strDstFolder, param.RelativeFilePaths[ii]).Replace("\\", "/");
 
                     AssetDatabase.ImportAsset(strAssetPath);
                     TextureImporter importer = AssetImporter.GetAtPath(strAssetPath) as TextureImporter;
@@ -148,11 +144,11 @@ namespace UnityEditor.StreamingImageSequence {
 
                 settings.boolValue = true;
                 serializedClip.ApplyModifiedProperties();
-                ObjectReferenceKeyframe[] Keyframes = new ObjectReferenceKeyframe[param.files.Count];
+                ObjectReferenceKeyframe[] Keyframes = new ObjectReferenceKeyframe[param.RelativeFilePaths.Count];
                 EditorCurveBinding curveBinding = new EditorCurveBinding();
 
 
-                for (int ii = 0; ii < param.files.Count; ii++)
+                for (int ii = 0; ii < param.RelativeFilePaths.Count; ii++)
                 {
                     Keyframes[ii] = new ObjectReferenceKeyframe();
                     Keyframes[ii].time = 0.25F * ii;
@@ -207,7 +203,7 @@ namespace UnityEditor.StreamingImageSequence {
         }
 
         public string strAssetName;
-        public List<string> files;
+        public List<string> RelativeFilePaths;
         public string strDstFolder;
         public string strSrcFolder;
         public bool DoNotCopy;

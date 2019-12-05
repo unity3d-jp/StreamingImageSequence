@@ -41,6 +41,9 @@ namespace UnityEditor.StreamingImageSequence
             if (!attr.HasFlag(FileAttributes.Directory)) {
                 folder = Path.GetDirectoryName(folder);
             }
+            string fullSrcPath = Path.GetFullPath(folder).Replace("\\", "/");
+            Uri fullSrcPathUri = new Uri(fullSrcPath + "/");
+
 
             if (string.IsNullOrEmpty(folder)) {
                 Debug.LogError(@"Folder is empty. Path: " + path);
@@ -48,25 +51,27 @@ namespace UnityEditor.StreamingImageSequence
             }
 
             //Enumerate all files with the supported extensions and sort
-            List<string> fileNames = new List<string>();
+            List<string> relFilePaths = new List<string>();
             string[] extensions = {
                 "*." + PictureFileImporter.PNG_EXTENSION, 
                 "*." + PictureFileImporter.TGA_EXTENSION,
             };
             foreach (string ext in extensions) {
-                IEnumerable<string> files = Directory.EnumerateFiles(folder, ext, SearchOption.AllDirectories);
+                IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, ext, SearchOption.AllDirectories);
                 foreach (string filePath in files) {
-                    fileNames.Add(Path.GetFileName(filePath));
+                    Uri curPathUri = new Uri(filePath.Replace("\\", "/"));
+                    Uri diff = fullSrcPathUri.MakeRelativeUri(curPathUri);
+                    relFilePaths.Add(diff.OriginalString);
                 }
             }
-            if (fileNames.Count <= 0) {
+            if (relFilePaths.Count <= 0) {
                 EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER, @"No files in folder:: " + folder,"OK");
                 return;
             }
-            fileNames.Sort(FileNameComparer);
+            relFilePaths.Sort(FileNameComparer);
 
             //Estimate the asset name. Use the filename without numbers at the end
-            string assetName =  EstimateAssetName(fileNames[0]);
+            string assetName =  EstimateAssetName(relFilePaths[0]);
 
             // set dest folder
             string rootDestFolder = Application.streamingAssetsPath;
@@ -74,25 +79,22 @@ namespace UnityEditor.StreamingImageSequence
                 rootDestFolder = Application.dataPath;
             }
 
-
-            string destFolder = Path.Combine(rootDestFolder, assetName).Replace("\\", "/");
-
             //Set importer param
             m_importerParam.strAssetName = assetName ;
-            m_importerParam.files = fileNames;
             m_importerParam.strSrcFolder = folder;
-            m_importerParam.strDstFolder = destFolder;
+            m_importerParam.RelativeFilePaths = relFilePaths;
             m_importerParam.mode = importerMode;
             m_importerParam.DoNotCopy = false;
             m_importerParam.TargetAsset = targetAsset;
 
-            string fullSrcPath = Path.GetFullPath(folder).Replace("\\", "/");
 
             if (fullSrcPath.StartsWith(rootDestFolder)) {
                 //Import immediately if the assets are already under Unity
+                m_importerParam.strDstFolder = m_importerParam.strSrcFolder;
                 m_importerParam.DoNotCopy = true;
                 PictureFileImporter.Import(m_importerParam);
             } else {
+                m_importerParam.strDstFolder = Path.Combine(rootDestFolder, assetName).Replace("\\", "/");
                 InitWindow();
             }
         }
@@ -134,11 +136,11 @@ namespace UnityEditor.StreamingImageSequence
             GUILayout.Space(8);
 
             GUILayout.Label(StreamingImageSequenceConstants.DIALOG_HEADER + " Importer", m_headerStyle);
-            int numFiles = m_importerParam.files.Count;
+            int numFiles = m_importerParam.RelativeFilePaths.Count;
             GUILayout.Label(numFiles.ToString() + " external files found in: ");
             GUILayout.Label(m_importerParam.strSrcFolder);
             m_scrollPos = EditorGUILayout.BeginScrollView(m_scrollPos, GUILayout.Width(Screen.width - 4));
-            if (m_importerParam.files != null)
+            if (m_importerParam.RelativeFilePaths != null)
             {
                 for (int ii = 0; ii < numFiles; ii++)
                 {
@@ -147,7 +149,7 @@ namespace UnityEditor.StreamingImageSequence
                     string str = "" + ii + ":";
 
                     EditorGUILayout.LabelField(str, GUILayout.Width(40));
-                    EditorGUILayout.LabelField(m_importerParam.files[ii], GUILayout.Width(Screen.width - 130));
+                    EditorGUILayout.LabelField(m_importerParam.RelativeFilePaths[ii], GUILayout.Width(Screen.width - 130));
                     GUILayout.Space(1);
                     EditorGUILayout.EndHorizontal();
                 }
