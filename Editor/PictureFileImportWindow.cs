@@ -11,9 +11,21 @@ using UnityEngine.StreamingImageSequence;
 namespace UnityEditor.StreamingImageSequence
 {
 
-    public class PictureFileImportWindow : EditorWindow
+    public class PictureFileImportWindow : EditorWindow {
 
-    {
+        void OnEnable() {
+            m_headerStyle = new GUIStyle(GUI.skin.label) {
+                fontSize = 18,
+                fontStyle = FontStyle.Bold
+            };
+
+            m_copyToggleStyle = new GUIStyle(EditorStyles.toggle) {
+                fontStyle = FontStyle.Bold, 
+                onNormal = {textColor = Color.red},
+            };
+
+        }
+
         static Vector2 m_scrollPos;
 
         /// <param name="importerMode"> Importer mode: StreamingAssets or SpriteAnimation</param>
@@ -98,6 +110,7 @@ namespace UnityEditor.StreamingImageSequence
                 return;
             }
 
+
             m_isSelectingFolder = false;
             Rect rect = new Rect(0, 0, Screen.width, Screen.height);
             Rect rect2 = new Rect(2, 2, Screen.width - 4, Screen.height - 4);
@@ -106,14 +119,14 @@ namespace UnityEditor.StreamingImageSequence
             EditorGUILayout.BeginVertical();
             GUILayout.Space(8);
 
-            GUI.skin.label.fontSize = 24;
-            GUILayout.Label("Following files should be copied.");
-            GUI.skin.label.fontSize = 0;
-            GUILayout.Space(8);
+            GUILayout.Label(StreamingImageSequenceConstants.DIALOG_HEADER + " Importer", m_headerStyle);
+            int numFiles = m_importerParam.files.Count;
+            GUILayout.Label(numFiles.ToString() + " external files found in: ");
+            GUILayout.Label(m_importerParam.strSrcFolder);
             m_scrollPos = EditorGUILayout.BeginScrollView(m_scrollPos, GUILayout.Width(Screen.width - 4));
             if (m_importerParam.files != null)
             {
-                for (int ii = 0; ii < m_importerParam.files.Count; ii++)
+                for (int ii = 0; ii < numFiles; ii++)
                 {
                     EditorGUILayout.BeginHorizontal();
                     GUILayout.Space(16);
@@ -126,18 +139,20 @@ namespace UnityEditor.StreamingImageSequence
                 }
             }
             EditorGUILayout.EndScrollView();
-
             GUILayout.Space(4);
-            EditorGUILayout.BeginHorizontal();
-            var space = 170;
-            GUILayout.Space(640 - space);
 
+
+            //Copy Toggle
+            EditorGUILayout.BeginHorizontal();
             // C#var options = new GUILayoutOption[] { GUILayout.MaxWidth(Screen.width- space), GUILayout.MinWidth(120.0F) };
             EditorGUI.BeginDisabledGroup(m_importerParam.mode == PictureFileImporterParam.Mode.SpriteAnimation);
-            m_importerParam.DoNotCopy = EditorGUILayout.Toggle(@"Don't copy(Use original)", m_importerParam.DoNotCopy, GUILayout.Width(space));
+            string noCopyText = @"Don't copy(Use original).";
+            if (m_importerParam.DoNotCopy) {
+                noCopyText += " Warning! Copying external assets inside Unity project IS recommended.";
+            }
+            m_importerParam.DoNotCopy = GUILayout.Toggle(m_importerParam.DoNotCopy, noCopyText , m_copyToggleStyle);
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndHorizontal();
-
 
             GUILayout.Space(8);
             EditorGUILayout.BeginHorizontal();
@@ -203,6 +218,10 @@ namespace UnityEditor.StreamingImageSequence
         private bool m_isSelectingFolder;
         private static readonly Regex ASSET_NAME_REGEX = new Regex(@"[^a-zA-Z]*(\d+)(?!.*\d)", RegexOptions.IgnoreCase); 
         static PictureFileImporterParam m_importerParam = new PictureFileImporterParam();
+
+        //Styles
+        private GUIStyle m_headerStyle;
+        private GUIStyle m_copyToggleStyle;
 
     }
 } //end namespace
