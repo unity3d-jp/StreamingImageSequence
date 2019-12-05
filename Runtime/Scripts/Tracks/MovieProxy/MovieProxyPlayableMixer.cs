@@ -161,7 +161,9 @@ namespace UnityEngine.StreamingImageSequence
             {
 
                 var clip = enumulator.Current;
-                 var asset = clip.asset as StreamingImageSequencePlayableAsset;
+                var asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (null == asset.Pictures)
+                    continue;
                 float count = asset.Pictures.Length;
                 int index = 0;
                 var clipDuration = clip.duration;
