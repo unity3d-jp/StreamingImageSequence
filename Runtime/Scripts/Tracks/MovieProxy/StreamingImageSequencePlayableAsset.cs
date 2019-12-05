@@ -72,6 +72,7 @@ namespace UnityEngine.StreamingImageSequence
             QuadSize = param.QuadSize;
             Pictures = param.Pictures;
             m_folder = param.Folder;
+            EditorUtility.SetDirty(this);
         }
 
 
