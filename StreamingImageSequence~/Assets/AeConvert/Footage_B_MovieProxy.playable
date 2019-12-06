@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -13,12 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Version: 0
   Resolution:
-    Width: 1684
-    Height: 1000
+    Width: 0
+    Height: 0
   QuadSize:
     sizX: 0
     sizY: 0
-  Folder: Assets/StreamingAssets/Footage_B
   m_displayOnClipsOnly: 1
   Pictures:
   - B_00000.png
@@ -79,4 +79,5 @@ MonoBehaviour:
   - B_00055.png
   - B_00056.png
   - B_00057.png
-  m_loadingIndex: -1
+  m_loadingIndex: 58
+  m_folder: Assets/StreamingAssets/Footage_B
