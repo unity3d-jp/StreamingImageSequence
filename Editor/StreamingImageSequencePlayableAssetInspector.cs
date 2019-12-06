@@ -8,9 +8,7 @@ namespace UnityEditor.StreamingImageSequence {
     public class StreamingImageSequencePlayableAssetInspector : Editor {
 
         void OnEnable() {
-            if (null == serializedObject)
-                return;
-            m_asset = serializedObject.targetObject as StreamingImageSequencePlayableAsset;
+            m_asset = target as StreamingImageSequencePlayableAsset;
         }
 
 //---------------------------------------------------------------------------------------------------------------------
