@@ -8,12 +8,22 @@ namespace UnityEditor.StreamingImageSequence {
     public class StreamingImageSequencePlayableAssetInspector : Editor {
 
         void OnEnable() {
+            if (null == serializedObject)
+                return;
             m_asset = serializedObject.targetObject as StreamingImageSequencePlayableAsset;
         }
-        
+
+//---------------------------------------------------------------------------------------------------------------------
+
+        void OnDisable() {
+            m_asset = null;
+        }
+
 //---------------------------------------------------------------------------------------------------------------------
 
         public override void OnInspectorGUI() {
+            if (null == m_asset)
+                return;
 
             DrawFolderField();
             base.OnInspectorGUI();
@@ -55,7 +65,7 @@ namespace UnityEditor.StreamingImageSequence {
 
 //---------------------------------------------------------------------------------------------------------------------
 
-        private StreamingImageSequencePlayableAsset m_asset;
+        private StreamingImageSequencePlayableAsset m_asset = null;
 
     }
 }
