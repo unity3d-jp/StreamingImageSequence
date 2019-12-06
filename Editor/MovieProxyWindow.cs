@@ -49,7 +49,7 @@ namespace UnityEditor.StreamingImageSequence
 
  
         /*
-        [MenuItem("Window/MovieProxy")]
+        [MenuItem("Window/Streaming Image Sequence")]
 
         public static void ShowWindow()
         {
