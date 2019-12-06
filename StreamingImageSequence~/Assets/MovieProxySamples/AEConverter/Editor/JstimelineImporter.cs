@@ -1,14 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
-using UnityEngine.Timeline;
-using UnityEditor.Experimental.AssetImporters;
-using UnityEditor;
-using UnityEngine.Playables;
+﻿using System.IO;
 using System.Text.RegularExpressions;
-using UnityEngine.UI;
+using UnityEditor.Experimental.AssetImporters;
+using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.StreamingImageSequence;
+using UnityEngine.Timeline;
+using UnityEngine.UI;
+
+namespace UnityEditor.StreamingImageSequence {
+
 
 [ScriptedImporter(1, "jstimeline")]
 public class JstimelineImporter : ScriptedImporter
@@ -234,4 +234,5 @@ public class JstimelineImporter : ScriptedImporter
 }
 
 
+} //end namespace
 
