@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
 using UnityEngine.UI;
 
@@ -17,16 +19,86 @@ namespace UnityEditor.StreamingImageSequence {
         [MenuItem("Edit/Movie Proxy/Create Clip", false, 1)]
         static void RegisterFilesAndCreateMovieProxy()
         {
-            ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets);
-        }
-
-        static void ImportPictureFiles(PictureFileImporterParam.Mode importerMode) {
             string path = EditorUtility.OpenFilePanel("Open File", "", PNG_EXTENSION + "," + TGA_EXTENSION);
             if (string.IsNullOrEmpty(path)) {
                 return;
             }
 
-            PictureFileImportWindow.Init(importerMode, path, null);
+            ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, null);
+        }
+
+        /// <param name="importerMode"> Importer mode: StreamingAssets or SpriteAnimation</param>
+        /// <param name="path"> Can be a directory path or a file path</param>
+        public static void ImportPictureFiles(PictureFileImporterParam.Mode importerMode, string path, 
+                StreamingImageSequencePlayableAsset targetAsset) 
+        {
+            Assert.IsFalse(string.IsNullOrEmpty(path));
+
+            //Convert path to folder here
+            string folder = path;
+            FileAttributes attr = File.GetAttributes(path);
+            if (!attr.HasFlag(FileAttributes.Directory)) {
+                folder = Path.GetDirectoryName(folder);
+            }
+            string fullSrcPath = Path.GetFullPath(folder).Replace("\\", "/");
+            Uri fullSrcPathUri = new Uri(fullSrcPath + "/");
+
+
+            if (string.IsNullOrEmpty(folder)) {
+                Debug.LogError(@"Folder is empty. Path: " + path);
+                return;
+            }
+
+            //Enumerate all files with the supported extensions and sort
+            List<string> relFilePaths = new List<string>();
+            string[] extensions = {
+                "*." + PictureFileImporter.PNG_EXTENSION, 
+                "*." + PictureFileImporter.TGA_EXTENSION,
+            };
+            foreach (string ext in extensions) {
+                IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, ext, SearchOption.AllDirectories);
+                foreach (string filePath in files) {
+                    Uri curPathUri = new Uri(filePath.Replace("\\", "/"));
+                    Uri diff = fullSrcPathUri.MakeRelativeUri(curPathUri);
+                    relFilePaths.Add(diff.OriginalString);
+                }
+            }
+            if (relFilePaths.Count <= 0) {
+                EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER, @"No files in folder:: " + folder,"OK");
+                return;
+            }
+            relFilePaths.Sort(FileNameComparer);
+
+            //Estimate the asset name. Use the filename without numbers at the end
+            string assetName =  EstimateAssetName(relFilePaths[0]);
+
+            // set dest folder
+            string rootDestFolder = Application.streamingAssetsPath;
+            if (importerMode == PictureFileImporterParam.Mode.SpriteAnimation) {
+                rootDestFolder = Application.dataPath;
+            }
+
+            //Set importer param
+            PictureFileImporterParam importerParam = new PictureFileImporterParam {
+                strAssetName = assetName,
+                strSrcFolder = folder,
+                RelativeFilePaths = relFilePaths,
+                mode = importerMode,
+                DoNotCopy = false,
+                TargetAsset = targetAsset
+            };
+
+
+            if (fullSrcPath.StartsWith(rootDestFolder)) {
+                //Import immediately if the assets are already under Unity
+                importerParam.strDstFolder = importerParam.strSrcFolder;
+                importerParam.DoNotCopy = true;
+                PictureFileImporter.Import(importerParam);
+            } else {
+                importerParam.strDstFolder = Path.Combine(rootDestFolder, assetName).Replace("\\", "/");
+                PictureFileImportWindow.SetParam(importerParam);
+                PictureFileImportWindow.InitWindow();
+            }
         }
 
         /*
@@ -192,7 +264,35 @@ namespace UnityEditor.StreamingImageSequence {
 
         }
 
+//---------------------------------------------------------------------------------------------------------------------
+
+        private static int FileNameComparer(string x, string y) {
+            return string.Compare(x, y, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+//---------------------------------------------------------------------------------------------------------------------
+        internal static string EstimateAssetName(string fullFilePath) {
+            string ret = Path.GetFileNameWithoutExtension(fullFilePath);
+            // Find the last number sequence that is not followed by a number sequence
+            Regex r = new Regex(@"(\d+)(?!.*\d)", RegexOptions.IgnoreCase);
+            Match m = ASSET_NAME_REGEX.Match(ret);
+            if (m.Success) {
+                ret = ret.Substring(0, m.Index);
+            }
+
+            //Fallback: just get the directory name. For example, if the fileName is 00000.png
+            if (string.IsNullOrEmpty(ret)) {
+                ret = Path.GetFileName(Path.GetDirectoryName(fullFilePath));
+            }
+
+            return ret;
+        }
+
+        private static readonly Regex ASSET_NAME_REGEX = new Regex(@"[^a-zA-Z]*(\d+)(?!.*\d)", RegexOptions.IgnoreCase); 
+
+
     }
+
 
     public class PictureFileImporterParam
     {

@@ -55,7 +55,7 @@ namespace UnityEditor.StreamingImageSequence {
                         if (DragAndDrop.paths.Length <= 0)
                             break;
 
-                        PictureFileImportWindow.Init(PictureFileImporterParam.Mode.StreamingAssets, DragAndDrop.paths[0], m_asset);
+                        PictureFileImporter.ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, DragAndDrop.paths[0], m_asset);
                     }
                     break;
                 default:
