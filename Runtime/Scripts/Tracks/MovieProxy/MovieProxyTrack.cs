@@ -7,7 +7,6 @@ namespace UnityEngine.StreamingImageSequence
 { 
     [TrackClipType(typeof(StreamingImageSequencePlayableAsset))]
     [TrackBindingType(typeof(MovieProxyNativeRenderer))]
-    [TrackMediaType(TimelineAsset.MediaType.Script)]
     [TrackColor(0.776f, 0.263f, 0.09f)]
     public class MovieProxyTrack : TrackAsset
     {
