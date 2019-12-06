@@ -1,4 +1,4 @@
-## MovieProxy
+## StreamingImageSequence
 
 copyright © 2019 Unity Technologies ApS
 
