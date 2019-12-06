@@ -272,8 +272,8 @@ namespace UnityEditor.StreamingImageSequence {
 
 //---------------------------------------------------------------------------------------------------------------------
         internal static string EstimateAssetName(string fullFilePath) {
-            string ret = Path.GetFileNameWithoutExtension(fullFilePath);
-            // Find the last number sequence that is not followed by a number sequence
+            string ret = Path.GetFileNameWithoutExtension(fullFilePath.Replace("\\","/"));
+            //From the filename, find the last number sequence that is not followed by a number sequence
             Regex r = new Regex(@"(\d+)(?!.*\d)", RegexOptions.IgnoreCase);
             Match m = ASSET_NAME_REGEX.Match(ret);
             if (m.Success) {
