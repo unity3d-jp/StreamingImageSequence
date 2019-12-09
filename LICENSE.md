@@ -1,4 +1,4 @@
-## StreamingImageSequence
+# Streaming Image Sequence
 
 copyright © 2019 Unity Technologies ApS
 

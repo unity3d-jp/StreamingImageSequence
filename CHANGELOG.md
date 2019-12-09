@@ -2,7 +2,9 @@
 
 ## [0.0.2-preview] - 2019-12-5
 
-Renaming to *Streaming Image Sequence \<com.unity.streaming-image-sequence\>*.
+- Renaming to *Streaming Image Sequence \<com.unity.streaming-image-sequence\>*.
+- Add folder drag and drop support.
+
 
 ## [0.0.1-preview] - 2019-10-10
 
