@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
-using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -12,8 +8,7 @@ using UnityEngine.UI;
 using UnityEditor;
 #endif
 
-namespace UnityEngine.StreamingImageSequence
-{ 
+namespace UnityEngine.StreamingImageSequence {
     [System.Serializable]
     public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
     {
@@ -41,6 +36,7 @@ namespace UnityEngine.StreamingImageSequence
 		private int m_sLastIndex = -1;
 
         public string GetFolder() { return m_folder; }
+        public UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
 
         internal void Reset()
         {
@@ -173,6 +169,11 @@ namespace UnityEngine.StreamingImageSequence
         }
         internal bool SetTexture(GameObject go, int index, bool isBlocking, bool isAlreadySet)
         {
+            if (null == Pictures || index < 0 || index >= Pictures.Length || string.IsNullOrEmpty(Pictures[index])) {
+                return false;
+            }
+
+
             var sID = go.GetInstanceID();
             StReadResult tResult = new StReadResult();
             
@@ -267,6 +268,10 @@ namespace UnityEngine.StreamingImageSequence
 
 //---------------------------------------------------------------------------------------------------------------------
         [SerializeField] private string m_folder;
+
+#if UNITY_EDITOR
+        [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Enabling Folder D&D to Timeline
+#endif
 
     }
 
