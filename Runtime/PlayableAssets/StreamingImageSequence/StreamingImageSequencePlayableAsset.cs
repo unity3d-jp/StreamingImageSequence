@@ -33,7 +33,8 @@ namespace UnityEngine.StreamingImageSequence {
         public string[] Pictures;
         private bool[] LoadRequested;
         public int m_loadingIndex = -1;
-		private int m_sLastIndex = -1;
+		private int m_lastIndex = -1;
+        private bool m_verified;
 
         public string GetFolder() { return m_folder; }
         public UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
@@ -41,7 +42,7 @@ namespace UnityEngine.StreamingImageSequence {
         internal void Reset()
         {
             m_loadingIndex = -1;
-            m_sLastIndex = -1;
+            m_lastIndex = -1;
             LoadRequested = null;
         }
 
@@ -53,6 +54,22 @@ namespace UnityEngine.StreamingImageSequence {
             }
         }
 
+        public bool Verified
+        {
+            get
+            {
+                if (!m_verified)
+                {
+                    m_verified = !string.IsNullOrEmpty(m_folder) && 
+                                 m_folder.StartsWith("Assets/StreamingAssets") &&
+                                 Directory.Exists(m_folder) && 
+                                 Pictures != null && 
+                                 Pictures.Length > 0;
+                }
+                
+                return m_verified;
+            }
+        }
 
 
         public StreamingImageSequencePlayableAsset()
@@ -237,7 +254,7 @@ namespace UnityEngine.StreamingImageSequence {
 
             }
 			bool textureIsSet = false;
-			if (tResult.readStatus == 2 && m_sLastIndex != index) {
+			if (tResult.readStatus == 2 && m_lastIndex != index) {
 				StreamingImageSequencePlugin.SetLoadedTexture (filename, sID);
 				textureIsSet = true;
 			}
@@ -245,7 +262,7 @@ namespace UnityEngine.StreamingImageSequence {
             {
                 GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), sID);
             }
-			m_sLastIndex = index;
+			m_lastIndex = index;
             return isAlreadySet;
         }
 

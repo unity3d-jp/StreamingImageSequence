@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using System;
 using System.Reflection;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
-using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence
@@ -16,8 +13,7 @@ namespace UnityEditor.StreamingImageSequence
 
     public class EditorPeriodicJob : PeriodicJob
     {
- 
-        static Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam> m_streamingImageSequencePlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
+        private static Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam> m_streamingImageSequencePlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
 
         static EditorPeriodicJob()
         {
@@ -89,40 +85,25 @@ namespace UnityEditor.StreamingImageSequence
                     // Draw TrackGroupLeftSide
                     ProcessTrackGroup(track as GroupTrack);
                 }
-                else if (track.GetType() == typeof(MovieProxyTrack))
+                else if (track.GetType() == typeof(StreamingImageSequenceTrack))
                 {
-                    // MovieProxy Track
-                     ProcessMovieProxyTrack( track as MovieProxyTrack);
+                    // StreamingImageSequence Track
+                     ProcessStreamingImageSequenceTrack( track as StreamingImageSequenceTrack);
                 }
             }
         }
 
-        private static void ProcessMovieProxyTrack(MovieProxyTrack  track)
+        private static void ProcessStreamingImageSequenceTrack(StreamingImageSequenceTrack  track)
         {
             foreach (var clip in track.GetClips())
             {
-
-                // You might want to use "as" rather than compare type.
-                // "as" sometimes fail on first importing time for project.
-                if (clip.asset.GetType() != typeof(StreamingImageSequencePlayableAsset))
+                var asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (!asset.Verified)
                 {
-                    Debug.LogError("StreamingImageSequencePlayableAsset is broken:" + clip.asset.name);
                     continue;
-
                 }
-
-                /*
-                if (clip.asset == null)
-                {
-                    Debug.LogError("StreamingImageSequencePlayableAsset on " + clip.displayName + " is broken.");
-                    continue;
-                }*/
-
-                StreamingImageSequencePlayableAsset asset = (StreamingImageSequencePlayableAsset)clip.asset;
-                if (null == asset.Pictures)
-                    continue;
-
-                int length = asset.Pictures.Length;
+                
+                var length = asset.Pictures.Length;
                 if (m_streamingImageSequencePlayableAssetToColorArray.ContainsKey(asset))
                 {
 
@@ -253,11 +234,6 @@ namespace UnityEditor.StreamingImageSequence
             }
 #endif
         }
-
-
-
-
     }
-
 #endif
 }

@@ -8,12 +8,12 @@ namespace UnityEngine.StreamingImageSequence
     [TrackClipType(typeof(StreamingImageSequencePlayableAsset))]
     [TrackBindingType(typeof(StreamingImageSequenceNativeRenderer))]
     [TrackColor(0.776f, 0.263f, 0.09f)]
-    public class MovieProxyTrack : TrackAsset
+    public class StreamingImageSequenceTrack : TrackAsset
     {
         LoaderPeriodicJob m_LoaderPeriodicJob;
-        public MovieProxyTrack()
+        public StreamingImageSequenceTrack()
         {
-            LogUtility.LogDebug("MovieProxyTrack creating ObserverPeriodicJob");
+            LogUtility.LogDebug("StreamingImageSequenceTrack creating ObserverPeriodicJob");
             m_LoaderPeriodicJob = new LoaderPeriodicJob(this);
             m_LoaderPeriodicJob.AddToUpdateManger();
             // above job is removed when finished to load by calling RemoveIfFinished();

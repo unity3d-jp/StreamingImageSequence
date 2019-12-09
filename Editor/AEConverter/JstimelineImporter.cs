@@ -152,7 +152,7 @@ public class JstimelineImporter : ScriptedImporter
             var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(strNewFolderPath, strFootageName + "_MovieProxy.playable"));
             AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
 
-            var movieTrack = asset.CreateTrack<MovieProxyTrack>(null, strFootageName);
+            var movieTrack = asset.CreateTrack<StreamingImageSequenceTrack>(null, strFootageName);
             var clip = movieTrack.CreateDefaultClip();
             clip.asset = proxyAsset;
             clip.start = track.Start;

@@ -184,7 +184,7 @@ namespace UnityEditor.StreamingImageSequence
                     // Playable Track
                     nextStartY = DrawTrack(nextStartY, m_PlayableTrackLineStyle, track);
                 }
-                else if (track.GetType() == typeof(MovieProxyTrack))
+                else if (track.GetType() == typeof(StreamingImageSequenceTrack))
                 {
                     // MovieProxy Track
                     nextStartY = DrawTrack(nextStartY, m_MovieProxyTrackLineStyle, track);

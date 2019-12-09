@@ -146,7 +146,7 @@ namespace UnityEditor.StreamingImageSequence
                     var childTracks = UpdateManager.GetTrackList(track as GroupTrack);
                     ProcessTracks(track,childTracks, goList, currentIndex);
                 }
-                else if (trackType == typeof(MovieProxyTrack))
+                else if (trackType == typeof(StreamingImageSequenceTrack))
                 {
                     newList.Add(track);
                 }
