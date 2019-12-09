@@ -136,7 +136,7 @@ namespace UnityEngine.StreamingImageSequence
             string filename = Pictures[index];
             filename = GetCompleteFilePath(filename);
             StReadResult tResult = new StReadResult();
-            PluginUtil.GetNativTextureInfo(filename, out tResult);
+            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
             return (tResult.readStatus != 0);
 
         }
@@ -149,7 +149,7 @@ namespace UnityEngine.StreamingImageSequence
                 LoadRequested = new bool[Pictures.Length];
             }
 
-            PluginUtil.GetNativTextureInfo(filename, out tResult);
+            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
             //Debug.Log("tResult.readStatus " + tResult.readStatus + "Loading " + filename);
             if (tResult.readStatus == 0)
             {
@@ -159,7 +159,7 @@ namespace UnityEngine.StreamingImageSequence
             {
                 while (tResult.readStatus != 2)
                 {
-                    PluginUtil.GetNativTextureInfo(filename, out tResult);
+                    StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
                     
                 }
             }
@@ -230,19 +230,19 @@ namespace UnityEngine.StreamingImageSequence
 #endif
                 }
 
-                PluginUtil.SetNativeTexturePtr(ptr, (uint)tResult.width, (uint)tResult.height, sID);
+                StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)tResult.width, (uint)tResult.height, sID);
                 isAlreadySet = true;
  
 
             }
 			bool textureIsSet = false;
 			if (tResult.readStatus == 2 && m_sLastIndex != index) {
-				PluginUtil.SetLoadedTexture (filename, sID);
+				StreamingImageSequencePlugin.SetLoadedTexture (filename, sID);
 				textureIsSet = true;
 			}
 			if (textureIsSet && !UpdateManager.useCoroutine)
             {
-                GL.IssuePluginEvent(PluginUtil.GetRenderEventFunc(), sID);
+                GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), sID);
             }
 			m_sLastIndex = index;
             return isAlreadySet;

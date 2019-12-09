@@ -32,7 +32,7 @@ namespace UnityEditor.StreamingImageSequence
             {
                 string fileName = m_param.m_asset.Pictures[ii];
                 //m_collorArray[ii] = notYet;
-                if ( PluginUtil.GetNativTextureInfo(m_param.m_asset.GetCompleteFilePath(fileName), out tResult) != IntPtr.Zero)
+                if ( StreamingImageSequencePlugin.GetNativTextureInfo(m_param.m_asset.GetCompleteFilePath(fileName), out tResult) != IntPtr.Zero)
                 {
                     if ( tResult.readStatus == 2 )
                     {

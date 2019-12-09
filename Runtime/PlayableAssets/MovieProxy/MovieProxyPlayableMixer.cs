@@ -274,7 +274,7 @@ namespace UnityEngine.StreamingImageSequence
 
         static public void ResetAllTexturePtr()
         {
-            PluginUtil.ResetAllLoadedTexture();
+            StreamingImageSequencePlugin.ResetAllLoadedTexture();
         }
         */
 

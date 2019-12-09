@@ -65,7 +65,7 @@ namespace UnityEditor.StreamingImageSequence
             PlayableDirector  currentDirector = UpdateManager.GetCurrentDirector();
             if (currentDirector == null)
             {
-                PluginUtil.HideAllOverwrapWindows();
+                StreamingImageSequencePlugin.HideAllOverwrapWindows();
                 return;
             }
 
@@ -89,7 +89,7 @@ namespace UnityEditor.StreamingImageSequence
                     // Draw TrackGroupLeftSide
                     ProcessTrackGroup(track as GroupTrack);
                 }
-                 else if (track.GetType() == typeof(MovieProxyTrack))
+                else if (track.GetType() == typeof(MovieProxyTrack))
                 {
                     // MovieProxy Track
                      ProcessMovieProxyTrack( track as MovieProxyTrack);
@@ -133,7 +133,7 @@ namespace UnityEditor.StreamingImageSequence
                     m_MovieProxyPlayableAssetToColorArray.Add(asset, new BGJobCacheParam(asset));
                 }
                 var param = m_MovieProxyPlayableAssetToColorArray[asset];
-                int allAreLoaded = PluginUtil.GetAllAreLoaded(asset.GetInstanceID());
+                int allAreLoaded = StreamingImageSequencePlugin.GetAllAreLoaded(asset.GetInstanceID());
 
                 if (allAreLoaded == 0)
                 {
@@ -143,15 +143,15 @@ namespace UnityEditor.StreamingImageSequence
                     {
                         return;
                     }
-                    PluginUtil.SetOverwrapWindowData(asset.GetInstanceID(), colorArray, colorArray.Length);
+                    StreamingImageSequencePlugin.SetOverwrapWindowData(asset.GetInstanceID(), colorArray, colorArray.Length);
                     if (param.m_allLoaded)
                     {
-                        PluginUtil.SetAllAreLoaded(asset.GetInstanceID(), 1);
+                        StreamingImageSequencePlugin.SetAllAreLoaded(asset.GetInstanceID(), 1);
                     }
                 }
                 else
                 {
-                    PluginUtil.HideOverwrapWindow(asset.GetInstanceID());
+                    StreamingImageSequencePlugin.HideOverwrapWindow(asset.GetInstanceID());
                 }
 
 
@@ -239,16 +239,16 @@ namespace UnityEditor.StreamingImageSequence
                 {
                     width -= startX + width - (windowPos.x + windowPos.width);
                 }
-                int isLoaded = PluginUtil.GetAllAreLoaded(clip.asset.GetInstanceID());
+                int isLoaded = StreamingImageSequencePlugin.GetAllAreLoaded(clip.asset.GetInstanceID());
 
                 if ((rect.y - treeviewPos.y > 0.0f - offsetY && rect.y - treeviewPos.y < trackbounds.height - trackbounds.y && width > 0.0f - offsetY)
                       && isLoaded == 0)
                 { 
-                       PluginUtil.ShowOverwrapWindow(clip.asset.GetInstanceID(), (int)startX, (int)startY, (int)width, 1, forceChange); // (int)rect.height);
+                       StreamingImageSequencePlugin.ShowOverwrapWindow(clip.asset.GetInstanceID(), (int)startX, (int)startY, (int)width, 1, forceChange); // (int)rect.height);
                 }
                 else
                 {
-                  PluginUtil.HideOverwrapWindow(clip.asset.GetInstanceID());
+                  StreamingImageSequencePlugin.HideOverwrapWindow(clip.asset.GetInstanceID());
                 }
             }
 #endif

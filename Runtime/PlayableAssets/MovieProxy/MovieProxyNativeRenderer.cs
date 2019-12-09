@@ -58,7 +58,7 @@ public class MovieProxyNativeRenderer : MonoBehaviour {
         for (;;)
         {
             yield return new WaitForEndOfFrame();
-            GL.IssuePluginEvent(PluginUtil.GetRenderEventFunc(), instanceId);
+            GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), instanceId);
 
         }
     }

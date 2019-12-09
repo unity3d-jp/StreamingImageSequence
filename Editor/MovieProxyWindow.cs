@@ -348,7 +348,7 @@ namespace UnityEditor.StreamingImageSequence
          /*
             var parm = m_MovieProxyPlayableAssetToColorArray[asset];
 
-             PluginUtil.SetOverwrapWindowData(asset.GetInstanceID(), colorArray, colorArray.Length);
+             StreamingImageSequencePlugin.SetOverwrapWindowData(asset.GetInstanceID(), colorArray, colorArray.Length);
              */
             /*
             //        if (parm.m_NeedUpdate)

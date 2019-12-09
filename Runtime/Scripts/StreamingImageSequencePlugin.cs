@@ -24,7 +24,7 @@ namespace UnityEngine.StreamingImageSequence
         Requested,
         Loaded,
     };
-    public class PluginUtil  {
+    public static class StreamingImageSequencePlugin {
 
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
         // Impremented in Loader dll
