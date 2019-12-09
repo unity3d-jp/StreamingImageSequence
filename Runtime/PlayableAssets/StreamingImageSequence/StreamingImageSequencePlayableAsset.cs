@@ -76,8 +76,8 @@ namespace UnityEngine.StreamingImageSequence {
         public override Playable CreatePlayable(PlayableGraph graph, GameObject go) {
 
 
-            var bh = new MovieProxyPlayableBehaviour();
-            return ScriptPlayable<MovieProxyPlayableBehaviour>.Create(graph,bh);
+            var bh = new StreamingImageSequencePlayableBehaviour();
+            return ScriptPlayable<StreamingImageSequencePlayableBehaviour>.Create(graph,bh);
         }
 
         internal void LoadRequest(bool isDirectorIdle) {

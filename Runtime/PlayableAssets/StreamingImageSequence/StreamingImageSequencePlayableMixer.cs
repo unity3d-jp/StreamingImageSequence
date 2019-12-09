@@ -19,7 +19,7 @@ namespace UnityEngine.StreamingImageSequence
 
     // A behaviour that is attached to a playable
 
-    public class MovieProxyPlayableMixer : PlayableBehaviour
+    public class StreamingImageSequencePlayableMixer : PlayableBehaviour
     {
 
         internal PlayableDirector m_PlayableDirector;
@@ -41,7 +41,7 @@ namespace UnityEngine.StreamingImageSequence
 
             }
         }
-        public MovieProxyPlayableMixer()
+        public StreamingImageSequencePlayableMixer()
         {
 
 #if UNITY_EDITOR
@@ -108,7 +108,7 @@ namespace UnityEngine.StreamingImageSequence
 
             if (m_BoundGameObject == null)
             {
-                var renderer = playerData as MovieProxyNativeRenderer;
+                var renderer = playerData as StreamingImageSequenceNativeRenderer;
                 if (renderer != null)
                 {
                     m_BoundGameObject = renderer.gameObject;

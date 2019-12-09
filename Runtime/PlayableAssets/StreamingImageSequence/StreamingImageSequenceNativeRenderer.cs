@@ -10,7 +10,7 @@ namespace UnityEngine.StreamingImageSequence
 {
 
 //[ExecuteInEditMode]
-public class MovieProxyNativeRenderer : MonoBehaviour {
+public class StreamingImageSequenceNativeRenderer : MonoBehaviour {
 #if DEBUG_THREAD
     int m_timer = 0;
 #endif

@@ -157,7 +157,7 @@ namespace UnityEditor.StreamingImageSequence
 
             foreach ( var track in newList )
             {
-                var tmp = newPlayableDirector.GetGenericBinding(track) as MovieProxyNativeRenderer;
+                var tmp = newPlayableDirector.GetGenericBinding(track) as StreamingImageSequenceNativeRenderer;
                 GameObject go = null;
                 if ( tmp != null )
                 {
