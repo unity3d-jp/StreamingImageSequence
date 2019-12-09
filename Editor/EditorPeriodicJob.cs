@@ -17,7 +17,7 @@ namespace UnityEditor.StreamingImageSequence
     public class EditorPeriodicJob : PeriodicJob
     {
  
-        static Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam> m_MovieProxyPlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
+        static Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam> m_streamingImageSequencePlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
 
         static EditorPeriodicJob()
         {
@@ -31,7 +31,7 @@ namespace UnityEditor.StreamingImageSequence
 
         private  void Reinitialize()
         {
-            m_MovieProxyPlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
+            m_streamingImageSequencePlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
         }
         public override void Initialize()
         {
@@ -40,7 +40,7 @@ namespace UnityEditor.StreamingImageSequence
 
         public override void Reset()
         {
-             m_MovieProxyPlayableAssetToColorArray = null;
+             m_streamingImageSequencePlayableAssetToColorArray = null;
         }
 
         public override void Cleanup()
@@ -54,7 +54,7 @@ namespace UnityEditor.StreamingImageSequence
 
                 return;
             }
-            if ( m_MovieProxyPlayableAssetToColorArray == null )
+            if ( m_streamingImageSequencePlayableAssetToColorArray == null )
             {
                 Reinitialize();
             }
@@ -123,22 +123,22 @@ namespace UnityEditor.StreamingImageSequence
                     continue;
 
                 int length = asset.Pictures.Length;
-                if (m_MovieProxyPlayableAssetToColorArray.ContainsKey(asset))
+                if (m_streamingImageSequencePlayableAssetToColorArray.ContainsKey(asset))
                 {
 
 
                 }
                 else
                 {
-                    m_MovieProxyPlayableAssetToColorArray.Add(asset, new BGJobCacheParam(asset));
+                    m_streamingImageSequencePlayableAssetToColorArray.Add(asset, new BGJobCacheParam(asset));
                 }
-                var param = m_MovieProxyPlayableAssetToColorArray[asset];
+                var param = m_streamingImageSequencePlayableAssetToColorArray[asset];
                 int allAreLoaded = StreamingImageSequencePlugin.GetAllAreLoaded(asset.GetInstanceID());
 
                 if (allAreLoaded == 0)
                 {
-                    new BGJobCacheChecker(m_MovieProxyPlayableAssetToColorArray[asset]);
-                    UInt32[] colorArray = m_MovieProxyPlayableAssetToColorArray[asset].m_collorArray;
+                    new BGJobCacheChecker(m_streamingImageSequencePlayableAssetToColorArray[asset]);
+                    UInt32[] colorArray = m_streamingImageSequencePlayableAssetToColorArray[asset].m_collorArray;
                     if (colorArray == null)
                     {
                         return;

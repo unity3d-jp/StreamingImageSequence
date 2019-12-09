@@ -14,10 +14,10 @@ namespace UnityEditor.StreamingImageSequence {
         public const string PNG_EXTENSION = "png";
         public const string TGA_EXTENSION = "tga";
 
-        static string versionString = "MovieProxy version 0.2.1";
+        static string versionString = "StreamingImageSequence version 0.2.1";
 
         [MenuItem("Edit/Streaming Image Sequence/Create Clip", false, 1)]
-        static void RegisterFilesAndCreateMovieProxy()
+        private static void RegisterFilesAndCreateStreamingImageSequence()
         {
             string path = EditorUtility.OpenFilePanel("Open File", "", PNG_EXTENSION + "," + TGA_EXTENSION);
             if (string.IsNullOrEmpty(path)) {
@@ -240,7 +240,7 @@ namespace UnityEditor.StreamingImageSequence {
 
                 //            var proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>(); //new StreamingImageSequencePlayableAsset(trackMovieContainer);
                 //            proxyAsset.SetParam(trackMovieContainer);
-                //            var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_MovieProxy.playable").Replace("\\", "/"));*/
+                //            var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_StreamingImageSequence.playable").Replace("\\", "/"));*/
                 AssetDatabase.Refresh();
             }
             else
@@ -249,7 +249,7 @@ namespace UnityEditor.StreamingImageSequence {
                 StreamingImageSequencePlayableAsset proxyAsset = param.TargetAsset;
                 if (null == proxyAsset) {
                     proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>(); 
-                    var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_MovieProxy.playable").Replace("\\", "/"));
+                    var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_StreamingImageSequence.playable").Replace("\\", "/"));
                     AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
                 }
 
