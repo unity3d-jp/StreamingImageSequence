@@ -305,7 +305,7 @@ namespace UnityEngine.StreamingImageSequence
                 val++;
                 threadTickCounts[index] = val;
 
-                Util.Log("alive " + id);
+                LogUtility.LogDebug("alive " + id);
                 BackGroundTask task = null;
                 
                 if ( s_BackGroundTaskQueue.Count > 0)
@@ -354,7 +354,7 @@ namespace UnityEngine.StreamingImageSequence
             }
             else
             {
-                Util.Log("Unalbe to stop thread by user program!");
+                LogUtility.LogDebug("Unable to stop thread by user program!");
 
             }
             s_bShutdown = false;

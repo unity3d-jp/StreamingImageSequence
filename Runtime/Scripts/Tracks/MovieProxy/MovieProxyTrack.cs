@@ -13,7 +13,7 @@ namespace UnityEngine.StreamingImageSequence
         LoaderPeriodicJob m_LoaderPeriodicJob;
         public MovieProxyTrack()
         {
-            Util.Log("MovieProxyTrack creating ObserverPeriodicJob");
+            LogUtility.LogDebug("MovieProxyTrack creating ObserverPeriodicJob");
             m_LoaderPeriodicJob = new LoaderPeriodicJob(this);
             m_LoaderPeriodicJob.AddToUpdateManger();
             // above job is removed when finished to load by calling RemoveIfFinished();

@@ -59,7 +59,7 @@ namespace UnityEditor.StreamingImageSequence
                 Reinitialize();
             }
 
-            Util.Log("EditorPeriodicJob::Executing");
+            LogUtility.LogDebug("EditorPeriodicJob::Executing");
             UpdateManager.GetStreamingAssetPath(); // must be executed in main thread.
 
             PlayableDirector  currentDirector = UpdateManager.GetCurrentDirector();

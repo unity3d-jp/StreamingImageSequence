@@ -14,19 +14,19 @@ namespace UnityEngine.StreamingImageSequence
 {
 
 
-    public class Util
+    public static class LogUtility
     {
         static bool s_isLogEnabled = false;
 
-        static public void Log(object message)
+        public static void LogDebug(object message)
         {
-			if (isEnable)
+			if (Enabled)
             {
                 UnityEngine.Debug.Log(message);
             }
         }
 
-        static bool isEnable
+        static bool Enabled
         {
 			get {
 				// unable to  call this from back thread.

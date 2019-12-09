@@ -33,7 +33,7 @@ namespace UnityEngine.StreamingImageSequence
 #if UNITY_EDITOR
             if (tResult.readStatus == 1)
             {
-                Util.Log("Already requestd:" + m_strFileName);
+                LogUtility.LogDebug("Already requested:" + m_strFileName);
             }
 #endif
 

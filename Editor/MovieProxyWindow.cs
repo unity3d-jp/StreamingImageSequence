@@ -457,12 +457,12 @@ namespace UnityEditor.StreamingImageSequence
 
             public override void OnOpen()
             {
-                Util.Log("Popup opened: " + this);
+                LogUtility.LogDebug("Popup opened: " + this);
             }
 
             public override void OnClose()
             {
-                Util.Log("Popup closed: " + this);
+                LogUtility.LogDebug("Popup closed: " + this);
             }
         }
 

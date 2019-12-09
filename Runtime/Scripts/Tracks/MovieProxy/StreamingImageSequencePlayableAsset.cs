@@ -62,7 +62,6 @@ namespace UnityEngine.StreamingImageSequence
         public StreamingImageSequencePlayableAsset()
         {
             m_loadingIndex = -1;
-            Util.Log("StreamingImageSequencePlayableAsset");
         }
          
         public void SetParam(StreamingImageSequencePlayableAssetParam param)
