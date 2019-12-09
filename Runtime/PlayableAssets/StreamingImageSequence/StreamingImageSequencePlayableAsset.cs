@@ -4,6 +4,8 @@ using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
+using System.Collections.Generic;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -30,7 +32,7 @@ namespace UnityEngine.StreamingImageSequence {
         public StreamingImageSequencePlayableAssetParam.StPicResolution Resolution;
         public StreamingImageSequencePlayableAssetParam.StQuadSize QuadSize;
         public bool m_displayOnClipsOnly;
-        public string[] Pictures;
+        public List<string> Pictures;
         private bool[] LoadRequested;
         public int m_loadingIndex = -1;
 		private int m_lastIndex = -1;
@@ -64,7 +66,7 @@ namespace UnityEngine.StreamingImageSequence {
                                  m_folder.StartsWith("Assets/StreamingAssets") &&
                                  Directory.Exists(m_folder) && 
                                  Pictures != null && 
-                                 Pictures.Length > 0;
+                                 Pictures.Count > 0;
                 }
                 
                 return m_verified;
@@ -84,6 +86,11 @@ namespace UnityEngine.StreamingImageSequence {
             QuadSize = param.QuadSize;
             Pictures = param.Pictures;
             m_folder = param.Folder;
+            if (m_folder.StartsWith("Assets")) {
+                m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(m_folder);
+            } else {
+                m_timelineDefaultAsset = null;
+            }
             EditorUtility.SetDirty(this);
         }
 
@@ -101,7 +108,7 @@ namespace UnityEngine.StreamingImageSequence {
             if (null == Pictures)
                 return;
 
-            int numPictures = Pictures.Length;
+            int numPictures = Pictures.Count;
             if (LoadRequested == null && numPictures > 0) {
                 LoadRequested = new bool[numPictures];
             }
@@ -125,9 +132,9 @@ namespace UnityEngine.StreamingImageSequence {
             }
             StReadResult tResult = new StReadResult();
             int loadRequestMax = m_loadingIndex + step;
-            if (loadRequestMax > Pictures.Length)
+            if (loadRequestMax > Pictures.Count)
             {
-                loadRequestMax = Pictures.Length;
+                loadRequestMax = Pictures.Count;
             }
             for (int ii = m_loadingIndex; ii <= loadRequestMax - 1; ii++)
             {
@@ -159,7 +166,7 @@ namespace UnityEngine.StreamingImageSequence {
             filename = GetCompleteFilePath(filename);
             if (LoadRequested == null)
             {
-                LoadRequested = new bool[Pictures.Length];
+                LoadRequested = new bool[Pictures.Count];
             }
 
             StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
@@ -186,7 +193,7 @@ namespace UnityEngine.StreamingImageSequence {
         }
         internal bool SetTexture(GameObject go, int index, bool isBlocking, bool isAlreadySet)
         {
-            if (null == Pictures || index < 0 || index >= Pictures.Length || string.IsNullOrEmpty(Pictures[index])) {
+            if (null == Pictures || index < 0 || index >= Pictures.Count || string.IsNullOrEmpty(Pictures[index])) {
                 return false;
             }
 

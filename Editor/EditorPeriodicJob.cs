@@ -103,7 +103,7 @@ namespace UnityEditor.StreamingImageSequence
                     continue;
                 }
                 
-                var length = asset.Pictures.Length;
+                var length = asset.Pictures.Count;
                 if (m_streamingImageSequencePlayableAssetToColorArray.ContainsKey(asset))
                 {
 

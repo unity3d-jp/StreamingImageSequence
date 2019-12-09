@@ -164,13 +164,13 @@ namespace UnityEditor.StreamingImageSequence {
 
             // create assets
             StreamingImageSequencePlayableAssetParam trackMovieContainer = new StreamingImageSequencePlayableAssetParam();
-            trackMovieContainer.Pictures = new string[param.RelativeFilePaths.Count];
-            for (int ii = 0; ii < param.RelativeFilePaths.Count; ii++)
+            trackMovieContainer.Pictures = new List<string>();
+            foreach (string relPath in param.RelativeFilePaths)
             {
-                trackMovieContainer.Pictures[ii] = param.RelativeFilePaths[ii];
+                trackMovieContainer.Pictures.Add(relPath);
             }
 
-            ///   if possible, convert folder names to relative path.
+            //if possible, convert folder names to relative path.
             string strUnityProjectFolder = null;
             Regex regAssetFolder = new Regex("/Assets$");
             strUnityProjectFolder = Application.dataPath;

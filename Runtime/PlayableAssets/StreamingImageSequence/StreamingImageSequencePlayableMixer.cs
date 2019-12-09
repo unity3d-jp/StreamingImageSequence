@@ -164,7 +164,7 @@ namespace UnityEngine.StreamingImageSequence
                 var asset = clip.asset as StreamingImageSequencePlayableAsset;
                 if (null == asset.Pictures)
                     continue;
-                float count = asset.Pictures.Length;
+                float count = asset.Pictures.Count;
                 int index = 0;
                 var clipDuration = clip.duration;
                 var startTime = clip.start;
@@ -240,7 +240,7 @@ namespace UnityEngine.StreamingImageSequence
         private void ProcessInAdvanceLoading(double time, TimelineClip clip, int index)
         {
             var asset = clip.asset as StreamingImageSequencePlayableAsset;
-            int count = asset.Pictures.Length;
+            int count = asset.Pictures.Count;
 
 
             if (m_nextInadvanceLoadingFrameArray[index] < count)

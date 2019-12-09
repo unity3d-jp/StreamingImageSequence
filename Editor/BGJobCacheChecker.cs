@@ -77,18 +77,18 @@ namespace UnityEditor.StreamingImageSequence
         public BGJobCacheParam(StreamingImageSequencePlayableAsset asset)
         {
            m_asset = asset;
-            m_collorArray = new UInt32[m_asset.Pictures.Length];
+            m_collorArray = new UInt32[m_asset.Pictures.Count];
 
-            m_tex2D = new Texture2D(m_asset.Pictures.Length, 1);
+            m_tex2D = new Texture2D(m_asset.Pictures.Count, 1);
             m_allLoaded = false;
  //           m_style = new GUIStyle(GUI.skin.box); 
         }
 
         public void Reinitialize()
         {
-            m_collorArray = new UInt32[m_asset.Pictures.Length];
+            m_collorArray = new UInt32[m_asset.Pictures.Count];
 
-            m_tex2D = new Texture2D(m_asset.Pictures.Length, 1);
+            m_tex2D = new Texture2D(m_asset.Pictures.Count, 1);
             m_allLoaded = false;
         }
     }
