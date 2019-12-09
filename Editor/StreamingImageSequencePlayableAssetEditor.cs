@@ -28,12 +28,10 @@ namespace UnityEngine.StreamingImageSequence {
 
             string folder = asset.GetFolder();
             if (string.IsNullOrEmpty(folder)) {
+
                 UnityEditor.DefaultAsset timelineDefaultAsset = asset.GetTimelineDefaultAsset();
                 if (null!=timelineDefaultAsset) {
-                    string directoryPath = AssetDatabase.GetAssetPath(timelineDefaultAsset).Replace("\\","/");
-                    if (directoryPath.StartsWith("Assets/StreamingAssets/")) {
-                        InitializeAssetFromDefaultAsset(clip, asset);
-                    } else {
+                    if (!InitializeAssetFromDefaultAsset(clip, asset)) {
                         clipOptions.errorText = kNotStreamingAssetsFolderAssignedError;
                     }
                 } else {
@@ -58,20 +56,27 @@ namespace UnityEngine.StreamingImageSequence {
                 return;
             }
 
-            if (null != asset.GetTimelineDefaultAsset()) {
-                InitializeAssetFromDefaultAsset(clip, asset);
-            }
-            
+            InitializeAssetFromDefaultAsset(clip, asset);
         }
-        
-        private static void InitializeAssetFromDefaultAsset(TimelineClip clip, StreamingImageSequencePlayableAsset asset)
+       
+        private static bool InitializeAssetFromDefaultAsset(TimelineClip clip, StreamingImageSequencePlayableAsset asset) 
         {
-            string path = AssetDatabase.GetAssetPath(asset.GetTimelineDefaultAsset());
+            UnityEditor.DefaultAsset timelineDefaultAsset = asset.GetTimelineDefaultAsset();
+            if (null == timelineDefaultAsset)
+                return false;
+
+            string path = AssetDatabase.GetAssetPath(timelineDefaultAsset).Replace("\\","/");
+            if (!path.StartsWith("Assets/StreamingAssets/")) {
+                return false;
+            }
+
+
             PictureFileImporter.ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, asset);
 
             asset.m_displayOnClipsOnly = true;
             clip.duration = asset.Pictures.Length * 0.125; // 8fps (standard limited animation)
             clip.displayName = Path.GetFileName(asset.GetFolder());
+            return true;
         }
 
         /// <inheritdoc/>
