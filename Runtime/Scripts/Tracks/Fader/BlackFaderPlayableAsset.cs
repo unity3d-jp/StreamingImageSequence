@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 
-namespace Unity.MovieProxy
+namespace UnityEngine.StreamingImageSequence
 {
 
     [System.Serializable]

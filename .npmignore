@@ -6,7 +6,7 @@ Documentation/ApiDocs/**
 Documentation~/ApiDocs/**
 AEPlugins/**
 AEPsamples/**
-MovieProxyProject~/**
+StreamingImageSequence~/**
 .DS_Store
 .npmrc
 .npmignore

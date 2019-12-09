@@ -14,7 +14,7 @@ using UnityEngine.Timeline;
 using UnityEditor;
 #endif
 
-namespace Unity.MovieProxy
+namespace UnityEngine.StreamingImageSequence
 {
 
     // A behaviour that is attached to a playable
@@ -71,7 +71,7 @@ namespace Unity.MovieProxy
             if (!m_IsTexSet)
             {
                 Assert.IsTrue(clip != null);
-                var asset = clip.asset as MovieProxyPlayableAsset;
+                var asset = clip.asset as StreamingImageSequencePlayableAsset;
                 m_IsTexSet = asset.SetTexture(m_BoundGameObject, 0, false, m_IsTexSet);
             }
         }
@@ -161,7 +161,9 @@ namespace Unity.MovieProxy
             {
 
                 var clip = enumulator.Current;
-                 var asset = clip.asset as MovieProxyPlayableAsset;
+                var asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (null == asset.Pictures)
+                    continue;
                 float count = asset.Pictures.Length;
                 int index = 0;
                 var clipDuration = clip.duration;
@@ -237,7 +239,7 @@ namespace Unity.MovieProxy
 
         private void ProcessInAdvanceLoading(double time, TimelineClip clip, int index)
         {
-            var asset = clip.asset as MovieProxyPlayableAsset;
+            var asset = clip.asset as StreamingImageSequencePlayableAsset;
             int count = asset.Pictures.Length;
 
 

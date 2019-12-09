@@ -8,8 +8,9 @@ using UnityEngine.Timeline;
 using UnityEngine.Playables;
 using UnityEngine.Assertions;
 using System;
+using UnityEngine.StreamingImageSequence;
 
-namespace Unity.MovieProxy
+namespace UnityEditor.StreamingImageSequence
 { 
     public class MovieProxyWindow : EditorWindow
     {
@@ -43,12 +44,12 @@ namespace Unity.MovieProxy
         static float m_fRightAreaWidth = 0.0f;
 
         static PlayableDirector m_currentDirector;
-        static Dictionary<MovieProxyPlayableAsset, BGJobCacheParam> m_MovieProxyPlayableAssetToColorArray = new Dictionary<MovieProxyPlayableAsset, BGJobCacheParam>();
+        static Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam> m_MovieProxyPlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
         public Vector2 m_scrollPosition = Vector2.zero;
 
  
         /*
-        [MenuItem("Window/MovieProxy")]
+        [MenuItem("Window/Streaming Image Sequence")]
 
         public static void ShowWindow()
         {
@@ -299,7 +300,7 @@ namespace Unity.MovieProxy
             EditorGUI.DrawRect(
                 new Rect(fRectStartX + fRectWidth -2.0f, nextStartY , 2.0f, kHeaderTrackHeight),
                 colDark);
-            if (clip.asset.GetType() == typeof(MovieProxyPlayableAsset))
+            if (clip.asset.GetType() == typeof(StreamingImageSequencePlayableAsset))
             {
                 DrawCacheStatus(nextStartY, clip);
             }
@@ -307,7 +308,7 @@ namespace Unity.MovieProxy
 
         private void DrawCacheStatus(float nextStartY, TimelineClip clip)
         {
-            var asset = clip.asset as MovieProxyPlayableAsset;
+            var asset = clip.asset as StreamingImageSequencePlayableAsset;
             float wholeWidth = m_fRightAreaWidth - 16.0f;
             double start = clip.start;
             double end = clip.end;

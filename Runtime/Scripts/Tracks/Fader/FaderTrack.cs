@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
 
-namespace Unity.MovieProxy
+namespace UnityEngine.StreamingImageSequence
 {
 
     [TrackClipType(typeof(FaderPlayableAsset))]

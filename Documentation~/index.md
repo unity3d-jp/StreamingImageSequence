@@ -1,5 +1,5 @@
 >>>
-**_Movie Proxy Documentation_**
+**_Streaming Image Sequence Documentation_**
 
 Work in progress
 

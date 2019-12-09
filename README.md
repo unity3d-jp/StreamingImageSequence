@@ -1,13 +1,12 @@
 
 README.md
-# Movie Proxy
+# Streaming Image Sequence
 
-## 【Movie Proxy Ver 0.2.0】
-Movie Proxy is a plug-in for Unity Timeline to use sequential pictures without making Unity 2D Sprite.
+## 【Streaming Image Sequence Ver 0.2.0】
+Streaming Image Sequence is a plug-in for Unity Timeline to use sequential pictures without making Unity 2D Sprite.
 
 ### 【Target Environment】
-Requires Unity 2018.1.0f2.
-This pack was created in Unity 2018.1.0f2.
+Requires Unity 2019.2.13f1
 Only works on PC and Mac.
 
 #### 【License】

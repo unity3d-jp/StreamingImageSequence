@@ -7,8 +7,9 @@ using System.Reflection;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
+using UnityEngine.StreamingImageSequence;
 
-namespace Unity.MovieProxy
+namespace UnityEditor.StreamingImageSequence
 {
 #if UNITY_EDITOR
     [InitializeOnLoad]
@@ -16,7 +17,7 @@ namespace Unity.MovieProxy
     public class EditorPeriodicJob : PeriodicJob
     {
  
-        static Dictionary<MovieProxyPlayableAsset, BGJobCacheParam> m_MovieProxyPlayableAssetToColorArray = new Dictionary<MovieProxyPlayableAsset, BGJobCacheParam>();
+        static Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam> m_MovieProxyPlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
 
         static EditorPeriodicJob()
         {
@@ -30,7 +31,7 @@ namespace Unity.MovieProxy
 
         private  void Reinitialize()
         {
-            m_MovieProxyPlayableAssetToColorArray = new Dictionary<MovieProxyPlayableAsset, BGJobCacheParam>();
+            m_MovieProxyPlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
         }
         public override void Initialize()
         {
@@ -103,9 +104,9 @@ namespace Unity.MovieProxy
 
                 // You might want to use "as" rather than compare type.
                 // "as" sometimes fail on first importing time for project.
-                if (clip.asset.GetType() != typeof(MovieProxyPlayableAsset))
+                if (clip.asset.GetType() != typeof(StreamingImageSequencePlayableAsset))
                 {
-                    Debug.LogError("MovieProxyPlayableAsset is broken:" + clip.asset.name);
+                    Debug.LogError("StreamingImageSequencePlayableAsset is broken:" + clip.asset.name);
                     continue;
 
                 }
@@ -113,11 +114,14 @@ namespace Unity.MovieProxy
                 /*
                 if (clip.asset == null)
                 {
-                    Debug.LogError("MovieProxyPlayableAsset on " + clip.displayName + " is broken.");
+                    Debug.LogError("StreamingImageSequencePlayableAsset on " + clip.displayName + " is broken.");
                     continue;
                 }*/
 
-                MovieProxyPlayableAsset asset = (MovieProxyPlayableAsset)clip.asset;
+                StreamingImageSequencePlayableAsset asset = (StreamingImageSequencePlayableAsset)clip.asset;
+                if (null == asset.Pictures)
+                    continue;
+
                 int length = asset.Pictures.Length;
                 if (m_MovieProxyPlayableAssetToColorArray.ContainsKey(asset))
                 {
@@ -216,7 +220,7 @@ namespace Unity.MovieProxy
                 info = type.GetProperty("clip", bf);
                 var clip = info.GetValue(obj, null) as UnityEngine.Timeline.TimelineClip;
                 var assetType = clip.asset.GetType();
-                if (assetType != typeof(MovieProxyPlayableAsset))
+                if (assetType != typeof(StreamingImageSequencePlayableAsset))
                 {
                     continue;
                 }

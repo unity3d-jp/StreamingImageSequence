@@ -6,7 +6,7 @@ using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace Unity.MovieProxy
+namespace UnityEngine.StreamingImageSequence
 {
     public class LoaderPeriodicJob : PeriodicJob
     {
@@ -84,9 +84,9 @@ namespace Unity.MovieProxy
 
                 // You might want to use "as" rather than compare type.
                 // "as" sometimes fail on first importing time for project.
-                if (asset.GetType() == typeof(MovieProxyPlayableAsset))
+                if (asset.GetType() == typeof(StreamingImageSequencePlayableAsset))
                 {
-                    var timelineAsset = (MovieProxyPlayableAsset)asset;
+                    var timelineAsset = (StreamingImageSequencePlayableAsset)asset;
                     timelineAsset.Reset();
 
                     continue;
@@ -127,9 +127,9 @@ namespace Unity.MovieProxy
 
                     // You might want to use "as" rather than compare type.
                     // "as" sometimes fail on first importing time for project.
-                    if ( asset.GetType() == typeof(MovieProxyPlayableAsset) )
+                    if ( asset.GetType() == typeof(StreamingImageSequencePlayableAsset) )
                     {
-                        var timelineAsset = (MovieProxyPlayableAsset)asset;
+                        var timelineAsset = (StreamingImageSequencePlayableAsset)asset;
                         if (!Application.isPlaying)
                             timelineAsset.LoadRequest(m_director);
 
@@ -141,7 +141,7 @@ namespace Unity.MovieProxy
                     // null check of asset value must be here later than above asset.GetType() as operator == null means the object is destroyed.
                     if (asset == null)
                     {
-                        Debug.LogError("MovieProxyPlayableAsset on " + cl.displayName + " is broken.");
+                        Debug.LogError("StreamingImageSequencePlayableAsset on " + cl.displayName + " is broken.");
                         continue;
                     }
                 }

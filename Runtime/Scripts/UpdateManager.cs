@@ -12,7 +12,7 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 #endif
 
-namespace Unity.MovieProxy
+namespace UnityEngine.StreamingImageSequence
 {
     
 #if UNITY_EDITOR
@@ -122,43 +122,39 @@ namespace Unity.MovieProxy
 #if UNITY_EDITOR
         static void InitInEditor()
         {
-            EditorApplication.playmodeStateChanged += ChangedPlaymodeState;
+            EditorApplication.playModeStateChanged += ChangedPlayModeState;
             EditorApplication.update += UpdateFromEditor;
         }
 
 
-        static void ChangedPlaymodeState()
+        static void ChangedPlayModeState(PlayModeStateChange state)
         {
-            bool bIsPlaying = EditorApplication.isPlaying;
-            bool bPlayingOrWillChangePlaymode = EditorApplication.isPlayingOrWillChangePlaymode;
-            bool bIsPaused = EditorApplication.isPaused;
-
-            if (bIsPaused )
-            {
+            if (EditorApplication.isPaused ) {
                 return;
             }
-            if ( bIsPlaying == false && bPlayingOrWillChangePlaymode == true )
-            {
-                StopThread();
-                CallSetupBeforePlayingDelegate();
-                // Util.Log("Play button was pressed.");
-            }
-            else if (bIsPlaying == true  && bPlayingOrWillChangePlaymode == true )
-            {
-                // Util.Log("Play was started.");
-            }
-            else if (bIsPlaying == true  && bPlayingOrWillChangePlaymode == false)
-            {
-                // started to play.
-                // Util.Log("Stop is pressed");
-            }
-            else
-            {
-                CallSetupAfterPlayDelegate();
-				// Util.Log("Play  stopped.");
-            }
 
-
+            switch (state) {
+                case PlayModeStateChange.ExitingEditMode: {
+                    StopThread();
+                    CallSetupBeforePlayingDelegate();
+                    // Util.Log("Play button was pressed.");
+                    break;
+                }
+                case PlayModeStateChange.EnteredPlayMode: {
+                    // Util.Log("Play was started.");
+                    break;
+                }
+                case PlayModeStateChange.ExitingPlayMode: {
+                    // started to play.
+                    // Util.Log("Stop is pressed");
+                    break;
+                }
+                case PlayModeStateChange.EnteredEditMode: {
+                    CallSetupAfterPlayDelegate();
+                    // Util.Log("Play  stopped.");
+                    break;
+                }
+            }
         }
 
         static void CallResetDelegate()

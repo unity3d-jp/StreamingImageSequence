@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace Unity.MovieProxy
+namespace UnityEngine.StreamingImageSequence
 {
     // A behaviour that is attached to a playable
     public class FaderPlayableMixer : PlayableBehaviour

@@ -6,8 +6,9 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Assertions;
 using System.IO;
+using UnityEngine.StreamingImageSequence;
 
-namespace Unity.MovieProxy
+namespace UnityEditor.StreamingImageSequence
 {
 
 
@@ -67,13 +68,13 @@ namespace Unity.MovieProxy
 
     public class BGJobCacheParam
     {
-        public MovieProxyPlayableAsset m_asset;
+        public StreamingImageSequencePlayableAsset m_asset;
         public UInt32[] m_collorArray;
         public Texture2D m_tex2D;
         public bool m_allLoaded;
 
  //       public GUIStyle m_style;
-        public BGJobCacheParam(MovieProxyPlayableAsset asset)
+        public BGJobCacheParam(StreamingImageSequencePlayableAsset asset)
         {
            m_asset = asset;
             m_collorArray = new UInt32[m_asset.Pictures.Length];

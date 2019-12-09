@@ -1,123 +1,109 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Timeline;
-using UnityEditor;
-using UnityEngine.Playables;
-using UnityEngine.Assertions;
 using System.Text.RegularExpressions;
+using UnityEngine;
+using UnityEngine.Assertions;
+using UnityEngine.StreamingImageSequence;
+using UnityEngine.UI;
 
-namespace Unity.MovieProxy
-{
+namespace UnityEditor.StreamingImageSequence {
 
     public class PictureFileImporter
     {
+        public const string PNG_EXTENSION = "png";
+        public const string TGA_EXTENSION = "tga";
 
         static string versionString = "MovieProxy version 0.2.1";
 
-        [MenuItem("Edit/Movie Proxy/Create Clip", false, 1)]
+        [MenuItem("Edit/Streaming Image Sequence/Create Clip", false, 1)]
         static void RegisterFilesAndCreateMovieProxy()
         {
-            importPictureFiles(PictureFileImporterParam.Mode.StereamingAssets);
-        }
-        static void importPictureFiles(PictureFileImporterParam.Mode mode)
-        {
-            PictureFileImporterParam param = new PictureFileImporterParam();
-
-            string strPath = EditorUtility.OpenFilePanel("Open File", "", param.strExtensionPng + "," + param.strExtentionTga);
-            string strExtension = Path.GetExtension(strPath).ToLower();
-            if (strExtension == "." + param.strExtensionPng.ToLower())
-            {
-                param.strExtension = param.strExtensionPng;
-            }
-            else if (strExtension == "." + param.strExtentionTga.ToLower())
-            {
-                param.strExtension = param.strExtentionTga;
-            }
-
-            var strFileneWithoutExtention = Path.GetFileNameWithoutExtension(strPath);
-            if (!Regex.IsMatch(strFileneWithoutExtention, @"\d+$"))
-            {
-                Debug.LogError(@"Input doesn't include number.");
+            string path = EditorUtility.OpenFilePanel("Open File", "", PNG_EXTENSION + "," + TGA_EXTENSION);
+            if (string.IsNullOrEmpty(path)) {
                 return;
             }
 
+            ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, null);
+        }
+
+        /// <param name="importerMode"> Importer mode: StreamingAssets or SpriteAnimation</param>
+        /// <param name="path"> Can be a directory path or a file path</param>
+        public static void ImportPictureFiles(PictureFileImporterParam.Mode importerMode, string path, 
+                StreamingImageSequencePlayableAsset targetAsset) 
+        {
+            Assert.IsFalse(string.IsNullOrEmpty(path));
+
+            //Convert path to folder here
+            string folder = path;
+            FileAttributes attr = File.GetAttributes(path);
+            if (!attr.HasFlag(FileAttributes.Directory)) {
+                folder = Path.GetDirectoryName(folder);
+            }
+            string fullSrcPath = Path.GetFullPath(folder).Replace("\\", "/");
+            Uri fullSrcPathUri = new Uri(fullSrcPath + "/");
 
 
-            /// cehck Importing file name
-            var regNumbers = new Regex(@"\d+$");
-            var matches = regNumbers.Matches(strFileneWithoutExtention);
-            Assert.IsTrue(matches.Count > 0);
-
-            param.match = null;
-            foreach (Match match in matches)
-            {
-                param.match = match;
+            if (string.IsNullOrEmpty(folder)) {
+                Debug.LogError(@"Folder is empty. Path: " + path);
+                return;
             }
 
-            Assert.IsTrue(param.match != null);
-
-            var parsed = int.Parse(param.match.Value);
-            int periodIndex = strFileneWithoutExtention.Length;
-            int digits = param.match.Value.Length;
-            param.strSrcFolder = Path.GetDirectoryName(strPath);
-            var strBaseName = strFileneWithoutExtention.Substring(0, param.match.Index);
-
-
-            /// create copy destination path
-
-
-            var strDistFolder = Application.streamingAssetsPath;
-            if (mode == PictureFileImporterParam.Mode.SpriteAnimation)
-            {
-                strDistFolder = Application.dataPath;
-            }
-            if (!Directory.Exists(strDistFolder))
-            {
-                Directory.CreateDirectory(strDistFolder);
-            }
-
-            param.strAssetName = strBaseName;
-            if (param.strAssetName.EndsWith("_") || param.strAssetName.EndsWith("-"))
-            {
-                param.strAssetName = param.strAssetName.Substring(0, param.strAssetName.Length - 1);
-            }
-
-            param.strDstFolder = Path.Combine(strDistFolder, param.strAssetName).Replace("\\", "/");
-
-
-
-            /// making list of the files and copy them.
-            List<string> strNames = new List<string>();
-
-            for (; ; )
-            {
-                string strZero = string.Format("{0:D" + digits + "}", parsed++);
-                string strFileName = strBaseName + strZero + "." + param.strExtension;
-                strFileName = strFileName.Replace("\\", "/");
-                string path = Path.Combine(param.strSrcFolder, strFileName).Replace("\\", "/");
-                if (!File.Exists(path))
-                {
-                    break;
+            //Enumerate all files with the supported extensions and sort
+            List<string> relFilePaths = new List<string>();
+            string[] extensions = {
+                "*." + PictureFileImporter.PNG_EXTENSION, 
+                "*." + PictureFileImporter.TGA_EXTENSION,
+            };
+            foreach (string ext in extensions) {
+                IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, ext, SearchOption.AllDirectories);
+                foreach (string filePath in files) {
+                    Uri curPathUri = new Uri(filePath.Replace("\\", "/"));
+                    Uri diff = fullSrcPathUri.MakeRelativeUri(curPathUri);
+                    relFilePaths.Add(diff.OriginalString);
                 }
-                strNames.Add(strFileName);
+            }
+            if (relFilePaths.Count <= 0) {
+                EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER, @"No files in folder:: " + folder,"OK");
+                return;
+            }
+            relFilePaths.Sort(FileNameComparer);
+
+            //Estimate the asset name. Use the filename without numbers at the end
+            string assetName =  EstimateAssetName(relFilePaths[0]);
+
+            // set dest folder
+            string rootDestFolder = Application.streamingAssetsPath;
+            if (importerMode == PictureFileImporterParam.Mode.SpriteAnimation) {
+                rootDestFolder = Application.dataPath;
             }
 
-            param.files = new string[strNames.Count];
-            for (int ii = 0; ii < strNames.Count; ii++)
-            {
-                param.files[ii] = strNames[ii];
-            }
-            param.mode = mode;
-            PictureFileImportWindow.Init(param);
+            //Set importer param
+            PictureFileImporterParam importerParam = new PictureFileImporterParam {
+                strAssetName = assetName,
+                strSrcFolder = folder,
+                RelativeFilePaths = relFilePaths,
+                mode = importerMode,
+                DoNotCopy = false,
+                TargetAsset = targetAsset
+            };
 
+
+            if (fullSrcPath.StartsWith(rootDestFolder)) {
+                //Import immediately if the assets are already under Unity
+                importerParam.strDstFolder = importerParam.strSrcFolder;
+                importerParam.DoNotCopy = true;
+                PictureFileImporter.Import(importerParam);
+            } else {
+                importerParam.strDstFolder = Path.Combine(rootDestFolder, assetName).Replace("\\", "/");
+                PictureFileImportWindow.SetParam(importerParam);
+                PictureFileImportWindow.InitWindow();
+            }
         }
 
         /*
 
-        [MenuItem("Edit/Movie Proxy/Create MovieProxy/Register files", false, 6)]
+        [MenuItem("Edit/Streaming Image Sequence/Create MovieProxy/Register files", false, 6)]
         static void ImportAndCreateSpriteAnimation()
         {
             importPictureFiles(PictureFileImporterParam.Mode.SpriteAnimation);
@@ -125,17 +111,17 @@ namespace Unity.MovieProxy
         }
         */
 
-        [MenuItem("Edit/Movie Proxy/Reset",false,50)]
+        [MenuItem("Edit/Streaming Image Sequence/Reset",false,50)]
         static void Reset()
         {
             UpdateManager.ResetPlugin();
         }
-        [MenuItem("Edit/Movie Proxy/Show version",false,51)]
+        [MenuItem("Edit/Streaming Image Sequence/Show version",false,51)]
         static void ShowVersion()
         {
             Debug.Log(versionString);
         }
-        public static void import(PictureFileImporterParam param)
+        public static void Import(PictureFileImporterParam param)
         {
             if (param.DoNotCopy)
             {
@@ -146,7 +132,7 @@ namespace Unity.MovieProxy
             {
 
                 string dstFolder = param.strDstFolder.Replace("\\", "/");
-                if (param.mode == PictureFileImporterParam.Mode.StereamingAssets)
+                if (param.mode == PictureFileImporterParam.Mode.StreamingAssets)
                 {
                     if (dstFolder.StartsWith(Application.dataPath) && !dstFolder.StartsWith(Path.Combine(Application.dataPath, "StreamingAssets").Replace("\\", "/")))
                     {
@@ -163,29 +149,25 @@ namespace Unity.MovieProxy
                     }
                 }
 
-                if (!Directory.Exists(param.strDstFolder))
+                foreach (string relPath in param.RelativeFilePaths)
                 {
-                    Directory.CreateDirectory(param.strDstFolder);
-                }
-
-                for (int ii = 0; ii < param.files.Length; ii++)
-                {
-                    string strAbsFilePathDst = Path.Combine(param.strDstFolder, param.files[ii]).Replace("\\", "/");
+                    string strAbsFilePathDst = Path.Combine(param.strDstFolder, relPath).Replace("\\", "/");
                     if (File.Exists(strAbsFilePathDst))
                     {
                         File.Delete(strAbsFilePathDst);
                     }
-                    string strAbsFilePathSrc = Path.Combine(param.strSrcFolder, param.files[ii]).Replace("\\", "/");
+                    string strAbsFilePathSrc = Path.Combine(param.strSrcFolder, relPath).Replace("\\", "/");
+                    Directory.CreateDirectory(Path.GetDirectoryName(strAbsFilePathDst));//make sure dir exists
                     FileUtil.CopyFileOrDirectory(strAbsFilePathSrc, strAbsFilePathDst);
                 }
             }
 
-            /// ceate assets
-            MovieProxyPlayableAssetParam trackMovieContainer = new MovieProxyPlayableAssetParam();
-            trackMovieContainer.Pictures = new string[param.files.Length];
-            for (int ii = 0; ii < param.files.Length; ii++)
+            // create assets
+            StreamingImageSequencePlayableAssetParam trackMovieContainer = new StreamingImageSequencePlayableAssetParam();
+            trackMovieContainer.Pictures = new string[param.RelativeFilePaths.Count];
+            for (int ii = 0; ii < param.RelativeFilePaths.Count; ii++)
             {
-                trackMovieContainer.Pictures[ii] = param.files[ii];
+                trackMovieContainer.Pictures[ii] = param.RelativeFilePaths[ii];
             }
 
             ///   if possible, convert folder names to relative path.
@@ -205,10 +187,10 @@ namespace Unity.MovieProxy
 
             if (param.mode == PictureFileImporterParam.Mode.SpriteAnimation)
             {
-                Sprite[] sprites = new Sprite[param.files.Length];
-                for (int ii = 0; ii < param.files.Length; ii++)
+                Sprite[] sprites = new Sprite[param.RelativeFilePaths.Count];
+                for (int ii = 0; ii < param.RelativeFilePaths.Count; ii++)
                 {
-                    string strAssetPath = Path.Combine(param.strDstFolder, param.files[ii]).Replace("\\", "/");
+                    string strAssetPath = Path.Combine(param.strDstFolder, param.RelativeFilePaths[ii]).Replace("\\", "/");
 
                     AssetDatabase.ImportAsset(strAssetPath);
                     TextureImporter importer = AssetImporter.GetAtPath(strAssetPath) as TextureImporter;
@@ -234,11 +216,11 @@ namespace Unity.MovieProxy
 
                 settings.boolValue = true;
                 serializedClip.ApplyModifiedProperties();
-                ObjectReferenceKeyframe[] Keyframes = new ObjectReferenceKeyframe[param.files.Length];
+                ObjectReferenceKeyframe[] Keyframes = new ObjectReferenceKeyframe[param.RelativeFilePaths.Count];
                 EditorCurveBinding curveBinding = new EditorCurveBinding();
 
 
-                for (int ii = 0; ii < param.files.Length; ii++)
+                for (int ii = 0; ii < param.RelativeFilePaths.Count; ii++)
                 {
                     Keyframes[ii] = new ObjectReferenceKeyframe();
                     Keyframes[ii].time = 0.25F * ii;
@@ -256,18 +238,22 @@ namespace Unity.MovieProxy
                 AnimationUtility.SetObjectReferenceCurve(newClip, curveBinding, Keyframes);
                 AssetDatabase.CreateAsset(newClip, Path.Combine(param.strDstFolder, "Animation.anim").Replace("\\", "/"));
 
-                //            var proxyAsset = ScriptableObject.CreateInstance<MovieProxyPlayableAsset>(); //new MovieProxyPlayableAsset(trackMovieContainer);
+                //            var proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>(); //new StreamingImageSequencePlayableAsset(trackMovieContainer);
                 //            proxyAsset.SetParam(trackMovieContainer);
                 //            var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_MovieProxy.playable").Replace("\\", "/"));*/
                 AssetDatabase.Refresh();
             }
             else
             {
-                var proxyAsset = ScriptableObject.CreateInstance<MovieProxyPlayableAsset>(); //new MovieProxyPlayableAsset(trackMovieContainer);
-                proxyAsset.SetParam(trackMovieContainer);
-                var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_MovieProxy.playable").Replace("\\", "/"));
+                //StreamingAsset
+                StreamingImageSequencePlayableAsset proxyAsset = param.TargetAsset;
+                if (null == proxyAsset) {
+                    proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>(); 
+                    var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_MovieProxy.playable").Replace("\\", "/"));
+                    AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
+                }
 
-                AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
+                proxyAsset.SetParam(trackMovieContainer);
                 if (!param.DoNotCopy)
                 {
                     AssetDatabase.Refresh();
@@ -278,26 +264,50 @@ namespace Unity.MovieProxy
 
         }
 
+//---------------------------------------------------------------------------------------------------------------------
+
+        private static int FileNameComparer(string x, string y) {
+            return string.Compare(x, y, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+//---------------------------------------------------------------------------------------------------------------------
+        internal static string EstimateAssetName(string fullFilePath) {
+            string ret = Path.GetFileNameWithoutExtension(fullFilePath.Replace("\\","/"));
+            //From the filename, find the last number sequence that is not followed by a number sequence
+            Regex r = new Regex(@"(\d+)(?!.*\d)", RegexOptions.IgnoreCase);
+            Match m = ASSET_NAME_REGEX.Match(ret);
+            if (m.Success) {
+                ret = ret.Substring(0, m.Index);
+            }
+
+            //Fallback: just get the directory name. For example, if the fileName is 00000.png
+            if (string.IsNullOrEmpty(ret)) {
+                ret = Path.GetFileName(Path.GetDirectoryName(fullFilePath));
+            }
+
+            return ret;
+        }
+
+        private static readonly Regex ASSET_NAME_REGEX = new Regex(@"[^a-zA-Z]*(\d+)(?!.*\d)", RegexOptions.IgnoreCase); 
+
+
     }
+
 
     public class PictureFileImporterParam
     {
         public enum Mode
         {
-            StereamingAssets,
+            StreamingAssets,
             SpriteAnimation,
         }
 
-        public readonly string strExtensionPng = "png";
-        public readonly string strExtentionTga = "tga";
-        public string strExtension;
         public string strAssetName;
-        public Match match;
-        public string[] files;
+        public List<string> RelativeFilePaths;
         public string strDstFolder;
         public string strSrcFolder;
-        public bool IsSelectingFolder;
         public bool DoNotCopy;
         public Mode mode;
+        public StreamingImageSequencePlayableAsset TargetAsset = null;
     }
 }

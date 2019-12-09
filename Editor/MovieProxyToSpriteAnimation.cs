@@ -9,8 +9,9 @@ using UnityEditor.Animations;
 using UnityEngine.Assertions;
 using System.IO;
 using System.Text.RegularExpressions;
+using UnityEngine.StreamingImageSequence;
 
-namespace Unity.MovieProxy
+namespace UnityEditor.StreamingImageSequence
 { 
 
     public class MovieProxyToSpriteAnimation  {
@@ -18,7 +19,7 @@ namespace Unity.MovieProxy
         static List<Object> orgList;
         static TimelineAsset newAsset;
         static PlayableDirector newPlayableDirector; 
-        [MenuItem("Edit/Movie Proxy/Convert MovieProxy to SpriteAnimation", false, 5)]
+        [MenuItem("Edit/Streaming Image Sequence/Convert MovieProxy to SpriteAnimation", false, 5)]
         static private void ConvertToSpriteAnimation()
         {
 
@@ -194,12 +195,12 @@ namespace Unity.MovieProxy
                     {
                         animator = go.AddComponent<Animator>();
                     }
-                    var movieProxyAsset = srcClip.asset as MovieProxyPlayableAsset;
+                    var movieProxyAsset = srcClip.asset as StreamingImageSequencePlayableAsset;
 
                     
                     Sprite[] sprites = new Sprite[movieProxyAsset.Pictures.Length];
 
-                    string strSrcFolder = Path.Combine(UpdateManager.GetProjectFolder(), movieProxyAsset.Folder).Replace("\\", "/");
+                    string strSrcFolder = Path.Combine(UpdateManager.GetProjectFolder(), movieProxyAsset.GetFolder()).Replace("\\", "/");
                     string strDistFolder = GetDistinationFolder(movieProxyAsset.Pictures[0] );
                     for (int ii = 0; ii < movieProxyAsset.Pictures.Length; ii++)
                     {

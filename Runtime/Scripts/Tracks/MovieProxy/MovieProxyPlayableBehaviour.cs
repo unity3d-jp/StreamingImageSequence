@@ -14,7 +14,7 @@ using UnityEngine.Timeline;
 using UnityEditor;
 #endif
 
-namespace Unity.MovieProxy
+namespace UnityEngine.StreamingImageSequence
 {
 
     // A behaviour that is attached to a playable
@@ -23,7 +23,7 @@ namespace Unity.MovieProxy
     {
         static string strPorjectFolder = null;
 
-		internal TimelineClip m_clip;
+		internal TimelineClip m_clip = null;
         public MovieProxyPlayableBehaviour()
         {
             if (strPorjectFolder == null)
@@ -38,30 +38,19 @@ namespace Unity.MovieProxy
 
         private string GetCompleteFilePath(string filePath)
         {
-            var asset = m_clip.asset as MovieProxyPlayableAsset;
+            var asset = m_clip.asset as StreamingImageSequencePlayableAsset;
 
-            string strOverridePath = asset.Folder;
+            string strOverridePath = asset.GetFolder();
 
-            if (strOverridePath != null && strOverridePath != "")
+            if (!string.IsNullOrEmpty(strOverridePath))
             {
-                filePath = Path.Combine(strOverridePath, Path.GetFileName(filePath)).Replace("\\", "/");
+                filePath = Path.Combine(strOverridePath, filePath).Replace("\\", "/");
 
             }
 
             if (Path.IsPathRooted(filePath))
             {
                 filePath = Path.Combine(strPorjectFolder, filePath).Replace("\\", "/");
-            }
-            else
-            {
-                string strStreamingAssets = "Assets/StreamingAssets";
-                if (strOverridePath != null && strOverridePath.StartsWith(strStreamingAssets))
-                {
-                    string rest = strOverridePath.Substring(strStreamingAssets.Length + 1, strOverridePath.Length - strStreamingAssets.Length - 1);
-                    string dir = UpdateManager.GetStreamingAssetPath();
-                    string dir2 = Path.Combine(dir, rest);
-                    filePath = Path.Combine(dir2, Path.GetFileName(filePath)).Replace("\\", "/");
-                }
             }
             return filePath;
         }
