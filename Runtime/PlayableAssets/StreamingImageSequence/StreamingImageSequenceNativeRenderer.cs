@@ -10,7 +10,7 @@ namespace UnityEngine.StreamingImageSequence
 {
 
 //[ExecuteInEditMode]
-public class MovieProxyNativeRenderer : MonoBehaviour {
+public class StreamingImageSequenceNativeRenderer : MonoBehaviour {
 #if DEBUG_THREAD
     int m_timer = 0;
 #endif
@@ -58,7 +58,7 @@ public class MovieProxyNativeRenderer : MonoBehaviour {
         for (;;)
         {
             yield return new WaitForEndOfFrame();
-            GL.IssuePluginEvent(PluginUtil.GetRenderEventFunc(), instanceId);
+            GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), instanceId);
 
         }
     }

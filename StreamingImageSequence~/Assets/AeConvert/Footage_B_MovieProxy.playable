@@ -81,3 +81,5 @@ MonoBehaviour:
   - B_00057.png
   m_loadingIndex: 58
   m_folder: Assets/StreamingAssets/Footage_B
+  m_timelineDefaultAsset: {fileID: 102900000, guid: 8bcebc0ffe2c86e4f82055b17b71d654,
+    type: 3}

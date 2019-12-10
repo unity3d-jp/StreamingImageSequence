@@ -184,7 +184,7 @@ namespace UnityEditor.StreamingImageSequence
                     // Playable Track
                     nextStartY = DrawTrack(nextStartY, m_PlayableTrackLineStyle, track);
                 }
-                else if (track.GetType() == typeof(MovieProxyTrack))
+                else if (track.GetType() == typeof(StreamingImageSequenceTrack))
                 {
                     // MovieProxy Track
                     nextStartY = DrawTrack(nextStartY, m_MovieProxyTrackLineStyle, track);
@@ -324,7 +324,7 @@ namespace UnityEditor.StreamingImageSequence
 
 
 
-            int length = asset.Pictures.Length;
+            int length = asset.Pictures.Count;
             if (m_MovieProxyPlayableAssetToColorArray.ContainsKey(asset))
             {
 
@@ -348,7 +348,7 @@ namespace UnityEditor.StreamingImageSequence
          /*
             var parm = m_MovieProxyPlayableAssetToColorArray[asset];
 
-             PluginUtil.SetOverwrapWindowData(asset.GetInstanceID(), colorArray, colorArray.Length);
+             StreamingImageSequencePlugin.SetOverwrapWindowData(asset.GetInstanceID(), colorArray, colorArray.Length);
              */
             /*
             //        if (parm.m_NeedUpdate)
@@ -457,12 +457,12 @@ namespace UnityEditor.StreamingImageSequence
 
             public override void OnOpen()
             {
-                Util.Log("Popup opened: " + this);
+                LogUtility.LogDebug("Popup opened: " + this);
             }
 
             public override void OnClose()
             {
-                Util.Log("Popup closed: " + this);
+                LogUtility.LogDebug("Popup closed: " + this);
             }
         }
 

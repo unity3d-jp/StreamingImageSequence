@@ -70,7 +70,7 @@ namespace UnityEngine.StreamingImageSequence
 #if UNITY_EDITOR
         static public void ResetPlugin()
         {
-            PluginUtil.ResetPlugin();
+            StreamingImageSequencePlugin.ResetPlugin();
             s_PluginResetTime = EditorApplication.timeSinceStartup;
         }
 #endif
@@ -86,15 +86,15 @@ namespace UnityEngine.StreamingImageSequence
             double diff = EditorApplication.timeSinceStartup - s_PluginResetTime;
             if (diff > 0.016f * 60.0f)
             {
-                PluginUtil.ResetOverwrapWindows();
-                PluginUtil.ResetAllLoadedTexture();
-                PluginUtil.DoneResetPlugin();
+                StreamingImageSequencePlugin.ResetOverwrapWindows();
+                StreamingImageSequencePlugin.ResetAllLoadedTexture();
+                StreamingImageSequencePlugin.DoneResetPlugin();
             }
     }
 #endif  //UNITY_EDITOR
         static public bool IsPluginResetting()
         {
-            return (PluginUtil.IsPluginResetting() != 0);
+            return (StreamingImageSequencePlugin.IsPluginResetting() != 0);
         }
         static public bool IsInitialized()
         {
@@ -305,7 +305,7 @@ namespace UnityEngine.StreamingImageSequence
                 val++;
                 threadTickCounts[index] = val;
 
-                Util.Log("alive " + id);
+                LogUtility.LogDebug("alive " + id);
                 BackGroundTask task = null;
                 
                 if ( s_BackGroundTaskQueue.Count > 0)
@@ -354,7 +354,7 @@ namespace UnityEngine.StreamingImageSequence
             }
             else
             {
-                Util.Log("Unalbe to stop thread by user program!");
+                LogUtility.LogDebug("Unable to stop thread by user program!");
 
             }
             s_bShutdown = false;
@@ -437,7 +437,7 @@ namespace UnityEngine.StreamingImageSequence
             var sequenceWindowArray = Resources.FindObjectsOfTypeAll<EditorWindow>();
             if (sequenceWindowArray == null)
             {
-                PluginUtil.HideAllOverwrapWindows();
+                StreamingImageSequencePlugin.HideAllOverwrapWindows();
                 return null;
             }
             foreach (var w in sequenceWindowArray)
@@ -450,7 +450,7 @@ namespace UnityEngine.StreamingImageSequence
             }
             if (timelineWindow == null)
             {
-                PluginUtil.HideAllOverwrapWindows();
+                StreamingImageSequencePlugin.HideAllOverwrapWindows();
             }
             return timelineWindow;
         }

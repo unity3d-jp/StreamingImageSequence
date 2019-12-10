@@ -19,7 +19,7 @@ namespace UnityEngine.StreamingImageSequence
 
     // A behaviour that is attached to a playable
 
-    public class MovieProxyPlayableMixer : PlayableBehaviour
+    public class StreamingImageSequencePlayableMixer : PlayableBehaviour
     {
 
         internal PlayableDirector m_PlayableDirector;
@@ -41,7 +41,7 @@ namespace UnityEngine.StreamingImageSequence
 
             }
         }
-        public MovieProxyPlayableMixer()
+        public StreamingImageSequencePlayableMixer()
         {
 
 #if UNITY_EDITOR
@@ -108,7 +108,7 @@ namespace UnityEngine.StreamingImageSequence
 
             if (m_BoundGameObject == null)
             {
-                var renderer = playerData as MovieProxyNativeRenderer;
+                var renderer = playerData as StreamingImageSequenceNativeRenderer;
                 if (renderer != null)
                 {
                     m_BoundGameObject = renderer.gameObject;
@@ -164,7 +164,7 @@ namespace UnityEngine.StreamingImageSequence
                 var asset = clip.asset as StreamingImageSequencePlayableAsset;
                 if (null == asset.Pictures)
                     continue;
-                float count = asset.Pictures.Length;
+                float count = asset.Pictures.Count;
                 int index = 0;
                 var clipDuration = clip.duration;
                 var startTime = clip.start;
@@ -240,7 +240,7 @@ namespace UnityEngine.StreamingImageSequence
         private void ProcessInAdvanceLoading(double time, TimelineClip clip, int index)
         {
             var asset = clip.asset as StreamingImageSequencePlayableAsset;
-            int count = asset.Pictures.Length;
+            int count = asset.Pictures.Count;
 
 
             if (m_nextInadvanceLoadingFrameArray[index] < count)
@@ -274,7 +274,7 @@ namespace UnityEngine.StreamingImageSequence
 
         static public void ResetAllTexturePtr()
         {
-            PluginUtil.ResetAllLoadedTexture();
+            StreamingImageSequencePlugin.ResetAllLoadedTexture();
         }
         */
 

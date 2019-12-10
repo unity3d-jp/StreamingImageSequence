@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
-using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
+using System.Collections.Generic;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-namespace UnityEngine.StreamingImageSequence
-{ 
+namespace UnityEngine.StreamingImageSequence {
     [System.Serializable]
     public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
     {
@@ -35,17 +32,19 @@ namespace UnityEngine.StreamingImageSequence
         public StreamingImageSequencePlayableAssetParam.StPicResolution Resolution;
         public StreamingImageSequencePlayableAssetParam.StQuadSize QuadSize;
         public bool m_displayOnClipsOnly;
-        public string[] Pictures;
+        public List<string> Pictures;
         private bool[] LoadRequested;
         public int m_loadingIndex = -1;
-		private int m_sLastIndex = -1;
+		private int m_lastIndex = -1;
+        private bool m_verified;
 
         public string GetFolder() { return m_folder; }
+        public UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
 
         internal void Reset()
         {
             m_loadingIndex = -1;
-            m_sLastIndex = -1;
+            m_lastIndex = -1;
             LoadRequested = null;
         }
 
@@ -57,12 +56,27 @@ namespace UnityEngine.StreamingImageSequence
             }
         }
 
+        public bool Verified
+        {
+            get
+            {
+                if (!m_verified)
+                {
+                    m_verified = !string.IsNullOrEmpty(m_folder) && 
+                                 m_folder.StartsWith("Assets/StreamingAssets") &&
+                                 Directory.Exists(m_folder) && 
+                                 Pictures != null && 
+                                 Pictures.Count > 0;
+                }
+                
+                return m_verified;
+            }
+        }
 
 
         public StreamingImageSequencePlayableAsset()
         {
             m_loadingIndex = -1;
-            Util.Log("StreamingImageSequencePlayableAsset");
         }
          
         public void SetParam(StreamingImageSequencePlayableAssetParam param)
@@ -72,6 +86,11 @@ namespace UnityEngine.StreamingImageSequence
             QuadSize = param.QuadSize;
             Pictures = param.Pictures;
             m_folder = param.Folder;
+            if (m_folder.StartsWith("Assets")) {
+                m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(m_folder);
+            } else {
+                m_timelineDefaultAsset = null;
+            }
             EditorUtility.SetDirty(this);
         }
 
@@ -81,15 +100,15 @@ namespace UnityEngine.StreamingImageSequence
         public override Playable CreatePlayable(PlayableGraph graph, GameObject go) {
 
 
-            var bh = new MovieProxyPlayableBehaviour();
-            return ScriptPlayable<MovieProxyPlayableBehaviour>.Create(graph,bh);
+            var bh = new StreamingImageSequencePlayableBehaviour();
+            return ScriptPlayable<StreamingImageSequencePlayableBehaviour>.Create(graph,bh);
         }
 
         internal void LoadRequest(bool isDirectorIdle) {
             if (null == Pictures)
                 return;
 
-            int numPictures = Pictures.Length;
+            int numPictures = Pictures.Count;
             if (LoadRequested == null && numPictures > 0) {
                 LoadRequested = new bool[numPictures];
             }
@@ -113,9 +132,9 @@ namespace UnityEngine.StreamingImageSequence
             }
             StReadResult tResult = new StReadResult();
             int loadRequestMax = m_loadingIndex + step;
-            if (loadRequestMax > Pictures.Length)
+            if (loadRequestMax > Pictures.Count)
             {
-                loadRequestMax = Pictures.Length;
+                loadRequestMax = Pictures.Count;
             }
             for (int ii = m_loadingIndex; ii <= loadRequestMax - 1; ii++)
             {
@@ -137,7 +156,7 @@ namespace UnityEngine.StreamingImageSequence
             string filename = Pictures[index];
             filename = GetCompleteFilePath(filename);
             StReadResult tResult = new StReadResult();
-            PluginUtil.GetNativTextureInfo(filename, out tResult);
+            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
             return (tResult.readStatus != 0);
 
         }
@@ -147,10 +166,10 @@ namespace UnityEngine.StreamingImageSequence
             filename = GetCompleteFilePath(filename);
             if (LoadRequested == null)
             {
-                LoadRequested = new bool[Pictures.Length];
+                LoadRequested = new bool[Pictures.Count];
             }
 
-            PluginUtil.GetNativTextureInfo(filename, out tResult);
+            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
             //Debug.Log("tResult.readStatus " + tResult.readStatus + "Loading " + filename);
             if (tResult.readStatus == 0)
             {
@@ -160,7 +179,7 @@ namespace UnityEngine.StreamingImageSequence
             {
                 while (tResult.readStatus != 2)
                 {
-                    PluginUtil.GetNativTextureInfo(filename, out tResult);
+                    StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
                     
                 }
             }
@@ -174,6 +193,11 @@ namespace UnityEngine.StreamingImageSequence
         }
         internal bool SetTexture(GameObject go, int index, bool isBlocking, bool isAlreadySet)
         {
+            if (null == Pictures || index < 0 || index >= Pictures.Count || string.IsNullOrEmpty(Pictures[index])) {
+                return false;
+            }
+
+
             var sID = go.GetInstanceID();
             StReadResult tResult = new StReadResult();
             
@@ -231,21 +255,21 @@ namespace UnityEngine.StreamingImageSequence
 #endif
                 }
 
-                PluginUtil.SetNativeTexturePtr(ptr, (uint)tResult.width, (uint)tResult.height, sID);
+                StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)tResult.width, (uint)tResult.height, sID);
                 isAlreadySet = true;
  
 
             }
 			bool textureIsSet = false;
-			if (tResult.readStatus == 2 && m_sLastIndex != index) {
-				PluginUtil.SetLoadedTexture (filename, sID);
+			if (tResult.readStatus == 2 && m_lastIndex != index) {
+				StreamingImageSequencePlugin.SetLoadedTexture (filename, sID);
 				textureIsSet = true;
 			}
 			if (textureIsSet && !UpdateManager.useCoroutine)
             {
-                GL.IssuePluginEvent(PluginUtil.GetRenderEventFunc(), sID);
+                GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), sID);
             }
-			m_sLastIndex = index;
+			m_lastIndex = index;
             return isAlreadySet;
         }
 
@@ -268,6 +292,10 @@ namespace UnityEngine.StreamingImageSequence
 
 //---------------------------------------------------------------------------------------------------------------------
         [SerializeField] private string m_folder;
+
+#if UNITY_EDITOR
+        [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Enabling Folder D&D to Timeline
+#endif
 
     }
 

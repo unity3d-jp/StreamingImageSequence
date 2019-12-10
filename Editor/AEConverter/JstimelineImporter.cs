@@ -90,10 +90,10 @@ public class JstimelineImporter : ScriptedImporter
 
 
 
-            if (trackMovieContainer.Pictures.Length != 0)
+            if (trackMovieContainer.Pictures.Count != 0)
             {
                 // remove '~' if necessary
-                for (int xx = 0; xx < trackMovieContainer.Pictures.Length; xx++)
+                for (int xx = 0; xx < trackMovieContainer.Pictures.Count; xx++)
                 {
                     string filename = trackMovieContainer.Pictures[xx];
                     if (!filename.StartsWith("~"))
@@ -107,7 +107,7 @@ public class JstimelineImporter : ScriptedImporter
 
                 var strDir = trackMovieContainer.Pictures[0];
                 strDir = Path.GetDirectoryName(strDir);
-                for (int xx = 0; xx < trackMovieContainer.Pictures.Length; xx++)
+                for (int xx = 0; xx < trackMovieContainer.Pictures.Count; xx++)
                 {
                     var strFileName = Path.GetFileName(trackMovieContainer.Pictures[xx]);
                     trackMovieContainer.Pictures[xx] = strFileName;
@@ -128,7 +128,7 @@ public class JstimelineImporter : ScriptedImporter
                     Directory.CreateDirectory(strDstFolder);
                 }
 
-                for (int ii = 0; ii < trackMovieContainer.Pictures.Length; ii++)
+                for (int ii = 0; ii < trackMovieContainer.Pictures.Count; ii++)
                 {
                     string strAbsFilePathDst = Path.Combine(strDstFolder, trackMovieContainer.Pictures[ii]).Replace("\\", "/");
                     if (File.Exists(strAbsFilePathDst))
@@ -152,7 +152,7 @@ public class JstimelineImporter : ScriptedImporter
             var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(strNewFolderPath, strFootageName + "_MovieProxy.playable"));
             AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
 
-            var movieTrack = asset.CreateTrack<MovieProxyTrack>(null, strFootageName);
+            var movieTrack = asset.CreateTrack<StreamingImageSequenceTrack>(null, strFootageName);
             var clip = movieTrack.CreateDefaultClip();
             clip.asset = proxyAsset;
             clip.start = track.Start;

@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using System;
 using System.Reflection;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
-using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence
@@ -16,8 +13,7 @@ namespace UnityEditor.StreamingImageSequence
 
     public class EditorPeriodicJob : PeriodicJob
     {
- 
-        static Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam> m_MovieProxyPlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
+        private static Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam> m_streamingImageSequencePlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
 
         static EditorPeriodicJob()
         {
@@ -31,7 +27,7 @@ namespace UnityEditor.StreamingImageSequence
 
         private  void Reinitialize()
         {
-            m_MovieProxyPlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
+            m_streamingImageSequencePlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
         }
         public override void Initialize()
         {
@@ -40,7 +36,7 @@ namespace UnityEditor.StreamingImageSequence
 
         public override void Reset()
         {
-             m_MovieProxyPlayableAssetToColorArray = null;
+             m_streamingImageSequencePlayableAssetToColorArray = null;
         }
 
         public override void Cleanup()
@@ -54,18 +50,18 @@ namespace UnityEditor.StreamingImageSequence
 
                 return;
             }
-            if ( m_MovieProxyPlayableAssetToColorArray == null )
+            if ( m_streamingImageSequencePlayableAssetToColorArray == null )
             {
                 Reinitialize();
             }
 
-            Util.Log("EditorPeriodicJob::Executing");
+            LogUtility.LogDebug("EditorPeriodicJob::Executing");
             UpdateManager.GetStreamingAssetPath(); // must be executed in main thread.
 
             PlayableDirector  currentDirector = UpdateManager.GetCurrentDirector();
             if (currentDirector == null)
             {
-                PluginUtil.HideAllOverwrapWindows();
+                StreamingImageSequencePlugin.HideAllOverwrapWindows();
                 return;
             }
 
@@ -89,69 +85,54 @@ namespace UnityEditor.StreamingImageSequence
                     // Draw TrackGroupLeftSide
                     ProcessTrackGroup(track as GroupTrack);
                 }
-                 else if (track.GetType() == typeof(MovieProxyTrack))
+                else if (track.GetType() == typeof(StreamingImageSequenceTrack))
                 {
-                    // MovieProxy Track
-                     ProcessMovieProxyTrack( track as MovieProxyTrack);
+                    // StreamingImageSequence Track
+                     ProcessStreamingImageSequenceTrack( track as StreamingImageSequenceTrack);
                 }
             }
         }
 
-        private static void ProcessMovieProxyTrack(MovieProxyTrack  track)
+        private static void ProcessStreamingImageSequenceTrack(StreamingImageSequenceTrack  track)
         {
             foreach (var clip in track.GetClips())
             {
-
-                // You might want to use "as" rather than compare type.
-                // "as" sometimes fail on first importing time for project.
-                if (clip.asset.GetType() != typeof(StreamingImageSequencePlayableAsset))
+                var asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (!asset.Verified)
                 {
-                    Debug.LogError("StreamingImageSequencePlayableAsset is broken:" + clip.asset.name);
                     continue;
-
                 }
-
-                /*
-                if (clip.asset == null)
-                {
-                    Debug.LogError("StreamingImageSequencePlayableAsset on " + clip.displayName + " is broken.");
-                    continue;
-                }*/
-
-                StreamingImageSequencePlayableAsset asset = (StreamingImageSequencePlayableAsset)clip.asset;
-                if (null == asset.Pictures)
-                    continue;
-
-                int length = asset.Pictures.Length;
-                if (m_MovieProxyPlayableAssetToColorArray.ContainsKey(asset))
+                
+                var length = asset.Pictures.Count;
+                if (m_streamingImageSequencePlayableAssetToColorArray.ContainsKey(asset))
                 {
 
 
                 }
                 else
                 {
-                    m_MovieProxyPlayableAssetToColorArray.Add(asset, new BGJobCacheParam(asset));
+                    m_streamingImageSequencePlayableAssetToColorArray.Add(asset, new BGJobCacheParam(asset));
                 }
-                var param = m_MovieProxyPlayableAssetToColorArray[asset];
-                int allAreLoaded = PluginUtil.GetAllAreLoaded(asset.GetInstanceID());
+                var param = m_streamingImageSequencePlayableAssetToColorArray[asset];
+                int allAreLoaded = StreamingImageSequencePlugin.GetAllAreLoaded(asset.GetInstanceID());
 
                 if (allAreLoaded == 0)
                 {
-                    new BGJobCacheChecker(m_MovieProxyPlayableAssetToColorArray[asset]);
-                    UInt32[] colorArray = m_MovieProxyPlayableAssetToColorArray[asset].m_collorArray;
+                    new BGJobCacheChecker(m_streamingImageSequencePlayableAssetToColorArray[asset]);
+                    UInt32[] colorArray = m_streamingImageSequencePlayableAssetToColorArray[asset].m_collorArray;
                     if (colorArray == null)
                     {
                         return;
                     }
-                    PluginUtil.SetOverwrapWindowData(asset.GetInstanceID(), colorArray, colorArray.Length);
+                    StreamingImageSequencePlugin.SetOverwrapWindowData(asset.GetInstanceID(), colorArray, colorArray.Length);
                     if (param.m_allLoaded)
                     {
-                        PluginUtil.SetAllAreLoaded(asset.GetInstanceID(), 1);
+                        StreamingImageSequencePlugin.SetAllAreLoaded(asset.GetInstanceID(), 1);
                     }
                 }
                 else
                 {
-                    PluginUtil.HideOverwrapWindow(asset.GetInstanceID());
+                    StreamingImageSequencePlugin.HideOverwrapWindow(asset.GetInstanceID());
                 }
 
 
@@ -239,25 +220,20 @@ namespace UnityEditor.StreamingImageSequence
                 {
                     width -= startX + width - (windowPos.x + windowPos.width);
                 }
-                int isLoaded = PluginUtil.GetAllAreLoaded(clip.asset.GetInstanceID());
+                int isLoaded = StreamingImageSequencePlugin.GetAllAreLoaded(clip.asset.GetInstanceID());
 
                 if ((rect.y - treeviewPos.y > 0.0f - offsetY && rect.y - treeviewPos.y < trackbounds.height - trackbounds.y && width > 0.0f - offsetY)
                       && isLoaded == 0)
                 { 
-                       PluginUtil.ShowOverwrapWindow(clip.asset.GetInstanceID(), (int)startX, (int)startY, (int)width, 1, forceChange); // (int)rect.height);
+                       StreamingImageSequencePlugin.ShowOverwrapWindow(clip.asset.GetInstanceID(), (int)startX, (int)startY, (int)width, 1, forceChange); // (int)rect.height);
                 }
                 else
                 {
-                  PluginUtil.HideOverwrapWindow(clip.asset.GetInstanceID());
+                  StreamingImageSequencePlugin.HideOverwrapWindow(clip.asset.GetInstanceID());
                 }
             }
 #endif
         }
-
-
-
-
     }
-
 #endif
 }

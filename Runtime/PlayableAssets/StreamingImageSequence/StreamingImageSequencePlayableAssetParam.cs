@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace UnityEngine.StreamingImageSequence {
     [System.Serializable]
     public class StreamingImageSequencePlayableAssetParam
@@ -19,7 +20,7 @@ namespace UnityEngine.StreamingImageSequence {
         public StPicResolution Resolution;
         public StQuadSize QuadSize;
         public string Folder;
-        public string[] Pictures;
+        public List<string> Pictures;
     }
 
 } //end namespace

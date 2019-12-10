@@ -11,11 +11,11 @@ namespace UnityEngine.StreamingImageSequence
     public class LoaderPeriodicJob : PeriodicJob
     {
         PlayableDirector m_director;
-        MovieProxyTrack m_track;
+        StreamingImageSequenceTrack m_track;
 
  
 
-        public LoaderPeriodicJob(MovieProxyTrack track) : base(UpdateManager.JobOrder.Normal)
+        public LoaderPeriodicJob(StreamingImageSequenceTrack track) : base(UpdateManager.JobOrder.Normal)
         {
             m_track = track;
         }

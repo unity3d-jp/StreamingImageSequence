@@ -19,12 +19,12 @@ namespace UnityEngine.StreamingImageSequence
 
     // A behaviour that is attached to a playable
 
-    public class MovieProxyPlayableBehaviour : PlayableBehaviour
+    public class StreamingImageSequencePlayableBehaviour : PlayableBehaviour
     {
         static string strPorjectFolder = null;
 
 		internal TimelineClip m_clip = null;
-        public MovieProxyPlayableBehaviour()
+        public StreamingImageSequencePlayableBehaviour()
         {
             if (strPorjectFolder == null)
             {

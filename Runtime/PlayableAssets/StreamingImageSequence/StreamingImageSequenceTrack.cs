@@ -6,14 +6,14 @@ using UnityEngine.Timeline;
 namespace UnityEngine.StreamingImageSequence
 { 
     [TrackClipType(typeof(StreamingImageSequencePlayableAsset))]
-    [TrackBindingType(typeof(MovieProxyNativeRenderer))]
+    [TrackBindingType(typeof(StreamingImageSequenceNativeRenderer))]
     [TrackColor(0.776f, 0.263f, 0.09f)]
-    public class MovieProxyTrack : TrackAsset
+    public class StreamingImageSequenceTrack : TrackAsset
     {
         LoaderPeriodicJob m_LoaderPeriodicJob;
-        public MovieProxyTrack()
+        public StreamingImageSequenceTrack()
         {
-            Util.Log("MovieProxyTrack creating ObserverPeriodicJob");
+            LogUtility.LogDebug("StreamingImageSequenceTrack creating ObserverPeriodicJob");
             m_LoaderPeriodicJob = new LoaderPeriodicJob(this);
             m_LoaderPeriodicJob.AddToUpdateManger();
             // above job is removed when finished to load by calling RemoveIfFinished();
@@ -21,8 +21,8 @@ namespace UnityEngine.StreamingImageSequence
 #if false
         protected override Playable CreatePlayable(PlayableGraph graph, GameObject go, TimelineClip clip)
         {
-            var playable = (ScriptPlayable<MovieProxyPlayableBehaviour>)base.CreatePlayable(graph, go, clip);
-            var myBehaviour = playable.GetBehaviour() as MovieProxyPlayableBehaviour;
+            var playable = (ScriptPlayable<StreamingImageSequencePlayableBehaviour>)base.CreatePlayable(graph, go, clip);
+            var myBehaviour = playable.GetBehaviour() as StreamingImageSequencePlayableBehaviour;
             myBehaviour.m_clip = clip;
             return playable;
         }
@@ -30,14 +30,14 @@ namespace UnityEngine.StreamingImageSequence
 
         public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
         {
-            var mixer = ScriptPlayable<MovieProxyPlayableMixer>.Create(graph, inputCount);
+            var mixer = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);
             
             var director = go.GetComponent<PlayableDirector>();
             if (director != null)
             {
                 var boundGo = director.GetGenericBinding(this);
-                var outputGo = boundGo as MovieProxyNativeRenderer;
-                MovieProxyPlayableMixer bh = mixer.GetBehaviour();
+                var outputGo = boundGo as StreamingImageSequenceNativeRenderer;
+                StreamingImageSequencePlayableMixer bh = mixer.GetBehaviour();
                 bh.m_track = this;
                 bh.m_clips = GetClips();
                 if (outputGo != null)

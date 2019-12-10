@@ -24,16 +24,16 @@ namespace UnityEngine.StreamingImageSequence
         {
 
             StReadResult tResult;
-            PluginUtil.GetNativTextureInfo(m_strFileName, out tResult);
+            StreamingImageSequencePlugin.GetNativTextureInfo(m_strFileName, out tResult);
             if (tResult.readStatus == 0)
             {
                 //Debug.Log("Loading: " + m_strFileName);
-                PluginUtil.LoadAndAlloc(m_strFileName);
+                StreamingImageSequencePlugin.LoadAndAlloc(m_strFileName);
             }
 #if UNITY_EDITOR
             if (tResult.readStatus == 1)
             {
-                Util.Log("Already requestd:" + m_strFileName);
+                LogUtility.LogDebug("Already requested:" + m_strFileName);
             }
 #endif
 
