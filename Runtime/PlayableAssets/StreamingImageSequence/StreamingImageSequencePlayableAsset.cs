@@ -32,11 +32,20 @@ namespace UnityEngine.StreamingImageSequence {
         public StreamingImageSequencePlayableAssetParam.StPicResolution Resolution;
         public StreamingImageSequencePlayableAssetParam.StQuadSize QuadSize;
         public bool m_displayOnClipsOnly;
-        public List<string> Pictures;
         private bool[] LoadRequested;
         public int m_loadingIndex = -1;
 		private int m_lastIndex = -1;
         private bool m_verified;
+
+        public IList<string> GetImagePaths() { return m_imagePaths; }
+        public System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
+
+        public string GetImagePath(int index) {
+            if (null == m_imagePaths || index >= m_imagePaths.Count)
+                return null;
+
+            return m_imagePaths[index];
+        }
 
         public string GetFolder() { return m_folder; }
         public UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
@@ -65,8 +74,8 @@ namespace UnityEngine.StreamingImageSequence {
                     m_verified = !string.IsNullOrEmpty(m_folder) && 
                                  m_folder.StartsWith("Assets/StreamingAssets") &&
                                  Directory.Exists(m_folder) && 
-                                 Pictures != null && 
-                                 Pictures.Count > 0;
+                                 m_imagePaths != null && 
+                                 m_imagePaths.Count > 0;
                 }
                 
                 return m_verified;
@@ -84,7 +93,7 @@ namespace UnityEngine.StreamingImageSequence {
             Version = param.Version;
             Resolution = param.Resolution;
             QuadSize = param.QuadSize;
-            Pictures = param.Pictures;
+            m_imagePaths = param.Pictures;
             m_folder = param.Folder;
             if (m_folder.StartsWith("Assets")) {
                 m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(m_folder);
@@ -105,10 +114,10 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
         internal void LoadRequest(bool isDirectorIdle) {
-            if (null == Pictures)
+            if (null == m_imagePaths)
                 return;
 
-            int numPictures = Pictures.Count;
+            int numPictures = m_imagePaths.Count;
             if (LoadRequested == null && numPictures > 0) {
                 LoadRequested = new bool[numPictures];
             }
@@ -132,9 +141,9 @@ namespace UnityEngine.StreamingImageSequence {
             }
             StReadResult tResult = new StReadResult();
             int loadRequestMax = m_loadingIndex + step;
-            if (loadRequestMax > Pictures.Count)
+            if (loadRequestMax > m_imagePaths.Count)
             {
-                loadRequestMax = Pictures.Count;
+                loadRequestMax = m_imagePaths.Count;
             }
             for (int ii = m_loadingIndex; ii <= loadRequestMax - 1; ii++)
             {
@@ -153,7 +162,7 @@ namespace UnityEngine.StreamingImageSequence {
 
         internal bool IsLoadRequested(int index)
         {
-            string filename = Pictures[index];
+            string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
             StReadResult tResult = new StReadResult();
             StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
@@ -162,11 +171,11 @@ namespace UnityEngine.StreamingImageSequence {
         }
         internal string LoadRequest(int index, bool isBlocking, out StReadResult tResult)
         {
-            string filename = Pictures[index];
+            string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
             if (LoadRequested == null)
             {
-                LoadRequested = new bool[Pictures.Count];
+                LoadRequested = new bool[m_imagePaths.Count];
             }
 
             StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
@@ -193,7 +202,7 @@ namespace UnityEngine.StreamingImageSequence {
         }
         internal bool SetTexture(GameObject go, int index, bool isBlocking, bool isAlreadySet)
         {
-            if (null == Pictures || index < 0 || index >= Pictures.Count || string.IsNullOrEmpty(Pictures[index])) {
+            if (null == m_imagePaths || index < 0 || index >= m_imagePaths.Count || string.IsNullOrEmpty(m_imagePaths[index])) {
                 return false;
             }
 
@@ -292,6 +301,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 //---------------------------------------------------------------------------------------------------------------------
         [SerializeField] private string m_folder;
+        [SerializeField] List<string> m_imagePaths;
 
 #if UNITY_EDITOR
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Enabling Folder D&D to Timeline

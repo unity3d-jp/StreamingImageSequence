@@ -39,7 +39,7 @@ namespace UnityEngine.StreamingImageSequence {
                 }
             }  else if (!Directory.Exists(folder)) {
                 clipOptions.errorText = kFolderMissingError;
-            } else if (asset.Pictures == null) {
+            } else if (asset.GetImagePaths() == null) {
                 clipOptions.errorText = kNoPicturesAssignedError;
             }
             clipOptions.tooltip = folder;
@@ -74,7 +74,7 @@ namespace UnityEngine.StreamingImageSequence {
             PictureFileImporter.ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, asset);
 
             asset.m_displayOnClipsOnly = true;
-            clip.duration = asset.Pictures.Count * 0.125; // 8fps (standard limited animation)
+            clip.duration = asset.GetImagePaths().Count * 0.125; // 8fps (standard limited animation)
             clip.displayName = Path.GetFileName(asset.GetFolder());
             return true;
         }

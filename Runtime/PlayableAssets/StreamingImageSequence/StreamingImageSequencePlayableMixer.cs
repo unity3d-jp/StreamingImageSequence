@@ -104,10 +104,11 @@ namespace UnityEngine.StreamingImageSequence
                 if (null == asset)
                     continue;
 
-                if (null == asset.Pictures)
+                IList<string> imagePaths = asset.GetImagePaths();
+                if (null == imagePaths)
                     continue;
 
-                int count = asset.Pictures.Count;
+                int count = imagePaths.Count;
                 double clipDuration = clip.duration;
                 double startTime = clip.start;
                 double endTime = clip.end;
@@ -155,8 +156,10 @@ namespace UnityEngine.StreamingImageSequence
         private void ProcessInAdvanceLoading(double time, TimelineClip clip, int index)
         {
             var asset = clip.asset as StreamingImageSequencePlayableAsset;
-            int count = asset.Pictures.Count;
+            if (null == asset)
+                return;
 
+            int count = asset.GetImagePaths().Count;
 
             if (m_nextInadvanceLoadingFrameArray[index] < count)
             {

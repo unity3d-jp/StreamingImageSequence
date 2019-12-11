@@ -30,7 +30,7 @@ namespace UnityEditor.StreamingImageSequence
             int loaded = 0;
             for ( int ii = 0; ii < m_param.m_collorArray.Length; ii++ )
             {
-                string fileName = m_param.m_asset.Pictures[ii];
+                string fileName = m_param.m_asset.GetImagePath(ii);
                 //m_collorArray[ii] = notYet;
                 if ( StreamingImageSequencePlugin.GetNativTextureInfo(m_param.m_asset.GetCompleteFilePath(fileName), out tResult) != IntPtr.Zero)
                 {
@@ -77,18 +77,20 @@ namespace UnityEditor.StreamingImageSequence
         public BGJobCacheParam(StreamingImageSequencePlayableAsset asset)
         {
            m_asset = asset;
-            m_collorArray = new UInt32[m_asset.Pictures.Count];
+           int imageCount = m_asset.GetImagePaths().Count;
+           m_collorArray = new UInt32[imageCount];
 
-            m_tex2D = new Texture2D(m_asset.Pictures.Count, 1);
-            m_allLoaded = false;
+           m_tex2D = new Texture2D(imageCount, 1);
+           m_allLoaded = false;
  //           m_style = new GUIStyle(GUI.skin.box); 
         }
 
         public void Reinitialize()
         {
-            m_collorArray = new UInt32[m_asset.Pictures.Count];
+            int imageCount = m_asset.GetImagePaths().Count;
+            m_collorArray = new UInt32[imageCount];
 
-            m_tex2D = new Texture2D(m_asset.Pictures.Count, 1);
+            m_tex2D = new Texture2D(imageCount, 1);
             m_allLoaded = false;
         }
     }

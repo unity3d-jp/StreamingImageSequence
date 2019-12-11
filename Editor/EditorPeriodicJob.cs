@@ -98,12 +98,15 @@ namespace UnityEditor.StreamingImageSequence
             foreach (var clip in track.GetClips())
             {
                 var asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (null == asset)
+                    continue;
+
                 if (!asset.Verified)
                 {
                     continue;
                 }
                 
-                var length = asset.Pictures.Count;
+                var length = asset.GetImagePaths().Count;
                 if (m_streamingImageSequencePlayableAssetToColorArray.ContainsKey(asset))
                 {
 
