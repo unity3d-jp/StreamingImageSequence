@@ -65,22 +65,10 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 
-
-        internal void InitTexture(TimelineClip clip)
-        {
-            if (!m_IsTexSet)
-            {
-                Assert.IsTrue(clip != null);
-                var asset = clip.asset as StreamingImageSequencePlayableAsset;
-                m_IsTexSet = asset.SetTexture(m_boundGameObject, 0, false, m_IsTexSet);
-            }
-        }
-
         void Reset()
         {
             m_IsTexSet = false;
             m_loadStartOffsetTime = -1.0;
-  
         }
 
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
@@ -106,104 +94,62 @@ namespace UnityEngine.StreamingImageSequence
             }
 
 
-            // it is working as mixer.
-            var time = m_PlayableDirector.time;
+            double directorTime = m_PlayableDirector.time;
+            TimelineClip activeClip = null;
 
-			// find which index is the first.
-			float startS = 999999999.0f;
-			int startIndex = -1;
-            var enumulator = m_clips.GetEnumerator();
-            enumulator.MoveNext();
-            for (int ii = 0; ii < inputCount; ii++, enumulator.MoveNext())
-            {
+            int i = 0;
+            foreach (TimelineClip clip in m_clips) {
 
-                var clip = enumulator.Current;
+                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (null == asset)
+                    continue;
 
-                float startTime = (float)clip.start;
-				if (startTime < startS) 
-				{
-					startS = startTime;
-					startIndex = ii;
-				}
-			}
-
-            enumulator = m_clips.GetEnumerator();
-            enumulator.MoveNext();
-            for (int ii = 0; ii < inputCount; ii++, enumulator.MoveNext())
-            {
-
-                var clip = enumulator.Current;
-                var asset = clip.asset as StreamingImageSequencePlayableAsset;
                 if (null == asset.Pictures)
                     continue;
-                //Debug.Log(binding + " " + asset.name);
 
-                float count = asset.Pictures.Count;
-                int index = 0;
-                var clipDuration = clip.duration;
-                var startTime = clip.start;
-                var endTime = clip.end;
+                int count = asset.Pictures.Count;
+                double clipDuration = clip.duration;
+                double startTime = clip.start;
+                double endTime = clip.end;
 
-                if ( m_loadStartOffsetTime < 0.0)
-                {
+                if ( m_loadStartOffsetTime < 0.0) {
                     m_loadStartOffsetTime = 1.0f + count * 0.1f;
 
                 }
 
-				if ( time >= startTime - m_loadStartOffsetTime && time < endTime)
-                {
-					if (ii == startIndex )
-                    {
-                        InitTexture(clip); // try to ceate texture instance.
-                    }
-
-                     ProcessInAdvanceLoading(time, clip, ii );
+                //Load clips that might still be inactive, in advance
+				if ( directorTime>= startTime - m_loadStartOffsetTime && directorTime < endTime) {
+                    ProcessInAdvanceLoading(directorTime, clip, i );
                 }
 
-
-
-
-
-
-                if (time >= startTime && time < endTime)
-                {
-                    if (asset.m_displayOnClipsOnly)
-                    {
-                        m_boundGameObject.SetActive(true);
-                    }
-                    float rate = (float)(time - startTime);
+                if (directorTime >= startTime && directorTime < endTime) {
+                    activeClip = clip;
+                    float rate = (float)(directorTime - startTime);
                     float now = (float)count * (float)rate / (float)clipDuration;
-                    index = (int)now;
-                    if (index < 0)
-                    {
+                    int index = (int)now;
+                    if (index < 0) {
                         index = 0;
                     }
-                    if (index >= count)
-                    {
+                    if (index >= count) {
                         index = (int)count - 1;
                     }
 
-
                     m_IsTexSet = asset.SetTexture(m_boundGameObject, index, false, m_IsTexSet);
 #if UNITY_EDITOR
-                    if (m_IsTexSet)
-                    {
-                        if (!EditorApplication.isPlaying)
-                        {
+                    if (m_IsTexSet) {
+                        if (!EditorApplication.isPlaying) {
                             m_gameView.Repaint();
                         }
                     }
 #endif
 
-                }
-                else
-                {
-                    if (asset.m_displayOnClipsOnly)
-                    {
-                        m_boundGameObject.SetActive(false);
-                    }
-                }
+                } 
+
+                ++i;
             }
+
+            //Hide/Show
+            m_boundGameObject.SetActive(null != activeClip);
         }
 
         private void ProcessInAdvanceLoading(double time, TimelineClip clip, int index)
