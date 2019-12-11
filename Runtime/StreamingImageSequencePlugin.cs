@@ -18,7 +18,7 @@ namespace UnityEngine.StreamingImageSequence
         public int readStatus;
     };
 
-    public enum EnLoadStatus
+    public enum LoadStatus
     {
         Uninitialized,
         Requested,

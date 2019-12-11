@@ -25,22 +25,11 @@ namespace UnityEngine.StreamingImageSequence
         internal PlayableDirector m_PlayableDirector;
         internal IEnumerable<TimelineClip> m_clips;
         internal TrackAsset m_track;
-        private bool m_IsTexSet = false;
         private double m_loadStartOffsetTime = -1.0;
 #if UNITY_EDITOR
         EditorWindow m_gameView;
 #endif
-        private GameObject m_boundGameObject;
         private int[] m_nextInadvanceLoadingFrameArray;
-        public GameObject boundGameObject
-        {
-            get { return m_boundGameObject; }
-            set
-            {
-                m_boundGameObject = value;
-
-            }
-        }
         public StreamingImageSequencePlayableMixer()
         {
 
@@ -52,7 +41,6 @@ namespace UnityEngine.StreamingImageSequence
 #endif
             m_loadStartOffsetTime = -1.0;
         }
-
 
         public override void OnPlayableCreate(Playable playable)
         {
@@ -67,15 +55,17 @@ namespace UnityEngine.StreamingImageSequence
 
         void Reset()
         {
-            m_IsTexSet = false;
             m_loadStartOffsetTime = -1.0;
+            m_boundGameObject   = null;
+            m_spriteRenderer    = null;
+            m_image             = null;
+            m_meshRenderer      = null;
         }
 
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
             int inputCount = playable.GetInputCount<Playable>();
-            if (inputCount == 0)
-            {
+            if (inputCount == 0) {
                 return; // it doesn't work as mixer.
             }
 
@@ -88,7 +78,7 @@ namespace UnityEngine.StreamingImageSequence
                 }
             }
 
-            if (!TryBindGameObject(playerData)) {
+            if (!TryBindGameObjectFromFrame(playerData)) {
                 Debug.LogError("Can't bind GameObject for track: " + m_track.name);
                 return;
             }
@@ -135,14 +125,16 @@ namespace UnityEngine.StreamingImageSequence
                         index = (int)count - 1;
                     }
 
-                    m_IsTexSet = asset.SetTexture(m_boundGameObject, index, false, m_IsTexSet);
+                    bool texReady = asset.RequestLoadImage(index, false);
+                    if (texReady) {
+                        UpdateRendererTexture(asset);
+
 #if UNITY_EDITOR
-                    if (m_IsTexSet) {
                         if (!EditorApplication.isPlaying) {
                             m_gameView.Repaint();
                         }
-                    }
 #endif
+                    }
 
                 } 
 
@@ -185,10 +177,23 @@ namespace UnityEngine.StreamingImageSequence
 
         }
 
-        public bool TryBindGameObject(object playerData) {
+//---------------------------------------------------------------------------------------------------------------------
+        public bool BindGameObject(GameObject go) {
+            m_boundGameObject = go;
+            bool ret = InitRenderers();
+            if (!ret) {
+                Reset();
+                return false;
+            }
+
+            return true;
+        }
+
+
+//---------------------------------------------------------------------------------------------------------------------
+        private bool TryBindGameObjectFromFrame(object playerData) {
             if (null != m_boundGameObject)
                 return true;
-
 
             //There might be two sources: playerData, and the Object bound to the track
             StreamingImageSequenceNativeRenderer renderer = playerData as StreamingImageSequenceNativeRenderer;
@@ -204,17 +209,46 @@ namespace UnityEngine.StreamingImageSequence
                 return false;
             }
 
-            if (m_boundGameObject.GetComponent<MeshRenderer>()  == null
-                && (m_boundGameObject.GetComponent<Image>()) == null 
-                && (m_boundGameObject.GetComponent<SpriteRenderer>()) == null) 
-            {
-                m_boundGameObject = null;
+            bool ret = InitRenderers();
+            if (!ret) {
+                Reset();
                 return false;
             }
 
             return true;
         }
 
+//---------------------------------------------------------------------------------------------------------------------
+        private bool InitRenderers() {
+            m_spriteRenderer= m_boundGameObject.GetComponent<SpriteRenderer>();
+            m_meshRenderer  = m_boundGameObject.GetComponent<MeshRenderer>();
+            m_image         = m_boundGameObject.GetComponent<Image>();
+            return (null!= m_meshRenderer || null!= m_image || null!=m_spriteRenderer);
+        }
+
+//---------------------------------------------------------------------------------------------------------------------
+
+        void UpdateRendererTexture(StreamingImageSequencePlayableAsset asset) {
+            Texture2D tex = asset.GetTexture();
+            GameObject go = m_boundGameObject;
+            if (null!=m_spriteRenderer ) {
+                Sprite sprite = m_spriteRenderer.sprite;
+                if (sprite.texture != tex) {
+                    m_spriteRenderer.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 2, SpriteMeshType.FullRect);
+                }
+            } else if (null!=m_meshRenderer) {
+                Material mat = m_meshRenderer.sharedMaterial;
+                mat.mainTexture = tex; 
+            } else if (null!= m_image) {
+                Sprite sprite = m_image.sprite;
+                if (sprite.texture != tex) {
+                    m_image.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 1, SpriteMeshType.FullRect);
+                }
+            }
+
+        }
+
+//---------------------------------------------------------------------------------------------------------------------
         
         /*
         static public void ResetAllTexturePtr()
@@ -222,6 +256,11 @@ namespace UnityEngine.StreamingImageSequence
             StreamingImageSequencePlugin.ResetAllLoadedTexture();
         }
         */
+
+        private GameObject      m_boundGameObject;
+        private SpriteRenderer  m_spriteRenderer = null;
+        private MeshRenderer    m_meshRenderer = null;
+        private Image           m_image = null;
 
     }
 

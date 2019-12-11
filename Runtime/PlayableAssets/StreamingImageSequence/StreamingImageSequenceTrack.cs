@@ -42,13 +42,26 @@ namespace UnityEngine.StreamingImageSequence
                 bh.m_clips = GetClips();
                 if (outputGo != null)
                 {
-                    bh.boundGameObject = outputGo.gameObject;
+                    m_boundGameObject = outputGo.gameObject;
+                    bh.BindGameObject(m_boundGameObject);
                 }
                 bh.m_PlayableDirector = director;
 
             }
             return mixer;
         }
+
+        public GameObject GetBoundGameObject() { return m_boundGameObject; } 
+
+//---------------------------------------------------------------------------------------------------------------------
+
+        public void SetActiveBoundGameObject(bool active) {
+            m_boundGameObject.SetActive(active);
+        }
+
+//---------------------------------------------------------------------------------------------------------------------
+
+        private GameObject m_boundGameObject = null;
 
     }
 

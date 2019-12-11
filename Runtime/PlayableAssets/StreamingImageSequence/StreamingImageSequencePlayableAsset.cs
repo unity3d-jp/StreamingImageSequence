@@ -5,7 +5,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
 using System.Collections.Generic;
-
+using UnityEngine.Experimental.PlayerLoop;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -28,6 +28,12 @@ namespace UnityEngine.StreamingImageSequence {
             public int sizY;
         }
 
+        ~StreamingImageSequencePlayableAsset() {
+            Reset();
+
+        }
+
+
         public int Version;
         public StreamingImageSequencePlayableAssetParam.StPicResolution Resolution;
         public StreamingImageSequencePlayableAssetParam.StQuadSize QuadSize;
@@ -39,6 +45,7 @@ namespace UnityEngine.StreamingImageSequence {
 
         public IList<string> GetImagePaths() { return m_imagePaths; }
         public System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
+        public Texture2D GetTexture() { return m_texture; }
 
         public string GetImagePath(int index) {
             if (null == m_imagePaths || index >= m_imagePaths.Count)
@@ -55,6 +62,7 @@ namespace UnityEngine.StreamingImageSequence {
             m_loadingIndex = -1;
             m_lastIndex = -1;
             LoadRequested = null;
+            ResetTexture();
         }
 
         public ClipCaps clipCaps
@@ -100,6 +108,7 @@ namespace UnityEngine.StreamingImageSequence {
             } else {
                 m_timelineDefaultAsset = null;
             }
+            m_texture = null;
             EditorUtility.SetDirty(this);
         }
 
@@ -200,86 +209,40 @@ namespace UnityEngine.StreamingImageSequence {
 #endif
             return filename;
         }
-        internal bool SetTexture(GameObject go, int index, bool isBlocking, bool isAlreadySet)
+        internal bool RequestLoadImage(int index, bool isBlocking)
         {
             if (null == m_imagePaths || index < 0 || index >= m_imagePaths.Count || string.IsNullOrEmpty(m_imagePaths[index])) {
                 return false;
             }
+           
+            string filename = LoadRequest(index,isBlocking, out StReadResult tResult);
 
-
-            var sID = go.GetInstanceID();
-            StReadResult tResult = new StReadResult();
-            
-            string filename = LoadRequest(index,isBlocking, out tResult);
-
-            if (!isAlreadySet &&  tResult.readStatus == 2)
+            if (null == m_texture &&  tResult.readStatus == (int)LoadStatus.Loaded)
             {
-                Texture2D tex = null;
 #if UNITY_STANDALONE_OSX
-				var textureFormat = TextureFormat.RGBA32;
+				const TextureFormat textureFormat = TextureFormat.RGBA32;
 #elif UNITY_STANDALONE_WIN
-                var textureFormat = TextureFormat.BGRA32;
+                const TextureFormat textureFormat = TextureFormat.BGRA32;
 #endif
+                m_texture = new Texture2D(tResult.width, tResult.height, textureFormat, false, false);
+                m_texture.LoadRawTextureData(tResult.buffer, tResult.width * tResult.height * 4);
+                m_texture.filterMode = FilterMode.Bilinear;
+                m_texture.Apply();
 
-				tex = new Texture2D(tResult.width, tResult.height, textureFormat, false, false);
-                tex.LoadRawTextureData(tResult.buffer, tResult.width * tResult.height * 4);
-                tex.filterMode = FilterMode.Bilinear;
-                tex.Apply();
-
-                var renderer = go.GetComponent<Renderer>();
-                Image image = null;
-                SpriteRenderer spriteRenderer = null;
-                IntPtr ptr = IntPtr.Zero;
-
-                if ((spriteRenderer = go.GetComponent<SpriteRenderer>()) != null)
-                {
-                    spriteRenderer.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 2, SpriteMeshType.FullRect);
-                    ptr = spriteRenderer.sprite.texture.GetNativeTexturePtr();
-                    Assert.IsTrue(ptr != IntPtr.Zero);
-                }
-                else if (renderer != null)
-                {
-                    var mat = go.GetComponent<Renderer>().sharedMaterial;
-                    mat.mainTexture = tex; //
-                    ptr = mat.mainTexture.GetNativeTexturePtr();
-                    Assert.IsTrue(ptr != IntPtr.Zero);
-                }
-                else if ((image = go.GetComponent<Image>()) != null)
-                {
-                    image.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 1, SpriteMeshType.FullRect);
-                    ptr = image.mainTexture.GetNativeTexturePtr();
-                    Assert.IsTrue(ptr != IntPtr.Zero);
-					var material = image.material;
-#if UNITY_STANDALONE_WIN
-#if UNITY_2017_2_OR_NEWER
-#else
-                    if (material != null) {
-						var id = Shader.PropertyToID("_GammaCorrection");
-						if (id > 0) {
-							material.SetInt (id, 1);
-						}
-                    }
-#endif
-
-#endif
-                }
-
-                StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)tResult.width, (uint)tResult.height, sID);
-                isAlreadySet = true;
- 
-
+                IntPtr ptr =  m_texture.GetNativeTexturePtr();
+                int texInstanceID = m_texture.GetInstanceID();
+                StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)tResult.width, (uint)tResult.height, texInstanceID);
             }
-			bool textureIsSet = false;
-			if (tResult.readStatus == 2 && m_lastIndex != index) {
-				StreamingImageSequencePlugin.SetLoadedTexture (filename, sID);
-				textureIsSet = true;
+
+            //Update the texture
+			if (tResult.readStatus == (int)LoadStatus.Loaded && m_lastIndex != index) {
+                int texInstanceID = m_texture.GetInstanceID();
+                StreamingImageSequencePlugin.SetLoadedTexture (filename, texInstanceID);
+                GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), texInstanceID);
 			}
-			if (textureIsSet)
-            {
-                GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), sID);
-            }
+
 			m_lastIndex = index;
-            return isAlreadySet;
+            return null!=m_texture;
         }
 
         public  string GetCompleteFilePath(string filePath)
@@ -300,12 +263,23 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
 //---------------------------------------------------------------------------------------------------------------------
+        void ResetTexture() {
+            if (null != m_texture) {
+                StreamingImageSequencePlugin.ResetLoadedTexture(m_texture.GetInstanceID());
+                m_texture = null;
+            }
+        }
+        
+//---------------------------------------------------------------------------------------------------------------------
+
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
 
 #if UNITY_EDITOR
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Enabling Folder D&D to Timeline
 #endif
+
+        Texture2D m_texture = null;
 
     }
 
