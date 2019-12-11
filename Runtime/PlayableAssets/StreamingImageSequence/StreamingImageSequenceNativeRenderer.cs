@@ -13,34 +13,6 @@ namespace UnityEngine.StreamingImageSequence
 public class StreamingImageSequenceNativeRenderer : MonoBehaviour {
 #if DEBUG_THREAD
     int m_timer = 0;
-#endif
-	bool m_ColutinStarted = false;
-    private void Awake()
-    {
-    }
-    void Start () {
-
-    }
-	
-	void Update () {
-		// Sometimes the GameObject should be disabled in Activaiton Track.
-		// So, we need to restart coroutines in such case.
-		if (UpdateManager.useCoroutine && !m_ColutinStarted) {
-			StartCoroutine (OnRender ());
-			m_ColutinStarted = true;
-		}
-
-	}
-
-    void LateUpdate()
-    {
-
-    }
-
-	void OnDisable() {
-		m_ColutinStarted = false;
-	}
-#if DEBUG_THREAD
     private void OnGUI()
     {
         string str = "" + m_timer;

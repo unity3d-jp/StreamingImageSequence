@@ -144,11 +144,6 @@ namespace UnityEngine.StreamingImageSequence
                 var startTime = clip.start;
                 var endTime = clip.end;
 
-                if (UpdateManager.useCoroutine )
-                {
-                    startTime -= 1.0 / 60.0;
-                    endTime -= 1.0 / 60.0;
-                }
                 if ( m_loadStartOffsetTime < 0.0)
                 {
                     m_loadStartOffsetTime = 1.0f + count * 0.1f;

@@ -265,7 +265,7 @@ namespace UnityEngine.StreamingImageSequence {
 				StreamingImageSequencePlugin.SetLoadedTexture (filename, sID);
 				textureIsSet = true;
 			}
-			if (textureIsSet && !UpdateManager.useCoroutine)
+			if (textureIsSet)
             {
                 GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), sID);
             }

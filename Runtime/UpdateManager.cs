@@ -540,13 +540,6 @@ namespace UnityEngine.StreamingImageSequence
             return false;
         }
 
-		static public bool useCoroutine
-		{
-			get {
-				return false;
-			}
-
-		}
     }
 
     public class PlayableDirectorStatus
