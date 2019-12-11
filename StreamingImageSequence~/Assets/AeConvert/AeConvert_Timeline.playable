@@ -248,9 +248,10 @@ MonoBehaviour:
     sizX: 0
     sizY: 0
   m_displayOnClipsOnly: 0
-  Pictures: []
   m_loadingIndex: -1
   m_folder: 
+  m_imagePaths: []
+  m_timelineDefaultAsset: {fileID: 0}
 --- !u!114 &114361684351849680
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -271,6 +272,7 @@ MonoBehaviour:
     sizX: 0
     sizY: 0
   m_displayOnClipsOnly: 0
-  Pictures: []
   m_loadingIndex: -1
   m_folder: 
+  m_imagePaths: []
+  m_timelineDefaultAsset: {fileID: 0}
