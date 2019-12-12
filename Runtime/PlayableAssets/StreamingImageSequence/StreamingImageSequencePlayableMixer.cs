@@ -65,6 +65,9 @@ namespace UnityEngine.StreamingImageSequence
 //---------------------------------------------------------------------------------------------------------------------
         public override void PrepareFrame(Playable playable, FrameData info) {
             base.PrepareFrame(playable, info);
+            if (null == m_boundGameObject)
+                return;
+
             m_boundGameObject.SetActive(false); //Always hide first, and show it later 
         }
 
