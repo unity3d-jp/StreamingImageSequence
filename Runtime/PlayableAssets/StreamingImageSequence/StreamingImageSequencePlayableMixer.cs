@@ -253,7 +253,7 @@ namespace UnityEngine.StreamingImageSequence
                 mat.mainTexture = tex; 
             } else if (null!= m_image) {
                 Sprite sprite = m_image.sprite;
-                if (sprite.texture != tex) {
+                if (null!=sprite && sprite.texture != tex) {
                     m_image.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 1, SpriteMeshType.FullRect);
                 }
             }
