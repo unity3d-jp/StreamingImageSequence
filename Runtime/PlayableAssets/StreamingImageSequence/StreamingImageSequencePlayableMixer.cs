@@ -62,6 +62,13 @@ namespace UnityEngine.StreamingImageSequence
             m_meshRenderer      = null;
         }
 
+//---------------------------------------------------------------------------------------------------------------------
+        public override void PrepareFrame(Playable playable, FrameData info) {
+            base.PrepareFrame(playable, info);
+            m_boundGameObject.SetActive(false); //Always hide first, and show it later 
+        }
+
+//---------------------------------------------------------------------------------------------------------------------
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
             int inputCount = playable.GetInputCount<Playable>();
@@ -142,7 +149,9 @@ namespace UnityEngine.StreamingImageSequence
             }
 
             //Hide/Show
-            m_boundGameObject.SetActive(null != activeClip);
+            if (null != activeClip) {
+                m_boundGameObject.SetActive(true);
+            }
         }
 
         private void ProcessInAdvanceLoading(double time, TimelineClip clip, int index)
