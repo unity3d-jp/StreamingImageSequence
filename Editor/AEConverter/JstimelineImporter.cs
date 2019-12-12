@@ -6,6 +6,7 @@ using UnityEngine.Playables;
 using UnityEngine.StreamingImageSequence;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace UnityEditor.StreamingImageSequence {
 
@@ -35,7 +36,6 @@ public class JstimelineImporter : ScriptedImporter
 
         // prepare paths
 
-        var strFolderName = Path.GetDirectoryName(strJsTimelinePath);
         var strAssetName = Path.GetFileNameWithoutExtension(strJsTimelinePath);
 
         var strGuid = AssetDatabase.CreateFolder("Assets", strAssetName);
@@ -52,10 +52,9 @@ public class JstimelineImporter : ScriptedImporter
         var strJson = File.ReadAllText(strJsTimelinePath);
         var container = JsonUtility.FromJson<TimelineParam>(strJson);
 
-        string strAssetFolder = null;
-        if (container.assetFolder == "" || container.assetFolder == null)
-        {
-            strAssetFolder = strFolderName;
+        string assetFolder = container.assetFolder;
+        if (string.IsNullOrEmpty(assetFolder)) {
+            assetFolder = Path.GetDirectoryName(strJsTimelinePath);
         }
 
         var strAssetPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(strNewFolderPath, strAssetName + "_Timeline.playable"));
@@ -81,79 +80,52 @@ public class JstimelineImporter : ScriptedImporter
             }
             if (!Path.IsPathRooted(strFootagePath))
             {
-                strFootagePath = Path.Combine(strAssetFolder, strFootagePath);
+                strFootagePath = Path.Combine(assetFolder, strFootagePath);
             }
             string strFootageName = Path.GetFileNameWithoutExtension(strFootagePath);
             string strJsonFootage = File.ReadAllText(strFootagePath);
             StreamingImageSequencePlayableAssetParam trackMovieContainer = JsonUtility.FromJson<StreamingImageSequencePlayableAssetParam>(strJsonFootage);
 
+            int numImages = trackMovieContainer.Pictures.Count;
+            if (numImages > 0) {
 
+                List<string> originalImagePaths = new List<string>(trackMovieContainer.Pictures);
 
-
-            if (trackMovieContainer.Pictures.Count != 0)
-            {
-                // remove '~' if necessary
-                for (int xx = 0; xx < trackMovieContainer.Pictures.Count; xx++)
-                {
-                    string filename = trackMovieContainer.Pictures[xx];
-                    if (!filename.StartsWith("~"))
-                    {
-                        continue;
+                for (int xx = 0; xx < numImages; ++xx) {
+                    string fileName = trackMovieContainer.Pictures[xx];
+                    // replace '~' with the path to home (for Linux environment
+                    if (fileName.StartsWith("~")) {
+                        fileName = strHome + fileName.Substring(1);
                     }
-                    string newFileName = strHome + filename.Substring(1);
-                    trackMovieContainer.Pictures[xx] = newFileName;
-
+                    trackMovieContainer.Pictures[xx] = Path.GetFileName(fileName);
                 }
-
-                var strDir = trackMovieContainer.Pictures[0];
-                strDir = Path.GetDirectoryName(strDir);
-                for (int xx = 0; xx < trackMovieContainer.Pictures.Count; xx++)
-                {
-                    var strFileName = Path.GetFileName(trackMovieContainer.Pictures[xx]);
-                    trackMovieContainer.Pictures[xx] = strFileName;
-                }
-
                 
-                string strStreamingAssets = "Assets/StreamingAssets";
-                string strDstFolder = Application.streamingAssetsPath;
- 
-                if (!Directory.Exists(strDstFolder))
-                {
-                    Directory.CreateDirectory(strDstFolder);
-                }
+                string destFolder = Application.streamingAssetsPath;
+                Directory.CreateDirectory(destFolder); //make sure the directory exists
 
-                strDstFolder = Path.Combine(strDstFolder, strFootageName).Replace("\\", "/");
-                if (!Directory.Exists(strDstFolder))
-                {
-                    Directory.CreateDirectory(strDstFolder);
-                }
+                destFolder = Path.Combine(destFolder, strFootageName).Replace("\\", "/");
+                trackMovieContainer.Folder = destFolder;
 
-                for (int ii = 0; ii < trackMovieContainer.Pictures.Count; ii++)
-                {
-                    string strAbsFilePathDst = Path.Combine(strDstFolder, trackMovieContainer.Pictures[ii]).Replace("\\", "/");
-                    if (File.Exists(strAbsFilePathDst))
-                    {
-                        File.Delete(strAbsFilePathDst);
+                for (int i=0;i<numImages;++i) {
+                    string destFilePath = Path.Combine(destFolder, trackMovieContainer.Pictures[i]);
+                    if (File.Exists(destFilePath)) {
+                        File.Delete(destFilePath);
                     }
-                    string strAbsFilePathSrc = Path.Combine(strDir, trackMovieContainer.Pictures[ii]).Replace("\\", "/");
-                    FileUtil.CopyFileOrDirectory(strAbsFilePathSrc, strAbsFilePathDst);
+                    
+                    string srcFilePath = Path.GetFullPath(Path.Combine(assetFolder, originalImagePaths[i])).Replace("\\", "/");
+                    FileUtil.CopyFileOrDirectory(srcFilePath, destFilePath);
                 }
-
-                trackMovieContainer.Folder = Path.Combine(strStreamingAssets, strFootageName).Replace("\\", "/");
 
             }
-
-
-
 
             var proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
             proxyAsset.SetParam(trackMovieContainer);
             proxyAsset.m_displayOnClipsOnly = true;
-            var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(strNewFolderPath, strFootageName + "_MovieProxy.playable"));
+            var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(strNewFolderPath, strFootageName + "_StreamingImageSequence.playable"));
             AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
 
-            var movieTrack = asset.CreateTrack<StreamingImageSequenceTrack>(null, strFootageName);
-            var clip = movieTrack.CreateDefaultClip();
+            StreamingImageSequenceTrack movieTrack = asset.CreateTrack<StreamingImageSequenceTrack>(null, strFootageName);
+            TimelineClip clip = movieTrack.CreateDefaultClip();
             clip.asset = proxyAsset;
             clip.start = track.Start;
             clip.duration = track.Duration;
@@ -168,12 +140,9 @@ public class JstimelineImporter : ScriptedImporter
             }
             GameObject canvasObj = null;
             Canvas canvas = Object.FindObjectOfType(typeof(Canvas)) as Canvas;
-            if (canvas != null)
-            {
+            if (canvas != null) {
                 canvasObj = canvas.gameObject;
-            }
-            else
-            {
+            } else {
                 canvasObj = new GameObject();
                 canvas = canvasObj.AddComponent<Canvas>();
                 canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -186,27 +155,22 @@ public class JstimelineImporter : ScriptedImporter
             directorGo.transform.SetParent(canvasObj.transform);
             directorGo.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
-            var newGo = new GameObject();
+            GameObject newGo = new GameObject();
             Image image = newGo.AddComponent<Image>();
+            StreamingImageSequenceNativeRenderer renderer = newGo.AddComponent<StreamingImageSequenceNativeRenderer>();
 
-            var rectTransform =
-            newGo.GetComponent<RectTransform>();
+            RectTransform rectTransform = newGo.GetComponent<RectTransform>();
             rectTransform.SetParent(directorGo.transform);
             rectTransform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-            rectTransform.sizeDelta =
-                new Vector2(trackMovieContainer.Resolution.Width,
-                            trackMovieContainer.Resolution.Height);
-
+            rectTransform.sizeDelta = new Vector2(trackMovieContainer.Resolution.Width,
+                                                  trackMovieContainer.Resolution.Height);
 
             newGo.name = strFootageName;
             newGo.SetActive(true);
-            director.SetGenericBinding(movieTrack, newGo);
-
-
+            director.SetGenericBinding(movieTrack, renderer);
         }
 
-        if ( ctx == null )
-        {
+        if ( ctx == null ) {
             AssetDatabase.Refresh();
             // cause crash if this is called inside of OnImportAsset()
             UnityEditor.EditorApplication.delayCall += () => {
