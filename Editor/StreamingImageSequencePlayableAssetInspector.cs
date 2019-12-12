@@ -54,7 +54,7 @@ namespace UnityEditor.StreamingImageSequence {
             using (new EditorGUILayout.VerticalScope(GUI.skin.box))
             {
                 GUILayout.Label("Images", "BoldLabel");
-                EditorGUILayout.LabelField("Number of Images", $"{m_pPictures.arraySize}");
+                EditorGUILayout.LabelField("Number of Images", $"{m_asset.GetImagePaths().Count}");
                 GUILayout.Space(4f);
                 
                 m_foldout = EditorGUILayout.Foldout(m_foldout, "Images");
@@ -73,7 +73,6 @@ namespace UnityEditor.StreamingImageSequence {
 
         private void PrepareSerializedProperties()
         {
-            if (m_pPictures == null) m_pPictures = serializedObject.FindProperty("Pictures");
             if (m_pResolution == null) m_pResolution = serializedObject.FindProperty("Resolution");
         }
 
@@ -187,7 +186,7 @@ namespace UnityEditor.StreamingImageSequence {
 //---------------------------------------------------------------------------------------------------------------------
         private void RefreshImageList()
         {
-            m_imageList = new ReorderableList(m_asset.Pictures, typeof(string), true, false, false, false) {
+            m_imageList = new ReorderableList(m_asset.GetImagePathsNonGeneric(), typeof(string), true, false, false, false) {
                 elementHeight = EditorGUIUtility.singleLineHeight + 8f,
                 headerHeight = 3
             };
@@ -201,7 +200,6 @@ namespace UnityEditor.StreamingImageSequence {
 
 //---------------------------------------------------------------------------------------------------------------------
         private StreamingImageSequencePlayableAsset m_asset = null;
-        private SerializedProperty m_pPictures;
 
         private SerializedProperty m_pResolution;
         

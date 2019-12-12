@@ -197,24 +197,25 @@ namespace UnityEditor.StreamingImageSequence
                     }
                     var movieProxyAsset = srcClip.asset as StreamingImageSequencePlayableAsset;
 
-                    
-                    Sprite[] sprites = new Sprite[movieProxyAsset.Pictures.Count];
+
+                    int imageCount = movieProxyAsset.GetImagePaths().Count;
+                    Sprite[] sprites = new Sprite[imageCount];
 
                     string strSrcFolder = Path.Combine(UpdateManager.GetProjectFolder(), movieProxyAsset.GetFolder()).Replace("\\", "/");
-                    string strDistFolder = GetDistinationFolder(movieProxyAsset.Pictures[0] );
-                    for (int ii = 0; ii < movieProxyAsset.Pictures.Count; ii++)
+                    string strDistFolder = GetDistinationFolder(movieProxyAsset.GetImagePath(0));
+                    for (int ii = 0; ii < imageCount; ii++)
                     {
-                        string strAssetPath =  Path.Combine(strDistFolder, movieProxyAsset.Pictures[ii]).Replace("\\", "/");
-                        string strSrcPath = Path.Combine( strSrcFolder, movieProxyAsset.Pictures[ii]).Replace("\\", "/");
+                        string strAssetPath =  Path.Combine(strDistFolder, movieProxyAsset.GetImagePath(ii)).Replace("\\", "/");
+                        string strSrcPath = Path.Combine( strSrcFolder, movieProxyAsset.GetImagePath(ii)).Replace("\\", "/");
                         if (!File.Exists(strAssetPath))
                         {
                             FileUtil.CopyFileOrDirectory(strSrcPath, strAssetPath);
                         }
                     }
 
-                    for (int ii = 0; ii < movieProxyAsset.Pictures.Count; ii++)
+                    for (int ii = 0; ii < imageCount; ii++)
                     {
-                        string strAssetPath = Path.Combine(strDistFolder, movieProxyAsset.Pictures[ii]).Replace("\\", "/");
+                        string strAssetPath = Path.Combine(strDistFolder, movieProxyAsset.GetImagePath(ii)).Replace("\\", "/");
                         strAssetPath = UpdateManager.ToRelativePath(strAssetPath);
 
                         AssetDatabase.ImportAsset(strAssetPath);
@@ -231,9 +232,9 @@ namespace UnityEditor.StreamingImageSequence
 
                     }
 
-                    for (int ii = 0; ii < movieProxyAsset.Pictures.Count; ii++)
+                    for (int ii = 0; ii < imageCount; ii++)
                     {
-                        string strAssetPath = Path.Combine(strDistFolder, movieProxyAsset.Pictures[ii]).Replace("\\", "/");
+                        string strAssetPath = Path.Combine(strDistFolder, movieProxyAsset.GetImagePath(ii)).Replace("\\", "/");
                         strAssetPath = UpdateManager.ToRelativePath(strAssetPath);
                         AssetDatabase.ImportAsset(strAssetPath);
 
@@ -257,7 +258,7 @@ namespace UnityEditor.StreamingImageSequence
 
                     settings.boolValue = true;
                     serializedClip.ApplyModifiedProperties();
-                    ObjectReferenceKeyframe[] Keyframes = new ObjectReferenceKeyframe[movieProxyAsset.Pictures.Count];
+                    ObjectReferenceKeyframe[] Keyframes = new ObjectReferenceKeyframe[imageCount];
                     EditorCurveBinding curveBinding = new EditorCurveBinding();
                     if (go.GetComponent<Image>() != null)
                     {
@@ -272,9 +273,9 @@ namespace UnityEditor.StreamingImageSequence
                         curveBinding.propertyName = "m_Sprite";
                     }
 
-                    float delta = (float)srcClip.duration / (float)(movieProxyAsset.Pictures.Count - 1);
+                    float delta = (float)srcClip.duration / (float)(imageCount - 1);
                     
-                    for (int ii = 0; ii < movieProxyAsset.Pictures.Count; ii++)
+                    for (int ii = 0; ii < imageCount; ii++)
                     {
                         Keyframes[ii] = new ObjectReferenceKeyframe();
                         Keyframes[ii].time = delta * ii;

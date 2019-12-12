@@ -324,7 +324,7 @@ namespace UnityEditor.StreamingImageSequence
 
 
 
-            int length = asset.Pictures.Count;
+            int length = asset.GetImagePaths().Count;
             if (m_MovieProxyPlayableAssetToColorArray.ContainsKey(asset))
             {
 

@@ -25,22 +25,11 @@ namespace UnityEngine.StreamingImageSequence
         internal PlayableDirector m_PlayableDirector;
         internal IEnumerable<TimelineClip> m_clips;
         internal TrackAsset m_track;
-        private bool m_IsTexSet = false;
         private double m_loadStartOffsetTime = -1.0;
 #if UNITY_EDITOR
         EditorWindow m_gameView;
 #endif
-        private GameObject m_BoundGameObject;
         private int[] m_nextInadvanceLoadingFrameArray;
-        public GameObject boundGameObject
-        {
-            get { return m_BoundGameObject; }
-            set
-            {
-                m_BoundGameObject = value;
-
-            }
-        }
         public StreamingImageSequencePlayableMixer()
         {
 
@@ -53,7 +42,6 @@ namespace UnityEngine.StreamingImageSequence
             m_loadStartOffsetTime = -1.0;
         }
 
-
         public override void OnPlayableCreate(Playable playable)
         {
             UpdateManager.m_ResetDelegate += Reset;
@@ -65,32 +53,19 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 
-
-        internal void InitTexture(TimelineClip clip)
-        {
-            if (!m_IsTexSet)
-            {
-                Assert.IsTrue(clip != null);
-                var asset = clip.asset as StreamingImageSequencePlayableAsset;
-                m_IsTexSet = asset.SetTexture(m_BoundGameObject, 0, false, m_IsTexSet);
-            }
-        }
-
         void Reset()
         {
-            m_IsTexSet = false;
             m_loadStartOffsetTime = -1.0;
-  
+            m_boundGameObject   = null;
+            m_spriteRenderer    = null;
+            m_image             = null;
+            m_meshRenderer      = null;
         }
 
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
-
-
-
             int inputCount = playable.GetInputCount<Playable>();
-            if (inputCount == 0)
-            {
+            if (inputCount == 0) {
                 return; // it doesn't work as mixer.
             }
 
@@ -102,146 +77,81 @@ namespace UnityEngine.StreamingImageSequence
                     m_nextInadvanceLoadingFrameArray[ii] = 0;
                 }
             }
-            var binding = m_PlayableDirector.GetGenericBinding(m_track);
-            var go = binding as GameObject;
 
-
-            if (m_BoundGameObject == null)
-            {
-                var renderer = playerData as StreamingImageSequenceNativeRenderer;
-                if (renderer != null)
-                {
-                    m_BoundGameObject = renderer.gameObject;
-                }
-                else if ( go != null )
-                {
-                    m_BoundGameObject = go;
-                }
-            }
-
-            if (m_BoundGameObject == null)
-            {
+            if (!TryBindGameObjectFromFrame(playerData)) {
+                Debug.LogError("Can't bind GameObject for track: " + m_track.name);
                 return;
             }
 
 
+            double directorTime = m_PlayableDirector.time;
+            TimelineClip activeClip = null;
 
-            if (
-                (m_BoundGameObject.GetComponent<MeshRenderer>())  == null
-                && (m_BoundGameObject.GetComponent<Image>()) == null 
-                && (m_BoundGameObject.GetComponent<SpriteRenderer>()) == null)
-            {
-                return;
-            }
+            int i = 0;
+            foreach (TimelineClip clip in m_clips) {
 
-            // it is working as mixer.
-            var time = m_PlayableDirector.time;
-
-			// find which index is the first.
-			float startS = 999999999.0f;
-			int startIndex = -1;
-            var enumulator = m_clips.GetEnumerator();
-            enumulator.MoveNext();
-            for (int ii = 0; ii < inputCount; ii++, enumulator.MoveNext())
-            {
-
-                var clip = enumulator.Current;
-
-                float startTime = (float)clip.start;
-				if (startTime < startS) 
-				{
-					startS = startTime;
-					startIndex = ii;
-				}
-			}
-
-            enumulator = m_clips.GetEnumerator();
-            enumulator.MoveNext();
-            for (int ii = 0; ii < inputCount; ii++, enumulator.MoveNext())
-            {
-
-                var clip = enumulator.Current;
-                var asset = clip.asset as StreamingImageSequencePlayableAsset;
-                if (null == asset.Pictures)
+                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (null == asset)
                     continue;
-                float count = asset.Pictures.Count;
-                int index = 0;
-                var clipDuration = clip.duration;
-                var startTime = clip.start;
-                var endTime = clip.end;
 
-                if (UpdateManager.useCoroutine )
-                {
-                    startTime -= 1.0 / 60.0;
-                    endTime -= 1.0 / 60.0;
-                }
-                if ( m_loadStartOffsetTime < 0.0)
-                {
+                IList<string> imagePaths = asset.GetImagePaths();
+                if (null == imagePaths)
+                    continue;
+
+                int count = imagePaths.Count;
+                double clipDuration = clip.duration;
+                double startTime = clip.start;
+                double endTime = clip.end;
+
+                if ( m_loadStartOffsetTime < 0.0) {
                     m_loadStartOffsetTime = 1.0f + count * 0.1f;
 
                 }
 
-				if ( time >= startTime - m_loadStartOffsetTime && time < endTime)
-                {
-					if (ii == startIndex )
-                    {
-                        InitTexture(clip); // try to ceate texture instance.
-                    }
-
-                     ProcessInAdvanceLoading(time, clip, ii );
+                //Load clips that might still be inactive, in advance
+				if ( directorTime>= startTime - m_loadStartOffsetTime && directorTime < endTime) {
+                    ProcessInAdvanceLoading(directorTime, clip, i );
                 }
 
-
-
-
-
-
-                if (time >= startTime && time < endTime)
-                {
-                    if (asset.m_displayOnClipsOnly)
-                    {
-                        m_BoundGameObject.SetActive(true);
-                    }
-                    float rate = (float)(time - startTime);
+                if (directorTime >= startTime && directorTime < endTime) {
+                    activeClip = clip;
+                    float rate = (float)(directorTime - startTime);
                     float now = (float)count * (float)rate / (float)clipDuration;
-                    index = (int)now;
-                    if (index < 0)
-                    {
+                    int index = (int)now;
+                    if (index < 0) {
                         index = 0;
                     }
-                    if (index >= count)
-                    {
+                    if (index >= count) {
                         index = (int)count - 1;
                     }
 
+                    bool texReady = asset.RequestLoadImage(index, false);
+                    if (texReady) {
+                        UpdateRendererTexture(asset);
 
-                    m_IsTexSet = asset.SetTexture(m_BoundGameObject, index, false, m_IsTexSet);
 #if UNITY_EDITOR
-                    if (m_IsTexSet)
-                    {
-                        if (!EditorApplication.isPlaying)
-                        {
+                        if (!EditorApplication.isPlaying) {
                             m_gameView.Repaint();
                         }
-                    }
 #endif
-
-                }
-                else
-                {
-                    if (asset.m_displayOnClipsOnly)
-                    {
-                        m_BoundGameObject.SetActive(false);
                     }
-                }
+
+                } 
+
+                ++i;
             }
+
+            //Hide/Show
+            m_boundGameObject.SetActive(null != activeClip);
         }
 
         private void ProcessInAdvanceLoading(double time, TimelineClip clip, int index)
         {
             var asset = clip.asset as StreamingImageSequencePlayableAsset;
-            int count = asset.Pictures.Count;
+            if (null == asset)
+                return;
 
+            int count = asset.GetImagePaths().Count;
 
             if (m_nextInadvanceLoadingFrameArray[index] < count)
             {
@@ -266,17 +176,91 @@ namespace UnityEngine.StreamingImageSequence
             }
 
         }
-        /*
-        public void ResetTexturePtr()
-        {
- 
+
+//---------------------------------------------------------------------------------------------------------------------
+        public bool BindGameObject(GameObject go) {
+            m_boundGameObject = go;
+            bool ret = InitRenderers();
+            if (!ret) {
+                Reset();
+                return false;
+            }
+
+            return true;
         }
 
+
+//---------------------------------------------------------------------------------------------------------------------
+        private bool TryBindGameObjectFromFrame(object playerData) {
+            if (null != m_boundGameObject)
+                return true;
+
+            //There might be two sources: playerData, and the Object bound to the track
+            StreamingImageSequenceNativeRenderer renderer = playerData as StreamingImageSequenceNativeRenderer;
+            if (null != renderer) {
+                m_boundGameObject = renderer.gameObject;
+            } else  {
+                Object binding = m_PlayableDirector.GetGenericBinding(m_track);
+                GameObject go = binding as GameObject;
+                m_boundGameObject = go;
+            }
+
+            if (null == m_boundGameObject) {
+                return false;
+            }
+
+            bool ret = InitRenderers();
+            if (!ret) {
+                Reset();
+                return false;
+            }
+
+            return true;
+        }
+
+//---------------------------------------------------------------------------------------------------------------------
+        private bool InitRenderers() {
+            m_spriteRenderer= m_boundGameObject.GetComponent<SpriteRenderer>();
+            m_meshRenderer  = m_boundGameObject.GetComponent<MeshRenderer>();
+            m_image         = m_boundGameObject.GetComponent<Image>();
+            return (null!= m_meshRenderer || null!= m_image || null!=m_spriteRenderer);
+        }
+
+//---------------------------------------------------------------------------------------------------------------------
+
+        void UpdateRendererTexture(StreamingImageSequencePlayableAsset asset) {
+            Texture2D tex = asset.GetTexture();
+            GameObject go = m_boundGameObject;
+            if (null!=m_spriteRenderer ) {
+                Sprite sprite = m_spriteRenderer.sprite;
+                if (sprite.texture != tex) {
+                    m_spriteRenderer.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 2, SpriteMeshType.FullRect);
+                }
+            } else if (null!=m_meshRenderer) {
+                Material mat = m_meshRenderer.sharedMaterial;
+                mat.mainTexture = tex; 
+            } else if (null!= m_image) {
+                Sprite sprite = m_image.sprite;
+                if (sprite.texture != tex) {
+                    m_image.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 1, SpriteMeshType.FullRect);
+                }
+            }
+
+        }
+
+//---------------------------------------------------------------------------------------------------------------------
+        
+        /*
         static public void ResetAllTexturePtr()
         {
             StreamingImageSequencePlugin.ResetAllLoadedTexture();
         }
         */
+
+        private GameObject      m_boundGameObject;
+        private SpriteRenderer  m_spriteRenderer = null;
+        private MeshRenderer    m_meshRenderer = null;
+        private Image           m_image = null;
 
     }
 

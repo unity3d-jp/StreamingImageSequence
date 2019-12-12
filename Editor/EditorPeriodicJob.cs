@@ -95,15 +95,26 @@ namespace UnityEditor.StreamingImageSequence
 
         private static void ProcessStreamingImageSequenceTrack(StreamingImageSequenceTrack  track)
         {
+            //Check if we should hide the bound game object 
+            if (track.isEmpty) {
+                if (null != track.GetBoundGameObject()) {
+                    track.SetActiveBoundGameObject(false);
+                }
+                return;
+            }
+
             foreach (var clip in track.GetClips())
             {
                 var asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (null == asset)
+                    continue;
+
                 if (!asset.Verified)
                 {
                     continue;
                 }
                 
-                var length = asset.Pictures.Count;
+                var length = asset.GetImagePaths().Count;
                 if (m_streamingImageSequencePlayableAssetToColorArray.ContainsKey(asset))
                 {
 

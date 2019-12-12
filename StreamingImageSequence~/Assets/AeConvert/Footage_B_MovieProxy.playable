@@ -20,7 +20,9 @@ MonoBehaviour:
     sizX: 0
     sizY: 0
   m_displayOnClipsOnly: 1
-  Pictures:
+  m_loadingIndex: 58
+  m_folder: Assets/StreamingAssets/Footage_B
+  m_imagePaths:
   - B_00000.png
   - B_00001.png
   - B_00002.png
@@ -79,7 +81,5 @@ MonoBehaviour:
   - B_00055.png
   - B_00056.png
   - B_00057.png
-  m_loadingIndex: 58
-  m_folder: Assets/StreamingAssets/Footage_B
   m_timelineDefaultAsset: {fileID: 102900000, guid: 8bcebc0ffe2c86e4f82055b17b71d654,
     type: 3}
