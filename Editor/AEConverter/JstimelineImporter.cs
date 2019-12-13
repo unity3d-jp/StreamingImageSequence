@@ -106,7 +106,6 @@ public class JstimelineImporter : ScriptedImporter
                     
                     string srcFilePath = Path.GetFullPath(Path.Combine(assetFolder, originalImagePaths[i])).Replace("\\", "/");
                     FileUtil.CopyFileOrDirectory(srcFilePath, destFilePath);
-                    AssetDatabase.ImportAsset(AssetEditorUtility.NormalizeAssetPath(destFilePath));
                 }
 
             }
@@ -173,6 +172,7 @@ public class JstimelineImporter : ScriptedImporter
 
         //cause crash if this is called inside of OnImportAsset()
         UnityEditor.EditorApplication.delayCall += () => {
+            AssetDatabase.Refresh();
             Selection.activeGameObject = director.gameObject;
         };
     }
