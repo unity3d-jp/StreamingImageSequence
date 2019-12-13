@@ -16,7 +16,7 @@ public class JstimelineImporter : ScriptedImporter
 {
     public override void OnImportAsset(AssetImportContext ctx)
     {
-        CreateTimeline(ctx.assetPath,null );
+        CreateTimeline(ctx.assetPath);
     }
 
     [MenuItem("Edit/Streaming Image Sequence/Import AE Timeline", false, 10)]
@@ -26,11 +26,19 @@ public class JstimelineImporter : ScriptedImporter
         JstimelineImporter.CreateTimeline(strPath);
     }
 
-    public static void CreateTimeline(string jsTimelinePath, AssetImportContext ctx = null ) {
+//---------------------------------------------------------------------------------------------------------------------
+
+    static void CreateTimeline(string jsTimelinePath) {
 
         // prepare asset name, paths, etc
         string assetName = Path.GetFileNameWithoutExtension(jsTimelinePath);
-        string timelineFolder = Path.Combine("Assets", assetName).Replace("\\","/");
+        string timelineFolder = Path.GetDirectoryName(jsTimelinePath);
+        if (string.IsNullOrEmpty(timelineFolder)) {
+            Debug.LogError("Can't get directory name for: " + jsTimelinePath);
+            return;
+        }
+        timelineFolder = Path.Combine(timelineFolder,assetName).Replace("\\","/");
+        Directory.CreateDirectory(timelineFolder);
         string strJson = File.ReadAllText(jsTimelinePath);
         TimelineParam container = JsonUtility.FromJson<TimelineParam>(strJson);
         string assetFolder = container.assetFolder;
@@ -86,9 +94,8 @@ public class JstimelineImporter : ScriptedImporter
                 }
                 
                 string destFolder = Application.streamingAssetsPath;
-                Directory.CreateDirectory(destFolder); //make sure the directory exists
-
                 destFolder = Path.Combine(destFolder, strFootageName).Replace("\\", "/");
+                Directory.CreateDirectory(destFolder); //make sure the directory exists
                 trackMovieContainer.Folder = destFolder;
 
                 for (int i=0;i<numImages;++i) {
@@ -99,6 +106,7 @@ public class JstimelineImporter : ScriptedImporter
                     
                     string srcFilePath = Path.GetFullPath(Path.Combine(assetFolder, originalImagePaths[i])).Replace("\\", "/");
                     FileUtil.CopyFileOrDirectory(srcFilePath, destFilePath);
+                    AssetDatabase.ImportAsset(AssetEditorUtility.NormalizeAssetPath(destFilePath));
                 }
 
             }
@@ -163,13 +171,10 @@ public class JstimelineImporter : ScriptedImporter
             director.SetGenericBinding(movieTrack, renderer);
         }
 
-        if ( ctx == null ) {
-            AssetDatabase.Refresh();
-            // cause crash if this is called inside of OnImportAsset()
-            UnityEditor.EditorApplication.delayCall += () => {
-                Selection.activeGameObject = director.gameObject;
-            };
-        }
+        //cause crash if this is called inside of OnImportAsset()
+        UnityEditor.EditorApplication.delayCall += () => {
+            Selection.activeGameObject = director.gameObject;
+        };
     }
 
 //---------------------------------------------------------------------------------------------------------------------
