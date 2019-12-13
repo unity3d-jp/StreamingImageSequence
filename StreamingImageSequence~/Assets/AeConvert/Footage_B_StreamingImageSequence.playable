@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_Name: Footage_B_StreamingImageSequence
+  m_EditorClassIdentifier: 
+  Version: 0
+  Resolution:
+    Width: 1684
+    Height: 1000
+  QuadSize:
+    sizX: 0
+    sizY: 0
+  m_displayOnClipsOnly: 1
+  m_loadingIndex: -1
+  m_folder: E:/G/unity3d-jp/StreamingImageSequence/StreamingImageSequence~/Assets/StreamingAssets/Footage_B
+  m_imagePaths:
+  - B_00000.png
+  - B_00001.png
+  - B_00002.png
+  - B_00003.png
+  - B_00004.png
+  - B_00005.png
+  - B_00006.png
+  - B_00007.png
+  - B_00008.png
+  - B_00009.png
+  - B_00010.png
+  - B_00011.png
+  - B_00012.png
+  - B_00013.png
+  - B_00014.png
+  - B_00015.png
+  - B_00016.png
+  - B_00017.png
+  - B_00018.png
+  - B_00019.png
+  - B_00020.png
+  - B_00021.png
+  - B_00022.png
+  - B_00023.png
+  - B_00024.png
+  - B_00025.png
+  - B_00026.png
+  - B_00027.png
+  - B_00028.png
+  - B_00029.png
+  - B_00030.png
+  - B_00031.png
+  - B_00032.png
+  - B_00033.png
+  - B_00034.png
+  - B_00035.png
+  - B_00036.png
+  - B_00037.png
+  - B_00038.png
+  - B_00039.png
+  - B_00040.png
+  - B_00041.png
+  - B_00042.png
+  - B_00043.png
+  - B_00044.png
+  - B_00045.png
+  - B_00046.png
+  - B_00047.png
+  - B_00048.png
+  - B_00049.png
+  - B_00050.png
+  - B_00051.png
+  - B_00052.png
+  - B_00053.png
+  - B_00054.png
+  - B_00055.png
+  - B_00056.png
+  - B_00057.png
+  m_timelineDefaultAsset: {fileID: 0}

@@ -82,7 +82,7 @@ namespace UnityEditor.StreamingImageSequence {
             string newLoadPath = DrawFolderSelector ("Image Sequence", "Select Folder", 
                 prevFolder,
                 prevFolder,
-                NormalizeLoadPath
+                AssetEditorUtility.NormalizeAssetPath
             );
 
             if (newLoadPath != prevFolder) {
@@ -156,20 +156,6 @@ namespace UnityEditor.StreamingImageSequence {
             }
             return newDirPath;
         }        
-
-//---------------------------------------------------------------------------------------------------------------------
-
-        //Normalize so that the path is relative to the Unity root project
-        private static string NormalizeLoadPath(string path) {
-            if(!string.IsNullOrEmpty(path))
-            {
-                if (path.StartsWith(Application.dataPath))
-                {
-                    return path.Substring(Application.dataPath.Length - "Assets".Length);
-                }
-            }
-            return path;
-        }
 
 //---------------------------------------------------------------------------------------------------------------------
         private void DoImageGUI()

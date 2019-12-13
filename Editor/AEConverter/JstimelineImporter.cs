@@ -6,6 +6,7 @@ using UnityEngine.Playables;
 using UnityEngine.StreamingImageSequence;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace UnityEditor.StreamingImageSequence {
 
@@ -15,7 +16,7 @@ public class JstimelineImporter : ScriptedImporter
 {
     public override void OnImportAsset(AssetImportContext ctx)
     {
-        CreateTimeline(ctx.assetPath,null );
+        CreateTimeline(ctx.assetPath);
     }
 
     [MenuItem("Edit/Streaming Image Sequence/Import AE Timeline", false, 10)]
@@ -25,51 +26,42 @@ public class JstimelineImporter : ScriptedImporter
         JstimelineImporter.CreateTimeline(strPath);
     }
 
-    public static void CreateTimeline(string strJsTimelinePath, AssetImportContext ctx = null )
-    {
+//---------------------------------------------------------------------------------------------------------------------
 
-        string strUnityPorjectFolder = null;
-        Regex regAssetFolder = new Regex("/Assets$");
-        strUnityPorjectFolder = Application.dataPath;
-        strUnityPorjectFolder = regAssetFolder.Replace(strUnityPorjectFolder, "");
+    static void CreateTimeline(string jsTimelinePath) {
 
-        // prepare paths
-
-        var strFolderName = Path.GetDirectoryName(strJsTimelinePath);
-        var strAssetName = Path.GetFileNameWithoutExtension(strJsTimelinePath);
-
-        var strGuid = AssetDatabase.CreateFolder("Assets", strAssetName);
-        var strNewFolderPath = AssetDatabase.GUIDToAssetPath(strGuid);
-
-        /*
-        var strMaterialFolder = Path.Combine(strNewFolderPath, "Material");
-        if (!Directory.Exists(strMaterialFolder))
-        {
-            Directory.CreateDirectory(strMaterialFolder);
-        }*/
-
-        // create working folder
-        var strJson = File.ReadAllText(strJsTimelinePath);
-        var container = JsonUtility.FromJson<TimelineParam>(strJson);
-
-        string strAssetFolder = null;
-        if (container.assetFolder == "" || container.assetFolder == null)
-        {
-            strAssetFolder = strFolderName;
+        // prepare asset name, paths, etc
+        string assetName = Path.GetFileNameWithoutExtension(jsTimelinePath);
+        string timelineFolder = Path.GetDirectoryName(jsTimelinePath);
+        if (string.IsNullOrEmpty(timelineFolder)) {
+            Debug.LogError("Can't get directory name for: " + jsTimelinePath);
+            return;
+        }
+        timelineFolder = Path.Combine(timelineFolder,assetName).Replace("\\","/");
+        Directory.CreateDirectory(timelineFolder);
+        string strJson = File.ReadAllText(jsTimelinePath);
+        TimelineParam container = JsonUtility.FromJson<TimelineParam>(strJson);
+        string assetFolder = container.assetFolder;
+        if (string.IsNullOrEmpty(assetFolder)) {
+            assetFolder = Path.GetDirectoryName(jsTimelinePath);
         }
 
-        var strAssetPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(strNewFolderPath, strAssetName + "_Timeline.playable"));
+        //delete existing objects in the scene that is pointing to the Director
+        string timelinePath = Path.Combine(timelineFolder, assetName + "_Timeline.playable").Replace("\\","/");
+        PlayableDirector director = RemovePlayableFromDirectorsInScene(timelinePath);
+        if (null == director) {
+            GameObject directorGo = new GameObject(assetName);
+            director = directorGo.AddComponent<PlayableDirector>();
+        }
+
+        //Create timeline asset
         TimelineAsset asset = ScriptableObject.CreateInstance<TimelineAsset>();
-        AssetDatabase.CreateAsset(asset, strAssetPath);
+        AssetEditorUtility.OverwriteAsset(asset, timelinePath);
 
-        var directorGo = new GameObject(strAssetName);
-        var director = directorGo.AddComponent<PlayableDirector>();
         director.playableAsset = asset;
-
-        var strHome = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+        string strHome = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
 
         int numTracks = container.Tracks.Length;
- 
         for (int index = numTracks - 1; index >= 0; index--)
         {
             var track = container.Tracks[index];
@@ -81,83 +73,56 @@ public class JstimelineImporter : ScriptedImporter
             }
             if (!Path.IsPathRooted(strFootagePath))
             {
-                strFootagePath = Path.Combine(strAssetFolder, strFootagePath);
+                strFootagePath = Path.Combine(assetFolder, strFootagePath);
             }
             string strFootageName = Path.GetFileNameWithoutExtension(strFootagePath);
             string strJsonFootage = File.ReadAllText(strFootagePath);
             StreamingImageSequencePlayableAssetParam trackMovieContainer = JsonUtility.FromJson<StreamingImageSequencePlayableAssetParam>(strJsonFootage);
 
+            int numImages = trackMovieContainer.Pictures.Count;
+            if (numImages > 0) {
 
+                List<string> originalImagePaths = new List<string>(trackMovieContainer.Pictures);
 
-
-            if (trackMovieContainer.Pictures.Count != 0)
-            {
-                // remove '~' if necessary
-                for (int xx = 0; xx < trackMovieContainer.Pictures.Count; xx++)
-                {
-                    string filename = trackMovieContainer.Pictures[xx];
-                    if (!filename.StartsWith("~"))
-                    {
-                        continue;
+                for (int xx = 0; xx < numImages; ++xx) {
+                    string fileName = trackMovieContainer.Pictures[xx];
+                    // replace '~' with the path to home (for Linux environment
+                    if (fileName.StartsWith("~")) {
+                        fileName = strHome + fileName.Substring(1);
                     }
-                    string newFileName = strHome + filename.Substring(1);
-                    trackMovieContainer.Pictures[xx] = newFileName;
-
+                    trackMovieContainer.Pictures[xx] = Path.GetFileName(fileName);
                 }
-
-                var strDir = trackMovieContainer.Pictures[0];
-                strDir = Path.GetDirectoryName(strDir);
-                for (int xx = 0; xx < trackMovieContainer.Pictures.Count; xx++)
-                {
-                    var strFileName = Path.GetFileName(trackMovieContainer.Pictures[xx]);
-                    trackMovieContainer.Pictures[xx] = strFileName;
-                }
-
                 
-                string strStreamingAssets = "Assets/StreamingAssets";
-                string strDstFolder = Application.streamingAssetsPath;
- 
-                if (!Directory.Exists(strDstFolder))
-                {
-                    Directory.CreateDirectory(strDstFolder);
-                }
+                string destFolder = Application.streamingAssetsPath;
+                destFolder = Path.Combine(destFolder, strFootageName).Replace("\\", "/");
+                Directory.CreateDirectory(destFolder); //make sure the directory exists
+                trackMovieContainer.Folder = destFolder;
 
-                strDstFolder = Path.Combine(strDstFolder, strFootageName).Replace("\\", "/");
-                if (!Directory.Exists(strDstFolder))
-                {
-                    Directory.CreateDirectory(strDstFolder);
-                }
-
-                for (int ii = 0; ii < trackMovieContainer.Pictures.Count; ii++)
-                {
-                    string strAbsFilePathDst = Path.Combine(strDstFolder, trackMovieContainer.Pictures[ii]).Replace("\\", "/");
-                    if (File.Exists(strAbsFilePathDst))
-                    {
-                        File.Delete(strAbsFilePathDst);
+                for (int i=0;i<numImages;++i) {
+                    string destFilePath = Path.Combine(destFolder, trackMovieContainer.Pictures[i]);
+                    if (File.Exists(destFilePath)) {
+                        File.Delete(destFilePath);
                     }
-                    string strAbsFilePathSrc = Path.Combine(strDir, trackMovieContainer.Pictures[ii]).Replace("\\", "/");
-                    FileUtil.CopyFileOrDirectory(strAbsFilePathSrc, strAbsFilePathDst);
+                    
+                    string srcFilePath = Path.GetFullPath(Path.Combine(assetFolder, originalImagePaths[i])).Replace("\\", "/");
+                    FileUtil.CopyFileOrDirectory(srcFilePath, destFilePath);
                 }
-
-                trackMovieContainer.Folder = Path.Combine(strStreamingAssets, strFootageName).Replace("\\", "/");
 
             }
 
 
-
-
-            var proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
+            StreamingImageSequencePlayableAsset proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
             proxyAsset.SetParam(trackMovieContainer);
             proxyAsset.m_displayOnClipsOnly = true;
-            var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(strNewFolderPath, strFootageName + "_MovieProxy.playable"));
-            AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
 
-            var movieTrack = asset.CreateTrack<StreamingImageSequenceTrack>(null, strFootageName);
-            var clip = movieTrack.CreateDefaultClip();
+            string playableAssetPath = Path.Combine(timelineFolder, strFootageName + "_StreamingImageSequence.playable");
+            AssetEditorUtility.OverwriteAsset(proxyAsset, playableAssetPath);
+
+            StreamingImageSequenceTrack movieTrack = asset.CreateTrack<StreamingImageSequenceTrack>(null, strFootageName);
+            TimelineClip clip = movieTrack.CreateDefaultClip();
             clip.asset = proxyAsset;
             clip.start = track.Start;
             clip.duration = track.Duration;
-
 
             if (Object.FindObjectOfType(typeof(UnityEngine.EventSystems.EventSystem)) == null)
             {
@@ -168,12 +133,9 @@ public class JstimelineImporter : ScriptedImporter
             }
             GameObject canvasObj = null;
             Canvas canvas = Object.FindObjectOfType(typeof(Canvas)) as Canvas;
-            if (canvas != null)
-            {
+            if (canvas != null) {
                 canvasObj = canvas.gameObject;
-            }
-            else
-            {
+            } else {
                 canvasObj = new GameObject();
                 canvas = canvasObj.AddComponent<Canvas>();
                 canvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -183,37 +145,59 @@ public class JstimelineImporter : ScriptedImporter
 
             }
 
-            directorGo.transform.SetParent(canvasObj.transform);
-            directorGo.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
+            Transform directorT = director.gameObject.transform;
+            directorT.SetParent(canvasObj.transform);
+            directorT.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
 
-            var newGo = new GameObject();
-            Image image = newGo.AddComponent<Image>();
+            GameObject imageGo = null;
+            Transform imageT = directorT.Find(strFootageName);
+            if (null == imageT) {
+                imageGo = new GameObject(strFootageName);
+                imageT = imageGo.transform;
+            } else {
+                imageGo = imageT.gameObject;
+            }
 
-            var rectTransform =
-            newGo.GetComponent<RectTransform>();
-            rectTransform.SetParent(directorGo.transform);
+            Image image = imageGo.GetOrAddComponent<Image>();
+            StreamingImageSequenceNativeRenderer renderer = imageGo.GetOrAddComponent<StreamingImageSequenceNativeRenderer>();
+
+            RectTransform rectTransform = imageGo.GetComponent<RectTransform>();
+            rectTransform.SetParent(directorT);
             rectTransform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-            rectTransform.sizeDelta =
-                new Vector2(trackMovieContainer.Resolution.Width,
-                            trackMovieContainer.Resolution.Height);
+            rectTransform.sizeDelta = new Vector2(trackMovieContainer.Resolution.Width,
+                                                  trackMovieContainer.Resolution.Height);
 
-
-            newGo.name = strFootageName;
-            newGo.SetActive(true);
-            director.SetGenericBinding(movieTrack, newGo);
-
-
+            director.SetGenericBinding(movieTrack, renderer);
         }
 
-        if ( ctx == null )
-        {
+        //cause crash if this is called inside of OnImportAsset()
+        UnityEditor.EditorApplication.delayCall += () => {
             AssetDatabase.Refresh();
-            // cause crash if this is called inside of OnImportAsset()
-            UnityEditor.EditorApplication.delayCall += () => {
-                Selection.activeGameObject = directorGo;
-            };
-        }
+            Selection.activeGameObject = director.gameObject;
+        };
     }
+
+//---------------------------------------------------------------------------------------------------------------------
+    static PlayableDirector RemovePlayableFromDirectorsInScene(string timelinePath) {
+        PlayableDirector[] directors = Object.FindObjectsOfType<PlayableDirector>();
+        PlayableDirector ret = null;
+        foreach (PlayableDirector director in directors) {
+            string playableAssetPath = AssetDatabase.GetAssetPath(director.playableAsset);
+            if (playableAssetPath != timelinePath) {
+                continue;
+            }
+
+            director.playableAsset = null;
+            ret = director;
+        }
+
+        return ret;
+    }
+
+
+//---------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------
+
 
     [System.Serializable]
     public class TimelineParam
