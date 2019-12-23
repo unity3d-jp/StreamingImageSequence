@@ -5,8 +5,8 @@ namespace UnityEngine.StreamingImageSequence {
     public class StreamingImageSequencePlayableAssetParam
     {
         public int Version;
-        public ImageDimension<int> Resolution;
-        public ImageDimension<float> QuadSize;
+        public ImageDimensionInt Resolution;
+        public ImageDimensionFloat QuadSize;
         public string Folder;
         public List<string> Pictures;
     }

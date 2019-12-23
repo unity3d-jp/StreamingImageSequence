@@ -1,10 +1,10 @@
 ﻿namespace UnityEngine.StreamingImageSequence {
 
     [System.Serializable]
-    public struct ImageDimension<T>
+    public struct ImageDimensionFloat
     {
-        public T Width;
-        public T Height;
+        public float Width;
+        public float Height;
     }
 
 } //end namespace

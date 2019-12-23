@@ -16,9 +16,8 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
         [SerializeField] private int m_version;        
-        [SerializeField] private ImageDimension<int>    m_resolution;
-        [SerializeField] private ImageDimension<float>  m_quadSize;
-        public bool m_displayOnClipsOnly;
+        [SerializeField] private ImageDimensionInt   m_resolution;
+        [SerializeField] private ImageDimensionFloat m_quadSize;
         private bool[] LoadRequested;
         public int m_loadingIndex = -1;
 		private int m_lastIndex = -1;
