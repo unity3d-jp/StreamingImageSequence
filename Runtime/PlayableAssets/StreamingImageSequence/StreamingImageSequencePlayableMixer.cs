@@ -89,7 +89,7 @@ namespace UnityEngine.StreamingImageSequence
             }
 
             if (!TryBindGameObjectFromFrame(playerData)) {
-                Debug.LogError("Can't bind GameObject for track: " + m_track.name);
+                //Debug.LogError("Can't bind GameObject for track: " + m_track.name);
                 return;
             }
 

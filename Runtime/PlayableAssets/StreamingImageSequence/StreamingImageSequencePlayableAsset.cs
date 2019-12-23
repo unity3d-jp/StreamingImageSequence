@@ -11,35 +11,11 @@ namespace UnityEngine.StreamingImageSequence {
     [System.Serializable]
     public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
     {
-        [System.Serializable]
-        public struct StPicResolution
-        {
-            public int Width;
-            public int Height;
-        };
-
-        [System.Serializable]
-        public struct StQuadSize
-        {
-            public float sizX;
-            public int sizY;
-        }
-
         ~StreamingImageSequencePlayableAsset() {
             Reset();
-
         }
 
-
-        public int Version;
-        public StreamingImageSequencePlayableAssetParam.StPicResolution Resolution;
-        public StreamingImageSequencePlayableAssetParam.StQuadSize QuadSize;
-        public bool m_displayOnClipsOnly;
-        private bool[] LoadRequested;
-        public int m_loadingIndex = -1;
-		private int m_lastIndex = -1;
-        private bool m_verified;
-
+        public int GetVersion() { return m_version; }
         public IList<string> GetImagePaths() { return m_imagePaths; }
         public System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
         public Texture2D GetTexture() { return m_texture; }
@@ -95,9 +71,9 @@ namespace UnityEngine.StreamingImageSequence {
          
         public void SetParam(StreamingImageSequencePlayableAssetParam param)
         {
-            Version = param.Version;
-            Resolution = param.Resolution;
-            QuadSize = param.QuadSize;
+            m_version = param.Version;
+            m_resolution = param.Resolution;
+            m_quadSize = param.QuadSize;
             m_imagePaths = param.Pictures;
             m_folder = param.Folder;
             if (m_folder.StartsWith("Assets")) {
@@ -109,15 +85,13 @@ namespace UnityEngine.StreamingImageSequence {
             EditorUtility.SetDirty(this);
         }
 
+//---------------------------------------------------------------------------------------------------------------------
 
-
-        // Factory method that generates a playable based on this asset
         public override Playable CreatePlayable(PlayableGraph graph, GameObject go) {
-
-
-            var bh = new StreamingImageSequencePlayableBehaviour();
-            return ScriptPlayable<StreamingImageSequencePlayableBehaviour>.Create(graph,bh);
+            //Dummy. We just need to implement this from PlayableAsset because folder D&D support. See notes below
+            return Playable.Null;
         }
+//---------------------------------------------------------------------------------------------------------------------
 
         internal void LoadRequest(bool isDirectorIdle) {
             if (null == m_imagePaths)
@@ -271,14 +245,27 @@ namespace UnityEngine.StreamingImageSequence {
 
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
+        [SerializeField] private int m_version;        
+        [SerializeField] private ImageDimensionInt   m_resolution;
+        [SerializeField] private ImageDimensionFloat m_quadSize;
 
 #if UNITY_EDITOR
-        [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Enabling Folder D&D to Timeline
+        [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; 
 #endif
+        private bool[] LoadRequested;
+        public int m_loadingIndex = -1;
+		private int m_lastIndex = -1;
+        private bool m_verified;
 
         Texture2D m_texture = null;
 
     }
-
-
 }
+
+//---------------------------------------------------------------------------------------------------------------------
+//[Note-Sin: 2019-12-23] We need two things, in order to enable folder drag/drop to the timeline Window
+//1. Derive this class from PlayableAsset
+//2. Declare UnityEditor.DefaultAsset variable 
+
+
+

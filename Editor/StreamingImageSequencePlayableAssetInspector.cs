@@ -32,14 +32,10 @@ namespace UnityEditor.StreamingImageSequence {
 
             PrepareSerializedProperties();
             using (new EditorGUILayout.VerticalScope (GUI.skin.box))  {
-                EditorGUILayout.LabelField("Version",  $"{m_asset.Version}", "BoldLabel");
+                EditorGUILayout.LabelField("Version",  $"{m_asset.GetVersion() }", "BoldLabel");
                 EditorGUILayout.PropertyField(m_pResolution, true);
                 GUILayout.Space(4f);
 
-                using (new EditorGUI.DisabledScope(true)) {
-                    EditorGUILayout.Toggle("Display On Clips Only", m_asset.m_displayOnClipsOnly);
-
-                }
             }
             GUILayout.Space(4f);
 
@@ -73,7 +69,7 @@ namespace UnityEditor.StreamingImageSequence {
 
         private void PrepareSerializedProperties()
         {
-            if (m_pResolution == null) m_pResolution = serializedObject.FindProperty("Resolution");
+            if (m_pResolution == null) m_pResolution = serializedObject.FindProperty("m_resolution");
         }
 
 //---------------------------------------------------------------------------------------------------------------------
