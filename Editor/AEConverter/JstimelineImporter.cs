@@ -113,7 +113,6 @@ public class JstimelineImporter : ScriptedImporter
 
             StreamingImageSequencePlayableAsset proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
             proxyAsset.SetParam(trackMovieContainer);
-            proxyAsset.m_displayOnClipsOnly = true;
 
             string playableAssetPath = Path.Combine(timelineFolder, strFootageName + "_StreamingImageSequence.playable");
             AssetEditorUtility.OverwriteAsset(proxyAsset, playableAssetPath);

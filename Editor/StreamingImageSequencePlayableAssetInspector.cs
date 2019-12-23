@@ -36,10 +36,6 @@ namespace UnityEditor.StreamingImageSequence {
                 EditorGUILayout.PropertyField(m_pResolution, true);
                 GUILayout.Space(4f);
 
-                using (new EditorGUI.DisabledScope(true)) {
-                    EditorGUILayout.Toggle("Display On Clips Only", m_asset.m_displayOnClipsOnly);
-
-                }
             }
             GUILayout.Space(4f);
 
