@@ -11,35 +11,20 @@ namespace UnityEngine.StreamingImageSequence {
     [System.Serializable]
     public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
     {
-        [System.Serializable]
-        public struct StPicResolution
-        {
-            public int Width;
-            public int Height;
-        };
-
-        [System.Serializable]
-        public struct StQuadSize
-        {
-            public float sizX;
-            public int sizY;
-        }
-
         ~StreamingImageSequencePlayableAsset() {
             Reset();
-
         }
 
-
-        public int Version;
-        public StreamingImageSequencePlayableAssetParam.StPicResolution Resolution;
-        public StreamingImageSequencePlayableAssetParam.StQuadSize QuadSize;
+        [SerializeField] private int m_version;        
+        [SerializeField] private ImageDimension<int>    m_resolution;
+        [SerializeField] private ImageDimension<float>  m_quadSize;
         public bool m_displayOnClipsOnly;
         private bool[] LoadRequested;
         public int m_loadingIndex = -1;
 		private int m_lastIndex = -1;
         private bool m_verified;
 
+        public int GetVersion() { return m_version; }
         public IList<string> GetImagePaths() { return m_imagePaths; }
         public System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
         public Texture2D GetTexture() { return m_texture; }
@@ -95,9 +80,9 @@ namespace UnityEngine.StreamingImageSequence {
          
         public void SetParam(StreamingImageSequencePlayableAssetParam param)
         {
-            Version = param.Version;
-            Resolution = param.Resolution;
-            QuadSize = param.QuadSize;
+            m_version = param.Version;
+            m_resolution = param.Resolution;
+            m_quadSize = param.QuadSize;
             m_imagePaths = param.Pictures;
             m_folder = param.Folder;
             if (m_folder.StartsWith("Assets")) {
