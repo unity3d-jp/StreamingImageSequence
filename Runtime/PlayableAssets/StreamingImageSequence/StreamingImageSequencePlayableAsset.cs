@@ -15,14 +15,6 @@ namespace UnityEngine.StreamingImageSequence {
             Reset();
         }
 
-        [SerializeField] private int m_version;        
-        [SerializeField] private ImageDimensionInt   m_resolution;
-        [SerializeField] private ImageDimensionFloat m_quadSize;
-        private bool[] LoadRequested;
-        public int m_loadingIndex = -1;
-		private int m_lastIndex = -1;
-        private bool m_verified;
-
         public int GetVersion() { return m_version; }
         public IList<string> GetImagePaths() { return m_imagePaths; }
         public System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
@@ -253,10 +245,17 @@ namespace UnityEngine.StreamingImageSequence {
 
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
+        [SerializeField] private int m_version;        
+        [SerializeField] private ImageDimensionInt   m_resolution;
+        [SerializeField] private ImageDimensionFloat m_quadSize;
 
 #if UNITY_EDITOR
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; 
 #endif
+        private bool[] LoadRequested;
+        public int m_loadingIndex = -1;
+		private int m_lastIndex = -1;
+        private bool m_verified;
 
         Texture2D m_texture = null;
 
