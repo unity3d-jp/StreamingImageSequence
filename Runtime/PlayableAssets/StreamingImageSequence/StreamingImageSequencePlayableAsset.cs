@@ -109,15 +109,13 @@ namespace UnityEngine.StreamingImageSequence {
             EditorUtility.SetDirty(this);
         }
 
+//---------------------------------------------------------------------------------------------------------------------
 
-
-        // Factory method that generates a playable based on this asset
         public override Playable CreatePlayable(PlayableGraph graph, GameObject go) {
-
-
-            var bh = new StreamingImageSequencePlayableBehaviour();
-            return ScriptPlayable<StreamingImageSequencePlayableBehaviour>.Create(graph,bh);
+            //Dummy. We just need to implement this from PlayableAsset because folder D&D support. See notes below
+            return Playable.Null;
         }
+//---------------------------------------------------------------------------------------------------------------------
 
         internal void LoadRequest(bool isDirectorIdle) {
             if (null == m_imagePaths)
@@ -273,12 +271,18 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] List<string> m_imagePaths;
 
 #if UNITY_EDITOR
-        [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Enabling Folder D&D to Timeline
+        [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; 
 #endif
 
         Texture2D m_texture = null;
 
     }
-
-
 }
+
+//---------------------------------------------------------------------------------------------------------------------
+//[Note-Sin: 2019-12-23] We need two things, in order to enable folder drag/drop to the timeline Window
+//1. Derive this class from PlayableAsset
+//2. Declare UnityEditor.DefaultAsset variable 
+
+
+
