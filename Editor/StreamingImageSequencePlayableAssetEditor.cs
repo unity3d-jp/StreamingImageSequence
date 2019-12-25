@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using JetBrains.Annotations;
 using System.IO;
 using UnityEditor;
 using UnityEditor.StreamingImageSequence;
@@ -74,6 +75,10 @@ namespace UnityEngine.StreamingImageSequence {
             ImageSequenceImporter.ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, asset);
             clip.duration = asset.GetImagePaths().Count * 0.125; // 8fps (standard limited animation)
             clip.displayName = Path.GetFileName(asset.GetFolder());
+            clip.CreateCurves("Curves: " + clip.displayName);
+
+            asset.Setup(clip);
+            asset.SetDuration(clip.duration);
             return true;
         }
 
