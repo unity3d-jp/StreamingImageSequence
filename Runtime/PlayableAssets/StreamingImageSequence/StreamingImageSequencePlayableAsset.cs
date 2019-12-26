@@ -53,6 +53,17 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
 
+        public StreamingImageSequencePlayableAsset() {
+            m_loadingIndex = -1;
+#if UNITY_EDITOR            
+            m_timelineEditorCurveBinding  = new EditorCurveBinding() {
+                path = "",
+                type = typeof(StreamingImageSequencePlayableAsset),
+                propertyName = "m_time"
+            };
+#endif            
+        }
+
         ~StreamingImageSequencePlayableAsset() {
             Reset();
         }
@@ -286,41 +297,47 @@ namespace UnityEngine.StreamingImageSequence {
             clip.OnTimingSet     = OnClipTimingSet;
             clip.OnTimingTrimmed = OnClipTimingTrimmed;
             m_timelineClip = clip;
+            m_duration = clip.duration;
+        }
+
+
+//----------------------------------------------------------------------------------------------------------------------
+        public void ValidateAnimationCurve() {
+            AnimationCurve curve = GetAndValidateAnimationCurve();
+            RefreshAnimationCurve(curve);
         }
 
 //----------------------------------------------------------------------------------------------------------------------
-        //make sure we have at least two keys at the end
-        private void ValidateAnimationCurve() {
-            if (null == m_animationCurve)
-                m_animationCurve = new AnimationCurve();
+        //Get the animation curve from the TimelineClip. Also make sure we have at least two keys 
+        private AnimationCurve GetAndValidateAnimationCurve() {
+            AnimationCurve animationCurve = null;
+#if UNITY_EDITOR
+            animationCurve = AnimationUtility.GetEditorCurve(m_timelineClip.curves, m_timelineEditorCurveBinding);
+#endif
+            if (null == animationCurve)
+                animationCurve = new AnimationCurve();
             
-            
-            int numKeys = m_animationCurve.keys.Length;
-            if (numKeys >= 2)
-                return;
-
-            if (numKeys == 1) {
-                m_animationCurve.keys[0] = new Keyframe(0.0f,0.0f);
-                m_animationCurve.AddKey((float)m_duration, 1.0f);
-                return;
+            int numKeys = animationCurve.keys.Length;
+            switch (numKeys) {
+                case 0: {
+                    animationCurve = AnimationCurve.Linear(0, 0, (float) m_duration,1 );
+                    break;
+                }
+                case 1: {
+                    animationCurve.keys[0] = new Keyframe(0.0f,0.0f);
+                    animationCurve.AddKey((float)m_duration, 1.0f);
+                    break;
+                }
+                default: break;
             }
 
-            //No keys
-            m_animationCurve = AnimationCurve.Linear(0, 0, (float) m_duration,1 );
-            
+            return animationCurve;
         }
-
-//----------------------------------------------------------------------------------------------------------------------
-        public void SetDuration(double dur) {
-            m_duration = dur;
-            ValidateAnimationCurve();
-            RefreshAnimationCurve();
-        }
-
+        
 //----------------------------------------------------------------------------------------------------------------------
 
-        private void  RefreshAnimationCurve() {
-            m_timelineClip.curves.SetCurve("", typeof(StreamingImageSequencePlayableAsset), "m_time", m_animationCurve);
+        private void  RefreshAnimationCurve(AnimationCurve curve) {
+            m_timelineClip.curves.SetCurve("", typeof(StreamingImageSequencePlayableAsset), "m_time", curve);
 #if UNITY_EDITOR            
             //[TODO-sin: 2019-12-25] Is there a way to make this smoother ?
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
@@ -331,17 +348,17 @@ namespace UnityEngine.StreamingImageSequence {
 
         void OnClipTimingSet(double st, double dur) {
             m_duration = dur;
-            ValidateAnimationCurve();
+            AnimationCurve curve = GetAndValidateAnimationCurve();
 
             //[TODO-sin: 2019-12-25] Calculate new tangents
             
             //Make sure the last keyframe is located at the duration time
-            Keyframe[] keys = m_animationCurve.keys;
+            Keyframe[] keys = curve.keys;
             int lastKeyIndex = keys.Length - 1;
             Keyframe lastKey = keys[lastKeyIndex];
             keys[lastKeyIndex].time  = (float) m_duration;
-            m_animationCurve.keys = keys;
-            RefreshAnimationCurve();
+            curve.keys = keys;
+            RefreshAnimationCurve(curve);
         }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -356,12 +373,13 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
         [SerializeField] private ImageDimensionInt  m_resolution;
         
-        [SerializeField] double m_duration; //In seconds
-        [SerializeField] AnimationCurve m_animationCurve; //Local to the TimelineClip that owns this object
         [SerializeField] double m_time;
+
+        double m_duration; //In seconds
 
 #if UNITY_EDITOR
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below
+        private EditorCurveBinding m_timelineEditorCurveBinding;
 #endif
         private bool[] m_loadRequested;
         //[TODO-sin: 2019-12-25] Is there a way we can just serialize this without affecting folder D&D
