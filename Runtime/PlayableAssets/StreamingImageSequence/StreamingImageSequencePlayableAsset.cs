@@ -352,11 +352,24 @@ namespace UnityEngine.StreamingImageSequence {
             m_clipStart = st;
             m_clipDuration = dur;
             
-            //[TODO-sin: 2019-12-25] Calculate new tangents
+            Keyframe[] keys = curve.keys;
+            int lastKeyIndex = keys.Length - 1;
+            
+            //[TODO-sin: 2019-12-26] Calculate new positions/tangents of middle keys
+            //for (int i = 1; i < lastKeyIndex; ++i) {
+            //}
+           
             
             //Make sure the last keyframe is located at the duration time
-            Keyframe[] keys = curve.keys;
-            keys[keys.Length - 1].time  = (float) m_clipDuration;
+            keys[lastKeyIndex].time  = (float) m_clipDuration;
+            
+            //Fix the tangent of the last key
+            double valueDiff = keys[lastKeyIndex].value - keys[lastKeyIndex-1].value;
+            double timeDiff = keys[lastKeyIndex].time - keys[lastKeyIndex-1].time;
+            float tangent = (float) (valueDiff / dur);
+            keys[lastKeyIndex - 1].outTangent = tangent;
+            keys[lastKeyIndex].inTangent = tangent;
+            
             curve.keys = keys;
             RefreshAnimationCurve(curve);
         }
