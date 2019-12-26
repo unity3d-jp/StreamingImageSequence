@@ -139,7 +139,7 @@ namespace UnityEngine.StreamingImageSequence {
             return Playable.Null;
         }
         
-        public override double duration {  get {  return m_duration;  }  }
+        public override double duration {  get {  return m_clipDuration;  }  }
         
 //---------------------------------------------------------------------------------------------------------------------
 
@@ -297,7 +297,8 @@ namespace UnityEngine.StreamingImageSequence {
             clip.OnTimingSet     = OnClipTimingSet;
             clip.OnTimingTrimmed = OnClipTimingTrimmed;
             m_timelineClip = clip;
-            m_duration = clip.duration;
+            m_clipStart = clip.start;
+            m_clipDuration = clip.duration;
         }
 
 
@@ -320,12 +321,12 @@ namespace UnityEngine.StreamingImageSequence {
             int numKeys = animationCurve.keys.Length;
             switch (numKeys) {
                 case 0: {
-                    animationCurve = AnimationCurve.Linear(0, 0, (float) m_duration,1 );
+                    animationCurve = AnimationCurve.Linear(0, 0, (float) m_clipDuration,1 );
                     break;
                 }
                 case 1: {
                     animationCurve.keys[0] = new Keyframe(0.0f,0.0f);
-                    animationCurve.AddKey((float)m_duration, 1.0f);
+                    animationCurve.AddKey((float)m_clipDuration, 1.0f);
                     break;
                 }
                 default: break;
@@ -347,23 +348,42 @@ namespace UnityEngine.StreamingImageSequence {
 //---------------------------------------------------------------------------------------------------------------------
 
         void OnClipTimingSet(double st, double dur) {
-            m_duration = dur;
             AnimationCurve curve = GetAndValidateAnimationCurve();
-
+            m_clipStart = st;
+            m_clipDuration = dur;
+            
             //[TODO-sin: 2019-12-25] Calculate new tangents
             
             //Make sure the last keyframe is located at the duration time
             Keyframe[] keys = curve.keys;
-            int lastKeyIndex = keys.Length - 1;
-            Keyframe lastKey = keys[lastKeyIndex];
-            keys[lastKeyIndex].time  = (float) m_duration;
+            keys[keys.Length - 1].time  = (float) m_clipDuration;
             curve.keys = keys;
             RefreshAnimationCurve(curve);
         }
 
 //---------------------------------------------------------------------------------------------------------------------
         void OnClipTimingTrimmed(double st, double dur) {
-            Debug.Log("OnClipTimingTrimmed");
+            AnimationCurve curve = GetAndValidateAnimationCurve();
+            double prevDur = m_clipDuration;
+            double prevStart = m_clipStart;
+            m_clipStart = st;
+            m_clipDuration = dur;
+            
+            //double localStart = m_timelineClip.ToLocalTime(st);
+            double localStartTime   = (st - prevStart);
+            float startVal = curve.Evaluate((float) localStartTime);
+            float endVal = curve.Evaluate((float) (localStartTime + dur));
+            
+            //[TODO-sin: 2019-12-26] Calculate new tangents
+            
+            Keyframe[] keys = curve.keys;
+            int lastKeyIndex = keys.Length - 1;
+            
+            keys[0].value = startVal;
+            keys[lastKeyIndex].time = (float) m_clipDuration;
+            keys[lastKeyIndex].value = endVal;
+            curve.keys = keys;
+            RefreshAnimationCurve(curve);
         }
         
 //----------------------------------------------------------------------------------------------------------------------
@@ -375,7 +395,8 @@ namespace UnityEngine.StreamingImageSequence {
         
         [SerializeField] double m_time;
 
-        double m_duration; //In seconds
+        double m_clipStart;     //In global space. In seconds
+        double m_clipDuration;  //In seconds
 
 #if UNITY_EDITOR
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below
