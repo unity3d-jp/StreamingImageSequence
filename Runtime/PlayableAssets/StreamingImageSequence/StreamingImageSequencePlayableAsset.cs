@@ -68,12 +68,21 @@ namespace UnityEngine.StreamingImageSequence {
             Reset();
         }
 //----------------------------------------------------------------------------------------------------------------------        
+        //Calculate Image Sequence Time, which is normalized [0..1] 
+        public double ToImageSequenceTime(double globalTime) {
+            double localTime = m_timelineClip.ToLocalTime(globalTime);
+            AnimationCurve curve = GetAndValidateAnimationCurve();
+            return curve.Evaluate((float)localTime);
+        }
+//----------------------------------------------------------------------------------------------------------------------
 
         public int GetVersion() { return m_version; }
         public IList<string> GetImagePaths() { return m_imagePaths; }
         public ImageDimensionInt GetResolution() { return m_resolution; }
         public System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
         public Texture2D GetTexture() { return m_texture; }
+
+//----------------------------------------------------------------------------------------------------------------------        
 
         public string GetImagePath(int index) {
             if (null == m_imagePaths || index >= m_imagePaths.Count)

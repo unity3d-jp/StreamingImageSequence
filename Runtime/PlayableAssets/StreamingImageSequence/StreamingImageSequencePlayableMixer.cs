@@ -125,9 +125,8 @@ namespace UnityEngine.StreamingImageSequence
 
                 if (directorTime >= startTime && directorTime < endTime) {
                     activeClip = clip;
-                    float rate = (float)(directorTime - startTime);
-                    float now = (float)count * (float)rate / (float)clipDuration;
-                    int index = (int)now;
+                    double imageSequenceTime = asset.ToImageSequenceTime(directorTime);
+                    int index = (int)(count * imageSequenceTime);
                     if (index < 0) {
                         index = 0;
                     }
