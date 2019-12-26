@@ -71,11 +71,13 @@ namespace UnityEngine.StreamingImageSequence {
                 return false;
             }
 
-
             ImageSequenceImporter.ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, asset);
-            clip.duration = asset.GetImagePaths().Count * 0.125; // 8fps (standard limited animation)
-            clip.displayName = Path.GetFileName(asset.GetFolder());
-            clip.CreateCurves("Curves: " + clip.displayName);
+            //If the clip already has curves (because of cloning, etc), then we don't set anything
+            if (null == clip.curves) {
+                clip.duration = asset.GetImagePaths().Count * 0.125; // 8fps (standard limited animation)
+                clip.displayName = Path.GetFileName(asset.GetFolder());
+                clip.CreateCurves("Curves: " + clip.displayName);
+            }
 
             asset.Setup(clip);
             asset.ValidateAnimationCurve();
