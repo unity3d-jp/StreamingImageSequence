@@ -30,6 +30,9 @@ public class JstimelineImporter : ScriptedImporter
 
 //---------------------------------------------------------------------------------------------------------------------
 
+    //TODO-sin: 2019-12-27: Add tests
+    //1. Importing jstimeline inside Assets folder
+    //2. Importing jstimeline outside the project
     static void CreateTimeline(string jsTimelinePath) {
 
         // prepare asset name, paths, etc
@@ -40,6 +43,11 @@ public class JstimelineImporter : ScriptedImporter
             return;
         }
         timelineFolder = Path.Combine(timelineFolder,assetName).Replace("\\","/");
+        //Check if we are exporting from external asset
+        if (!timelineFolder.StartsWith("Assets/")) {
+            timelineFolder = Path.Combine("Assets", assetName);
+        }
+        
         Directory.CreateDirectory(timelineFolder);
         string strJson = File.ReadAllText(jsTimelinePath);
         TimelineParam container = JsonUtility.FromJson<TimelineParam>(strJson);
