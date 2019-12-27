@@ -8,6 +8,8 @@ using UnityEditor;
 #endif
 
 namespace UnityEngine.StreamingImageSequence {
+    
+    //ITimelineClipAsset interface is used to define the clip capabilities (ClipCaps) 
     [System.Serializable]
     public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
     {
@@ -38,12 +40,8 @@ namespace UnityEngine.StreamingImageSequence {
             ResetTexture();
         }
 
-        public ClipCaps clipCaps
-        {
-            get
-            {
-                return ClipCaps.None;
-            }
+        public ClipCaps clipCaps {
+            get { return ClipCaps.None; }
         }
 
         public bool Verified
