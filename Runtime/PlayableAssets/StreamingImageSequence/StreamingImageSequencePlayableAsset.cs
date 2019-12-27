@@ -25,6 +25,7 @@ namespace UnityEngine.StreamingImageSequence {
 
         public int GetVersion() { return m_version; }
         public IList<string> GetImagePaths() { return m_imagePaths; }
+        public ImageDimensionInt GetResolution() { return m_resolution; }
         public System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
         public Texture2D GetTexture() { return m_texture; }
 
@@ -254,7 +255,7 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
         [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
-        [SerializeField] private ImageDimensionInt   m_resolution;
+        [SerializeField] private ImageDimensionInt  m_resolution;
 
 #if UNITY_EDITOR
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below

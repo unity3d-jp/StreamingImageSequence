@@ -30,10 +30,15 @@ namespace UnityEditor.StreamingImageSequence {
             EditorGUI.BeginChangeCheck();
             serializedObject.Update();
 
-            PrepareSerializedProperties();
             using (new EditorGUILayout.VerticalScope (GUI.skin.box))  {
                 EditorGUILayout.LabelField("Version",  $"{m_asset.GetVersion() }", "BoldLabel");
-                EditorGUILayout.PropertyField(m_pResolution, true);
+
+                m_resolutionFoldout = EditorGUILayout.Foldout(m_resolutionFoldout, "Resolution");
+                if (m_resolutionFoldout) {
+                    ImageDimensionInt res = m_asset.GetResolution();
+                    EditorGUILayout.LabelField("Width",  $"{res.Width } px");
+                    EditorGUILayout.LabelField("Height",  $"{res.Height } px");
+                }
                 GUILayout.Space(4f);
 
             }
@@ -53,8 +58,8 @@ namespace UnityEditor.StreamingImageSequence {
                 EditorGUILayout.LabelField("Number of Images", $"{m_asset.GetImagePaths().Count}");
                 GUILayout.Space(4f);
                 
-                m_foldout = EditorGUILayout.Foldout(m_foldout, "Images");
-                if (m_foldout)
+                m_imageListFoldout = EditorGUILayout.Foldout(m_imageListFoldout, "Images");
+                if (m_imageListFoldout)
                 {
                     DoImageGUI();
                 }
@@ -67,10 +72,6 @@ namespace UnityEditor.StreamingImageSequence {
 
         }
 
-        private void PrepareSerializedProperties()
-        {
-            if (m_pResolution == null) m_pResolution = serializedObject.FindProperty("m_resolution");
-        }
 
 //---------------------------------------------------------------------------------------------------------------------
         private void DoFolderGUI() {
@@ -183,12 +184,11 @@ namespace UnityEditor.StreamingImageSequence {
 //---------------------------------------------------------------------------------------------------------------------
         private StreamingImageSequencePlayableAsset m_asset = null;
 
-        private SerializedProperty m_pResolution;
         
         private ReorderableList m_imageList;
         private bool m_isImageListDirty;
-        private bool m_foldout;
-
+        private bool m_imageListFoldout;
+        private bool m_resolutionFoldout = true;
 
     }
 }
