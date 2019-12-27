@@ -71,7 +71,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
 
-            PictureFileImporter.ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, asset);
+            ImageSequenceImporter.ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, asset);
             clip.duration = asset.GetImagePaths().Count * 0.125; // 8fps (standard limited animation)
             clip.displayName = Path.GetFileName(asset.GetFolder());
             return true;

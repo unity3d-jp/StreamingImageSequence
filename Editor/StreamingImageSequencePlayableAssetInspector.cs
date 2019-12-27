@@ -177,7 +177,7 @@ namespace UnityEditor.StreamingImageSequence {
 
 //---------------------------------------------------------------------------------------------------------------------
         private void ImportImages(string path) {
-            PictureFileImporter.ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, m_asset);
+            ImageSequenceImporter.ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, m_asset);
             m_isImageListDirty = true;
         }
 
