@@ -174,7 +174,7 @@ namespace UnityEngine.StreamingImageSequence
                     {
                         if (!asset.IsLoadRequested(m_nextInadvanceLoadingFrameArray[index]))
                         {
-                            StReadResult result = new StReadResult();
+                            ReadResult result = new ReadResult();
                             asset.LoadRequest(m_nextInadvanceLoadingFrameArray[index], false, out result);
                         }
                     }

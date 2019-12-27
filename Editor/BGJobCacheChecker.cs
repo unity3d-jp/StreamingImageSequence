@@ -25,7 +25,7 @@ namespace UnityEditor.StreamingImageSequence
         }
         public override void Execute()
         {
-            StReadResult tResult = new StReadResult();
+            ReadResult tResult = new ReadResult();
 
             int loaded = 0;
             for ( int ii = 0; ii < m_param.m_collorArray.Length; ii++ )
@@ -34,7 +34,7 @@ namespace UnityEditor.StreamingImageSequence
                 //m_collorArray[ii] = notYet;
                 if ( StreamingImageSequencePlugin.GetNativTextureInfo(m_param.m_asset.GetCompleteFilePath(fileName), out tResult) != IntPtr.Zero)
                 {
-                    if ( tResult.readStatus == 2 )
+                    if ( tResult.ReadStatus == 2 )
                     {
                         m_param.m_collorArray[ii] = 0xffffffff;
                         loaded ++;
