@@ -33,6 +33,7 @@ excons.cache
 
 StreamingImageSequence~/*.csproj
 StreamingImageSequence~/*.sln
+StreamingImageSequence~/.idea/**
 .vs/
 Library/
 Temp/
