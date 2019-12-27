@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Text.RegularExpressions;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -14,8 +13,11 @@ namespace UnityEditor.StreamingImageSequence {
 [ScriptedImporter(1, "jstimeline")]
 public class JstimelineImporter : ScriptedImporter
 {
-    public override void OnImportAsset(AssetImportContext ctx)
-    {
+    public override void OnImportAsset(AssetImportContext ctx) {
+        //Ignore test assets
+        if (ctx.assetPath.StartsWith("Packages/com.unity.streaming-image-sequence/Tests"))
+            return;
+        
         CreateTimeline(ctx.assetPath);
     }
 
