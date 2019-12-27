@@ -19,7 +19,7 @@ namespace UnityEditor.StreamingImageSequence
         static List<Object> orgList;
         static TimelineAsset newAsset;
         static PlayableDirector newPlayableDirector; 
-        [MenuItem("Edit/Streaming Image Sequence/Convert MovieProxy to SpriteAnimation", false, 5)]
+        [MenuItem("Assets/Streaming Image Sequence/Convert MovieProxy to SpriteAnimation", false, 5)]
         static private void ConvertToSpriteAnimation()
         {
 

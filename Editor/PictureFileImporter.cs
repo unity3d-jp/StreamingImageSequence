@@ -16,7 +16,7 @@ namespace UnityEditor.StreamingImageSequence {
 
         static string versionString = "StreamingImageSequence version 0.2.1";
 
-        [MenuItem("Edit/Streaming Image Sequence/Create Clip", false, 1)]
+        [MenuItem("Assets/Streaming Image Sequence/Create Clip", false, 1)]
         private static void RegisterFilesAndCreateStreamingImageSequence()
         {
             string path = EditorUtility.OpenFilePanel("Open File", "", PNG_EXTENSION + "," + TGA_EXTENSION);
@@ -103,7 +103,7 @@ namespace UnityEditor.StreamingImageSequence {
 
         /*
 
-        [MenuItem("Edit/Streaming Image Sequence/Create MovieProxy/Register files", false, 6)]
+        [MenuItem("Assets/Streaming Image Sequence/Create MovieProxy/Register files", false, 6)]
         static void ImportAndCreateSpriteAnimation()
         {
             importPictureFiles(PictureFileImporterParam.Mode.SpriteAnimation);
@@ -111,12 +111,12 @@ namespace UnityEditor.StreamingImageSequence {
         }
         */
 
-        [MenuItem("Edit/Streaming Image Sequence/Reset",false,50)]
+        [MenuItem("Assets/Streaming Image Sequence/Reset",false,50)]
         static void Reset()
         {
             UpdateManager.ResetPlugin();
         }
-        [MenuItem("Edit/Streaming Image Sequence/Show version",false,51)]
+        [MenuItem("Assets/Streaming Image Sequence/Show version",false,51)]
         static void ShowVersion()
         {
             Debug.Log(versionString);
