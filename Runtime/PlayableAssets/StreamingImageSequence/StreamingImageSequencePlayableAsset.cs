@@ -11,11 +11,17 @@ namespace UnityEngine.StreamingImageSequence {
     
     //ITimelineClipAsset interface is used to define the clip capabilities (ClipCaps) 
     [System.Serializable]
-    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
-    {
+    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset  {
+//----------------------------------------------------------------------------------------------------------------------        
+        public StreamingImageSequencePlayableAsset() {
+            m_loadingIndex = -1;
+        }
+//----------------------------------------------------------------------------------------------------------------------        
+        
         ~StreamingImageSequencePlayableAsset() {
             Reset();
         }
+//----------------------------------------------------------------------------------------------------------------------        
 
         public int GetVersion() { return m_version; }
         public IList<string> GetImagePaths() { return m_imagePaths; }
@@ -32,13 +38,15 @@ namespace UnityEngine.StreamingImageSequence {
         public string GetFolder() { return m_folder; }
         public UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
 
-        internal void Reset()
-        {
+//----------------------------------------------------------------------------------------------------------------------        
+        internal void Reset() {
             m_loadingIndex = -1;
             m_lastIndex = -1;
             LoadRequested = null;
             ResetTexture();
+            m_resolution = new ImageDimensionInt();
         }
+//----------------------------------------------------------------------------------------------------------------------        
 
         public ClipCaps clipCaps {
             get { return ClipCaps.None; }
@@ -61,17 +69,11 @@ namespace UnityEngine.StreamingImageSequence {
             }
         }
 
+//----------------------------------------------------------------------------------------------------------------------        
 
-        public StreamingImageSequencePlayableAsset()
-        {
-            m_loadingIndex = -1;
-        }
          
-        public void SetParam(StreamingImageSequencePlayableAssetParam param)
-        {
-            m_version = param.Version;
+        public void SetParam(StreamingImageSequencePlayableAssetParam param) {
             m_resolution = param.Resolution;
-            m_quadSize = param.QuadSize;
             m_imagePaths = param.Pictures;
             m_folder = param.Folder;
             if (m_folder.StartsWith("Assets")) {
@@ -184,27 +186,29 @@ namespace UnityEngine.StreamingImageSequence {
                 return false;
             }
            
-            string filename = LoadRequest(index,isBlocking, out StReadResult tResult);
+            string filename = LoadRequest(index,isBlocking, out StReadResult readResult);
 
-            if (null == m_texture &&  tResult.readStatus == (int)LoadStatus.Loaded)
+            if (null == m_texture &&  readResult.readStatus == (int)LoadStatus.Loaded)
             {
 #if UNITY_STANDALONE_OSX
 				const TextureFormat textureFormat = TextureFormat.RGBA32;
 #elif UNITY_STANDALONE_WIN
                 const TextureFormat textureFormat = TextureFormat.BGRA32;
 #endif
-                m_texture = new Texture2D(tResult.width, tResult.height, textureFormat, false, false);
-                m_texture.LoadRawTextureData(tResult.buffer, tResult.width * tResult.height * 4);
+                m_texture = new Texture2D(readResult.width, readResult.height, textureFormat, false, false);
+                m_texture.LoadRawTextureData(readResult.buffer, readResult.width * readResult.height * 4);
                 m_texture.filterMode = FilterMode.Bilinear;
                 m_texture.Apply();
 
                 IntPtr ptr =  m_texture.GetNativeTexturePtr();
                 int texInstanceID = m_texture.GetInstanceID();
-                StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)tResult.width, (uint)tResult.height, texInstanceID);
+                
+                UpdateResolution(readResult);
+                StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)readResult.width, (uint)readResult.height, texInstanceID);
             }
 
             //Update the texture
-			if (tResult.readStatus == (int)LoadStatus.Loaded && m_lastIndex != index) {
+			if (readResult.readStatus == (int)LoadStatus.Loaded && m_lastIndex != index) {
                 int texInstanceID = m_texture.GetInstanceID();
                 StreamingImageSequencePlugin.SetLoadedTexture (filename, texInstanceID);
                 GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), texInstanceID);
@@ -238,17 +242,22 @@ namespace UnityEngine.StreamingImageSequence {
                 m_texture = null;
             }
         }
+
+//---------------------------------------------------------------------------------------------------------------------
+        void UpdateResolution(StReadResult readResult) {
+            m_resolution.Width  = readResult.width;
+            m_resolution.Height = readResult.height;
+        }
         
 //---------------------------------------------------------------------------------------------------------------------
 
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
-        [SerializeField] private int m_version;        
+        [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
         [SerializeField] private ImageDimensionInt   m_resolution;
-        [SerializeField] private ImageDimensionFloat m_quadSize;
 
 #if UNITY_EDITOR
-        [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; 
+        [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below
 #endif
         private bool[] LoadRequested;
         public int m_loadingIndex = -1;
@@ -256,6 +265,8 @@ namespace UnityEngine.StreamingImageSequence {
         private bool m_verified;
 
         Texture2D m_texture = null;
+
+        private const int STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION = 1;
 
     }
 }
