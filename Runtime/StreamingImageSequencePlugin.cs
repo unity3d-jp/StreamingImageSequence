@@ -7,15 +7,15 @@ using System.Runtime.InteropServices;
 namespace UnityEngine.StreamingImageSequence
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 8)]
-    public struct StReadResult
+    public struct ReadResult
     {
-        public IntPtr buffer;
+        public IntPtr Buffer;
         [MarshalAs(UnmanagedType.I4)]
-        public int width;
+        public int Width;
         [MarshalAs(UnmanagedType.I4)]
-        public int height;
+        public int Height;
         [MarshalAs(UnmanagedType.I4)]
-        public int readStatus;
+        public int ReadStatus;
     };
 
     public enum LoadStatus
@@ -35,7 +35,7 @@ namespace UnityEngine.StreamingImageSequence
         public extern static void NativeFree(IntPtr ptr);
 
         [DllImport("Loader", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out StReadResult tResult);
+        public extern static IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult);
 
         [DllImport("Loader", CharSet = CharSet.Unicode, ExactSpelling = true)]
         public extern static int ResetNativeTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
@@ -97,7 +97,7 @@ namespace UnityEngine.StreamingImageSequence
 		public extern static void NativeFree(IntPtr ptr);
 
 		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public extern static  IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out StReadResult tResult);
+		public extern static  IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult);
 
 		// Impremented in Drawer dll
 		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
@@ -174,12 +174,12 @@ namespace UnityEngine.StreamingImageSequence
 
         public  static void NativeFree(IntPtr ptr){}
 
-        public  static  IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out StReadResult tResult)
+        public  static  IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult)
         {
-            tResult.buffer = IntPtr.Zero;
-            tResult.width = 0;
-            tResult.height = 0;
-            tResult.readStatus = 0;
+            tResult.Buffer = IntPtr.Zero;
+            tResult.Width = 0;
+            tResult.Height = 0;
+            tResult.ReadStatus = 0;
             return IntPtr.Zero;
         }
 

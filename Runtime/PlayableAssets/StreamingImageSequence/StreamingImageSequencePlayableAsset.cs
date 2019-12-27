@@ -8,15 +8,25 @@ using UnityEditor;
 #endif
 
 namespace UnityEngine.StreamingImageSequence {
+    
+    //ITimelineClipAsset interface is used to define the clip capabilities (ClipCaps) 
     [System.Serializable]
-    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
-    {
+    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset  {
+//----------------------------------------------------------------------------------------------------------------------        
+        public StreamingImageSequencePlayableAsset() {
+            m_loadingIndex = -1;
+            m_lastIndex = -1;
+        }
+//----------------------------------------------------------------------------------------------------------------------        
+        
         ~StreamingImageSequencePlayableAsset() {
             Reset();
         }
+//----------------------------------------------------------------------------------------------------------------------        
 
         public int GetVersion() { return m_version; }
         public IList<string> GetImagePaths() { return m_imagePaths; }
+        public ImageDimensionInt GetResolution() { return m_resolution; }
         public System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
         public Texture2D GetTexture() { return m_texture; }
 
@@ -30,20 +40,18 @@ namespace UnityEngine.StreamingImageSequence {
         public string GetFolder() { return m_folder; }
         public UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
 
-        internal void Reset()
-        {
+//----------------------------------------------------------------------------------------------------------------------        
+        internal void Reset() {
             m_loadingIndex = -1;
             m_lastIndex = -1;
-            LoadRequested = null;
+            m_loadRequested = null;
             ResetTexture();
+            m_resolution = new ImageDimensionInt();
         }
+//----------------------------------------------------------------------------------------------------------------------        
 
-        public ClipCaps clipCaps
-        {
-            get
-            {
-                return ClipCaps.None;
-            }
+        public ClipCaps clipCaps {
+            get { return ClipCaps.None; }
         }
 
         public bool Verified
@@ -63,17 +71,11 @@ namespace UnityEngine.StreamingImageSequence {
             }
         }
 
+//----------------------------------------------------------------------------------------------------------------------        
 
-        public StreamingImageSequencePlayableAsset()
-        {
-            m_loadingIndex = -1;
-        }
          
-        public void SetParam(StreamingImageSequencePlayableAssetParam param)
-        {
-            m_version = param.Version;
+        public void SetParam(StreamingImageSequencePlayableAssetParam param) {
             m_resolution = param.Resolution;
-            m_quadSize = param.QuadSize;
             m_imagePaths = param.Pictures;
             m_folder = param.Folder;
             if (m_folder.StartsWith("Assets")) {
@@ -98,8 +100,8 @@ namespace UnityEngine.StreamingImageSequence {
                 return;
 
             int numPictures = m_imagePaths.Count;
-            if (LoadRequested == null && numPictures > 0) {
-                LoadRequested = new bool[numPictures];
+            if (m_loadRequested == null && numPictures > 0) {
+                m_loadRequested = new bool[numPictures];
             }
 
             // request loading while editor is idle.
@@ -119,7 +121,6 @@ namespace UnityEngine.StreamingImageSequence {
             {
                 return;
             }
-            StReadResult tResult = new StReadResult();
             int loadRequestMax = m_loadingIndex + step;
             if (loadRequestMax > m_imagePaths.Count)
             {
@@ -132,7 +133,7 @@ namespace UnityEngine.StreamingImageSequence {
                     continue;
                 }
 
-                LoadRequest(ii, false, out tResult);
+                LoadRequest(ii, false, out ReadResult readResult);
 
             }
             m_loadingIndex = loadRequestMax;
@@ -144,69 +145,67 @@ namespace UnityEngine.StreamingImageSequence {
         {
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
-            StReadResult tResult = new StReadResult();
-            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
-            return (tResult.readStatus != 0);
+            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out ReadResult readResult);
+            return (readResult.ReadStatus != 0);
 
         }
-        internal string LoadRequest(int index, bool isBlocking, out StReadResult tResult)
-        {
+
+//----------------------------------------------------------------------------------------------------------------------        
+        internal string LoadRequest(int index, bool isBlocking, out ReadResult readResult) {
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
-            if (LoadRequested == null)
-            {
-                LoadRequested = new bool[m_imagePaths.Count];
+            if (m_loadRequested == null) {
+                m_loadRequested = new bool[m_imagePaths.Count];
             }
 
-            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
-            //Debug.Log("tResult.readStatus " + tResult.readStatus + "Loading " + filename);
-            if (tResult.readStatus == 0)
-            {
+            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
+            //Debug.Log("readResult.readStatus " + readResult.readStatus + "Loading " + filename);
+            if (readResult.ReadStatus == 0) {
                 new BGJobPictureLoader(filename);
             }
-            if ( isBlocking )
-            {
-                while (tResult.readStatus != 2)
-                {
-                    StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
-                    
+            if ( isBlocking ) {
+                while (readResult.ReadStatus != 2) {
+                    StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
                 }
             }
 #if false //UNITY_EDITOR
-            if ( tResult.readStatus == 1 )
+            if ( readResult.readStatus == 1 )
             {
                 Util.Log("Already requestd:" + filename);
             }
 #endif
             return filename;
         }
+//----------------------------------------------------------------------------------------------------------------------        
         internal bool RequestLoadImage(int index, bool isBlocking)
         {
             if (null == m_imagePaths || index < 0 || index >= m_imagePaths.Count || string.IsNullOrEmpty(m_imagePaths[index])) {
                 return false;
             }
            
-            string filename = LoadRequest(index,isBlocking, out StReadResult tResult);
+            string filename = LoadRequest(index,isBlocking, out ReadResult readResult);
 
-            if (null == m_texture &&  tResult.readStatus == (int)LoadStatus.Loaded)
+            if (null == m_texture &&  readResult.ReadStatus == (int)LoadStatus.Loaded)
             {
 #if UNITY_STANDALONE_OSX
 				const TextureFormat textureFormat = TextureFormat.RGBA32;
 #elif UNITY_STANDALONE_WIN
                 const TextureFormat textureFormat = TextureFormat.BGRA32;
 #endif
-                m_texture = new Texture2D(tResult.width, tResult.height, textureFormat, false, false);
-                m_texture.LoadRawTextureData(tResult.buffer, tResult.width * tResult.height * 4);
+                m_texture = new Texture2D(readResult.Width, readResult.Height, textureFormat, false, false);
+                m_texture.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
                 m_texture.filterMode = FilterMode.Bilinear;
                 m_texture.Apply();
 
                 IntPtr ptr =  m_texture.GetNativeTexturePtr();
                 int texInstanceID = m_texture.GetInstanceID();
-                StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)tResult.width, (uint)tResult.height, texInstanceID);
+                
+                UpdateResolution(readResult);
+                StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)readResult.Width, (uint)readResult.Height, texInstanceID);
             }
 
             //Update the texture
-			if (tResult.readStatus == (int)LoadStatus.Loaded && m_lastIndex != index) {
+			if (readResult.ReadStatus == (int)LoadStatus.Loaded && m_lastIndex != index) {
                 int texInstanceID = m_texture.GetInstanceID();
                 StreamingImageSequencePlugin.SetLoadedTexture (filename, texInstanceID);
                 GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), texInstanceID);
@@ -215,19 +214,17 @@ namespace UnityEngine.StreamingImageSequence {
 			m_lastIndex = index;
             return null!=m_texture;
         }
+//----------------------------------------------------------------------------------------------------------------------        
 
         public  string GetCompleteFilePath(string filePath)
         {
             string strOverridePath = m_folder;
 
-            if (!string.IsNullOrEmpty(strOverridePath))
-            {
+            if (!string.IsNullOrEmpty(strOverridePath)) {
                 filePath = Path.Combine(strOverridePath, filePath).Replace("\\", "/");
-
             }
 
-            if (Path.IsPathRooted(filePath))
-            {
+            if (Path.IsPathRooted(filePath)) {
                 filePath = Path.Combine(UpdateManager.GetProjectFolder(), filePath).Replace("\\", "/");
             }
             return filePath;
@@ -240,24 +237,31 @@ namespace UnityEngine.StreamingImageSequence {
                 m_texture = null;
             }
         }
+
+//---------------------------------------------------------------------------------------------------------------------
+        void UpdateResolution(ReadResult readResult) {
+            m_resolution.Width  = readResult.Width;
+            m_resolution.Height = readResult.Height;
+        }
         
 //---------------------------------------------------------------------------------------------------------------------
 
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
-        [SerializeField] private int m_version;        
-        [SerializeField] private ImageDimensionInt   m_resolution;
-        [SerializeField] private ImageDimensionFloat m_quadSize;
+        [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
+        [SerializeField] private ImageDimensionInt  m_resolution;
 
 #if UNITY_EDITOR
-        [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; 
+        [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below
 #endif
-        private bool[] LoadRequested;
-        public int m_loadingIndex = -1;
-		private int m_lastIndex = -1;
+        private bool[] m_loadRequested;
+        public int m_loadingIndex;
+		private int m_lastIndex;
         private bool m_verified;
 
         Texture2D m_texture = null;
+
+        private const int STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION = 1;
 
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Text.RegularExpressions;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -14,12 +13,15 @@ namespace UnityEditor.StreamingImageSequence {
 [ScriptedImporter(1, "jstimeline")]
 public class JstimelineImporter : ScriptedImporter
 {
-    public override void OnImportAsset(AssetImportContext ctx)
-    {
+    public override void OnImportAsset(AssetImportContext ctx) {
+        //Ignore test assets
+        if (ctx.assetPath.StartsWith("Packages/com.unity.streaming-image-sequence/Tests"))
+            return;
+        
         CreateTimeline(ctx.assetPath);
     }
 
-    [MenuItem("Edit/Streaming Image Sequence/Import AE Timeline", false, 10)]
+    [MenuItem("Assets/Streaming Image Sequence/Import AE Timeline", false, 10)]
     static void CreateTimeline()
     {
         string strPath = EditorUtility.OpenFilePanel("Open File", "", "jstimeline");
@@ -28,6 +30,9 @@ public class JstimelineImporter : ScriptedImporter
 
 //---------------------------------------------------------------------------------------------------------------------
 
+    //TODO-sin: 2019-12-27: Add tests
+    //1. Importing jstimeline inside Assets folder
+    //2. Importing jstimeline outside the project
     static void CreateTimeline(string jsTimelinePath) {
 
         // prepare asset name, paths, etc
@@ -38,6 +43,11 @@ public class JstimelineImporter : ScriptedImporter
             return;
         }
         timelineFolder = Path.Combine(timelineFolder,assetName).Replace("\\","/");
+        //Check if we are exporting from external asset
+        if (!timelineFolder.StartsWith("Assets/")) {
+            timelineFolder = Path.Combine("Assets", assetName);
+        }
+        
         Directory.CreateDirectory(timelineFolder);
         string strJson = File.ReadAllText(jsTimelinePath);
         TimelineParam container = JsonUtility.FromJson<TimelineParam>(strJson);
