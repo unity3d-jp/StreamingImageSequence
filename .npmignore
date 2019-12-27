@@ -4,8 +4,7 @@ build/**
 node_modules/**
 Documentation/ApiDocs/**
 Documentation~/ApiDocs/**
-AEPlugins/**
-AEPsamples/**
+AE~/**
 StreamingImageSequence~/**
 .DS_Store
 .npmrc
