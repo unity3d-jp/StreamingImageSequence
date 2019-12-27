@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace UnityEditor.StreamingImageSequence {
 
-    public class PictureFileImporter
+    public static class ImageSequenceImporter
     {
         public const string PNG_EXTENSION = "png";
         public const string TGA_EXTENSION = "tga";
@@ -52,8 +52,8 @@ namespace UnityEditor.StreamingImageSequence {
             //Enumerate all files with the supported extensions and sort
             List<string> relFilePaths = new List<string>();
             string[] extensions = {
-                "*." + PictureFileImporter.PNG_EXTENSION, 
-                "*." + PictureFileImporter.TGA_EXTENSION,
+                "*." + ImageSequenceImporter.PNG_EXTENSION, 
+                "*." + ImageSequenceImporter.TGA_EXTENSION,
             };
             foreach (string ext in extensions) {
                 IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, ext, SearchOption.AllDirectories);
@@ -93,11 +93,11 @@ namespace UnityEditor.StreamingImageSequence {
                 //Import immediately if the assets are already under Unity
                 importerParam.strDstFolder = importerParam.strSrcFolder;
                 importerParam.DoNotCopy = true;
-                PictureFileImporter.Import(importerParam);
+                ImageSequenceImporter.Import(importerParam);
             } else {
                 importerParam.strDstFolder = Path.Combine(rootDestFolder, assetName).Replace("\\", "/");
-                PictureFileImportWindow.SetParam(importerParam);
-                PictureFileImportWindow.InitWindow();
+                ImageSequenceImportWindow.SetParam(importerParam);
+                ImageSequenceImportWindow.InitWindow();
             }
         }
 

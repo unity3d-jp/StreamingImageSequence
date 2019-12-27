@@ -4,7 +4,7 @@ using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence {
 
-    public class PictureFileImportWindow : EditorWindow {
+    public class ImageSequenceImportWindow : EditorWindow {
 
         void OnEnable() {
             m_headerStyle = new GUIStyle(EditorStyles.label) {
@@ -38,7 +38,7 @@ namespace UnityEditor.StreamingImageSequence {
 
         internal static void InitWindow() {
             Rect rect = new Rect(160, 160, 0, 0);
-            PictureFileImportWindow window = ScriptableObject.CreateInstance<PictureFileImportWindow>(); // GetWindow<PictureFileImportWindow>();
+            ImageSequenceImportWindow window = ScriptableObject.CreateInstance<ImageSequenceImportWindow>(); // GetWindow<PictureFileImportWindow>();
                                                                                                          //      PictureFileImportWindow window = GetWindow<PictureFileImportWindow>();
             window.ShowAsDropDown(rect, new Vector2(640, 480));
         }
@@ -119,7 +119,7 @@ namespace UnityEditor.StreamingImageSequence {
             GUILayout.Space(320 / 2);
             if (GUILayout.Button("OK"))
             {
-                PictureFileImporter.Import(m_importerParam);
+                ImageSequenceImporter.Import(m_importerParam);
                 this.Close();
             }
 
