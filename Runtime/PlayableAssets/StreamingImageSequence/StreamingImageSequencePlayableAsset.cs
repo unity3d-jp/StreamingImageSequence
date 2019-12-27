@@ -15,6 +15,7 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
         public StreamingImageSequencePlayableAsset() {
             m_loadingIndex = -1;
+            m_lastIndex = -1;
         }
 //----------------------------------------------------------------------------------------------------------------------        
         
@@ -43,7 +44,7 @@ namespace UnityEngine.StreamingImageSequence {
         internal void Reset() {
             m_loadingIndex = -1;
             m_lastIndex = -1;
-            LoadRequested = null;
+            m_loadRequested = null;
             ResetTexture();
             m_resolution = new ImageDimensionInt();
         }
@@ -99,8 +100,8 @@ namespace UnityEngine.StreamingImageSequence {
                 return;
 
             int numPictures = m_imagePaths.Count;
-            if (LoadRequested == null && numPictures > 0) {
-                LoadRequested = new bool[numPictures];
+            if (m_loadRequested == null && numPictures > 0) {
+                m_loadRequested = new bool[numPictures];
             }
 
             // request loading while editor is idle.
@@ -153,8 +154,8 @@ namespace UnityEngine.StreamingImageSequence {
         internal string LoadRequest(int index, bool isBlocking, out ReadResult readResult) {
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
-            if (LoadRequested == null) {
-                LoadRequested = new bool[m_imagePaths.Count];
+            if (m_loadRequested == null) {
+                m_loadRequested = new bool[m_imagePaths.Count];
             }
 
             StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
@@ -253,9 +254,9 @@ namespace UnityEngine.StreamingImageSequence {
 #if UNITY_EDITOR
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below
 #endif
-        private bool[] LoadRequested;
-        public int m_loadingIndex = -1;
-		private int m_lastIndex = -1;
+        private bool[] m_loadRequested;
+        public int m_loadingIndex;
+		private int m_lastIndex;
         private bool m_verified;
 
         Texture2D m_texture = null;
