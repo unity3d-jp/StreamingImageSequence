@@ -32,6 +32,7 @@ Plugin/_build_*
 excons.cache
 
 StreamingImageSequence~/*.csproj
+StreamingImageSequence~/*.csproj.meta
 StreamingImageSequence~/*.sln
 StreamingImageSequence~/.idea/**
 .vs/
