@@ -120,7 +120,6 @@ namespace UnityEngine.StreamingImageSequence {
             {
                 return;
             }
-            StReadResult tResult = new StReadResult();
             int loadRequestMax = m_loadingIndex + step;
             if (loadRequestMax > m_imagePaths.Count)
             {
@@ -133,7 +132,7 @@ namespace UnityEngine.StreamingImageSequence {
                     continue;
                 }
 
-                LoadRequest(ii, false, out tResult);
+                LoadRequest(ii, false, out ReadResult readResult);
 
             }
             m_loadingIndex = loadRequestMax;
@@ -145,59 +144,55 @@ namespace UnityEngine.StreamingImageSequence {
         {
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
-            StReadResult tResult = new StReadResult();
-            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
-            return (tResult.readStatus != 0);
+            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out ReadResult readResult);
+            return (readResult.ReadStatus != 0);
 
         }
-        internal string LoadRequest(int index, bool isBlocking, out StReadResult tResult)
-        {
+
+//----------------------------------------------------------------------------------------------------------------------        
+        internal string LoadRequest(int index, bool isBlocking, out ReadResult readResult) {
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
-            if (LoadRequested == null)
-            {
+            if (LoadRequested == null) {
                 LoadRequested = new bool[m_imagePaths.Count];
             }
 
-            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
-            //Debug.Log("tResult.readStatus " + tResult.readStatus + "Loading " + filename);
-            if (tResult.readStatus == 0)
-            {
+            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
+            //Debug.Log("readResult.readStatus " + readResult.readStatus + "Loading " + filename);
+            if (readResult.ReadStatus == 0) {
                 new BGJobPictureLoader(filename);
             }
-            if ( isBlocking )
-            {
-                while (tResult.readStatus != 2)
-                {
-                    StreamingImageSequencePlugin.GetNativTextureInfo(filename, out tResult);
-                    
+            if ( isBlocking ) {
+                while (readResult.ReadStatus != 2) {
+                    StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
                 }
             }
 #if false //UNITY_EDITOR
-            if ( tResult.readStatus == 1 )
+            if ( readResult.readStatus == 1 )
             {
                 Util.Log("Already requestd:" + filename);
             }
 #endif
             return filename;
         }
+//----------------------------------------------------------------------------------------------------------------------        
         internal bool RequestLoadImage(int index, bool isBlocking)
         {
             if (null == m_imagePaths || index < 0 || index >= m_imagePaths.Count || string.IsNullOrEmpty(m_imagePaths[index])) {
                 return false;
             }
            
-            string filename = LoadRequest(index,isBlocking, out StReadResult readResult);
+            string filename = LoadRequest(index,isBlocking, out ReadResult readResult);
 
-            if (null == m_texture &&  readResult.readStatus == (int)LoadStatus.Loaded)
+            if (null == m_texture &&  readResult.ReadStatus == (int)LoadStatus.Loaded)
             {
 #if UNITY_STANDALONE_OSX
 				const TextureFormat textureFormat = TextureFormat.RGBA32;
 #elif UNITY_STANDALONE_WIN
                 const TextureFormat textureFormat = TextureFormat.BGRA32;
 #endif
-                m_texture = new Texture2D(readResult.width, readResult.height, textureFormat, false, false);
-                m_texture.LoadRawTextureData(readResult.buffer, readResult.width * readResult.height * 4);
+                m_texture = new Texture2D(readResult.Width, readResult.Height, textureFormat, false, false);
+                m_texture.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
                 m_texture.filterMode = FilterMode.Bilinear;
                 m_texture.Apply();
 
@@ -205,11 +200,11 @@ namespace UnityEngine.StreamingImageSequence {
                 int texInstanceID = m_texture.GetInstanceID();
                 
                 UpdateResolution(readResult);
-                StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)readResult.width, (uint)readResult.height, texInstanceID);
+                StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)readResult.Width, (uint)readResult.Height, texInstanceID);
             }
 
             //Update the texture
-			if (readResult.readStatus == (int)LoadStatus.Loaded && m_lastIndex != index) {
+			if (readResult.ReadStatus == (int)LoadStatus.Loaded && m_lastIndex != index) {
                 int texInstanceID = m_texture.GetInstanceID();
                 StreamingImageSequencePlugin.SetLoadedTexture (filename, texInstanceID);
                 GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), texInstanceID);
@@ -218,19 +213,17 @@ namespace UnityEngine.StreamingImageSequence {
 			m_lastIndex = index;
             return null!=m_texture;
         }
+//----------------------------------------------------------------------------------------------------------------------        
 
         public  string GetCompleteFilePath(string filePath)
         {
             string strOverridePath = m_folder;
 
-            if (!string.IsNullOrEmpty(strOverridePath))
-            {
+            if (!string.IsNullOrEmpty(strOverridePath)) {
                 filePath = Path.Combine(strOverridePath, filePath).Replace("\\", "/");
-
             }
 
-            if (Path.IsPathRooted(filePath))
-            {
+            if (Path.IsPathRooted(filePath)) {
                 filePath = Path.Combine(UpdateManager.GetProjectFolder(), filePath).Replace("\\", "/");
             }
             return filePath;
@@ -245,9 +238,9 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
 //---------------------------------------------------------------------------------------------------------------------
-        void UpdateResolution(StReadResult readResult) {
-            m_resolution.Width  = readResult.width;
-            m_resolution.Height = readResult.height;
+        void UpdateResolution(ReadResult readResult) {
+            m_resolution.Width  = readResult.Width;
+            m_resolution.Height = readResult.Height;
         }
         
 //---------------------------------------------------------------------------------------------------------------------

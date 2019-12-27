@@ -23,15 +23,15 @@ namespace UnityEngine.StreamingImageSequence
         public override void Execute()
         {
 
-            StReadResult tResult;
+            ReadResult tResult;
             StreamingImageSequencePlugin.GetNativTextureInfo(m_strFileName, out tResult);
-            if (tResult.readStatus == 0)
+            if (tResult.ReadStatus == 0)
             {
                 //Debug.Log("Loading: " + m_strFileName);
                 StreamingImageSequencePlugin.LoadAndAlloc(m_strFileName);
             }
 #if UNITY_EDITOR
-            if (tResult.readStatus == 1)
+            if (tResult.ReadStatus == 1)
             {
                 LogUtility.LogDebug("Already requested:" + m_strFileName);
             }
