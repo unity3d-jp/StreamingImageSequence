@@ -1,4 +1,4 @@
-yamato_name: MovieProxy
+yamato_name: StreamingImageSequence
 test_editors:
   - version: 2019.2
   - version: 2019.3
