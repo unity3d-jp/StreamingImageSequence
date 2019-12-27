@@ -21,7 +21,7 @@ public class JstimelineImporter : ScriptedImporter
         CreateTimeline(ctx.assetPath);
     }
 
-    [MenuItem("Edit/Streaming Image Sequence/Import AE Timeline", false, 10)]
+    [MenuItem("Assets/Streaming Image Sequence/Import AE Timeline", false, 10)]
     static void CreateTimeline()
     {
         string strPath = EditorUtility.OpenFilePanel("Open File", "", "jstimeline");
