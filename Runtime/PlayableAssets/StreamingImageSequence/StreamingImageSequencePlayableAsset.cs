@@ -305,6 +305,9 @@ namespace UnityEngine.StreamingImageSequence {
         public void Setup(TimelineClip clip) {
             clip.OnTimingSet     = OnClipTimingSet;
             clip.OnTimingTrimmed = OnClipTimingTrimmed;
+            if (null == clip.curves) {
+                clip.CreateCurves("Curves: " + clip.displayName);
+            }
             m_timelineClip = clip;
             m_clipStart = clip.start;
             m_clipDuration = clip.duration;

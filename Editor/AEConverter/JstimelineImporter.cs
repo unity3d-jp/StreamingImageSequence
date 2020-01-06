@@ -121,17 +121,20 @@ public class JstimelineImporter : ScriptedImporter
             }
 
 
-            StreamingImageSequencePlayableAsset proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
-            proxyAsset.SetParam(trackMovieContainer);
+            StreamingImageSequencePlayableAsset sisAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
+            sisAsset.SetParam(trackMovieContainer);
 
             string playableAssetPath = Path.Combine(timelineFolder, strFootageName + "_StreamingImageSequence.playable");
-            AssetEditorUtility.OverwriteAsset(proxyAsset, playableAssetPath);
+            AssetEditorUtility.OverwriteAsset(sisAsset, playableAssetPath);
 
             StreamingImageSequenceTrack movieTrack = asset.CreateTrack<StreamingImageSequenceTrack>(null, strFootageName);
             TimelineClip clip = movieTrack.CreateDefaultClip();
-            clip.asset = proxyAsset;
+            clip.asset = sisAsset;
             clip.start = track.Start;
             clip.duration = track.Duration;
+            sisAsset.Setup(clip);
+            sisAsset.ValidateAnimationCurve();
+
 
             if (Object.FindObjectOfType(typeof(UnityEngine.EventSystems.EventSystem)) == null)
             {
