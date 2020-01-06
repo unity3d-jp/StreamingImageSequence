@@ -13,11 +13,6 @@ namespace UnityEngine.StreamingImageSequence {
     //ITimelineClipAsset interface is used to define the clip capabilities (ClipCaps) 
     [System.Serializable]
     public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset, IPlayableBehaviour {
-//----------------------------------------------------------------------------------------------------------------------        
-        public StreamingImageSequencePlayableAsset() {
-            m_loadingIndex = -1;
-            m_lastIndex = -1;
-        }
         
 //----------------------------------------------------------------------------------------------------------------------
         public virtual void OnBehaviourDelay(Playable playable, FrameData info) {
@@ -55,6 +50,7 @@ namespace UnityEngine.StreamingImageSequence {
 
         public StreamingImageSequencePlayableAsset() {
             m_loadingIndex = -1;
+            m_lastIndex = -1;
 #if UNITY_EDITOR            
             m_timelineEditorCurveBinding  = new EditorCurveBinding() {
                 path = "",
