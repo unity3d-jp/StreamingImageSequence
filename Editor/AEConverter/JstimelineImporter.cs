@@ -106,7 +106,7 @@ public class JstimelineImporter : ScriptedImporter
                 string destFolder = Application.streamingAssetsPath;
                 destFolder = Path.Combine(destFolder, strFootageName).Replace("\\", "/");
                 Directory.CreateDirectory(destFolder); //make sure the directory exists
-                trackMovieContainer.Folder = destFolder;
+                trackMovieContainer.Folder = AssetEditorUtility.NormalizeAssetPath(destFolder);
 
                 for (int i=0;i<numImages;++i) {
                     string destFilePath = Path.Combine(destFolder, trackMovieContainer.Pictures[i]);
