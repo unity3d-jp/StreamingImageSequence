@@ -180,6 +180,7 @@ public class JstimelineImporter : ScriptedImporter
                                                   trackMovieContainer.Resolution.Height);
 
             director.SetGenericBinding(movieTrack, renderer);
+            EditorUtility.SetDirty(director);
         }
 
         //cause crash if this is called inside of OnImportAsset()
