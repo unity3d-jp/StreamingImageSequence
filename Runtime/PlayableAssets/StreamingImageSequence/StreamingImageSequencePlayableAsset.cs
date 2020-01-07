@@ -101,8 +101,10 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
 
         public ClipCaps clipCaps {
-            get { return ClipCaps.None; }
+            get { return ClipCaps.ClipIn | ClipCaps.SpeedMultiplier; }
         }
+        
+//----------------------------------------------------------------------------------------------------------------------        
 
         public bool Verified
         {
@@ -299,8 +301,6 @@ namespace UnityEngine.StreamingImageSequence {
 //---------------------------------------------------------------------------------------------------------------------
         
         public void Setup(TimelineClip clip) {
-            clip.OnTimingSet     = OnClipTimingSet;
-            clip.OnTimingTrimmed = OnClipTimingTrimmed;
             if (null == clip.curves) {
                 clip.CreateCurves("Curves: " + clip.displayName);
             }
@@ -353,59 +353,6 @@ namespace UnityEngine.StreamingImageSequence {
 #endif            
         }
 
-//---------------------------------------------------------------------------------------------------------------------
-
-        void OnClipTimingSet(double st, double dur) {
-            AnimationCurve curve = GetAndValidateAnimationCurve();
-            m_clipStart = st;
-            m_clipDuration = dur;
-            
-            Keyframe[] keys = curve.keys;
-            int lastKeyIndex = keys.Length - 1;
-            
-            //[TODO-sin: 2019-12-26] Calculate new positions/tangents of middle keys
-            //for (int i = 1; i < lastKeyIndex; ++i) {
-            //}
-           
-            
-            //Make sure the last keyframe is located at the duration time
-            keys[lastKeyIndex].time  = (float) m_clipDuration;
-            
-            //Fix the tangent of the last key
-            double valueDiff = keys[lastKeyIndex].value - keys[lastKeyIndex-1].value;
-            double timeDiff = keys[lastKeyIndex].time - keys[lastKeyIndex-1].time;
-            float tangent = (float) (valueDiff / dur);
-            keys[lastKeyIndex - 1].outTangent = tangent;
-            keys[lastKeyIndex].inTangent = tangent;
-            
-            curve.keys = keys;
-            RefreshAnimationCurve(curve);
-        }
-
-//---------------------------------------------------------------------------------------------------------------------
-        void OnClipTimingTrimmed(double st, double dur) {
-            AnimationCurve curve = GetAndValidateAnimationCurve();
-            double prevDur = m_clipDuration;
-            double prevStart = m_clipStart;
-            m_clipStart = st;
-            m_clipDuration = dur;
-            
-            //double localStart = m_timelineClip.ToLocalTime(st);
-            double localStartTime   = (st - prevStart);
-            float startVal = curve.Evaluate((float) localStartTime);
-            float endVal = curve.Evaluate((float) (localStartTime + dur));
-            
-            //[TODO-sin: 2019-12-26] Calculate new tangents
-            
-            Keyframe[] keys = curve.keys;
-            int lastKeyIndex = keys.Length - 1;
-            
-            keys[0].value = startVal;
-            keys[lastKeyIndex].time = (float) m_clipDuration;
-            keys[lastKeyIndex].value = endVal;
-            curve.keys = keys;
-            RefreshAnimationCurve(curve);
-        }
         
 //----------------------------------------------------------------------------------------------------------------------
 
