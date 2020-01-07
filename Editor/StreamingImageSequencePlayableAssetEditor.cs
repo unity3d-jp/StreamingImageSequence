@@ -32,7 +32,7 @@ namespace UnityEngine.StreamingImageSequence {
 
                 UnityEditor.DefaultAsset timelineDefaultAsset = asset.GetTimelineDefaultAsset();
                 if (null!=timelineDefaultAsset) {
-                    if (!InitializeAssetFromDefaultAsset(clip, asset)) {
+                    if (!InitializeAssetFromDefaultAsset(clip, null, asset)) {
                         clipOptions.errorText = kNotStreamingAssetsFolderAssignedError;
                     }
                 } else {
@@ -57,21 +57,26 @@ namespace UnityEngine.StreamingImageSequence {
                 return;
             }
 
-            InitializeAssetFromDefaultAsset(clip, asset);
+            InitializeAssetFromDefaultAsset(clip, clonedFrom, asset);
         }
-       
-        private static bool InitializeAssetFromDefaultAsset(TimelineClip clip, StreamingImageSequencePlayableAsset asset) 
-        {
-            UnityEditor.DefaultAsset timelineDefaultAsset = asset.GetTimelineDefaultAsset();
-            if (null == timelineDefaultAsset)
-                return false;
 
-            string path = AssetDatabase.GetAssetPath(timelineDefaultAsset).Replace("\\","/");
-            if (!path.StartsWith("Assets/StreamingAssets/")) {
-                return false;
+//----------------------------------------------------------------------------------------------------------------------
+
+        private static bool InitializeAssetFromDefaultAsset(TimelineClip clip, TimelineClip clonedFrom, 
+            StreamingImageSequencePlayableAsset asset) 
+        {
+            if (null == clonedFrom) { //Not cloning, which means this is created by user interaction, such as Folder D&D
+                UnityEditor.DefaultAsset timelineDefaultAsset = asset.GetTimelineDefaultAsset();
+                if (null == timelineDefaultAsset)
+                    return false;
+
+                string path = AssetDatabase.GetAssetPath(timelineDefaultAsset).Replace("\\","/");
+                if (!path.StartsWith("Assets/StreamingAssets/")) {
+                    return false;
+                }
+                ImageSequenceImporter.ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, asset);
             }
 
-            ImageSequenceImporter.ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, asset);
             //If the clip already has curves (because of cloning, etc), then we don't set anything
             if (null == clip.curves) {
                 clip.duration = asset.GetImagePaths().Count * 0.125; // 8fps (standard limited animation)
