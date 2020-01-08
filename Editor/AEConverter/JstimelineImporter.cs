@@ -106,7 +106,7 @@ public class JstimelineImporter : ScriptedImporter
                 string destFolder = Application.streamingAssetsPath;
                 destFolder = Path.Combine(destFolder, strFootageName).Replace("\\", "/");
                 Directory.CreateDirectory(destFolder); //make sure the directory exists
-                trackMovieContainer.Folder = destFolder;
+                trackMovieContainer.Folder = AssetEditorUtility.NormalizeAssetPath(destFolder);
 
                 for (int i=0;i<numImages;++i) {
                     string destFilePath = Path.Combine(destFolder, trackMovieContainer.Pictures[i]);
@@ -121,17 +121,20 @@ public class JstimelineImporter : ScriptedImporter
             }
 
 
-            StreamingImageSequencePlayableAsset proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
-            proxyAsset.SetParam(trackMovieContainer);
+            StreamingImageSequencePlayableAsset sisAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
+            sisAsset.SetParam(trackMovieContainer);
 
             string playableAssetPath = Path.Combine(timelineFolder, strFootageName + "_StreamingImageSequence.playable");
-            AssetEditorUtility.OverwriteAsset(proxyAsset, playableAssetPath);
+            AssetEditorUtility.OverwriteAsset(sisAsset, playableAssetPath);
 
             StreamingImageSequenceTrack movieTrack = asset.CreateTrack<StreamingImageSequenceTrack>(null, strFootageName);
             TimelineClip clip = movieTrack.CreateDefaultClip();
-            clip.asset = proxyAsset;
+            clip.asset = sisAsset;
             clip.start = track.Start;
             clip.duration = track.Duration;
+            sisAsset.Setup(clip);
+            sisAsset.ValidateAnimationCurve();
+
 
             if (Object.FindObjectOfType(typeof(UnityEngine.EventSystems.EventSystem)) == null)
             {
@@ -177,6 +180,7 @@ public class JstimelineImporter : ScriptedImporter
                                                   trackMovieContainer.Resolution.Height);
 
             director.SetGenericBinding(movieTrack, renderer);
+            EditorUtility.SetDirty(director);
         }
 
         //cause crash if this is called inside of OnImportAsset()

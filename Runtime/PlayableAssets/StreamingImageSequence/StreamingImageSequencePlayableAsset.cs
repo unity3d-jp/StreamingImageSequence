@@ -4,6 +4,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
 #if UNITY_EDITOR
+using UnityEditor.Timeline;
 using UnityEditor;
 #endif
 
@@ -11,24 +12,73 @@ namespace UnityEngine.StreamingImageSequence {
     
     //ITimelineClipAsset interface is used to define the clip capabilities (ClipCaps) 
     [System.Serializable]
-    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset  {
-//----------------------------------------------------------------------------------------------------------------------        
+    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset, IPlayableBehaviour {
+        
+//----------------------------------------------------------------------------------------------------------------------
+        public virtual void OnBehaviourDelay(Playable playable, FrameData info) {
+
+        }
+        public virtual void OnBehaviourPause(Playable playable, FrameData info){
+
+        }
+        public virtual void OnBehaviourPlay(Playable playable, FrameData info){
+
+        }
+        public virtual void OnGraphStart(Playable playable){
+
+        }
+        public virtual void OnGraphStop(Playable playable){
+
+        }
+        public virtual void OnPlayableCreate(Playable playable){
+
+        }
+        public virtual void OnPlayableDestroy(Playable playable){
+
+        }
+        public virtual void PrepareData(Playable playable, FrameData info){
+
+        }
+        public virtual void PrepareFrame(Playable playable, FrameData info){
+
+        }
+
+        public virtual void ProcessFrame(Playable playable, FrameData info, object playerData) {
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+
         public StreamingImageSequencePlayableAsset() {
             m_loadingIndex = -1;
             m_lastIndex = -1;
+#if UNITY_EDITOR            
+            m_timelineEditorCurveBinding  = new EditorCurveBinding() {
+                path = "",
+                type = typeof(StreamingImageSequencePlayableAsset),
+                propertyName = "m_time"
+            };
+#endif            
         }
-//----------------------------------------------------------------------------------------------------------------------        
-        
+
         ~StreamingImageSequencePlayableAsset() {
             Reset();
         }
 //----------------------------------------------------------------------------------------------------------------------        
+        //Calculate Image Sequence Time, which is normalized [0..1] 
+        public double ToImageSequenceTime(double globalTime) {
+            double localTime = m_timelineClip.ToLocalTime(globalTime);
+            AnimationCurve curve = GetAndValidateAnimationCurve();
+            return curve.Evaluate((float)localTime);
+        }
+//----------------------------------------------------------------------------------------------------------------------
 
         public int GetVersion() { return m_version; }
         public IList<string> GetImagePaths() { return m_imagePaths; }
         public ImageDimensionInt GetResolution() { return m_resolution; }
         public System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
         public Texture2D GetTexture() { return m_texture; }
+
+//----------------------------------------------------------------------------------------------------------------------        
 
         public string GetImagePath(int index) {
             if (null == m_imagePaths || index >= m_imagePaths.Count)
@@ -51,8 +101,10 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
 
         public ClipCaps clipCaps {
-            get { return ClipCaps.None; }
+            get { return ClipCaps.ClipIn | ClipCaps.SpeedMultiplier; }
         }
+        
+//----------------------------------------------------------------------------------------------------------------------        
 
         public bool Verified
         {
@@ -93,6 +145,9 @@ namespace UnityEngine.StreamingImageSequence {
             //Dummy. We just need to implement this from PlayableAsset because folder D&D support. See notes below
             return Playable.Null;
         }
+        
+        public override double duration {  get {  return m_clipDuration;  }  }
+        
 //---------------------------------------------------------------------------------------------------------------------
 
         internal void LoadRequest(bool isDirectorIdle) {
@@ -243,18 +298,81 @@ namespace UnityEngine.StreamingImageSequence {
             m_resolution.Width  = readResult.Width;
             m_resolution.Height = readResult.Height;
         }
-        
 //---------------------------------------------------------------------------------------------------------------------
+        
+        public void Setup(TimelineClip clip) {
+            if (null == clip.curves) {
+                clip.CreateCurves("Curves: " + clip.displayName);
+            }
+            m_timelineClip = clip;
+            m_clipStart = clip.start;
+            m_clipDuration = clip.duration;
+        }
+
+
+//----------------------------------------------------------------------------------------------------------------------
+        public void ValidateAnimationCurve() {
+            AnimationCurve curve = GetAndValidateAnimationCurve();
+            RefreshAnimationCurve(curve);
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+        //Get the animation curve from the TimelineClip. Also make sure we have at least two keys 
+        private AnimationCurve GetAndValidateAnimationCurve() {
+            AnimationCurve animationCurve = null;
+#if UNITY_EDITOR
+            animationCurve = AnimationUtility.GetEditorCurve(m_timelineClip.curves, m_timelineEditorCurveBinding);
+#endif
+            if (null == animationCurve)
+                animationCurve = new AnimationCurve();
+            
+            int numKeys = animationCurve.keys.Length;
+            switch (numKeys) {
+                case 0: {
+                    animationCurve = AnimationCurve.Linear(0, 0, (float) m_clipDuration,1 );
+                    break;
+                }
+                case 1: {
+                    animationCurve.keys[0] = new Keyframe(0.0f,0.0f);
+                    animationCurve.AddKey((float)m_clipDuration, 1.0f);
+                    break;
+                }
+                default: break;
+            }
+
+            return animationCurve;
+        }
+        
+//----------------------------------------------------------------------------------------------------------------------
+
+        private void  RefreshAnimationCurve(AnimationCurve curve) {
+            m_timelineClip.curves.SetCurve("", typeof(StreamingImageSequencePlayableAsset), "m_time", curve);
+#if UNITY_EDITOR            
+            //[TODO-sin: 2019-12-25] Is there a way to make this smoother ?
+            TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
+#endif            
+        }
+
+        
+//----------------------------------------------------------------------------------------------------------------------
 
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
         [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
         [SerializeField] private ImageDimensionInt  m_resolution;
+        
+        [SerializeField] double m_time;
+
+        double m_clipStart;     //In global space. In seconds
+        double m_clipDuration;  //In seconds
 
 #if UNITY_EDITOR
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below
+        private EditorCurveBinding m_timelineEditorCurveBinding;
 #endif
         private bool[] m_loadRequested;
+        //[TODO-sin: 2019-12-25] Is there a way we can just serialize this without affecting folder D&D
+        TimelineClip m_timelineClip  = null; 
         public int m_loadingIndex;
 		private int m_lastIndex;
         private bool m_verified;

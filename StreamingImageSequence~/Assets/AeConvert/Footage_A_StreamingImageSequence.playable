@@ -12,16 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
   m_Name: Footage_A_StreamingImageSequence
   m_EditorClassIdentifier: 
-  Version: 0
-  Resolution:
-    Width: 1684
-    Height: 1050
-  QuadSize:
-    sizX: 0
-    sizY: 0
-  m_displayOnClipsOnly: 1
-  m_loadingIndex: -1
-  m_folder: E:/G/unity3d-jp/StreamingImageSequence/StreamingImageSequence~/Assets/StreamingAssets/Footage_A
+  m_folder: Assets/StreamingAssets/Footage_A
   m_imagePaths:
   - A_00000.png
   - A_00001.png
@@ -51,4 +42,11 @@ MonoBehaviour:
   - A_00025.png
   - A_00026.png
   - A_00027.png
-  m_timelineDefaultAsset: {fileID: 0}
+  m_version: 1
+  m_resolution:
+    Width: 1684
+    Height: 1050
+  m_time: 0
+  m_timelineDefaultAsset: {fileID: 102900000, guid: 03c7029848f532949bbbc4d26c7915b1,
+    type: 3}
+  m_loadingIndex: -1

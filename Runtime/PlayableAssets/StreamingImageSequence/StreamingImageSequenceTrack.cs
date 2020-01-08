@@ -50,7 +50,18 @@ namespace UnityEngine.StreamingImageSequence
             return mixer;
         }
 
+//---------------------------------------------------------------------------------------------------------------------
 
+        protected override  void OnAfterTrackDeserialize() {
+            //Re-setup the PlayableAsset
+            foreach (TimelineClip clip in m_Clips) {
+                StreamingImageSequencePlayableAsset playableAsset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (null == playableAsset)
+                    continue;
+                
+                playableAsset.Setup(clip);
+            }
+        }
 
 //---------------------------------------------------------------------------------------------------------------------
 

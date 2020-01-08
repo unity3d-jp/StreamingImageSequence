@@ -35,6 +35,8 @@ StreamingImageSequence~/*.csproj
 StreamingImageSequence~/*.csproj.meta
 StreamingImageSequence~/*.sln
 StreamingImageSequence~/.idea/**
+StreamingImageSequence~.meta
+StreamingImageSequence~/Assets.meta
 .vs/
 Library/
 Temp/
