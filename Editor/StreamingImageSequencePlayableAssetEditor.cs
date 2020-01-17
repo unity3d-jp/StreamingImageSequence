@@ -116,11 +116,10 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             if (!m_persistentPreviews.TryGetValue(clip, out StreamingImageSequencePreview preview)) {
-                preview = m_persistentPreviews[clip] = new StreamingImageSequencePreview();
+                preview = m_persistentPreviews[clip] = new StreamingImageSequencePreview(curAsset);
             }
 
             if (Event.current.type == EventType.Repaint) {
-                preview.SetTexture(curAsset.GetTexture());
                 preview.Render(quantizedRect);
             }
         }
