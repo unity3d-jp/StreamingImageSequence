@@ -80,6 +80,15 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------        
 
+        public float GetDimensionRatio() {
+            if (Mathf.Approximately(m_dimensionRatio, 0f)) {
+                m_dimensionRatio = m_resolution.CalculateRatio();
+            }
+
+            return m_dimensionRatio;
+        }
+//----------------------------------------------------------------------------------------------------------------------        
+
         public string GetImagePath(int index) {
             if (null == m_imagePaths || index >= m_imagePaths.Count)
                 return null;
@@ -128,6 +137,7 @@ namespace UnityEngine.StreamingImageSequence {
          
         public void SetParam(StreamingImageSequencePlayableAssetParam param) {
             m_resolution = param.Resolution;
+            m_dimensionRatio = m_resolution.CalculateRatio();
             m_imagePaths = param.Pictures;
             m_folder = param.Folder;
             if (m_folder.StartsWith("Assets")) {
@@ -240,14 +250,10 @@ namespace UnityEngine.StreamingImageSequence {
            
             string filename = LoadRequest(index,isBlocking, out ReadResult readResult);
 
-            if (null == m_texture &&  readResult.ReadStatus == (int)LoadStatus.Loaded)
-            {
-#if UNITY_STANDALONE_OSX
-				const TextureFormat textureFormat = TextureFormat.RGBA32;
-#elif UNITY_STANDALONE_WIN
-                const TextureFormat textureFormat = TextureFormat.BGRA32;
-#endif
-                m_texture = new Texture2D(readResult.Width, readResult.Height, textureFormat, false, false);
+            if (null == m_texture &&  readResult.ReadStatus == (int)LoadStatus.Loaded) {
+                m_texture = new Texture2D(readResult.Width, readResult.Height, 
+                    StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
+                );
                 m_texture.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
                 m_texture.filterMode = FilterMode.Bilinear;
                 m_texture.Apply();
@@ -271,7 +277,7 @@ namespace UnityEngine.StreamingImageSequence {
         }
 //----------------------------------------------------------------------------------------------------------------------        
 
-        public  string GetCompleteFilePath(string filePath)
+        public string GetCompleteFilePath(string filePath)
         {
             string strOverridePath = m_folder;
 
@@ -297,6 +303,7 @@ namespace UnityEngine.StreamingImageSequence {
         void UpdateResolution(ReadResult readResult) {
             m_resolution.Width  = readResult.Width;
             m_resolution.Height = readResult.Height;
+            m_dimensionRatio = m_resolution.CalculateRatio();
         }
 //---------------------------------------------------------------------------------------------------------------------
         
@@ -359,12 +366,14 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
         [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
-        [SerializeField] private ImageDimensionInt  m_resolution;
-        
+        [SerializeField] private ImageDimensionInt  m_resolution;        
         [SerializeField] double m_time;
+
+        [SerializeField] float m_dimensionRatio;
 
         double m_clipStart;     //In global space. In seconds
         double m_clipDuration;  //In seconds
+
 
 #if UNITY_EDITOR
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below
