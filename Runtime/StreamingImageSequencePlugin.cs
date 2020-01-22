@@ -44,43 +44,42 @@ namespace UnityEngine.StreamingImageSequence
 
         // Implemented in Loader dll
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static IntPtr LoadAndAlloc([MarshalAs(UnmanagedType.LPStr)]string fileName);
+        public static extern IntPtr LoadAndAlloc([MarshalAs(UnmanagedType.LPStr)]string fileName);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static void NativeFree(IntPtr ptr);
+        public static extern void NativeFree(IntPtr ptr);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult);
+        public static extern IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static int ResetNativeTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
+        public static extern int ResetNativeTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static void ResetPlugin();
+        public static extern void ResetPlugin();
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static void  DoneResetPlugin();
+        public static extern void  DoneResetPlugin();
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static int   IsPluginResetting();
+        public static extern int   IsPluginResetting();
 
         // Implemented in Drawer dll
         [DllImport(DRAWER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static void SetNativeTexturePtr(IntPtr Texture, UInt32 uWidth, UInt32 height, Int32 sObjectID);
+        public static extern void SetNativeTexturePtr(IntPtr Texture, UInt32 uWidth, UInt32 height, Int32 sObjectID);
 
         [DllImport(DRAWER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static void SetLoadedTexture([MarshalAs(UnmanagedType.LPStr)]string fileName, Int32 sObjectID);
+        public static extern void SetLoadedTexture([MarshalAs(UnmanagedType.LPStr)]string fileName, Int32 sObjectID);
 
         [DllImport(DRAWER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static void ResetLoadedTexture(Int32 sObjectID);
+        public static extern void ResetLoadedTexture(Int32 sObjectID);
 
         [DllImport(DRAWER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static void ResetAllLoadedTexture();
+        public static extern void ResetAllLoadedTexture();
 
         [DllImport(DRAWER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern IntPtr GetRenderEventFunc();
 
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-
         [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern IntPtr TestDraw(int posX, int posY);
 
@@ -107,16 +106,16 @@ namespace UnityEngine.StreamingImageSequence
 
 #elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 
-        public static  IntPtr TestDraw(int posX, int posY) { return IntPtr.Zero; }       
-        public static  void LoadAndShowBitMap(int posX, int posY, [MarshalAs(UnmanagedType.LPStr)]string fileName) { }
-        public static  void ShowOverwrapWindow(int sInstanceID, int posX, int posY, int sWidth, int sHeight, int forceDraw) { }
-        public static  void HideOverwrapWindow(int sInstanceID) { }
-        public static  void SetOverwrapWindowData(int sInstanceID, UInt32[] byteArray, int length ) { }
-        public static  void HideAllOverwrapWindows() { }
-        public static  void SetAllAreLoaded(int sInstanceID,int flag) {}
-        public static  int GetAllAreLoaded(int sInstanceID) { return 0; }
-        public static  void ResetOverwrapWindows() { }
-#endif
+        public static IntPtr TestDraw(int posX, int posY) { return IntPtr.Zero; }       
+        public static void LoadAndShowBitMap(int posX, int posY, [MarshalAs(UnmanagedType.LPStr)]string fileName) { }
+        public static void ShowOverwrapWindow(int sInstanceID, int posX, int posY, int sWidth, int sHeight, int forceDraw) { }
+        public static void HideOverwrapWindow(int sInstanceID) { }
+        public static void SetOverwrapWindowData(int sInstanceID, UInt32[] byteArray, int length ) { }
+        public static void HideAllOverwrapWindows() { }
+        public static void SetAllAreLoaded(int sInstanceID,int flag) {}
+        public static int GetAllAreLoaded(int sInstanceID) { return 0; }
+        public static void ResetOverwrapWindows() { }
+#endif //Platform-dependent support
 
 
 #endif //UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
