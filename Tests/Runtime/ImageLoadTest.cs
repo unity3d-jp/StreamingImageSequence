@@ -15,7 +15,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             StreamingImageSequencePlugin.GetNativTextureInfo(fullPath, out ReadResult readResult);
             Assert.AreEqual(readResult.ReadStatus, 0);
 
-            new BGJobPictureLoader(fullPath);
+            ImageLoadBGTask.Queue(fullPath);
             yield return new WaitForSeconds(1.0f);
 
             StreamingImageSequencePlugin.ResetNativeTexture(fullPath);
