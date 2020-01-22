@@ -62,12 +62,13 @@ internal class StreamingImageSequencePreview : IDisposable {
             //[TODO-sin: 2020-1-17] Queue a job if the read status is not success yet
             if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
 
-                //[TODO-sin: 2020-1-17] Store Texture and filename in the list and compare it.
-                if (m_textures.Count <= i || null==m_textures[i]) {
+                if (m_textures.Count <= i || null==m_textures[i] || m_textures[i].name!=fullPath) {
 
-                    Texture2D curTex = new Texture2D(readResult.Width, readResult.Height, 
+                    Texture2D curTex = new Texture2D(readResult.Width, readResult.Height,
                         StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
-                    );
+                    ) {
+                        name = fullPath
+                    };
 
                     curTex.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
                     curTex.filterMode = FilterMode.Bilinear;
