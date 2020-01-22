@@ -12,7 +12,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         string fullPath = "Packages/com.unity.streaming-image-sequence/Tests/Data/AeConvert.jstimeline";
         Assert.IsTrue(File.Exists(fullPath));
 
-        JstimelineImporter.ImportAETimeline(fullPath);
+        JstimelineImporter.ImportTimeline(fullPath);
 
         //Check if the generated director is valid
         PlayableDirector[] directors = Object.FindObjectsOfType<PlayableDirector>();
