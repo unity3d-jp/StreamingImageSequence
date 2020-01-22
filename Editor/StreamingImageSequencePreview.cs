@@ -66,31 +66,40 @@ internal class StreamingImageSequencePreview : IDisposable {
             //Load
             string fullPath = m_playableAsset.GetCompleteFilePath(imagePaths[imageIndex]);
             StreamingImageSequencePlugin.GetNativTextureInfo(fullPath, out ReadResult readResult);
+            switch (readResult.ReadStatus) {
+                case StreamingImageSequenceConstants.READ_RESULT_NONE: {
+                    new BGJobPictureLoader(fullPath);
+                    break;
+                }
+                case StreamingImageSequenceConstants.READ_RESULT_SUCCESS: {
+                    if (m_textures.Count <= i || null==m_textures[i] || m_textures[i].name!=fullPath) {
 
-            //[TODO-sin: 2020-1-17] Queue a job if the read status is not success yet
-            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
+                        Texture2D curTex = new Texture2D(readResult.Width, readResult.Height,
+                            StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
+                        ) {
+                            name = fullPath
+                        };
 
-                if (m_textures.Count <= i || null==m_textures[i] || m_textures[i].name!=fullPath) {
+                        curTex.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
+                        curTex.filterMode = FilterMode.Bilinear;
+                        curTex.Apply();
 
-                    Texture2D curTex = new Texture2D(readResult.Width, readResult.Height,
-                        StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
-                    ) {
-                        name = fullPath
-                    };
-
-                    curTex.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
-                    curTex.filterMode = FilterMode.Bilinear;
-                    curTex.Apply();
-
-                    if (m_textures.Count <= i) {
-                        m_textures.Add(curTex);
-                    } else {
-                        m_textures[i] = curTex;
+                        if (m_textures.Count <= i) {
+                            m_textures.Add(curTex);
+                        } else {
+                            m_textures[i] = curTex;
+                        }
                     }
+
+                    Graphics.DrawTexture(drawRect, m_textures[i]);
+                    break;
+                }
+                default: {
+                    break;
                 }
 
-                Graphics.DrawTexture(drawRect, m_textures[i]);
             }
+
             drawRect.x += widthPerPreviewImage;
             localTime += localTimeCounter;
         }
