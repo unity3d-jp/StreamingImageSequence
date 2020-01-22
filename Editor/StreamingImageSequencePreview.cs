@@ -28,7 +28,13 @@ internal class StreamingImageSequencePreview : IDisposable {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    public void Render(Rect rect) {
+    internal void SetLocalTime(double startTime, double endTime) {
+        m_localStartTime = startTime;
+        m_localEndTime = endTime;
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+    internal void Render(Rect rect) {
 
         IList<string> imagePaths = m_playableAsset.GetImagePaths();
 
@@ -44,8 +50,8 @@ internal class StreamingImageSequencePreview : IDisposable {
         int numPreviewImages = Mathf.FloorToInt(rect.width / widthPerPreviewImage);
 
         //[TODO-sin: 2020-1-17] The middle of the preview should show the middle frame, not the left
-        int imageIndexCounter = imagePaths.Count / numPreviewImages;
-        int imageIndex = 0;
+        double localTimeCounter = (m_localEndTime - m_localStartTime) / numPreviewImages;
+        double localTime = m_localStartTime;
         Rect drawRect = new Rect(rect) {
             width = widthPerPreviewImage,
             height = heightPerPreviewImage
@@ -53,7 +59,7 @@ internal class StreamingImageSequencePreview : IDisposable {
 
         for (int i = 0; i < numPreviewImages; ++i) {
 
-            //[TODO-sin: 2020-1-17] imageIndex should be based on time, instead of index directly
+            int imageIndex = m_playableAsset.LocalTimeToImageIndex(localTime);
 
             //Load
             string fullPath = m_playableAsset.GetCompleteFilePath(imagePaths[imageIndex]);
@@ -84,7 +90,7 @@ internal class StreamingImageSequencePreview : IDisposable {
                 Graphics.DrawTexture(drawRect, m_textures[i]);
             }
             drawRect.x += widthPerPreviewImage;
-            imageIndex += imageIndexCounter;
+            localTime += localTimeCounter;
         }
 
     }
@@ -94,6 +100,8 @@ internal class StreamingImageSequencePreview : IDisposable {
     List<Texture2D> m_textures;
     private readonly StreamingImageSequencePlayableAsset m_playableAsset = null;
     private const int MIN_PREVIEW_IMAGE_WIDTH = 60;
+    private double m_localStartTime;
+    private double m_localEndTime;
 }
 
 } //end namespace

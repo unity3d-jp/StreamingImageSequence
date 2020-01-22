@@ -12,7 +12,7 @@ namespace UnityEngine.StreamingImageSequence {
     
     //ITimelineClipAsset interface is used to define the clip capabilities (ClipCaps) 
     [System.Serializable]
-    internal class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset, IPlayableBehaviour {
+    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset, IPlayableBehaviour {
         
 //----------------------------------------------------------------------------------------------------------------------
         public virtual void OnBehaviourDelay(Playable playable, FrameData info) {
@@ -65,17 +65,32 @@ namespace UnityEngine.StreamingImageSequence {
         }
 //----------------------------------------------------------------------------------------------------------------------        
         //Calculate Image Sequence Time, which is normalized [0..1] 
-        private double GlobalTime2CurveTime(double globalTime) {
+        private double GlobalTimeToCurveTime(double globalTime) {
             double localTime = m_timelineClip.ToLocalTime(globalTime);
+            return LocalTimeToCurveTime(localTime);
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+        private double LocalTimeToCurveTime(double localTime) {
             AnimationCurve curve = GetAndValidateAnimationCurve();
             return curve.Evaluate((float)localTime);
+        }
+//----------------------------------------------------------------------------------------------------------------------
+
+        //Calculate the used image index for the passed globalTime
+        internal int GlobalTimeToImageIndex(double globalTime) {
+            double imageSequenceTime = GlobalTimeToCurveTime(globalTime);
+            int count = m_imagePaths.Count;
+            int index = (int)(count * imageSequenceTime);
+            index = Mathf.Clamp(index, 0, count - 1);
+            return index;
         }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-        //Calculate the used image index for the passed globalTime
-        internal int GlobalTime2ImageIndex(double globalTime) {
-            double imageSequenceTime = GlobalTime2CurveTime(globalTime);
+        //Calculate the used image index for the passed localTime
+        internal int LocalTimeToImageIndex(double localTime) {
+            double imageSequenceTime = LocalTimeToCurveTime(localTime);
             int count = m_imagePaths.Count;
             int index = (int)(count * imageSequenceTime);
             index = Mathf.Clamp(index, 0, count - 1);

@@ -125,7 +125,7 @@ namespace UnityEngine.StreamingImageSequence
 
                 if (directorTime >= startTime && directorTime < endTime) {
                     activeClip = clip;
-                    int index = asset.GlobalTime2ImageIndex(directorTime);
+                    int index = asset.GlobalTimeToImageIndex(directorTime);
 
                     bool texReady = asset.RequestLoadImage(index, false);
                     if (texReady) {
