@@ -46,16 +46,18 @@ internal class StreamingImageSequencePreview : IDisposable {
         int widthPerPreviewImage = (int) (dimensionRatio * rect.height);
         int heightPerPreviewImage = (int)rect.height;
 
-        //Prepare the textures
+        //Initialize variables to display the preview images correctly.
         int numPreviewImages = Mathf.FloorToInt(rect.width / widthPerPreviewImage);
-
-        //[TODO-sin: 2020-1-17] The middle of the preview should show the middle frame, not the left
-        double localTimeCounter = (m_localEndTime - m_localStartTime) / numPreviewImages;
-        double localTime = m_localStartTime;
+        double usedWidthRatio = (numPreviewImages * widthPerPreviewImage) / rect.width;
+        double endPreviewTime = (m_localEndTime - m_localStartTime) * usedWidthRatio + m_localStartTime;
+        double localTimeCounter = (endPreviewTime - m_localStartTime) / numPreviewImages;
         Rect drawRect = new Rect(rect) {
             width = widthPerPreviewImage,
             height = heightPerPreviewImage
         };
+
+        //Each preview should show the image used in the time in the middle of the span, instead of the left start point
+        double localTime = m_localStartTime + (localTimeCounter * 0.5f);
 
         for (int i = 0; i < numPreviewImages; ++i) {
 
