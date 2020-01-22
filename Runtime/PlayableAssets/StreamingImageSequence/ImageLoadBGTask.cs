@@ -11,20 +11,20 @@ namespace UnityEngine.StreamingImageSequence
 {
 
 
-    public class BGJobPictureLoader : BackGroundTask
+    public class ImageLoadBGTask : BackGroundTask
     {
 		internal static bool m_sUpdated;
         string m_strFileName;
 
 //----------------------------------------------------------------------------------------------------------------------
         internal static void Queue(string strFileName) {
-            BGJobPictureLoader task = new BGJobPictureLoader(strFileName);
+            ImageLoadBGTask task = new ImageLoadBGTask(strFileName);
             UpdateManager.QueueBackGroundTask(task);
             
         }
 
 //----------------------------------------------------------------------------------------------------------------------
-        private BGJobPictureLoader( string strFileName ) {
+        private ImageLoadBGTask( string strFileName ) {
             m_strFileName = strFileName;
         }
 
