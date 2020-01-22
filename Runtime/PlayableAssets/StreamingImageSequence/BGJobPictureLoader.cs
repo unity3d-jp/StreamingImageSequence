@@ -15,27 +15,37 @@ namespace UnityEngine.StreamingImageSequence
     {
 		internal static bool m_sUpdated;
         string m_strFileName;
-        public BGJobPictureLoader( string strFileName )
-        {
-            m_strFileName = strFileName;
-            UpdateManager.QueueBackGroundTask(this);
-        }
-        public override void Execute()
-        {
 
-            ReadResult tResult;
-            StreamingImageSequencePlugin.GetNativTextureInfo(m_strFileName, out tResult);
-            if (tResult.ReadStatus == 0)
-            {
-                //Debug.Log("Loading: " + m_strFileName);
-                StreamingImageSequencePlugin.LoadAndAlloc(m_strFileName);
-            }
+//----------------------------------------------------------------------------------------------------------------------
+        internal static void Queue(string strFileName) {
+            BGJobPictureLoader task = new BGJobPictureLoader(strFileName);
+            UpdateManager.QueueBackGroundTask(task);
+            
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+        private BGJobPictureLoader( string strFileName ) {
+            m_strFileName = strFileName;
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+        public override void Execute() {
+            StreamingImageSequencePlugin.GetNativTextureInfo(m_strFileName, out ReadResult tResult);
+            switch (tResult.ReadStatus) {
+                case StreamingImageSequenceConstants.READ_RESULT_NONE: {
+                    //Debug.Log("Loading: " + m_strFileName);
+                    StreamingImageSequencePlugin.LoadAndAlloc(m_strFileName);
+                    break;
+                }
+                case StreamingImageSequenceConstants.READ_RESULT_REQUESTED: {
 #if UNITY_EDITOR
-            if (tResult.ReadStatus == 1)
-            {
-                LogUtility.LogDebug("Already requested:" + m_strFileName);
-            }
+                    LogUtility.LogDebug("Already requested:" + m_strFileName);
 #endif
+                    break;
+                }
+                default: break;
+            }
 
             m_sUpdated = true;
         }

@@ -252,11 +252,11 @@ namespace UnityEngine.StreamingImageSequence {
 
             StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
             //Debug.Log("readResult.readStatus " + readResult.readStatus + "Loading " + filename);
-            if (readResult.ReadStatus == 0) {
-                new BGJobPictureLoader(filename);
+            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_NONE) {
+                BGJobPictureLoader.Queue(filename);
             }
             if ( isBlocking ) {
-                while (readResult.ReadStatus != 2) {
+                while (readResult.ReadStatus != StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
                     StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
                 }
             }

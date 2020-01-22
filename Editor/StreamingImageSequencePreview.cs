@@ -68,7 +68,7 @@ internal class StreamingImageSequencePreview : IDisposable {
             StreamingImageSequencePlugin.GetNativTextureInfo(fullPath, out ReadResult readResult);
             switch (readResult.ReadStatus) {
                 case StreamingImageSequenceConstants.READ_RESULT_NONE: {
-                    new BGJobPictureLoader(fullPath);
+                    BGJobPictureLoader.Queue(fullPath);
                     break;
                 }
                 case StreamingImageSequenceConstants.READ_RESULT_SUCCESS: {
