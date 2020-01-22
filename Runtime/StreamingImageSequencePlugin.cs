@@ -53,6 +53,9 @@ namespace UnityEngine.StreamingImageSequence
         public extern static IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public extern static int ResetNativeTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
+
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public extern static void ResetPlugin();
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
@@ -77,9 +80,6 @@ namespace UnityEngine.StreamingImageSequence
         public static extern IntPtr GetRenderEventFunc();
 
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-
-        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static int ResetNativeTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
 
         [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern IntPtr TestDraw(int posX, int posY);
