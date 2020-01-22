@@ -28,7 +28,13 @@ internal class StreamingImageSequencePreview : IDisposable {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    public void Render(Rect rect) {
+    internal void SetLocalTime(double startTime, double endTime) {
+        m_localStartTime = startTime;
+        m_localEndTime = endTime;
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+    internal void Render(Rect rect) {
 
         IList<string> imagePaths = m_playableAsset.GetImagePaths();
 
@@ -40,50 +46,62 @@ internal class StreamingImageSequencePreview : IDisposable {
         int widthPerPreviewImage = (int) (dimensionRatio * rect.height);
         int heightPerPreviewImage = (int)rect.height;
 
-        //Prepare the textures
+        //Initialize variables to display the preview images correctly.
         int numPreviewImages = Mathf.FloorToInt(rect.width / widthPerPreviewImage);
-
-        //[TODO-sin: 2020-1-17] The middle of the preview should show the middle frame, not the left
-        int imageIndexCounter = imagePaths.Count / numPreviewImages;
-        int imageIndex = 0;
+        double usedWidthRatio = (numPreviewImages * widthPerPreviewImage) / rect.width;
+        double endPreviewTime = (m_localEndTime - m_localStartTime) * usedWidthRatio + m_localStartTime;
+        double localTimeCounter = (endPreviewTime - m_localStartTime) / numPreviewImages;
         Rect drawRect = new Rect(rect) {
             width = widthPerPreviewImage,
             height = heightPerPreviewImage
         };
 
+        //Each preview should show the image used in the time in the middle of the span, instead of the left start point
+        double localTime = m_localStartTime + (localTimeCounter * 0.5f);
+
         for (int i = 0; i < numPreviewImages; ++i) {
 
-            //[TODO-sin: 2020-1-17] imageIndex should be based on time, instead of index directly
+            int imageIndex = m_playableAsset.LocalTimeToImageIndex(localTime);
 
             //Load
             string fullPath = m_playableAsset.GetCompleteFilePath(imagePaths[imageIndex]);
             StreamingImageSequencePlugin.GetNativTextureInfo(fullPath, out ReadResult readResult);
+            switch (readResult.ReadStatus) {
+                case StreamingImageSequenceConstants.READ_RESULT_NONE: {
+                    ImageLoadBGTask.Queue(fullPath);
+                    break;
+                }
+                case StreamingImageSequenceConstants.READ_RESULT_SUCCESS: {
+                    if (m_textures.Count <= i || null==m_textures[i] || m_textures[i].name!=fullPath) {
 
-            //[TODO-sin: 2020-1-17] Queue a job if the read status is not success yet
-            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
+                        Texture2D curTex = new Texture2D(readResult.Width, readResult.Height,
+                            StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
+                        ) {
+                            name = fullPath
+                        };
 
-                //[TODO-sin: 2020-1-17] Store Texture and filename in the list and compare it.
-                if (m_textures.Count <= i || null==m_textures[i]) {
+                        curTex.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
+                        curTex.filterMode = FilterMode.Bilinear;
+                        curTex.Apply();
 
-                    Texture2D curTex = new Texture2D(readResult.Width, readResult.Height, 
-                        StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
-                    );
-
-                    curTex.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
-                    curTex.filterMode = FilterMode.Bilinear;
-                    curTex.Apply();
-
-                    if (m_textures.Count <= i) {
-                        m_textures.Add(curTex);
-                    } else {
-                        m_textures[i] = curTex;
+                        if (m_textures.Count <= i) {
+                            m_textures.Add(curTex);
+                        } else {
+                            m_textures[i] = curTex;
+                        }
                     }
+
+                    Graphics.DrawTexture(drawRect, m_textures[i]);
+                    break;
+                }
+                default: {
+                    break;
                 }
 
-                Graphics.DrawTexture(drawRect, m_textures[i]);
             }
+
             drawRect.x += widthPerPreviewImage;
-            imageIndex += imageIndexCounter;
+            localTime += localTimeCounter;
         }
 
     }
@@ -93,6 +111,8 @@ internal class StreamingImageSequencePreview : IDisposable {
     List<Texture2D> m_textures;
     private readonly StreamingImageSequencePlayableAsset m_playableAsset = null;
     private const int MIN_PREVIEW_IMAGE_WIDTH = 60;
+    private double m_localStartTime;
+    private double m_localEndTime;
 }
 
 } //end namespace

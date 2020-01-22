@@ -65,18 +65,45 @@ namespace UnityEngine.StreamingImageSequence {
         }
 //----------------------------------------------------------------------------------------------------------------------        
         //Calculate Image Sequence Time, which is normalized [0..1] 
-        public double ToImageSequenceTime(double globalTime) {
+        private double GlobalTimeToCurveTime(double globalTime) {
             double localTime = m_timelineClip.ToLocalTime(globalTime);
+            return LocalTimeToCurveTime(localTime);
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+        private double LocalTimeToCurveTime(double localTime) {
             AnimationCurve curve = GetAndValidateAnimationCurve();
             return curve.Evaluate((float)localTime);
         }
 //----------------------------------------------------------------------------------------------------------------------
 
-        public int GetVersion() { return m_version; }
-        public IList<string> GetImagePaths() { return m_imagePaths; }
-        public ImageDimensionInt GetResolution() { return m_resolution; }
-        public System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
-        public Texture2D GetTexture() { return m_texture; }
+        //Calculate the used image index for the passed globalTime
+        internal int GlobalTimeToImageIndex(double globalTime) {
+            double imageSequenceTime = GlobalTimeToCurveTime(globalTime);
+            int count = m_imagePaths.Count;
+            int index = (int)(count * imageSequenceTime);
+            index = Mathf.Clamp(index, 0, count - 1);
+            return index;
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+        //Calculate the used image index for the passed localTime
+        internal int LocalTimeToImageIndex(double localTime) {
+            double imageSequenceTime = LocalTimeToCurveTime(localTime);
+            int count = m_imagePaths.Count;
+            int index = (int)(count * imageSequenceTime);
+            index = Mathf.Clamp(index, 0, count - 1);
+            return index;
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+        internal int GetVersion() { return m_version; }
+        internal IList<string> GetImagePaths() { return m_imagePaths; }
+        internal ImageDimensionInt GetResolution() { return m_resolution; }
+        internal System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
+        internal Texture2D GetTexture() { return m_texture; }
 
 //----------------------------------------------------------------------------------------------------------------------        
 
@@ -225,11 +252,11 @@ namespace UnityEngine.StreamingImageSequence {
 
             StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
             //Debug.Log("readResult.readStatus " + readResult.readStatus + "Loading " + filename);
-            if (readResult.ReadStatus == 0) {
-                new BGJobPictureLoader(filename);
+            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_NONE) {
+                ImageLoadBGTask.Queue(filename);
             }
             if ( isBlocking ) {
-                while (readResult.ReadStatus != 2) {
+                while (readResult.ReadStatus != StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
                     StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
                 }
             }

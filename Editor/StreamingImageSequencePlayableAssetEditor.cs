@@ -120,6 +120,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             if (Event.current.type == EventType.Repaint) {
+                preview.SetLocalTime(region.startTime, region.endTime);
                 preview.Render(quantizedRect);
             }
         }
