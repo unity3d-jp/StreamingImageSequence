@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -24,234 +24,102 @@ namespace UnityEngine.StreamingImageSequence
         Requested,
         Loaded,
     };
+
+//----------------------------------------------------------------------------------------------------------------------
     public static class StreamingImageSequencePlugin {
 
+//only support Windows and OSX
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+
+
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-        // Impremented in Loader dll
-        [DllImport("Loader", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        private const string LOADER_DLL             = "Loader";
+        private const string DRAWER_DLL             = "Drawer";
+        private const string DRAW_OVER_WINDOW_DLL   = "DrawOverWindow";
+#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
+        private const string LOADER_DLL             = "Project";
+        private const string DRAWER_DLL             = "Project";
+        private const string DRAW_OVER_WINDOW_DLL   = "Project";
+#endif
+
+        // Implemented in Loader dll
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public extern static IntPtr LoadAndAlloc([MarshalAs(UnmanagedType.LPStr)]string fileName);
 
-        [DllImport("Loader", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public extern static void NativeFree(IntPtr ptr);
 
-        [DllImport("Loader", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public extern static IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult);
 
-        [DllImport("Loader", CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public extern static int ResetNativeTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
-
-        [DllImport("Loader", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public extern static void ResetPlugin();
-        [DllImport("Loader", CharSet = CharSet.Unicode, ExactSpelling = true)]
-	    public extern static void  DoneResetPlugin();
-        [DllImport("Loader", CharSet = CharSet.Unicode, ExactSpelling = true)]
-	    public extern static int   IsPluginResetting();
 
-        // Impremented in Drawer dll
-        [DllImport("Drawer", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public extern static void  DoneResetPlugin();
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public extern static int   IsPluginResetting();
+
+        // Implemented in Drawer dll
+        [DllImport(DRAWER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public extern static void SetNativeTexturePtr(IntPtr Texture, UInt32 uWidth, UInt32 height, Int32 sObjectID);
 
-        [DllImport("Drawer", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(DRAWER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public extern static void SetLoadedTexture([MarshalAs(UnmanagedType.LPStr)]string fileName, Int32 sObjectID);
 
-        [DllImport("Drawer", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(DRAWER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public extern static void ResetLoadedTexture(Int32 sObjectID);
 
-        [DllImport("Drawer", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(DRAWER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public extern static void ResetAllLoadedTexture();
-        [DllImport("Drawer", CharSet = CharSet.Unicode, ExactSpelling = true)]
+
+        [DllImport(DRAWER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern IntPtr GetRenderEventFunc();
 
-        [DllImport("DrawOverWindow", CharSet = CharSet.Unicode, ExactSpelling = true)]
+#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
+
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public extern static int ResetNativeTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
+
+        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern IntPtr TestDraw(int posX, int posY);
 
-        [DllImport("DrawOverWindow", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void LoadAndShowBitMap(int posX, int posY, [MarshalAs(UnmanagedType.LPStr)]string fileName);
 
-        [DllImport("DrawOverWindow", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void ShowOverwrapWindow(int sInstanceID, int posX, int posY, int sWidth, int sHeight, int forceDraw);
 
-        [DllImport("DrawOverWindow", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void HideOverwrapWindow(int sInstanceID);
-        [DllImport("DrawOverWindow", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void SetOverwrapWindowData(int sInstanceID, UInt32[] byteArray, int length );
-        [DllImport("DrawOverWindow", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void HideAllOverwrapWindows();
 
-
-        [DllImport("DrawOverWindow", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void SetAllAreLoaded(int sInstanceID,int flag);
-        [DllImport("DrawOverWindow", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int GetAllAreLoaded(int sInstanceID);
 
-        [DllImport("DrawOverWindow", CharSet = CharSet.Unicode, ExactSpelling = true)]
+        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void ResetOverwrapWindows();
 
 #elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-		// Impremented in Loader dll
-		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public extern static IntPtr LoadAndAlloc([MarshalAs(UnmanagedType.LPStr)]string fileName);
 
-
-		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public extern static void NativeFree(IntPtr ptr);
-
-		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public extern static  IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult);
-
-		// Impremented in Drawer dll
-		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public extern static void SetNativeTexturePtr(IntPtr Texture, UInt32 uWidth, UInt32 height, Int32 sObjectID);
-
-		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public extern static void SetLoadedTexture([MarshalAs(UnmanagedType.LPStr)]string fileName, Int32 sObjectID);
-
-		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public extern static void ResetLoadedTexture(Int32 sObjectID);
-
-		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public extern static void ResetAllLoadedTexture();
-		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public static extern IntPtr GetRenderEventFunc();
-
-
-		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public extern static void ResetPlugin();
-		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public extern static void  DoneResetPlugin();
-		[DllImport("Project", CharSet = CharSet.Unicode, ExactSpelling = true)]
-		public extern static int   IsPluginResetting();
-
-		public static  IntPtr TestDraw(int posX, int posY)
-		{
-		return IntPtr.Zero;
-		}
-
-
-		public static  void LoadAndShowBitMap(int posX, int posY, [MarshalAs(UnmanagedType.LPStr)]string fileName)
-		{
-
-		}
-
-		public static  void ShowOverwrapWindow(int sInstanceID, int posX, int posY, int sWidth, int sHeight, int forceDraw)
-		{
-
-		}
-
-		public static  void HideOverwrapWindow(int sInstanceID)
-		{
-
-		}
-		public static  void SetOverwrapWindowData(int sInstanceID, UInt32[] byteArray, int length )
-		{
-
-		}
-		public static  void HideAllOverwrapWindows()
-		{
-
-		}
-
-
-		public static  void SetAllAreLoaded(int sInstanceID,int flag)
-		{
-
-		}
-		public static  int GetAllAreLoaded(int sInstanceID)
-		{
-			return 0;
-		}
-
-
-		public static  void ResetOverwrapWindows()
-		{
-		}
-#else
-        // Impremented in Loader dll
-        public static IntPtr LoadAndAlloc([MarshalAs(UnmanagedType.LPStr)]string fileName)
-        {
-            return IntPtr.Zero;
-        }
-
-        public  static void NativeFree(IntPtr ptr){}
-
-        public  static  IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult)
-        {
-            tResult.Buffer = IntPtr.Zero;
-            tResult.Width = 0;
-            tResult.Height = 0;
-            tResult.ReadStatus = 0;
-            return IntPtr.Zero;
-        }
-
-        public  static void SetNativeTexturePtr(IntPtr Texture, UInt32 uWidth, UInt32 height, Int32 sObjectID)
-        {
-
-        }
-
-        public  static void SetLoadedTexture([MarshalAs(UnmanagedType.LPStr)]string fileName, Int32 sObjectID)
-        {
-            
-        }
-        
-
-        public  static void ResetLoadedTexture(Int32 sObjectID)
-        {
-            
-        }
-        
-
-        public  static void ResetAllLoadedTexture()
-        {
-            
-        }
-        
-
-        public static  IntPtr GetRenderEventFunc()
-        {
-            return IntPtr.Zero;
-        }
-       
-
-        public static  IntPtr TestDraw(int posX, int posY)
-        {
-            return IntPtr.Zero;
-        }
-       
-
-        public static  void LoadAndShowBitMap(int posX, int posY, [MarshalAs(UnmanagedType.LPStr)]string fileName)
-        {
-
-        }
-
-        public static  void ShowOverwrapWindow(int sInstanceID, int posX, int posY, int sWidth, int sHeight, int forceDraw)
-        {
-
-        }
-
-        public static  void HideOverwrapWindow(int sInstanceID)
-        {
-
-        }
-        public static  void SetOverwrapWindowData(int sInstanceID, UInt32[] byteArray, int length )
-        {
-
-        }
-        public static  void HideAllOverwrapWindows()
-        {
-
-        }
-
-
-        public static  void SetAllAreLoaded(int sInstanceID,int flag)
-        {
-
-        }
-        public static  int GetAllAreLoaded(int sInstanceID)
-        {
-            return 0;
-        }
+        public static  IntPtr TestDraw(int posX, int posY) { return IntPtr.Zero; }       
+        public static  void LoadAndShowBitMap(int posX, int posY, [MarshalAs(UnmanagedType.LPStr)]string fileName) { }
+        public static  void ShowOverwrapWindow(int sInstanceID, int posX, int posY, int sWidth, int sHeight, int forceDraw) { }
+        public static  void HideOverwrapWindow(int sInstanceID) { }
+        public static  void SetOverwrapWindowData(int sInstanceID, UInt32[] byteArray, int length ) { }
+        public static  void HideAllOverwrapWindows() { }
+        public static  void SetAllAreLoaded(int sInstanceID,int flag) {}
+        public static  int GetAllAreLoaded(int sInstanceID) { return 0; }
+        public static  void ResetOverwrapWindows() { }
 #endif
 
+
+#endif //UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 
     }
 
