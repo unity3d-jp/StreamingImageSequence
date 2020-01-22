@@ -12,7 +12,7 @@ namespace UnityEngine.StreamingImageSequence {
     
     //ITimelineClipAsset interface is used to define the clip capabilities (ClipCaps) 
     [System.Serializable]
-    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset, IPlayableBehaviour {
+    internal class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset, IPlayableBehaviour {
         
 //----------------------------------------------------------------------------------------------------------------------
         public virtual void OnBehaviourDelay(Playable playable, FrameData info) {
@@ -65,18 +65,30 @@ namespace UnityEngine.StreamingImageSequence {
         }
 //----------------------------------------------------------------------------------------------------------------------        
         //Calculate Image Sequence Time, which is normalized [0..1] 
-        public double ToImageSequenceTime(double globalTime) {
+        private double GlobalTime2CurveTime(double globalTime) {
             double localTime = m_timelineClip.ToLocalTime(globalTime);
             AnimationCurve curve = GetAndValidateAnimationCurve();
             return curve.Evaluate((float)localTime);
         }
+
 //----------------------------------------------------------------------------------------------------------------------
 
-        public int GetVersion() { return m_version; }
-        public IList<string> GetImagePaths() { return m_imagePaths; }
-        public ImageDimensionInt GetResolution() { return m_resolution; }
-        public System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
-        public Texture2D GetTexture() { return m_texture; }
+        //Calculate the used image index for the passed globalTime
+        internal int GlobalTime2ImageIndex(double globalTime) {
+            double imageSequenceTime = GlobalTime2CurveTime(globalTime);
+            int count = m_imagePaths.Count;
+            int index = (int)(count * imageSequenceTime);
+            index = Mathf.Clamp(index, 0, count - 1);
+            return index;
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+        internal int GetVersion() { return m_version; }
+        internal IList<string> GetImagePaths() { return m_imagePaths; }
+        internal ImageDimensionInt GetResolution() { return m_resolution; }
+        internal System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
+        internal Texture2D GetTexture() { return m_texture; }
 
 //----------------------------------------------------------------------------------------------------------------------        
 
