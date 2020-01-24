@@ -3,14 +3,15 @@ using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
 using UnityEditor;
 #endif
 
 namespace UnityEngine.StreamingImageSequence {
-    
+
     //ITimelineClipAsset interface is used to define the clip capabilities (ClipCaps) 
     [System.Serializable]
     public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset, IPlayableBehaviour {
@@ -270,6 +271,11 @@ namespace UnityEngine.StreamingImageSequence {
             return filename;
         }
 //----------------------------------------------------------------------------------------------------------------------        
+        
+        static unsafe void  TestUnsafe() {
+
+        }
+
         internal bool RequestLoadImage(int index, bool isBlocking)
         {
             if (null == m_imagePaths || index < 0 || index >= m_imagePaths.Count || string.IsNullOrEmpty(m_imagePaths[index])) {
@@ -279,16 +285,20 @@ namespace UnityEngine.StreamingImageSequence {
             string filename = LoadRequest(index,isBlocking, out ReadResult readResult);
 
             if (null == m_texture &&  readResult.ReadStatus == (int)LoadStatus.Loaded) {
+
                 m_texture = new Texture2D(readResult.Width, readResult.Height, 
                     StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
                 );
 
-                //Buffer.MemoryCopy(readResult.Buffer,readResult.Buffer,1,1);
-//                CopyMemory()
-                byte[] asu = m_texture.GetRawTextureData();
-                Marshal.Copy(readResult.Buffer, asu, 0, readResult.Width * readResult.Height);
+                //Copy IntPtr to Texture
+                int length = readResult.Width * readResult.Height * 4;
+                unsafe {
+                    void* src = readResult.Buffer.ToPointer();
+                    NativeArray<float> rawTextureData = m_texture.GetRawTextureData<float>();
+                    void* dest = rawTextureData.GetUnsafePtr();
+                    Buffer.MemoryCopy(src, dest, length, length);
+                }
 
-//                m_texture.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
                 m_texture.filterMode = FilterMode.Bilinear;
                 m_texture.Apply();
 

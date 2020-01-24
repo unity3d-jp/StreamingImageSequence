@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
+using Unity.Collections.LowLevel.Unsafe;
 
 namespace UnityEngine.StreamingImageSequence {
 
@@ -80,7 +82,16 @@ internal class StreamingImageSequencePreview : IDisposable {
                             name = fullPath
                         };
 
-                        curTex.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
+                        //Copy IntPtr to Texture
+                        int length = readResult.Width * readResult.Height * 4;
+                        unsafe {
+                            void* src = readResult.Buffer.ToPointer();
+                            NativeArray<float> rawTextureData = curTex.GetRawTextureData<float>();
+                            void* dest = rawTextureData.GetUnsafePtr();
+                            Buffer.MemoryCopy(src, dest, length, length);
+                        }
+
+                        //curTex.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
                         curTex.filterMode = FilterMode.Bilinear;
                         curTex.Apply();
 
