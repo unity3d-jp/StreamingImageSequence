@@ -3,8 +3,6 @@ using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
 using UnityEditor;
@@ -286,26 +284,12 @@ namespace UnityEngine.StreamingImageSequence {
 
             if (null == m_texture &&  readResult.ReadStatus == (int)LoadStatus.Loaded) {
 
-                m_texture = new Texture2D(readResult.Width, readResult.Height, 
-                    StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
-                );
-
-                //Copy IntPtr to Texture
-                int length = readResult.Width * readResult.Height * 4;
-                unsafe {
-                    void* src = readResult.Buffer.ToPointer();
-                    NativeArray<float> rawTextureData = m_texture.GetRawTextureData<float>();
-                    void* dest = rawTextureData.GetUnsafePtr();
-                    Buffer.MemoryCopy(src, dest, length, length);
-                }
-
-                m_texture.filterMode = FilterMode.Bilinear;
-                m_texture.Apply();
+                m_texture = StreamingImageSequencePlugin.CreateTextureFromPlugin(ref readResult);
 
                 IntPtr ptr =  m_texture.GetNativeTexturePtr();
                 int texInstanceID = m_texture.GetInstanceID();
                 
-                UpdateResolution(readResult);
+                UpdateResolution(ref readResult);
                 StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)readResult.Width, (uint)readResult.Height, texInstanceID);
             }
 
@@ -344,7 +328,7 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
 //---------------------------------------------------------------------------------------------------------------------
-        void UpdateResolution(ReadResult readResult) {
+        void UpdateResolution(ref ReadResult readResult) {
             m_resolution.Width  = readResult.Width;
             m_resolution.Height = readResult.Height;
             m_dimensionRatio = m_resolution.CalculateRatio();

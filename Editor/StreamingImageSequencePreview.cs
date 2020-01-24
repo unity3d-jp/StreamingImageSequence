@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
 
 namespace UnityEngine.StreamingImageSequence {
 
-internal class StreamingImageSequencePreview : IDisposable {
+    internal class StreamingImageSequencePreview : IDisposable {
 
     public StreamingImageSequencePreview(StreamingImageSequencePlayableAsset playableAsset) {
         m_playableAsset = playableAsset;
@@ -74,26 +71,11 @@ internal class StreamingImageSequencePreview : IDisposable {
                     break;
                 }
                 case StreamingImageSequenceConstants.READ_RESULT_SUCCESS: {
+                    //If the name is the same, then we don't need to reload
                     if (m_textures.Count <= i || null==m_textures[i] || m_textures[i].name!=fullPath) {
 
-                        Texture2D curTex = new Texture2D(readResult.Width, readResult.Height,
-                            StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
-                        ) {
-                            name = fullPath
-                        };
-
-                        //Copy IntPtr to Texture
-                        int length = readResult.Width * readResult.Height * 4;
-                        unsafe {
-                            void* src = readResult.Buffer.ToPointer();
-                            NativeArray<float> rawTextureData = curTex.GetRawTextureData<float>();
-                            void* dest = rawTextureData.GetUnsafePtr();
-                            Buffer.MemoryCopy(src, dest, length, length);
-                        }
-
-                        //curTex.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
-                        curTex.filterMode = FilterMode.Bilinear;
-                        curTex.Apply();
+                        Texture2D curTex = StreamingImageSequencePlugin.CreateTextureFromPlugin(ref readResult);
+                        curTex.name = fullPath;
 
                         if (m_textures.Count <= i) {
                             m_textures.Add(curTex);
