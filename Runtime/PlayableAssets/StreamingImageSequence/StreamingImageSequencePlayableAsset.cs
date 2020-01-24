@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
 using UnityEditor;
@@ -281,7 +282,13 @@ namespace UnityEngine.StreamingImageSequence {
                 m_texture = new Texture2D(readResult.Width, readResult.Height, 
                     StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
                 );
-                m_texture.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
+
+                //Buffer.MemoryCopy(readResult.Buffer,readResult.Buffer,1,1);
+//                CopyMemory()
+                byte[] asu = m_texture.GetRawTextureData();
+                Marshal.Copy(readResult.Buffer, asu, 0, readResult.Width * readResult.Height);
+
+//                m_texture.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
                 m_texture.filterMode = FilterMode.Bilinear;
                 m_texture.Apply();
 
