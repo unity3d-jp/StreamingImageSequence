@@ -7,7 +7,6 @@ namespace UnityEngine.StreamingImageSequence {
 
     public StreamingImageSequencePreview(StreamingImageSequencePlayableAsset playableAsset) {
         m_playableAsset = playableAsset;
-        m_textures = new List<Texture2D>();
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -15,15 +14,6 @@ namespace UnityEngine.StreamingImageSequence {
         if (m_disposed) return;
 
         m_disposed= true;
-        foreach (Texture2D tex in m_textures) {
-            if (tex!= null) {
-                if (Application.isPlaying)
-                    UnityEngine.Object.Destroy(tex);
-                else
-                    UnityEngine.Object.DestroyImmediate(tex);
-            }
-        }
-        m_textures.Clear();
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -71,20 +61,8 @@ namespace UnityEngine.StreamingImageSequence {
                     break;
                 }
                 case StreamingImageSequenceConstants.READ_RESULT_SUCCESS: {
-                    //If the name is the same, then we don't need to reload
-                    if (m_textures.Count <= i || null==m_textures[i] || m_textures[i].name!=fullPath) {
-
-                        Texture2D curTex = StreamingImageSequencePlugin.CreateTexture(ref readResult);
-                        curTex.name = fullPath;
-
-                        if (m_textures.Count <= i) {
-                            m_textures.Add(curTex);
-                        } else {
-                            m_textures[i] = curTex;
-                        }
-                    }
-
-                    Graphics.DrawTexture(drawRect, m_textures[i]);
+                    Texture2D tex = PreviewTextureFactory.GetOrCreate(fullPath, ref readResult);
+                    Graphics.DrawTexture(drawRect, tex);
                     break;
                 }
                 default: {
@@ -101,7 +79,6 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
     private bool m_disposed;
-    List<Texture2D> m_textures;
     private readonly StreamingImageSequencePlayableAsset m_playableAsset = null;
     private const int MIN_PREVIEW_IMAGE_WIDTH = 60;
     private double m_localStartTime;
