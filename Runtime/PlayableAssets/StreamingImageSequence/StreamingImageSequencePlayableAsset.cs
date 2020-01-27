@@ -284,7 +284,7 @@ namespace UnityEngine.StreamingImageSequence {
 
             if (null == m_texture &&  readResult.ReadStatus == (int)LoadStatus.Loaded) {
 
-                m_texture = StreamingImageSequencePlugin.CreateTextureFromPlugin(ref readResult);
+                m_texture = StreamingImageSequencePlugin.CreateTexture(ref readResult);
 
                 IntPtr ptr =  m_texture.GetNativeTexturePtr();
                 int texInstanceID = m_texture.GetInstanceID();

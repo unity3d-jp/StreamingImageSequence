@@ -74,7 +74,7 @@ namespace UnityEngine.StreamingImageSequence {
                     //If the name is the same, then we don't need to reload
                     if (m_textures.Count <= i || null==m_textures[i] || m_textures[i].name!=fullPath) {
 
-                        Texture2D curTex = StreamingImageSequencePlugin.CreateTextureFromPlugin(ref readResult);
+                        Texture2D curTex = StreamingImageSequencePlugin.CreateTexture(ref readResult);
                         curTex.name = fullPath;
 
                         if (m_textures.Count <= i) {

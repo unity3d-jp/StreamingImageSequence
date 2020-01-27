@@ -2,6 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine.Assertions;
 
 namespace UnityEngine.StreamingImageSequence {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 8)]
@@ -118,9 +119,12 @@ namespace UnityEngine.StreamingImageSequence {
 
 #endif //UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 
-        public static Texture2D CreateTextureFromPlugin(ref ReadResult readResult) {
-            int length = readResult.Width * readResult.Height * 4;
+//----------------------------------------------------------------------------------------------------------------------
 
+        public static Texture2D CreateTexture(ref ReadResult readResult) {
+            Assert.IsTrue(StreamingImageSequenceConstants.READ_RESULT_SUCCESS == readResult.ReadStatus);
+            
+            int length = readResult.Width * readResult.Height * 4;
             Texture2D tex = new Texture2D(readResult.Width, readResult.Height,
                 StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
             );
