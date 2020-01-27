@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace UnityEngine.StreamingImageSequence {
     
-public class PreviewTexture : IDisposable {
+internal class PreviewTexture : IDisposable {
 
     public PreviewTexture(Texture2D tex) {
         m_texture = tex;

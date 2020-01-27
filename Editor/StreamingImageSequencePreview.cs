@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnityEngine.StreamingImageSequence {
 
-    internal class StreamingImageSequencePreview : IDisposable {
+internal class StreamingImageSequencePreview : IDisposable {
 
     public StreamingImageSequencePreview(StreamingImageSequencePlayableAsset playableAsset) {
         m_playableAsset = playableAsset;

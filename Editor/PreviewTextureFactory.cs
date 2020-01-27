@@ -3,7 +3,7 @@ using UnityEditor;
 
 namespace UnityEngine.StreamingImageSequence {
 
-public static class PreviewTextureFactory {
+internal static class PreviewTextureFactory {
 
     [InitializeOnLoadMethod]
     static void OnLoad() {
