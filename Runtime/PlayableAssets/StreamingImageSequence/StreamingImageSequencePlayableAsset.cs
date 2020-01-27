@@ -270,9 +270,6 @@ namespace UnityEngine.StreamingImageSequence {
         }
 //----------------------------------------------------------------------------------------------------------------------        
         
-        static unsafe void  TestUnsafe() {
-
-        }
 
         internal bool RequestLoadImage(int index, bool isBlocking)
         {
