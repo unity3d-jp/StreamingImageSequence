@@ -9,7 +9,7 @@ using UnityEditor;
 #endif
 
 namespace UnityEngine.StreamingImageSequence {
-    
+
     //ITimelineClipAsset interface is used to define the clip capabilities (ClipCaps) 
     [System.Serializable]
     public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset, IPlayableBehaviour {
@@ -269,6 +269,8 @@ namespace UnityEngine.StreamingImageSequence {
             return filename;
         }
 //----------------------------------------------------------------------------------------------------------------------        
+        
+
         internal bool RequestLoadImage(int index, bool isBlocking)
         {
             if (null == m_imagePaths || index < 0 || index >= m_imagePaths.Count || string.IsNullOrEmpty(m_imagePaths[index])) {
@@ -278,17 +280,13 @@ namespace UnityEngine.StreamingImageSequence {
             string filename = LoadRequest(index,isBlocking, out ReadResult readResult);
 
             if (null == m_texture &&  readResult.ReadStatus == (int)LoadStatus.Loaded) {
-                m_texture = new Texture2D(readResult.Width, readResult.Height, 
-                    StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
-                );
-                m_texture.LoadRawTextureData(readResult.Buffer, readResult.Width * readResult.Height * 4);
-                m_texture.filterMode = FilterMode.Bilinear;
-                m_texture.Apply();
+
+                m_texture = StreamingImageSequencePlugin.CreateTexture(ref readResult);
 
                 IntPtr ptr =  m_texture.GetNativeTexturePtr();
                 int texInstanceID = m_texture.GetInstanceID();
                 
-                UpdateResolution(readResult);
+                UpdateResolution(ref readResult);
                 StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)readResult.Width, (uint)readResult.Height, texInstanceID);
             }
 
@@ -327,7 +325,7 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
 //---------------------------------------------------------------------------------------------------------------------
-        void UpdateResolution(ReadResult readResult) {
+        void UpdateResolution(ref ReadResult readResult) {
             m_resolution.Width  = readResult.Width;
             m_resolution.Height = readResult.Height;
             m_dimensionRatio = m_resolution.CalculateRatio();
