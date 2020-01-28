@@ -48,3 +48,6 @@ Adobe\ After\ Effects\ Auto-Save/
 
 # Plugin
 Plugin~/_out/
+
+# XCode
+*.xcuserdatad/
