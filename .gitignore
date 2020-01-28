@@ -51,3 +51,4 @@ Plugin~/_out/
 
 # XCode
 *.xcuserdatad/
+Plugins~/DerivedData/**
