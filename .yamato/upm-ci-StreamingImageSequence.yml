@@ -1,4 +1,4 @@
-yamato_name: streamingImageSequence
+yamato_name: StreamingImageSequence
 test_editors:
   - version: 2019.2
   - version: 2019.3
@@ -44,8 +44,8 @@ pack:
     flavor: b1.large
   commands:
     - npm install upm-ci-utils@stable -g --registry https://api.bintray.com/npm/unity/unity-npm
-    - unzip -qq -o {{ yamato_name }}_{{ platform.name }}_prepack_artifacts*
-    - rm {{ yamato_name }}_{{ platform.name }}_prepack_artifacts*
+    - unzip -qq -o streamingImageSequence_{{ platform.name }}_prepack_artifacts*
+    - rm streamingImageSequence_{{ platform.name }}_prepack_artifacts*
     - upm-ci package pack
   artifacts:
     {{ yamato_name }}_pack_artifacts:
