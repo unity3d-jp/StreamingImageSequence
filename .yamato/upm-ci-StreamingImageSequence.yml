@@ -16,7 +16,7 @@ platforms:
 ---
 {% for platform in platforms %}
 prepack_{{ platform.name }}:
-  name: Pack {{ yamato_name }}
+  name: Prepack {{ yamato_name }} on {{ platform.name }}
   agent:
     type: {{ platform.type }}
     image: {{ platform.image }}
