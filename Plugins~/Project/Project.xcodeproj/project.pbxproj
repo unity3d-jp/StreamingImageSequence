@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		27BE207823E04E4000D8F415 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 27BE207723E04E4000D8F415 /* Config.xcconfig */; };
 		DE5EC2AF1F8C214E0041DB03 /* Loader.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE5EC2AE1F8C214E0041DB03 /* Loader.mm */; };
 		DE5EC2B21F8D312D0041DB03 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE5EC2B11F8D312D0041DB03 /* CoreGraphics.framework */; };
 		DED204221F8FAFCB000C75CE /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED204211F8FAFCB000C75CE /* Metal.framework */; };
@@ -190,7 +189,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27BE207823E04E4000D8F415 /* Config.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
