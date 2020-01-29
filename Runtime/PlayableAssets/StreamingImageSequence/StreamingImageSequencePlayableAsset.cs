@@ -341,15 +341,21 @@ namespace UnityEngine.StreamingImageSequence {
             m_clipDuration = clip.duration;
         }
 
+//----------------------------------------------------------------------------------------------------------------------
+        public void ResetAnimationCurve() {
+            AnimationCurve animationCurve = new AnimationCurve();
+            ValidateAnimationCurve(ref animationCurve);
+            RefreshAnimationCurveInTimelineClip(animationCurve);
+        }
 
 //----------------------------------------------------------------------------------------------------------------------
         public void ValidateAnimationCurve() {
             AnimationCurve curve = GetAndValidateAnimationCurve();
-            RefreshAnimationCurve(curve);
+            RefreshAnimationCurveInTimelineClip(curve);
         }
 
 //----------------------------------------------------------------------------------------------------------------------
-        //Get the animation curve from the TimelineClip. Also make sure we have at least two keys 
+        //Get the animation curve from the TimelineClip.  
         private AnimationCurve GetAndValidateAnimationCurve() {
             AnimationCurve animationCurve = null;
 #if UNITY_EDITOR
@@ -358,6 +364,13 @@ namespace UnityEngine.StreamingImageSequence {
             if (null == animationCurve)
                 animationCurve = new AnimationCurve();
             
+            ValidateAnimationCurve(ref animationCurve);
+            return animationCurve;
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+        //Validate: make sure we have at least two keys
+        private void ValidateAnimationCurve(ref AnimationCurve animationCurve) {
             int numKeys = animationCurve.keys.Length;
             switch (numKeys) {
                 case 0: {
@@ -371,13 +384,11 @@ namespace UnityEngine.StreamingImageSequence {
                 }
                 default: break;
             }
-
-            return animationCurve;
         }
         
 //----------------------------------------------------------------------------------------------------------------------
 
-        private void  RefreshAnimationCurve(AnimationCurve curve) {
+        private void  RefreshAnimationCurveInTimelineClip(AnimationCurve curve) {
             m_timelineClip.curves.SetCurve("", typeof(StreamingImageSequencePlayableAsset), "m_time", curve);
 #if UNITY_EDITOR            
             //[TODO-sin: 2019-12-25] Is there a way to make this smoother ?
