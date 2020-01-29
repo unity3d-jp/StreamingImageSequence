@@ -50,7 +50,7 @@ internal static class PreviewTextureFactory {
             }
         }
         foreach (string texFullPath in m_obsoleteTextures) {
-            m_obsoleteTextures.Remove(texFullPath);
+            m_previewTextures.Remove(texFullPath);
         }
     }
     
