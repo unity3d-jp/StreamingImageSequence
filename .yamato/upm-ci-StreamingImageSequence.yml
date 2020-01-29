@@ -2,16 +2,38 @@ yamato_name: StreamingImageSequence
 test_editors:
   - version: 2019.2
   - version: 2019.3
-test_platforms:
+platforms:
   - name: win
     type: Unity::VM
     image: package-ci/win10:stable
     flavor: b1.large
+    plugin_path: Runtime/Plugins/x64
   - name: mac
     type: Unity::VM::osx
     image: slough-ops/macos-10.14-xcode
     flavor: m1.mac
+    plugin_path: Runtime/Plugins/OSX
 ---
+{% for platform in platforms %}
+prepack_{{ platform.name }}:
+  name: Pack {{ yamato_name }}
+  agent:
+    type: {{ platform.type }}
+    image: {{ platform.image }}
+    flavor: {{ platform.flavor }}
+  commands:
+{% if platform.name == "mac" -%}
+    - cd Plugins~/Project && xcodebuild -configuration Release build && cd ../..
+{% else -%}
+    - cd . 
+{% endif -%}
+  artifacts:
+    {{ yamato_name }}_{{ platform.name }}_prepack_artifacts:
+      paths:
+        - {{platform.plugin_path}}
+{% endfor %}
+
+
 pack:
   name: Pack {{ yamato_name }}
   agent:
@@ -28,9 +50,13 @@ pack:
     {{ yamato_name }}_pack_artifacts:
       paths:
         - "upm-ci~/**/*"
-
+  dependencies:
+{% for platform in platforms %}
+    - .yamato/upm-ci-{{ yamato_name }}.yml#prepack_{{ platform.name }}
+{% endfor %}
+    
 {% for editor in test_editors %}
-{% for platform in test_platforms %}
+{% for platform in platforms %}
 test_{{ platform.name }}_{{ editor.version }}:
   name : Test {{ yamato_name }} using {{ editor.version }} on {{ platform.name }}
   agent:
