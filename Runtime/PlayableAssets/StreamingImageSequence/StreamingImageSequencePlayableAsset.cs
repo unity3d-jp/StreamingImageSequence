@@ -394,7 +394,7 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] private ImageDimensionInt  m_resolution;        
         [SerializeField] double m_time;
 
-        [SerializeField] float m_dimensionRatio;
+        [SerializeField] [HideInInspector] float m_dimensionRatio;
 
         double m_clipStart;     //In global space. In seconds
         double m_clipDuration;  //In seconds
