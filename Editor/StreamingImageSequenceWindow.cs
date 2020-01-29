@@ -12,7 +12,7 @@ using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence
 { 
-    public class MovieProxyWindow : EditorWindow
+    public class StreamingImageSequenceWindow : EditorWindow
     {
         private GUIStyle m_windowStyle = null;
         private GUIStyle m_boxStyle = null;
