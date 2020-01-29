@@ -140,6 +140,7 @@
 				F435F5DA1F5D4B9A00F8DB6A /* Sources */,
 				F435F5DB1F5D4B9A00F8DB6A /* Frameworks */,
 				F435F5DC1F5D4B9A00F8DB6A /* Resources */,
+				27BE207C23E121B600D8F415 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -193,6 +194,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		27BE207C23E121B600D8F415 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -R $CODESIGNING_FOLDER_PATH $POST_BUILD_COPY_PATH\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		F435F5DA1F5D4B9A00F8DB6A /* Sources */ = {
