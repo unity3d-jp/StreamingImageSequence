@@ -67,6 +67,7 @@ namespace UnityEditor.StreamingImageSequence {
             }
 
             if (GUILayout.Button("Reset Curve")) {
+                //[TODO-sin:2020-1-29] Support undo for this
                 m_asset.ResetAnimationCurve();
                 
             }
