@@ -9,7 +9,7 @@ test_platforms:
     flavor: b1.large
   - name: mac
     type: Unity::VM::osx
-    image: package-ci/mac:stable
+    image: slough-ops/macos-10.14-xcode
     flavor: m1.mac
 ---
 pack:
