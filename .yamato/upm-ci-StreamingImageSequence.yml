@@ -8,13 +8,13 @@ platforms:
     image:         package-ci/win10:stable
     prepack_image: package-ci/win10:stable
     flavor: b1.large
-    plugin_path: Runtime/Plugins/x64
+    plugin_path: Runtime/Plugins/x64/**
   - name: mac
     type: Unity::VM::osx
     image:         package-ci/mac:stable     
     prepack_image: slough-ops/macos-10.14-xcode
     flavor: m1.mac
-    plugin_path: Runtime/Plugins/OSX
+    plugin_path: Runtime/Plugins/OSX/**
 ---
 {% for platform in platforms %}
 prepack_{{ platform.name }}:
