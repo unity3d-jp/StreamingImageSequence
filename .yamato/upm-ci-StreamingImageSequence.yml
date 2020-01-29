@@ -5,12 +5,14 @@ test_editors:
 platforms:
   - name: win
     type: Unity::VM
-    image: package-ci/win10:stable
+    image:         package-ci/win10:stable
+    prepack_image: package-ci/win10:stable
     flavor: b1.large
     plugin_path: Runtime/Plugins/x64
   - name: mac
     type: Unity::VM::osx
-    image: slough-ops/macos-10.14-xcode
+    image:         package-ci/mac:stable     
+    prepack_image: slough-ops/macos-10.14-xcode
     flavor: m1.mac
     plugin_path: Runtime/Plugins/OSX
 ---
@@ -19,7 +21,7 @@ prepack_{{ platform.name }}:
   name: Prepack {{ yamato_name }} on {{ platform.name }}
   agent:
     type: {{ platform.type }}
-    image: {{ platform.image }}
+    image: {{ platform.prepack_image }}
     flavor: {{ platform.flavor }}
   commands:
 {% if platform.name == "mac" -%}
