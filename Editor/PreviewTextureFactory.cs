@@ -25,13 +25,14 @@ internal static class PreviewTextureFactory {
         Assert.IsTrue(StreamingImageSequenceConstants.READ_RESULT_SUCCESS == readResult.ReadStatus);
 
         if (m_previewTextures.ContainsKey(fullPath)) {
-            
+            Assert.IsNotNull(m_previewTextures[fullPath].GetTexture());
             return m_previewTextures[fullPath].GetTexture();
         }
 
         Texture2D newTex = StreamingImageSequencePlugin.CreateTexture(ref readResult);
         newTex.name = fullPath;
         m_previewTextures[fullPath] = new PreviewTexture(newTex);
+        newTex.hideFlags = HideFlags.HideAndDontSave; //This is static. Don't destroy the tex if a new scene is loaded
         return newTex;
     }
 
