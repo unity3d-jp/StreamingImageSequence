@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace UnityEngine.StreamingImageSequence {
     [CustomTimelineEditor(typeof(StreamingImageSequencePlayableAsset)), UsedImplicitly]
-    internal class MovieProxyPlayableAssetEditor : ClipEditor
+    internal class StreamingImageSequencePlayableAssetEditor : ClipEditor
     {
         private const string kNoFolderAssignedError = "No Folder assigned";
         private const string kNotStreamingAssetsFolderAssignedError = "Loading folder must be under Assets/StreamingAssets";
