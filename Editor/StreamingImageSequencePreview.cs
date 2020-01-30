@@ -62,7 +62,9 @@ internal class StreamingImageSequencePreview : IDisposable {
                 }
                 case StreamingImageSequenceConstants.READ_RESULT_SUCCESS: {
                     Texture2D tex = PreviewTextureFactory.GetOrCreate(fullPath, ref readResult);
-                    Graphics.DrawTexture(drawRect, tex);
+                    if (null != tex) {
+                        Graphics.DrawTexture(drawRect, tex);
+                    }
                     break;
                 }
                 default: {
