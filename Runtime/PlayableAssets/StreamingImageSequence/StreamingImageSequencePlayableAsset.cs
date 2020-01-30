@@ -342,6 +342,11 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
 //----------------------------------------------------------------------------------------------------------------------
+        public void OnAfterTrackDeserialize(TimelineClip clip) {
+            Setup(clip);
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
         public void ResetAnimationCurve() {
             AnimationCurve animationCurve = new AnimationCurve();
             ValidateAnimationCurve(ref animationCurve);
