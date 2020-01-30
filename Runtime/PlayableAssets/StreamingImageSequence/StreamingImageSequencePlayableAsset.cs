@@ -418,6 +418,8 @@ namespace UnityEngine.StreamingImageSequence {
         private bool[] m_loadRequested;
         //[TODO-sin: 2019-12-25] Is there a way we can just serialize this without affecting folder D&D
         TimelineClip m_timelineClip  = null; 
+
+        //[TODO-sin: 2020-1-30] Don't serialize this
         public int m_loadingIndex;
 		private int m_lastIndex;
         private bool m_verified;
