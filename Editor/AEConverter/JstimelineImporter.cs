@@ -24,7 +24,9 @@ public class JstimelineImporter : ScriptedImporter
     [MenuItem("Assets/Streaming Image Sequence/Import AE Timeline", false, 10)]
     static void ImportAETimeline() {
         string strPath = EditorUtility.OpenFilePanel("Open File", "", "jstimeline");
-        JstimelineImporter.ImportTimeline(strPath);
+        if (strPath.Length != 0) {
+            JstimelineImporter.ImportTimeline(strPath);
+        }
     }
 
 //---------------------------------------------------------------------------------------------------------------------
