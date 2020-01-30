@@ -134,6 +134,8 @@ namespace UnityEngine.StreamingImageSequence {
             ResetTexture();
             m_resolution = new ImageDimensionInt();
         }
+        
+        
 //----------------------------------------------------------------------------------------------------------------------        
 
         public ClipCaps clipCaps {
@@ -183,7 +185,7 @@ namespace UnityEngine.StreamingImageSequence {
             return Playable.Null;
         }
         
-        public override double duration {  get {  return m_clipDuration;  }  }
+        public override double duration {  get {  return (null!=m_timelineClip) ? m_timelineClip.duration : 0;  }  }
         
 //---------------------------------------------------------------------------------------------------------------------
 
@@ -338,7 +340,6 @@ namespace UnityEngine.StreamingImageSequence {
             }
             m_timelineClip = clip;
             m_clipStart = clip.start;
-            m_clipDuration = clip.duration;
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -351,6 +352,8 @@ namespace UnityEngine.StreamingImageSequence {
             AnimationCurve animationCurve = new AnimationCurve();
             ValidateAnimationCurve(ref animationCurve);
             RefreshAnimationCurveInTimelineClip(animationCurve);
+            m_timelineClip.clipIn = 0;
+            m_timelineClip.timeScale = 1.0;
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -379,12 +382,12 @@ namespace UnityEngine.StreamingImageSequence {
             int numKeys = animationCurve.keys.Length;
             switch (numKeys) {
                 case 0: {
-                    animationCurve = AnimationCurve.Linear(0, 0, (float) m_clipDuration,1 );
+                    animationCurve = AnimationCurve.Linear(0, 0, (float) m_timelineClip.duration,1 );
                     break;
                 }
                 case 1: {
                     animationCurve.keys[0] = new Keyframe(0.0f,0.0f);
-                    animationCurve.AddKey((float)m_clipDuration, 1.0f);
+                    animationCurve.AddKey((float)m_timelineClip.duration, 1.0f);
                     break;
                 }
                 default: break;
@@ -413,7 +416,6 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] [HideInInspector] float m_dimensionRatio;
 
         double m_clipStart;     //In global space. In seconds
-        double m_clipDuration;  //In seconds
 
 
 #if UNITY_EDITOR
