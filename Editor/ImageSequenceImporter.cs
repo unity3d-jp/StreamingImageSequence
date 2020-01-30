@@ -115,6 +115,7 @@ namespace UnityEditor.StreamingImageSequence {
         static void Reset()
         {
             UpdateManager.ResetPlugin();
+            PreviewTextureFactory.Reset();
         }
         [MenuItem("Assets/Streaming Image Sequence/Show version",false,51)]
         static void ShowVersion()

@@ -121,6 +121,12 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
 
+        public static bool IsResetting() {
+            return (StreamingImageSequencePlugin.IsPluginResetting() != 0);
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+
         public static Texture2D CreateTexture(ref ReadResult readResult) {
             Assert.IsTrue(StreamingImageSequenceConstants.READ_RESULT_SUCCESS == readResult.ReadStatus);
             

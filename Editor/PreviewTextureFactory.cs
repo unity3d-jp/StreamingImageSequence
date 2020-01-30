@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEditor;
 
 namespace UnityEngine.StreamingImageSequence {
@@ -13,7 +14,15 @@ internal static class PreviewTextureFactory {
     }
     
 //----------------------------------------------------------------------------------------------------------------------    
+
+    public static void Reset() {
+        m_previewTextures.Clear();
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------    
+
     public static Texture2D GetOrCreate(string fullPath, ref ReadResult readResult) {
+        Assert.IsTrue(StreamingImageSequenceConstants.READ_RESULT_SUCCESS == readResult.ReadStatus);
 
         if (m_previewTextures.ContainsKey(fullPath)) {
             
@@ -30,6 +39,9 @@ internal static class PreviewTextureFactory {
     private static void Update() {
         double curTime = EditorApplication.timeSinceStartup;
 
+        if (StreamingImageSequencePlugin.IsResetting())
+            return;
+
         //Remove obsolete textures
         m_obsoleteTextures.Clear();
         foreach (KeyValuePair<string, PreviewTexture> keyValue in m_previewTextures) {
@@ -38,7 +50,7 @@ internal static class PreviewTextureFactory {
             }
         }
         foreach (string texFullPath in m_obsoleteTextures) {
-            m_obsoleteTextures.Remove(texFullPath);
+            m_previewTextures.Remove(texFullPath);
         }
     }
     
