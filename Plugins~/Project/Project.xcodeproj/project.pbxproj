@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		27C33CC423E41B5D005D468F /* CriticalSectionObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27C33CC023E41B5D005D468F /* CriticalSectionObject.cpp */; };
 		27C33CC723E42255005D468F /* CriticalSectionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27C33CC623E42255005D468F /* CriticalSectionController.cpp */; };
+		27C33CCD23E4265C005D468F /* CriticalSection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27C33CCB23E4265C005D468F /* CriticalSection.cpp */; };
 		DE5EC2AF1F8C214E0041DB03 /* Loader.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE5EC2AE1F8C214E0041DB03 /* Loader.mm */; };
 		DE5EC2B21F8D312D0041DB03 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE5EC2B11F8D312D0041DB03 /* CoreGraphics.framework */; };
 		DED204221F8FAFCB000C75CE /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED204211F8FAFCB000C75CE /* Metal.framework */; };
@@ -32,6 +33,9 @@
 		27C33CC123E41B5D005D468F /* CriticalSectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CriticalSectionController.h; path = ../CommonLib/CriticalSectionController.h; sourceTree = "<group>"; };
 		27C33CC323E41B5D005D468F /* CriticalSectionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CriticalSectionObject.h; path = ../CommonLib/CriticalSectionObject.h; sourceTree = "<group>"; };
 		27C33CC623E42255005D468F /* CriticalSectionController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CriticalSectionController.cpp; path = ../CommonLib/CriticalSectionController.cpp; sourceTree = "<group>"; };
+		27C33CCB23E4265C005D468F /* CriticalSection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CriticalSection.cpp; path = ../CommonLib/CriticalSection.cpp; sourceTree = "<group>"; };
+		27C33CCC23E4265C005D468F /* CriticalSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CriticalSection.h; path = ../CommonLib/CriticalSection.h; sourceTree = "<group>"; };
+		27C33CCE23E42851005D468F /* CriticalSectionType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CriticalSectionType.h; path = ../CommonLib/CriticalSectionType.h; sourceTree = "<group>"; };
 		DE5EC2AE1F8C214E0041DB03 /* Loader.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Loader.mm; path = ../Loader/Loader.mm; sourceTree = "<group>"; };
 		DE5EC2B11F8D312D0041DB03 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		DED204211F8FAFCB000C75CE /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
@@ -123,10 +127,13 @@
 		F435F5EE1F5D4C2800F8DB6A /* CommonLib */ = {
 			isa = PBXGroup;
 			children = (
+				27C33CCB23E4265C005D468F /* CriticalSection.cpp */,
+				27C33CCC23E4265C005D468F /* CriticalSection.h */,
 				27C33CC623E42255005D468F /* CriticalSectionController.cpp */,
 				27C33CC123E41B5D005D468F /* CriticalSectionController.h */,
 				27C33CC023E41B5D005D468F /* CriticalSectionObject.cpp */,
 				27C33CC323E41B5D005D468F /* CriticalSectionObject.h */,
+				27C33CCE23E42851005D468F /* CriticalSectionType.h */,
 				27C33CBF23E419AD005D468F /* Types.h */,
 				F435F5F31F5D4C6200F8DB6A /* CommonLib.cpp */,
 				F435F5F41F5D4C6200F8DB6A /* CommonLib.h */,
@@ -244,6 +251,7 @@
 				F4F9C11C1FC549A100876739 /* RenderAPI.cpp in Sources */,
 				F435F5F81F5D4C7F00F8DB6A /* Loader.cpp in Sources */,
 				F4F9C11F1FC552C200876739 /* RenderAPI_OpenGL2.cpp in Sources */,
+				27C33CCD23E4265C005D468F /* CriticalSection.cpp in Sources */,
 				DE5EC2AF1F8C214E0041DB03 /* Loader.mm in Sources */,
 				27C33CC723E42255005D468F /* CriticalSectionController.cpp in Sources */,
 				F435F5F21F5D4C5700F8DB6A /* Drawer.cpp in Sources */,

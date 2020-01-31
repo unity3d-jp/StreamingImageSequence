@@ -1,0 +1,17 @@
+#pragma once
+
+#include "CriticalSectionObject.h"
+
+namespace StreamingImageSequencePlugin {
+
+enum CriticalSectionType {
+    CRITICAL_SECTION_TYPE_FILENAME_TO_PTR = 0,
+    CRITICAL_SECTION_TYPE_INSTANCE_ID_TO_FILENAME,
+    CRITICAL_SECTION_TYPE_INSTANCE_ID_TO_UNITY_TEXTURE_PTR,
+    CRITICAL_SECTION_TYPE_LOADING_COUNTER,
+    CRITICAL_SECTION_TYPE_RESETTING,
+    CRITICAL_SECTION_TYPE_MAX = 32
+};
+
+
+} //end namespace

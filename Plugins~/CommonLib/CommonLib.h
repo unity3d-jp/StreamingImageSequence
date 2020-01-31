@@ -52,29 +52,19 @@ public:
 
 extern COMMONLIBWIN_API std::map<strType, StReadResult> g_fileNameToPtrMap;
 extern COMMONLIBWIN_API std::map<int, strType>          g_instanceIdToFileName;
-extern COMMONLIBWIN_API std::map<int, void*>				 g_instanceIdToUnityTexturePointer;
-extern COMMONLIBWIN_API std::map<strType, int>				 g_scenePathToSceneStatus;
-extern COMMONLIBWIN_API	 CCommonLib                 g_CCommonLib;
+extern COMMONLIBWIN_API std::map<int, void*>            g_instanceIdToUnityTexturePointer;
+extern COMMONLIBWIN_API std::map<strType, int>          g_scenePathToSceneStatus;
+extern COMMONLIBWIN_API CCommonLib                      g_CCommonLib;
 
-enum {
-	eCS_FileNameToPtr = 0,
-	eCS_InstanceIdToFileName,
-	eCS_InstanceIdToUnityTexturePtr,
-	eCS_LoadingCounter,
-	eCS_Resetting,
-	eCS_MAX = 32
-};
+//----------------------------------------------------------------------------------------------------------------------
 
-#include "CriticalSectionObject.h"
+#include "CriticalSection.h"
 
-#define FILENAME2PTR_CS					(&g_CriticalSectionObjectArray[eCS_FileNameToPtr])
-#define INSTANCEID2FILENAME_CS			(&g_CriticalSectionObjectArray[eCS_InstanceIdToFileName])
-#define INSTANCEID2TEXTURE_CS			(&g_CriticalSectionObjectArray[eCS_InstanceIdToUnityTexturePtr])
-#define LOADINGCOUNTER_CS			(&g_CriticalSectionObjectArray[eCS_LoadingCounter])
-#define RESETTING_CS				(&g_CriticalSectionObjectArray[eCS_Resetting])
-extern COMMONLIBWIN_API StreamingImageSequencePlugin::CriticalSectionObject  g_CriticalSectionObjectArray[eCS_MAX];
-extern COMMONLIBWIN_API	int						g_LoadingFileCounter;
-extern COMMONLIBWIN_API	int						g_IsResetting;
+#define FILENAME2PTR_CS             (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_FILENAME_TO_PTR))
+#define INSTANCEID2FILENAME_CS      (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_INSTANCE_ID_TO_FILENAME))
+#define INSTANCEID2TEXTURE_CS       (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_INSTANCE_ID_TO_UNITY_TEXTURE_PTR))
+#define LOADINGCOUNTER_CS           (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_LOADING_COUNTER))
+#define RESETTING_CS                (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_RESETTING))
 
 
 #endif //#ifdef COMMONLIB
