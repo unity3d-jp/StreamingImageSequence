@@ -29,133 +29,113 @@ CLoaderWin::CLoaderWin()
 	g_LoadingFileCounter--;\
 }
 
-
-LOADERWIN_API void*  LoadAndAlloc(const charType* fileName)
-{
-
-	StReadResult tResult;
-	strType wstr(fileName);
-	{
-		CCriticalSectionController cs(FILENAME2PTR_CS);
-		{
-			if (g_fileNameToPtrMap.find(wstr) != g_fileNameToPtrMap.end())
-			{
-				return g_fileNameToPtrMap[wstr].buffer;
-			}
-		}
-
-	}
-
-	size_t length =
-#if USE_WCHAR
-		wcslen(fileName);
-#else
-		strlen(fileName);
-#endif
-
-	if (length < 4)
-	{
-		return NULL;
-	}
-	if (fileName[length - 4] != '.')
-	{
-		return NULL;
-	}
-
-
-	{
-		CCriticalSectionController cs(FILENAME2PTR_CS);
-		{
-			tResult = g_fileNameToPtrMap[wstr];
-			tResult.readStatus = 1; // loading
-			g_fileNameToPtrMap[wstr] = tResult;
-		}
-	}
-	void *ptr = nullptr;
-
-	INC_LOADINGCOUNTER();
-#ifdef _WIN32	// not neccesary for now
-	if ((fileName[length - 3] == 'T' || fileName[length - 3] == 't')
-		&& (fileName[length - 2] == 'G' || fileName[length - 2] == 'g')
-		&& (fileName[length - 1] == 'A' || fileName[length - 1] == 'a'))
-	{
-		ptr = loadTGAFileAndAlloc(fileName, &tResult);
-	}
-	else
-#endif
-	{
-		ptr = loadPNGFileAndAlloc(fileName, &tResult);
-        if(ptr == NULL) {
-            return NULL;
+//----------------------------------------------------------------------------------------------------------------------
+LOADERWIN_API void*  LoadAndAlloc(const charType* fileName) {
+    using namespace StreamingImageSequencePlugin;
+    StReadResult tResult;
+    strType wstr(fileName);
+    {
+        CCriticalSectionController cs(FILENAME2PTR_CS);
+        //Make sure we are not loading the same texture twice
+        if (g_fileNameToPtrMap.find(wstr) != g_fileNameToPtrMap.end())  {
+            return g_fileNameToPtrMap.at(wstr).buffer;
         }
-	}
-	DEC_LOADINGCOUNTER();
-	{
-		CCriticalSectionController cs(FILENAME2PTR_CS);
-		{
-			tResult.readStatus = 2; // loaded
-			g_fileNameToPtrMap[wstr] = tResult;
-		}
-	}
+    }
 
-	return ptr;
+    size_t length =
+#if USE_WCHAR
+        wcslen(fileName);
+#else
+        strlen(fileName);
+#endif
+
+    //Check extension validity
+    if (length < 4 || fileName[length - 4] != '.')    {
+        return NULL;
+    }
+
+    {
+        CCriticalSectionController cs(FILENAME2PTR_CS);
+        tResult.readStatus = READ_STATUS_LOADING;
+        g_fileNameToPtrMap[wstr] = tResult;
+    }
+    void *ptr = nullptr;
+
+    INC_LOADINGCOUNTER();
+#ifdef _WIN32    // not neccesary for now
+    if ((fileName[length - 3] == 'T' || fileName[length - 3] == 't')
+        && (fileName[length - 2] == 'G' || fileName[length - 2] == 'g')
+        && (fileName[length - 1] == 'A' || fileName[length - 1] == 'a'))
+    {
+        ptr = loadTGAFileAndAlloc(fileName, &tResult);
+    }
+    else
+#endif
+    {
+        ptr = loadPNGFileAndAlloc(fileName, &tResult);
+    }
+    DEC_LOADINGCOUNTER();
+    if(ptr == NULL) {
+        return NULL;
+    }
+    
+    {
+        CCriticalSectionController cs(FILENAME2PTR_CS);
+        tResult.readStatus = READ_STATUS_SUCCESS;
+        g_fileNameToPtrMap[wstr] = tResult;
+    }
+
+    return ptr;
 }
 
-LOADERWIN_API void   NativeFree(void* ptr)
-{
+//----------------------------------------------------------------------------------------------------------------------
+
+LOADERWIN_API void   NativeFree(void* ptr) {
 	free(ptr);
 }
 
-LOADERWIN_API void*  GetNativTextureInfo(const charType* fileName, StReadResult* pResult)
-{
-	{
-		CCriticalSectionController cs(FILENAME2PTR_CS);
-		{
-			ASSERT(pResult);
-			pResult->readStatus = 0;
-			strType wstr(fileName);
 
-			if (g_fileNameToPtrMap.find(wstr) != g_fileNameToPtrMap.end())
-			{
-				*pResult = g_fileNameToPtrMap[wstr];
-				if (pResult->readStatus == 2)
-				{
-					ASSERT(pResult->buffer);
-				} 
-				return pResult->buffer;
-			}
-		}
-	}
-	return NULL;
+//----------------------------------------------------------------------------------------------------------------------
+LOADERWIN_API void*  GetNativTextureInfo(const charType* fileName, StReadResult* pResult) {
+    using namespace StreamingImageSequencePlugin;
+    {
+        CCriticalSectionController cs(FILENAME2PTR_CS);
+        ASSERT(pResult);
+        pResult->readStatus = READ_STATUS_NONE;
+        strType wstr(fileName);
+
+        if (g_fileNameToPtrMap.find(wstr) != g_fileNameToPtrMap.end()) {
+            *pResult = g_fileNameToPtrMap[wstr];
+            
+            //if success, then the buffer must be not null
+            ASSERT(pResult->readStatus != READ_STATUS_SUCCESS || pResult->buffer);
+            return pResult->buffer;
+        }
+    }
+    return NULL;
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 // return succ:0 fail:-1
-LOADERWIN_API int   ResetNativeTexture(const charType* fileName)
-{
+LOADERWIN_API int   ResetNativeTexture(const charType* fileName) {
+    using namespace StreamingImageSequencePlugin;
 	StReadResult tReadResult;
 	void* ptr = GetNativTextureInfo(fileName, &tReadResult);
-	if (!ptr)
-	{
-		return -1;
-	}
 
-	if (tReadResult.readStatus != 2)
-	{
+    //Check
+    if (!ptr || tReadResult.readStatus != READ_STATUS_SUCCESS) {
 		return -1;
 	}
 
 
-	{
-		CCriticalSectionController cs(FILENAME2PTR_CS);
-		{
-			strType wstr(fileName);
-			if (g_fileNameToPtrMap.find(wstr) != g_fileNameToPtrMap.end())
-			{
-				NativeFree(tReadResult.buffer);
-				g_fileNameToPtrMap.erase(wstr);
-			}
-		}
-	}
+    CCriticalSectionController cs(FILENAME2PTR_CS);
+    {
+        strType wstr(fileName);
+        if (g_fileNameToPtrMap.find(wstr) != g_fileNameToPtrMap.end()) {
+            NativeFree(tReadResult.buffer);
+            g_fileNameToPtrMap.erase(wstr);
+        }
+    }
 
 	return 0;
 

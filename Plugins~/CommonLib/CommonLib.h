@@ -7,6 +7,8 @@
 #ifndef COMMONLIB
 #define COMMONLIB
 
+#include "ReadStatus.h"
+
 #include "../Drawer/PlatformBase.h"
 #include "../Drawer/Unity/IUnityGraphics.h"
 
@@ -79,21 +81,20 @@ typedef wchar_t WCHAR;
 #endif
 
 typedef void* TexPointer;
-typedef u32 ReadStatus;
 
 struct StReadResult
 {
     u8*  buffer;
     u32    width;
     u32    height;
-    ReadStatus readStatus;
+    StreamingImageSequencePlugin::ReadStatus readStatus;
     
     StReadResult()
     {
         buffer = NULL;
         width = 0;
         height = 0;
-        readStatus = 0;
+        readStatus = StreamingImageSequencePlugin::READ_STATUS_NONE;
     }
 };
 

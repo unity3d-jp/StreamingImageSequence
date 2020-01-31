@@ -26,13 +26,9 @@ static IUnityGraphics*   s_Graphics = nullptr;
 static RenderAPI*        s_CurrentAPI = NULL;
 static UnityGfxRenderer  s_DeviceType = kUnityGfxRendererNull;
 
-
-
-
-
-
 void UpdateTexture(int sEventID)
 {
+    using namespace StreamingImageSequencePlugin;
 	if (IsPluginResetting())
 	{
 		return;
@@ -66,7 +62,7 @@ void UpdateTexture(int sEventID)
 		return; // not found.
 	}
 
-	if (tResult.readStatus != 2)
+	if (tResult.readStatus != READ_STATUS_SUCCESS)
 	{
 		return;
 	}
