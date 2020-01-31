@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "../CommonLib/CommonLib.h"
+#include "../CommonLib/CCriticalSectionController.h"
 #include "Loader.h"
 #include "TGALoader.h"
 #include "FileType.h"

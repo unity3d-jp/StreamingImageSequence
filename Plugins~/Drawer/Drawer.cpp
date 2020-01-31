@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include  "RenderAPI.h"
 #include "../CommonLib/CommonLib.h"
+#include "../CommonLib/CCriticalSectionController.h"
 #include "../Loader/Loader.h"
 #include "Drawer.h"
 
