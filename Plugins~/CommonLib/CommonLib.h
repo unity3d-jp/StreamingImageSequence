@@ -65,14 +65,14 @@ enum {
 	eCS_MAX = 32
 };
 
-#include "CCriticalSectionObject.h"
+#include "CriticalSectionObject.h"
 
 #define FILENAME2PTR_CS					(&g_CriticalSectionObjectArray[eCS_FileNameToPtr])
 #define INSTANCEID2FILENAME_CS			(&g_CriticalSectionObjectArray[eCS_InstanceIdToFileName])
 #define INSTANCEID2TEXTURE_CS			(&g_CriticalSectionObjectArray[eCS_InstanceIdToUnityTexturePtr])
 #define LOADINGCOUNTER_CS			(&g_CriticalSectionObjectArray[eCS_LoadingCounter])
 #define RESETTING_CS				(&g_CriticalSectionObjectArray[eCS_Resetting])
-extern COMMONLIBWIN_API StreamingImageSequencePlugin::CCriticalSectionObject  g_CriticalSectionObjectArray[eCS_MAX];
+extern COMMONLIBWIN_API StreamingImageSequencePlugin::CriticalSectionObject  g_CriticalSectionObjectArray[eCS_MAX];
 extern COMMONLIBWIN_API	int						g_LoadingFileCounter;
 extern COMMONLIBWIN_API	int						g_IsResetting;
 

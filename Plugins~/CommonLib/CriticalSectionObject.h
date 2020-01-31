@@ -4,7 +4,7 @@
 
 namespace StreamingImageSequencePlugin {
 
-class COMMONLIBWIN_API CCriticalSectionObject
+class COMMONLIBWIN_API CriticalSectionObject
 {
 private:
 #ifdef _WIN32
@@ -12,10 +12,10 @@ private:
 #else
     std::recursive_mutex m_cs;
 #endif
-	void operator =(const CCriticalSectionObject& src) {}
+	void operator =(const CriticalSectionObject& src) {}
 public:
-	CCriticalSectionObject();
-	virtual ~CCriticalSectionObject();
+	CriticalSectionObject();
+	virtual ~CriticalSectionObject();
 
 	void Enter();
 	void Leave();

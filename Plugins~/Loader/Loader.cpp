@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "../CommonLib/CommonLib.h"
-#include "../CommonLib/CCriticalSectionController.h"
+#include "../CommonLib/CriticalSectionController.h"
 #include "Loader.h"
 #include "TGALoader.h"
 #include "FileType.h"
@@ -27,11 +27,11 @@ CLoaderWin::CLoaderWin()
 }
 
 #define INC_LOADINGCOUNTER() {\
-	CCriticalSectionController cs2(LOADINGCOUNTER_CS);\
+	CriticalSectionController cs2(LOADINGCOUNTER_CS);\
 	g_LoadingFileCounter++;\
 }
 #define DEC_LOADINGCOUNTER() {\
-	CCriticalSectionController cs2(LOADINGCOUNTER_CS);\
+	CriticalSectionController cs2(LOADINGCOUNTER_CS);\
 	g_LoadingFileCounter--;\
 }
 
@@ -69,7 +69,7 @@ StreamingImageSequencePlugin::FileType CheckFileType(const charType* fileName) {
 bool GetNativeTextureInfoInternal(const charType* fileName, StReadResult* pResult, map<strType, StReadResult>* readResultMap) {
     using namespace StreamingImageSequencePlugin;
     {
-        CCriticalSectionController cs(FILENAME2PTR_CS);
+        CriticalSectionController cs(FILENAME2PTR_CS);
         ASSERT(pResult);
         pResult->readStatus = READ_STATUS_NONE;
         strType wstr(fileName);
@@ -109,7 +109,7 @@ LOADERWIN_API bool LoadAndAlloc(const charType* fileName) {
     //Loading
     strType wstr(fileName);
     {
-        CCriticalSectionController cs(FILENAME2PTR_CS);
+        CriticalSectionController cs(FILENAME2PTR_CS);
         readResult.readStatus = READ_STATUS_LOADING;
         g_fileNameToPtrMap[wstr] = readResult;
     }
@@ -134,7 +134,7 @@ LOADERWIN_API bool LoadAndAlloc(const charType* fileName) {
     }
     
     {
-        CCriticalSectionController cs(FILENAME2PTR_CS);
+        CriticalSectionController cs(FILENAME2PTR_CS);
         readResult.readStatus = READ_STATUS_SUCCESS;
         g_fileNameToPtrMap[wstr] = readResult;
     }
@@ -163,7 +163,7 @@ LOADERWIN_API int   ResetNativeTexture(const charType* fileName) {
 	}
 
 
-    CCriticalSectionController cs(FILENAME2PTR_CS);
+    CriticalSectionController cs(FILENAME2PTR_CS);
     {
         strType wstr(fileName);
         if (g_fileNameToPtrMap.find(wstr) != g_fileNameToPtrMap.end()) {
@@ -192,19 +192,19 @@ LOADERWIN_API int    GetSceneStatus(const charType* scenePath)
 
 LOADERWIN_API void  ResetPlugin()
 {
-	StreamingImageSequencePlugin::CCriticalSectionController cs2(RESETTING_CS);
+	StreamingImageSequencePlugin::CriticalSectionController cs2(RESETTING_CS);
 	g_IsResetting = 1;
 }
 
 LOADERWIN_API void  DoneResetPlugin()
 {
-	StreamingImageSequencePlugin::CCriticalSectionController cs2(RESETTING_CS);
+	StreamingImageSequencePlugin::CriticalSectionController cs2(RESETTING_CS);
 	g_IsResetting = 0;
 }
 
 LOADERWIN_API int   IsPluginResetting()
 {
-	StreamingImageSequencePlugin::CCriticalSectionController cs2(RESETTING_CS);
+	StreamingImageSequencePlugin::CriticalSectionController cs2(RESETTING_CS);
 	return g_IsResetting ;
 }
 #ifdef _WIN32

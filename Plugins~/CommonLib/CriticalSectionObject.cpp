@@ -1,22 +1,22 @@
-#include "CCriticalSectionObject.h"
+#include "CriticalSectionObject.h"
 
 namespace StreamingImageSequencePlugin {
 
-CCriticalSectionObject::CCriticalSectionObject()
+CriticalSectionObject::CriticalSectionObject()
 {
 #ifdef _WIN32
 	InitializeCriticalSection(&m_cs);
 #endif
 }
 
-CCriticalSectionObject::~CCriticalSectionObject()
+CriticalSectionObject::~CriticalSectionObject()
 {
 #ifdef _WIN32
 	DeleteCriticalSection(&m_cs);
 #endif
 }
 
-void CCriticalSectionObject::Enter()
+void CriticalSectionObject::Enter()
 {
 #ifdef _WIN32
 	EnterCriticalSection(&m_cs);
@@ -25,7 +25,7 @@ void CCriticalSectionObject::Enter()
 #endif
 }
 
-void CCriticalSectionObject::Leave()
+void CriticalSectionObject::Leave()
 {
 #ifdef _WIN32
 	LeaveCriticalSection(&m_cs);

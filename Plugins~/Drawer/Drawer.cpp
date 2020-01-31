@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include  "RenderAPI.h"
 #include "../CommonLib/CommonLib.h"
-#include "../CommonLib/CCriticalSectionController.h"
+#include "../CommonLib/CriticalSectionController.h"
 #include "../Loader/Loader.h"
 #include "Drawer.h"
 
@@ -39,7 +39,7 @@ void UpdateTexture(int sEventID)
 	strType wstr;
 
 	{
-		CCriticalSectionController cs(INSTANCEID2FILENAME_CS);
+		CriticalSectionController cs(INSTANCEID2FILENAME_CS);
 		{
 			if (g_instanceIdToFileName.find(sEventID) == g_instanceIdToFileName.end())
 			{
@@ -50,7 +50,7 @@ void UpdateTexture(int sEventID)
 		}
 	}
 	{
-		CCriticalSectionController cs(FILENAME2PTR_CS);
+		CriticalSectionController cs(FILENAME2PTR_CS);
 
 		if (g_fileNameToPtrMap.find(wstr) == g_fileNameToPtrMap.end())
 		{
@@ -70,7 +70,7 @@ void UpdateTexture(int sEventID)
 	}
 	TexPointer  unityTexture = nullptr;
 	{
-		CCriticalSectionController cs(INSTANCEID2TEXTURE_CS);
+		CriticalSectionController cs(INSTANCEID2TEXTURE_CS);
 		{
 			if (g_instanceIdToUnityTexturePointer.find(sEventID) == g_instanceIdToUnityTexturePointer.end())
 			{
@@ -106,7 +106,7 @@ UNITY_INTERFACE_EXPORT UnityRenderingEvent UNITY_INTERFACE_API GetRenderEventFun
 
 UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetNativeTexturePtr(void* texture, u32 uWidth, u32 uHeight, s32 sObjectID)
 {
-	CCriticalSectionController cs(INSTANCEID2TEXTURE_CS);
+	CriticalSectionController cs(INSTANCEID2TEXTURE_CS);
 	g_instanceIdToUnityTexturePointer[sObjectID] = reinterpret_cast<TexPointer>(texture);
 
 }
@@ -115,7 +115,7 @@ UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetLoadedTexture(const charType*
 {
 	StReadResult readResult;
 	if (GetNativeTextureInfo(fileName, &readResult) && NULL != readResult.buffer) {
-		CCriticalSectionController cs(INSTANCEID2FILENAME_CS);
+		CriticalSectionController cs(INSTANCEID2FILENAME_CS);
 		{
 			strType wstr(fileName);
 			g_instanceIdToFileName[sObjectID] = wstr;
@@ -127,7 +127,7 @@ UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetLoadedTexture(const charType*
 
 UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetLoadedTexture(s32 sObjectID)
 {
-	CCriticalSectionController cs(INSTANCEID2TEXTURE_CS);//
+	CriticalSectionController cs(INSTANCEID2TEXTURE_CS);//
 	{
 		g_instanceIdToUnityTexturePointer.erase(sObjectID);
 	}
@@ -137,9 +137,9 @@ UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetLoadedTexture(s32 sObjectID
 UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTexture()
 {
 
-	CCriticalSectionController cs2(INSTANCEID2TEXTURE_CS);
-	CCriticalSectionController cs1(INSTANCEID2FILENAME_CS);
-	CCriticalSectionController cs0(FILENAME2PTR_CS);
+	CriticalSectionController cs2(INSTANCEID2TEXTURE_CS);
+	CriticalSectionController cs1(INSTANCEID2FILENAME_CS);
+	CriticalSectionController cs0(FILENAME2PTR_CS);
 	{
 
 

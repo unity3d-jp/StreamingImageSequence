@@ -7,12 +7,12 @@
 #pragma comment(lib, "gdiplus.lib")
 #endif
 
-#include "CCriticalSectionObject.h"
+#include "CriticalSectionObject.h"
 
 using namespace std;
 COMMONLIBWIN_API	int							g_LoadingFileCounter = 0;
 COMMONLIBWIN_API	int							g_IsResetting = 0;
-COMMONLIBWIN_API    StreamingImageSequencePlugin::CCriticalSectionObject   g_CriticalSectionObjectArray[eCS_MAX];
+COMMONLIBWIN_API    StreamingImageSequencePlugin::CriticalSectionObject   g_CriticalSectionObjectArray[eCS_MAX];
 COMMONLIBWIN_API    map<strType, StReadResult> g_fileNameToPtrMap;
 COMMONLIBWIN_API    map<int, strType>          g_instanceIdToFileName;
 COMMONLIBWIN_API    map<int, void*>            g_instanceIdToUnityTexturePointer;
