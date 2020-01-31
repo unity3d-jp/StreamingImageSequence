@@ -57,7 +57,7 @@ void UpdateTexture(int sEventID)
 	}
 
 	StReadResult tResult;
-	if (!GetNativTextureInfo(wstr.c_str(), &tResult))
+	if (!GetNativeTextureInfo(wstr.c_str(), &tResult))
 	{
 		return; // not found.
 	}
@@ -165,9 +165,8 @@ UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetNativeTexturePtr(void* textur
 
 UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetLoadedTexture(const charType* fileName, s32 sObjectID)
 {
-	StReadResult tReulst;
-	if (GetNativTextureInfo(fileName, &tReulst))
-	{
+	StReadResult readResult;
+	if (GetNativeTextureInfo(fileName, &readResult) && NULL != readResult.buffer) {
 		CCriticalSectionController cs(INSTANCEID2FILENAME_CS);
 		{
 			strType wstr(fileName);

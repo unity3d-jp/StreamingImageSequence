@@ -54,7 +54,7 @@ internal class StreamingImageSequencePreview : IDisposable {
 
             //Load
             string fullPath = m_playableAsset.GetCompleteFilePath(imagePaths[imageIndex]);
-            StreamingImageSequencePlugin.GetNativTextureInfo(fullPath, out ReadResult readResult);
+            StreamingImageSequencePlugin.GetNativeTextureInfo(fullPath, out ReadResult readResult);
             switch (readResult.ReadStatus) {
                 case StreamingImageSequenceConstants.READ_RESULT_NONE: {
                     ImageLoadBGTask.Queue(fullPath);

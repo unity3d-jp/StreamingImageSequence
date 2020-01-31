@@ -24,6 +24,7 @@
 /* Begin PBXFileReference section */
 		27BE207723E04E4000D8F415 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		27C33CBA23E3D8E5005D468F /* ReadStatus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ReadStatus.h; path = ../CommonLib/ReadStatus.h; sourceTree = "<group>"; };
+		27C33CBB23E3FA0F005D468F /* FileType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = FileType.h; path = ../Loader/FileType.h; sourceTree = "<group>"; };
 		DE5EC2AE1F8C214E0041DB03 /* Loader.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Loader.mm; path = ../Loader/Loader.mm; sourceTree = "<group>"; };
 		DE5EC2B11F8D312D0041DB03 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		DED204211F8FAFCB000C75CE /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
@@ -125,6 +126,7 @@
 		F435F5EF1F5D4C3300F8DB6A /* Loader */ = {
 			isa = PBXGroup;
 			children = (
+				27C33CBB23E3FA0F005D468F /* FileType.h */,
 				DE5EC2AE1F8C214E0041DB03 /* Loader.mm */,
 				F435F5F61F5D4C7F00F8DB6A /* Loader.cpp */,
 				F435F5F71F5D4C7F00F8DB6A /* Loader.h */,

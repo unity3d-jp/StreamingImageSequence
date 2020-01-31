@@ -1,17 +1,22 @@
-// LoaderWin.cpp : Defines the exported functions for the DLL application.
+// Loader.cpp : Defines the exported functions for the DLL application.
 //
 
 #include "stdafx.h"
 #include "../CommonLib/CommonLib.h"
 #include "Loader.h"
 #include "TGALoader.h"
+#include "FileType.h"
 
 #pragma comment( lib, "winmm.lib" )
 #pragma comment(lib, "gdiplus.lib")
 
 using namespace std;
 
+//Forward declarations
 void* loadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult);
+void* loadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult, u32 requiredWidth, u32 requiredHeight);
+
+//----------------------------------------------------------------------------------------------------------------------
 
 // This is the constructor of a class that has been exported.
 // see LoaderWin.h for the class definition
@@ -30,19 +35,11 @@ CLoaderWin::CLoaderWin()
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-LOADERWIN_API void*  LoadAndAlloc(const charType* fileName) {
-    using namespace StreamingImageSequencePlugin;
-    StReadResult tResult;
-    strType wstr(fileName);
-    {
-        CCriticalSectionController cs(FILENAME2PTR_CS);
-        //Make sure we are not loading the same texture twice
-        if (g_fileNameToPtrMap.find(wstr) != g_fileNameToPtrMap.end())  {
-            return g_fileNameToPtrMap.at(wstr).buffer;
-        }
-    }
 
-    size_t length =
+StreamingImageSequencePlugin::FileType CheckFileType(const charType* fileName) {
+    using namespace StreamingImageSequencePlugin;
+   
+    const size_t length =
 #if USE_WCHAR
         wcslen(fileName);
 #else
@@ -51,42 +48,99 @@ LOADERWIN_API void*  LoadAndAlloc(const charType* fileName) {
 
     //Check extension validity
     if (length < 4 || fileName[length - 4] != '.')    {
-        return NULL;
+        return FILE_TYPE_INVALID;
     }
 
-    {
-        CCriticalSectionController cs(FILENAME2PTR_CS);
-        tResult.readStatus = READ_STATUS_LOADING;
-        g_fileNameToPtrMap[wstr] = tResult;
-    }
-    void *ptr = nullptr;
-
-    INC_LOADINGCOUNTER();
-#ifdef _WIN32    // not neccesary for now
+#ifdef _WIN32    // TGA is only supported on Windows
     if ((fileName[length - 3] == 'T' || fileName[length - 3] == 't')
         && (fileName[length - 2] == 'G' || fileName[length - 2] == 'g')
         && (fileName[length - 1] == 'A' || fileName[length - 1] == 'a'))
     {
-        ptr = loadTGAFileAndAlloc(fileName, &tResult);
+        return FILE_TYPE_TGA;
     }
-    else
 #endif
+    
+    return FILE_TYPE_PNG;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Returns whether this file has been processed, or is still processed
+bool GetNativeTextureInfoInternal(const charType* fileName, StReadResult* pResult, map<strType, StReadResult>* readResultMap) {
+    using namespace StreamingImageSequencePlugin;
     {
-        ptr = loadPNGFileAndAlloc(fileName, &tResult);
+        CCriticalSectionController cs(FILENAME2PTR_CS);
+        ASSERT(pResult);
+        pResult->readStatus = READ_STATUS_NONE;
+        strType wstr(fileName);
+
+        if (readResultMap->find(wstr) != readResultMap->end()) {
+            *pResult = readResultMap->at(wstr);
+            
+            //if success, then the buffer must be not null
+            ASSERT(pResult->readStatus != READ_STATUS_SUCCESS || pResult->buffer);
+            return true;
+        }
+    }
+    return false;
+
+}
+
+LOADERWIN_API bool GetNativeTextureInfo(const charType* fileName, StReadResult* readResult) {
+    return GetNativeTextureInfoInternal(fileName, readResult, &g_fileNameToPtrMap);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+//Returns if the fileName can be loaded ()
+LOADERWIN_API bool LoadAndAlloc(const charType* fileName) {
+    using namespace StreamingImageSequencePlugin;
+    StReadResult readResult;
+    
+    bool isProcessed = GetNativeTextureInfoInternal(fileName, &readResult, &g_fileNameToPtrMap);
+    if (isProcessed) {
+        return true;
+    }
+    
+    FileType fileType = CheckFileType(fileName);
+    if (FILE_TYPE_INVALID ==fileType)
+        return false;
+    
+    //Loading
+    strType wstr(fileName);
+    {
+        CCriticalSectionController cs(FILENAME2PTR_CS);
+        readResult.readStatus = READ_STATUS_LOADING;
+        g_fileNameToPtrMap[wstr] = readResult;
+    }
+    
+    void *ptr = nullptr;
+    INC_LOADINGCOUNTER();
+    switch (fileType) {
+        case FILE_TYPE_TGA: {
+            ptr = loadTGAFileAndAlloc(fileName, &readResult);
+            break;
+        }
+        case FILE_TYPE_PNG: {
+            ptr = loadPNGFileAndAlloc(fileName, &readResult);
+            break;
+        }
+        default: break;
     }
     DEC_LOADINGCOUNTER();
+
     if(ptr == NULL) {
-        return NULL;
+        return false;
     }
     
     {
         CCriticalSectionController cs(FILENAME2PTR_CS);
-        tResult.readStatus = READ_STATUS_SUCCESS;
-        g_fileNameToPtrMap[wstr] = tResult;
+        readResult.readStatus = READ_STATUS_SUCCESS;
+        g_fileNameToPtrMap[wstr] = readResult;
     }
 
-    return ptr;
+    return true;
 }
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -96,34 +150,14 @@ LOADERWIN_API void   NativeFree(void* ptr) {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-LOADERWIN_API void*  GetNativTextureInfo(const charType* fileName, StReadResult* pResult) {
-    using namespace StreamingImageSequencePlugin;
-    {
-        CCriticalSectionController cs(FILENAME2PTR_CS);
-        ASSERT(pResult);
-        pResult->readStatus = READ_STATUS_NONE;
-        strType wstr(fileName);
-
-        if (g_fileNameToPtrMap.find(wstr) != g_fileNameToPtrMap.end()) {
-            *pResult = g_fileNameToPtrMap[wstr];
-            
-            //if success, then the buffer must be not null
-            ASSERT(pResult->readStatus != READ_STATUS_SUCCESS || pResult->buffer);
-            return pResult->buffer;
-        }
-    }
-    return NULL;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
 // return succ:0 fail:-1
 LOADERWIN_API int   ResetNativeTexture(const charType* fileName) {
     using namespace StreamingImageSequencePlugin;
-	StReadResult tReadResult;
-	void* ptr = GetNativTextureInfo(fileName, &tReadResult);
+	StReadResult readResult;
+	GetNativeTextureInfo(fileName, &readResult);
 
     //Check
-    if (!ptr || tReadResult.readStatus != READ_STATUS_SUCCESS) {
+    if (!readResult.buffer || readResult.readStatus != READ_STATUS_SUCCESS) {
 		return -1;
 	}
 
@@ -132,7 +166,7 @@ LOADERWIN_API int   ResetNativeTexture(const charType* fileName) {
     {
         strType wstr(fileName);
         if (g_fileNameToPtrMap.find(wstr) != g_fileNameToPtrMap.end()) {
-            NativeFree(tReadResult.buffer);
+            NativeFree(readResult.buffer);
             g_fileNameToPtrMap.erase(wstr);
         }
     }

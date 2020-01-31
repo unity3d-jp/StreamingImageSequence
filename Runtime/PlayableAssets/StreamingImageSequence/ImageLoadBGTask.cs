@@ -31,7 +31,7 @@ namespace UnityEngine.StreamingImageSequence
 //----------------------------------------------------------------------------------------------------------------------
 
         public override void Execute() {
-            StreamingImageSequencePlugin.GetNativTextureInfo(m_strFileName, out ReadResult tResult);
+            StreamingImageSequencePlugin.GetNativeTextureInfo(m_strFileName, out ReadResult tResult);
             switch (tResult.ReadStatus) {
                 case StreamingImageSequenceConstants.READ_RESULT_NONE: {
                     //Debug.Log("Loading: " + m_strFileName);

@@ -29,9 +29,9 @@ public:
 
 extern "C"
 {
-	LOADERWIN_API void*  LoadAndAlloc(const charType* ptr);
+	LOADERWIN_API bool  LoadAndAlloc(const charType* ptr);
 	LOADERWIN_API void   NativeFree(void* ptr);
-	LOADERWIN_API void*  GetNativTextureInfo(const charType* fileName, StReadResult* pResult);
+	LOADERWIN_API bool  GetNativeTextureInfo(const charType* fileName, StReadResult* pResult);
 	LOADERWIN_API int   ResetNativeTexture(const charType* fileName);
 	LOADERWIN_API void  ResetPlugin();
 	LOADERWIN_API void  DoneResetPlugin();

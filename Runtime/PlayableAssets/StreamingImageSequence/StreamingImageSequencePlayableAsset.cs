@@ -239,7 +239,7 @@ namespace UnityEngine.StreamingImageSequence {
         {
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
-            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out ReadResult readResult);
+            StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out ReadResult readResult);
             return (readResult.ReadStatus != 0);
 
         }
@@ -252,14 +252,14 @@ namespace UnityEngine.StreamingImageSequence {
                 m_loadRequested = new bool[m_imagePaths.Count];
             }
 
-            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
+            StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult);
             //Debug.Log("readResult.readStatus " + readResult.readStatus + "Loading " + filename);
             if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_NONE) {
                 ImageLoadBGTask.Queue(filename);
             }
             if ( isBlocking ) {
                 while (readResult.ReadStatus != StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
-                    StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
+                    StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult);
                 }
             }
 #if false //UNITY_EDITOR
