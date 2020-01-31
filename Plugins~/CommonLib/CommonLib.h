@@ -20,21 +20,7 @@
 
 typedef void* TexPointer;
 
-struct StReadResult
-{
-    u8*  buffer;
-    u32    width;
-    u32    height;
-    StreamingImageSequencePlugin::ReadStatus readStatus;
-    
-    StReadResult()
-    {
-        buffer = NULL;
-        width = 0;
-        height = 0;
-        readStatus = StreamingImageSequencePlugin::READ_STATUS_NONE;
-    }
-};
+
 
 // This class is exported from the CommonLibWin.dll
 class COMMONLIBWIN_API CCommonLib {
@@ -48,7 +34,7 @@ public:
 	virtual ~CCommonLib();
 };
 
-
+#include "ReadResult.h"
 
 extern COMMONLIBWIN_API std::map<strType, StReadResult> g_fileNameToPtrMap;
 extern COMMONLIBWIN_API std::map<int, strType>          g_instanceIdToFileName;
