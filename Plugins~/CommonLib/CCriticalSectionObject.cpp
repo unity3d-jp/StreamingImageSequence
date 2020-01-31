@@ -1,5 +1,7 @@
 #include "CCriticalSectionObject.h"
 
+namespace StreamingImageSequencePlugin {
+
 CCriticalSectionObject::CCriticalSectionObject()
 {
 #ifdef _WIN32
@@ -33,3 +35,4 @@ void CCriticalSectionObject::Leave()
 }
 
 
+} //end namespace

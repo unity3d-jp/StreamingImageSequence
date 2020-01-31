@@ -21,6 +21,7 @@ using namespace Gdiplus;
 #endif
 
 
+namespace StreamingImageSequencePlugin {
 
 IUnityInterfaces* g_unity = nullptr;
 static IUnityGraphics*   s_Graphics = nullptr;
@@ -90,60 +91,6 @@ void UpdateTexture(int sEventID)
     }
 
 }
-
-#if SUPPORT_D3D11
-void UploadTextureToDeviceD3D11(TexPointer unityTexture, StReadResult& tResult) {
-    
-    D3D11_BOX box;
-    box.front = 0;
-    box.back = 1;
-    box.left = 0;
-    box.right = tResult.width;
-    box.top = 0;
-    box.bottom = tResult.height;
-    if (!g_unity)
-    {
-        return;
-    }
-    auto device = g_unity->Get<IUnityGraphicsD3D11>()->GetDevice();
-    ID3D11DeviceContext* context;
-    device->GetImmediateContext(&context);
-    if (tResult.buffer && unityTexture) {
-        context->UpdateSubresource(reinterpret_cast<ID3D11Texture2D*>(unityTexture), 0, &box, tResult.buffer, tResult.width * 4, tResult.height * 4);
-    }
-}
-#endif
-
-#if SUPPORT_OPENGL_LEGACY || SUPPORT_OPENGL_UNIFIED
-void UploadTextureToDeviceOpenGL(TexPointer unityTexture, StReadResult& tResult) {
-
-  GLuint gltex = (GLuint)(size_t)(unityTexture);
-  glBindTexture (GL_TEXTURE_2D, gltex);
-  int texWidth, texHeight;
-  glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &texWidth);
-  glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &texHeight);
-
-  glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, texWidth, texHeight, GL_RGBA, GL_UNSIGNED_BYTE, tResult.buffer);
-
-}
-#endif
-
-#if SUPPORT_D3D9
-void UploadTextureToDeviceD3D9(TexPointer unityTexture, StReadResult& tResult) {
-	D3DLOCKED_RECT tLockedRect;
-
-	IDirect3DTexture9* pTexture = reinterpret_cast<IDirect3DTexture9*>(unityTexture);
-	DWORD uFlag = D3DLOCK_DISCARD;
-	HRESULT res = pTexture->LockRect(0,&tLockedRect, NULL, uFlag);
-	if (res == S_OK)
-	{
-		memcpy(tLockedRect.pBits, tResult.buffer, tResult.width * tResult.height * 4);
-		pTexture->UnlockRect(0);
-	}
-}
-#endif
-
-
 
 static void UNITY_INTERFACE_API OnRenderEvent(int eventID)
 {
@@ -250,4 +197,60 @@ UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces
 }
 
 
+} //end namespace
+
+//----------------------------------------------------------------------------------------------------------------------
+
+
+#if SUPPORT_D3D11
+void UploadTextureToDeviceD3D11(TexPointer unityTexture, StReadResult& tResult) {
+    
+    D3D11_BOX box;
+    box.front = 0;
+    box.back = 1;
+    box.left = 0;
+    box.right = tResult.width;
+    box.top = 0;
+    box.bottom = tResult.height;
+    if (!g_unity)
+    {
+        return;
+    }
+    auto device = g_unity->Get<IUnityGraphicsD3D11>()->GetDevice();
+    ID3D11DeviceContext* context;
+    device->GetImmediateContext(&context);
+    if (tResult.buffer && unityTexture) {
+        context->UpdateSubresource(reinterpret_cast<ID3D11Texture2D*>(unityTexture), 0, &box, tResult.buffer, tResult.width * 4, tResult.height * 4);
+    }
+}
+#endif
+
+#if SUPPORT_OPENGL_LEGACY || SUPPORT_OPENGL_UNIFIED
+void UploadTextureToDeviceOpenGL(TexPointer unityTexture, StReadResult& tResult) {
+
+  GLuint gltex = (GLuint)(size_t)(unityTexture);
+  glBindTexture (GL_TEXTURE_2D, gltex);
+  int texWidth, texHeight;
+  glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &texWidth);
+  glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &texHeight);
+
+  glTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, texWidth, texHeight, GL_RGBA, GL_UNSIGNED_BYTE, tResult.buffer);
+
+}
+#endif
+
+#if SUPPORT_D3D9
+void UploadTextureToDeviceD3D9(TexPointer unityTexture, StReadResult& tResult) {
+    D3DLOCKED_RECT tLockedRect;
+
+    IDirect3DTexture9* pTexture = reinterpret_cast<IDirect3DTexture9*>(unityTexture);
+    DWORD uFlag = D3DLOCK_DISCARD;
+    HRESULT res = pTexture->LockRect(0,&tLockedRect, NULL, uFlag);
+    if (res == S_OK)
+    {
+        memcpy(tLockedRect.pBits, tResult.buffer, tResult.width * tResult.height * 4);
+        pTexture->UnlockRect(0);
+    }
+}
+#endif
 

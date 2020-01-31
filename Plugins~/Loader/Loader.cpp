@@ -192,19 +192,19 @@ LOADERWIN_API int    GetSceneStatus(const charType* scenePath)
 
 LOADERWIN_API void  ResetPlugin()
 {
-	CCriticalSectionController cs2(RESETTING_CS);
+	StreamingImageSequencePlugin::CCriticalSectionController cs2(RESETTING_CS);
 	g_IsResetting = 1;
 }
 
 LOADERWIN_API void  DoneResetPlugin()
 {
-	CCriticalSectionController cs2(RESETTING_CS);
+	StreamingImageSequencePlugin::CCriticalSectionController cs2(RESETTING_CS);
 	g_IsResetting = 0;
 }
 
 LOADERWIN_API int   IsPluginResetting()
 {
-	CCriticalSectionController cs2(RESETTING_CS);
+	StreamingImageSequencePlugin::CCriticalSectionController cs2(RESETTING_CS);
 	return g_IsResetting ;
 }
 #ifdef _WIN32

@@ -2,6 +2,7 @@
 
 #include "Types.h"
 
+namespace StreamingImageSequencePlugin {
 
 class COMMONLIBWIN_API CCriticalSectionObject
 {
@@ -19,3 +20,5 @@ public:
 	void Enter();
 	void Leave();
 };
+
+} //end namespace

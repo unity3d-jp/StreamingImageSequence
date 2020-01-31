@@ -2,6 +2,8 @@
 
 #include "Types.h"
 
+namespace StreamingImageSequencePlugin {
+
 class CCriticalSectionObject;
 
 class COMMONLIBWIN_API CCriticalSectionController
@@ -13,3 +15,4 @@ public:
 	virtual ~CCriticalSectionController();
 };
 
+} // end namespace

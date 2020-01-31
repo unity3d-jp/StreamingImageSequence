@@ -72,7 +72,7 @@ enum {
 #define INSTANCEID2TEXTURE_CS			(&g_CriticalSectionObjectArray[eCS_InstanceIdToUnityTexturePtr])
 #define LOADINGCOUNTER_CS			(&g_CriticalSectionObjectArray[eCS_LoadingCounter])
 #define RESETTING_CS				(&g_CriticalSectionObjectArray[eCS_Resetting])
-extern COMMONLIBWIN_API CCriticalSectionObject  g_CriticalSectionObjectArray[eCS_MAX];
+extern COMMONLIBWIN_API StreamingImageSequencePlugin::CCriticalSectionObject  g_CriticalSectionObjectArray[eCS_MAX];
 extern COMMONLIBWIN_API	int						g_LoadingFileCounter;
 extern COMMONLIBWIN_API	int						g_IsResetting;
 

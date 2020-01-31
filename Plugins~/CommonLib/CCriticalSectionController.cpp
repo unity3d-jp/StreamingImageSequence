@@ -1,6 +1,8 @@
 #include "CCriticalSectionController.h"
 #include "CCriticalSectionObject.h"
 
+namespace StreamingImageSequencePlugin {
+
 CCriticalSectionController::CCriticalSectionController(CCriticalSectionObject* cs)
 	:m_cs(cs)
 {
@@ -12,3 +14,4 @@ CCriticalSectionController::~CCriticalSectionController()
 	m_cs->Leave();
 }
 
+} //end namespace
