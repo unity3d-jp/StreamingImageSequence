@@ -66,7 +66,7 @@ LOADERWIN_API bool LoadAndAlloc(const charType* fileName) {
     //Loading
     strType wstr(fileName);
     {
-        CriticalSectionController cs(FILENAME2PTR_CS);
+        CriticalSectionController cs(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
         readResult.readStatus = READ_STATUS_LOADING;
         g_fileNameToPtrMap[wstr] = readResult;
     }
@@ -91,8 +91,8 @@ LOADERWIN_API bool LoadAndAlloc(const charType* fileName) {
     }
     
     {
-        CriticalSectionController cs(FILENAME2PTR_CS);
-        readResult.readStatus = READ_STATUS_SUCCESS;
+		CriticalSectionController cs(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
+		readResult.readStatus = READ_STATUS_SUCCESS;
         g_fileNameToPtrMap[wstr] = readResult;
     }
 
@@ -120,8 +120,8 @@ LOADERWIN_API int   ResetNativeTexture(const charType* fileName) {
 	}
 
 
-    CriticalSectionController cs(FILENAME2PTR_CS);
-    {
+	CriticalSectionController cs(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
+	{
         strType wstr(fileName);
         if (g_fileNameToPtrMap.find(wstr) != g_fileNameToPtrMap.end()) {
             NativeFree(readResult.buffer);

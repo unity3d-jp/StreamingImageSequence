@@ -32,7 +32,7 @@ extern COMMONLIBWIN_API std::map<strType, int>          g_scenePathToSceneStatus
 
 #include "CriticalSection.h"
 
-#define FILENAME2PTR_CS             (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_FILENAME_TO_PTR))
+#define TEXTURE_CS(texType)         (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(static_cast<StreamingImageSequencePlugin::CriticalSectionType>(texType)))
 #define INSTANCEID2FILENAME_CS      (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_INSTANCE_ID_TO_FILENAME))
 #define INSTANCEID2TEXTURE_CS       (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_INSTANCE_ID_TO_UNITY_TEXTURE_PTR))
 #define LOADINGCOUNTER_CS           (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_LOADING_COUNTER))

@@ -42,7 +42,7 @@ bool LoaderUtility::GetTextureInfo(const charType* fileName, StReadResult* pResu
 {
     using namespace StreamingImageSequencePlugin;
     {
-        CriticalSectionController cs(CriticalSection::GetInstance().GetObject(CRITICAL_SECTION_TYPE_FILENAME_TO_PTR));
+        CriticalSectionController cs(CriticalSection::GetInstance().GetObject(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
         ASSERT(pResult);
         pResult->readStatus = READ_STATUS_NONE;
         strType wstr(fileName);

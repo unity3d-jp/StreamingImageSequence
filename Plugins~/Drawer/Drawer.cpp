@@ -49,7 +49,7 @@ void UpdateTexture(int sEventID)
 		}
 	}
 	{
-		CriticalSectionController cs(FILENAME2PTR_CS);
+		CriticalSectionController cs(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
 
 		if (g_fileNameToPtrMap.find(wstr) == g_fileNameToPtrMap.end())
 		{
@@ -136,10 +136,12 @@ UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetLoadedTexture(s32 sObjectID
 
 UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTexture()
 {
+	using namespace StreamingImageSequencePlugin;
 
-	StreamingImageSequencePlugin::CriticalSectionController cs2(INSTANCEID2TEXTURE_CS);
-	StreamingImageSequencePlugin::CriticalSectionController cs1(INSTANCEID2FILENAME_CS);
-	StreamingImageSequencePlugin::CriticalSectionController cs0(FILENAME2PTR_CS);
+	CriticalSectionController cs2(INSTANCEID2TEXTURE_CS);
+	CriticalSectionController cs1(INSTANCEID2FILENAME_CS);
+	CriticalSectionController cs0(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
+
 	{
 
 
