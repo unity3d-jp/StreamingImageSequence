@@ -21,26 +21,12 @@
 typedef void* TexPointer;
 
 
-
-// This class is exported from the CommonLibWin.dll
-class COMMONLIBWIN_API CCommonLib {
-#ifdef _WIN32
-	Gdiplus::GdiplusStartupInput    startInput;
-	ULONG_PTR                       token;
-#endif
-
-public:
-	CCommonLib();
-	virtual ~CCommonLib();
-};
-
 #include "ReadResult.h"
 
 extern COMMONLIBWIN_API std::map<strType, StReadResult> g_fileNameToPtrMap;
 extern COMMONLIBWIN_API std::map<int, strType>          g_instanceIdToFileName;
 extern COMMONLIBWIN_API std::map<int, void*>            g_instanceIdToUnityTexturePointer;
 extern COMMONLIBWIN_API std::map<strType, int>          g_scenePathToSceneStatus;
-extern COMMONLIBWIN_API CCommonLib                      g_CCommonLib;
 
 //----------------------------------------------------------------------------------------------------------------------
 
