@@ -43,13 +43,13 @@ namespace UnityEngine.StreamingImageSequence {
 
         // Implemented in Loader dll
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern bool LoadAndAlloc([MarshalAs(UnmanagedType.LPStr)]string fileName);
+        public static extern bool LoadAndAlloc([MarshalAs(UnmanagedType.LPStr)]string fileName, int textureType);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void NativeFree(IntPtr ptr);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern bool GetNativeTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult);
+        public static extern bool GetNativeTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult, int textureType);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int ResetNativeTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);

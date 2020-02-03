@@ -12,10 +12,11 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             string fullPath = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
             Assert.IsTrue(File.Exists(fullPath));
 
-            StreamingImageSequencePlugin.GetNativeTextureInfo(fullPath, out ReadResult readResult);
+            StreamingImageSequencePlugin.GetNativeTextureInfo(fullPath, out ReadResult readResult, 
+                StreamingImageSequenceConstants.TEXTURE_TYPE_FULL);
             Assert.AreEqual(readResult.ReadStatus, 0);
 
-            ImageLoadBGTask.Queue(fullPath);
+            ImageLoadBGTask.Queue(fullPath, StreamingImageSequenceConstants.TEXTURE_TYPE_FULL);
             yield return new WaitForSeconds(1.0f);
 
             StreamingImageSequencePlugin.ResetNativeTexture(fullPath);
