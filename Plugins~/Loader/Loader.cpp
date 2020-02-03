@@ -31,14 +31,6 @@ int g_IsResetting;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-// This is the constructor of a class that has been exported.
-// see LoaderWin.h for the class definition
-CLoaderWin::CLoaderWin()
-{
-	return;
-}
-
-
 #define INC_LOADINGCOUNTER() {\
 	CriticalSectionController cs2(LOADINGCOUNTER_CS);\
 	g_LoadingFileCounter++;\

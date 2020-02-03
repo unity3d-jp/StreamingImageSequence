@@ -14,17 +14,8 @@
 #  define LOADERWIN_API
 #endif
 
-
+                                                                                                                        
 #include "../CommonLib/CommonLib.h"
-
-
-// This class is exported from the LoaderWin.dll
-class LOADERWIN_API CLoaderWin {
-public:
-	CLoaderWin(void);
-	// TODO: add your methods here.
-};
-
 
 
 extern "C"
