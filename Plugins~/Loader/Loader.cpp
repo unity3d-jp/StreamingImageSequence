@@ -66,7 +66,7 @@ LOADERWIN_API bool LoadAndAlloc(const charType* fileName, int textureType) {
     //Loading
     strType wstr(fileName);
     {
-        CriticalSectionController cs(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
+        CriticalSectionController cs(TEXTURE_CS(textureType));
         readResult.readStatus = READ_STATUS_LOADING;
         g_fileNameToPtrMap[wstr] = readResult;
     }
@@ -91,7 +91,7 @@ LOADERWIN_API bool LoadAndAlloc(const charType* fileName, int textureType) {
     }
     
     {
-		CriticalSectionController cs(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
+		CriticalSectionController cs(TEXTURE_CS(textureType));
 		readResult.readStatus = READ_STATUS_SUCCESS;
         g_fileNameToPtrMap[wstr] = readResult;
     }
@@ -120,6 +120,7 @@ LOADERWIN_API int   ResetNativeTexture(const charType* fileName) {
 	}
 
 
+	//[TODO-sin: 2020-2-3] Reset all textures
 	CriticalSectionController cs(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
 	{
         strType wstr(fileName);

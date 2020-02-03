@@ -16,7 +16,7 @@
 
         public const int TEXTURE_TYPE_FULL  = 0;
         //[TODO-sin: 2020-2-3] Should be 1. In progress
-        public const int TEXTURE_TYPE_PREVIEW = 0;
+        public const int TEXTURE_TYPE_PREVIEW = 1;
 
     }
 

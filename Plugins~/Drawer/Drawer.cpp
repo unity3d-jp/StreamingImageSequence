@@ -36,7 +36,7 @@ void UpdateTexture(int sEventID)
 	}
 
 	strType wstr;
-
+	const uint32_t textureType = CRITICAL_SECTION_TYPE_FULL_TEXTURE;
 	{
 		CriticalSectionController cs(INSTANCEID2FILENAME_CS);
 		{
@@ -49,7 +49,7 @@ void UpdateTexture(int sEventID)
 		}
 	}
 	{
-		CriticalSectionController cs(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
+		CriticalSectionController cs(TEXTURE_CS(textureType));
 
 		if (g_fileNameToPtrMap.find(wstr) == g_fileNameToPtrMap.end())
 		{
@@ -58,7 +58,7 @@ void UpdateTexture(int sEventID)
 	}
 
 	StReadResult tResult;
-	if (!GetNativeTextureInfo(wstr.c_str(), &tResult, CRITICAL_SECTION_TYPE_FULL_TEXTURE))
+	if (!GetNativeTextureInfo(wstr.c_str(), &tResult, textureType))
 	{
 		return; // not found.
 	}
@@ -141,6 +141,8 @@ UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTexture()
 
 	CriticalSectionController cs2(INSTANCEID2TEXTURE_CS);
 	CriticalSectionController cs1(INSTANCEID2FILENAME_CS);
+
+	//[TODO-sin: 2020-2-3] Reset all textures
 	CriticalSectionController cs0(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
 
 	{
