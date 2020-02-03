@@ -14,11 +14,14 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Loader.h" />
     <ClInclude Include="TGALoader.h" />
+    <ClInclude Include="FileType.h" />
+    <ClInclude Include="LoaderUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Loader.cpp" />
     <ClCompile Include="TGALoader.cpp" />
+    <ClCompile Include="LoaderUtility.cpp" />
   </ItemGroup>
 </Project>

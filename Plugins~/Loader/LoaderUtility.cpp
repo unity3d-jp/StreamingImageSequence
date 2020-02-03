@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "LoaderUtility.h"
 
 #include "FileType.h"

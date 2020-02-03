@@ -146,11 +146,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CommonLib.h" />
+    <ClInclude Include="CriticalSection.h" />
+    <ClInclude Include="CriticalSectionController.h" />
+    <ClInclude Include="CriticalSectionObject.h" />
+    <ClInclude Include="CriticalSectionType.h" />
+    <ClInclude Include="ReadResult.h" />
+    <ClInclude Include="ReadStatus.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CommonLib.cpp" />
+    <ClCompile Include="CriticalSection.cpp" />
+    <ClCompile Include="CriticalSectionController.cpp" />
+    <ClCompile Include="CriticalSectionObject.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>

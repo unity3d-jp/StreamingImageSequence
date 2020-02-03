@@ -1,3 +1,5 @@
+
+#include "stdafx.h"
 #include "CriticalSectionObject.h"
 
 #include "CriticalSection.h"
