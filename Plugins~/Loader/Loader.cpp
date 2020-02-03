@@ -42,19 +42,19 @@ int g_IsResetting;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-LOADERWIN_API bool GetNativeTextureInfo(const charType* fileName, StReadResult* readResult) {
+LOADERWIN_API bool GetNativeTextureInfo(const charType* fileName, StReadResult* readResult, const uint32_t textureType) {
     using namespace StreamingImageSequencePlugin;
-    return LoaderUtility::GetTextureInfo(fileName, readResult, &g_fileNameToPtrMap );
+    return LoaderUtility::GetTextureInfo(fileName, readResult, &g_fileNameToPtrMap, textureType );
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 //Returns if the fileName can be loaded ()
-LOADERWIN_API bool LoadAndAlloc(const charType* fileName) {
+LOADERWIN_API bool LoadAndAlloc(const charType* fileName, int textureType) {
     using namespace StreamingImageSequencePlugin;
     StReadResult readResult;
     
-    bool isProcessed = LoaderUtility::GetTextureInfo(fileName, &readResult, &g_fileNameToPtrMap);
+    bool isProcessed = LoaderUtility::GetTextureInfo(fileName, &readResult, &g_fileNameToPtrMap, textureType);
     if (isProcessed) {
         return true;
     }
@@ -112,7 +112,7 @@ LOADERWIN_API void   NativeFree(void* ptr) {
 LOADERWIN_API int   ResetNativeTexture(const charType* fileName) {
     using namespace StreamingImageSequencePlugin;
 	StReadResult readResult;
-	GetNativeTextureInfo(fileName, &readResult);
+	GetNativeTextureInfo(fileName, &readResult, CRITICAL_SECTION_TYPE_FULL_TEXTURE);
 
     //Check
     if (!readResult.buffer || readResult.readStatus != READ_STATUS_SUCCESS) {

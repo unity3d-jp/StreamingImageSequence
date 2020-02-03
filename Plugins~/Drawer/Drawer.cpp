@@ -58,7 +58,7 @@ void UpdateTexture(int sEventID)
 	}
 
 	StReadResult tResult;
-	if (!GetNativeTextureInfo(wstr.c_str(), &tResult))
+	if (!GetNativeTextureInfo(wstr.c_str(), &tResult, CRITICAL_SECTION_TYPE_FULL_TEXTURE))
 	{
 		return; // not found.
 	}
@@ -113,8 +113,9 @@ UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetNativeTexturePtr(void* textur
 
 UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetLoadedTexture(const charType* fileName, s32 sObjectID)
 {
+	using namespace StreamingImageSequencePlugin;
 	StReadResult readResult;
-	if (GetNativeTextureInfo(fileName, &readResult) && NULL != readResult.buffer) {
+	if (GetNativeTextureInfo(fileName, &readResult, CRITICAL_SECTION_TYPE_FULL_TEXTURE) && NULL != readResult.buffer) {
 		StreamingImageSequencePlugin::CriticalSectionController cs(INSTANCEID2FILENAME_CS);
 		{
 			strType wstr(fileName);

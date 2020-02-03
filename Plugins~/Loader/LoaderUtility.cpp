@@ -38,11 +38,13 @@ FileType LoaderUtility::CheckFileType(const charType* fileName) {
 //Returns whether the file has been processed, or is still processed  (inside readResultMap).
 
 bool LoaderUtility::GetTextureInfo(const charType* fileName, StReadResult* pResult,
-                                  std::map<strType, StReadResult>* readResultMap)
+                                  std::map<strType, StReadResult>* readResultMap, const uint32_t textureType)
 {
     using namespace StreamingImageSequencePlugin;
     {
-        CriticalSectionController cs(CriticalSection::GetInstance().GetObject(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
+        CriticalSectionController cs(CriticalSection::GetInstance().GetObject(
+            static_cast<CriticalSectionType>(textureType))
+        );
         ASSERT(pResult);
         pResult->readStatus = READ_STATUS_NONE;
         strType wstr(fileName);
