@@ -44,7 +44,7 @@ int g_IsResetting;
 
 LOADERWIN_API bool GetNativeTextureInfo(const charType* fileName, StReadResult* readResult, const uint32_t textureType) {
     using namespace StreamingImageSequencePlugin;
-    return LoaderUtility::GetTextureInfo(fileName, readResult, &g_fileNameToPtrMap, textureType );
+    return LoaderUtility::GetTextureInfo(fileName, readResult, &g_fileNameToPtrMap[textureType], textureType );
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ LOADERWIN_API bool LoadAndAlloc(const charType* fileName, int textureType) {
     using namespace StreamingImageSequencePlugin;
     StReadResult readResult;
     
-    bool isProcessed = LoaderUtility::GetTextureInfo(fileName, &readResult, &g_fileNameToPtrMap, textureType);
+    bool isProcessed = LoaderUtility::GetTextureInfo(fileName, &readResult, &g_fileNameToPtrMap[textureType], textureType);
     if (isProcessed) {
         return true;
     }
@@ -68,7 +68,7 @@ LOADERWIN_API bool LoadAndAlloc(const charType* fileName, int textureType) {
     {
         CriticalSectionController cs(TEXTURE_CS(textureType));
         readResult.readStatus = READ_STATUS_LOADING;
-        g_fileNameToPtrMap[wstr] = readResult;
+        g_fileNameToPtrMap[textureType][wstr] = readResult;
     }
     
     void *ptr = nullptr;
@@ -93,7 +93,7 @@ LOADERWIN_API bool LoadAndAlloc(const charType* fileName, int textureType) {
     {
 		CriticalSectionController cs(TEXTURE_CS(textureType));
 		readResult.readStatus = READ_STATUS_SUCCESS;
-        g_fileNameToPtrMap[wstr] = readResult;
+        g_fileNameToPtrMap[textureType][wstr] = readResult;
     }
 
     return true;
@@ -124,9 +124,9 @@ LOADERWIN_API int   ResetNativeTexture(const charType* fileName) {
 	CriticalSectionController cs(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
 	{
         strType wstr(fileName);
-        if (g_fileNameToPtrMap.find(wstr) != g_fileNameToPtrMap.end()) {
+        if (g_fileNameToPtrMap[0].find(wstr) != g_fileNameToPtrMap[0].end()) {
             NativeFree(readResult.buffer);
-            g_fileNameToPtrMap.erase(wstr);
+            g_fileNameToPtrMap[0].erase(wstr);
         }
     }
 

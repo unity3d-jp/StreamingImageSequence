@@ -51,7 +51,7 @@ void UpdateTexture(int sEventID)
 	{
 		CriticalSectionController cs(TEXTURE_CS(textureType));
 
-		if (g_fileNameToPtrMap.find(wstr) == g_fileNameToPtrMap.end())
+		if (g_fileNameToPtrMap[textureType].find(wstr) == g_fileNameToPtrMap[textureType].end())
 		{
 			return; // not found.
 		}
@@ -148,7 +148,7 @@ UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTexture()
 	{
 
 
-		for (auto itr = g_fileNameToPtrMap.begin(); itr != g_fileNameToPtrMap.end(); ++itr) 
+		for (auto itr = g_fileNameToPtrMap[0].begin(); itr != g_fileNameToPtrMap[0].end(); ++itr) 
 		{
 			StReadResult tResult = itr->second;
 			if (tResult.buffer)
@@ -157,7 +157,7 @@ UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTexture()
 
 		g_instanceIdToUnityTexturePointer.clear();
 		g_instanceIdToFileName.clear();
-		g_fileNameToPtrMap.clear();
+		g_fileNameToPtrMap[0].clear();
 	}
 }
 

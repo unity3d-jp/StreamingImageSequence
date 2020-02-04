@@ -22,15 +22,15 @@ typedef void* TexPointer;
 
 
 #include "ReadResult.h"
+#include "CriticalSection.h"
 
-extern COMMONLIBWIN_API std::map<strType, StReadResult> g_fileNameToPtrMap;
+extern COMMONLIBWIN_API std::map<strType, StReadResult> g_fileNameToPtrMap[StreamingImageSequencePlugin::MAX_CRITICAL_SECTION_TYPE_TEXTURES];
 extern COMMONLIBWIN_API std::map<int, strType>          g_instanceIdToFileName;
 extern COMMONLIBWIN_API std::map<int, void*>            g_instanceIdToUnityTexturePointer;
 extern COMMONLIBWIN_API std::map<strType, int>          g_scenePathToSceneStatus;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#include "CriticalSection.h"
 
 #define TEXTURE_CS(texType)         (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(static_cast<StreamingImageSequencePlugin::CriticalSectionType>(texType)))
 #define INSTANCEID2FILENAME_CS      (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_INSTANCE_ID_TO_FILENAME))
