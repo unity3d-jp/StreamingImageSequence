@@ -5,6 +5,12 @@ using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.Assertions;
 
 namespace UnityEngine.StreamingImageSequence {
+
+    //Delegates
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate void DelegateStringFunc([MarshalAs(UnmanagedType.LPStr)] string str);
+//----------------------------------------------------------------------------------------------------------------------
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 8)]
     public struct ReadResult
     {
@@ -46,6 +52,9 @@ namespace UnityEngine.StreamingImageSequence {
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int ResetNativeTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
+
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        internal static extern void ListLoadedTextures(int textureType, DelegateStringFunc func);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void ResetPlugin();

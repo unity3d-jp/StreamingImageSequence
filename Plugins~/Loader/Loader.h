@@ -24,6 +24,9 @@ extern "C"
 	LOADERWIN_API void  NativeFree(void* ptr);
 	LOADERWIN_API bool  GetNativeTextureInfo(const charType* fileName, StReadResult* pResult, const uint32_t textureType);
 	LOADERWIN_API int   ResetNativeTexture(const charType* fileName);
+
+	LOADERWIN_API void  ListLoadedTextures(const uint32_t textureType, void(* OnNextTexture)(const char*));
+
 	LOADERWIN_API void  ResetPlugin();
 	LOADERWIN_API void  DoneResetPlugin();
 	LOADERWIN_API int   IsPluginResetting();

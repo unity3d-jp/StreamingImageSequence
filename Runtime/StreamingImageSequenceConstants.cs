@@ -14,9 +14,12 @@
         public const int READ_RESULT_SUCCESS    = 2;
 
 
-        public const int TEXTURE_TYPE_FULL  = 0;
-        //[TODO-sin: 2020-2-3] Should be 1. In progress
-        public const int TEXTURE_TYPE_PREVIEW = 1;
+        public const int TEXTURE_TYPE_FULL      = 0;
+        public const int TEXTURE_TYPE_PREVIEW   = 1;
+        public const int MAX_TEXTURE_TYPES      = TEXTURE_TYPE_PREVIEW + 1;
+
+        internal const string MENU_PATH = "Assets/Streaming Image Sequence/";
+
 
     }
 

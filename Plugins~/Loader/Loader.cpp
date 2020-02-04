@@ -134,6 +134,20 @@ LOADERWIN_API int   ResetNativeTexture(const charType* fileName) {
 	return 0;
 
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+LOADERWIN_API void ListLoadedTextures(const uint32_t textureType, void(*OnNextTexture)(const char*)) {
+	using namespace StreamingImageSequencePlugin;
+	ASSERT(textureType < MAX_CRITICAL_SECTION_TYPE_TEXTURES);
+
+	for (auto itr = g_fileNameToPtrMap[textureType].begin(); itr != g_fileNameToPtrMap[textureType].end(); ++itr) {
+		OnNextTexture(itr->first.c_str());
+	}
+
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
 LOADERWIN_API void   SetSceneStatus(const charType* scenePath, int sceneStatus)
 {
 	g_scenePathToSceneStatus[scenePath] = sceneStatus;
