@@ -11,8 +11,8 @@ namespace UnityEditor.StreamingImageSequence {
 
     public static class ImageSequenceImporter
     {
-        public const string PNG_EXTENSION = "png";
-        public const string TGA_EXTENSION = "tga";
+        private const string PNG_EXTENSION = "png";
+        private const string TGA_EXTENSION = "tga";
 
 
         /// Import images in the path to create StreamingImageSequence assets with those images
