@@ -1,9 +1,15 @@
 #include "stdafx.h"
-#include "LoaderUtility.h"
 
+//Loader
+#include "LoaderUtility.h"
 #include "FileType.h"
-#include "CommonLib/CriticalSection.h"
-#include "CommonLib/CriticalSectionController.h"
+#include "TGALoader.h"
+
+//----------------------------------------------------------------------------------------------------------------------
+//Forward declarations
+void* loadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult);
+
+//----------------------------------------------------------------------------------------------------------------------
 
 namespace StreamingImageSequencePlugin {
 
@@ -41,24 +47,67 @@ bool LoaderUtility::GetTextureInfo(const charType* fileName, StReadResult* pResu
                                   std::map<strType, StReadResult>* readResultMap, const uint32_t textureType)
 {
     using namespace StreamingImageSequencePlugin;
-    {
-        CriticalSectionController cs(CriticalSection::GetInstance().GetObject(
-            static_cast<CriticalSectionType>(textureType))
-        );
-        ASSERT(pResult);
-        pResult->readStatus = READ_STATUS_NONE;
-        strType wstr(fileName);
+    ASSERT(pResult);
+    pResult->readStatus = READ_STATUS_NONE;
+    strType wstr(fileName);
 
-        if (readResultMap->find(wstr) != readResultMap->end()) {
-            *pResult = readResultMap->at(wstr);
+    if (readResultMap->find(wstr) != readResultMap->end()) {
+        *pResult = readResultMap->at(wstr);
             
-            //if success, then the buffer must be not null
-            ASSERT(pResult->readStatus != READ_STATUS_SUCCESS || pResult->buffer);
-            return true;
-        }
+        //if success, then the buffer must be not null
+        ASSERT(pResult->readStatus != READ_STATUS_SUCCESS || pResult->buffer);
+        return true;
     }
     return false;
 
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+//Returns whether the file has been processed, or is still processed  (inside readResultMap).
+bool LoaderUtility::LoadAndAllocTexture(const charType* fileName, std::map<strType, StReadResult>* readResultMap, const uint32_t texType) 
+{
+    using namespace StreamingImageSequencePlugin;
+    StReadResult readResult;
+
+    const bool isProcessed = LoaderUtility::GetTextureInfo(fileName, &readResult, readResultMap, texType);
+    if (isProcessed) {
+        return true;
+    }
+
+    const FileType fileType = LoaderUtility::CheckFileType(fileName);
+    if (FILE_TYPE_INVALID == fileType)
+        return false;
+
+    //Loading
+    strType wstr(fileName);
+    {
+        readResult.readStatus = READ_STATUS_LOADING;
+        (*readResultMap)[wstr] = readResult;
+    }
+
+    void* ptr = nullptr;
+    switch (fileType) {
+    case FILE_TYPE_TGA: {
+        ptr = loadTGAFileAndAlloc(fileName, &readResult);
+        break;
+    }
+    case FILE_TYPE_PNG: {
+        ptr = loadPNGFileAndAlloc(fileName, &readResult);
+        break;
+    }
+    default: break;
+    }
+
+    if (ptr == NULL) {
+        return false;
+    }
+
+    readResult.readStatus = READ_STATUS_SUCCESS;
+    (*readResultMap)[wstr] = readResult;
+
+    return true;
+
+}
+
 
 } //end namespace

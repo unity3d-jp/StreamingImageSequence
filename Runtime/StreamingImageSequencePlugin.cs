@@ -42,7 +42,10 @@ namespace UnityEngine.StreamingImageSequence {
 
         // Implemented in Loader dll
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern bool LoadAndAlloc([MarshalAs(UnmanagedType.LPStr)]string fileName, int textureType);
+        public static extern bool LoadAndAllocFullTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
+
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public static extern bool LoadAndAllocPreviewTexture([MarshalAs(UnmanagedType.LPStr)]string fileName, int width, int height);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void NativeFree(IntPtr ptr);

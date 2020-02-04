@@ -19,86 +19,39 @@
 
 using namespace std;
 
-//Forward declarations
-void* loadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult);
-void* loadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult, u32 requiredWidth, u32 requiredHeight);
-
 //----------------------------------------------------------------------------------------------------------------------
 
-int g_LoadingFileCounter = 0;
 int g_IsResetting;
 
-
 //----------------------------------------------------------------------------------------------------------------------
 
-#define INC_LOADINGCOUNTER() {\
-	CriticalSectionController cs2(LOADINGCOUNTER_CS);\
-	g_LoadingFileCounter++;\
-}
-#define DEC_LOADINGCOUNTER() {\
-	CriticalSectionController cs2(LOADINGCOUNTER_CS);\
-	g_LoadingFileCounter--;\
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
+//Get the texture info and return the result inside ReadResult. Thread-safe
 LOADERWIN_API bool GetNativeTextureInfo(const charType* fileName, StReadResult* readResult, const uint32_t textureType) {
     using namespace StreamingImageSequencePlugin;
+    CriticalSectionController cs(TEXTURE_CS(textureType));
     return LoaderUtility::GetTextureInfo(fileName, readResult, &g_fileNameToPtrMap[textureType], textureType );
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//Returns if the fileName can be loaded ()
-LOADERWIN_API bool LoadAndAlloc(const charType* fileName, int textureType) {
+//Returns if the fileName can be loaded (). Thread-safe
+LOADERWIN_API bool LoadAndAllocFullTexture(const charType* fileName) {
+
     using namespace StreamingImageSequencePlugin;
-    StReadResult readResult;
-    
-    bool isProcessed = LoaderUtility::GetTextureInfo(fileName, &readResult, &g_fileNameToPtrMap[textureType], textureType);
-    if (isProcessed) {
-        return true;
-    }
-    
-    const FileType fileType = LoaderUtility::CheckFileType(fileName);
-    if (FILE_TYPE_INVALID ==fileType)
-        return false;
-    
-    //Loading
-    strType wstr(fileName);
-    {
-        CriticalSectionController cs(TEXTURE_CS(textureType));
-        readResult.readStatus = READ_STATUS_LOADING;
-        g_fileNameToPtrMap[textureType][wstr] = readResult;
-    }
-    
-    void *ptr = nullptr;
-    INC_LOADINGCOUNTER();
-    switch (fileType) {
-        case FILE_TYPE_TGA: {
-            ptr = loadTGAFileAndAlloc(fileName, &readResult);
-            break;
-        }
-        case FILE_TYPE_PNG: {
-            ptr = loadPNGFileAndAlloc(fileName, &readResult);
-            break;
-        }
-        default: break;
-    }
-    DEC_LOADINGCOUNTER();
-
-    if(ptr == NULL) {
-        return false;
-    }
-    
-    {
-		CriticalSectionController cs(TEXTURE_CS(textureType));
-		readResult.readStatus = READ_STATUS_SUCCESS;
-        g_fileNameToPtrMap[textureType][wstr] = readResult;
-    }
-
-    return true;
+    const uint32_t textureType = CRITICAL_SECTION_TYPE_FULL_TEXTURE;
+	CriticalSectionController cs(TEXTURE_CS(textureType));
+	return LoaderUtility::LoadAndAllocTexture(fileName, &g_fileNameToPtrMap[textureType], textureType);
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+//Returns if the fileName can be loaded (). Thread-safe
+LOADERWIN_API bool LoadAndAllocPreviewTexture(const charType* fileName, const uint32_t width, const uint32_t height) {
+    //[TODO-sin: 2020-2-4] Implement this
+	using namespace StreamingImageSequencePlugin;
+	const uint32_t textureType = CRITICAL_SECTION_TYPE_PREVIEW_TEXTURE;
+	CriticalSectionController cs(TEXTURE_CS(textureType));
+	return LoaderUtility::LoadAndAllocTexture(fileName, &g_fileNameToPtrMap[textureType], textureType);
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 

@@ -38,7 +38,16 @@ namespace UnityEngine.StreamingImageSequence
             switch (tResult.ReadStatus) {
                 case StreamingImageSequenceConstants.READ_RESULT_NONE: {
                     //Debug.Log("Loading: " + m_strFileName);
-                    StreamingImageSequencePlugin.LoadAndAlloc(m_strFileName, m_textureType);
+                    //[TODO-sin: 2020-2-4] Clean this up
+                    switch (m_textureType) {
+                        case StreamingImageSequenceConstants.TEXTURE_TYPE_FULL:
+                            StreamingImageSequencePlugin.LoadAndAllocFullTexture(m_strFileName);
+                            break;
+                        case StreamingImageSequenceConstants.TEXTURE_TYPE_PREVIEW:
+                            StreamingImageSequencePlugin.LoadAndAllocPreviewTexture(m_strFileName, 750,240);
+                            break;
+
+                    }
                     break;
                 }
                 case StreamingImageSequenceConstants.READ_RESULT_REQUESTED: {

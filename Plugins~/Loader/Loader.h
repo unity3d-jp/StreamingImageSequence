@@ -20,7 +20,8 @@
 
 extern "C"
 {
-	LOADERWIN_API bool  LoadAndAlloc(const charType* ptr, int textureType);
+	LOADERWIN_API bool  LoadAndAllocFullTexture(const charType* ptr);
+	LOADERWIN_API bool  LoadAndAllocPreviewTexture(const charType* ptr, const uint32_t width, const uint32_t height);
 	LOADERWIN_API void  NativeFree(void* ptr);
 	LOADERWIN_API bool  GetNativeTextureInfo(const charType* fileName, StReadResult* pResult, const uint32_t textureType);
 	LOADERWIN_API int   ResetNativeTexture(const charType* fileName);
