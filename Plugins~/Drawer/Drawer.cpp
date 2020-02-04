@@ -142,22 +142,23 @@ UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTexture()
 	CriticalSectionController cs2(INSTANCEID2TEXTURE_CS);
 	CriticalSectionController cs1(INSTANCEID2FILENAME_CS);
 
-	//[TODO-sin: 2020-2-3] Reset all textures
-	CriticalSectionController cs0(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
+	//Reset all textures
+	for (uint32_t texType = 0; texType < MAX_CRITICAL_SECTION_TYPE_TEXTURES; ++texType) {
+		CriticalSectionController cs0(TEXTURE_CS(texType));
+		{
+			for (auto itr = g_fileNameToPtrMap[texType].begin(); itr != g_fileNameToPtrMap[texType].end(); ++itr)
+			{
+				StReadResult readResult = itr->second;
+				if (readResult.buffer)
+					NativeFree(readResult.buffer);
+			}
+			g_fileNameToPtrMap[texType].clear();
+		}
+	}
 
 	{
-
-
-		for (auto itr = g_fileNameToPtrMap[0].begin(); itr != g_fileNameToPtrMap[0].end(); ++itr) 
-		{
-			StReadResult tResult = itr->second;
-			if (tResult.buffer)
-				NativeFree(tResult.buffer);
-		}
-
 		g_instanceIdToUnityTexturePointer.clear();
 		g_instanceIdToFileName.clear();
-		g_fileNameToPtrMap[0].clear();
 	}
 }
 

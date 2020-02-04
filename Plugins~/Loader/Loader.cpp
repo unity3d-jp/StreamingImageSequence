@@ -111,24 +111,25 @@ LOADERWIN_API void   NativeFree(void* ptr) {
 // return succ:0 fail:-1
 LOADERWIN_API int   ResetNativeTexture(const charType* fileName) {
     using namespace StreamingImageSequencePlugin;
-	StReadResult readResult;
-	GetNativeTextureInfo(fileName, &readResult, CRITICAL_SECTION_TYPE_FULL_TEXTURE);
 
-    //Check
-    if (!readResult.buffer || readResult.readStatus != READ_STATUS_SUCCESS) {
-		return -1;
+	//Reset all textures
+	for (uint32_t texType = 0; texType < MAX_CRITICAL_SECTION_TYPE_TEXTURES; ++texType) {
+		StReadResult readResult;
+		GetNativeTextureInfo(fileName, &readResult, texType);
+
+		//Check
+		if (!readResult.buffer || readResult.readStatus != READ_STATUS_SUCCESS) {
+			continue;
+		}
+
+		CriticalSectionController cs0(TEXTURE_CS(texType));
+		{
+			strType wstr(fileName);
+			NativeFree(readResult.buffer);
+			g_fileNameToPtrMap[texType].erase(wstr);
+		}
 	}
 
-
-	//[TODO-sin: 2020-2-3] Reset all textures
-	CriticalSectionController cs(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_TEXTURE));
-	{
-        strType wstr(fileName);
-        if (g_fileNameToPtrMap[0].find(wstr) != g_fileNameToPtrMap[0].end()) {
-            NativeFree(readResult.buffer);
-            g_fileNameToPtrMap[0].erase(wstr);
-        }
-    }
 
 	return 0;
 
