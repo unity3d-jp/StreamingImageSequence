@@ -146,7 +146,7 @@
     <ProjectReference Include="..\CommonLib\CommonLibWin.vcxproj">
       <Project>{8812eb8f-fb6b-4975-b0f3-8e881bca51b9}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Loader\LoaderWin.vcxproj">
+    <ProjectReference Include="..\Loader\Loader.vcxproj">
       <Project>{3eba0ded-47ec-46ee-880e-00d3eb8e24e8}</Project>
     </ProjectReference>
   </ItemGroup>

@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3EBA0DED-47EC-46EE-880E-00D3EB8E24E8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>LoaderWin</RootNamespace>
+    <RootNamespace>Loader</RootNamespace>
     <ProjectName>Loader</ProjectName>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
