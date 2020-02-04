@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -14,9 +15,10 @@ namespace UnityEditor.StreamingImageSequence {
         public const string PNG_EXTENSION = "png";
         public const string TGA_EXTENSION = "tga";
 
+        //[TODO-sin: 2020-2-4] Remove this. The version can be confirmed using the Package Manager
         static string versionString = "StreamingImageSequence version 0.2.1";
 
-        [MenuItem("Assets/Streaming Image Sequence/Create Clip", false, 1)]
+        [MenuItem(StreamingImageSequenceConstants.MENU_PATH +  "Create Clip", false, 1)]
         private static void RegisterFilesAndCreateStreamingImageSequence()
         {
             string path = EditorUtility.OpenFilePanel("Open File", "", PNG_EXTENSION + "," + TGA_EXTENSION);
@@ -111,13 +113,44 @@ namespace UnityEditor.StreamingImageSequence {
         }
         */
 
-        [MenuItem("Assets/Streaming Image Sequence/Reset",false,50)]
+        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Reset",false,50)]
         static void Reset()
         {
             UpdateManager.ResetPlugin();
             PreviewTextureFactory.Reset();
         }
-        [MenuItem("Assets/Streaming Image Sequence/Show version",false,51)]
+
+//----------------------------------------------------------------------------------------------------------------------
+        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Show Loaded Textures",false,52)]
+        static void ShowLoadedTextures() {
+            StringBuilder sb = new StringBuilder();
+
+            for (int textureType = 0; textureType < StreamingImageSequenceConstants.MAX_TEXTURE_TYPES; ++textureType) {
+                sb.AppendLine("TEXTURE_TYPE: " + textureType.ToString());
+
+                List<string> loadedTextures = new List<string>();
+                StreamingImageSequencePlugin.ListLoadedTextures(textureType, (fileName) => {
+                    loadedTextures.Add(fileName);
+                });
+
+                foreach (var fileName in loadedTextures) {
+                    StreamingImageSequencePlugin.GetNativeTextureInfo(fileName, out ReadResult readResult, textureType);
+                    sb.Append("    ");
+                    sb.Append(fileName);
+                    sb.Append(". Status: " + readResult.ReadStatus);
+                    sb.Append(", Size: (" + readResult.Width + ", " + readResult.Height);
+                    sb.AppendLine(") ");
+                }
+
+                sb.AppendLine("----------------------------------------------------------------");
+                sb.AppendLine();
+                sb.AppendLine();
+            }
+            Debug.Log(sb.ToString());
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+        [MenuItem("Assets/Streaming Image Sequence/Show version",false,55)]
         static void ShowVersion()
         {
             Debug.Log(versionString);
