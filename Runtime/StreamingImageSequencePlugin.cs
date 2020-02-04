@@ -17,13 +17,6 @@ namespace UnityEngine.StreamingImageSequence {
         public int ReadStatus;
     };
 
-    public enum LoadStatus
-    {
-        Uninitialized,
-        Requested,
-        Loaded,
-    };
-
 //----------------------------------------------------------------------------------------------------------------------
     public static class StreamingImageSequencePlugin {
 
