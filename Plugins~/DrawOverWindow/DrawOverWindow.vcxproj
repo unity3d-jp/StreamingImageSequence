@@ -112,9 +112,15 @@
       <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <CustomBuildStep>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
+    </CustomBuildStep>
+    <PostBuildEvent>
       <Command>copy $(TargetPath) $(SolutionDir)..\Runtime\Plugins\$(Platform)\$(TargetName)$(TargetExt)</Command>
       <Message>Copy to Runtime\Plugins</Message>
-    </CustomBuildStep>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -153,9 +159,15 @@
       <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <CustomBuildStep>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
+    </CustomBuildStep>
+    <PostBuildEvent>
       <Command>copy $(TargetPath) $(SolutionDir)..\Runtime\Plugins\$(Platform)\$(TargetName)$(TargetExt)</Command>
       <Message>Copy to Runtime\Plugins</Message>
-    </CustomBuildStep>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

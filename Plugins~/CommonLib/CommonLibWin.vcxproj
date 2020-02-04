@@ -116,11 +116,17 @@
       <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <CustomBuildStep>
-      <Command>copy $(TargetPath) $(SolutionDir)..\Runtime\Plugins\$(Platform)\$(TargetName)$(TargetExt)</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Message>Copy to Runtime\Plugins</Message>
+      <Message>
+      </Message>
     </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>copy $(TargetPath) $(SolutionDir)..\Runtime\Plugins\$(Platform)\$(TargetName)$(TargetExt)</Command>
+      <Message>Copy to Runtime\Plugins</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -158,11 +164,17 @@
       <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <CustomBuildStep>
-      <Command>copy $(TargetPath) $(SolutionDir)..\Runtime\Plugins\$(Platform)\$(TargetName)$(TargetExt)</Command>
+      <Command>
+      </Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Message>Copy to Runtime\Plugins</Message>
+      <Message>
+      </Message>
     </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>copy $(TargetPath) $(SolutionDir)..\Runtime\Plugins\$(Platform)\$(TargetName)$(TargetExt)</Command>
+      <Message>Copy to Runtime\Plugins</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
