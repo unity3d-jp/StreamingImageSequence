@@ -3,8 +3,12 @@
 
 #include "stdafx.h"
 
+//CommonLib
 #include "CommonLib/Types.h"
 #include "CommonLib/ReadResult.h"
+
+//Loader
+#include "Loader/TGALoader.h"
 
 
 #pragma comment( lib, "winmm.lib" )
@@ -27,7 +31,7 @@ void LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
 		CP_ACP,
 		MB_PRECOMPOSED,
 		fileName,
-		strlen(fileName),
+		static_cast<int>(strlen(fileName)),
 		wlocal,
 		size);
 	Gdiplus::Bitmap*    pBitmap = Gdiplus::Bitmap::FromFile(wlocal);
@@ -75,4 +79,9 @@ void LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
 	ASSERT(pResult->buffer);
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+void LoadTGAFileAndAlloc(const charType* fileName, StReadResult* readResult) {
+	
+	loadTGAFileAndAlloc(fileName, readResult);
+}
 
