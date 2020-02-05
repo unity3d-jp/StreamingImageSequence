@@ -140,6 +140,9 @@
     <ProjectReference Include="..\CommonLib\CommonLibWin.vcxproj">
       <Project>{8812eb8f-fb6b-4975-b0f3-8e881bca51b9}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\External\stb\stb.vcxproj">
+      <Project>{67891f1f-c556-489f-9454-70447be801d5}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
