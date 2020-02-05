@@ -26,7 +26,7 @@ int g_IsResetting;
 //----------------------------------------------------------------------------------------------------------------------
 
 //Get the texture info and return the result inside ReadResult. Thread-safe
-LOADERWIN_API bool GetNativeTextureInfo(const charType* fileName, StReadResult* readResult, const uint32_t textureType) {
+LOADER_API bool GetNativeTextureInfo(const charType* fileName, StReadResult* readResult, const uint32_t textureType) {
     using namespace StreamingImageSequencePlugin;
     CriticalSectionController cs(TEXTURE_CS(textureType));
     return LoaderUtility::GetTextureInfo(fileName, readResult, &g_fileNameToPtrMap[textureType], textureType );
@@ -35,7 +35,7 @@ LOADERWIN_API bool GetNativeTextureInfo(const charType* fileName, StReadResult* 
 //----------------------------------------------------------------------------------------------------------------------
 
 //Returns if the fileName can be loaded (). Thread-safe
-LOADERWIN_API bool LoadAndAllocFullTexture(const charType* fileName) {
+LOADER_API bool LoadAndAllocFullTexture(const charType* fileName) {
 
     using namespace StreamingImageSequencePlugin;
     const uint32_t textureType = CRITICAL_SECTION_TYPE_FULL_TEXTURE;
@@ -45,7 +45,7 @@ LOADERWIN_API bool LoadAndAllocFullTexture(const charType* fileName) {
 
 //----------------------------------------------------------------------------------------------------------------------
 //Returns if the fileName can be loaded (). Thread-safe
-LOADERWIN_API bool LoadAndAllocPreviewTexture(const charType* fileName, const uint32_t width, const uint32_t height) {
+LOADER_API bool LoadAndAllocPreviewTexture(const charType* fileName, const uint32_t width, const uint32_t height) {
 	using namespace StreamingImageSequencePlugin;
 	const uint32_t textureType = CRITICAL_SECTION_TYPE_PREVIEW_TEXTURE;
 	{
@@ -89,14 +89,14 @@ LOADERWIN_API bool LoadAndAllocPreviewTexture(const charType* fileName, const ui
 
 //----------------------------------------------------------------------------------------------------------------------
 
-LOADERWIN_API void   NativeFree(void* ptr) {
+LOADER_API void   NativeFree(void* ptr) {
 	free(ptr);
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 // return succ:0 fail:-1
-LOADERWIN_API int   ResetNativeTexture(const charType* fileName) {
+LOADER_API int   ResetNativeTexture(const charType* fileName) {
     using namespace StreamingImageSequencePlugin;
 
 	//Reset all textures
@@ -123,7 +123,7 @@ LOADERWIN_API int   ResetNativeTexture(const charType* fileName) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-LOADERWIN_API void ListLoadedTextures(const uint32_t textureType, void(*OnNextTexture)(const char*)) {
+LOADER_API void ListLoadedTextures(const uint32_t textureType, void(*OnNextTexture)(const char*)) {
 	using namespace StreamingImageSequencePlugin;
 	ASSERT(textureType < MAX_CRITICAL_SECTION_TYPE_TEXTURES);
 
@@ -135,12 +135,12 @@ LOADERWIN_API void ListLoadedTextures(const uint32_t textureType, void(*OnNextTe
 
 //----------------------------------------------------------------------------------------------------------------------
 
-LOADERWIN_API void   SetSceneStatus(const charType* scenePath, int sceneStatus)
+LOADER_API void   SetSceneStatus(const charType* scenePath, int sceneStatus)
 {
 	g_scenePathToSceneStatus[scenePath] = sceneStatus;
 
 }
-LOADERWIN_API int    GetSceneStatus(const charType* scenePath)
+LOADER_API int    GetSceneStatus(const charType* scenePath)
 {
 	strType wstr(scenePath);
 	if (g_scenePathToSceneStatus.find(wstr) != g_scenePathToSceneStatus.end())
@@ -150,19 +150,19 @@ LOADERWIN_API int    GetSceneStatus(const charType* scenePath)
 	return -1;	// not found;
 }
 
-LOADERWIN_API void  ResetPlugin()
+LOADER_API void  ResetPlugin()
 {
 	StreamingImageSequencePlugin::CriticalSectionController cs2(RESETTING_CS);
 	g_IsResetting = 1;
 }
 
-LOADERWIN_API void  DoneResetPlugin()
+LOADER_API void  DoneResetPlugin()
 {
 	StreamingImageSequencePlugin::CriticalSectionController cs2(RESETTING_CS);
 	g_IsResetting = 0;
 }
 
-LOADERWIN_API int   IsPluginResetting()
+LOADER_API int   IsPluginResetting()
 {
 	StreamingImageSequencePlugin::CriticalSectionController cs2(RESETTING_CS);
 	return g_IsResetting ;
