@@ -56,6 +56,7 @@ void LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
 		pResult->width = width;
 		pResult->height = height;
 		pResult->buffer = pBuffer;
+		pResult->readStatus = StreamingImageSequencePlugin::READ_STATUS_SUCCESS;
 
 		Gdiplus::BitmapData bitmapData;
 		pBitmap->LockBits(&Gdiplus::Rect(0, 0, width, height), Gdiplus::ImageLockModeWrite, PixelFormat32bppARGB, &bitmapData);
@@ -72,11 +73,10 @@ void LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
 	}
 	else
 	{
+		pResult->readStatus = StreamingImageSequencePlugin::READ_STATUS_FAIL;
 		ASSERT(0);
 	}
 
-
-	ASSERT(pResult->buffer);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

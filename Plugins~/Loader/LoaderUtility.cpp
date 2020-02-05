@@ -96,14 +96,9 @@ bool LoaderUtility::LoadAndAllocTexture(const charType* fileName, std::map<strTy
             LoadPNGFileAndAlloc(fileName, &readResult);
             break;
         }
-        default: break;
+        default: { break; }
     }
 
-    if (readResult.buffer == NULL) {
-        return true;
-    }
-
-    readResult.readStatus = READ_STATUS_SUCCESS;
     (*readResultMap)[wstr] = readResult;
 
     return true;

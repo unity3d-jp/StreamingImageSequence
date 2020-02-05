@@ -11,19 +11,24 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
         [UnityTest]
         public IEnumerator QueueFullImageLoadTask() {
-            string fullPath = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
+            const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
+            string fullPath = Path.GetFullPath(PKG_PATH);
             Assert.IsTrue(File.Exists(fullPath));
 
             const int TEX_TYPE = StreamingImageSequenceConstants.TEXTURE_TYPE_FULL;
 
             StreamingImageSequencePlugin.GetNativeTextureInfo(fullPath, out ReadResult readResult, TEX_TYPE);
-            Assert.AreEqual(readResult.ReadStatus, StreamingImageSequenceConstants.READ_RESULT_NONE);
+            Assert.AreEqual(StreamingImageSequenceConstants.READ_RESULT_NONE, readResult.ReadStatus, 
+                "Texture is already or currently being loaded"
+            );
 
             ImageLoadBGTask.Queue(fullPath);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(LOAD_TIMEOUT);
 
             StreamingImageSequencePlugin.GetNativeTextureInfo(fullPath, out readResult, TEX_TYPE);
-            Assert.AreEqual(readResult.ReadStatus, StreamingImageSequenceConstants.READ_RESULT_SUCCESS);
+            Assert.AreEqual(StreamingImageSequenceConstants.READ_RESULT_SUCCESS, readResult.ReadStatus,
+                "Loading texture is not successful."
+            );
 
             AssertUnloaded(fullPath, TEX_TYPE);
             ResetAndAssert(fullPath, TEX_TYPE);
@@ -32,23 +37,28 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 //----------------------------------------------------------------------------------------------------------------------
         [UnityTest]
         public IEnumerator QueuePreviewImageLoadTask() {
-            string fullPath = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
+            const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
+            string fullPath = Path.GetFullPath(PKG_PATH);
             Assert.IsTrue(File.Exists(fullPath));
 
             const int TEX_TYPE = StreamingImageSequenceConstants.TEXTURE_TYPE_PREVIEW;
 
             StreamingImageSequencePlugin.GetNativeTextureInfo(fullPath, out ReadResult readResult, TEX_TYPE);
-            Assert.AreEqual(readResult.ReadStatus, StreamingImageSequenceConstants.READ_RESULT_NONE);
+            Assert.AreEqual(StreamingImageSequenceConstants.READ_RESULT_NONE, readResult.ReadStatus, 
+                "Texture is already or currently being loaded"
+            );
 
             const int WIDTH = 256;
             const int HEIGHT= 128;
             PreviewImageLoadBGTask.Queue(fullPath, WIDTH, HEIGHT);
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(LOAD_TIMEOUT);
 
             StreamingImageSequencePlugin.GetNativeTextureInfo(fullPath, out readResult, TEX_TYPE);
-            Assert.AreEqual(readResult.ReadStatus, StreamingImageSequenceConstants.READ_RESULT_SUCCESS);
-            Assert.AreEqual(readResult.Width, WIDTH);
-            Assert.AreEqual(readResult.Height, HEIGHT);
+            Assert.AreEqual(StreamingImageSequenceConstants.READ_RESULT_SUCCESS, readResult.ReadStatus, 
+                "Loading texture is not successful."
+            );
+            Assert.AreEqual(WIDTH, readResult.Width );
+            Assert.AreEqual(HEIGHT, readResult.Height);
 
             AssertUnloaded(fullPath, TEX_TYPE);
             ResetAndAssert(fullPath, TEX_TYPE);
@@ -63,7 +73,9 @@ namespace UnityEditor.StreamingImageSequence.Tests {
                 if (texType == exceptionTexType)
                     continue;
                 StreamingImageSequencePlugin.GetNativeTextureInfo(fullPath, out ReadResult otherReadResult, texType);
-                Assert.AreEqual(otherReadResult.ReadStatus, StreamingImageSequenceConstants.READ_RESULT_NONE);
+                Assert.AreEqual(StreamingImageSequenceConstants.READ_RESULT_NONE, otherReadResult.ReadStatus, 
+                    "AssertUnloaded()"
+                );
             }
         }
 
@@ -72,9 +84,12 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         void ResetAndAssert(string fullPath, int texType) {
             StreamingImageSequencePlugin.ResetNativeTexture(fullPath);
             StreamingImageSequencePlugin.GetNativeTextureInfo(fullPath, out ReadResult readResult, texType);
-            Assert.AreEqual(readResult.ReadStatus, StreamingImageSequenceConstants.READ_RESULT_NONE);
+            Assert.AreEqual(StreamingImageSequenceConstants.READ_RESULT_NONE, readResult.ReadStatus, "ResetAndAssert");
         }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+        private const float LOAD_TIMEOUT = 0.1f; //in seconds
     }
 
 } //end namespace
