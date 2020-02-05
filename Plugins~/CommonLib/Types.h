@@ -29,21 +29,18 @@
 
 
 #ifdef _WIN32
-  typedef UINT64 u64;
-  typedef UINT32 u32;
-  typedef INT32 s32;
-  typedef UINT16 u16;
-  typedef UINT8 u8;
+    typedef UINT64 u64;
+    typedef UINT32 u32;
+    typedef INT32 s32;
+    typedef UINT16 u16;
+    typedef UINT8 u8;
 #else
-  typedef unsigned long u64;
-  typedef unsigned int u32;
-  typedef int s32;
-  typedef short u16;
-  typedef char u8;
-#endif
-
-#ifndef _WIN32
-typedef wchar_t WCHAR;
+    typedef unsigned long u64;
+    typedef unsigned int u32;
+    typedef int s32;
+    typedef short u16;
+    typedef unsigned char u8;
+    typedef wchar_t WCHAR;
 #endif
 
 
