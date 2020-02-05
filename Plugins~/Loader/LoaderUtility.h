@@ -17,6 +17,9 @@ public:
     static bool LoadAndAllocTexture(const charType* fileName, std::map<strType, StReadResult>* readResultMap, 
         const uint32_t texType);
 
+    static bool LoadAndAllocTexture(const charType* fileName, std::map<strType, StReadResult>* readResultMap,
+        const uint32_t texType, const uint32_t reqWidth, const uint32_t reqHeight);
+
 };
 
 } //end namespace

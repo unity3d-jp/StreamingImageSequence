@@ -14,8 +14,6 @@
 #include "FileType.h"
 #include "LoaderUtility.h"
 
-//External
-#include "External/stb/stb_image_resize.h"
 
 using namespace std;
 
@@ -48,43 +46,8 @@ LOADER_API bool LoadAndAllocFullTexture(const charType* fileName) {
 LOADER_API bool LoadAndAllocPreviewTexture(const charType* fileName, const uint32_t width, const uint32_t height) {
 	using namespace StreamingImageSequencePlugin;
 	const uint32_t textureType = CRITICAL_SECTION_TYPE_PREVIEW_TEXTURE;
-	{
-		CriticalSectionController cs(TEXTURE_CS(textureType));
-		if (!LoaderUtility::LoadAndAllocTexture(fileName, &g_fileNameToPtrMap[textureType], textureType))
-			return false;
-	}
-
-	StReadResult readResult;
-	if (!GetNativeTextureInfo(fileName, &readResult, textureType))
-		return false;
-
-	//Buffer is still null. Means, still loading
-	if (NULL == readResult.buffer) {
-		return true; 
-	}
-
-	//Already resized. 
-	if (readResult.width == width && readResult.height == height)
-		return true;
-
-	{
-		//Resize texture 
-		CriticalSectionController cs(TEXTURE_CS(textureType));
-
-		const uint64_t NUM_CHANNELS = 4;
-		u8* resizedBuffer = (u8*)malloc(static_cast<uint32_t>(NUM_CHANNELS * width * height));
-
-		stbir_resize_uint8(readResult.buffer, readResult.width, readResult.height, 0,
-			resizedBuffer, width, height, 0, NUM_CHANNELS);
-		free(readResult.buffer);
-		readResult.buffer = resizedBuffer;
-		readResult.width = width;
-		readResult.height = height;
-		g_fileNameToPtrMap[textureType][fileName] = readResult;
-
-	}
-
-	return true;
+	CriticalSectionController cs(TEXTURE_CS(textureType));
+	return LoaderUtility::LoadAndAllocTexture(fileName, &g_fileNameToPtrMap[textureType], textureType, width, height);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

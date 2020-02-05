@@ -7,7 +7,8 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //Forward declarations
-void* loadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult);
+void LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult);
+void LoadPNGFileAndAllocWithSize(const charType* fileName, StReadResult* pResult, const uint32_t width, const uint32_t height);
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -80,26 +81,23 @@ bool LoaderUtility::LoadAndAllocTexture(const charType* fileName, std::map<strTy
 
     //Loading
     strType wstr(fileName);
-    {
-        readResult.readStatus = READ_STATUS_LOADING;
-        (*readResultMap)[wstr] = readResult;
-    }
+    readResult.readStatus = READ_STATUS_LOADING;
+    (*readResultMap)[wstr] = readResult;
 
-    void* ptr = nullptr;
     switch (fileType) {
-    case FILE_TYPE_TGA: {
-        ptr = loadTGAFileAndAlloc(fileName, &readResult);
-        break;
-    }
-    case FILE_TYPE_PNG: {
-        ptr = loadPNGFileAndAlloc(fileName, &readResult);
-        break;
-    }
-    default: break;
+        case FILE_TYPE_TGA: {
+            loadTGAFileAndAlloc(fileName, &readResult);
+            break;
+        }
+        case FILE_TYPE_PNG: {
+            LoadPNGFileAndAlloc(fileName, &readResult);
+            break;
+        }
+        default: break;
     }
 
-    if (ptr == NULL) {
-        return false;
+    if (readResult.buffer == NULL) {
+        return true;
     }
 
     readResult.readStatus = READ_STATUS_SUCCESS;
@@ -107,6 +105,40 @@ bool LoaderUtility::LoadAndAllocTexture(const charType* fileName, std::map<strTy
 
     return true;
 
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+//Returns whether the file has been processed, or is still processed  (inside readResultMap).
+bool LoaderUtility::LoadAndAllocTexture(const charType* fileName, std::map<strType, StReadResult>* readResultMap,
+    const uint32_t texType, const uint32_t reqWidth, const uint32_t reqHeight) 
+{
+    using namespace StreamingImageSequencePlugin;
+    StReadResult readResult;
+
+    const bool isProcessed = LoaderUtility::GetTextureInfo(fileName, &readResult, readResultMap, texType);
+    if (isProcessed) {
+        return true;
+    }
+
+    //Only support PNG now for loading an image with required size
+    const FileType fileType = LoaderUtility::CheckFileType(fileName);
+    if (FILE_TYPE_PNG != fileType)
+        return false;
+
+    //Loading
+    strType wstr(fileName);
+    readResult.readStatus = READ_STATUS_LOADING;
+    (*readResultMap)[wstr] = readResult;
+
+    LoadPNGFileAndAllocWithSize(fileName, &readResult, reqWidth, reqHeight);
+    if (readResult.buffer == NULL) {
+        return true;
+    }
+
+    readResult.readStatus = READ_STATUS_SUCCESS;
+    (*readResultMap)[wstr] = readResult;
+
+    return true;
 }
 
 

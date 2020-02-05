@@ -6,14 +6,16 @@
 #include "CommonLib/Types.h"
 #include "CommonLib/ReadResult.h"
 
+//External
+#include "External/stb/stb_image_resize.h"
+
 #pragma comment( lib, "winmm.lib" )
 #pragma comment(lib, "gdiplus.lib")
 
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void* loadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult)
-{
+void LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
 	u8* pBuffer = NULL;
 
 # if USE_WCHAR
@@ -72,7 +74,32 @@ void* loadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult)
 	}
 
 
-	ASSERT(pBuffer);
-	return pBuffer; //  pBuffer;
+	ASSERT(pResult->buffer);
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void LoadPNGFileAndAllocWithSize(const charType* fileName, StReadResult* readResult, 
+	const uint32_t width, const uint32_t height) 
+{
+	LoadPNGFileAndAlloc(fileName, readResult);
+	ASSERT(readResult.buffer);
+
+	//Already has the required size 
+	if (readResult->width == width && readResult->height == height)
+		return;
+
+	{
+		const uint64_t NUM_CHANNELS = 4;
+		u8* resizedBuffer = (u8*)malloc(static_cast<uint32_t>(NUM_CHANNELS * width * height));
+
+		stbir_resize_uint8(readResult->buffer, readResult->width, readResult->height, 0,
+			resizedBuffer, width, height, 0, NUM_CHANNELS);
+		free(readResult->buffer);
+		readResult->buffer = resizedBuffer;
+		readResult->width = width;
+		readResult->height = height;
+	}
+}
+
 
