@@ -258,7 +258,7 @@ namespace UnityEngine.StreamingImageSequence {
             StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, texType);
             //Debug.Log("readResult.readStatus " + readResult.readStatus + "Loading " + filename);
             if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_NONE) {
-                ImageLoadBGTask.Queue(filename, StreamingImageSequenceConstants.TEXTURE_TYPE_FULL);
+                ImageLoadBGTask.Queue(filename);
             }
             if ( isBlocking ) {
                 while (readResult.ReadStatus != StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
