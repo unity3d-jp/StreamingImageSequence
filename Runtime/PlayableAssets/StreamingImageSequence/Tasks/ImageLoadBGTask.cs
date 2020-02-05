@@ -7,47 +7,36 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using System.IO;
 
-namespace UnityEngine.StreamingImageSequence
-{
+namespace UnityEngine.StreamingImageSequence {
 
 
-    public class ImageLoadBGTask : BackGroundTask
+    internal class ImageLoadBGTask : BackGroundTask
     {
 		internal static bool m_sUpdated;
         
         string m_strFileName;
-        private int m_textureType;
 
 //----------------------------------------------------------------------------------------------------------------------
-        internal static void Queue(string strFileName, int texType) {
-            ImageLoadBGTask task = new ImageLoadBGTask(strFileName, texType);
+        internal static void Queue(string strFileName) {
+            ImageLoadBGTask task = new ImageLoadBGTask(strFileName);
             UpdateManager.QueueBackGroundTask(task);
             
         }
 
 //----------------------------------------------------------------------------------------------------------------------
-        private ImageLoadBGTask( string strFileName, int texType ) {
+        private ImageLoadBGTask( string strFileName) {
             m_strFileName = strFileName;
-            m_textureType = texType;
         }
 
 //----------------------------------------------------------------------------------------------------------------------
 
         public override void Execute() {
-            StreamingImageSequencePlugin.GetNativeTextureInfo(m_strFileName, out ReadResult tResult, m_textureType);
+            const int TEX_TYPE = StreamingImageSequenceConstants.TEXTURE_TYPE_FULL;
+            StreamingImageSequencePlugin.GetNativeTextureInfo(m_strFileName, out ReadResult tResult, TEX_TYPE);
             switch (tResult.ReadStatus) {
                 case StreamingImageSequenceConstants.READ_RESULT_NONE: {
                     //Debug.Log("Loading: " + m_strFileName);
-                    //[TODO-sin: 2020-2-4] Clean this up
-                    switch (m_textureType) {
-                        case StreamingImageSequenceConstants.TEXTURE_TYPE_FULL:
-                            StreamingImageSequencePlugin.LoadAndAllocFullTexture(m_strFileName);
-                            break;
-                        case StreamingImageSequenceConstants.TEXTURE_TYPE_PREVIEW:
-                            StreamingImageSequencePlugin.LoadAndAllocPreviewTexture(m_strFileName, 750,240);
-                            break;
-
-                    }
+                    StreamingImageSequencePlugin.LoadAndAllocFullTexture(m_strFileName);
                     break;
                 }
                 case StreamingImageSequenceConstants.READ_RESULT_REQUESTED: {

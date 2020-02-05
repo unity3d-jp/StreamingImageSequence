@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 
 namespace UnityEngine.StreamingImageSequence {
 
@@ -58,7 +59,7 @@ internal class StreamingImageSequencePreview : IDisposable {
                 StreamingImageSequenceConstants.TEXTURE_TYPE_PREVIEW);
             switch (readResult.ReadStatus) {
                 case StreamingImageSequenceConstants.READ_RESULT_NONE: {
-                    ImageLoadBGTask.Queue(fullPath, StreamingImageSequenceConstants.TEXTURE_TYPE_PREVIEW);
+                    PreviewImageLoadBGTask.Queue(fullPath, widthPerPreviewImage, heightPerPreviewImage);
                     break;
                 }
                 case StreamingImageSequenceConstants.READ_RESULT_SUCCESS: {
