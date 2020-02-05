@@ -5,10 +5,12 @@
 #include "FileType.h"
 #include "TGALoader.h"
 
+//External
+#include "External/stb/stb_image_resize.h"
+
 //----------------------------------------------------------------------------------------------------------------------
 //Forward declarations
 void LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult);
-void LoadPNGFileAndAllocWithSize(const charType* fileName, StReadResult* pResult, const uint32_t width, const uint32_t height);
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -112,31 +114,35 @@ bool LoaderUtility::LoadAndAllocTexture(const charType* fileName, std::map<strTy
 bool LoaderUtility::LoadAndAllocTexture(const charType* fileName, std::map<strType, StReadResult>* readResultMap,
     const uint32_t texType, const uint32_t reqWidth, const uint32_t reqHeight) 
 {
-    using namespace StreamingImageSequencePlugin;
-    StReadResult readResult;
 
-    const bool isProcessed = LoaderUtility::GetTextureInfo(fileName, &readResult, readResultMap, texType);
-    if (isProcessed) {
-        return true;
-    }
-
-    //Only support PNG now for loading an image with required size
-    const FileType fileType = LoaderUtility::CheckFileType(fileName);
-    if (FILE_TYPE_PNG != fileType)
+    if (!LoaderUtility::LoadAndAllocTexture(fileName, readResultMap, texType))
         return false;
 
-    //Loading
-    strType wstr(fileName);
-    readResult.readStatus = READ_STATUS_LOADING;
-    (*readResultMap)[wstr] = readResult;
+    StReadResult readResult;
+    if (!GetTextureInfo(fileName, &readResult, readResultMap, texType))
+        return false;
 
-    LoadPNGFileAndAllocWithSize(fileName, &readResult, reqWidth, reqHeight);
-    if (readResult.buffer == NULL) {
-        return true;
+    //Buffer is still null. Means, still loading
+    if (NULL == readResult.buffer) {
+        return true; 
     }
 
-    readResult.readStatus = READ_STATUS_SUCCESS;
-    (*readResultMap)[wstr] = readResult;
+    //Already resized. 
+    if (readResult.width == reqWidth && readResult.height == reqHeight)
+        return true;
+
+    {
+        const uint64_t NUM_CHANNELS = 4;
+        u8* resizedBuffer = (u8*)malloc(static_cast<uint32_t>(NUM_CHANNELS * reqWidth * reqHeight));
+
+        stbir_resize_uint8(readResult.buffer, readResult.width, readResult.height, 0,
+            resizedBuffer, reqWidth, reqHeight, 0, NUM_CHANNELS);
+        free(readResult.buffer);
+        readResult.buffer = resizedBuffer;
+        readResult.width = reqWidth;
+        readResult.height = reqHeight;
+        (*readResultMap)[fileName] = readResult;
+    }
 
     return true;
 }
