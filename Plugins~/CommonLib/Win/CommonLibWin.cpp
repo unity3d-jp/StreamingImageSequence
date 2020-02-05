@@ -5,7 +5,7 @@
 #pragma comment(lib, "gdiplus.lib")
 
 // This class is exported from the CommonLibWin.dll
-class COMMONLIBWIN_API CCommonLib {
+class COMMONLIB_API CCommonLib {
 	Gdiplus::GdiplusStartupInput    startInput;
 	ULONG_PTR                       token;
 
@@ -14,7 +14,7 @@ public:
 	virtual ~CCommonLib();
 };
 
-COMMONLIBWIN_API	CCommonLib		g_CCommonLib;
+COMMONLIB_API	CCommonLib		g_CCommonLib;
 
 // This is the constructor of a class that has been exported.
 // see CommonLibWin.h for the class definition

@@ -5,7 +5,7 @@
 
 namespace StreamingImageSequencePlugin {
 
-class COMMONLIBWIN_API CriticalSection {
+class COMMONLIB_API CriticalSection {
     public:
         static CriticalSection& GetInstance( );
         ~CriticalSection( );

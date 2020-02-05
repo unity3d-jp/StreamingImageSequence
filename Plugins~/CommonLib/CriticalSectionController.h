@@ -6,7 +6,7 @@ namespace StreamingImageSequencePlugin {
 
 class CriticalSectionObject;
 
-class COMMONLIBWIN_API CriticalSectionController
+class COMMONLIB_API CriticalSectionController
 {
 	CriticalSectionObject* m_cs;
 	CriticalSectionController(){};

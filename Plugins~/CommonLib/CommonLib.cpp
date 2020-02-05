@@ -8,10 +8,10 @@
 
 using namespace std;
 
-COMMONLIBWIN_API    map<strType, StReadResult>  g_fileNameToPtrMap[StreamingImageSequencePlugin::MAX_CRITICAL_SECTION_TYPE_TEXTURES];
-COMMONLIBWIN_API    map<int, strType>           g_instanceIdToFileName;
-COMMONLIBWIN_API    map<int, void*>             g_instanceIdToUnityTexturePointer;
-COMMONLIBWIN_API    map<strType, int>           g_scenePathToSceneStatus;
+COMMONLIB_API    map<strType, StReadResult>  g_fileNameToPtrMap[StreamingImageSequencePlugin::MAX_CRITICAL_SECTION_TYPE_TEXTURES];
+COMMONLIB_API    map<int, strType>           g_instanceIdToFileName;
+COMMONLIB_API    map<int, void*>             g_instanceIdToUnityTexturePointer;
+COMMONLIB_API    map<strType, int>           g_scenePathToSceneStatus;
 
 //----------------------------------------------------------------------------------------------------------------------
 

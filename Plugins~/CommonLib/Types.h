@@ -2,12 +2,12 @@
 
 #ifdef _WIN32
 #  ifdef COMMONLIBWIN_EXPORTS
-#  define COMMONLIBWIN_API __declspec(dllexport)
+#  define COMMONLIB_API __declspec(dllexport)
 #  else
-#  define COMMONLIBWIN_API __declspec(dllimport)
+#  define COMMONLIB_API __declspec(dllimport)
 #  endif
 #else
-#  define COMMONLIBWIN_API
+#  define COMMONLIB_API
 #endif
 
 

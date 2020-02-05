@@ -4,7 +4,7 @@
 
 namespace StreamingImageSequencePlugin {
 
-class COMMONLIBWIN_API CriticalSectionObject
+class COMMONLIB_API CriticalSectionObject
 {
 private:
 #ifdef _WIN32
