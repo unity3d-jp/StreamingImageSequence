@@ -63,6 +63,10 @@ LOADERWIN_API bool LoadAndAllocPreviewTexture(const charType* fileName, const ui
 		return true; 
 	}
 
+	//Already resized. 
+	if (readResult.width == width && readResult.height == height)
+		return true;
+
 	{
 		//Resize texture 
 		CriticalSectionController cs(TEXTURE_CS(textureType));
