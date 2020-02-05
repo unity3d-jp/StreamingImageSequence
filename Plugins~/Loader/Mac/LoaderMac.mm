@@ -63,10 +63,12 @@ void* LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
         pBuffer =CGImageRefRetrievePixelData(image, width, height);
         
         if(pBuffer != NULL) {
-            
             pResult->width  = width;
             pResult->height = height;
             pResult->buffer = pBuffer;
+            pResult->readStatus = StreamingImageSequencePlugin::READ_STATUS_SUCCESS;
+        } else {
+            pResult->readStatus = StreamingImageSequencePlugin::READ_STATUS_FAIL;
         }
         
         CGImageRelease(image);
@@ -80,24 +82,4 @@ void LoadTGAFileAndAlloc(const charType* fileName, StReadResult* pResult) {
     assert(false);   //Not implemented yet
 }
 //----------------------------------------------------------------------------------------------------------------------
-
-void LoadPNGFileAndAllocWithSize(const charType* fileName, StReadResult* pResult,
-                                 const u32 reqWidth, const u32 reqHeight)
-{
-    u8* pBuffer = NULL;
-    
-    const CGImageRef image = CGImageRefLoad(fileName);
-    if(image != NULL) {
-        pBuffer =CGImageRefRetrievePixelData(image, reqWidth, reqHeight);
-        
-        if(pBuffer != NULL) {
-            pResult->width  = reqWidth;
-            pResult->height = reqHeight;
-            pResult->buffer = pBuffer;
-        }
-        
-        CGImageRelease(image);
-    }
-}
-
 
