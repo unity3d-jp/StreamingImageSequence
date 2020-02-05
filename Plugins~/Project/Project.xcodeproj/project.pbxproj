@@ -11,7 +11,7 @@
 		27C33CC723E42255005D468F /* CriticalSectionController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27C33CC623E42255005D468F /* CriticalSectionController.cpp */; };
 		27C33CCD23E4265C005D468F /* CriticalSection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27C33CCB23E4265C005D468F /* CriticalSection.cpp */; };
 		27C33CD123E4367C005D468F /* LoaderUtility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27C33CCF23E4367C005D468F /* LoaderUtility.cpp */; };
-		DE5EC2AF1F8C214E0041DB03 /* Loader.mm in Sources */ = {isa = PBXBuildFile; fileRef = DE5EC2AE1F8C214E0041DB03 /* Loader.mm */; };
+		54D482EB23EA8DFD009281C2 /* LoaderMac.mm in Sources */ = {isa = PBXBuildFile; fileRef = 54D482EA23EA8DFD009281C2 /* LoaderMac.mm */; };
 		DE5EC2B21F8D312D0041DB03 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE5EC2B11F8D312D0041DB03 /* CoreGraphics.framework */; };
 		DED204221F8FAFCB000C75CE /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED204211F8FAFCB000C75CE /* Metal.framework */; };
 		F435F5F21F5D4C5700F8DB6A /* Drawer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F435F5F01F5D4C5700F8DB6A /* Drawer.cpp */; };
@@ -40,7 +40,7 @@
 		27C33CCF23E4367C005D468F /* LoaderUtility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LoaderUtility.cpp; path = ../Loader/LoaderUtility.cpp; sourceTree = "<group>"; };
 		27C33CD023E4367C005D468F /* LoaderUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoaderUtility.h; path = ../Loader/LoaderUtility.h; sourceTree = "<group>"; };
 		27C33CD223E4375D005D468F /* ReadResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ReadResult.h; path = ../CommonLib/ReadResult.h; sourceTree = "<group>"; };
-		DE5EC2AE1F8C214E0041DB03 /* Loader.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Loader.mm; path = ../Loader/Loader.mm; sourceTree = "<group>"; };
+		54D482EA23EA8DFD009281C2 /* LoaderMac.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LoaderMac.mm; path = ../Loader/Mac/LoaderMac.mm; sourceTree = "<group>"; };
 		DE5EC2B11F8D312D0041DB03 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		DED204211F8FAFCB000C75CE /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		F435F5DE1F5D4B9A00F8DB6A /* Project.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Project.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +74,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		54D482E923EA8DF0009281C2 /* Mac */ = {
+			isa = PBXGroup;
+			children = (
+				54D482EA23EA8DFD009281C2 /* LoaderMac.mm */,
+			);
+			name = Mac;
+			sourceTree = "<group>";
+		};
 		DE5EC2B01F8D312D0041DB03 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -150,8 +158,8 @@
 		F435F5EF1F5D4C3300F8DB6A /* Loader */ = {
 			isa = PBXGroup;
 			children = (
+				54D482E923EA8DF0009281C2 /* Mac */,
 				27C33CBB23E3FA0F005D468F /* FileType.h */,
-				DE5EC2AE1F8C214E0041DB03 /* Loader.mm */,
 				F435F5F61F5D4C7F00F8DB6A /* Loader.cpp */,
 				F435F5F71F5D4C7F00F8DB6A /* Loader.h */,
 				27C33CCF23E4367C005D468F /* LoaderUtility.cpp */,
@@ -253,6 +261,7 @@
 				27C33CC423E41B5D005D468F /* CriticalSectionObject.cpp in Sources */,
 				F49D2D511F5D4F0000DDF068 /* Drawer.mm in Sources */,
 				F4F9C1221FC552E700876739 /* RenderAPI_Metal.mm in Sources */,
+				54D482EB23EA8DFD009281C2 /* LoaderMac.mm in Sources */,
 				F435F5F51F5D4C6200F8DB6A /* CommonLib.cpp in Sources */,
 				F4F9C1201FC552C200876739 /* RenderAPI_OpenGLCoreES.cpp in Sources */,
 				F4F9C11C1FC549A100876739 /* RenderAPI.cpp in Sources */,
@@ -260,7 +269,6 @@
 				F435F5F81F5D4C7F00F8DB6A /* Loader.cpp in Sources */,
 				F4F9C11F1FC552C200876739 /* RenderAPI_OpenGL2.cpp in Sources */,
 				27C33CCD23E4265C005D468F /* CriticalSection.cpp in Sources */,
-				DE5EC2AF1F8C214E0041DB03 /* Loader.mm in Sources */,
 				27C33CC723E42255005D468F /* CriticalSectionController.cpp in Sources */,
 				F435F5F21F5D4C5700F8DB6A /* Drawer.cpp in Sources */,
 			);

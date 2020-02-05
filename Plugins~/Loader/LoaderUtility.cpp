@@ -10,6 +10,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 //Forward declarations
+void LoadTGAFileAndAlloc(const charType* fileName, StReadResult* pResult);
 void LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult);
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -88,7 +89,7 @@ bool LoaderUtility::LoadAndAllocTexture(const charType* fileName, std::map<strTy
 
     switch (fileType) {
         case FILE_TYPE_TGA: {
-            loadTGAFileAndAlloc(fileName, &readResult);
+            LoadTGAFileAndAlloc(fileName, &readResult);
             break;
         }
         case FILE_TYPE_PNG: {

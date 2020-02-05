@@ -1,4 +1,3 @@
-//
 //  Loader.mm
 //  Project
 //
@@ -9,10 +8,10 @@
 #import <Foundation/Foundation.h>
 #include <ApplicationServices/ApplicationServices.h>
 
-#include "stdafx.h"
-#include "../CommonLib/CommonLib.h"
+#include "CommonLib/CommonLib.h"
+
+//Loader
 #include "Loader.h"
-#include "TGALoader.h"
 
 #define DEBUG_MAC_DRAWING (0)
 
@@ -54,7 +53,7 @@ u8* CGImageRefRetrievePixelData(const CGImageRef image, u32 width, u32 height) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void* loadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
+void* LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
     u8* pBuffer = NULL;
     
     const CGImageRef image = CGImageRefLoad(fileName);
@@ -77,13 +76,14 @@ void* loadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void* loadTGAFileAndAlloc(const charType* fileName, StReadResult* pResult) {
+void LoadTGAFileAndAlloc(const charType* fileName, StReadResult* pResult) {
     assert(false);   //Not implemented yet
-    return NULL;
 }
 //----------------------------------------------------------------------------------------------------------------------
 
-void* loadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult, const u32 reqWidth, const u32 reqHeight) {
+void LoadPNGFileAndAllocWithSize(const charType* fileName, StReadResult* pResult,
+                                 const u32 reqWidth, const u32 reqHeight)
+{
     u8* pBuffer = NULL;
     
     const CGImageRef image = CGImageRefLoad(fileName);
@@ -98,8 +98,6 @@ void* loadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult, const
         
         CGImageRelease(image);
     }
-    
-    return pBuffer; //  pBuffer;
 }
 
 
