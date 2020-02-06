@@ -239,27 +239,30 @@ namespace UnityEngine.StreamingImageSequence {
         {
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
-            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out ReadResult readResult);
+            StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out ReadResult readResult, 
+                StreamingImageSequenceConstants.TEXTURE_TYPE_FULL
+            );
             return (readResult.ReadStatus != 0);
 
         }
 
 //----------------------------------------------------------------------------------------------------------------------        
         internal string LoadRequest(int index, bool isBlocking, out ReadResult readResult) {
+            const int texType = StreamingImageSequenceConstants.TEXTURE_TYPE_FULL;
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
             if (m_loadRequested == null) {
                 m_loadRequested = new bool[m_imagePaths.Count];
             }
 
-            StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
+            StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, texType);
             //Debug.Log("readResult.readStatus " + readResult.readStatus + "Loading " + filename);
             if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_NONE) {
                 ImageLoadBGTask.Queue(filename);
             }
             if ( isBlocking ) {
                 while (readResult.ReadStatus != StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
-                    StreamingImageSequencePlugin.GetNativTextureInfo(filename, out readResult);
+                    StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, texType);
                 }
             }
 #if false //UNITY_EDITOR
@@ -281,7 +284,7 @@ namespace UnityEngine.StreamingImageSequence {
            
             string filename = LoadRequest(index,isBlocking, out ReadResult readResult);
 
-            if (null == m_texture &&  readResult.ReadStatus == (int)LoadStatus.Loaded) {
+            if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
 
                 m_texture = StreamingImageSequencePlugin.CreateTexture(ref readResult);
 
@@ -293,7 +296,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             //Update the texture
-			if (readResult.ReadStatus == (int)LoadStatus.Loaded && m_lastIndex != index) {
+			if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS && m_lastIndex != index) {
                 int texInstanceID = m_texture.GetInstanceID();
                 StreamingImageSequencePlugin.SetLoadedTexture (filename, texInstanceID);
                 GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), texInstanceID);

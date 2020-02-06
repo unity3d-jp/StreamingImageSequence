@@ -5,6 +5,12 @@ using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine.Assertions;
 
 namespace UnityEngine.StreamingImageSequence {
+
+    //Delegates
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    internal delegate void DelegateStringFunc([MarshalAs(UnmanagedType.LPStr)] string str);
+//----------------------------------------------------------------------------------------------------------------------
+
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 8)]
     public struct ReadResult
     {
@@ -15,13 +21,6 @@ namespace UnityEngine.StreamingImageSequence {
         public int Height;
         [MarshalAs(UnmanagedType.I4)]
         public int ReadStatus;
-    };
-
-    public enum LoadStatus
-    {
-        Uninitialized,
-        Requested,
-        Loaded,
     };
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -43,16 +42,22 @@ namespace UnityEngine.StreamingImageSequence {
 
         // Implemented in Loader dll
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern IntPtr LoadAndAlloc([MarshalAs(UnmanagedType.LPStr)]string fileName);
+        public static extern bool LoadAndAllocFullTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
+
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        public static extern bool LoadAndAllocPreviewTexture([MarshalAs(UnmanagedType.LPStr)]string fileName, int width, int height);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void NativeFree(IntPtr ptr);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern IntPtr GetNativTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult);
+        public static extern bool GetNativeTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult, int textureType);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int ResetNativeTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
+
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        internal static extern void ListLoadedTextures(int textureType, DelegateStringFunc func);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void ResetPlugin();

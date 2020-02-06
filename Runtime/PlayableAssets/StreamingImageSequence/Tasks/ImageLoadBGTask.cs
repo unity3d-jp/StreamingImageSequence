@@ -7,13 +7,13 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using System.IO;
 
-namespace UnityEngine.StreamingImageSequence
-{
+namespace UnityEngine.StreamingImageSequence {
 
 
-    public class ImageLoadBGTask : BackGroundTask
+    internal class ImageLoadBGTask : BackGroundTask
     {
 		internal static bool m_sUpdated;
+        
         string m_strFileName;
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -24,18 +24,19 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 //----------------------------------------------------------------------------------------------------------------------
-        private ImageLoadBGTask( string strFileName ) {
+        private ImageLoadBGTask( string strFileName) {
             m_strFileName = strFileName;
         }
 
 //----------------------------------------------------------------------------------------------------------------------
 
         public override void Execute() {
-            StreamingImageSequencePlugin.GetNativTextureInfo(m_strFileName, out ReadResult tResult);
+            const int TEX_TYPE = StreamingImageSequenceConstants.TEXTURE_TYPE_FULL;
+            StreamingImageSequencePlugin.GetNativeTextureInfo(m_strFileName, out ReadResult tResult, TEX_TYPE);
             switch (tResult.ReadStatus) {
                 case StreamingImageSequenceConstants.READ_RESULT_NONE: {
                     //Debug.Log("Loading: " + m_strFileName);
-                    StreamingImageSequencePlugin.LoadAndAlloc(m_strFileName);
+                    StreamingImageSequencePlugin.LoadAndAllocFullTexture(m_strFileName);
                     break;
                 }
                 case StreamingImageSequenceConstants.READ_RESULT_REQUESTED: {
