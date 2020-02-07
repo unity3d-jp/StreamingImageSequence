@@ -62,7 +62,14 @@ namespace UnityEngine.StreamingImageSequence
             m_meshRenderer      = null;
         }
 
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+        public override void OnGraphStart(Playable playable){
+            //refresh use images
+            Debug.Log("OnGraphStart. MarkerCount()." + m_track.GetMarkerCount());
+
+        }
+        
+//----------------------------------------------------------------------------------------------------------------------
         public override void PrepareFrame(Playable playable, FrameData info) {
             base.PrepareFrame(playable, info);
             if (null == m_boundGameObject)
@@ -71,7 +78,7 @@ namespace UnityEngine.StreamingImageSequence
             m_boundGameObject.SetActive(false); //Always hide first, and show it later 
         }
 
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
             int inputCount = playable.GetInputCount<Playable>();

@@ -4,11 +4,7 @@ using UnityEngine.Timeline;
 namespace UnityEngine.StreamingImageSequence {
 
 internal class UseImageMarker : Marker, INotification {
-
-    ~UseImageMarker() {
-        m_playableAsset.HideImage(time);
-    }
-
+    
 //----------------------------------------------------------------------------------------------------------------------    
     internal void SetPlayableAsset(StreamingImageSequencePlayableAsset playableAsset) {
         m_playableAsset = playableAsset;

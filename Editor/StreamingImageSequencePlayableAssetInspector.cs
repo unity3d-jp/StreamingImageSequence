@@ -72,6 +72,10 @@ namespace UnityEditor.StreamingImageSequence {
                 
             }
             
+            if (GUILayout.Button("Reset Markers")) {
+                //[TODO-sin:2020-2-7] Support undo for this
+                m_asset.ResetMarkers();
+            }
 
             serializedObject.ApplyModifiedProperties();
             EditorGUI.EndChangeCheck();

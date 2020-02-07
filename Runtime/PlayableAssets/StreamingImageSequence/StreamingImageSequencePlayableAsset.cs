@@ -326,6 +326,56 @@ namespace UnityEngine.StreamingImageSequence {
             }
             return filePath;
         }
+//---------------------------------------------------------------------------------------------------------------------
+
+        internal void ResetMarkers() {
+            TrackAsset track = m_timelineClip.parentTrack;
+            List<UseImageMarker> markersToDelete = new List<UseImageMarker>();
+            foreach (IMarker m in track.GetMarkers()) {
+                if (!(m is UseImageMarker))
+                    continue;
+                
+                UseImageMarker marker = m as UseImageMarker;
+                if (this != marker.GetPlayableAsset()) {
+                    continue;
+                }
+                markersToDelete.Add(marker);
+
+            }
+            //Delete all markers in the parent track that has the assigned PlayableAsset set to this object
+            foreach (UseImageMarker marker in markersToDelete) {
+                track.DeleteMarker(marker);
+            }
+            markersToDelete.Clear();
+
+            
+            // time per frame
+            m_useImageInFrames = new List<bool>();
+            double timePerFrame = 1.0 / track.timelineAsset.editorSettings.fps;
+            double markerTime = m_timelineClip.start; 
+            while (markerTime < m_timelineClip.duration) {
+                m_useImageInFrames.Add(true);
+                
+                UseImageMarker marker = m_timelineClip.parentTrack.CreateMarker<UseImageMarker>(markerTime);
+                marker.SetPlayableAsset(this);
+                markerTime += timePerFrame;
+            }
+            TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
+
+        }
+        
+//---------------------------------------------------------------------------------------------------------------------
+        //internal void HideImage(double globalTime) {
+            //from globalTime to index
+            // double localTime = m_timelineClip.ToLocalTime(globalTime);
+            // TrackAsset track = m_timelineClip.parentTrack;
+            // double timePerFrame = 1.0 / track.timelineAsset.editorSettings.fps;
+            // int index = (int)(localTime / timePerFrame);
+            // Debug.Log(index);
+            //
+            // m_useImageInFrames[index] = false;
+
+        //}
 
 //---------------------------------------------------------------------------------------------------------------------
         void ResetTexture() {
@@ -430,6 +480,11 @@ namespace UnityEngine.StreamingImageSequence {
 
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
+        
+        //[TODO: 2020-2-7] Use a class here and store time there, so that we can preserve the edits as much as possible 
+        //when resizing the length of the TimelineClip (and maybe do show/hide markers)
+        [SerializeField] List<bool> m_useImageInFrames; //The ground truth for using/dropping an image in that frame
+
         [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;
 
