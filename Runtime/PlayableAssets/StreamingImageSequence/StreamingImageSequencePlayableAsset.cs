@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
 using UnityEditor;
@@ -18,7 +19,6 @@ namespace UnityEngine.StreamingImageSequence {
     {
         
         
-//----------------------------------------------------------------------------------------------------------------------
         public void OnBehaviourDelay(Playable playable, FrameData info) {
 
         }
@@ -129,6 +129,7 @@ namespace UnityEngine.StreamingImageSequence {
 
         public string GetFolder() { return m_folder; }
         public UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
+
 
 //----------------------------------------------------------------------------------------------------------------------        
         internal void Reset() {
@@ -350,20 +351,32 @@ namespace UnityEngine.StreamingImageSequence {
 
             
             // time per frame
-            m_useImageInFrames = new List<bool>();
+            m_imageAtFrameInfoList = new List<ImageAtFrameInfo>();
             double timePerFrame = 1.0 / track.timelineAsset.editorSettings.fps;
             double markerTime = m_timelineClip.start; 
             while (markerTime < m_timelineClip.duration) {
-                m_useImageInFrames.Add(true);
-                
-                UseImageMarker marker = m_timelineClip.parentTrack.CreateMarker<UseImageMarker>(markerTime);
-                marker.SetPlayableAsset(this);
+                m_imageAtFrameInfoList.Add(new ImageAtFrameInfo(markerTime));
                 markerTime += timePerFrame;
             }
-            TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
+            
+            RecreateMarkers();
+
+            
+
 
         }
         
+//---------------------------------------------------------------------------------------------------------------------
+        //Recreate markers based on the info in m_imageInFrameInfoList
+        private void RecreateMarkers() {
+            foreach (ImageAtFrameInfo info in m_imageAtFrameInfoList) {
+                UseImageMarker marker = m_timelineClip.parentTrack.CreateMarker<UseImageMarker>(info.GetLocalTime());
+                marker.Setup(this, info);
+            }
+            TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
+            
+        }
+
 //---------------------------------------------------------------------------------------------------------------------
         //internal void HideImage(double globalTime) {
             //from globalTime to index
@@ -481,9 +494,7 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
         
-        //[TODO: 2020-2-7] Use a class here and store time there, so that we can preserve the edits as much as possible 
-        //when resizing the length of the TimelineClip (and maybe do show/hide markers)
-        [SerializeField] List<bool> m_useImageInFrames; //The ground truth for using/dropping an image in that frame
+        [SerializeField] List<ImageAtFrameInfo> m_imageAtFrameInfoList; //The ground truth for using/dropping an image in that frame
 
         [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;

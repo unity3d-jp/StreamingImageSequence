@@ -64,8 +64,16 @@ namespace UnityEngine.StreamingImageSequence
 
 //----------------------------------------------------------------------------------------------------------------------
         public override void OnGraphStart(Playable playable){
-            //refresh use images
-            Debug.Log("OnGraphStart. MarkerCount()." + m_track.GetMarkerCount());
+            
+            
+            //Refresh all markers
+            foreach (IMarker m in m_track.GetMarkers()) {
+                if (!(m is UseImageMarker))
+                    continue;
+                
+                UseImageMarker marker = m as UseImageMarker;
+                marker.Refresh();
+            }
 
         }
         

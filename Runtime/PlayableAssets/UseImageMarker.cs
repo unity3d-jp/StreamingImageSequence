@@ -1,21 +1,41 @@
-﻿using UnityEngine.Playables;
+﻿using System;
+using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using UnityEngine.UI;
 
 namespace UnityEngine.StreamingImageSequence {
 
+[Serializable]
 internal class UseImageMarker : Marker, INotification {
-    
+
+
 //----------------------------------------------------------------------------------------------------------------------    
-    internal void SetPlayableAsset(StreamingImageSequencePlayableAsset playableAsset) {
+    internal void Setup(StreamingImageSequencePlayableAsset playableAsset, ImageAtFrameInfo info) {
         m_playableAsset = playableAsset;
+        m_info = info;
     } 
     
     internal StreamingImageSequencePlayableAsset GetPlayableAsset() {  return m_playableAsset; }
+
+    
+//----------------------------------------------------------------------------------------------------------------------    
+    internal void Refresh() {
+        if (null == m_playableAsset)
+            return;
+        
+        TimelineClip clip = m_playableAsset.GetTimelineClip();
+        time = clip.start + m_info.GetLocalTime();
+    }
     
 //----------------------------------------------------------------------------------------------------------------------    
     public PropertyName id { get; } //use default implementation
 
     [SerializeField] private StreamingImageSequencePlayableAsset m_playableAsset = null;
+    [SerializeField] private ImageAtFrameInfo m_info;
+
 }
 
 } //end namespace
+
+
+//A visual representation (Marker) of ImageAtFrameInfo

@@ -5,7 +5,7 @@ namespace UnityEngine.StreamingImageSequence {
 [Serializable]
 public class ImageAtFrameInfo {
 
-    internal ImageAtFrameInfo(UseImageMarker marker, double localTime) {
+    internal ImageAtFrameInfo(double localTime) {
         m_useImage = true;
         m_localTime = localTime;
     }
@@ -13,6 +13,7 @@ public class ImageAtFrameInfo {
 //----------------------------------------------------------------------------------------------------------------------
     internal bool IsUsed() { return m_useImage; }
     internal void SetUsed(bool used) { m_useImage = used; }
+    internal double GetLocalTime() { return m_localTime; }
 
 //----------------------------------------------------------------------------------------------------------------------
 
