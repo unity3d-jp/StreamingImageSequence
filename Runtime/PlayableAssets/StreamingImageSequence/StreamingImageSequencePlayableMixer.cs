@@ -66,6 +66,13 @@ namespace UnityEngine.StreamingImageSequence
         public override void OnGraphStart(Playable playable){
             
             
+            foreach (TimelineClip clip in m_clips) {
+                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (null == asset)
+                    continue;
+                asset.OnGraphStart(playable);
+            }
+
             //Refresh all markers
             foreach (IMarker m in m_track.GetMarkers()) {
                 if (!(m is UseImageMarker))
@@ -74,6 +81,7 @@ namespace UnityEngine.StreamingImageSequence
                 UseImageMarker marker = m as UseImageMarker;
                 marker.Refresh();
             }
+            
 
         }
         

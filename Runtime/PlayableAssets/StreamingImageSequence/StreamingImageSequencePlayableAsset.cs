@@ -3,7 +3,6 @@ using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
-using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
 using UnityEditor;
@@ -28,9 +27,16 @@ namespace UnityEngine.StreamingImageSequence {
         public void OnBehaviourPlay(Playable playable, FrameData info){
 
         }
-        public void OnGraphStart(Playable playable){
-
+        
+        
+//----------------------------------------------------------------------------------------------------------------------
+        public void OnGraphStart(Playable playable) {
+            
+            //refresh time per frame
+            float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
+            m_timePerFrame = 1.0 / fps;
         }
+        
         public void OnGraphStop(Playable playable){
 
         }
@@ -129,7 +135,6 @@ namespace UnityEngine.StreamingImageSequence {
 
         public string GetFolder() { return m_folder; }
         public UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
-
 
 //----------------------------------------------------------------------------------------------------------------------        
         internal void Reset() {
@@ -352,19 +357,18 @@ namespace UnityEngine.StreamingImageSequence {
             
             // time per frame
             m_imageAtFrameInfoList = new List<ImageAtFrameInfo>();
-            double timePerFrame = 1.0 / track.timelineAsset.editorSettings.fps;
             double markerTime = m_timelineClip.start; 
             while (markerTime < m_timelineClip.duration) {
-                m_imageAtFrameInfoList.Add(new ImageAtFrameInfo(markerTime));
-                markerTime += timePerFrame;
+                ImageAtFrameInfo info = new ImageAtFrameInfo(markerTime);
+
+                m_imageAtFrameInfoList.Add(info);
+                markerTime += m_timePerFrame;
             }
             
             RecreateMarkers();
-
             
-
-
         }
+
         
 //---------------------------------------------------------------------------------------------------------------------
         //Recreate markers based on the info in m_imageInFrameInfoList
@@ -377,18 +381,6 @@ namespace UnityEngine.StreamingImageSequence {
             
         }
 
-//---------------------------------------------------------------------------------------------------------------------
-        //internal void HideImage(double globalTime) {
-            //from globalTime to index
-            // double localTime = m_timelineClip.ToLocalTime(globalTime);
-            // TrackAsset track = m_timelineClip.parentTrack;
-            // double timePerFrame = 1.0 / track.timelineAsset.editorSettings.fps;
-            // int index = (int)(localTime / timePerFrame);
-            // Debug.Log(index);
-            //
-            // m_useImageInFrames[index] = false;
-
-        //}
 
 //---------------------------------------------------------------------------------------------------------------------
         void ResetTexture() {
@@ -520,6 +512,7 @@ namespace UnityEngine.StreamingImageSequence {
         private bool m_verified;
 
         Texture2D m_texture = null;
+        private double m_timePerFrame = 0;
 
         private const int STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION = 1;
 
