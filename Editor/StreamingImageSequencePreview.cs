@@ -32,7 +32,8 @@ internal class StreamingImageSequencePreview : IDisposable {
         ImageDimensionInt resolution = m_playableAsset.GetResolution();
 
         //Calculate rect for one image.
-        float dimensionRatio = m_playableAsset.GetDimensionRatio();
+        float dimensionRatio = m_playableAsset.GetOrUpdateDimensionRatio();
+        
         int widthPerPreviewImage = (int) (dimensionRatio * rect.height);
         int heightPerPreviewImage = (int)rect.height;
 

@@ -127,7 +127,8 @@ public class JstimelineImporter : ScriptedImporter
             clip.asset = sisAsset;
             clip.start = track.Start;
             clip.duration = track.Duration;
-            sisAsset.Setup(clip);
+            clip.CreateCurves("Curves: " + clip.displayName);
+            sisAsset.SetTimelineClip(clip);
             sisAsset.ValidateAnimationCurve();
 
 

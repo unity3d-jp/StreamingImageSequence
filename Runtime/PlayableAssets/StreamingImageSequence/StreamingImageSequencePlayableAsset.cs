@@ -11,39 +11,43 @@ using UnityEditor;
 namespace UnityEngine.StreamingImageSequence {
 
     //ITimelineClipAsset interface is used to define the clip capabilities (ClipCaps) 
+    //IPlayableBehaviour is required to display the curves in the timeline window
     [System.Serializable]
-    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset, IPlayableBehaviour {
+    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
+                                                     , IPlayableBehaviour, ISerializationCallbackReceiver 
+    {
+        
         
 //----------------------------------------------------------------------------------------------------------------------
-        public virtual void OnBehaviourDelay(Playable playable, FrameData info) {
+        public void OnBehaviourDelay(Playable playable, FrameData info) {
 
         }
-        public virtual void OnBehaviourPause(Playable playable, FrameData info){
+        public void OnBehaviourPause(Playable playable, FrameData info){
 
         }
-        public virtual void OnBehaviourPlay(Playable playable, FrameData info){
+        public void OnBehaviourPlay(Playable playable, FrameData info){
 
         }
-        public virtual void OnGraphStart(Playable playable){
+        public void OnGraphStart(Playable playable){
 
         }
-        public virtual void OnGraphStop(Playable playable){
+        public void OnGraphStop(Playable playable){
 
         }
-        public virtual void OnPlayableCreate(Playable playable){
+        public void OnPlayableCreate(Playable playable){
 
         }
-        public virtual void OnPlayableDestroy(Playable playable){
+        public void OnPlayableDestroy(Playable playable){
 
         }
-        public virtual void PrepareData(Playable playable, FrameData info){
+        public void PrepareData(Playable playable, FrameData info){
 
         }
-        public virtual void PrepareFrame(Playable playable, FrameData info){
+        public void PrepareFrame(Playable playable, FrameData info){
 
         }
 
-        public virtual void ProcessFrame(Playable playable, FrameData info, object playerData) {
+        public void ProcessFrame(Playable playable, FrameData info, object playerData) {
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -79,11 +83,8 @@ namespace UnityEngine.StreamingImageSequence {
 
         //Calculate the used image index for the passed globalTime
         internal int GlobalTimeToImageIndex(double globalTime) {
-            double imageSequenceTime = GlobalTimeToCurveTime(globalTime);
-            int count = m_imagePaths.Count;
-            int index = (int)(count * imageSequenceTime);
-            index = Mathf.Clamp(index, 0, count - 1);
-            return index;
+            double localTime = m_timelineClip.ToLocalTime(globalTime);
+            return LocalTimeToImageIndex(localTime);
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -104,16 +105,19 @@ namespace UnityEngine.StreamingImageSequence {
         internal ImageDimensionInt GetResolution() { return m_resolution; }
         internal System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
         internal Texture2D GetTexture() { return m_texture; }
+        internal TimelineClip GetTimelineClip() { return m_timelineClip; }
+
+        //This method must only be called from the track that owns this PlayableAsset, or during deserialization
+        internal void SetTimelineClip(TimelineClip clip) {  m_timelineClip = clip; }
 
 //----------------------------------------------------------------------------------------------------------------------        
-
-        public float GetDimensionRatio() {
-            if (Mathf.Approximately(m_dimensionRatio, 0f)) {
-                m_dimensionRatio = m_resolution.CalculateRatio();
+        internal float GetOrUpdateDimensionRatio() {
+            if (Mathf.Approximately(0.0f, m_dimensionRatio)) {
+                ForceUpdateResolution();
             }
-
             return m_dimensionRatio;
         }
+
 //----------------------------------------------------------------------------------------------------------------------        
 
         public string GetImagePath(int index) {
@@ -337,21 +341,33 @@ namespace UnityEngine.StreamingImageSequence {
         }
 //---------------------------------------------------------------------------------------------------------------------
         
-        public void Setup(TimelineClip clip) {
-            if (null == clip.curves) {
-                clip.CreateCurves("Curves: " + clip.displayName);
-            }
-            m_timelineClip = clip;
-            m_clipStart = clip.start;
-        }
 
+        void ForceUpdateResolution() {
+            if (null!=m_imagePaths && m_imagePaths.Count <= 0)
+                return;
+
+            //Load the first image to update the resolution.
+            LoadRequest(0, false, out ReadResult readResult);
+            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {               
+                UpdateResolution(ref readResult);
+            }
+            
+        }
 //----------------------------------------------------------------------------------------------------------------------
         public void OnAfterTrackDeserialize(TimelineClip clip) {
-            Setup(clip);
+            SetTimelineClip(clip);
+        }
+        
+        public void OnBeforeSerialize() {
         }
 
+        public void OnAfterDeserialize() {
+            ForceUpdateResolution();
+        }
+        
+
 //----------------------------------------------------------------------------------------------------------------------
-        public void ResetAnimationCurve() {
+        internal void ResetAnimationCurve() {
             AnimationCurve animationCurve = new AnimationCurve();
             ValidateAnimationCurve(ref animationCurve);
             RefreshAnimationCurveInTimelineClip(animationCurve);
@@ -413,12 +429,11 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
         [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
-        [SerializeField] private ImageDimensionInt  m_resolution;        
         [SerializeField] double m_time;
 
-        [SerializeField] [HideInInspector] float m_dimensionRatio;
+        private ImageDimensionInt  m_resolution;        
+        private float m_dimensionRatio;
 
-        double m_clipStart;     //In global space. In seconds
 
 
 #if UNITY_EDITOR
@@ -426,10 +441,12 @@ namespace UnityEngine.StreamingImageSequence {
         private EditorCurveBinding m_timelineEditorCurveBinding;
 #endif
         private bool[] m_loadRequested;
-        //[TODO-sin: 2019-12-25] Is there a way we can just serialize this without affecting folder D&D
+        
+        //[Note-sin: 2020-2-13] TimelineClip has to be setup every time (after deserialization, etc) to ensure that
+        //we are referring to the same instance rather than having a newly created one
         TimelineClip m_timelineClip  = null; 
 
-        //[TODO-sin: 2020-1-30] Don't serialize this
+        //[TODO-sin: 2020-1-30] Turn this to a non-public var
         public int m_loadingIndex;
 		private int m_lastIndex;
         private bool m_verified;

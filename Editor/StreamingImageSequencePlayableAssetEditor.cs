@@ -83,7 +83,7 @@ namespace UnityEngine.StreamingImageSequence {
                 clip.CreateCurves("Curves: " + clip.displayName);
             }
 
-            asset.Setup(clip);
+            asset.SetTimelineClip(clip);
             asset.ValidateAnimationCurve();
             return true;
         }
