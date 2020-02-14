@@ -1,5 +1,4 @@
-﻿using System;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using System.IO;
 using UnityEditor;
 using UnityEditor.StreamingImageSequence;
@@ -101,7 +100,8 @@ namespace UnityEngine.StreamingImageSequence {
             base.DrawBackground(clip, region);
             
             var rect = region.position;
-            if (rect.width <= 0)
+            const int VISIBLE_WIDTH_THRESHOLD = 10; //width that is too small will affect the placement of preview imgs
+            if (rect.width <= VISIBLE_WIDTH_THRESHOLD)
                 return;
 
             StreamingImageSequencePlayableAsset curAsset = clip.asset as StreamingImageSequencePlayableAsset;
@@ -120,7 +120,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             if (Event.current.type == EventType.Repaint) {
-                preview.SetLocalTime(region.startTime, region.endTime);
+                preview.SetVisibleLocalTime(region.startTime, region.endTime);
                 preview.Render(quantizedRect);
             }
         }

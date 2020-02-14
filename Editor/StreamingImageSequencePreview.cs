@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NUnit.Framework.Constraints;
+using UnityEngine.Timeline;
 
 namespace UnityEngine.StreamingImageSequence {
 
@@ -18,66 +18,82 @@ internal class StreamingImageSequencePreview : IDisposable {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void SetLocalTime(double startTime, double endTime) {
-        m_localStartTime = startTime;
-        m_localEndTime = endTime;
+    internal void SetVisibleLocalTime(double startTime, double endTime) {
+        m_visibleLocalStartTime = startTime;
+        m_visibleLocalEndTime   = endTime;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void Render(Rect rect) {
+    internal void Render(Rect visibleRect) {
 
+        TimelineClip clip = m_playableAsset.GetTimelineClip();
         IList<string> imagePaths = m_playableAsset.GetImagePaths();
 
-        //TODO-sin: 2020-1-17 Set the size of textures according to the used size in the Timeline instead of full size
-        ImageDimensionInt resolution = m_playableAsset.GetResolution();
-
+        //Calculate the width if we are showing the whole clip
+        double visibleDuration = m_visibleLocalEndTime - m_visibleLocalStartTime;
+        double scaledClipDuration = clip.duration * clip.timeScale; 
+        float fullWidth = Mathf.Ceil((float)(visibleRect.width * scaledClipDuration / visibleDuration));
+        
+        
         //Calculate rect for one image.
         float dimensionRatio = m_playableAsset.GetOrUpdateDimensionRatio();
-        
-        int widthPerPreviewImage = (int) (dimensionRatio * rect.height);
-        int heightPerPreviewImage = (int)rect.height;
+        int widthPerPreviewImage = (int) (dimensionRatio * visibleRect.height);
+        int heightPerPreviewImage = (int)visibleRect.height;
 
-        //Initialize variables to display the preview images correctly.
-        int numPreviewImages = Mathf.FloorToInt(rect.width / widthPerPreviewImage);
-        double usedWidthRatio = (numPreviewImages * widthPerPreviewImage) / rect.width;
-        double endPreviewTime = (m_localEndTime - m_localStartTime) * usedWidthRatio + m_localStartTime;
-        double localTimeCounter = (endPreviewTime - m_localStartTime) / numPreviewImages;
-        Rect drawRect = new Rect(rect) {
+        //Set the number of preview images available for this clip, at least 1
+        int numAllPreviewImages = Mathf.Max(Mathf.FloorToInt(fullWidth / widthPerPreviewImage),1);
+        numAllPreviewImages = Mathf.Min(numAllPreviewImages, imagePaths.Count);
+        
+        //Find the place to draw the preview image[0], which might not be rendered
+        float xOffset = (float)(fullWidth * (m_visibleLocalStartTime / scaledClipDuration));
+        Rect drawRect = new Rect(visibleRect) {
+            x = visibleRect.x - xOffset,
+            y = visibleRect.y,
             width = widthPerPreviewImage,
             height = heightPerPreviewImage
         };
-
+        
+        
+        int xCounter = (int) fullWidth / numAllPreviewImages;
+        double localTimeCounter = scaledClipDuration / numAllPreviewImages;
         //Each preview should show the image used in the time in the middle of the span, instead of the left start point
-        double localTime = m_localStartTime + (localTimeCounter * 0.5f);
+        double localTime = (localTimeCounter * 0.5f);
+        
+        
+        //Loop to render all preview Images, ignoring those outside the visible Rect
+        float endVisibleRectX = visibleRect.x + visibleRect.width;
+        float startVisibleRectX = visibleRect.x - widthPerPreviewImage; //for rendering preview images that are partly visible
+        for (int i = 0; i < numAllPreviewImages; ++i) {
+            if (drawRect.x >= startVisibleRectX && drawRect.x <= endVisibleRectX) {
 
-        for (int i = 0; i < numPreviewImages; ++i) {
+                int imageIndex = m_playableAsset.LocalTimeToImageIndex(localTime);
 
-            int imageIndex = m_playableAsset.LocalTimeToImageIndex(localTime);
-
-            //Load
-            string fullPath = m_playableAsset.GetCompleteFilePath(imagePaths[imageIndex]);
-            StreamingImageSequencePlugin.GetNativeTextureInfo(fullPath, out ReadResult readResult, 
-                StreamingImageSequenceConstants.TEXTURE_TYPE_PREVIEW);
-            switch (readResult.ReadStatus) {
-                case StreamingImageSequenceConstants.READ_RESULT_NONE: {
-                    PreviewImageLoadBGTask.Queue(fullPath, widthPerPreviewImage, heightPerPreviewImage);
-                    break;
-                }
-                case StreamingImageSequenceConstants.READ_RESULT_SUCCESS: {
-                    Texture2D tex = PreviewTextureFactory.GetOrCreate(fullPath, ref readResult);
-                    if (null != tex) {
-                        Graphics.DrawTexture(drawRect, tex);
+                //Load
+                string fullPath = m_playableAsset.GetCompleteFilePath(imagePaths[imageIndex]);
+                StreamingImageSequencePlugin.GetNativeTextureInfo(fullPath, out ReadResult readResult, 
+                    StreamingImageSequenceConstants.TEXTURE_TYPE_PREVIEW);
+                switch (readResult.ReadStatus) {
+                    case StreamingImageSequenceConstants.READ_RESULT_NONE: {
+                        PreviewImageLoadBGTask.Queue(fullPath, widthPerPreviewImage, heightPerPreviewImage);
+                        break;
                     }
-                    break;
-                }
-                default: {
-                    break;
-                }
+                    case StreamingImageSequenceConstants.READ_RESULT_SUCCESS: {
+                        Texture2D tex = PreviewTextureFactory.GetOrCreate(fullPath, ref readResult);
+                        if (null != tex) {
+                            Graphics.DrawTexture(drawRect, tex);
+                        }
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
 
+                }
+                
             }
-
-            drawRect.x += widthPerPreviewImage;
-            localTime += localTimeCounter;
+            //Check if x is inside the visible rect
+            drawRect.x += xCounter;
+            localTime  += localTimeCounter;
         }
 
     }
@@ -86,8 +102,8 @@ internal class StreamingImageSequencePreview : IDisposable {
     private bool m_disposed;
     private readonly StreamingImageSequencePlayableAsset m_playableAsset = null;
     private const int MIN_PREVIEW_IMAGE_WIDTH = 60;
-    private double m_localStartTime;
-    private double m_localEndTime;
+    private double m_visibleLocalStartTime;
+    private double m_visibleLocalEndTime;
 }
 
 } //end namespace
