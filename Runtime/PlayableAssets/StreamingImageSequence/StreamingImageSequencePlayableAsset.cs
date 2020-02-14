@@ -11,39 +11,40 @@ using UnityEditor;
 namespace UnityEngine.StreamingImageSequence {
 
     //ITimelineClipAsset interface is used to define the clip capabilities (ClipCaps) 
+    //IPlayableBehaviour is required to display the curves in the timeline window
     [System.Serializable]
     public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset, IPlayableBehaviour {
         
 //----------------------------------------------------------------------------------------------------------------------
-        public virtual void OnBehaviourDelay(Playable playable, FrameData info) {
+        public void OnBehaviourDelay(Playable playable, FrameData info) {
 
         }
-        public virtual void OnBehaviourPause(Playable playable, FrameData info){
+        public void OnBehaviourPause(Playable playable, FrameData info){
 
         }
-        public virtual void OnBehaviourPlay(Playable playable, FrameData info){
+        public void OnBehaviourPlay(Playable playable, FrameData info){
 
         }
-        public virtual void OnGraphStart(Playable playable){
+        public void OnGraphStart(Playable playable){
 
         }
-        public virtual void OnGraphStop(Playable playable){
+        public void OnGraphStop(Playable playable){
 
         }
-        public virtual void OnPlayableCreate(Playable playable){
+        public void OnPlayableCreate(Playable playable){
 
         }
-        public virtual void OnPlayableDestroy(Playable playable){
+        public void OnPlayableDestroy(Playable playable){
 
         }
-        public virtual void PrepareData(Playable playable, FrameData info){
+        public void PrepareData(Playable playable, FrameData info){
 
         }
-        public virtual void PrepareFrame(Playable playable, FrameData info){
+        public void PrepareFrame(Playable playable, FrameData info){
 
         }
 
-        public virtual void ProcessFrame(Playable playable, FrameData info, object playerData) {
+        public void ProcessFrame(Playable playable, FrameData info, object playerData) {
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -79,11 +80,8 @@ namespace UnityEngine.StreamingImageSequence {
 
         //Calculate the used image index for the passed globalTime
         internal int GlobalTimeToImageIndex(double globalTime) {
-            double imageSequenceTime = GlobalTimeToCurveTime(globalTime);
-            int count = m_imagePaths.Count;
-            int index = (int)(count * imageSequenceTime);
-            index = Mathf.Clamp(index, 0, count - 1);
-            return index;
+            double localTime = m_timelineClip.ToLocalTime(globalTime);
+            return LocalTimeToImageIndex(localTime);
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -104,10 +102,11 @@ namespace UnityEngine.StreamingImageSequence {
         internal ImageDimensionInt GetResolution() { return m_resolution; }
         internal System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
         internal Texture2D GetTexture() { return m_texture; }
+        internal TimelineClip GetTimelineClip() { return m_timelineClip; }
 
 //----------------------------------------------------------------------------------------------------------------------        
 
-        public float GetDimensionRatio() {
+        internal float GetDimensionRatio() {
             if (Mathf.Approximately(m_dimensionRatio, 0f)) {
                 m_dimensionRatio = m_resolution.CalculateRatio();
             }
