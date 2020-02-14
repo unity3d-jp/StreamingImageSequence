@@ -55,6 +55,9 @@ namespace UnityEngine.StreamingImageSequence {
                 return;
             }
 
+            //This callback occurs before the clip is assigned to the track, but we need the track for creating curves.
+            clip.parentTrack = track; 
+            
             InitializeAssetFromDefaultAsset(clip, clonedFrom, asset);
         }
 
