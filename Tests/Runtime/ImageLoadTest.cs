@@ -91,7 +91,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-        private const float LOAD_TIMEOUT = 3.0f; //in seconds
+        private const float LOAD_TIMEOUT = 10.0f; //in seconds
     }
 
 } //end namespace
