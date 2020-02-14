@@ -169,8 +169,10 @@ namespace UnityEngine.StreamingImageSequence {
 
          
         public void SetParam(StreamingImageSequencePlayableAssetParam param) {
-            m_resolution = param.Resolution;
-            m_dimensionRatio = m_resolution.CalculateRatio();
+            if (m_resolution.Width > 0 && m_resolution.Height > 0) {
+                m_resolution = param.Resolution;
+                m_dimensionRatio = m_resolution.CalculateRatio();
+            }
             m_imagePaths = param.Pictures;
             m_folder = param.Folder;
             if (m_folder.StartsWith("Assets")) {
