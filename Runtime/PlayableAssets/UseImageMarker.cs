@@ -16,7 +16,6 @@ internal class UseImageMarker : Marker, INotification {
     } 
     
     internal StreamingImageSequencePlayableAsset GetPlayableAsset() {  return m_playableAsset; }
-
     
 //----------------------------------------------------------------------------------------------------------------------    
     internal void Refresh() {
@@ -27,15 +26,17 @@ internal class UseImageMarker : Marker, INotification {
         time = clip.start + m_info.GetLocalTime();
         
     }
+
+//----------------------------------------------------------------------------------------------------------------------    
+    internal bool IsImageUsed() { return m_info.IsUsed(); }
+    internal void SetImageUsed(bool used) { m_info.SetUsed(used); }
     
 //----------------------------------------------------------------------------------------------------------------------    
     public PropertyName id { get; } //use default implementation
 
     [SerializeField] private StreamingImageSequencePlayableAsset m_playableAsset = null;
     [SerializeField] private ImageAtFrameInfo m_info;
-    
-    //[TODO-sin: 2020-2-7] Don't show localTime in the inspector
-    
+       
     //[TODO-sin: 2020-2-7] Refresh the texture immediately when m_info.useImage is modified
 }
 
