@@ -335,6 +335,7 @@ namespace UnityEngine.StreamingImageSequence {
         }
 //---------------------------------------------------------------------------------------------------------------------
 
+#if UNITY_EDITOR
         internal void ResetMarkers() {
             TrackAsset track = m_timelineClip.parentTrack;
             List<UseImageMarker> markersToDelete = new List<UseImageMarker>();
@@ -356,6 +357,9 @@ namespace UnityEngine.StreamingImageSequence {
             markersToDelete.Clear();
             
             // time per frame
+            foreach (PlayableFrame frame in m_playableFrames) {
+                AssetDatabase.RemoveObjectFromAsset(frame);
+            }
             m_playableFrames = new List<PlayableFrame>();
 
             //Recalculate the number of frames and create the marker's ground truth data
@@ -365,12 +369,14 @@ namespace UnityEngine.StreamingImageSequence {
             for (int i = 0; i < numFrames; ++i) {
                 PlayableFrame controller = ScriptableObject.CreateInstance<PlayableFrame>();
                 controller.Init(this, timePerFrame * i);
+                AssetDatabase.AddObjectToAsset(controller, this);
                 m_playableFrames.Add(controller);
             }
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
            
         }
 
+#endif
         
 //---------------------------------------------------------------------------------------------------------------------
         void ResetTexture() {
@@ -470,13 +476,14 @@ namespace UnityEngine.StreamingImageSequence {
 #endif            
         }
 
-        
+
 //----------------------------------------------------------------------------------------------------------------------
 
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
         
-        //The ground truth for using/dropping an image in that frame
+        //ScriptableObjects that stores the ground truth for using/dropping an image in a particular frame
+        //We are using AssetDatabase.AddObjectToAsset to store the object 
         [SerializeField] List<PlayableFrame> m_playableFrames = null;
 
         [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
