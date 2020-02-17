@@ -70,12 +70,6 @@ namespace UnityEngine.StreamingImageSequence {
         ~StreamingImageSequencePlayableAsset() {
             Reset();
         }
-//----------------------------------------------------------------------------------------------------------------------        
-        //Calculate Image Sequence Time, which is normalized [0..1] 
-        private double GlobalTimeToCurveTime(double globalTime) {
-            double localTime = m_timelineClip.ToLocalTime(globalTime);
-            return LocalTimeToCurveTime(localTime);
-        }
 
 //----------------------------------------------------------------------------------------------------------------------
         private double LocalTimeToCurveTime(double localTime) {
@@ -94,6 +88,16 @@ namespace UnityEngine.StreamingImageSequence {
 
         //Calculate the used image index for the passed localTime
         internal int LocalTimeToImageIndex(double localTime) {
+            //Try to check if this frame is "dropped", so that we should use the image in the prev frame
+            float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
+            double timePerFrame = m_timelineClip.timeScale / (fps );
+            int frameIndex = (int) (localTime / timePerFrame);
+            while (!m_playableFrames[frameIndex].IsUsed() && frameIndex > 0) {
+                --frameIndex;
+                localTime = frameIndex * timePerFrame;
+            }
+
+
             double imageSequenceTime = LocalTimeToCurveTime(localTime);
             int count = m_imagePaths.Count;
             int index = (int)(count * imageSequenceTime);
@@ -257,21 +261,21 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------        
         internal string LoadRequest(int index, bool isBlocking, out ReadResult readResult) {
-            const int texType = StreamingImageSequenceConstants.TEXTURE_TYPE_FULL;
+            const int TEX_TYPE = StreamingImageSequenceConstants.TEXTURE_TYPE_FULL;
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
             if (m_loadRequested == null) {
                 m_loadRequested = new bool[m_imagePaths.Count];
             }
 
-            StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, texType);
+            StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, TEX_TYPE);
             //Debug.Log("readResult.readStatus " + readResult.readStatus + "Loading " + filename);
             if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_NONE) {
                 ImageLoadBGTask.Queue(filename);
             }
             if ( isBlocking ) {
                 while (readResult.ReadStatus != StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
-                    StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, texType);
+                    StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, TEX_TYPE);
                 }
             }
 #if false //UNITY_EDITOR
