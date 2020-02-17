@@ -30,8 +30,12 @@ namespace UnityEngine.StreamingImageSequence {
         
         
 //----------------------------------------------------------------------------------------------------------------------
+        //Called when the PlayableAsset is changed: (moved, resized)
         public void OnGraphStart(Playable playable) {
+            float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
+            m_timePerFrame = m_timelineClip.timeScale / fps;
            
+            //[TODO-sin: 2020-2-17] Change the size of m_playableFrames if necessary
         }
         
         public void OnGraphStop(Playable playable){
@@ -89,14 +93,13 @@ namespace UnityEngine.StreamingImageSequence {
         //Calculate the used image index for the passed localTime
         internal int LocalTimeToImageIndex(double localTime) {
             //Try to check if this frame is "dropped", so that we should use the image in the prev frame
-            float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
-            double timePerFrame = m_timelineClip.timeScale / (fps );
-            int frameIndex = (int) (localTime / timePerFrame);
-            while (!m_playableFrames[frameIndex].IsUsed() && frameIndex > 0) {
-                --frameIndex;
-                localTime = frameIndex * timePerFrame;
+            int frameIndex = (int) (localTime / m_timePerFrame);
+            if (frameIndex < m_playableFrames.Count) {
+                while (!m_playableFrames[frameIndex].IsUsed() && frameIndex > 0) {
+                    --frameIndex;
+                    localTime = frameIndex * m_timePerFrame;
+                }
             }
-
 
             double imageSequenceTime = LocalTimeToCurveTime(localTime);
             int count = m_imagePaths.Count;
@@ -369,11 +372,10 @@ namespace UnityEngine.StreamingImageSequence {
 
             //Recalculate the number of frames and create the marker's ground truth data
             float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
-            float timePerFrame = 1.0f / fps;
             int numFrames = (int) (m_timelineClip.duration * fps);
             for (int i = 0; i < numFrames; ++i) {
                 PlayableFrame controller = ScriptableObject.CreateInstance<PlayableFrame>();
-                controller.Init(this, timePerFrame * i);
+                controller.Init(this, m_timePerFrame * i);
                 AssetDatabase.AddObjectToAsset(controller, this);
                 m_playableFrames.Add(controller);
             }
@@ -509,8 +511,10 @@ namespace UnityEngine.StreamingImageSequence {
 
         //[TODO-sin: 2020-1-30] Turn this to a non-public var
         public int m_loadingIndex;
-		private int m_lastIndex;
+
+        private int m_lastIndex;
         private bool m_verified;
+        private double m_timePerFrame = 0;
 
         Texture2D m_texture = null;
 
