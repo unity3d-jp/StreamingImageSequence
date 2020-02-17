@@ -339,7 +339,7 @@ namespace UnityEngine.StreamingImageSequence {
                 if (null == marker)
                     continue;
                 
-                ImageAtFrameInfo owner = marker.GetOwner();
+                PlayableFrame owner = marker.GetOwner();
                 if (null == owner)
                     continue;
 
@@ -356,16 +356,16 @@ namespace UnityEngine.StreamingImageSequence {
             markersToDelete.Clear();
             
             // time per frame
-            m_imageAtFrameInfoList = new List<ImageAtFrameInfo>();
+            m_playableFrames = new List<PlayableFrame>();
 
             //Recalculate the number of frames and create the marker's ground truth data
             float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
             float timePerFrame = 1.0f / fps;
             int numFrames = (int) (m_timelineClip.duration * fps);
             for (int i = 0; i < numFrames; ++i) {
-                ImageAtFrameInfo info = ScriptableObject.CreateInstance<ImageAtFrameInfo>();
-                info.Init(this, timePerFrame * i);
-                m_imageAtFrameInfoList.Add(info);
+                PlayableFrame controller = ScriptableObject.CreateInstance<PlayableFrame>();
+                controller.Init(this, timePerFrame * i);
+                m_playableFrames.Add(controller);
             }
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
            
@@ -477,7 +477,7 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] List<string> m_imagePaths;
         
         //The ground truth for using/dropping an image in that frame
-        [SerializeField] List<ImageAtFrameInfo> m_imageAtFrameInfoList = null;
+        [SerializeField] List<PlayableFrame> m_playableFrames = null;
 
         [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;
@@ -514,8 +514,8 @@ namespace UnityEngine.StreamingImageSequence {
 //1. Derive this class from PlayableAsset
 //2. Declare UnityEditor.DefaultAsset variable 
 
-//[Note-Sin: 2020-2-17] PlayableFrameController
-//StreamingImageSequencePlayableAsset owns PlayableFrameController, which in turn owns UseImageMarker
+//[Note-Sin: 2020-2-17] PlayableFrame
+//StreamingImageSequencePlayableAsset owns PlayableFrame, which in turn owns UseImageMarker
 
 
 
