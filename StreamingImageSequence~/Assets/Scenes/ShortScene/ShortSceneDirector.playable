@@ -236,7 +236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbc7f66ed2f16414d967962472e39fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_useImage: 1
+  m_useImage: 0
   m_localTime: 0.5625000000000007
   m_playableAsset: {fileID: 2676715584079236920}
   m_marker: {fileID: 6471227586153852069}
@@ -361,7 +361,7 @@ MonoBehaviour:
   - {fileID: 4405952544847716228}
   - {fileID: -3203438250879542736}
   m_version: 1
-  m_time: 0
+  m_time: 0.5833333730697632
   m_timelineDefaultAsset: {fileID: 102900000, guid: 28ebc38bfdd481147934ea04bfc829bb,
     type: 3}
   m_loadingIndex: 6
@@ -453,7 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbc7f66ed2f16414d967962472e39fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_useImage: 1
+  m_useImage: 0
   m_localTime: 0.5000000000000006
   m_playableAsset: {fileID: 2676715584079236920}
   m_marker: {fileID: -4395596163201338418}
