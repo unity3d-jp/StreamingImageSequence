@@ -142,7 +142,10 @@ namespace UnityEngine.StreamingImageSequence {
             m_loadingIndex = -1;
             m_lastIndex = -1;
             m_loadRequested = null;
-            ResetTexture();
+            if (null != m_texture) {
+                ResetTexture();
+            }
+
             m_resolution = new ImageDimensionInt();
         }
         
@@ -380,10 +383,8 @@ namespace UnityEngine.StreamingImageSequence {
         
 //---------------------------------------------------------------------------------------------------------------------
         void ResetTexture() {
-            if (null != m_texture) {
-                StreamingImageSequencePlugin.ResetLoadedTexture(m_texture.GetInstanceID());
-                m_texture = null;
-            }
+            StreamingImageSequencePlugin.ResetLoadedTexture(m_texture.GetInstanceID());
+            m_texture = null;
         }
 
 //---------------------------------------------------------------------------------------------------------------------
