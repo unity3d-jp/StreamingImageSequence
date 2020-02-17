@@ -487,8 +487,7 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
         
-        //ScriptableObjects that stores the ground truth for using/dropping an image in a particular frame
-        //We are using AssetDatabase.AddObjectToAsset to store the object 
+        //The ground truth for using/dropping an image in a particular frame. See the notes below
         [SerializeField] List<PlayableFrame> m_playableFrames = null;
 
         [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
@@ -529,7 +528,7 @@ namespace UnityEngine.StreamingImageSequence {
 //2. Declare UnityEditor.DefaultAsset variable 
 
 //[Note-Sin: 2020-2-17] PlayableFrame
-//StreamingImageSequencePlayableAsset owns PlayableFrame, which in turn owns UseImageMarker
-
-
+//StreamingImageSequencePlayableAsset owns PlayableFrame, which owns UseImageMarker.
+//PlayableFrame is a ScriptableObject, which is stored inside StreamingImageSequencePlayableAsset using
+//AssetDatabase.AddObjectToAsset
 
