@@ -9,25 +9,31 @@ namespace UnityEngine.StreamingImageSequence {
 public class UseImageMarkerInspector: Editor {
 
     void OnEnable() {
-        m_asset = target as UseImageMarker;
-        m_useImageProperty = serializedObject.FindProperty("m_info.m_useImage");
-        m_useImageContent = new GUIContent("Use Image");
+        int numTargets = targets.Length;
+        m_assets = new UseImageMarker[numTargets];
+        for (int i = 0; i < numTargets; i++) {
+            m_assets[i] = targets[i] as UseImageMarker;
+        }
     }
 
 //----------------------------------------------------------------------------------------------------------------------
     public override void OnInspectorGUI() {
         //base.OnInspectorGUI();
-        serializedObject.Update ();
+        bool prevUseImage= m_assets[0].IsImageUsed();
+        bool useImage = EditorGUILayout.Toggle("Use Image", prevUseImage);
+        if (useImage == prevUseImage)
+            return;
 
-        EditorGUILayout.PropertyField(m_useImageProperty, m_useImageContent);
-        serializedObject.ApplyModifiedProperties ();
+        //Set all selected objects
+        foreach (UseImageMarker m in m_assets) {
+            m.SetImageUsed(useImage);
+        }
+
     }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    private UseImageMarker m_asset = null;
-    private GUIContent m_useImageContent = null;
-    private SerializedProperty m_useImageProperty; //For multiple object editing
+    private UseImageMarker[] m_assets = null;
 }
 
 } //end namespace
