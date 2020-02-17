@@ -31,10 +31,7 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------
         public void OnGraphStart(Playable playable) {
-            
-            //refresh time per frame
-            float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
-            m_timePerFrame = 1.0 / fps;
+           
         }
         
         public void OnGraphStop(Playable playable){
@@ -353,20 +350,20 @@ namespace UnityEngine.StreamingImageSequence {
                 track.DeleteMarker(marker);
             }
             markersToDelete.Clear();
-
             
             // time per frame
             m_imageAtFrameInfoList = new List<ImageAtFrameInfo>();
-            double markerTime = m_timelineClip.start; 
-            while (markerTime < m_timelineClip.duration) {
-                ImageAtFrameInfo info = new ImageAtFrameInfo(markerTime);
 
+            //Recalculate the number of frames and create the marker's ground truth data
+            float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
+            float timePerFrame = 1.0f / fps;
+            int numFrames = (int) (m_timelineClip.duration * fps);
+            for (int i = 0; i < numFrames; ++i) {
+                ImageAtFrameInfo info = new ImageAtFrameInfo(timePerFrame * i);
                 m_imageAtFrameInfoList.Add(info);
-                markerTime += m_timePerFrame;
             }
-            
-            RecreateMarkers();
-            
+           
+            RecreateMarkers();            
         }
 
         
@@ -512,7 +509,6 @@ namespace UnityEngine.StreamingImageSequence {
         private bool m_verified;
 
         Texture2D m_texture = null;
-        private double m_timePerFrame = 0;
 
         private const int STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION = 1;
 
