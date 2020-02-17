@@ -361,6 +361,8 @@ namespace UnityEngine.StreamingImageSequence {
             
             // time per frame
             foreach (PlayableFrame frame in m_playableFrames) {
+                if (!frame)
+                    continue;
                 AssetDatabase.RemoveObjectFromAsset(frame);
             }
             m_playableFrames = new List<PlayableFrame>();
