@@ -344,13 +344,9 @@ namespace UnityEngine.StreamingImageSequence {
                     continue;
                 
                 PlayableFrame owner = marker.GetOwner();
-                if (null == owner)
-                    continue;
-
-                if (this != owner.GetPlayableAsset()) {
-                    continue;
+                if (null == owner || this == owner.GetPlayableAsset()) {
+                    markersToDelete.Add(marker);
                 }
-                markersToDelete.Add(marker);
 
             }
             //Delete all markers in the parent track that has the assigned PlayableAsset set to this object
