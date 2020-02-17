@@ -41,8 +41,13 @@ internal class StreamingImageSequencePreview : IDisposable {
         int heightPerPreviewImage = (int)visibleRect.height;
 
         //Set the number of preview images available for this clip, at least 1
+        float fps = clip.parentTrack.timelineAsset.editorSettings.fps;
+        int numFrames = (int)(clip.duration * fps);
+
         int numAllPreviewImages = Mathf.Max(Mathf.FloorToInt(fullWidth / widthPerPreviewImage),1);
-        numAllPreviewImages = Mathf.Min(numAllPreviewImages, imagePaths.Count);
+        numAllPreviewImages = Mathf.Min(numAllPreviewImages, numFrames);
+        if (numAllPreviewImages <= 0)
+            return;
         
         //Find the place to draw the preview image[0], which might not be rendered
         float xOffset = (float)(fullWidth * (m_visibleLocalStartTime / scaledClipDuration));
