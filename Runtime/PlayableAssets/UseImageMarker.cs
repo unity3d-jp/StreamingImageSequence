@@ -4,38 +4,38 @@ using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 namespace UnityEngine.StreamingImageSequence {
+
 [Serializable]
 [CustomStyle("UseImageMarker")]
 internal class UseImageMarker : Marker, INotification {
 //----------------------------------------------------------------------------------------------------------------------    
-    internal void Setup(StreamingImageSequencePlayableAsset playableAsset, ImageAtFrameInfo info) {
-        m_playableAsset = playableAsset;
-        m_info = info;
+
+    internal void Init(ImageAtFrameInfo info) {
+        m_owner = info;
     } 
-    
-    internal StreamingImageSequencePlayableAsset GetPlayableAsset() {  return m_playableAsset; }
+
     
 //----------------------------------------------------------------------------------------------------------------------    
     internal void Refresh() {
-        if (null == m_playableAsset)
+        if (null == m_owner)
             return;
         
-        TimelineClip clip = m_playableAsset.GetTimelineClip();
-        time = clip.start + m_info.GetLocalTime();
-        
+        TimelineClip clip = m_owner.GetPlayableAsset().GetTimelineClip();
+        time = clip.start + m_owner.GetLocalTime();       
+        Debug.Log("Refresh");
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
-    internal bool IsImageUsed() { return m_info.IsUsed(); }
-    internal void SetImageUsed(bool used) { m_info.SetUsed(used); }
+    internal ImageAtFrameInfo GetOwner() { return m_owner;}
+    internal bool IsImageUsed() { return m_owner && m_owner.IsUsed(); }
+    internal void SetImageUsed(bool used) { m_owner.SetUsed(used); }
     
 //----------------------------------------------------------------------------------------------------------------------    
     public PropertyName id { get; } //use default implementation
 
-    [SerializeField] private StreamingImageSequencePlayableAsset m_playableAsset = null;
-    [SerializeField] private ImageAtFrameInfo m_info;
+    [SerializeField] private ImageAtFrameInfo m_owner;
        
-    //[TODO-sin: 2020-2-7] Refresh the texture immediately when m_info.useImage is modified
+    //[TODO-sin: 2020-2-7] Refresh the texture immediately when m_owner.useImage is modified
 }
 
 } //end namespace

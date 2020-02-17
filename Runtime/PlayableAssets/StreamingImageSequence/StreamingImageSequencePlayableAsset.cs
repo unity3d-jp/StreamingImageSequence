@@ -335,11 +335,15 @@ namespace UnityEngine.StreamingImageSequence {
             TrackAsset track = m_timelineClip.parentTrack;
             List<UseImageMarker> markersToDelete = new List<UseImageMarker>();
             foreach (IMarker m in track.GetMarkers()) {
-                if (!(m is UseImageMarker))
+                UseImageMarker marker = m as UseImageMarker;
+                if (null == marker)
                     continue;
                 
-                UseImageMarker marker = m as UseImageMarker;
-                if (this != marker.GetPlayableAsset()) {
+                ImageAtFrameInfo owner = marker.GetOwner();
+                if (null == owner)
+                    continue;
+
+                if (this != owner.GetPlayableAsset()) {
                     continue;
                 }
                 markersToDelete.Add(marker);
@@ -359,26 +363,15 @@ namespace UnityEngine.StreamingImageSequence {
             float timePerFrame = 1.0f / fps;
             int numFrames = (int) (m_timelineClip.duration * fps);
             for (int i = 0; i < numFrames; ++i) {
-                ImageAtFrameInfo info = new ImageAtFrameInfo(timePerFrame * i);
+                ImageAtFrameInfo info = ScriptableObject.CreateInstance<ImageAtFrameInfo>();
+                info.Init(this, timePerFrame * i);
                 m_imageAtFrameInfoList.Add(info);
             }
+            TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
            
-            RecreateMarkers();            
         }
 
         
-//---------------------------------------------------------------------------------------------------------------------
-        //Recreate markers based on the info in m_imageInFrameInfoList
-        private void RecreateMarkers() {
-            foreach (ImageAtFrameInfo info in m_imageAtFrameInfoList) {
-                UseImageMarker marker = m_timelineClip.parentTrack.CreateMarker<UseImageMarker>(info.GetLocalTime());
-                marker.Setup(this, info);
-            }
-            TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
-            
-        }
-
-
 //---------------------------------------------------------------------------------------------------------------------
         void ResetTexture() {
             if (null != m_texture) {
@@ -483,7 +476,8 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
         
-        [SerializeField] List<ImageAtFrameInfo> m_imageAtFrameInfoList; //The ground truth for using/dropping an image in that frame
+        //The ground truth for using/dropping an image in that frame
+        [SerializeField] List<ImageAtFrameInfo> m_imageAtFrameInfoList = null;
 
         [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;
@@ -519,6 +513,9 @@ namespace UnityEngine.StreamingImageSequence {
 //[Note-Sin: 2019-12-23] We need two things, in order to enable folder drag/drop to the timeline Window
 //1. Derive this class from PlayableAsset
 //2. Declare UnityEditor.DefaultAsset variable 
+
+//[Note-Sin: 2020-2-17] PlayableFrameController
+//StreamingImageSequencePlayableAsset owns PlayableFrameController, which in turn owns UseImageMarker
 
 
 
