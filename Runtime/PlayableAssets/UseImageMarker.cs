@@ -4,11 +4,9 @@ using UnityEngine.Timeline;
 using UnityEngine.UI;
 
 namespace UnityEngine.StreamingImageSequence {
-
 [Serializable]
+[CustomStyle("UseImageMarker")]
 internal class UseImageMarker : Marker, INotification {
-
-
 //----------------------------------------------------------------------------------------------------------------------    
     internal void Setup(StreamingImageSequencePlayableAsset playableAsset, ImageAtFrameInfo info) {
         m_playableAsset = playableAsset;
