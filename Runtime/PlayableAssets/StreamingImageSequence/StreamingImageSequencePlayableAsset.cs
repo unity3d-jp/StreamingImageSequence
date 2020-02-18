@@ -18,7 +18,6 @@ namespace UnityEngine.StreamingImageSequence {
     {
         
         
-//----------------------------------------------------------------------------------------------------------------------
         public void OnBehaviourDelay(Playable playable, FrameData info) {
 
         }
@@ -28,9 +27,17 @@ namespace UnityEngine.StreamingImageSequence {
         public void OnBehaviourPlay(Playable playable, FrameData info){
 
         }
-        public void OnGraphStart(Playable playable){
-
+        
+        
+//----------------------------------------------------------------------------------------------------------------------
+        //Called when the PlayableAsset is changed: (moved, resized)
+        public void OnGraphStart(Playable playable) {
+            float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
+            m_timePerFrame = m_timelineClip.timeScale / fps;
+           
+            //[TODO-sin: 2020-2-17] Change the size of m_playableFrames if necessary
         }
+        
         public void OnGraphStop(Playable playable){
 
         }
@@ -67,12 +74,6 @@ namespace UnityEngine.StreamingImageSequence {
         ~StreamingImageSequencePlayableAsset() {
             Reset();
         }
-//----------------------------------------------------------------------------------------------------------------------        
-        //Calculate Image Sequence Time, which is normalized [0..1] 
-        private double GlobalTimeToCurveTime(double globalTime) {
-            double localTime = m_timelineClip.ToLocalTime(globalTime);
-            return LocalTimeToCurveTime(localTime);
-        }
 
 //----------------------------------------------------------------------------------------------------------------------
         private double LocalTimeToCurveTime(double localTime) {
@@ -91,6 +92,15 @@ namespace UnityEngine.StreamingImageSequence {
 
         //Calculate the used image index for the passed localTime
         internal int LocalTimeToImageIndex(double localTime) {
+            //Try to check if this frame is "dropped", so that we should use the image in the prev frame
+            int frameIndex = (int) (localTime / m_timePerFrame);
+            if (frameIndex >= 0 && null!=m_playableFrames && frameIndex < m_playableFrames.Count) {
+                while (!m_playableFrames[frameIndex].IsUsed() && frameIndex > 0) {
+                    --frameIndex;
+                    localTime = frameIndex * m_timePerFrame;
+                }
+            }
+
             double imageSequenceTime = LocalTimeToCurveTime(localTime);
             int count = m_imagePaths.Count;
             int index = (int)(count * imageSequenceTime);
@@ -135,7 +145,10 @@ namespace UnityEngine.StreamingImageSequence {
             m_loadingIndex = -1;
             m_lastIndex = -1;
             m_loadRequested = null;
-            ResetTexture();
+            if (null != m_texture) {
+                ResetTexture();
+            }
+
             m_resolution = new ImageDimensionInt();
         }
         
@@ -254,21 +267,21 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------        
         internal string LoadRequest(int index, bool isBlocking, out ReadResult readResult) {
-            const int texType = StreamingImageSequenceConstants.TEXTURE_TYPE_FULL;
+            const int TEX_TYPE = StreamingImageSequenceConstants.TEXTURE_TYPE_FULL;
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
             if (m_loadRequested == null) {
                 m_loadRequested = new bool[m_imagePaths.Count];
             }
 
-            StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, texType);
+            StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, TEX_TYPE);
             //Debug.Log("readResult.readStatus " + readResult.readStatus + "Loading " + filename);
             if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_NONE) {
                 ImageLoadBGTask.Queue(filename);
             }
             if ( isBlocking ) {
                 while (readResult.ReadStatus != StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
-                    StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, texType);
+                    StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, TEX_TYPE);
                 }
             }
 #if false //UNITY_EDITOR
@@ -326,13 +339,56 @@ namespace UnityEngine.StreamingImageSequence {
             }
             return filePath;
         }
+//---------------------------------------------------------------------------------------------------------------------
 
+#if UNITY_EDITOR
+        internal void ResetMarkers() {
+            TrackAsset track = m_timelineClip.parentTrack;
+            List<UseImageMarker> markersToDelete = new List<UseImageMarker>();
+            foreach (IMarker m in track.GetMarkers()) {
+                UseImageMarker marker = m as UseImageMarker;
+                if (null == marker)
+                    continue;
+                
+                PlayableFrame owner = marker.GetOwner();
+                if (null == owner || this == owner.GetPlayableAsset()) {
+                    markersToDelete.Add(marker);
+                }
+
+            }
+            //Delete all markers in the parent track that has the assigned PlayableAsset set to this object
+            foreach (UseImageMarker marker in markersToDelete) {
+                track.DeleteMarker(marker);
+            }
+            markersToDelete.Clear();
+            
+            // time per frame
+            foreach (PlayableFrame frame in m_playableFrames) {
+                if (!frame)
+                    continue;
+                AssetDatabase.RemoveObjectFromAsset(frame);
+            }
+            m_playableFrames = new List<PlayableFrame>();
+
+            //Recalculate the number of frames and create the marker's ground truth data
+            float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
+            int numFrames = (int) (m_timelineClip.duration * fps);
+            for (int i = 0; i < numFrames; ++i) {
+                PlayableFrame controller = ScriptableObject.CreateInstance<PlayableFrame>();
+                controller.Init(this, m_timePerFrame * i);
+                AssetDatabase.AddObjectToAsset(controller, this);
+                m_playableFrames.Add(controller);
+            }
+            TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
+           
+        }
+
+#endif
+        
 //---------------------------------------------------------------------------------------------------------------------
         void ResetTexture() {
-            if (null != m_texture) {
-                StreamingImageSequencePlugin.ResetLoadedTexture(m_texture.GetInstanceID());
-                m_texture = null;
-            }
+            StreamingImageSequencePlugin.ResetLoadedTexture(m_texture.GetInstanceID());
+            m_texture = null;
         }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -425,11 +481,15 @@ namespace UnityEngine.StreamingImageSequence {
 #endif            
         }
 
-        
+
 //----------------------------------------------------------------------------------------------------------------------
 
         [SerializeField] private string m_folder;
         [SerializeField] List<string> m_imagePaths;
+        
+        //The ground truth for using/dropping an image in a particular frame. See the notes below
+        [SerializeField] List<PlayableFrame> m_playableFrames = null;
+
         [SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;
 
@@ -450,8 +510,10 @@ namespace UnityEngine.StreamingImageSequence {
 
         //[TODO-sin: 2020-1-30] Turn this to a non-public var
         public int m_loadingIndex;
-		private int m_lastIndex;
+
+        private int m_lastIndex;
         private bool m_verified;
+        private double m_timePerFrame = 0;
 
         Texture2D m_texture = null;
 
@@ -465,5 +527,8 @@ namespace UnityEngine.StreamingImageSequence {
 //1. Derive this class from PlayableAsset
 //2. Declare UnityEditor.DefaultAsset variable 
 
-
+//[Note-Sin: 2020-2-17] PlayableFrame
+//StreamingImageSequencePlayableAsset owns PlayableFrame, which owns UseImageMarker.
+//PlayableFrame is a ScriptableObject, which is stored inside StreamingImageSequencePlayableAsset using
+//AssetDatabase.AddObjectToAsset
 
