@@ -94,7 +94,7 @@ namespace UnityEngine.StreamingImageSequence {
         internal int LocalTimeToImageIndex(double localTime) {
             //Try to check if this frame is "dropped", so that we should use the image in the prev frame
             int frameIndex = (int) (localTime / m_timePerFrame);
-            if (frameIndex >= 0 && frameIndex < m_playableFrames.Count) {
+            if (frameIndex >= 0 && null!=m_playableFrames && frameIndex < m_playableFrames.Count) {
                 while (!m_playableFrames[frameIndex].IsUsed() && frameIndex > 0) {
                     --frameIndex;
                     localTime = frameIndex * m_timePerFrame;
