@@ -1,12 +1,22 @@
->>>
-**_Streaming Image Sequence Documentation_**
+![demo](Documentation~/images/Demo.gif)
 
-Work in progress
+**Streaming Image Sequence**
 
-## Document revision history
->>>
- 
-|Date|Reason|
-|---|---|
-|Oct 10, 2019|Document created. Matches package version 0.0.1-preview|
->>>
+Streaming Image Sequence is a package for playing sequential image sequences in Unity Timeline 
+easily without making Unity 2D Sprites.
+
+#Supported Platforms
+
+1. Windows
+2. Mac
+
+#Basic Usage 
+
+- How to use
+- How to import
+- Component
+
+
+
+
+
