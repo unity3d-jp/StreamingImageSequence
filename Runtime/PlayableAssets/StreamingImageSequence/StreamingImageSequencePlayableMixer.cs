@@ -19,7 +19,7 @@ namespace UnityEngine.StreamingImageSequence
 
     // A behaviour that is attached to a playable
 
-    public class StreamingImageSequencePlayableMixer : PlayableBehaviour
+    internal class StreamingImageSequencePlayableMixer : PlayableBehaviour
     {
 
         internal PlayableDirector m_PlayableDirector;

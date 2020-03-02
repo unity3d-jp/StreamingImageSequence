@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Playables;
+﻿using UnityEngine.Playables;
 using UnityEngine.Timeline;
+
 namespace UnityEngine.StreamingImageSequence
 { 
     [TrackClipType(typeof(StreamingImageSequencePlayableAsset))]
     [TrackBindingType(typeof(StreamingImageSequenceNativeRenderer))]
     [TrackColor(0.776f, 0.263f, 0.09f)]
-    public class StreamingImageSequenceTrack : TrackAsset
+    internal class StreamingImageSequenceTrack : TrackAsset
     {
         LoaderPeriodicJob m_LoaderPeriodicJob;
         public StreamingImageSequenceTrack()
