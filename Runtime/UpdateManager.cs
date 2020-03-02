@@ -542,13 +542,13 @@ namespace UnityEngine.StreamingImageSequence
 
     }
 
-    public class PlayableDirectorStatus
+    internal class PlayableDirectorStatus
     {
         public double m_lastDirectorTick = -0.02f;
     }
 
 
-    public abstract class BackGroundTask
+    internal abstract class BackGroundTask
     {
         public abstract void Execute();
     }
