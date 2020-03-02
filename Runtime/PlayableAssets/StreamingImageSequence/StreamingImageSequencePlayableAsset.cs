@@ -181,7 +181,7 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
 
          
-        public void SetParam(StreamingImageSequencePlayableAssetParam param) {
+        internal void SetParam(StreamingImageSequencePlayableAssetParam param) {
             if (m_resolution.Width > 0 && m_resolution.Height > 0) {
                 m_resolution = param.Resolution;
                 m_dimensionRatio = m_resolution.CalculateRatio();

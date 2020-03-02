@@ -60,7 +60,7 @@ namespace UnityEditor.StreamingImageSequence  {
 
     }
 
-    public class BGJobCacheParam
+    internal class BGJobCacheParam
     {
         public StreamingImageSequencePlayableAsset m_asset;
         public UInt32[] m_collorArray;
