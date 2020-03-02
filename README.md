@@ -32,6 +32,7 @@ easily without making Unity 2D Sprites.
 1. The image sequences in the folder will then be shown inside the Image object, 
    and the Image object will be played/enabled/disabled as we play the Timeline or drag the time slider of the Timeline window
 
+For other ways for importing images, see [ImportingImages](Documentation~/en/ImportingImages.md)
 
 
 # StreamingImageSequence PlayableAsset

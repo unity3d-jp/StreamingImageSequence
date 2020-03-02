@@ -21,18 +21,19 @@ easily without making Unity 2D Sprites.
    
 1. Drag and Drop the sequential images folder under *StreamingAssets* to the StreamingImageSequenceTrack added previously
  
-   <img src="images/DragAndDropStreamingAssets.png" width=640>  
+   <img src="images/DragAndDropStreamingAssets.png" width=960>  
    
 1. Create an Image object by clicking the menu: GameObject -> UI -> Image
 
 1. Drag and drop the Image object to the object property of StreamingImageSequenceTrack, and click *Create StreamingImageSequenceNativeRenderer on Image* 
 
-   <img src="images/CreateStreamingImageSequenceNativeRenderer.png" width=640>  
+   <img src="images/CreateStreamingImageSequenceNativeRenderer.png" width=960>  
 
 1. The image sequences in the folder will then be shown inside the Image object, 
    and the Image object will be played/enabled/disabled as we play the Timeline or drag the time slider of the Timeline window
 
 
+For other ways for importing images, see [ImportingImages](en/ImportingImages.md)
 
 # StreamingImageSequence PlayableAsset
 
