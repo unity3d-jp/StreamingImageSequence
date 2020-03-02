@@ -4,7 +4,7 @@ using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence {
 
-    public class ImageSequenceImportWindow : EditorWindow {
+    internal class ImageSequenceImportWindow : EditorWindow {
 
         void OnEnable() {
             m_headerStyle = new GUIStyle(EditorStyles.label) {

@@ -11,7 +11,7 @@ using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence {
 
-    public class StreamingImageSequenceToSpriteAnimation  {
+    internal class StreamingImageSequenceToSpriteAnimation  {
 
         static List<Object> orgList;
         static TimelineAsset newAsset;
