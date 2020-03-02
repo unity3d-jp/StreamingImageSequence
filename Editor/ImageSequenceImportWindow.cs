@@ -32,7 +32,7 @@ namespace UnityEditor.StreamingImageSequence {
             }
         }
 
-        internal static void SetParam(PictureFileImporterParam param) {
+        internal static void SetParam(ImageFileImporterParam param) {
             m_importerParam = param;
         }
 
@@ -86,7 +86,7 @@ namespace UnityEditor.StreamingImageSequence {
             //Copy Toggle
             EditorGUILayout.BeginHorizontal();
             // C#var options = new GUILayoutOption[] { GUILayout.MaxWidth(Screen.width- space), GUILayout.MinWidth(120.0F) };
-            EditorGUI.BeginDisabledGroup(m_importerParam.mode == PictureFileImporterParam.Mode.SpriteAnimation);
+            EditorGUI.BeginDisabledGroup(m_importerParam.mode == ImageFileImporterParam.Mode.SpriteAnimation);
             string noCopyText = @"Don't copy(Use original).";
             if (m_importerParam.DoNotCopy) {
                 noCopyText += " Warning! Copying external assets inside Unity project IS recommended.";
@@ -135,7 +135,7 @@ namespace UnityEditor.StreamingImageSequence {
 
 //---------------------------------------------------------------------------------------------------------------------
         private bool m_isSelectingFolder;
-        static PictureFileImporterParam m_importerParam = new PictureFileImporterParam();
+        static ImageFileImporterParam m_importerParam = new ImageFileImporterParam();
 
         //Styles
         private GUIStyle m_headerStyle;
