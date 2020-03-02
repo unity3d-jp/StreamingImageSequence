@@ -11,7 +11,7 @@ namespace UnityEditor.StreamingImageSequence {
 
 
 [ScriptedImporter(1, "jstimeline")]
-public class JstimelineImporter : ScriptedImporter
+internal class JstimelineImporter : ScriptedImporter
 {
     public override void OnImportAsset(AssetImportContext ctx) {
         //Ignore test assets

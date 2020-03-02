@@ -11,7 +11,7 @@ namespace UnityEditor.StreamingImageSequence
 #if UNITY_EDITOR
     [InitializeOnLoad]
 
-    public class EditorPeriodicJob : PeriodicJob
+    internal class EditorPeriodicJob : PeriodicJob
     {
         private static Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam> m_streamingImageSequencePlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
 
