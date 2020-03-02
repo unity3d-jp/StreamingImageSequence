@@ -1,18 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
-using System.Threading;
-using System.Runtime.InteropServices;
+﻿using System;
 using UnityEngine;
-using UnityEngine.Assertions;
-using System.IO;
 using UnityEngine.StreamingImageSequence;
 
-namespace UnityEditor.StreamingImageSequence
-{
+namespace UnityEditor.StreamingImageSequence  {
 
 
-    public class BGJobCacheChecker : BackGroundTask
+    internal class BGJobCacheChecker : BackGroundTask
     {
 
         BGJobCacheParam m_param;
