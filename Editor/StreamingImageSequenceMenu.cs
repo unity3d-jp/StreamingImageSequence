@@ -5,10 +5,10 @@ using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence {
 
-    public static class StreamingImageSequenceMenu
+    internal static class StreamingImageSequenceMenu
     {
-        public const string PNG_EXTENSION = "png";
-        public const string TGA_EXTENSION = "tga";
+        private const string PNG_EXTENSION = "png";
+        private const string TGA_EXTENSION = "tga";
 
         [MenuItem(StreamingImageSequenceConstants.MENU_PATH +  "Create Clip", false, 1)]
         private static void RegisterFilesAndCreateStreamingImageSequence()

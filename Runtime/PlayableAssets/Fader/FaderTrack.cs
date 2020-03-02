@@ -14,7 +14,7 @@ namespace UnityEngine.StreamingImageSequence
     [TrackBindingType(typeof(Image))]
     [TrackColor(0.263f, 0.09f, 0.263f)]
 
-    public class FaderTrack : TrackAsset
+    internal class FaderTrack : TrackAsset
     {
         public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
         {

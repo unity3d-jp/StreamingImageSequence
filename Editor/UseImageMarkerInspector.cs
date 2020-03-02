@@ -6,7 +6,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 [CustomEditor(typeof(UseImageMarker), true)]
 [CanEditMultipleObjects]
-public class UseImageMarkerInspector: Editor {
+internal class UseImageMarkerInspector: Editor {
 
     void OnEnable() {
         int numTargets = targets.Length;

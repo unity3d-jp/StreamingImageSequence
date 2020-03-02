@@ -19,7 +19,8 @@ namespace UnityEngine.StreamingImageSequence
 
     // A behaviour that is attached to a playable
 
-    public class StreamingImageSequencePlayableBehaviour : PlayableBehaviour
+    //[TODO-sin: 2020-3-2] Never used ?
+    internal class StreamingImageSequencePlayableBehaviour : PlayableBehaviour
     {
         static string strPorjectFolder = null;
 
