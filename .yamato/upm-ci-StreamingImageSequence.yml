@@ -71,7 +71,9 @@ test_{{ platform.name }}_{{ editor.version }}:
   triggers:
     branches:
       only:
-      - "/.*/"
+        - "/.*/"
+      except:
+        - "dev"      
   artifacts:
     {{ yamato_name }}_test_results:
       paths:
