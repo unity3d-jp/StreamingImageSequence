@@ -32,12 +32,11 @@ easily without making Unity 2D Sprites.
 1. The image sequences in the folder will then be shown inside the Image object, 
    and the Image object will be played/enabled/disabled as we play the Timeline or drag the time slider of the Timeline window
 
-Drag and drop the Image object to the object property of StreamingImageSequenceTrack, and click *Create StreamingImageSequenceNativeRenderer on Image* 
 
 
 # StreamingImageSequence PlayableAsset
 
-<img src="Documentation~/images/StreamingImageSequencePlayableAsset.png" align=right width=480>
+<img src="Documentation~/images/StreamingImageSequencePlayableAsset.png" align=right width=400>
 
 * **Resolution** (Read Only)  
   Shows the width and height of the first image in the folder
