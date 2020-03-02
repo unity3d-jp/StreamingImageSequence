@@ -18,19 +18,31 @@ namespace UnityEngine.StreamingImageSequence {
     {
         
         
-        public void OnBehaviourDelay(Playable playable, FrameData info) {
-
-        }
+        /// <summary>
+        /// The implementation of UnityEngine.Playables.IPlayableBehaviour's OnBehaviourPause.
+        /// </summary>
+        /// <param name="playable"></param>
+        /// <param name="info"></param>
         public void OnBehaviourPause(Playable playable, FrameData info){
 
         }
+        
+        /// <summary>
+        /// The implementation of UnityEngine.Playables.IPlayableBehaviour's OnBehaviourPlay.
+        /// </summary>
+        /// <param name="playable"></param>
+        /// <param name="info"></param>
         public void OnBehaviourPlay(Playable playable, FrameData info){
 
         }
         
         
 //----------------------------------------------------------------------------------------------------------------------
-        //Called when the PlayableAsset is changed: (moved, resized)
+        /// <summary>
+        /// The implementation of UnityEngine.Playables.IPlayableBehaviour's OnGraphStart.
+        /// Called when the PlayableAsset is changed: (moved, resized)
+        /// </summary>
+        /// <param name="playable"></param>
         public void OnGraphStart(Playable playable) {
             float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
             m_timePerFrame = m_timelineClip.timeScale / fps;
@@ -38,22 +50,42 @@ namespace UnityEngine.StreamingImageSequence {
             //[TODO-sin: 2020-2-17] Change the size of m_playableFrames if necessary
         }
         
+        /// <summary>
+        /// The implementation of UnityEngine.Playables.IPlayableBehaviour's OnGraphStop.
+        /// </summary>
+        /// <param name="playable"></param>
         public void OnGraphStop(Playable playable){
 
         }
+        /// <summary>
+        /// The implementation of UnityEngine.Playables.IPlayableBehaviour's OnPlayableCreate.
+        /// </summary>
+        /// <param name="playable"></param>
         public void OnPlayableCreate(Playable playable){
 
         }
+        /// <summary>
+        /// The implementation of UnityEngine.Playables.IPlayableBehaviour's OnPlayableDestroy.
+        /// </summary>
+        /// <param name="playable"></param>
         public void OnPlayableDestroy(Playable playable){
 
         }
-        public void PrepareData(Playable playable, FrameData info){
 
-        }
+        /// <summary>
+        /// The implementation of UnityEngine.Playables.IPlayableBehaviour's PrepareFrame.
+        /// </summary>
+        /// <param name="playable"></param>
         public void PrepareFrame(Playable playable, FrameData info){
 
         }
 
+        /// <summary>
+        /// The implementation of UnityEngine.Playables.IPlayableBehaviour's ProcessFrame.
+        /// </summary>
+        /// <param name="playable"></param>
+        /// <param name="info"></param>
+        /// <param name="playerData"></param>
         public void ProcessFrame(Playable playable, FrameData info, object playerData) {
         }
 
@@ -130,15 +162,19 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------        
 
-        public string GetImagePath(int index) {
+        internal string GetImagePath(int index) {
             if (null == m_imagePaths || index >= m_imagePaths.Count)
                 return null;
 
             return m_imagePaths[index];
         }
 
+        /// <summary>
+        /// Get the source folder
+        /// </summary>
+        /// <returns>The folder where the images are located</returns>
         public string GetFolder() { return m_folder; }
-        public UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
+        internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
 
 //----------------------------------------------------------------------------------------------------------------------        
         internal void Reset() {
@@ -155,13 +191,17 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------        
 
+        /// <summary>
+        /// The Clip Capabilities that implements Timeline.ITimelineClipAsset.
+        /// Always returns (ClipCaps.ClipIn | ClipCaps.SpeedMultiplier)
+        /// </summary>
         public ClipCaps clipCaps {
             get { return ClipCaps.ClipIn | ClipCaps.SpeedMultiplier; }
         }
         
 //----------------------------------------------------------------------------------------------------------------------        
 
-        public bool Verified
+        internal bool Verified
         {
             get
             {
@@ -199,11 +239,20 @@ namespace UnityEngine.StreamingImageSequence {
 
 //---------------------------------------------------------------------------------------------------------------------
 
+        /// <summary>
+        /// Create Playable
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="go"></param>
+        /// <returns></returns>
         public override Playable CreatePlayable(PlayableGraph graph, GameObject go) {
             //Dummy. We just need to implement this from PlayableAsset because folder D&D support. See notes below
             return Playable.Null;
         }
         
+        /// <summary>
+        /// The duration of the PlayableAsset
+        /// </summary>
         public override double duration {  get {  return (null!=m_timelineClip) ? m_timelineClip.duration : 0;  }  }
         
 //---------------------------------------------------------------------------------------------------------------------
@@ -509,7 +558,7 @@ namespace UnityEngine.StreamingImageSequence {
         TimelineClip m_timelineClip  = null; 
 
         //[TODO-sin: 2020-1-30] Turn this to a non-public var
-        public int m_loadingIndex;
+        [SerializeField] internal int m_loadingIndex;
 
         private int m_lastIndex;
         private bool m_verified;
