@@ -45,5 +45,12 @@ namespace Tests {
                 }
             }
         }
+        
+        //[TODO-sin: 2020-3-2] Add a test as follows
+        //1. Create a StreamingImageSequenceTrack
+        //2. Add StreamingImageSequencePlayableAsset to the track
+        //3. Set folder
+        //4. Set time
+        
     }
 }
