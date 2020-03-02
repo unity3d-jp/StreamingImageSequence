@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Playables;
+﻿using UnityEngine.Playables;
 using UnityEngine.Timeline;
-using UnityEngine.UI;
 
 namespace UnityEngine.StreamingImageSequence
 {
 
     [System.Serializable]
 
-    public class FaderPlayableAsset : PlayableAsset, ITimelineClipAsset
+    internal class FaderPlayableAsset : PlayableAsset, ITimelineClipAsset
     {
         public Color m_color = Color.black;
         public bool m_noFade = false;
@@ -33,7 +28,7 @@ namespace UnityEngine.StreamingImageSequence
 
     }
 
-    public enum FadeType
+    internal enum FadeType
     {
         FadeIn,
         FadeOut
