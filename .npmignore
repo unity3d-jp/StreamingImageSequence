@@ -20,3 +20,5 @@ build.sh.meta
 build.bat
 build.bat.meta
 
+# Artifacts
+streamingImageSequence*prepack_artifacts*
