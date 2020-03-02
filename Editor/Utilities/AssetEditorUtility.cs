@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UnityEditor.StreamingImageSequence {
 
-public static class AssetEditorUtility {
+internal static class AssetEditorUtility {
     public static void OverwriteAsset(Object asset, string path) {
         if (File.Exists(path)) {
             AssetDatabase.DeleteAsset(path);

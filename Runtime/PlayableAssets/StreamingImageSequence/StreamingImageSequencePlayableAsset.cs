@@ -461,13 +461,19 @@ namespace UnityEngine.StreamingImageSequence {
             
         }
 //----------------------------------------------------------------------------------------------------------------------
-        public void OnAfterTrackDeserialize(TimelineClip clip) {
+        internal void OnAfterTrackDeserialize(TimelineClip clip) {
             SetTimelineClip(clip);
         }
         
+        /// <summary>
+        /// The implementation of OnBeforeSerialize() from ISerializationCallbackReceiver
+        /// </summary>
         public void OnBeforeSerialize() {
         }
 
+        /// <summary>
+        /// The implementation of OnAfterDeserialize() from ISerializationCallbackReceiver
+        /// </summary>
         public void OnAfterDeserialize() {
             ForceUpdateResolution();
         }
@@ -483,7 +489,7 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
 //----------------------------------------------------------------------------------------------------------------------
-        public void ValidateAnimationCurve() {
+        internal void ValidateAnimationCurve() {
             AnimationCurve curve = GetAndValidateAnimationCurve();
             RefreshAnimationCurveInTimelineClip(curve);
         }

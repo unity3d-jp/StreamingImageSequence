@@ -1,20 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.Playables;
-using System.Reflection;
-using UnityEngine.Timeline;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
+﻿
 namespace UnityEngine.StreamingImageSequence
 {
 
 
-    public static class LogUtility
+    internal static class LogUtility
     {
         static bool s_isLogEnabled = false;
 

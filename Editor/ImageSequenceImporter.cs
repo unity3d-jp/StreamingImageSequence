@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace UnityEditor.StreamingImageSequence {
 
-    public static class ImageSequenceImporter
+    internal static class ImageSequenceImporter
     {
         private const string PNG_EXTENSION = "png";
         private const string TGA_EXTENSION = "tga";

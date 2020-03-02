@@ -5,6 +5,9 @@ using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence {
 
+    /// <summary>
+    /// The inspector of StreamingImageSequencePlayableAsset
+    /// </summary>
     [CustomEditor(typeof(StreamingImageSequencePlayableAsset))]
     public class StreamingImageSequencePlayableAssetInspector : Editor {
 
@@ -24,6 +27,9 @@ namespace UnityEditor.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
 
+        /// <summary>
+        /// StreamingImageSequencePlayableAsset GUI Drawing
+        /// </summary>
         public override void OnInspectorGUI() {
             if (null == m_asset)
                 return;
