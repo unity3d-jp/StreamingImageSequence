@@ -1,16 +1,16 @@
 ![demo](./images/Demo.gif)
 
-#Streaming Image Sequence
+# Streaming Image Sequence
 
 Streaming Image Sequence is a package for playing sequential image sequences in Unity Timeline 
 easily without making Unity 2D Sprites.
 
-#Supported Platforms
+# Supported Platforms
 
 1. Windows
 2. Mac
 
-#Basic Usage 
+# Basic Usage 
 
 1. Create an empty *GameObject* and add a *Director* component to it
 1. Copy the sequential images in a folder under *StreamingAssets*
@@ -35,7 +35,7 @@ easily without making Unity 2D Sprites.
 Drag and drop the Image object to the object property of StreamingImageSequenceTrack, and click *Create StreamingImageSequenceNativeRenderer on Image* 
 
 
-#StreamingImageSequence PlayableAsset
+# StreamingImageSequence PlayableAsset
 
 <img src="images/StreamingImageSequencePlayableAsset.png" align=right width=480>
 
