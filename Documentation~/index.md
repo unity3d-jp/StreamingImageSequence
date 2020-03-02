@@ -1,6 +1,6 @@
 ![demo](./images/Demo.gif)
 
-**Streaming Image Sequence**
+#Streaming Image Sequence
 
 Streaming Image Sequence is a package for playing sequential image sequences in Unity Timeline 
 easily without making Unity 2D Sprites.
@@ -46,7 +46,7 @@ Drag and drop the Image object to the object property of StreamingImageSequenceT
 * **Images**  
   The images inside the folder.
   We can reorder the images by dragging the image file name up/down.
-* **Reset Curve**
+* **Reset Curve**.  
   Reset the curve timing in the PlayableAsset to be linear.
 
 
