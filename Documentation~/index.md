@@ -33,6 +33,7 @@ easily without making Unity 2D Sprites.
    and the Image object will be played/enabled/disabled as we play the Timeline or drag the time slider of the Timeline window
 
 
+For other ways for importing images, see [ImportingImages](en/ImportingImages.md)
 
 # StreamingImageSequence PlayableAsset
 
