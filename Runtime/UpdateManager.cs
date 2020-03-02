@@ -18,7 +18,7 @@ namespace UnityEngine.StreamingImageSequence
 #if UNITY_EDITOR
     [InitializeOnLoad]
 #endif
-    public class UpdateManager
+    internal class UpdateManager
     {
         public enum JobOrder
         {
@@ -542,18 +542,18 @@ namespace UnityEngine.StreamingImageSequence
 
     }
 
-    public class PlayableDirectorStatus
+    internal class PlayableDirectorStatus
     {
         public double m_lastDirectorTick = -0.02f;
     }
 
 
-    public abstract class BackGroundTask
+    internal abstract class BackGroundTask
     {
         public abstract void Execute();
     }
 
-    public abstract class PeriodicJob
+    internal abstract class PeriodicJob
     {
         public UpdateManager.JobOrder m_order;
         internal bool m_RemoveRequestFlag;

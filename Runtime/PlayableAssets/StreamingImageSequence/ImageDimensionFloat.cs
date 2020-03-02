@@ -1,7 +1,7 @@
 ﻿namespace UnityEngine.StreamingImageSequence {
 
     [System.Serializable]
-    public struct ImageDimensionFloat
+    internal struct ImageDimensionFloat
     {
         public float Width;
         public float Height;

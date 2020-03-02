@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace UnityEditor.StreamingImageSequence {
 
-    public static class ImageSequenceImporter
+    internal static class ImageSequenceImporter
     {
         private const string PNG_EXTENSION = "png";
         private const string TGA_EXTENSION = "tga";
@@ -18,7 +18,7 @@ namespace UnityEditor.StreamingImageSequence {
         /// Import images in the path to create StreamingImageSequence assets with those images
         /// <param name="importerMode"> Importer mode: StreamingAssets or SpriteAnimation</param>
         /// <param name="path"> Can be a directory path or a file path</param>
-        public static void ImportPictureFiles(PictureFileImporterParam.Mode importerMode, string path, 
+        internal static void ImportPictureFiles(ImageFileImporterParam.Mode importerMode, string path, 
                 StreamingImageSequencePlayableAsset targetAsset) 
         {
             Assert.IsFalse(string.IsNullOrEmpty(path));
@@ -63,12 +63,12 @@ namespace UnityEditor.StreamingImageSequence {
 
             // set dest folder
             string rootDestFolder = Application.streamingAssetsPath;
-            if (importerMode == PictureFileImporterParam.Mode.SpriteAnimation) {
+            if (importerMode == ImageFileImporterParam.Mode.SpriteAnimation) {
                 rootDestFolder = Application.dataPath;
             }
 
             //Set importer param
-            PictureFileImporterParam importerParam = new PictureFileImporterParam {
+            ImageFileImporterParam importerParam = new ImageFileImporterParam {
                 strAssetName = assetName,
                 strSrcFolder = folder,
                 RelativeFilePaths = relFilePaths,
@@ -92,7 +92,7 @@ namespace UnityEditor.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
         
-        internal static void Import(PictureFileImporterParam param)
+        internal static void Import(ImageFileImporterParam param)
         {
             if (param.DoNotCopy)
             {
@@ -103,7 +103,7 @@ namespace UnityEditor.StreamingImageSequence {
             {
 
                 string dstFolder = param.strDstFolder.Replace("\\", "/");
-                if (param.mode == PictureFileImporterParam.Mode.StreamingAssets)
+                if (param.mode == ImageFileImporterParam.Mode.StreamingAssets)
                 {
                     if (dstFolder.StartsWith(Application.dataPath) && !dstFolder.StartsWith(Path.Combine(Application.dataPath, "StreamingAssets").Replace("\\", "/")))
                     {
@@ -156,7 +156,7 @@ namespace UnityEditor.StreamingImageSequence {
             }
             trackMovieContainer.Folder = param.strDstFolder;
 
-            if (param.mode == PictureFileImporterParam.Mode.SpriteAnimation)
+            if (param.mode == ImageFileImporterParam.Mode.SpriteAnimation)
             {
                 Sprite[] sprites = new Sprite[param.RelativeFilePaths.Count];
                 for (int ii = 0; ii < param.RelativeFilePaths.Count; ii++)
@@ -265,7 +265,7 @@ namespace UnityEditor.StreamingImageSequence {
     }
 
 
-    public class PictureFileImporterParam
+    internal class ImageFileImporterParam
     {
         public enum Mode
         {

@@ -8,7 +8,7 @@ using UnityEngine.Timeline;
 namespace UnityEngine.StreamingImageSequence
 {
     // A behaviour that is attached to a playable
-    public class FaderPlayableMixer : PlayableBehaviour
+    internal class FaderPlayableMixer : PlayableBehaviour
     {
         internal PlayableDirector m_PlayableDirector;
 #if false

@@ -2,7 +2,7 @@
 
 namespace UnityEngine.StreamingImageSequence {
     [System.Serializable]
-    public class StreamingImageSequencePlayableAssetParam
+    internal class StreamingImageSequencePlayableAssetParam
     {
         public int Version; //This is the version of the param, not the actual asset
         public ImageDimensionInt Resolution;

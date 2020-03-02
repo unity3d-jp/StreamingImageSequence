@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Playables;
-using UnityEngine.UI;
+﻿using UnityEngine.Playables;
 
 namespace UnityEngine.StreamingImageSequence
 {
 
     [System.Serializable]
 
-    public class BlackFaderPlayableAsset : FaderPlayableAsset
+    internal class BlackFaderPlayableAsset : FaderPlayableAsset
     {
 
         public override Playable CreatePlayable(PlayableGraph graph, GameObject go)

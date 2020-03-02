@@ -9,7 +9,7 @@ using UnityEngine.Timeline;
 namespace UnityEngine.StreamingImageSequence
 {
     // A behaviour that is attached to a playable
-    public class FaderPlayableBehaviour : PlayableBehaviour
+    internal class FaderPlayableBehaviour : PlayableBehaviour
     {
         // nothing to do
     }

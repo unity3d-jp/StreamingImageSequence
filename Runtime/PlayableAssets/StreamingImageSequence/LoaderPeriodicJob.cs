@@ -8,7 +8,7 @@ using UnityEngine.Timeline;
 
 namespace UnityEngine.StreamingImageSequence
 {
-    public class LoaderPeriodicJob : PeriodicJob
+    internal class LoaderPeriodicJob : PeriodicJob
     {
         PlayableDirector m_director;
         StreamingImageSequenceTrack m_track;

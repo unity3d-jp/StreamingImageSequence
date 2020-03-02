@@ -20,3 +20,8 @@ build.sh.meta
 build.bat
 build.bat.meta
 
+# Plugins code
+Plugins~/**
+
+# Artifacts
+streamingImageSequence*prepack_artifacts*

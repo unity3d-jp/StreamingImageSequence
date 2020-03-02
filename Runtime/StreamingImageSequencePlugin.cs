@@ -12,7 +12,7 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 8)]
-    public struct ReadResult
+    internal struct ReadResult
     {
         public IntPtr Buffer;
         [MarshalAs(UnmanagedType.I4)]
@@ -24,7 +24,7 @@ namespace UnityEngine.StreamingImageSequence {
     };
 
 //----------------------------------------------------------------------------------------------------------------------
-    public static class StreamingImageSequencePlugin {
+    internal static class StreamingImageSequencePlugin {
 
 //only support Windows and OSX
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX

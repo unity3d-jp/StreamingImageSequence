@@ -75,7 +75,7 @@ namespace UnityEngine.StreamingImageSequence {
                 if (!path.StartsWith("Assets/StreamingAssets/")) {
                     return false;
                 }
-                ImageSequenceImporter.ImportPictureFiles(PictureFileImporterParam.Mode.StreamingAssets, path, asset);
+                ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, path, asset);
             }
 
             //If the clip already has curves (because of cloning, etc), then we don't set anything

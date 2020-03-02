@@ -10,7 +10,7 @@ namespace UnityEngine.StreamingImageSequence
 {
 
 //[ExecuteInEditMode]
-public class StreamingImageSequenceNativeRenderer : MonoBehaviour {
+internal class StreamingImageSequenceNativeRenderer : MonoBehaviour {
 #if DEBUG_THREAD
     int m_timer = 0;
     private void OnGUI()
