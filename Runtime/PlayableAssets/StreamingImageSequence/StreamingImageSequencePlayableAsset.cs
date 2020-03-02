@@ -10,8 +10,13 @@ using UnityEditor;
 
 namespace UnityEngine.StreamingImageSequence {
 
-    //ITimelineClipAsset interface is used to define the clip capabilities (ClipCaps) 
-    //IPlayableBehaviour is required to display the curves in the timeline window
+    /// <summary>
+    /// The PlayableAsset of the TimelineClip to be used inside the Timeline Window.
+    /// Implements the following interfaces:
+    /// - ITimelineClipAsset: for defining clip capabilities (ClipCaps) 
+    /// - IPlayableBehaviour: for displaying the curves in the timeline window
+    /// - ISerializationCallbackReceiver: for serialization
+    /// </summary>
     [System.Serializable]
     public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
                                                      , IPlayableBehaviour, ISerializationCallbackReceiver 
@@ -76,6 +81,7 @@ namespace UnityEngine.StreamingImageSequence {
         /// The implementation of UnityEngine.Playables.IPlayableBehaviour's PrepareFrame.
         /// </summary>
         /// <param name="playable"></param>
+        /// <param name="info"></param>
         public void PrepareFrame(Playable playable, FrameData info){
 
         }
@@ -91,6 +97,9 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public StreamingImageSequencePlayableAsset() {
             m_loadingIndex = -1;
             m_lastIndex = -1;
@@ -103,6 +112,9 @@ namespace UnityEngine.StreamingImageSequence {
 #endif            
         }
 
+        /// <summary>
+        /// Destructor. Ensures to unload the images.
+        /// </summary>
         ~StreamingImageSequencePlayableAsset() {
             Reset();
         }
@@ -375,7 +387,7 @@ namespace UnityEngine.StreamingImageSequence {
         }
 //----------------------------------------------------------------------------------------------------------------------        
 
-        public string GetCompleteFilePath(string filePath)
+        internal string GetCompleteFilePath(string filePath)
         {
             string strOverridePath = m_folder;
 
