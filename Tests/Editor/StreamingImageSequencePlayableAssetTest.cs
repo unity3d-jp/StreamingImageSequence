@@ -1,9 +1,13 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.StreamingImageSequence;
 using UnityEngine.TestTools;
 using UnityEngine.Timeline;
+using UnityEditor.Timeline;
 
 namespace UnityEditor.StreamingImageSequence.Tests {
 
@@ -19,9 +23,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             director.playableAsset = asset;
 
             //Create empty asset
-            StreamingImageSequencePlayableAssetParam param = new StreamingImageSequencePlayableAssetParam();
             StreamingImageSequencePlayableAsset sisAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
-            sisAsset.SetParam(param);
 
             StreamingImageSequenceTrack movieTrack = asset.CreateTrack<StreamingImageSequenceTrack>(null, "Footage");
             TimelineClip clip = movieTrack.CreateDefaultClip();
@@ -31,9 +33,20 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             sisAsset.ValidateAnimationCurve();
 
             //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
-            Selection.activeGameObject=directorGo;
             EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
+            Selection.activeGameObject=directorGo;
             yield return null;
+
+            TimelineEditor.selectedClip = clip;
+            yield return null;
+
+            const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
+            string fullPath = Path.GetFullPath(PKG_PATH);
+            ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, fullPath, sisAsset,false);
+
+            IList<string> imagePaths = sisAsset.GetImagePaths();
+            Assert.IsNotNull(imagePaths);
+            Assert.IsTrue(imagePaths.Count > 0);
 
         }
     }
