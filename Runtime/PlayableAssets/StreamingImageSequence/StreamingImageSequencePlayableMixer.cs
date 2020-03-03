@@ -205,6 +205,7 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 //---------------------------------------------------------------------------------------------------------------------
+        //[TODO-sin: 2020-3-3] the m_boundGameObject part is the same with FaderTrack. Do something
         public bool BindGameObject(GameObject go) {
             m_boundGameObject = go;
             bool ret = InitRenderers();
