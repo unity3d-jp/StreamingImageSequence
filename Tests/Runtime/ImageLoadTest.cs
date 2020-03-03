@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.StreamingImageSequence;
 using UnityEngine.TestTools;
 
-namespace UnityEditor.StreamingImageSequence.Tests {
+namespace UnityEngine.StreamingImageSequence.Tests {
     public class ImageLoadTest {
 
 
