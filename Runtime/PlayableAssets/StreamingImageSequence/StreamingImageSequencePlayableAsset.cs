@@ -181,11 +181,19 @@ namespace UnityEngine.StreamingImageSequence {
             return m_imagePaths[index];
         }
 
+//----------------------------------------------------------------------------------------------------------------------        
+
+        internal bool HasImages() {
+            return (string.IsNullOrEmpty(m_folder) && null != m_imagePaths && m_imagePaths.Count > 0);
+        }
+
+//----------------------------------------------------------------------------------------------------------------------        
         /// <summary>
         /// Get the source folder
         /// </summary>
         /// <returns>The folder where the images are located</returns>
         public string GetFolder() { return m_folder; }
+
         internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
 
 //----------------------------------------------------------------------------------------------------------------------        
@@ -240,7 +248,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
             m_imagePaths = param.Pictures;
             m_folder = param.Folder;
-            if (m_folder.StartsWith("Assets")) {
+            if (null!=m_folder && m_folder.StartsWith("Assets")) {
                 m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(m_folder);
             } else {
                 m_timelineDefaultAsset = null;
