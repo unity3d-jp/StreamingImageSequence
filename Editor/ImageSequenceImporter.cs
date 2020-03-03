@@ -9,8 +9,7 @@ using UnityEngine.UI;
 
 namespace UnityEditor.StreamingImageSequence {
 
-    internal static class ImageSequenceImporter
-    {
+    internal static class ImageSequenceImporter {
         private const string PNG_EXTENSION = "png";
         private const string TGA_EXTENSION = "tga";
 
@@ -18,8 +17,8 @@ namespace UnityEditor.StreamingImageSequence {
         /// Import images in the path to create StreamingImageSequence assets with those images
         /// <param name="importerMode"> Importer mode: StreamingAssets or SpriteAnimation</param>
         /// <param name="path"> Can be a directory path or a file path</param>
-        internal static void ImportPictureFiles(ImageFileImporterParam.Mode importerMode, string path, 
-                StreamingImageSequencePlayableAsset targetAsset) 
+        internal static void ImportPictureFiles(ImageFileImporterParam.Mode importerMode, string path,
+            StreamingImageSequencePlayableAsset targetAsset, bool askToCopy = true) 
         {
             Assert.IsFalse(string.IsNullOrEmpty(path));
 
@@ -62,9 +61,9 @@ namespace UnityEditor.StreamingImageSequence {
             string assetName =  EstimateAssetName(relFilePaths[0]);
 
             // set dest folder
-            string rootDestFolder = Application.streamingAssetsPath;
+            string streamingAssetsPath = Application.streamingAssetsPath;
             if (importerMode == ImageFileImporterParam.Mode.SpriteAnimation) {
-                rootDestFolder = Application.dataPath;
+                streamingAssetsPath = Application.dataPath;
             }
 
             //Set importer param
@@ -78,13 +77,13 @@ namespace UnityEditor.StreamingImageSequence {
             };
 
 
-            if (fullSrcPath.StartsWith(rootDestFolder)) {
-                //Import immediately if the assets are already under Unity
+            //Import immediately if the assets are already under StreamingAssets
+            if (fullSrcPath.StartsWith(streamingAssetsPath) || !askToCopy) {
                 importerParam.strDstFolder = importerParam.strSrcFolder;
                 importerParam.DoNotCopy = true;
                 ImageSequenceImporter.Import(importerParam);
             } else {
-                importerParam.strDstFolder = Path.Combine(rootDestFolder, assetName).Replace("\\", "/");
+                importerParam.strDstFolder = Path.Combine(streamingAssetsPath, assetName).Replace("\\", "/");
                 ImageSequenceImportWindow.SetParam(importerParam);
                 ImageSequenceImportWindow.InitWindow();
             }
@@ -265,8 +264,7 @@ namespace UnityEditor.StreamingImageSequence {
     }
 
 
-    internal class ImageFileImporterParam
-    {
+    internal class ImageFileImporterParam {
         public enum Mode
         {
             StreamingAssets,
