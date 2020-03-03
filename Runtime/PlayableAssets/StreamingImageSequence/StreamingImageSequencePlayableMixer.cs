@@ -36,7 +36,7 @@ namespace UnityEngine.StreamingImageSequence
 #if UNITY_EDITOR
             System.Reflection.Assembly assembly = typeof(UnityEditor.EditorWindow).Assembly;
             Type type = assembly.GetType("UnityEditor.GameView");
-            m_gameView = EditorWindow.GetWindow(type);
+            m_gameView = EditorWindow.GetWindow(type,false,null,false);
 
 #endif
             m_loadStartOffsetTime = -1.0;
