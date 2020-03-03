@@ -94,7 +94,7 @@ namespace UnityEngine.StreamingImageSequence
                 if ( time >= clip.start && time <= clip.end)
                 {
                     fade = (float)((time - clip.start) / clip.duration);
-                    if ( asset.m_type == FadeType.FadeIn)
+                    if ( asset.m_type == FadeType.FadeOut)
                     {
                         fade = 1.0f - fade;
                     }
@@ -103,7 +103,7 @@ namespace UnityEngine.StreamingImageSequence
                 else if (time > clip.end)
                 {
                     fade =  1.0f;
-                    if (asset.m_type == FadeType.FadeIn)
+                    if (asset.m_type == FadeType.FadeOut)
                     {
                         fade = 1.0f - fade;
                     }
