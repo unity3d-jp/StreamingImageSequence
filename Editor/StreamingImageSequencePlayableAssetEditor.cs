@@ -108,7 +108,7 @@ namespace UnityEngine.StreamingImageSequence {
                 return;
 
             StreamingImageSequencePlayableAsset curAsset = clip.asset as StreamingImageSequencePlayableAsset;
-            if (null == curAsset)
+            if (null == curAsset || !curAsset.HasImages())
                 return;
 
             Rect quantizedRect = new Rect(Mathf.Ceil(rect.x), Mathf.Ceil(rect.y), Mathf.Ceil(rect.width), Mathf.Ceil(rect.height));
