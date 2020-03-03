@@ -25,7 +25,7 @@ namespace UnityEngine.StreamingImageSequence
                 bh.m_clips = GetClips();
                 if ( outputGo != null )
                 {
-                    bh.boundGameObject = outputGo.gameObject;
+                    bh.BindGameObject(outputGo.gameObject);
                     bh.m_initialColor = outputGo.color;
                 }
                 bh.m_PlayableDirector = director;
