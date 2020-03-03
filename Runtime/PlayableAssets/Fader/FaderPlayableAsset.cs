@@ -9,7 +9,6 @@ namespace UnityEngine.StreamingImageSequence
     internal class FaderPlayableAsset : PlayableAsset, ITimelineClipAsset
     {
         public Color m_color = Color.black;
-        public bool m_noFade = false;
         public FadeType m_type = FadeType.FadeIn;
 
         public ClipCaps clipCaps
