@@ -184,7 +184,7 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
 
         internal bool HasImages() {
-            return (string.IsNullOrEmpty(m_folder) && null != m_imagePaths && m_imagePaths.Count > 0);
+            return (!string.IsNullOrEmpty(m_folder) && null != m_imagePaths && m_imagePaths.Count > 0);
         }
 
 //----------------------------------------------------------------------------------------------------------------------        
