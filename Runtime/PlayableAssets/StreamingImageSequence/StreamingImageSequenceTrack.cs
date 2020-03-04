@@ -34,12 +34,7 @@ namespace UnityEngine.StreamingImageSequence
                 StreamingImageSequenceNativeRenderer nativeRenderer = boundGo as StreamingImageSequenceNativeRenderer;
                 StreamingImageSequencePlayableMixer bh = mixer.GetBehaviour();
                 bh.m_track = this;
-                bh.m_clips = GetClips();
-                if (nativeRenderer != null) {
-                    bh.BindGameObject(nativeRenderer.gameObject);
-                }
-                bh.m_PlayableDirector = director;
-
+                bh.Init(null == nativeRenderer ? null : nativeRenderer.gameObject, director, GetClips());
             }
             return mixer;
         }

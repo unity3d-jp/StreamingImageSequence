@@ -56,6 +56,10 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     protected abstract void InitInternalV(GameObject boundGameObject);
     protected abstract void ProcessActiveClipV(T asset, double directorTime, TimelineClip activeClip);
 
+//----------------------------------------------------------------------------------------------------------------------
+    protected GameObject GetBoundGameObject() { return m_boundGameObject; }
+    protected PlayableDirector GetPlayableDirector() { return m_playableDirector; }
+    protected IEnumerable<TimelineClip> GetClips() { return m_clips; }
 
 //----------------------------------------------------------------------------------------------------------------------
 
