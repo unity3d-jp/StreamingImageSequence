@@ -49,7 +49,6 @@ namespace UnityEngine.StreamingImageSequence {
         /// <inheritdoc/>
         public override void OnCreate(TimelineClip clip, TrackAsset track, TimelineClip clonedFrom)
         {
-            Debug.Log("OnCreate");
             StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
             if (null == asset) {
                 Debug.LogError("Asset is not a StreamingImageSequencePlayableAsset: " + clip.asset);
