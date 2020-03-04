@@ -9,36 +9,26 @@ namespace UnityEngine.StreamingImageSequence
 {
 
 // A behaviour that is attached to a playable
-internal class FaderPlayableMixer : PlayableBehaviour
-{
-    internal PlayableDirector m_PlayableDirector;
-    internal Color m_initialColor;
-    internal IEnumerable<TimelineClip> m_clips;
+internal class FaderPlayableMixer : PlayableBehaviour {
 
-  
+
+#if false //PlayableBehaviour's functions that can be overridden
 
     // Called when the owning graph starts playing
-    public override void OnGraphStart(Playable playable)
-    {
-        SetInitialColor(playable);
+    public override void OnGraphStart(Playable playable) {
     }
 
     // Called when the owning graph stops playing
-    public override void OnGraphStop(Playable playable)
-    {
-        SetInitialColor(playable);
+    public override void OnGraphStop(Playable playable) {
     }
 
-#if false
     // Called when the state of the playable is set to Play
-    public override void OnBehaviourPlay(Playable playable, FrameData info)
-    {
+    public override void OnBehaviourPlay(Playable playable, FrameData info) {
 
     }
 
     // Called when the state of the playable is set to Paused
-    public override void OnBehaviourPause(Playable playable, FrameData info)
-    {
+    public override void OnBehaviourPause(Playable playable, FrameData info) {
 
     }
 
@@ -46,8 +36,7 @@ internal class FaderPlayableMixer : PlayableBehaviour
 //----------------------------------------------------------------------------------------------------------------------
 
     // Called each frame while the state is set to Play
-    public override void PrepareFrame(Playable playable, FrameData info)
-    {
+    public override void PrepareFrame(Playable playable, FrameData info) {
         base.PrepareFrame(playable, info);
         if (null == m_boundGameObject)
             return;
@@ -65,44 +54,39 @@ internal class FaderPlayableMixer : PlayableBehaviour
             return;
         }
 
+        // it is working as mixer.
+        double directorTime = m_playableDirector.time;
+        foreach (TimelineClip clip in m_clips) {
+            FaderPlayableAsset asset = clip.asset as FaderPlayableAsset;
+            if (null == asset)
+                continue;
+
+            if ( directorTime >= clip.start && directorTime <= clip.end) {
+                DoSomething(asset, directorTime, clip);
+                break;
+            }
+        }
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+    void DoSomething(FaderPlayableAsset asset, double directorTime, TimelineClip activeClip) {
+        Color color = asset.GetColor();
+        float maxFade = color.a;
+
+        float fade = (float)( ((directorTime - activeClip.start) / activeClip.duration ) * maxFade);
+        if ( asset.GetFadeType() == FadeType.FADE_OUT) {
+            fade = maxFade - fade;
+        }
+
         Image image = m_boundGameObject.GetComponent<Image>();
         if ( image == null ) {
             return;
         }
 
-        TimelineClip activeClip = null;
-
-        float fade = m_initialColor.a;
-        Color color = m_initialColor;
-
-        // it is working as mixer.
-        double directorTime = m_PlayableDirector.time;
-        var enumulator = m_clips.GetEnumerator();
-        enumulator.MoveNext();
-        for (int ii = 0; ii < inputCount; ii++, enumulator.MoveNext()) {
-
-            var clip = enumulator.Current; 
-            var asset = clip.asset as FaderPlayableAsset;
-
-            color = asset.GetColor();
-            if ( directorTime >= clip.start && directorTime <= clip.end) {
-                fade = (float)((directorTime - clip.start) / clip.duration);
-                if ( asset.GetFadeType() == FadeType.FADE_OUT)
-                {
-                    fade = 1.0f - fade;
-                }
-
-                activeClip = clip;
-                break;
-            }
-        }
         color.a = fade;
         image.color = color;
+        m_boundGameObject.SetActive(true);
 
-        //Hide/Show
-        if (null != activeClip) {
-            m_boundGameObject.SetActive(true);
-        }
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -114,38 +98,10 @@ internal class FaderPlayableMixer : PlayableBehaviour
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-
-    private void SetInitialColor(Playable playable)
-    {
-        if (m_boundGameObject == null) {
-            return;
-        }
-
-        Image image = m_boundGameObject.GetComponent<Image>();
-        IEnumerator<TimelineClip> enumlator = m_clips.GetEnumerator();
-        enumlator.MoveNext();
-        if (playable.GetInputCount<Playable>() > 0)
-        {
-            var myScriptPlayable = (ScriptPlayable<FaderPlayableBehaviour>)playable.GetInput(0);
-            var myBehaviour = myScriptPlayable.GetBehaviour();
-            if (myBehaviour == null )
-            {
-                return;
-            }
-            TimelineClip clip = enumlator.Current;
-            FaderPlayableAsset asset = clip.asset as FaderPlayableAsset;
-
-            m_initialColor = asset.GetColor();
-
-            if (image != null ) {
-                image.color = m_initialColor;
-            }
-        }
-
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
     private GameObject m_boundGameObject;
+
+    internal PlayableDirector m_playableDirector;
+    internal IEnumerable<TimelineClip> m_clips;
 
 }
 

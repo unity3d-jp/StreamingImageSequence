@@ -23,12 +23,10 @@ namespace UnityEngine.StreamingImageSequence
                 var outputGo = director.GetGenericBinding(this) as Image;
                 FaderPlayableMixer bh = mixer.GetBehaviour();
                 bh.m_clips = GetClips();
-                if ( outputGo != null )
-                {
+                if ( outputGo != null ) {
                     bh.BindGameObject(outputGo.gameObject);
-                    bh.m_initialColor = outputGo.color;
                 }
-                bh.m_PlayableDirector = director;
+                bh.m_playableDirector = director;
             }
             return mixer;
         }
