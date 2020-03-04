@@ -26,21 +26,17 @@ namespace UnityEngine.StreamingImageSequence
         }
 #endif
 
-        public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
-        {
-            var mixer = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);
-            
+        public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
+            var mixer = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);            
             var director = go.GetComponent<PlayableDirector>();
-            if (director != null)
-            {
+            if (director != null) {
                 var boundGo = director.GetGenericBinding(this);
-                var outputGo = boundGo as StreamingImageSequenceNativeRenderer;
+                StreamingImageSequenceNativeRenderer nativeRenderer = boundGo as StreamingImageSequenceNativeRenderer;
                 StreamingImageSequencePlayableMixer bh = mixer.GetBehaviour();
                 bh.m_track = this;
                 bh.m_clips = GetClips();
-                if (outputGo != null)
-                {
-                    bh.BindGameObject(outputGo.gameObject);
+                if (nativeRenderer != null) {
+                    bh.BindGameObject(nativeRenderer.gameObject);
                 }
                 bh.m_PlayableDirector = director;
 
