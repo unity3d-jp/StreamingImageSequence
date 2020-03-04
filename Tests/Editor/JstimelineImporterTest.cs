@@ -16,7 +16,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
         //Check if the generated director is valid
         PlayableDirector[] directors = Object.FindObjectsOfType<PlayableDirector>();
-        Assert.AreEqual(directors.Length,1);
+        Assert.AreEqual(1, directors.Length);
 
         PlayableDirector pd = directors[0];
         TimelineAsset timelineAsset = pd.playableAsset as TimelineAsset;
@@ -32,7 +32,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
                 StreamingImageSequencePlayableAsset playableAsset = clip.asset as StreamingImageSequencePlayableAsset;
                 Assert.IsNotNull(playableAsset);
                 
-                Assert.AreEqual(playableAsset.GetImagePaths().Count,10);
+                Assert.AreEqual(10, playableAsset.GetImagePaths().Count);
             }
 
             //Make sure a StreamingImageSequenceNativeRenderer is bound to the trackAsset
