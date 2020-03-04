@@ -22,14 +22,6 @@ namespace UnityEngine.StreamingImageSequence
     internal class StreamingImageSequencePlayableMixer : PlayableBehaviour
     {
 
-        internal PlayableDirector m_PlayableDirector;
-        internal IEnumerable<TimelineClip> m_clips;
-        internal TrackAsset m_track;
-        private double m_loadStartOffsetTime = -1.0;
-#if UNITY_EDITOR
-        EditorWindow m_gameView;
-#endif
-        private int[] m_nextInadvanceLoadingFrameArray;
         public StreamingImageSequencePlayableMixer()
         {
 
@@ -277,18 +269,20 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 //---------------------------------------------------------------------------------------------------------------------
-        
-        /*
-        static public void ResetAllTexturePtr()
-        {
-            StreamingImageSequencePlugin.ResetAllLoadedTexture();
-        }
-        */
-
+       
         private GameObject      m_boundGameObject;
         private SpriteRenderer  m_spriteRenderer = null;
         private MeshRenderer    m_meshRenderer = null;
         private Image           m_image = null;
+
+        internal PlayableDirector m_PlayableDirector;
+        internal IEnumerable<TimelineClip> m_clips;
+        internal TrackAsset m_track;
+        private double m_loadStartOffsetTime = -1.0;
+#if UNITY_EDITOR
+        EditorWindow m_gameView;
+#endif
+        private int[] m_nextInadvanceLoadingFrameArray;
 
     }
 
