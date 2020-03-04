@@ -144,13 +144,7 @@ internal class JstimelineImporter : ScriptedImporter
             if (canvas != null) {
                 canvasObj = canvas.gameObject;
             } else {
-                canvasObj = new GameObject();
-                canvas = canvasObj.AddComponent<Canvas>();
-                canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-                canvasObj.AddComponent<UnityEngine.UI.CanvasScaler>();
-                canvasObj.AddComponent<GraphicRaycaster>();
-                canvasObj.name = "Canvas";
-
+                canvasObj = UIUtility.CreateCanvas().gameObject;
             }
 
             Transform directorT = director.gameObject.transform;

@@ -31,14 +31,10 @@ internal class FaderPlayableAssetTest {
         faderAsset.SetColor(col);
 
         //Create new Image 
-        GameObject canvasObj = new GameObject("Canvas");
-        Canvas canvas = canvasObj.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvasObj.AddComponent<UnityEngine.UI.CanvasScaler>();
-        canvasObj.AddComponent<GraphicRaycaster>();
+        Transform canvasT = UIUtility.CreateCanvas();
 
         GameObject imageObj = new GameObject("Image"); 
-        imageObj.transform.SetParent(canvas.transform);
+        imageObj.transform.SetParent(canvasT);
         Image image = imageObj.AddComponent<Image>();             
         director.SetGenericBinding(faderTrack, image);
 
