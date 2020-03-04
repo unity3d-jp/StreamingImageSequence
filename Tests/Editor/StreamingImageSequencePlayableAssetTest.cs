@@ -47,6 +47,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             IList<string> imagePaths = sisAsset.GetImagePaths();
             Assert.IsNotNull(imagePaths);
             Assert.IsTrue(imagePaths.Count > 0);
+            Assert.IsTrue(sisAsset.HasImages());
 
         }
     }
