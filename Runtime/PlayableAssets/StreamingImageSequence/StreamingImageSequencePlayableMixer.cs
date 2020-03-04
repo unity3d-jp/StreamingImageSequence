@@ -103,11 +103,8 @@ namespace UnityEngine.StreamingImageSequence
                 }
             }
 
-            if (!TryBindGameObjectFromFrame(playerData)) {
-                //Debug.LogError("Can't bind GameObject for track: " + m_track.name);
+            if (null == m_boundGameObject)
                 return;
-            }
-
 
             double directorTime = m_PlayableDirector.time;
             TimelineClip activeClip = null;
@@ -164,6 +161,8 @@ namespace UnityEngine.StreamingImageSequence
             }
         }
 
+//----------------------------------------------------------------------------------------------------------------------
+
         private void ProcessInAdvanceLoading(double time, TimelineClip clip, int index)
         {
             var asset = clip.asset as StreamingImageSequencePlayableAsset;
@@ -200,35 +199,6 @@ namespace UnityEngine.StreamingImageSequence
         //[TODO-sin: 2020-3-3] the m_boundGameObject part is the same with FaderTrack. Do something
         public bool BindGameObject(GameObject go) {
             m_boundGameObject = go;
-            bool ret = InitRenderers();
-            if (!ret) {
-                Reset();
-                return false;
-            }
-
-            return true;
-        }
-
-
-//---------------------------------------------------------------------------------------------------------------------
-        private bool TryBindGameObjectFromFrame(object playerData) {
-            if (null != m_boundGameObject)
-                return true;
-
-            //There might be two sources: playerData, and the Object bound to the track
-            StreamingImageSequenceNativeRenderer renderer = playerData as StreamingImageSequenceNativeRenderer;
-            if (null != renderer) {
-                m_boundGameObject = renderer.gameObject;
-            } else  {
-                Object binding = m_PlayableDirector.GetGenericBinding(m_track);
-                GameObject go = binding as GameObject;
-                m_boundGameObject = go;
-            }
-
-            if (null == m_boundGameObject) {
-                return false;
-            }
-
             bool ret = InitRenderers();
             if (!ret) {
                 Reset();
