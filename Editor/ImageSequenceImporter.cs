@@ -17,6 +17,8 @@ namespace UnityEditor.StreamingImageSequence {
         /// Import images in the path to create StreamingImageSequence assets with those images
         /// <param name="importerMode"> Importer mode: StreamingAssets or SpriteAnimation</param>
         /// <param name="path"> Can be a directory path or a file path</param>
+        /// <param name="targetAsset"> The target asset where the images are assigned to</param>
+        /// <param name="askToCopy"> Ask to copy if path is not under StreamingAssets. Default to true</param>
         internal static void ImportPictureFiles(ImageFileImporterParam.Mode importerMode, string path,
             StreamingImageSequencePlayableAsset targetAsset, bool askToCopy = true) 
         {
