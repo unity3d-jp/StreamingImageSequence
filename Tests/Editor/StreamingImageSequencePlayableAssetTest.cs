@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.StreamingImageSequence;
@@ -15,6 +16,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
         [UnityTest]
         public IEnumerator CreatePlayableAsset() {
+            EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects);
+
             GameObject directorGo = new GameObject("Director");
             PlayableDirector director = directorGo.AddComponent<PlayableDirector>();
 
@@ -34,7 +37,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
             //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
             EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
-            Selection.activeGameObject=directorGo;
+            Selection.activeTransform = directorGo.transform;
             yield return null;
 
             TimelineEditor.selectedClip = clip;

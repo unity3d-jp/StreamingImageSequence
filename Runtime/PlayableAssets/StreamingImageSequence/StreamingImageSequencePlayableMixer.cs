@@ -36,7 +36,7 @@ namespace UnityEngine.StreamingImageSequence
 #if UNITY_EDITOR
             System.Reflection.Assembly assembly = typeof(UnityEditor.EditorWindow).Assembly;
             Type type = assembly.GetType("UnityEditor.GameView");
-            m_gameView = EditorWindow.GetWindow(type);
+            m_gameView = EditorWindow.GetWindow(type,false,null,false);
 
 #endif
             m_loadStartOffsetTime = -1.0;
@@ -205,6 +205,7 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 //---------------------------------------------------------------------------------------------------------------------
+        //[TODO-sin: 2020-3-3] the m_boundGameObject part is the same with FaderTrack. Do something
         public bool BindGameObject(GameObject go) {
             m_boundGameObject = go;
             bool ret = InitRenderers();
