@@ -16,7 +16,9 @@ internal class FaderPlayableAsset : PlayableAsset, ITimelineClipAsset {
         return ScriptPlayable<FaderPlayableBehaviour>.Create(graph, bh);
     }
 
+    internal void SetColor(Color color) { m_color = color; }
     internal Color GetColor() { return m_color;}
+    internal void SetFadeType(FadeType fadeType) { m_fadeType = fadeType;}
     internal FadeType GetFadeType() { return m_fadeType;}
 
 //----------------------------------------------------------------------------------------------------------------------

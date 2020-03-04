@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Playables;
+﻿using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
 
@@ -13,21 +10,21 @@ namespace UnityEngine.StreamingImageSequence
     [TrackColor(0.263f, 0.09f, 0.263f)]
     internal class FaderTrack : TrackAsset {
         public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
+
             var mixer = ScriptPlayable<FaderPlayableMixer>.Create(graph, inputCount);
-            var director = go.GetComponent<PlayableDirector>();
+            PlayableDirector director = go.GetComponent<PlayableDirector>();
             if ( director != null ) {
-                Image outputGo = director.GetGenericBinding(this) as Image;
+                Image image = director.GetGenericBinding(this) as Image;
+                if (null == image) {
+                    return mixer;
+                }
                 FaderPlayableMixer bh = mixer.GetBehaviour();
-                bh.Init(outputGo.gameObject, director, GetClips());
+                bh.Init(image.gameObject, director, GetClips());
             }
             return mixer;
         }
 
-
-
-
-        public override void GatherProperties(PlayableDirector director, IPropertyCollector driver)
-        {
+        public override void GatherProperties(PlayableDirector director, IPropertyCollector driver) {
             var ps = director.GetGenericBinding(this) as Image;
             if (ps == null) return;
 
