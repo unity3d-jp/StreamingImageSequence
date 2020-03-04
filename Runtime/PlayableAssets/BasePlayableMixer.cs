@@ -27,7 +27,6 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
             return;
         }
 
-        // it is working as mixer.
         double directorTime = m_playableDirector.time;
         foreach (TimelineClip clip in m_clips) {
             T asset = clip.asset as T;
@@ -35,13 +34,12 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
                 continue;
 
             if ( directorTime >= clip.start && directorTime <= clip.end) {
-                ActivateBoundGameObject(asset, directorTime, clip);
+                ProcessActiveClipV(asset, directorTime, clip);
+                m_boundGameObject.SetActive(true);
                 break;
             }
         }
     }
-
-    protected abstract void ActivateBoundGameObject(T asset, double directorTime, TimelineClip activeClip);
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -49,7 +47,15 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
         m_boundGameObject = go;
         m_playableDirector = director;
         m_clips = clips;
+
+        InitInternalV(go);
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+    protected abstract void InitInternalV(GameObject boundGameObject);
+    protected abstract void ProcessActiveClipV(T asset, double directorTime, TimelineClip activeClip);
+
 
 //----------------------------------------------------------------------------------------------------------------------
 

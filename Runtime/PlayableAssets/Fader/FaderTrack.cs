@@ -11,25 +11,20 @@ namespace UnityEngine.StreamingImageSequence
     [TrackClipType(typeof(FaderPlayableAsset))]
     [TrackBindingType(typeof(Image))]
     [TrackColor(0.263f, 0.09f, 0.263f)]
-
-    internal class FaderTrack : TrackAsset
-    {
-        public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
-        {
+    internal class FaderTrack : TrackAsset {
+        public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
             var mixer = ScriptPlayable<FaderPlayableMixer>.Create(graph, inputCount);
             var director = go.GetComponent<PlayableDirector>();
-            if ( director != null )
-            {
-                var outputGo = director.GetGenericBinding(this) as Image;
+            if ( director != null ) {
+                Image outputGo = director.GetGenericBinding(this) as Image;
                 FaderPlayableMixer bh = mixer.GetBehaviour();
-                bh.m_clips = GetClips();
-                if ( outputGo != null ) {
-                    bh.BindGameObject(outputGo.gameObject);
-                }
-                bh.m_playableDirector = director;
+                bh.Init(outputGo.gameObject, director, GetClips());
             }
             return mixer;
         }
+
+
+
 
         public override void GatherProperties(PlayableDirector director, IPropertyCollector driver)
         {
