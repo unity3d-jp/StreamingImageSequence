@@ -84,10 +84,10 @@ internal class FaderPlayableMixer : PlayableBehaviour
             var clip = enumulator.Current; 
             var asset = clip.asset as FaderPlayableAsset;
 
-            color = asset.m_color;
+            color = asset.GetColor();
             if ( directorTime >= clip.start && directorTime <= clip.end) {
                 fade = (float)((directorTime - clip.start) / clip.duration);
-                if ( asset.m_type == FadeType.FadeOut)
+                if ( asset.GetFadeType() == FadeType.FADE_OUT)
                 {
                     fade = 1.0f - fade;
                 }
@@ -135,7 +135,7 @@ internal class FaderPlayableMixer : PlayableBehaviour
             TimelineClip clip = enumlator.Current;
             FaderPlayableAsset asset = clip.asset as FaderPlayableAsset;
 
-            m_initialColor = asset.m_color;
+            m_initialColor = asset.GetColor();
 
             if (image != null ) {
                 image.color = m_initialColor;
