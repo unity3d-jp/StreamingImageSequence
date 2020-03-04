@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.IO;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.StreamingImageSequence;
@@ -9,6 +10,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
     public class JstimelineImporterTest {
     [Test]
     public void Import() {
+        EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects);
+
         string fullPath = "Packages/com.unity.streaming-image-sequence/Tests/Data/AeConvert.jstimeline";
         Assert.IsTrue(File.Exists(fullPath));
 

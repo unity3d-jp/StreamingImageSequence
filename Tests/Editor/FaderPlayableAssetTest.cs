@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Collections;
+using UnityEditor.SceneManagement;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -14,6 +15,8 @@ internal class FaderPlayableAssetTest {
 
     [UnityTest]
     public IEnumerator CreatePlayableAsset() {
+        EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects);
+
         Color col = Color.green;
         GameObject directorGo = new GameObject("Director");
         PlayableDirector director = directorGo.AddComponent<PlayableDirector>();
