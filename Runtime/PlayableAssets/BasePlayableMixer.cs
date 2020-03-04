@@ -7,7 +7,6 @@ namespace UnityEngine.StreamingImageSequence {
 // A PlayableBehaviour that is attached to a Track via CreateTrackMixer() 
 internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: PlayableAsset {
 
-    // Called each frame while the state is set to Play
     public override void PrepareFrame(Playable playable, FrameData info) {
         base.PrepareFrame(playable, info);
         if (null == m_boundGameObject)
@@ -17,6 +16,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     }
 
 //----------------------------------------------------------------------------------------------------------------------
+    // Called each frame while the state is set to Play
     public override void ProcessFrame(Playable playable, FrameData info, object playerData) {
         int inputCount = playable.GetInputCount<Playable>();
         if (inputCount == 0 ) {
