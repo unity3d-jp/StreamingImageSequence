@@ -30,7 +30,7 @@ namespace UnityEngine.StreamingImageSequence {
 
                 UnityEditor.DefaultAsset timelineDefaultAsset = asset.GetTimelineDefaultAsset();
                 if (null!=timelineDefaultAsset) {
-                    if (!InitializeAssetFromDefaultAsset(clip, null, asset)) {
+                    if (!InitializeAssetFromDefaultAsset(asset, timelineDefaultAsset)) {
                         clipOptions.errorText = kNotStreamingAssetsFolderAssignedError;
                     }
                 } else {
@@ -49,6 +49,7 @@ namespace UnityEngine.StreamingImageSequence {
         /// <inheritdoc/>
         public override void OnCreate(TimelineClip clip, TrackAsset track, TimelineClip clonedFrom)
         {
+            Debug.Log("OnCreate");
             StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
             if (null == asset) {
                 Debug.LogError("Asset is not a StreamingImageSequencePlayableAsset: " + clip.asset);
@@ -58,35 +59,38 @@ namespace UnityEngine.StreamingImageSequence {
             //This callback occurs before the clip is assigned to the track, but we need the track for creating curves.
             clip.parentTrack = track; 
             
-            InitializeAssetFromDefaultAsset(clip, clonedFrom, asset);
-        }
-
-//----------------------------------------------------------------------------------------------------------------------
-
-        private static bool InitializeAssetFromDefaultAsset(TimelineClip clip, TimelineClip clonedFrom, 
-            StreamingImageSequencePlayableAsset asset) 
-        {
-            if (null == clonedFrom) { //Not cloning, which means this is created by user interaction, such as Folder D&D
-                UnityEditor.DefaultAsset timelineDefaultAsset = asset.GetTimelineDefaultAsset();
-                if (null == timelineDefaultAsset)
-                    return false;
-
-                string path = AssetDatabase.GetAssetPath(timelineDefaultAsset).Replace("\\","/");
-                if (!path.StartsWith("Assets/StreamingAssets/")) {
-                    return false;
-                }
-                ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, path, asset);
+            //If we have a default asset, and clonedFrom is NULL, which means this is created by user interaction,
+            //such as Folder D&D
+            UnityEditor.DefaultAsset timelineDefaultAsset = asset.GetTimelineDefaultAsset();
+            if (null != timelineDefaultAsset && null == clonedFrom) {
+                InitializeAssetFromDefaultAsset(asset, timelineDefaultAsset);
             }
 
             //If the clip already has curves (because of cloning, etc), then we don't set anything
             if (null == clip.curves) {
-                clip.duration = asset.GetImagePaths().Count * 0.125; // 8fps (standard limited animation)
-                clip.displayName = Path.GetFileName(asset.GetFolder());
+                if (asset.HasImages()) {
+                    clip.duration = asset.GetImagePaths().Count * 0.125; // 8fps (standard limited animation)
+                    clip.displayName = Path.GetFileName(asset.GetFolder());
+                }
                 clip.CreateCurves("Curves: " + clip.displayName);
             }
 
             asset.SetTimelineClip(clip);
             asset.ValidateAnimationCurve();
+
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+        private static bool InitializeAssetFromDefaultAsset(StreamingImageSequencePlayableAsset playableAsset,
+            UnityEditor.DefaultAsset timelineDefaultAsset) 
+        {
+            string path = AssetDatabase.GetAssetPath(timelineDefaultAsset).Replace("\\","/");
+            if (!path.StartsWith("Assets/StreamingAssets/")) {
+                return false;
+            }
+            ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, path, playableAsset);
+
             return true;
         }
 
