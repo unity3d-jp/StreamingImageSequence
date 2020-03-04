@@ -8,16 +8,14 @@ using System.Collections.Generic;
 
 namespace UnityEngine.StreamingImageSequence {
     [CustomTimelineEditor(typeof(StreamingImageSequencePlayableAsset)), UsedImplicitly]
-    internal class StreamingImageSequencePlayableAssetEditor : ClipEditor
-    {
-        private const string kNoFolderAssignedError = "No Folder assigned";
-        private const string kNotStreamingAssetsFolderAssignedError = "Loading folder must be under Assets/StreamingAssets";
-        private const string kFolderMissingError = "Assigned folder does not exist.";
-        private const string kNoPicturesAssignedError = "No Pictures assigned";
+    internal class StreamingImageSequencePlayableAssetEditor : ClipEditor {
+        private const string NO_FOLDER_ASSIGNED_ERROR = "No Folder assigned";
+        private const string FOLDER_MISSING_ERROR = "Assigned folder does not exist.";
+        private const string NO_PICTURES_ASSIGNED_ERROR = "No Pictures assigned";
 
+//----------------------------------------------------------------------------------------------------------------------
         /// <inheritdoc/>
-        public override ClipDrawOptions GetClipOptions(TimelineClip clip)
-        {
+        public override ClipDrawOptions GetClipOptions(TimelineClip clip) {
             var clipOptions = base.GetClipOptions(clip);
             StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
             if (null == asset) {
@@ -27,24 +25,18 @@ namespace UnityEngine.StreamingImageSequence {
 
             string folder = asset.GetFolder();
             if (string.IsNullOrEmpty(folder)) {
-
-                UnityEditor.DefaultAsset timelineDefaultAsset = asset.GetTimelineDefaultAsset();
-                if (null!=timelineDefaultAsset) {
-                    if (!InitializeAssetFromDefaultAsset(asset, timelineDefaultAsset)) {
-                        clipOptions.errorText = kNotStreamingAssetsFolderAssignedError;
-                    }
-                } else {
-                    clipOptions.errorText = kNoFolderAssignedError;
-                }
+                clipOptions.errorText = NO_FOLDER_ASSIGNED_ERROR;
             }  else if (!Directory.Exists(folder)) {
-                clipOptions.errorText = kFolderMissingError;
+                clipOptions.errorText = FOLDER_MISSING_ERROR;
             } else if (asset.GetImagePaths() == null) {
-                clipOptions.errorText = kNoPicturesAssignedError;
+                clipOptions.errorText = NO_PICTURES_ASSIGNED_ERROR;
             }
             clipOptions.tooltip = folder;
             
             return clipOptions;
         }
+
+//----------------------------------------------------------------------------------------------------------------------
 
         /// <inheritdoc/>
         public override void OnCreate(TimelineClip clip, TrackAsset track, TimelineClip clonedFrom)
@@ -81,18 +73,15 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-        private static bool InitializeAssetFromDefaultAsset(StreamingImageSequencePlayableAsset playableAsset,
+        private static void InitializeAssetFromDefaultAsset(StreamingImageSequencePlayableAsset playableAsset,
             UnityEditor.DefaultAsset timelineDefaultAsset) 
         {
             string path = AssetDatabase.GetAssetPath(timelineDefaultAsset).Replace("\\","/");
-            if (!path.StartsWith("Assets/StreamingAssets/")) {
-                return false;
-            }
-            ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, path, playableAsset);
-
-            return true;
+            const bool ASK_TO_COPY = false;
+            ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, path, playableAsset, ASK_TO_COPY);
         }
 
+//----------------------------------------------------------------------------------------------------------------------
         /// <inheritdoc/>
         public override void OnClipChanged(TimelineClip clip)
         {
