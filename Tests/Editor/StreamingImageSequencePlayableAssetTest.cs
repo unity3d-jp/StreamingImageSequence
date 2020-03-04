@@ -34,7 +34,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
             //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
             EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
-            Selection.activeGameObject=directorGo;
+            Selection.activeTransform = directorGo.transform;
             yield return null;
 
             TimelineEditor.selectedClip = clip;
