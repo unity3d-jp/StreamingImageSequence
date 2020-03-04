@@ -207,7 +207,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: FaderPlayableAsset
+    m_DisplayName: RedFader - FadeIn
   - m_Version: 1
     m_Start: 0.5666666666666667
     m_ClipIn: 0
@@ -276,7 +276,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: FaderPlayableAsset
+    m_DisplayName: 'BlueFader - FadeOut '
   m_Markers:
     m_Objects: []
 --- !u!114 &-7213371257665799059
