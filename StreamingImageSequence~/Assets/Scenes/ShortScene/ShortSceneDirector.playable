@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FaderPlayableAsset
   m_EditorClassIdentifier: 
   m_color: {r: 0.8396226, g: 0.24951048, b: 0.24951048, a: 1}
-  m_type: 0
+  m_fadeType: 0
 --- !u!114 &-7752880311682530481
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -209,7 +209,7 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: FaderPlayableAsset
   - m_Version: 1
-    m_Start: 0.6
+    m_Start: 0.5666666666666667
     m_ClipIn: 0
     m_Asset: {fileID: -7213371257665799059}
     m_Duration: 0.31666666666666665
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Name: FaderPlayableAsset(Clone)
   m_EditorClassIdentifier: 
   m_color: {r: 0.509434, g: 0.5635814, b: 0.6792453, a: 1}
-  m_type: 1
+  m_fadeType: 1
 --- !u!114 &-4395596163201338418
 MonoBehaviour:
   m_ObjectHideFlags: 1
