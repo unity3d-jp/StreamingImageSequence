@@ -27,10 +27,5 @@ internal class FaderPlayableAsset : PlayableAsset, ITimelineClipAsset {
 
 }
 
-    internal enum FadeType {
-        FADE_IN,
-        FADE_OUT
-    }
-
 
 }
