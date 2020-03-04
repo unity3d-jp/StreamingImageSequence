@@ -31,6 +31,9 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             StreamingImageSequenceTrack movieTrack = asset.CreateTrack<StreamingImageSequenceTrack>(null, "Footage");
             TimelineClip clip = movieTrack.CreateDefaultClip();
             clip.asset = sisAsset;
+            clip.CreateCurves("Curves: " + clip.displayName);
+            sisAsset.SetTimelineClip(clip);
+            sisAsset.ValidateAnimationCurve();
 
             //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
             EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
