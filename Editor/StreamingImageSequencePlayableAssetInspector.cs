@@ -60,16 +60,15 @@ namespace UnityEditor.StreamingImageSequence {
             GUILayout.Space(4f);
 
             using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
+                int numImages = 0;
                 if (m_asset.HasImages()) {
-                    GUILayout.Label("Images", "BoldLabel");
-                    EditorGUILayout.LabelField("Number of Images", $"{m_asset.GetImagePaths().Count}");
-                    GUILayout.Space(4f);
-                    m_imageListFoldout = EditorGUILayout.Foldout(m_imageListFoldout, "Images");
-                    if (m_imageListFoldout) {
-                        DoImageGUI();
-                    }
-                } else {
-                    GUILayout.Label("Images: Empty", "BoldLabel");
+                    numImages = m_asset.GetImagePaths().Count;
+                }
+                GUILayout.Label("Images: " + numImages, "BoldLabel");
+                GUILayout.Space(4f);
+                m_imageListFoldout = EditorGUILayout.Foldout(m_imageListFoldout, "Images");
+                if (m_imageListFoldout) {
+                    DoImageGUI();
                 }
             }
 
