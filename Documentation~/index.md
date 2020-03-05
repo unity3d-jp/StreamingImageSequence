@@ -11,13 +11,11 @@ easily without making Unity 2D Sprites.
 
 # Features
 
-## [Playing Sequential Images](en/StreamingImageSequencePlayableAsset.md)
+### [Playing Sequential Images](en/StreamingImageSequencePlayableAsset.md)
 <img src="./images/StreamingImageSequenceDemo.gif" width=400>  
 
-## [Fading Image objects](en/FaderPlayableAsset.md)
+### [Fading Image objects](en/FaderPlayableAsset.md)
 <img src="./images/FaderDemo.gif" width=280>  
-
-A playable asset for fading Image component in Unity Timeline.
 
 
 
