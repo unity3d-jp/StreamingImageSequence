@@ -181,10 +181,14 @@ namespace UnityEngine.StreamingImageSequence {
         
         
 //----------------------------------------------------------------------------------------------------------------------        
-
+        
         /// <inheritdoc/>
         public ClipCaps clipCaps {
+#if TIMELINE_NEWER_THAN_1_4_0            
+            get { return ClipCaps.ClipIn | ClipCaps.AutoScale; }
+#else            
             get { return ClipCaps.ClipIn | ClipCaps.SpeedMultiplier; }
+#endif            
         }
         
 //----------------------------------------------------------------------------------------------------------------------        
