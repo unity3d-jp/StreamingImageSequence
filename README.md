@@ -16,3 +16,15 @@ easily without making Unity 2D Sprites.
 
 ### [Fading Image objects](./Documentation~/en/FaderPlayableAsset.md)
 <img src="./Documentation~/images/FaderDemo.gif" width=280>  
+
+# License
+* Source Code: [Unity Companion License](LICENSE.md)
+* Unity-chan Assets: [Unity-Chan License](http://unity-chan.com/contents/guideline_en/).
+  Unity
+  Unity-chan Assets are located under the following folder:
+  - `AE~/Samples`
+  - `StreamingImageSequence~/Assets/StreamingAssets`  
+
+# Tutorial Videos
+- [Usage Video](https://youtu.be/mlRbwqJ74CM)
+- [Example](https://youtu.be/4og6rgQdb3c)
