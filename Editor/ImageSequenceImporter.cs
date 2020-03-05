@@ -74,7 +74,7 @@ namespace UnityEditor.StreamingImageSequence {
                 strSrcFolder = folder,
                 RelativeFilePaths = relFilePaths,
                 mode = importerMode,
-                DoNotCopy = false,
+                CopyToStreamingAssets = true,
                 TargetAsset = targetAsset
             };
 
@@ -82,7 +82,7 @@ namespace UnityEditor.StreamingImageSequence {
             //Import immediately if the assets are already under StreamingAssets
             if (fullSrcPath.StartsWith(streamingAssetsPath) || !askToCopy) {
                 importerParam.strDstFolder = importerParam.strSrcFolder;
-                importerParam.DoNotCopy = true;
+                importerParam.CopyToStreamingAssets = false;
                 ImageSequenceImporter.Import(importerParam);
             } else {
                 importerParam.strDstFolder = Path.Combine(streamingAssetsPath, assetName).Replace("\\", "/");
@@ -95,7 +95,7 @@ namespace UnityEditor.StreamingImageSequence {
         
         internal static void Import(ImageFileImporterParam param)
         {
-            if (param.DoNotCopy)
+            if (!param.CopyToStreamingAssets)
             {
                 param.strDstFolder = param.strSrcFolder.Replace("\\", "/");
 
@@ -226,7 +226,7 @@ namespace UnityEditor.StreamingImageSequence {
                 }
 
                 proxyAsset.SetParam(trackMovieContainer);
-                if (!param.DoNotCopy)
+                if (param.CopyToStreamingAssets)
                 {
                     AssetDatabase.Refresh();
                 }
@@ -277,7 +277,7 @@ namespace UnityEditor.StreamingImageSequence {
         public List<string> RelativeFilePaths;
         public string strDstFolder;
         public string strSrcFolder;
-        public bool DoNotCopy;
+        public bool CopyToStreamingAssets;
         public Mode mode;
         public StreamingImageSequencePlayableAsset TargetAsset = null;
     }

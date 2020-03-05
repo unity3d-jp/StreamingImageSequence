@@ -87,18 +87,15 @@ namespace UnityEditor.StreamingImageSequence {
             EditorGUILayout.BeginHorizontal();
             // C#var options = new GUILayoutOption[] { GUILayout.MaxWidth(Screen.width- space), GUILayout.MinWidth(120.0F) };
             EditorGUI.BeginDisabledGroup(m_importerParam.mode == ImageFileImporterParam.Mode.SpriteAnimation);
-            string noCopyText = @"Don't copy(Use original).";
-            if (m_importerParam.DoNotCopy) {
-                noCopyText += " Warning! Copying external assets inside Unity project IS recommended.";
-            }
-            m_importerParam.DoNotCopy = GUILayout.Toggle(m_importerParam.DoNotCopy, noCopyText , m_copyToggleStyle);
+            string copyText = @"Copy to StreamingAssets (Recommended).";
+            m_importerParam.CopyToStreamingAssets = GUILayout.Toggle(m_importerParam.CopyToStreamingAssets, copyText , m_copyToggleStyle);
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndHorizontal();
 
             GUILayout.Space(8);
             EditorGUILayout.BeginHorizontal();
             GUILayout.Space(8);
-            EditorGUI.BeginDisabledGroup(m_importerParam.DoNotCopy);
+            EditorGUI.BeginDisabledGroup(!m_importerParam.CopyToStreamingAssets);
             EditorGUILayout.LabelField("Copy to:", GUILayout.Width(120));
             m_importerParam.strDstFolder = EditorGUILayout.TextField(m_importerParam.strDstFolder);
             if (GUILayout.Button("...", GUILayout.Width(40)))
