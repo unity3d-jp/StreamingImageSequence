@@ -2,7 +2,41 @@
 
 A playable asset for fading Image component in Unity Timeline.
 
+# Tutorial 
 
+From an empty scene, do the following:
+
+1. Create an empty *GameObject* and add a *Director* component to it
+1. Copy the sequential images in a folder inside the Unity project, preferably under *StreamingAssets*
+   > Copying to a folder under *StreamingAssets* will save us from the process to import those images in Unity, which may take a long time if there are a lot of images
+1. Open the Timeline window, if not opened yet
+1. Add a FaderTrack in the Timeline Window
+
+   <img src="../images/AddFaderTrack.png" width=180>  
+   
+1. Right click on the timeline window and click *Add Fader Playable Asset*
+ 
+   <img src="../images/AddFaderPlayableAsset.png" width=480>  
+   
+1. Create an Image object by clicking the menu: GameObject -> UI -> Image
+
+1. Drag and drop the Image object to the object property of the FaderTrack 
+
+
+
+The Image object will be faded in/out as we play the Timeline or drag the time slider of the Timeline window.
+
+
+
+# Info in Inspector
+
+<img src="../images/FaderPlayableAsset.png" align=right  width=320>  
+
+* **Color**   
+  The color to be applied to the Image component attached to the track.
+* **Fade Type**  
+  - FadeIn : from invisible (alpha=0) to visible   (alpha=1) 
+  - FadeOut: from visible   (alpha=1) to invisible (alpha=0) 
 
 
 
