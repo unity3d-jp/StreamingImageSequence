@@ -8,16 +8,14 @@ using System.Collections.Generic;
 
 namespace UnityEngine.StreamingImageSequence {
     [CustomTimelineEditor(typeof(StreamingImageSequencePlayableAsset)), UsedImplicitly]
-    internal class StreamingImageSequencePlayableAssetEditor : ClipEditor
-    {
-        private const string kNoFolderAssignedError = "No Folder assigned";
-        private const string kNotStreamingAssetsFolderAssignedError = "Loading folder must be under Assets/StreamingAssets";
-        private const string kFolderMissingError = "Assigned folder does not exist.";
-        private const string kNoPicturesAssignedError = "No Pictures assigned";
+    internal class StreamingImageSequencePlayableAssetEditor : ClipEditor {
+        private const string NO_FOLDER_ASSIGNED_ERROR = "No Folder assigned";
+        private const string FOLDER_MISSING_ERROR = "Assigned folder does not exist.";
+        private const string NO_PICTURES_ASSIGNED_ERROR = "No Pictures assigned";
 
+//----------------------------------------------------------------------------------------------------------------------
         /// <inheritdoc/>
-        public override ClipDrawOptions GetClipOptions(TimelineClip clip)
-        {
+        public override ClipDrawOptions GetClipOptions(TimelineClip clip) {
             var clipOptions = base.GetClipOptions(clip);
             StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
             if (null == asset) {
@@ -27,24 +25,18 @@ namespace UnityEngine.StreamingImageSequence {
 
             string folder = asset.GetFolder();
             if (string.IsNullOrEmpty(folder)) {
-
-                UnityEditor.DefaultAsset timelineDefaultAsset = asset.GetTimelineDefaultAsset();
-                if (null!=timelineDefaultAsset) {
-                    if (!InitializeAssetFromDefaultAsset(clip, null, asset)) {
-                        clipOptions.errorText = kNotStreamingAssetsFolderAssignedError;
-                    }
-                } else {
-                    clipOptions.errorText = kNoFolderAssignedError;
-                }
+                clipOptions.errorText = NO_FOLDER_ASSIGNED_ERROR;
             }  else if (!Directory.Exists(folder)) {
-                clipOptions.errorText = kFolderMissingError;
+                clipOptions.errorText = FOLDER_MISSING_ERROR;
             } else if (asset.GetImagePaths() == null) {
-                clipOptions.errorText = kNoPicturesAssignedError;
+                clipOptions.errorText = NO_PICTURES_ASSIGNED_ERROR;
             }
             clipOptions.tooltip = folder;
             
             return clipOptions;
         }
+
+//----------------------------------------------------------------------------------------------------------------------
 
         /// <inheritdoc/>
         public override void OnCreate(TimelineClip clip, TrackAsset track, TimelineClip clonedFrom)
@@ -58,38 +50,38 @@ namespace UnityEngine.StreamingImageSequence {
             //This callback occurs before the clip is assigned to the track, but we need the track for creating curves.
             clip.parentTrack = track; 
             
-            InitializeAssetFromDefaultAsset(clip, clonedFrom, asset);
-        }
-
-//----------------------------------------------------------------------------------------------------------------------
-
-        private static bool InitializeAssetFromDefaultAsset(TimelineClip clip, TimelineClip clonedFrom, 
-            StreamingImageSequencePlayableAsset asset) 
-        {
-            if (null == clonedFrom) { //Not cloning, which means this is created by user interaction, such as Folder D&D
-                UnityEditor.DefaultAsset timelineDefaultAsset = asset.GetTimelineDefaultAsset();
-                if (null == timelineDefaultAsset)
-                    return false;
-
-                string path = AssetDatabase.GetAssetPath(timelineDefaultAsset).Replace("\\","/");
-                if (!path.StartsWith("Assets/StreamingAssets/")) {
-                    return false;
-                }
-                ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, path, asset);
+            //If we have a default asset, and clonedFrom is NULL, which means this is created by user interaction,
+            //such as Folder D&D
+            UnityEditor.DefaultAsset timelineDefaultAsset = asset.GetTimelineDefaultAsset();
+            if (null != timelineDefaultAsset && null == clonedFrom) {
+                InitializeAssetFromDefaultAsset(asset, timelineDefaultAsset);
             }
 
             //If the clip already has curves (because of cloning, etc), then we don't set anything
             if (null == clip.curves) {
-                clip.duration = asset.GetImagePaths().Count * 0.125; // 8fps (standard limited animation)
-                clip.displayName = Path.GetFileName(asset.GetFolder());
+                if (asset.HasImages()) {
+                    clip.duration = asset.GetImagePaths().Count * 0.125; // 8fps (standard limited animation)
+                    clip.displayName = Path.GetFileName(asset.GetFolder());
+                }
                 clip.CreateCurves("Curves: " + clip.displayName);
             }
 
             asset.SetTimelineClip(clip);
             asset.ValidateAnimationCurve();
-            return true;
+
         }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+        private static void InitializeAssetFromDefaultAsset(StreamingImageSequencePlayableAsset playableAsset,
+            UnityEditor.DefaultAsset timelineDefaultAsset) 
+        {
+            string path = AssetDatabase.GetAssetPath(timelineDefaultAsset).Replace("\\","/");
+            const bool ASK_TO_COPY = false;
+            ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, path, playableAsset, ASK_TO_COPY);
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
         /// <inheritdoc/>
         public override void OnClipChanged(TimelineClip clip)
         {

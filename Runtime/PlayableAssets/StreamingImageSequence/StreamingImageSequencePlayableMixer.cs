@@ -17,21 +17,11 @@ using UnityEditor;
 namespace UnityEngine.StreamingImageSequence
 {
 
-    // A behaviour that is attached to a playable
+    // A PlayableBehaviour that is attached to a Track via CreateTrackMixer() 
+    internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<StreamingImageSequencePlayableAsset> {
 
-    internal class StreamingImageSequencePlayableMixer : PlayableBehaviour
-    {
 
-        internal PlayableDirector m_PlayableDirector;
-        internal IEnumerable<TimelineClip> m_clips;
-        internal TrackAsset m_track;
-        private double m_loadStartOffsetTime = -1.0;
-#if UNITY_EDITOR
-        EditorWindow m_gameView;
-#endif
-        private int[] m_nextInadvanceLoadingFrameArray;
-        public StreamingImageSequencePlayableMixer()
-        {
+        public StreamingImageSequencePlayableMixer() {
 
 #if UNITY_EDITOR
             System.Reflection.Assembly assembly = typeof(UnityEditor.EditorWindow).Assembly;
@@ -56,7 +46,6 @@ namespace UnityEngine.StreamingImageSequence
         void Reset()
         {
             m_loadStartOffsetTime = -1.0;
-            m_boundGameObject   = null;
             m_spriteRenderer    = null;
             m_image             = null;
             m_meshRenderer      = null;
@@ -66,7 +55,7 @@ namespace UnityEngine.StreamingImageSequence
         public override void OnGraphStart(Playable playable){
             
             
-            foreach (TimelineClip clip in m_clips) {
+            foreach (TimelineClip clip in GetClips()) {
                 StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
                 if (null == asset)
                     continue;
@@ -86,15 +75,6 @@ namespace UnityEngine.StreamingImageSequence
         }
         
 //----------------------------------------------------------------------------------------------------------------------
-        public override void PrepareFrame(Playable playable, FrameData info) {
-            base.PrepareFrame(playable, info);
-            if (null == m_boundGameObject)
-                return;
-
-            m_boundGameObject.SetActive(false); //Always hide first, and show it later 
-        }
-
-//----------------------------------------------------------------------------------------------------------------------
         public override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
             int inputCount = playable.GetInputCount<Playable>();
@@ -102,8 +82,7 @@ namespace UnityEngine.StreamingImageSequence
                 return; // it doesn't work as mixer.
             }
 
-            if (m_nextInadvanceLoadingFrameArray == null)
-            {
+            if (m_nextInadvanceLoadingFrameArray == null) {
                 m_nextInadvanceLoadingFrameArray = new int[inputCount];
                 for ( int ii = 0;ii< inputCount;ii++)
                 {
@@ -111,17 +90,15 @@ namespace UnityEngine.StreamingImageSequence
                 }
             }
 
-            if (!TryBindGameObjectFromFrame(playerData)) {
-                //Debug.LogError("Can't bind GameObject for track: " + m_track.name);
+            GameObject go = GetBoundGameObject();
+
+            if (null == go)
                 return;
-            }
 
-
-            double directorTime = m_PlayableDirector.time;
-            TimelineClip activeClip = null;
+            double directorTime = GetPlayableDirector().time;
 
             int i = 0;
-            foreach (TimelineClip clip in m_clips) {
+            foreach (TimelineClip clip in GetClips()) {
 
                 StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
                 if (null == asset)
@@ -147,30 +124,17 @@ namespace UnityEngine.StreamingImageSequence
                 }
 
                 if (directorTime >= startTime && directorTime < endTime) {
-                    activeClip = clip;
-                    int index = asset.GlobalTimeToImageIndex(directorTime);
 
-                    bool texReady = asset.RequestLoadImage(index, false);
-                    if (texReady) {
-                        UpdateRendererTexture(asset);
-
-#if UNITY_EDITOR
-                        if (!EditorApplication.isPlaying) {
-                            m_gameView.Repaint();
-                        }
-#endif
-                    }
-
+                    ProcessActiveClipV(asset, directorTime, clip);
+                    go.SetActive(true);
                 } 
 
                 ++i;
             }
 
-            //Hide/Show
-            if (null != activeClip) {
-                m_boundGameObject.SetActive(true);
-            }
         }
+
+//----------------------------------------------------------------------------------------------------------------------
 
         private void ProcessInAdvanceLoading(double time, TimelineClip clip, int index)
         {
@@ -205,52 +169,43 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 //---------------------------------------------------------------------------------------------------------------------
-        //[TODO-sin: 2020-3-3] the m_boundGameObject part is the same with FaderTrack. Do something
-        public bool BindGameObject(GameObject go) {
-            m_boundGameObject = go;
-            bool ret = InitRenderers();
-            if (!ret) {
-                Reset();
-                return false;
+        protected override void ProcessActiveClipV(StreamingImageSequencePlayableAsset asset,
+            double directorTime, TimelineClip activeClip) 
+        {
+            int index = asset.GlobalTimeToImageIndex(directorTime);
+
+            bool texReady = asset.RequestLoadImage(index, false);
+            if (texReady) {
+                UpdateRendererTexture(asset);
+
+#if UNITY_EDITOR
+                if (!EditorApplication.isPlaying) {
+                    m_gameView.Repaint();
+                }
+#endif
             }
 
-            return true;
         }
-
 
 //---------------------------------------------------------------------------------------------------------------------
-        private bool TryBindGameObjectFromFrame(object playerData) {
-            if (null != m_boundGameObject)
-                return true;
 
-            //There might be two sources: playerData, and the Object bound to the track
-            StreamingImageSequenceNativeRenderer renderer = playerData as StreamingImageSequenceNativeRenderer;
-            if (null != renderer) {
-                m_boundGameObject = renderer.gameObject;
-            } else  {
-                Object binding = m_PlayableDirector.GetGenericBinding(m_track);
-                GameObject go = binding as GameObject;
-                m_boundGameObject = go;
-            }
-
-            if (null == m_boundGameObject) {
-                return false;
-            }
-
+        protected override void InitInternalV(GameObject boundGameObject) {
             bool ret = InitRenderers();
             if (!ret) {
                 Reset();
-                return false;
             }
-
-            return true;
         }
+
 
 //---------------------------------------------------------------------------------------------------------------------
         private bool InitRenderers() {
-            m_spriteRenderer= m_boundGameObject.GetComponent<SpriteRenderer>();
-            m_meshRenderer  = m_boundGameObject.GetComponent<MeshRenderer>();
-            m_image         = m_boundGameObject.GetComponent<Image>();
+            GameObject go = GetBoundGameObject();
+            if (null == go)
+                return false;
+
+            m_spriteRenderer= go.GetComponent<SpriteRenderer>();
+            m_meshRenderer  = go.GetComponent<MeshRenderer>();
+            m_image         = go.GetComponent<Image>();
             return (null!= m_meshRenderer || null!= m_image || null!=m_spriteRenderer);
         }
 
@@ -258,7 +213,7 @@ namespace UnityEngine.StreamingImageSequence
 
         void UpdateRendererTexture(StreamingImageSequencePlayableAsset asset) {
             Texture2D tex = asset.GetTexture();
-            GameObject go = m_boundGameObject;
+            GameObject go = GetBoundGameObject();
             if (null!=m_spriteRenderer ) {
                 Sprite sprite = m_spriteRenderer.sprite;
                 if (sprite.texture != tex) {
@@ -277,18 +232,17 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 //---------------------------------------------------------------------------------------------------------------------
-        
-        /*
-        static public void ResetAllTexturePtr()
-        {
-            StreamingImageSequencePlugin.ResetAllLoadedTexture();
-        }
-        */
-
-        private GameObject      m_boundGameObject;
+       
         private SpriteRenderer  m_spriteRenderer = null;
         private MeshRenderer    m_meshRenderer = null;
         private Image           m_image = null;
+
+        internal TrackAsset m_track;
+        private double m_loadStartOffsetTime;
+#if UNITY_EDITOR
+        EditorWindow m_gameView;
+#endif
+        private int[] m_nextInadvanceLoadingFrameArray;
 
     }
 
