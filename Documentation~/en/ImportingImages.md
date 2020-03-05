@@ -3,7 +3,7 @@
 There are a couple of ways to import images into StreamingImageSequencePlayableAsset
 
 1. [Folder Drag and Drop to the track](#folder-drag-and-drop-to-the-track)
-1. [Setting the folder in the inspector](#setting-the-folder-via-inspector)
+1. [Setting the folder via inspector](#setting-the-folder-via-inspector)
 1. [Importing a file exported from Adobe After Effects using our StreamingImageSequence script for Adobe After Effects](using-streamingImageSequence-plugin-for-adobe-after-effects)
 
 ## Folder Drag and Drop to the track
@@ -12,12 +12,12 @@ This is done by doing drag and drop of the sequential images folder to the Strea
 
 <img src="../images/DragAndDropFolder.png" width=960>  
 
-## Selecting the Folder via Inspector
+## Setting the Folder via Inspector
 
 We can simply click the **Select** button, or we can also drag and drop a folder directly into the inspector.
 <img src="../images/DragAndDropInspector.png" width=640>  
 
-If the chosen folder is not under *StreamingAssets*, then the following import window will appear to confirm if we'd like to copy the images into *StreamingAssets*. 
+If the chosen folder is not under *StreamingAssets*, then the following import window will appear to confirm if we'd like to copy the images into *StreamingAssets*.   
 We can choose to skip copying by unchecking the checkbox to do so.
 
 <img src="../images/ImporterWindow.png" width=480>  

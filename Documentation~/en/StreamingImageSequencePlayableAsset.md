@@ -2,7 +2,7 @@
 
 A playable asset for playing sequential image sequences in Unity Timeline.
 
-# Supported Formats
+# Supported Image Formats
 
 
 |             | Windows            | Mac                |
@@ -50,14 +50,14 @@ To do this, open the curve section, and right click on the curve to start adding
 <img src="../images/StreamingImageSequenceCurve.png" width=640>
 
 
-# Info in Inspector
+# Inspector
 
 <img src="../images/StreamingImageSequencePlayableAsset.png" align=right width=400>
 
 * **Resolution** (Read Only)  
   Shows the width and height of the first image in the folder
 * **Folder**  
-  The folder where the image files for this PlayableAsset are located
+  The folder where the image files are located
 * **Images**  
   The images inside the folder.
   We can reorder the images by dragging the image file name up/down.

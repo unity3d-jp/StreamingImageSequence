@@ -28,7 +28,7 @@ The Image object will be faded in/out as we play the Timeline or drag the time s
 
 
 
-# Info in Inspector
+# Inspector
 
 <img src="../images/FaderPlayableAsset.png" align=right  width=320>  
 
