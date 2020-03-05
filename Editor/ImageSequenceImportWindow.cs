@@ -82,7 +82,7 @@ namespace UnityEditor.StreamingImageSequence {
             EditorGUILayout.BeginHorizontal();
             // C#var options = new GUILayoutOption[] { GUILayout.MaxWidth(Screen.width- space), GUILayout.MinWidth(120.0F) };
             EditorGUI.BeginDisabledGroup(m_importerParam.mode == ImageFileImporterParam.Mode.SpriteAnimation);
-            string copyText = @"Copy to StreamingAssets (Recommended).";
+            string copyText = @"Copy to StreamingAssets (Recommended)";
             m_importerParam.CopyToStreamingAssets = GUILayout.Toggle(m_importerParam.CopyToStreamingAssets, copyText);
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndHorizontal();
