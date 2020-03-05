@@ -3,14 +3,24 @@
 There are a couple of ways to import images into StreamingImageSequencePlayableAsset
 
 1. [Folder Drag and Drop to the track](#Folder Drag and Drop to the track)
+1. [Setting the folder in the inspector](#Setting the Folder via Inspector)
 1. [Importing a file exported from Adobe After Effects using our StreamingImageSequence script for Adobe After Effects](Using StreamingImageSequence plugin for Adobe After Effects)
 
 # Folder Drag and Drop to the track
 
-This is done by doing drag and drop of the sequential images folder under *StreamingAssets* to the StreamingImageSequenceTrack.
+This is done by doing drag and drop of the sequential images folder to the StreamingImageSequenceTrack.
 
-<img src="../images/DragAndDropStreamingAssets.png" width=960>  
+<img src="../images/DragAndDropFolder.png" width=960>  
 
+# Selecting the Folder via Inspector
+
+We can simply click the **Select** button, or we can also drag and drop a folder directly into the inspector.
+<img src="../images/DragAndDropInspector.png" width=640>  
+
+If the folder is not under *StreamingAssets* folder, then the following window will appear to ask if we want to copy the images into *StreamingAssets*.  
+By default, the images will be copied. If we want to use the images directly, just uncheck the box.
+
+<img src="../images/ImporterWindow.png" width=640>  
 
 # Using StreamingImageSequence script for Adobe After Effects
 
@@ -20,9 +30,3 @@ This is done by doing drag and drop of the sequential images folder under *Strea
 > This import will also create/setup the required Director and Image objects in the Assets/{jstimeline_name} folder.  
 Importing a *jstimeline* which has the same file name as a previously imported *jstimeline* will overwrite the existing assets in the folder, 
 so it is recommended to move these assets into another folder.
-
-
-
-
-
-
