@@ -11,12 +11,7 @@ namespace UnityEditor.StreamingImageSequence {
                 fontSize = 18,
                 fontStyle = FontStyle.Bold
             };
-
-            m_copyToggleStyle = new GUIStyle(EditorStyles.toggle) {
-                fontStyle = FontStyle.Bold, 
-                onNormal = {textColor = Color.red},
-            };
-
+            
         }
 
         static Vector2 m_scrollPos;
@@ -88,7 +83,7 @@ namespace UnityEditor.StreamingImageSequence {
             // C#var options = new GUILayoutOption[] { GUILayout.MaxWidth(Screen.width- space), GUILayout.MinWidth(120.0F) };
             EditorGUI.BeginDisabledGroup(m_importerParam.mode == ImageFileImporterParam.Mode.SpriteAnimation);
             string copyText = @"Copy to StreamingAssets (Recommended).";
-            m_importerParam.CopyToStreamingAssets = GUILayout.Toggle(m_importerParam.CopyToStreamingAssets, copyText , m_copyToggleStyle);
+            m_importerParam.CopyToStreamingAssets = GUILayout.Toggle(m_importerParam.CopyToStreamingAssets, copyText);
             EditorGUI.EndDisabledGroup();
             EditorGUILayout.EndHorizontal();
 
@@ -136,7 +131,6 @@ namespace UnityEditor.StreamingImageSequence {
 
         //Styles
         private GUIStyle m_headerStyle;
-        private GUIStyle m_copyToggleStyle;
 
     }
 } //end namespace
