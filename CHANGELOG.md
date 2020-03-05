@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.2-preview.2] - 2020-3-5
+
+* feat: Fader imporvements. Reverse FadeOut and FadeIn, and a color to highlight FaderPlayableAsset
+* fix: reverse the parameter to copy images to StreamingAssets
+* fix: Hide UseImageMarker and use Timeline 1.4.0's ClipCaps.AutoScale 
+* fix: StreamingImageSequencePlayableAsset stability issues. 
+* fix: Support folder D&D for StreamingImageSequencePlayableAsset from folders which are not under "StreamingAssets"
+* fix: Test assembly definitions.
+
 ## [0.0.2-preview.1] - 2020-3-2
 
 - Renaming to *Streaming Image Sequence \<com.unity.streaming-image-sequence\>*.
