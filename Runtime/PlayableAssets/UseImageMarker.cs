@@ -7,6 +7,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 [Serializable]
 [CustomStyle("UseImageMarker")]
+[HideInMenu]
 internal class UseImageMarker : Marker, INotification {
 //----------------------------------------------------------------------------------------------------------------------    
 
