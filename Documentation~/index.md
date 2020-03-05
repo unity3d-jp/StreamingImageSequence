@@ -9,27 +9,16 @@ easily without making Unity 2D Sprites.
 2. Mac
 
 
-# Main Features
+# Features
 
-# [Playing Sequential Images](en/StreamingImageSequencePlayableAsset.md)
+## [Playing Sequential Images](en/StreamingImageSequencePlayableAsset.md)
 <img src="./images/StreamingImageSequenceDemo.gif" width=280>  
 
-# [Fading Image objects](en/FaderPlayableAsset.md)
+## [Fading Image objects](en/FaderPlayableAsset.md)
 <img src="./images/FaderDemo.gif" width=280>  
 
-# StreamingImageSequence PlayableAsset
+A playable asset for fading Image component in Unity Timeline.
 
-<img src="images/StreamingImageSequencePlayableAsset.png" align=right width=400>
-
-* **Resolution** (Read Only)  
-  Shows the width and height of the first image in the folder
-* **Folder**  
-  The folder where the image files for this PlayableAsset are located
-* **Images**  
-  The images inside the folder.
-  We can reorder the images by dragging the image file name up/down.
-* **Reset Curve**.  
-  Reset the curve timing in the PlayableAsset to be linear.
 
 
 
