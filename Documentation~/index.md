@@ -12,10 +12,12 @@ easily without making Unity 2D Sprites.
 # Features
 
 ### [Playing Sequential Images](en/StreamingImageSequencePlayableAsset.md)
-<img src="./images/StreamingImageSequenceDemo.gif" width=400>  
+![StreamingImageSequenceDemo](images/StreamingImageSequenceDemo.gif)
+
 
 ### [Fading Image objects](en/FaderPlayableAsset.md)
-<img src="./images/FaderDemo.gif" width=280>  
+![FaderDemo](images/FaderDemo.gif)
+
 
 
 

@@ -12,11 +12,11 @@ From an empty scene, do the following:
 1. Open the Timeline window, if not opened yet
 1. Add a FaderTrack in the Timeline Window
 
-   <img src="../images/AddFaderTrack.png" width=180>  
+   ![AddFaderTrack](../images/AddFaderTrack.png)
    
 1. Right click on the timeline window and click *Add Fader Playable Asset*
  
-   <img src="../images/AddFaderPlayableAsset.png" width=480>  
+   ![AddFaderPlayableAsset](../images/AddFaderPlayableAsset.png)
    
 1. Create an Image object by clicking the menu: GameObject -> UI -> Image
 
@@ -30,7 +30,7 @@ The Image object will be faded in/out as we play the Timeline or drag the time s
 
 # Inspector
 
-<img src="../images/FaderPlayableAsset.png" align=right  width=320>  
+![FaderPlayableAsset](../images/FaderPlayableAsset.png)
 
 * **Color**   
   The color to be applied to the Image component attached to the track.
