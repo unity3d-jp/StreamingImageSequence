@@ -21,17 +21,17 @@ From an empty scene, do the following:
 1. Open the Timeline window, if not opened yet
 1. Add a StreamingImageSequenceTrack in the Timeline Window
 
-   <img src="../images/AddStreamingImageSequenceTrack.png" width=180>  
+   ![AddStreamingImageSequenceTrack](../images/AddStreamingImageSequenceTrack.png)
    
 1. Drag and Drop the sequential images folder to the StreamingImageSequenceTrack added previously
  
-   <img src="../images/DragAndDropFolder.png" width=960>  
+   ![DragAndDropFolder](../images/DragAndDropFolder.png)
    
 1. Create an Image object by clicking the menu: GameObject -> UI -> Image
 
 1. Drag and drop the Image object to the object property of the StreamingImageSequenceTrack, and click *Create StreamingImageSequenceNativeRenderer on Image* 
 
-   <img src="../images/CreateStreamingImageSequenceNativeRenderer.png" width=960>  
+   ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceNativeRenderer.png)
 
 
 The image sequences in the folder will then be shown inside the Image object, 
@@ -46,13 +46,10 @@ For other ways for importing images, see [ImportingImages](ImportingImages.md)
 We can also change the timing of the playback by adjusting the curve of the asset.   
 To do this, open the curve section, and right click on the curve to start adding keys.
 
-
-<img src="../images/StreamingImageSequenceCurve.png" width=640>
-
+![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
 
 # Inspector
-
-<img src="../images/StreamingImageSequencePlayableAsset.png" align=right width=400>
+![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAsset.png)
 
 * **Resolution** (Read Only)  
   Shows the width and height of the first image in the folder

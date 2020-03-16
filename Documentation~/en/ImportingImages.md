@@ -10,17 +10,17 @@ There are a couple of ways to import images into StreamingImageSequencePlayableA
 
 This is done by doing drag and drop of the sequential images folder to the StreamingImageSequenceTrack.
 
-<img src="../images/DragAndDropFolder.png" width=960>  
+![DragAndDropFolder](../images/DragAndDropFolder.png)
 
 ## Setting the Folder via Inspector
 
 We can simply click the **Select** button, or we can also drag and drop a folder directly into the inspector.
-<img src="../images/DragAndDropInspector.png" width=640>  
+![DragAndDropInspector](../images/DragAndDropInspector.png)
 
 If the chosen folder is not under *StreamingAssets*, then the following import window will appear to confirm if we'd like to copy the images into *StreamingAssets*.   
 We can choose to skip copying by unchecking the checkbox to do so.
 
-<img src="../images/ImporterWindow.png" width=480>  
+![ImporterWindow](../images/ImporterWindow.png)
 
 > Copying to *StreamingAssets* is recommended because it saves us from the import process, which may take a long time if there are a lot of images.
 
