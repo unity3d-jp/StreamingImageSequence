@@ -1,7 +1,7 @@
 # Changelog
 
 ## [0.0.2-preview.3] - 2020-03-16
-* docs: Change img to MD format
+* docs: Updating img tag to MD
 
 ## [0.0.2-preview.2] - 2020-03-05
 
