@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.0.3-preview] - 2020-03-27
+* fix: update DLLs to avoid the requirement of installing VCRUNTIME140_1.DLL 
+* docs: Add Japanese docs
+
 ## [0.0.2-preview.3] - 2020-03-16
 * docs: Updating img tag to MD
 
