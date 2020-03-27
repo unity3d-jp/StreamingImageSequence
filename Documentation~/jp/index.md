@@ -17,7 +17,8 @@ Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Time
 <img src="./images/FaderDemo.gif" width=280>
 
 
-
+# 他の言語
+- [English](../index.md)
 
 
 

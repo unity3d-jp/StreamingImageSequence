@@ -19,7 +19,8 @@ easily without making Unity 2D Sprites.
 ![FaderDemo](images/FaderDemo.gif)
 
 
-
+# Other Languages
+- [日本語](jp/index.md)
 
 
 
