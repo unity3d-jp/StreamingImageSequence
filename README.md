@@ -4,7 +4,7 @@ Streaming Image Sequence is a package for playing sequential image sequences in 
 easily without making Unity 2D Sprites.
 
 # Other Languages
-- [日本語](jp/index.md)
+- [日本語](README_JP.md)
 
 # Supported Platforms
 
