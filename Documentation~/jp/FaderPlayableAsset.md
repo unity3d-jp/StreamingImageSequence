@@ -12,11 +12,11 @@ Unity Timeline 内で Image コンポーネントをフェードさせるため�
 1. Timeline ウィンドウが開かれていない場合は、これを開いてください。
 1. Timeline ウィンドウ内で、FaderTrack を追加してください。
 
-   <img src="../images/AddFaderTrack.png" width=180>
+   ![AddFaderTrack](../images/AddFaderTrack.png)
    
 1. Timeline ウィンドウ上で右クリックし「*Add Fader Playable Asset*」をクリックしてください。
- 
-   <img src="../images/AddFaderPlayableAsset.png" width=480>
+  
+   ![AddFaderPlayableAsset](../images/AddFaderPlayableAsset.png)
    
 1. メニューを GameObject -> UI -> Image の順にクリックして Image オブジェクトを作成してください。
 
@@ -29,8 +29,7 @@ Timeline を再生したり Timeline ウィンドウでタイムスライダー�
 
 
 # インスペクター
-
-<img src="../images/FaderPlayableAsset.png" align=right  width=320>
+![FaderPlayableAsset](../images/FaderPlayableAsset.png)
 
 * **Color**   
   トラックに添付された Image コンポーネントに適用される色です。

@@ -21,17 +21,17 @@
 1. Timeline ウィンドウが開かれていない場合は、これを開いてください。
 1. Timeline ウィンドウに StreamingImageSequenceTrack を追加してください。
 
-   <img src="../images/AddStreamingImageSequenceTrack.png" width=180>
+   ![AddStreamingImageSequenceTrack](../images/AddStreamingImageSequenceTrack.png)
    
 1. 追加した StreamingImageSequenceTrack に画像シーケンスの入ったフォルダーをドラッグアンドドロップしてください。
  
-   <img src="../images/DragAndDropFolder.png" width=960>
+   ![DragAndDropFolder](../images/DragAndDropFolder.png)
    
 1. メニューを GameObject -> UI -> Image の順にクリックして Image オブジェクトを作成してください。
 
 1. 作成した Image オブジェクトを、StreamingImageSequenceTrack のオブジェクトプロパティーにドラッグアンドドロップし「*Create StreamingImageSequenceNativeRenderer on Image*」をクリックしてください。
 
-   <img src="../images/CreateStreamingImageSequenceNativeRenderer.png" width=960>
+   ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceNativeRenderer.png)
 
 
 フォルダー内の画像シーケンスが Image オブジェクトの中に表示されます。Timeline を再生したり、Timeline ウィンドウのタイムスライダーをドラッグすると、Image オブジェクトが再生／有効化／無効化されます。
@@ -45,13 +45,11 @@
 アセットの曲線を調整してプレイバックのタイミングを変更することも可能です。   
 これを行うには、曲線のセクションを開き、曲線の上で右クリックするとキーの追加を開始できます。
 
-
-<img src="../images/StreamingImageSequenceCurve.png" width=640>
+![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
 
 
 # インスペクター
-
-<img src="../images/StreamingImageSequencePlayableAsset.png" align=right width=400>
+![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAsset.png)
 
 * **Resolution**（読み取り専用）  
   フォルダー内の最初の画像の幅と高さを表示します。

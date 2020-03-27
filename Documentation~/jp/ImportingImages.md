@@ -10,17 +10,16 @@
 
 画像シーケンスの入ったフォルダーを StreamingImageSequenceTrack にドラッグアンドドロップします。
 
-<img src="../images/DragAndDropFolder.png" width=960>
+![DragAndDropFolder](../images/DragAndDropFolder.png)
 
 ## インスペクターでフォルダーを設定する
 
 **Select** ボタンをクリックするか、フォルダーを直接インスペクター内にドラッグアンドドロップしてください。
-<img src="../images/DragAndDropInspector.png" width=640>
+![DragAndDropInspector](../images/DragAndDropInspector.png)
 
 選択されたフォルダーが *StreamingAssets* の配下にない場合、以下のインポートウィンドウが表示され、画像を *StreamingAssets* 内にコピーするかどうか確認されます。   
 チェックボックスをオフにすると、コピーをスキップできます。
-
-<img src="../images/ImporterWindow.png" width=480>
+![ImporterWindow](../images/ImporterWindow.png)
 
 > *StreamingAssets* にコピーすれば（画像の数が多い場合は時間が掛かる可能性がある）インポートのプロセスが省略されるので、これをお勧めします。
 
