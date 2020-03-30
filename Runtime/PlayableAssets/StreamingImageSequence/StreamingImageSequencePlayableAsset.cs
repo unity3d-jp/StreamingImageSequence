@@ -40,6 +40,12 @@ namespace UnityEngine.StreamingImageSequence {
             m_timePerFrame = m_timelineClip.timeScale / fps;
            
             //[TODO-sin: 2020-2-17] Change the size of m_playableFrames if necessary
+            
+            //Refresh all markers
+            foreach (PlayableFrame playableFrame in m_playableFrames) {
+                playableFrame.Refresh();
+            }
+            
         }
         
         /// <inheritdoc/>
@@ -357,7 +363,6 @@ namespace UnityEngine.StreamingImageSequence {
         }
 //---------------------------------------------------------------------------------------------------------------------
 
-#if UNITY_EDITOR
         internal void ResetMarkers() {
             TrackAsset track = m_timelineClip.parentTrack;
             List<UseImageMarker> markersToDelete = new List<UseImageMarker>();
@@ -378,28 +383,35 @@ namespace UnityEngine.StreamingImageSequence {
             }
             markersToDelete.Clear();
             
-            // time per frame
+#if UNITY_EDITOR //Remove from AssetDatabase
             foreach (PlayableFrame frame in m_playableFrames) {
                 if (!frame)
                     continue;
                 AssetDatabase.RemoveObjectFromAsset(frame);
             }
+#endif
+            
             m_playableFrames = new List<PlayableFrame>();
 
             //Recalculate the number of frames and create the marker's ground truth data
             float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
             int numFrames = (int) (m_timelineClip.duration * fps);
             for (int i = 0; i < numFrames; ++i) {
-                PlayableFrame controller = ScriptableObject.CreateInstance<PlayableFrame>();
-                controller.Init(this, m_timePerFrame * i);
-                AssetDatabase.AddObjectToAsset(controller, this);
-                m_playableFrames.Add(controller);
+                PlayableFrame playableFrame = ScriptableObject.CreateInstance<PlayableFrame>();
+                playableFrame.Init(this, m_timePerFrame * i);
+                m_playableFrames.Add(playableFrame);
+            }
+            
+#if UNITY_EDITOR //Add to AssetDatabase
+            foreach (PlayableFrame playableFrame in m_playableFrames) {
+                AssetDatabase.AddObjectToAsset(playableFrame, this);
+                
             }
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
+#endif            
            
         }
 
-#endif
         
 //---------------------------------------------------------------------------------------------------------------------
         void ResetTexture() {

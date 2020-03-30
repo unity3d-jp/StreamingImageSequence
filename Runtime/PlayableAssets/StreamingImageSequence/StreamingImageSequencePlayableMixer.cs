@@ -62,15 +62,6 @@ namespace UnityEngine.StreamingImageSequence
                     continue;
                 asset.OnGraphStart(playable);
             }
-
-            //Refresh all markers
-            foreach (IMarker m in m_track.GetMarkers()) {
-                if (!(m is UseImageMarker))
-                    continue;
-                
-                UseImageMarker marker = m as UseImageMarker;
-                marker.Refresh();
-            }
             
 
         }

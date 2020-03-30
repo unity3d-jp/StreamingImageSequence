@@ -27,6 +27,10 @@ internal class PlayableFrame : ScriptableObject {
     internal double GetLocalTime() { return m_localTime; }
 
 //----------------------------------------------------------------------------------------------------------------------
+    internal void Refresh() {
+        m_marker.Refresh();
+    }
+//----------------------------------------------------------------------------------------------------------------------
 
     [SerializeField] private bool m_useImage;
     [SerializeField] private double m_localTime;
