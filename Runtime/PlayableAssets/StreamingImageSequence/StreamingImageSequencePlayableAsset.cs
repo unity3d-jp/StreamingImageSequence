@@ -43,9 +43,8 @@ namespace UnityEngine.StreamingImageSequence {
             
             //Refresh all markers
             foreach (PlayableFrame playableFrame in m_playableFrames) {
-                playableFrame.Refresh();
+                playableFrame.Refresh(m_useImageMarkerVisibility);
             }
-            
         }
         
         /// <inheritdoc/>
@@ -147,6 +146,10 @@ namespace UnityEngine.StreamingImageSequence {
 
         //This method must only be called from the track that owns this PlayableAsset, or during deserialization
         internal void SetTimelineClip(TimelineClip clip) {  m_timelineClip = clip; }
+
+        internal bool GetUseImageMarkerVisibility() {  return m_useImageMarkerVisibility; }
+
+        internal void SetUseImageMarkerVisibility(bool show) { m_useImageMarkerVisibility = show; }
 
 //----------------------------------------------------------------------------------------------------------------------        
         internal float GetOrUpdateDimensionRatio() {
@@ -364,38 +367,36 @@ namespace UnityEngine.StreamingImageSequence {
 //---------------------------------------------------------------------------------------------------------------------
 
         internal void ResetMarkers() {
-            TrackAsset track = m_timelineClip.parentTrack;
-            List<UseImageMarker> markersToDelete = new List<UseImageMarker>();
-            foreach (IMarker m in track.GetMarkers()) {
-                UseImageMarker marker = m as UseImageMarker;
-                if (null == marker)
-                    continue;
-                
-                PlayableFrame owner = marker.GetOwner();
-                if (null == owner || this == owner.GetPlayableAsset()) {
-                    markersToDelete.Add(marker);
-                }
-
-            }
-            //Delete all markers in the parent track that has the assigned PlayableAsset set to this object
-            foreach (UseImageMarker marker in markersToDelete) {
-                track.DeleteMarker(marker);
-            }
-            markersToDelete.Clear();
+            // TrackAsset track = m_timelineClip.parentTrack;
+            // List<UseImageMarker> markersToDelete = new List<UseImageMarker>();
+            // foreach (IMarker m in track.GetMarkers()) {
+            //     UseImageMarker marker = m as UseImageMarker;
+            //     if (null == marker)
+            //         continue;
+            //     
+            //     PlayableFrame owner = marker.GetOwner();
+            //     if (null == owner || this == owner.GetPlayableAsset()) {
+            //         markersToDelete.Add(marker);
+            //     }
+            //
+            // }
+            // //Delete all markers in the parent track that has the assigned PlayableAsset set to this object
+            // foreach (UseImageMarker marker in markersToDelete) {
+            //     track.DeleteMarker(marker);
+            // }
+            // markersToDelete.Clear();
             
-#if UNITY_EDITOR //Remove from AssetDatabase
             foreach (PlayableFrame frame in m_playableFrames) {
                 if (!frame)
                     continue;
-                AssetDatabase.RemoveObjectFromAsset(frame);
+                ObjectUtility.Destroy(frame, true); //This will remove from AssetDatabase in UnityEditor
             }
-#endif
             
-            m_playableFrames = new List<PlayableFrame>();
 
             //Recalculate the number of frames and create the marker's ground truth data
             float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
             int numFrames = (int) (m_timelineClip.duration * fps);
+            m_playableFrames = new List<PlayableFrame>(numFrames);
             for (int i = 0; i < numFrames; ++i) {
                 PlayableFrame playableFrame = ScriptableObject.CreateInstance<PlayableFrame>();
                 playableFrame.Init(this, m_timePerFrame * i);
@@ -564,6 +565,7 @@ namespace UnityEngine.StreamingImageSequence {
         private EditorCurveBinding m_timelineEditorCurveBinding;
 #endif
         private bool[] m_loadRequested;
+        [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = true;
         
         //[Note-sin: 2020-2-13] TimelineClip has to be setup every time (after deserialization, etc) to ensure that
         //we are referring to the same instance rather than having a newly created one
