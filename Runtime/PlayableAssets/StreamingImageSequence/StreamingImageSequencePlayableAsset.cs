@@ -396,7 +396,7 @@ namespace UnityEngine.StreamingImageSequence {
         int CalculateIdealNumPlayableFrames() {
             //Recalculate the number of frames and create the marker's ground truth data
             float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
-            int numFrames = (int) (m_timelineClip.duration * fps);
+            int numFrames = Mathf.RoundToInt((float)(m_timelineClip.duration * fps));
             return numFrames;
             
         }

@@ -45,7 +45,7 @@ internal class StreamingImageSequencePreview : IDisposable {
 
         //Check the number of frames of this clip
         float fps = clip.parentTrack.timelineAsset.editorSettings.fps;
-        int numFrames = (int)(clip.duration * fps);
+        int numFrames = Mathf.RoundToInt((float)(clip.duration * fps));
         numAllPreviewImages = Mathf.Min(numAllPreviewImages, numFrames);
         if (numAllPreviewImages <= 0)
             return;
