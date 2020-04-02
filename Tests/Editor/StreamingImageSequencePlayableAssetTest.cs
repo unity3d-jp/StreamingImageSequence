@@ -56,6 +56,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.IsTrue(imagePaths.Count > 0);
             Assert.IsTrue(sisAsset.HasImages());
 
+            ObjectUtility.Destroy(sisAsset);
+            ObjectUtility.Destroy(playableAsset);
             AssetDatabase.DeleteAsset(tempTimelineAssetPath);
             AssetDatabase.DeleteAsset(tempSisAssetPath);
 
