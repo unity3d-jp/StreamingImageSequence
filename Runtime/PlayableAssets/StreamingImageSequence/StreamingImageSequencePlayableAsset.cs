@@ -124,13 +124,20 @@ namespace UnityEngine.StreamingImageSequence {
 
             Reset();
             
-            
+            DestroyPlayableFrames();
+        }
+//----------------------------------------------------------------------------------------------------------------------
+
+        private void DestroyPlayableFrames() {
             if (null == m_playableFrames)
                 return;
             
             foreach (PlayableFrame frame in m_playableFrames) {
+                if (null == frame)
+                    continue;
                 ObjectUtility.Destroy(frame);
             }
+            
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -462,13 +469,7 @@ namespace UnityEngine.StreamingImageSequence {
             Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Resetting Use Image Markers");
 #endif
 
-            if (null != m_playableFrames) {
-                foreach (PlayableFrame frame in m_playableFrames) {
-                    if (!frame)
-                        continue;
-                    ObjectUtility.Destroy(frame); //This will remove from AssetDatabase in UnityEditor
-                }
-            }
+            DestroyPlayableFrames();
 
             //Recalculate the number of frames and create the marker's ground truth data
             int numFrames = CalculateIdealNumPlayableFrames();
