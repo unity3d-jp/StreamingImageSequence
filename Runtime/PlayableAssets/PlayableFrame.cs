@@ -1,4 +1,9 @@
 ﻿using System;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 using UnityEngine.Timeline;
 
 namespace UnityEngine.StreamingImageSequence {
@@ -52,20 +57,22 @@ internal class PlayableFrame : ScriptableObject {
 //----------------------------------------------------------------------------------------------------------------------
 
     void CreateMarker() {
+#if UNITY_EDITOR
+        Undo.RegisterCompleteObjectUndo(this, "PlayableFrame: CreateMarker");
+#endif        
         TimelineClip timelineClip = m_playableAsset.GetTimelineClip();
         m_marker = timelineClip.parentTrack.CreateMarker<UseImageMarker>(m_localTime);
         m_marker.Init(this);
     }
 
     void DeleteMarker() {
+#if UNITY_EDITOR
+        Undo.RegisterCompleteObjectUndo(this, "PlayableFrame: DeleteMarker");
+#endif        
         TrackAsset track = m_marker.parent;
         track.DeleteMarker(m_marker);
     }
-
     
-    internal UseImageMarker GetMarker() {
-        return m_marker;
-    }
 //----------------------------------------------------------------------------------------------------------------------
 
     [SerializeField] private bool m_useImage;
