@@ -50,7 +50,6 @@ namespace UnityEditor.StreamingImageSequence {
 
             }
 
-            m_asset.SetUseImageMarkerVisibility(GUILayout.Toggle(m_asset.GetUseImageMarkerVisibility(), "Show Use Image Marker"));
             
             GUILayout.Space(4f);
 
@@ -81,6 +80,7 @@ namespace UnityEditor.StreamingImageSequence {
                 
             }
             
+            m_asset.SetUseImageMarkerVisibility(GUILayout.Toggle(m_asset.GetUseImageMarkerVisibility(), "Show Use Image Markers"));
             if (GUILayout.Button("Reset Use Image Markers")) {
                 m_asset.ResetPlayableFrames();
             }
