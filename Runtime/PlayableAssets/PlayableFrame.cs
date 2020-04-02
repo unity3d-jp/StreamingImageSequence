@@ -12,7 +12,6 @@ namespace UnityEngine.StreamingImageSequence {
 internal class PlayableFrame : ScriptableObject {
 
     internal void Init(StreamingImageSequencePlayableAsset asset, double localTime) {
-        m_useImage = true;
         m_playableAsset = asset;
         m_localTime = localTime;
 
@@ -75,7 +74,7 @@ internal class PlayableFrame : ScriptableObject {
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    [SerializeField] private bool m_useImage;
+    [SerializeField] private bool m_useImage = true;
     [SerializeField] private double m_localTime;
     [SerializeField] private StreamingImageSequencePlayableAsset m_playableAsset = null; 
     [SerializeField] private UseImageMarker m_marker = null; //ScriptableObject -> Marker -> UseImageMarker

@@ -39,12 +39,19 @@ namespace UnityEngine.StreamingImageSequence {
             float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
             m_timePerFrame = m_timelineClip.timeScale / fps;
 
+            int numIdealNumPlayableFrames = CalculateIdealNumPlayableFrames();
+
+            //if this asset was a cloned asset, split the playable frames
+            if (null != m_clonedFromAsset) {
+                SplitPlayableFrames(numIdealNumPlayableFrames);
+                m_clonedFromAsset = null;
+            }
+            
             if (null == m_playableFrames) {
                 ResetPlayableFrames();
             }
 
             //Change the size of m_playableFrames and reinitialize if necessary
-            int numIdealNumPlayableFrames = CalculateIdealNumPlayableFrames();
             int prevNumPlayableFrames = m_playableFrames.Count;
             if (numIdealNumPlayableFrames != prevNumPlayableFrames) {
 #if UNITY_EDITOR
@@ -124,6 +131,12 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
 //----------------------------------------------------------------------------------------------------------------------
+        internal void OnClonedFrom(StreamingImageSequencePlayableAsset otherAsset) {
+            m_clonedFromAsset = otherAsset; 
+            
+        }
+        
+//----------------------------------------------------------------------------------------------------------------------
 
         /// <inheritdoc cref="PlayableAsset" />
         private void OnDestroy() {
@@ -145,14 +158,76 @@ namespace UnityEngine.StreamingImageSequence {
             }
             
         }
+        
 
 //----------------------------------------------------------------------------------------------------------------------
+
         /// <summary>
         /// Get the source folder
         /// </summary>
         /// <returns>The folder where the images are located</returns>
         public string GetFolder() { return m_folder; }
         
+
+//----------------------------------------------------------------------------------------------------------------------
+        //Need to split the PlayableFrames which are currently shared by both this and m_clonedFromAsset
+        void SplitPlayableFrames(int numIdealFrames) {
+            if (null == m_playableFrames) {
+                return;
+            }
+
+            List<PlayableFrame> prevPlayableFrames = m_playableFrames;
+            m_playableFrames = new List<PlayableFrame>(numIdealFrames);
+            if (m_timelineClip.start < m_clonedFromAsset.GetTimelineClip().start) {
+                m_playableFrames.AddRange(prevPlayableFrames.GetRange(0,numIdealFrames));
+                m_clonedFromAsset.SplitPlayableFramesFromClonedAsset(numIdealFrames,prevPlayableFrames.Count - numIdealFrames);
+            }
+            else {
+                int idx = prevPlayableFrames.Count - numIdealFrames;
+                m_playableFrames.AddRange(prevPlayableFrames.GetRange(idx, idx + numIdealFrames -1));
+                m_clonedFromAsset.SplitPlayableFramesFromClonedAsset(0,idx);
+            }
+            
+            //Reinitialize to assign the owner
+            for (int i = 0; i < numIdealFrames; ++i) {
+                m_playableFrames[i].Init(this, m_timePerFrame * i);
+            }
+            
+        }
+
+
+        //This is called by the cloned asset
+        void SplitPlayableFramesFromClonedAsset(int startIndex, int count) {
+            if (null == m_playableFrames) {
+                return;
+            }
+
+
+            int numIdealFrames = CalculateIdealNumPlayableFrames();
+            if (numIdealFrames != count) {
+                Debug.LogWarning("StreamingImageSequencePlayableAsset::ReassignPlayableFrames() Count: " + count
+                                 + " is not ideal: " + numIdealFrames                
+                );
+                return;
+            }
+
+            List<PlayableFrame> prevPlayableFrames = m_playableFrames;
+            if (startIndex + count > prevPlayableFrames.Count) {
+                Debug.LogWarning("StreamingImageSequencePlayableAsset::ReassignPlayableFrames() Invalid params. "
+                                 + " StartIndex: " + startIndex +  ", Count: " + count                
+                );
+                return;
+            }
+            
+            m_playableFrames = new List<PlayableFrame>(numIdealFrames);
+            m_playableFrames.AddRange(prevPlayableFrames.GetRange(startIndex,numIdealFrames));
+
+            //Reinitialize to set the time
+            for (int i = 0; i < numIdealFrames; ++i) {
+                m_playableFrames[i].Init(this, m_timePerFrame * i);
+            }
+            
+        }
 //----------------------------------------------------------------------------------------------------------------------
         private double LocalTimeToCurveTime(double localTime) {
             AnimationCurve curve = GetAndValidateAnimationCurve();
@@ -209,7 +284,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
             return m_dimensionRatio;
         }
-
+        
 //----------------------------------------------------------------------------------------------------------------------        
 
         internal string GetImagePath(int index) {
@@ -546,7 +621,7 @@ namespace UnityEngine.StreamingImageSequence {
             ForceUpdateResolution();
         }
 #endregion
-        
+
 
 //----------------------------------------------------------------------------------------------------------------------
         internal void ResetAnimationCurve() {
@@ -666,6 +741,7 @@ namespace UnityEngine.StreamingImageSequence {
         private int m_lastIndex;
         private bool m_verified;
         private double m_timePerFrame = 0;
+        private StreamingImageSequencePlayableAsset m_clonedFromAsset = null;
 
         Texture2D m_texture = null;
 
