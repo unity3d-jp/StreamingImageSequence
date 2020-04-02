@@ -43,6 +43,9 @@ namespace UnityEngine.StreamingImageSequence {
             int numIdealNumPlayableFrames = CalculateIdealNumPlayableFrames();
             int prevNumPlayableFrames = m_playableFrames.Count;
             if (numIdealNumPlayableFrames != prevNumPlayableFrames) {
+#if UNITY_EDITOR
+                Undo.RecordObject(this, "StreamingImageSequencePlayableAsset: Updating PlayableFrame List");
+#endif                
                 List<bool> prevUsedFrames = new List<bool>(prevNumPlayableFrames);
                 foreach (PlayableFrame frame in m_playableFrames) {
                     prevUsedFrames.Add(frame.IsUsed());
@@ -50,13 +53,13 @@ namespace UnityEngine.StreamingImageSequence {
 
                 //Resize m_playableFrames
                 while (m_playableFrames.Count < numIdealNumPlayableFrames) {
-                    m_playableFrames.Add(ScriptableObject.CreateInstance<PlayableFrame>());
+                    m_playableFrames.Add(ObjectUtility.CreateScriptableObjectInstance<PlayableFrame>());
                 }
                 while (m_playableFrames.Count > numIdealNumPlayableFrames) {
                     int index = m_playableFrames.Count - 1;
                     PlayableFrame lastFrame = m_playableFrames[index];
                     m_playableFrames.RemoveAt(index);
-                    ObjectUtility.Destroy(lastFrame, true);
+                    ObjectUtility.Destroy(lastFrame);
                 }
                 
                 //Reinitialize 
@@ -426,7 +429,7 @@ namespace UnityEngine.StreamingImageSequence {
             foreach (PlayableFrame frame in m_playableFrames) {
                 if (!frame)
                     continue;
-                ObjectUtility.Destroy(frame, true); //This will remove from AssetDatabase in UnityEditor
+                ObjectUtility.Destroy(frame); //This will remove from AssetDatabase in UnityEditor
             }
             
 

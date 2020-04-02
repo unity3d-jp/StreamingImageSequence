@@ -1,11 +1,25 @@
-﻿namespace UnityEngine.StreamingImageSequence
+﻿#if UNITY_EDITOR   
+using UnityEditor;
+#endif
+
+namespace UnityEngine.StreamingImageSequence
 {
 
 internal static class ObjectUtility
 {
-    public static void Destroy(UnityEngine.Object obj, bool allowDestroyingAssets=false) {
+
+    internal static T CreateScriptableObjectInstance<T>() where T : ScriptableObject{
+        T obj = ScriptableObject.CreateInstance<T>();
+#if UNITY_EDITOR
+        Undo.RegisterCreatedObjectUndo(obj, "Creating " + typeof(T));
+#endif
+        return obj;
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------    
+    internal static void Destroy(UnityEngine.Object obj) {
 #if UNITY_EDITOR   
-        Object.DestroyImmediate(obj, allowDestroyingAssets);
+        Undo.DestroyObjectImmediate(obj);
 #else
         Object.Destroy(obj);
 #endif
