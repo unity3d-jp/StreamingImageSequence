@@ -1,7 +1,7 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
-using UnityEngine.UI;
 
 namespace UnityEngine.StreamingImageSequence {
 
@@ -12,6 +12,9 @@ internal class UseImageMarker : Marker, INotification {
 //----------------------------------------------------------------------------------------------------------------------    
 
     internal void Init(PlayableFrame controller) {
+#if UNITY_EDITOR        
+        Undo.RecordObject(this, "UseImageMarker: Init()");
+#endif
         m_owner = controller;
     } 
 

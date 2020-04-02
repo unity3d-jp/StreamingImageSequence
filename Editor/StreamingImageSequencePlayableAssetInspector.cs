@@ -81,13 +81,9 @@ namespace UnityEditor.StreamingImageSequence {
                 
             }
             
-            if (GUILayout.Button("Reset Markers")) {
-                //[TODO-sin:2020-2-7] Support undo for this
-                m_asset.ResetMarkers();
+            if (GUILayout.Button("Reset Use Image Markers")) {
+                m_asset.ResetUseImageMarkers();
             }
-
-            
-            
 
             serializedObject.ApplyModifiedProperties();
             EditorGUI.EndChangeCheck();
