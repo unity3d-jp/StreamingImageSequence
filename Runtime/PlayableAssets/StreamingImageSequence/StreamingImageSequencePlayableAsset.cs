@@ -39,6 +39,7 @@ namespace UnityEngine.StreamingImageSequence {
             float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
             m_timePerFrame = m_timelineClip.timeScale / fps;
            
+            
             //Change the size of m_playableFrames and reinitialize if necessary
             int numIdealNumPlayableFrames = CalculateIdealNumPlayableFrames();
             int prevNumPlayableFrames = m_playableFrames.Count;
@@ -46,26 +47,17 @@ namespace UnityEngine.StreamingImageSequence {
 #if UNITY_EDITOR
                 Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Updating PlayableFrame List");
 #endif                
+                //Change the size of m_playableFrames and reinitialize if necessary
                 List<bool> prevUsedFrames = new List<bool>(prevNumPlayableFrames);
                 foreach (PlayableFrame frame in m_playableFrames) {
                     prevUsedFrames.Add(frame.IsUsed());
                 }
-
-                //Resize m_playableFrames
-                while (m_playableFrames.Count < numIdealNumPlayableFrames) {
-                    m_playableFrames.Add(ObjectUtility.CreateScriptableObjectInstance<PlayableFrame>());
-                }
-                while (m_playableFrames.Count > numIdealNumPlayableFrames) {
-                    int index = m_playableFrames.Count - 1;
-                    PlayableFrame lastFrame = m_playableFrames[index];
-                    m_playableFrames.RemoveAt(index);
-                    ObjectUtility.Destroy(lastFrame);
-                }
+                
+                UpdatePlayableFramesSize(numIdealNumPlayableFrames);
                 
                 //Reinitialize 
                 for (int i = 0; i < numIdealNumPlayableFrames; ++i) {
                     int prevIndex = (int)(((float)(i) / numIdealNumPlayableFrames) * prevNumPlayableFrames);
-                    m_playableFrames[i].Init(this, m_timePerFrame * i);
                     m_playableFrames[i].SetUsed(prevUsedFrames[prevIndex]);
                 }
                 
@@ -75,6 +67,7 @@ namespace UnityEngine.StreamingImageSequence {
             foreach (PlayableFrame playableFrame in m_playableFrames) {
                 playableFrame.Refresh(m_useImageMarkerVisibility);
             }
+            
         }
         
         /// <inheritdoc/>
@@ -394,7 +387,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
             return filePath;
         }
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
         int CalculateIdealNumPlayableFrames() {
             //Recalculate the number of frames and create the marker's ground truth data
@@ -403,10 +396,35 @@ namespace UnityEngine.StreamingImageSequence {
             return numFrames;
             
         }
+//----------------------------------------------------------------------------------------------------------------------
+
+        private void UpdatePlayableFramesSize(int playableFramesSize) {
+
+            //Resize m_playableFrames
+            while (m_playableFrames.Count < playableFramesSize) {
+                PlayableFrame playableFrame = ObjectUtility.CreateScriptableObjectInstance<PlayableFrame>();
+                m_playableFrames.Add(playableFrame);
+#if UNITY_EDITOR                    
+                AssetDatabase.AddObjectToAsset(playableFrame, this);
+#endif                    
+            }
+            while (m_playableFrames.Count > playableFramesSize) {
+                int index = m_playableFrames.Count - 1;
+                PlayableFrame lastFrame = m_playableFrames[index];
+                m_playableFrames.RemoveAt(index);
+                ObjectUtility.Destroy(lastFrame);
+            }
+            
+            for (int i = 0; i < playableFramesSize; ++i) {
+                m_playableFrames[i].Init(this, m_timePerFrame * i);
+            }
+            
+            
+        }
         
 //---------------------------------------------------------------------------------------------------------------------
 
-        internal void ResetMarkers() {
+        internal void ResetUseImageMarkers() {
             // TrackAsset track = m_timelineClip.parentTrack;
             // List<UseImageMarker> markersToDelete = new List<UseImageMarker>();
             // foreach (IMarker m in track.GetMarkers()) {
@@ -425,28 +443,23 @@ namespace UnityEngine.StreamingImageSequence {
             //     track.DeleteMarker(marker);
             // }
             // markersToDelete.Clear();
+#if UNITY_EDITOR
+            Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Resetting Use Image Markers");
+#endif 
             
             foreach (PlayableFrame frame in m_playableFrames) {
                 if (!frame)
                     continue;
                 ObjectUtility.Destroy(frame); //This will remove from AssetDatabase in UnityEditor
             }
-            
 
             //Recalculate the number of frames and create the marker's ground truth data
             int numFrames = CalculateIdealNumPlayableFrames();
             m_playableFrames =  new List<PlayableFrame>(numFrames);
-            for (int i = 0; i < numFrames; ++i) {
-                PlayableFrame playableFrame = ScriptableObject.CreateInstance<PlayableFrame>();
-                playableFrame.Init(this, m_timePerFrame * i);
-                m_playableFrames.Add(playableFrame);
-            }
+            UpdatePlayableFramesSize(numFrames);
+            
             
 #if UNITY_EDITOR //Add to AssetDatabase
-            foreach (PlayableFrame playableFrame in m_playableFrames) {
-                AssetDatabase.AddObjectToAsset(playableFrame, this);
-                
-            }
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
 #endif            
            
