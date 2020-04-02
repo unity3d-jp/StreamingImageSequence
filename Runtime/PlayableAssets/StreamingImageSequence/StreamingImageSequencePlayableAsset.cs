@@ -43,7 +43,7 @@ namespace UnityEngine.StreamingImageSequence {
 
             //if this asset was a cloned asset, split the playable frames
             if (null != m_clonedFromAsset) {
-                SplitPlayableFrames(numIdealNumPlayableFrames);
+                TrySplitPlayableFrames(numIdealNumPlayableFrames);
                 m_clonedFromAsset = null;
             }
             
@@ -171,18 +171,31 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
         //Need to split the PlayableFrames which are currently shared by both this and m_clonedFromAsset
-        void SplitPlayableFrames(int numIdealFrames) {
+        void TrySplitPlayableFrames(int numIdealFrames) {
             if (null == m_playableFrames) {
                 return;
             }
 
             List<PlayableFrame> prevPlayableFrames = m_playableFrames;
             m_playableFrames = new List<PlayableFrame>(numIdealFrames);
+            int prevNumPlayableFrames = prevPlayableFrames.Count;
+            
+            //Check if this clone is a pure duplicate
+            TimelineClip otherTimelineClip = m_clonedFromAsset.GetTimelineClip();
+            if (Math.Abs(m_timelineClip.duration - otherTimelineClip.duration) < 0.0000001f) {
+                for (int i = 0; i < prevNumPlayableFrames; ++i) {
+                    m_playableFrames.Add(null);
+                    CreatePlayableFrameInList(i);
+                    m_playableFrames[i].SetUsed(prevPlayableFrames[i].IsUsed());
+
+                }
+                return;
+            }
+
             if (m_timelineClip.start < m_clonedFromAsset.GetTimelineClip().start) {
                 m_playableFrames.AddRange(prevPlayableFrames.GetRange(0,numIdealFrames));
                 m_clonedFromAsset.SplitPlayableFramesFromClonedAsset(numIdealFrames,prevPlayableFrames.Count - numIdealFrames);
-            }
-            else {
+            } else {
                 int idx = prevPlayableFrames.Count - numIdealFrames;
                 m_playableFrames.AddRange(prevPlayableFrames.GetRange(idx, idx + numIdealFrames -1));
                 m_clonedFromAsset.SplitPlayableFramesFromClonedAsset(0,idx);
