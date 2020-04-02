@@ -53,7 +53,7 @@ namespace UnityEngine.StreamingImageSequence {
                 //Change the size of m_playableFrames and reinitialize if necessary
                 List<bool> prevUsedFrames = new List<bool>(prevNumPlayableFrames);
                 foreach (PlayableFrame frame in m_playableFrames) {
-                    prevUsedFrames.Add(frame.IsUsed());
+                    prevUsedFrames.Add(null == frame || frame.IsUsed()); //if frame ==null, just regard as used.
                 }
                 
                 UpdatePlayableFramesSize(numIdealNumPlayableFrames);
@@ -69,8 +69,14 @@ namespace UnityEngine.StreamingImageSequence {
             }
             
             //Refresh all markers
-            foreach (PlayableFrame playableFrame in m_playableFrames) {
-                playableFrame.Refresh(m_useImageMarkerVisibility);
+            int numPlayableFrames = m_playableFrames.Count;
+            for (int i = 0; i < numPlayableFrames; ++i) {
+                
+                if (null == m_playableFrames[i]) {
+                    CreatePlayableFrameInList(i);
+                }
+                m_playableFrames[i].Refresh(m_useImageMarkerVisibility);
+                
             }
             
         }
@@ -424,27 +430,40 @@ namespace UnityEngine.StreamingImageSequence {
 
             //Resize m_playableFrames
             while (m_playableFrames.Count < playableFramesSize) {
-                PlayableFrame playableFrame = ObjectUtility.CreateScriptableObjectInstance<PlayableFrame>();
-                m_playableFrames.Add(playableFrame);
-#if UNITY_EDITOR                    
-                AssetDatabase.AddObjectToAsset(playableFrame, this);
-#endif                    
+                m_playableFrames.Add(null);
             }
+            
             while (m_playableFrames.Count > playableFramesSize) {
                 int index = m_playableFrames.Count - 1;
                 PlayableFrame lastFrame = m_playableFrames[index];
                 m_playableFrames.RemoveAt(index);
+                if (null ==lastFrame)
+                    continue;
                 ObjectUtility.Destroy(lastFrame);
             }
             
             for (int i = 0; i < playableFramesSize; ++i) {
+                PlayableFrame curPlayableFrame = m_playableFrames[i];
+                
+                if (null == curPlayableFrame) {
+                    CreatePlayableFrameInList(i);
+                }
                 m_playableFrames[i].Init(this, m_timePerFrame * i);
             }
             
             
         }
+//----------------------------------------------------------------------------------------------------------------------
+        private void CreatePlayableFrameInList(int index) {
+            PlayableFrame playableFrame = ObjectUtility.CreateScriptableObjectInstance<PlayableFrame>();
+#if UNITY_EDITOR                    
+            AssetDatabase.AddObjectToAsset(playableFrame, this);
+#endif
+            playableFrame.Init(this, m_timePerFrame * index);
+            m_playableFrames[index] = playableFrame;
+        }
         
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
         internal void ResetPlayableFrames() {
             // TrackAsset track = m_timelineClip.parentTrack;
