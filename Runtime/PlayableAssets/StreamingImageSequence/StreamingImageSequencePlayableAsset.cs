@@ -44,7 +44,7 @@ namespace UnityEngine.StreamingImageSequence {
             int prevNumPlayableFrames = m_playableFrames.Count;
             if (numIdealNumPlayableFrames != prevNumPlayableFrames) {
 #if UNITY_EDITOR
-                Undo.RecordObject(this, "StreamingImageSequencePlayableAsset: Updating PlayableFrame List");
+                Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Updating PlayableFrame List");
 #endif                
                 List<bool> prevUsedFrames = new List<bool>(prevNumPlayableFrames);
                 foreach (PlayableFrame frame in m_playableFrames) {
