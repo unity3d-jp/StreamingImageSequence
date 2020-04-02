@@ -82,7 +82,7 @@ namespace UnityEditor.StreamingImageSequence {
             }
             
             if (GUILayout.Button("Reset Use Image Markers")) {
-                m_asset.ResetUseImageMarkers();
+                m_asset.ResetPlayableFrames();
             }
 
             serializedObject.ApplyModifiedProperties();

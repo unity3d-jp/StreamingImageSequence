@@ -38,8 +38,11 @@ namespace UnityEngine.StreamingImageSequence {
         public void OnGraphStart(Playable playable) {
             float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
             m_timePerFrame = m_timelineClip.timeScale / fps;
-           
-            
+
+            if (null == m_playableFrames) {
+                ResetPlayableFrames();
+            }
+
             //Change the size of m_playableFrames and reinitialize if necessary
             int numIdealNumPlayableFrames = CalculateIdealNumPlayableFrames();
             int prevNumPlayableFrames = m_playableFrames.Count;
@@ -56,9 +59,11 @@ namespace UnityEngine.StreamingImageSequence {
                 UpdatePlayableFramesSize(numIdealNumPlayableFrames);
                 
                 //Reinitialize 
-                for (int i = 0; i < numIdealNumPlayableFrames; ++i) {
-                    int prevIndex = (int)(((float)(i) / numIdealNumPlayableFrames) * prevNumPlayableFrames);
-                    m_playableFrames[i].SetUsed(prevUsedFrames[prevIndex]);
+                if (prevNumPlayableFrames > 0) {
+                    for (int i = 0; i < numIdealNumPlayableFrames; ++i) {
+                        int prevIndex = (int)(((float)(i) / numIdealNumPlayableFrames) * prevNumPlayableFrames);
+                        m_playableFrames[i].SetUsed(prevUsedFrames[prevIndex]);
+                    }
                 }
                 
             }
@@ -108,14 +113,24 @@ namespace UnityEngine.StreamingImageSequence {
                 type = typeof(StreamingImageSequencePlayableAsset),
                 propertyName = "m_time"
             };
-#endif            
+#endif        
+            
         }
 
-        /// <summary>
-        /// Destructor. Ensures to unload the images.
-        /// </summary>
-        ~StreamingImageSequencePlayableAsset() {
+//----------------------------------------------------------------------------------------------------------------------
+
+        /// <inheritdoc cref="PlayableAsset" />
+        private void OnDestroy() {
+
             Reset();
+            
+            
+            if (null == m_playableFrames)
+                return;
+            
+            foreach (PlayableFrame frame in m_playableFrames) {
+                ObjectUtility.Destroy(frame);
+            }
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -424,7 +439,7 @@ namespace UnityEngine.StreamingImageSequence {
         
 //---------------------------------------------------------------------------------------------------------------------
 
-        internal void ResetUseImageMarkers() {
+        internal void ResetPlayableFrames() {
             // TrackAsset track = m_timelineClip.parentTrack;
             // List<UseImageMarker> markersToDelete = new List<UseImageMarker>();
             // foreach (IMarker m in track.GetMarkers()) {
@@ -445,12 +460,14 @@ namespace UnityEngine.StreamingImageSequence {
             // markersToDelete.Clear();
 #if UNITY_EDITOR
             Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Resetting Use Image Markers");
-#endif 
-            
-            foreach (PlayableFrame frame in m_playableFrames) {
-                if (!frame)
-                    continue;
-                ObjectUtility.Destroy(frame); //This will remove from AssetDatabase in UnityEditor
+#endif
+
+            if (null != m_playableFrames) {
+                foreach (PlayableFrame frame in m_playableFrames) {
+                    if (!frame)
+                        continue;
+                    ObjectUtility.Destroy(frame); //This will remove from AssetDatabase in UnityEditor
+                }
             }
 
             //Recalculate the number of frames and create the marker's ground truth data
