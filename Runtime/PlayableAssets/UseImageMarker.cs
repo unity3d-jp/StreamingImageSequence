@@ -12,9 +12,6 @@ internal class UseImageMarker : Marker, INotification {
 //----------------------------------------------------------------------------------------------------------------------    
 
     internal void Init(PlayableFrame controller) {
-#if UNITY_EDITOR        
-        Undo.RecordObject(this, "UseImageMarker: Init()");
-#endif
         m_owner = controller;
     } 
 

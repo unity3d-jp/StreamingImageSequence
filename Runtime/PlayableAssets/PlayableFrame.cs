@@ -42,6 +42,7 @@ internal class PlayableFrame : ScriptableObject {
         }
 
         if (m_marker) {
+            m_marker.Init(this);
             m_marker.Refresh();
         }
     }
