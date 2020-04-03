@@ -2,9 +2,9 @@
     "displayName": "Streaming Image Sequence",
     "name": "com.unity.streaming-image-sequence",
     "unity": "2019.2",
-    "version": "0.0.2-preview",
+    "version": "0.0.4-preview",
     "dependencies": {},
-    "description": "Streaming Image Sequence Proxy is a plug-in for Unity Timeline to use sequential pictures without making Unity 2D Sprites",
+    "description": "Streaming Image Sequence is a package for playing sequential image sequences in Unity Timeline easily without making Unity 2D Sprites.",
     "author": "Unity Technology Japan",
     "contributors": [
         "Toshiyuki Mori <toshiyuki@unity3d.com> (https://github.com/higeometry)",
