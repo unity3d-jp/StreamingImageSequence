@@ -108,7 +108,7 @@ namespace UnityEngine.StreamingImageSequence
 #if !UNITY_EDITOR
            UpdateManager.GetStreamingAssetPath(); // must be executed in main thread.          
            Assert.IsTrue(m_bInitialized == false);
-           Util.Log("InitInRuntime()");
+           LogUtility.LogDebug("InitInRuntime()");
            StartThread();
            foreach (var order in s_orders)
            {
