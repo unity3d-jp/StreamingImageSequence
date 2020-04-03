@@ -91,6 +91,13 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
 //----------------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Get the source folder
+        /// </summary>
+        /// <returns>The folder where the images are located</returns>
+        public string GetFolder() { return m_folder; }
+        
+//----------------------------------------------------------------------------------------------------------------------
         private double LocalTimeToCurveTime(double localTime) {
             AnimationCurve curve = GetAndValidateAnimationCurve();
             return curve.Evaluate((float)localTime);
@@ -157,16 +164,8 @@ namespace UnityEngine.StreamingImageSequence {
         internal bool HasImages() {
             return (!string.IsNullOrEmpty(m_folder) && null != m_imagePaths && m_imagePaths.Count > 0);
         }
-
-//----------------------------------------------------------------------------------------------------------------------        
-        /// <summary>
-        /// Get the source folder
-        /// </summary>
-        /// <returns>The folder where the images are located</returns>
-        public string GetFolder() { return m_folder; }
-
-        internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
-
+        
+        
 //----------------------------------------------------------------------------------------------------------------------        
         internal void Reset() {
             m_loadingIndex = -1;
@@ -209,26 +208,7 @@ namespace UnityEngine.StreamingImageSequence {
                 return m_verified;
             }
         }
-
-//----------------------------------------------------------------------------------------------------------------------        
-
-         
-        internal void SetParam(StreamingImageSequencePlayableAssetParam param) {
-            if (m_resolution.Width > 0 && m_resolution.Height > 0) {
-                m_resolution = param.Resolution;
-                m_dimensionRatio = m_resolution.CalculateRatio();
-            }
-            m_imagePaths = param.Pictures;
-            m_folder = param.Folder;
-            if (null!=m_folder && m_folder.StartsWith("Assets")) {
-                m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(m_folder);
-            } else {
-                m_timelineDefaultAsset = null;
-            }
-            m_texture = null;
-            EditorUtility.SetDirty(this);
-        }
-
+        
 //---------------------------------------------------------------------------------------------------------------------
 
 #region PlayableAsset functions override
@@ -524,10 +504,37 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
 
+//----------------------------------------------------------------------------------------------------------------------        
+
+#region Unity Editor code
+
+#if UNITY_EDITOR         
+        internal void SetParam(StreamingImageSequencePlayableAssetParam param) {
+            if (m_resolution.Width > 0 && m_resolution.Height > 0) {
+                m_resolution = param.Resolution;
+                m_dimensionRatio = m_resolution.CalculateRatio();
+            }
+            m_imagePaths = param.Pictures;
+            m_folder = param.Folder;
+            if (null!=m_folder && m_folder.StartsWith("Assets")) {
+                m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(m_folder);
+            } else {
+                m_timelineDefaultAsset = null;
+            }
+            m_texture = null;
+            EditorUtility.SetDirty(this);
+        }
+        
+        internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
+        
+#endif        
+        
+#endregion
+        
 //----------------------------------------------------------------------------------------------------------------------
 
-        [SerializeField] private string m_folder;
-        [SerializeField] List<string> m_imagePaths;
+        [SerializeField] private string m_folder = null;
+        [SerializeField] List<string> m_imagePaths = null;
         
         //The ground truth for using/dropping an image in a particular frame. See the notes below
         [SerializeField] List<PlayableFrame> m_playableFrames = null;
