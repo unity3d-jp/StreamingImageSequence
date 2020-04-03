@@ -15,7 +15,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         string fullPath = "Packages/com.unity.streaming-image-sequence/Tests/Data/AeConvert.jstimeline";
         Assert.IsTrue(File.Exists(fullPath));
 
-        JstimelineImporter.ImportTimeline(fullPath);
+        string destFolder = "TestRunner";
+        JstimelineImporter.ImportTimeline(fullPath, destFolder);
 
         //Check if the generated director is valid
         PlayableDirector[] directors = Object.FindObjectsOfType<PlayableDirector>();
@@ -42,6 +43,17 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             StreamingImageSequenceNativeRenderer r = pd.GetGenericBinding(trackAsset) as StreamingImageSequenceNativeRenderer;
             Assert.IsNotNull(r);
         }
+        
+        //Delete created assets
+        string destAssetsFolder = "Assets/" + destFolder;
+        string[] createdAssets = AssetDatabase.FindAssets("", new[] { destAssetsFolder});
+        Assert.Greater(createdAssets.Length,0);
+        foreach (string guid in createdAssets) {
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            AssetDatabase.DeleteAsset(assetPath);
+        }        
+        Directory.Delete(destAssetsFolder);
+        
 
     }
 
