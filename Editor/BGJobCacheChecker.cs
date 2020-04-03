@@ -14,7 +14,7 @@ namespace UnityEditor.StreamingImageSequence  {
         {
             m_param = param;
             UpdateManager.QueueBackGroundTask(this);
-            UpdateManager.m_ResetDelegate += Reset;
+            UpdateManager.m_resetDelegate += Reset;
         }
         public override void Execute()
         {
