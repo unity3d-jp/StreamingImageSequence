@@ -28,7 +28,8 @@ internal class JstimelineImporter : ScriptedImporter
     /// Import a timeline file exported from DCC tools into the scene in the Timeline object
     /// </summary>
     /// <param name="jsTimelinePath">The path of the file</param>
-    public static void ImportTimeline(string jsTimelinePath) {
+    /// <param name="destFolder">The dest folder of the imported files</param>
+    public static void ImportTimeline(string jsTimelinePath, string destFolder="") {
 
         // prepare asset name, paths, etc
         string assetName = Path.GetFileNameWithoutExtension(jsTimelinePath);
@@ -37,10 +38,11 @@ internal class JstimelineImporter : ScriptedImporter
             Debug.LogError("Can't get directory name for: " + jsTimelinePath);
             return;
         }
-        timelineFolder = Path.Combine(timelineFolder,assetName).Replace("\\","/");
+        timelineFolder = Path.Combine(timelineFolder,destFolder, assetName).Replace("\\","/");
+        
         //Check if we are exporting from external asset
         if (!timelineFolder.StartsWith("Assets/")) {
-            timelineFolder = Path.Combine("Assets", assetName);
+            timelineFolder = Path.Combine("Assets", destFolder, assetName);
         }
         
         Directory.CreateDirectory(timelineFolder);
@@ -98,13 +100,13 @@ internal class JstimelineImporter : ScriptedImporter
                     trackMovieContainer.Pictures[xx] = Path.GetFileName(fileName);
                 }
                 
-                string destFolder = Application.streamingAssetsPath;
-                destFolder = Path.Combine(destFolder, strFootageName).Replace("\\", "/");
-                Directory.CreateDirectory(destFolder); //make sure the directory exists
-                trackMovieContainer.Folder = AssetEditorUtility.NormalizeAssetPath(destFolder);
+                string destFootageFolder = Application.streamingAssetsPath;
+                destFootageFolder = Path.Combine(destFootageFolder, strFootageName).Replace("\\", "/");
+                Directory.CreateDirectory(destFootageFolder); //make sure the directory exists
+                trackMovieContainer.Folder = AssetEditorUtility.NormalizeAssetPath(destFootageFolder);
 
                 for (int i=0;i<numImages;++i) {
-                    string destFilePath = Path.Combine(destFolder, trackMovieContainer.Pictures[i]);
+                    string destFilePath = Path.Combine(destFootageFolder, trackMovieContainer.Pictures[i]);
                     if (File.Exists(destFilePath)) {
                         File.Delete(destFilePath);
                     }
