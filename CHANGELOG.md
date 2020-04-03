@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.1.0-preview] - 2020-04-06
+* feat: markers to indicate the use/skipping of image in StreamingImageSequencePlayableAsset 
+
 ## [0.0.4-preview] - 2020-04-03
 * fix: runtime build errors 
 * fix: avoid tests from modifying the project assets
