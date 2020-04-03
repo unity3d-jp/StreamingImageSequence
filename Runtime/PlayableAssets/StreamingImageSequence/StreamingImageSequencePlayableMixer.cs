@@ -32,24 +32,25 @@ namespace UnityEngine.StreamingImageSequence
             m_loadStartOffsetTime = -1.0;
         }
 
+        
+//----------------------------------------------------------------------------------------------------------------------
+
+#region IPlayableBehaviour interfaces
         public override void OnPlayableCreate(Playable playable)
         {
-            UpdateManager.m_ResetDelegate += Reset;
+#if UNITY_EDITOR
+            UpdateManager.m_resetDelegate += Reset;
+#endif
         }
 
         public override void OnPlayableDestroy(Playable playable)
         {
-            UpdateManager.m_ResetDelegate -= Reset;
+#if UNITY_EDITOR
+            UpdateManager.m_resetDelegate -= Reset;
+#endif
         }
 
 
-        void Reset()
-        {
-            m_loadStartOffsetTime = -1.0;
-            m_spriteRenderer    = null;
-            m_image             = null;
-            m_meshRenderer      = null;
-        }
 
 //----------------------------------------------------------------------------------------------------------------------
         public override void OnGraphStart(Playable playable){
@@ -134,6 +135,7 @@ namespace UnityEngine.StreamingImageSequence
 
         }
 
+#endregion        
 //----------------------------------------------------------------------------------------------------------------------
 
         private void ProcessInAdvanceLoading(double time, TimelineClip clip, int index)
@@ -187,6 +189,14 @@ namespace UnityEngine.StreamingImageSequence
 
         }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+        void Reset() {
+            m_loadStartOffsetTime = -1.0;
+            m_spriteRenderer    = null;
+            m_image             = null;
+            m_meshRenderer      = null;
+        }
 //---------------------------------------------------------------------------------------------------------------------
 
         protected override void InitInternalV(GameObject boundGameObject) {

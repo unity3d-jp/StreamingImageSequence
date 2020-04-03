@@ -47,9 +47,11 @@ namespace UnityEngine.StreamingImageSequence
         private static Dictionary<PlayableDirector, PlayableDirectorStatus> s_directorStatusDictiornary = new Dictionary<PlayableDirector, PlayableDirectorStatus>();
         private static string s_AppDataPath;
         private static string s_StreamingAssetPath;
-        public static event SetupBeforePlay m_SetupBeforePlayingDelegete = null;
-        public static event SetupAfterPlay m_SetupAfterPlayingDelegete = null;
-        public static event ResetDelegate m_ResetDelegate = null;
+#if UNITY_EDITOR        
+        public static event SetupBeforePlay m_setupBeforePlayingDelegate = null;
+        public static event SetupAfterPlay m_setupAfterPlayingDelegate = null;
+        public static event ResetDelegate m_resetDelegate = null;
+#endif        
         private static JobOrder[] s_orders = new JobOrder[] {
             JobOrder.Top,
             JobOrder.AboveNormal,
@@ -159,24 +161,24 @@ namespace UnityEngine.StreamingImageSequence
 
         static void CallResetDelegate()
         {
-            if (m_ResetDelegate != null)
+            if (m_resetDelegate != null)
             {
-                m_ResetDelegate();
+                m_resetDelegate();
             }
         }
         static void CallSetupBeforePlayingDelegate()
         {
-            if (m_SetupBeforePlayingDelegete!= null)
+            if (m_setupBeforePlayingDelegate!= null)
             {
-                m_SetupBeforePlayingDelegete();
+                m_setupBeforePlayingDelegate();
             }
         }
 
         static void CallSetupAfterPlayDelegate()
         {
-            if (m_SetupAfterPlayingDelegete != null)
+            if (m_setupAfterPlayingDelegate != null)
             {
-                m_SetupAfterPlayingDelegete();
+                m_setupAfterPlayingDelegate();
             }
         }
         static void UpdateFromEditor()
