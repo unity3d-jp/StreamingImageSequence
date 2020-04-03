@@ -203,7 +203,7 @@ namespace UnityEngine.StreamingImageSequence {
             
             //Reinitialize to assign the owner
             for (int i = 0; i < numIdealFrames; ++i) {
-                m_playableFrames[i].Init(this, m_timePerFrame * i);
+                m_playableFrames[i].Init(this, m_timePerFrame * i, m_useImageMarkerVisibility);
             }
             
         }
@@ -237,7 +237,7 @@ namespace UnityEngine.StreamingImageSequence {
 
             //Reinitialize to set the time
             for (int i = 0; i < numIdealFrames; ++i) {
-                m_playableFrames[i].Init(this, m_timePerFrame * i);
+                m_playableFrames[i].Init(this, m_timePerFrame * i, m_useImageMarkerVisibility);
             }
             
         }
@@ -536,7 +536,7 @@ namespace UnityEngine.StreamingImageSequence {
                 if (null == curPlayableFrame) {
                     CreatePlayableFrameInList(i);
                 }
-                m_playableFrames[i].Init(this, m_timePerFrame * i);
+                m_playableFrames[i].Init(this, m_timePerFrame * i, m_useImageMarkerVisibility);
             }
             
             
@@ -547,7 +547,7 @@ namespace UnityEngine.StreamingImageSequence {
 #if UNITY_EDITOR                    
             AssetDatabase.AddObjectToAsset(playableFrame, this);
 #endif
-            playableFrame.Init(this, m_timePerFrame * index);
+            playableFrame.Init(this, m_timePerFrame * index, m_useImageMarkerVisibility);
             m_playableFrames[index] = playableFrame;
         }
         
@@ -742,7 +742,7 @@ namespace UnityEngine.StreamingImageSequence {
         private EditorCurveBinding m_timelineEditorCurveBinding;
 #endif
         private bool[] m_loadRequested;
-        [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = true;
+        [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = false;
         
         //[Note-sin: 2020-2-13] TimelineClip has to be setup every time (after deserialization, etc) to ensure that
         //we are referring to the same instance rather than having a newly created one

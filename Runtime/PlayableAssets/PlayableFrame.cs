@@ -11,11 +11,11 @@ namespace UnityEngine.StreamingImageSequence {
 [Serializable]
 internal class PlayableFrame : ScriptableObject {
 
-    internal void Init(StreamingImageSequencePlayableAsset asset, double localTime) {
+    internal void Init(StreamingImageSequencePlayableAsset asset, double localTime, bool showMarker) {
         m_playableAsset = asset;
         m_localTime = localTime;
 
-        if (null == m_marker) {
+        if (null == m_marker && showMarker) {
             CreateMarker();
         }
     }
