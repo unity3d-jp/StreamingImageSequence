@@ -16,9 +16,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
         [UnityTest]
         public IEnumerator CreatePlayableAsset() {
-            EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects);
-            GameObject directorGo = new GameObject("Director");
-            PlayableDirector director = directorGo.AddComponent<PlayableDirector>();
+            PlayableDirector director = NewSceneWithDirector();
             StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
             yield return null;
 
@@ -29,6 +27,32 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
             DestroyTestTimelineAssets(sisAsset);
             yield return null;
+        }
+        
+//----------------------------------------------------------------------------------------------------------------------                
+        [UnityTest]
+        public IEnumerator ShowUseImageMarkers() {
+            PlayableDirector director = NewSceneWithDirector();
+            StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
+            yield return null;
+            
+            sisAsset.SetUseImageMarkerVisibility(true);
+            yield return null;
+            
+            TimelineClip clip = sisAsset.GetTimelineClip();
+            TrackAsset trackAsset = clip.parentTrack;
+            int numFrames = sisAsset.CalculateIdealNumPlayableFrames();
+            Assert.AreEqual(numFrames, trackAsset.GetMarkerCount());
+            
+            DestroyTestTimelineAssets(sisAsset);
+            yield return null;
+        }
+//----------------------------------------------------------------------------------------------------------------------                
+        private PlayableDirector NewSceneWithDirector() {
+            EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects);
+            GameObject directorGo = new GameObject("Director");
+            PlayableDirector director = directorGo.AddComponent<PlayableDirector>();
+            return director;
         }
         
 //----------------------------------------------------------------------------------------------------------------------                
