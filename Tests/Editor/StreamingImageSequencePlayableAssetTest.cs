@@ -36,13 +36,26 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
             yield return null;
             
+            //Resize
+            TimelineClip clip = sisAsset.GetTimelineClip();
+            TrackAsset trackAsset = clip.parentTrack;
+            //ResizeTimelineClip(clip, 0.03f); yield return null;
+            
             sisAsset.SetUseImageMarkerVisibility(true);
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
             yield return null;
             
-            TimelineClip clip = sisAsset.GetTimelineClip();
-            TrackAsset trackAsset = clip.parentTrack;
             Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            yield return null;
+
+
+            //Undo showing UseImageMarkers
+            Undo.PerformUndo();
+            TimelineEditor.Refresh(RefreshReason.ContentsModified);
+            yield return null;
+            Assert.False(sisAsset.GetUseImageMarkerVisibility());
+            Assert.AreEqual(0, trackAsset.GetMarkerCount());
+            
             
             DestroyTestTimelineAssets(sisAsset);
             yield return null;
