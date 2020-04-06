@@ -39,8 +39,6 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             //Resize
             TimelineClip clip = sisAsset.GetTimelineClip();
             TrackAsset trackAsset = clip.parentTrack;
-            //ResizeTimelineClip(clip, 0.03f); yield return null;
-            
             sisAsset.SetUseImageMarkerVisibility(true);
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
             yield return null;
@@ -50,9 +48,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
 
             //Undo showing UseImageMarkers
-            Undo.PerformUndo();
-            TimelineEditor.Refresh(RefreshReason.ContentsModified);
-            yield return null;
+            UndoAndRefreshTimelineEditor(); yield return null;
             Assert.False(sisAsset.GetUseImageMarkerVisibility());
             Assert.AreEqual(0, trackAsset.GetMarkerCount());
             
@@ -68,21 +64,35 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
             yield return null;
             
-            sisAsset.SetUseImageMarkerVisibility(true);
+            sisAsset.SetUseImageMarkerVisibility(true); 
+            Undo.IncrementCurrentGroup(); //the base of undo is here. UseImageMarkerVisibility is still true after undo
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
             yield return null;
-            
+
+            //Original length
             TimelineClip clip = sisAsset.GetTimelineClip();
             TrackAsset trackAsset = clip.parentTrack;
             Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            double origClipDuration = clip.duration;
 
-            //Resize
-            ResizeTimelineClip(clip, 7.0f); yield return null;
+            //Resize longer
+            ResizeTimelineClip(clip, origClipDuration + 3.0f); yield return null;
             Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
-            ResizeTimelineClip(clip, 4.0f); yield return null;
+
+            //Undo
+            UndoAndRefreshTimelineEditor(); yield return null;
+            Assert.AreEqual(origClipDuration, clip.duration);
             Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
-            ResizeTimelineClip(clip, 6.0f); yield return null;
+            
+            //Resize shorter
+            ResizeTimelineClip(clip, Mathf.Max(0.1f, ( (float)(origClipDuration) - 3.0f))); yield return null;
             Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            
+            //Undo
+            UndoAndRefreshTimelineEditor(); yield return null;
+            Assert.AreEqual(origClipDuration, clip.duration);
+            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            
             
             DestroyTestTimelineAssets(sisAsset);
             yield return null;
@@ -95,6 +105,12 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
         }
 
+//----------------------------------------------------------------------------------------------------------------------                
+        private void UndoAndRefreshTimelineEditor() {
+            Undo.PerformUndo(); 
+            TimelineEditor.Refresh(RefreshReason.ContentsModified);
+        }
+        
 //----------------------------------------------------------------------------------------------------------------------                
         private PlayableDirector NewSceneWithDirector() {
             EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects);
