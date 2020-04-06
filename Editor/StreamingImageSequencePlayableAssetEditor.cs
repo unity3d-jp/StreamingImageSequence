@@ -66,8 +66,20 @@ namespace UnityEngine.StreamingImageSequence {
                 clip.CreateCurves("Curves: " + clip.displayName);
             }
 
+
             asset.SetTimelineClip(clip);
             asset.ValidateAnimationCurve();
+
+            if (null == clonedFrom) {
+                return;
+            }
+            
+            StreamingImageSequencePlayableAsset clonedFromAsset = clonedFrom.asset as StreamingImageSequencePlayableAsset;
+            if (null == clonedFromAsset) {
+                return;
+            }
+            
+            asset.OnClonedFrom(clonedFromAsset);
 
         }
 

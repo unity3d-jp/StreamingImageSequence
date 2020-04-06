@@ -4,20 +4,19 @@ using UnityEngine.Timeline;
 namespace UnityEngine.StreamingImageSequence {
 
 [CustomTimelineEditor(typeof(UseImageMarker))]
-class UseImageMarkeEditor : MarkerEditor {
-    private const string IMAGE_NOT_USED = "Image is not used";
+class UseImageMarkerEditor : MarkerEditor {
 
-    public override MarkerDrawOptions GetMarkerOptions(IMarker m) {
-        MarkerDrawOptions options = base.GetMarkerOptions(m);
+//----------------------------------------------------------------------------------------------------------------------    
+    public override void DrawOverlay(IMarker m, MarkerUIStates uiState, MarkerOverlayRegion region)
+    {
         UseImageMarker marker = m as UseImageMarker;
-        if (!marker)
-            return options;
-
-        if (!marker.IsImageUsed()) {
-            options.errorText = IMAGE_NOT_USED;
+        if (null == marker)
+            return;
+            
+        if (marker.IsImageUsed()) {
+            Graphics.DrawTexture(region.markerRegion, EditorTextures.GetCheckedTexture());
         }
-
-        return options;
+        
     }
 }
 

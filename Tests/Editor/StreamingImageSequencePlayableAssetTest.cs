@@ -17,24 +17,28 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         [UnityTest]
         public IEnumerator CreatePlayableAsset() {
             EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects);
+            string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempTimelineForTestRunner.playable");
+            string tempSisAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempSisForTestRunner.playable");
 
             GameObject directorGo = new GameObject("Director");
             PlayableDirector director = directorGo.AddComponent<PlayableDirector>();
 
             //Create timeline asset
-            TimelineAsset asset = ScriptableObject.CreateInstance<TimelineAsset>();
-            director.playableAsset = asset;
-
+            TimelineAsset playableAsset = ScriptableObject.CreateInstance<TimelineAsset>();
+            director.playableAsset = playableAsset;
+            AssetDatabase.CreateAsset(playableAsset, tempTimelineAssetPath);
+            
             //Create empty asset
             StreamingImageSequencePlayableAsset sisAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
+            AssetDatabase.CreateAsset(sisAsset, tempSisAssetPath);
 
-            StreamingImageSequenceTrack movieTrack = asset.CreateTrack<StreamingImageSequenceTrack>(null, "Footage");
+            StreamingImageSequenceTrack movieTrack = playableAsset.CreateTrack<StreamingImageSequenceTrack>(null, "Footage");
             TimelineClip clip = movieTrack.CreateDefaultClip();
             clip.asset = sisAsset;
             clip.CreateCurves("Curves: " + clip.displayName);
             sisAsset.SetTimelineClip(clip);
             sisAsset.ValidateAnimationCurve();
-
+            
             //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
             EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
             Selection.activeTransform = directorGo.transform;
@@ -51,6 +55,12 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.IsNotNull(imagePaths);
             Assert.IsTrue(imagePaths.Count > 0);
             Assert.IsTrue(sisAsset.HasImages());
+
+            ObjectUtility.Destroy(movieTrack);
+            ObjectUtility.Destroy(sisAsset);
+            ObjectUtility.Destroy(playableAsset);
+            AssetDatabase.DeleteAsset(tempTimelineAssetPath);
+            AssetDatabase.DeleteAsset(tempSisAssetPath);
 
         }
     }

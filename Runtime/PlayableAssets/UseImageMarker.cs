@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
-using UnityEngine.UI;
 
 namespace UnityEngine.StreamingImageSequence {
 
