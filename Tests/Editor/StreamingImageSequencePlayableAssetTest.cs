@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using NUnit.Framework;
 using UnityEditor.SceneManagement;
@@ -50,7 +49,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         
 //----------------------------------------------------------------------------------------------------------------------                
         [UnityTest]
-        public IEnumerator ResizeTimelineClip() {
+        public IEnumerator ResizePlayableAsset() {
             PlayableDirector director = NewSceneWithDirector();
             StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
             yield return null;
@@ -62,29 +61,25 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             TrackAsset trackAsset = clip.parentTrack;
             Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
 
-            //
-            EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
-            Selection.activeObject = director;
-            
-            clip.duration = 7.0f;
-            TimelineEditor.Refresh(RefreshReason.ContentsModified);
-            yield return null;
+            //Resize
+            ResizeTimelineClip(clip, 7.0f); yield return null;
             Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
-            
-            clip.duration = 4.0f;
-            TimelineEditor.Refresh(RefreshReason.ContentsModified);
-            yield return null;
+            ResizeTimelineClip(clip, 4.0f); yield return null;
             Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
-            
-            clip.duration = 6.0f;
-            TimelineEditor.Refresh(RefreshReason.ContentsModified);
-            yield return null;
+            ResizeTimelineClip(clip, 6.0f); yield return null;
             Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
             
             DestroyTestTimelineAssets(sisAsset);
             yield return null;
         }
-        
+
+//----------------------------------------------------------------------------------------------------------------------                
+
+        private void ResizeTimelineClip(TimelineClip clip, double duration) {
+            clip.duration = duration;
+            TimelineEditor.Refresh(RefreshReason.ContentsModified);
+        }
+
 //----------------------------------------------------------------------------------------------------------------------                
         private PlayableDirector NewSceneWithDirector() {
             EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects);
@@ -118,12 +113,15 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
             //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
             EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
-            Selection.activeTransform = director.gameObject.transform;
-            TimelineEditor.selectedClip = sisAsset.GetTimelineClip();
+//            Selection.activeTransform = director.gameObject.transform;
+//            TimelineEditor.selectedClip = sisAsset.GetTimelineClip();
+            Selection.activeObject = director;
+
 
             const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
             string fullPath = Path.GetFullPath(PKG_PATH);
             ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, fullPath, sisAsset,false);
+            
             
             return sisAsset;
         }
