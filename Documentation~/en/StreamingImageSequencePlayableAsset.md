@@ -59,7 +59,7 @@ Keyboard shortcuts:
 1. u: toggle use/skip. This shortcut can be changed in the StreamingImageSequence category in the Shortcuts window.  
 1. left/right arrow: move to the prev/next UseImageMarker.
 
-
+> If the UseImageMarkers are not shown correctly, click on the PlayableDirector GameObject in the hierarchy window to refresh the timeline window.
 
 
 # Inspector
