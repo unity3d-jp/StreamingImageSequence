@@ -55,6 +55,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             yield return null;
             
             sisAsset.SetUseImageMarkerVisibility(true);
+            TimelineEditor.Refresh(RefreshReason.ContentsModified);
             yield return null;
             
             TimelineClip clip = sisAsset.GetTimelineClip();
