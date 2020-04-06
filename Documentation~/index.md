@@ -3,6 +3,8 @@
 Streaming Image Sequence is a package for playing sequential image sequences in Unity Timeline 
 easily without making Unity 2D Sprites.
 
+**Timeline 1.4.x or above is recommended.**
+
 # Supported Platforms
 
 1. Windows

@@ -43,10 +43,24 @@ For other ways for importing images, see [ImportingImages](ImportingImages.md)
 
 # Curve
 
-We can also change the timing of the playback by adjusting the curve of the asset.   
-To do this, open the curve section, and right click on the curve to start adding keys.
+The timing of the playback is determined by the curve of the asset, which can be adjusted by
+opening the curve section, right clicking on the curve to add keys, and moving them accordingly.
 
 ![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
+
+# UseImageMarker
+
+Each frame has UseImageMarker, which can be used to skip the image assigned to that particular frame, and show the last used image instead.
+
+![UseImageMarker](../images/UseImageMarker.png)
+
+Keyboard shortcuts:  
+
+1. u: toggle use/skip. This shortcut can be changed in the StreamingImageSequence category in the Shortcuts window.  
+1. left/right arrow: move to the prev/next UseImageMarker.
+
+> If the UseImageMarkers are not shown correctly, click on the PlayableDirector GameObject in the hierarchy window to refresh the timeline window.
+
 
 # Inspector
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAsset.png)
@@ -56,10 +70,14 @@ To do this, open the curve section, and right click on the curve to start adding
 * **Folder**  
   The folder where the image files are located
 * **Images**  
-  The images inside the folder.
-  We can reorder the images by dragging the image file name up/down.
+  The images inside the folder. 
+  Can be reordered by dragging the image file name up/down.
 * **Reset Curve**.  
   Reset the curve timing in the PlayableAsset to be linear.
+* **Show UseImageMarkers**.  
+  Show/hide UseImageMarker of each frame.
+* **Reset UseImageMarkers**.  
+  Reset UseImageMarkers of all frames.
 
 
 
