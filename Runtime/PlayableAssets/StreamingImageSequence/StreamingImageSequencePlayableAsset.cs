@@ -243,10 +243,7 @@ namespace UnityEngine.StreamingImageSequence {
 
         internal bool GetUseImageMarkerVisibility() {  return m_useImageMarkerVisibility; }
 
-        internal void SetUseImageMarkerVisibility(bool show) {
-            m_useImageMarkerVisibility = show;
-            RefreshPlayableFrames();
-        }
+        internal void SetUseImageMarkerVisibility(bool show) { m_useImageMarkerVisibility = show; }
 
 //----------------------------------------------------------------------------------------------------------------------        
         internal float GetOrUpdateDimensionRatio() {
