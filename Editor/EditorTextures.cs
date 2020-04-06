@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.IO;
+using UnityEditor;
 
 namespace UnityEngine.StreamingImageSequence {
 
@@ -10,8 +11,9 @@ internal static class EditorTextures {
 
     [InitializeOnLoadMethod]
     static void OnLoad() {
-        const string FULL_PATH = "Packages/com.unity.streaming-image-sequence/Editor/Textures/Checked.png";
-        m_checkedTexture = AssetDatabase.LoadAssetAtPath<Texture>(FULL_PATH);
+        const string TEX_PATH = "Packages/com.unity.streaming-image-sequence/Editor/Textures/Checked.png";
+        string fullTexPath = Path.GetFullPath(TEX_PATH);
+        m_checkedTexture = AssetDatabase.LoadAssetAtPath<Texture>(fullTexPath);
     }
     
 //----------------------------------------------------------------------------------------------------------------------
