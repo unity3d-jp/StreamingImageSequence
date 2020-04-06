@@ -57,7 +57,7 @@ Each frame has UseImageMarker, which can be used to skip the image assigned to t
 Keyboard shortcuts:  
 
 1. u: toggle use/skip. This shortcut can be changed in the StreamingImageSequence category in the Shortcuts window.  
-1. left/right arrow: move to the prev/left UseImageMarker
+1. left/right arrow: move to the prev/next UseImageMarker.
 
 
 
