@@ -17,51 +17,71 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         [UnityTest]
         public IEnumerator CreatePlayableAsset() {
             EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects);
-            string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempTimelineForTestRunner.playable");
-            string tempSisAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempSisForTestRunner.playable");
-
             GameObject directorGo = new GameObject("Director");
             PlayableDirector director = directorGo.AddComponent<PlayableDirector>();
-
-            //Create timeline asset
-            TimelineAsset playableAsset = ScriptableObject.CreateInstance<TimelineAsset>();
-            director.playableAsset = playableAsset;
-            AssetDatabase.CreateAsset(playableAsset, tempTimelineAssetPath);
-            
-            //Create empty asset
-            StreamingImageSequencePlayableAsset sisAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
-            AssetDatabase.CreateAsset(sisAsset, tempSisAssetPath);
-
-            StreamingImageSequenceTrack movieTrack = playableAsset.CreateTrack<StreamingImageSequenceTrack>(null, "Footage");
-            TimelineClip clip = movieTrack.CreateDefaultClip();
-            clip.asset = sisAsset;
-            clip.CreateCurves("Curves: " + clip.displayName);
-            sisAsset.SetTimelineClip(clip);
-            sisAsset.ValidateAnimationCurve();
-            
-            //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
-            EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
-            Selection.activeTransform = directorGo.transform;
+            StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
             yield return null;
-
-            TimelineEditor.selectedClip = clip;
-            yield return null;
-
-            const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
-            string fullPath = Path.GetFullPath(PKG_PATH);
-            ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, fullPath, sisAsset,false);
 
             IList<string> imagePaths = sisAsset.GetImagePaths();
             Assert.IsNotNull(imagePaths);
             Assert.IsTrue(imagePaths.Count > 0);
             Assert.IsTrue(sisAsset.HasImages());
 
+            DestroyTestTimelineAssets(sisAsset);
+            yield return null;
+        }
+        
+//----------------------------------------------------------------------------------------------------------------------                
+
+        StreamingImageSequencePlayableAsset CreateTestTimelineAssets(PlayableDirector director) {
+            string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempTimelineForTestRunner.playable");
+            string tempSisAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempSisForTestRunner.playable");
+
+
+            //Create timeline asset
+            TimelineAsset timelineAsset = ScriptableObject.CreateInstance<TimelineAsset>();
+            director.playableAsset = timelineAsset;
+            AssetDatabase.CreateAsset(timelineAsset, tempTimelineAssetPath);
+            
+            //Create empty asset
+            StreamingImageSequencePlayableAsset sisAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
+            AssetDatabase.CreateAsset(sisAsset, tempSisAssetPath);
+            
+            StreamingImageSequenceTrack movieTrack = timelineAsset.CreateTrack<StreamingImageSequenceTrack>(null, "Footage");
+            TimelineClip clip = movieTrack.CreateDefaultClip();
+            clip.asset = sisAsset;
+            clip.CreateCurves("Curves: " + clip.displayName);
+            sisAsset.SetTimelineClip(clip);
+            sisAsset.ValidateAnimationCurve();
+
+            //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
+            EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
+            Selection.activeTransform = director.gameObject.transform;
+            TimelineEditor.selectedClip = sisAsset.GetTimelineClip();
+
+            const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
+            string fullPath = Path.GetFullPath(PKG_PATH);
+            ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, fullPath, sisAsset,false);
+            
+            return sisAsset;
+        }
+
+//----------------------------------------------------------------------------------------------------------------------        
+        void DestroyTestTimelineAssets(StreamingImageSequencePlayableAsset sisAsset) {
+            TrackAsset movieTrack = sisAsset.GetTimelineClip().parentTrack;
+            TimelineAsset timelineAsset = movieTrack.timelineAsset;
+            
+            string tempSisAssetPath = AssetDatabase.GetAssetPath(sisAsset);
+            string tempTimelineAssetPath = AssetDatabase.GetAssetPath(timelineAsset);
+            Assert.False(string.IsNullOrEmpty(tempSisAssetPath));
+            Assert.False(string.IsNullOrEmpty(tempTimelineAssetPath));
+            
             ObjectUtility.Destroy(movieTrack);
             ObjectUtility.Destroy(sisAsset);
-            ObjectUtility.Destroy(playableAsset);
+            ObjectUtility.Destroy(timelineAsset);
             AssetDatabase.DeleteAsset(tempTimelineAssetPath);
             AssetDatabase.DeleteAsset(tempSisAssetPath);
-
+            
         }
     }
 }
