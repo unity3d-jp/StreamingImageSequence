@@ -94,8 +94,6 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
         StreamingImageSequencePlayableAsset CreateTestTimelineAssets(PlayableDirector director) {
             string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempTimelineForTestRunner.playable");
-            string tempSisAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempSisForTestRunner.playable");
-
 
             //Create timeline asset
             TimelineAsset timelineAsset = ScriptableObject.CreateInstance<TimelineAsset>();
@@ -103,12 +101,11 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             AssetDatabase.CreateAsset(timelineAsset, tempTimelineAssetPath);
             
             //Create empty asset
-            StreamingImageSequencePlayableAsset sisAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
-            AssetDatabase.CreateAsset(sisAsset, tempSisAssetPath);
-            
             StreamingImageSequenceTrack movieTrack = timelineAsset.CreateTrack<StreamingImageSequenceTrack>(null, "Footage");
             TimelineClip clip = movieTrack.CreateDefaultClip();
-            clip.asset = sisAsset;
+            StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(sisAsset);
+
             clip.CreateCurves("Curves: " + clip.displayName);
             sisAsset.SetTimelineClip(clip);
             sisAsset.ValidateAnimationCurve();
@@ -133,16 +130,12 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             TrackAsset movieTrack = sisAsset.GetTimelineClip().parentTrack;
             TimelineAsset timelineAsset = movieTrack.timelineAsset;
             
-            string tempSisAssetPath = AssetDatabase.GetAssetPath(sisAsset);
             string tempTimelineAssetPath = AssetDatabase.GetAssetPath(timelineAsset);
-            Assert.False(string.IsNullOrEmpty(tempSisAssetPath));
             Assert.False(string.IsNullOrEmpty(tempTimelineAssetPath));
-            
-            ObjectUtility.Destroy(movieTrack);
-            ObjectUtility.Destroy(sisAsset);
+
+            timelineAsset.DeleteTrack(movieTrack);
             ObjectUtility.Destroy(timelineAsset);
             AssetDatabase.DeleteAsset(tempTimelineAssetPath);
-            AssetDatabase.DeleteAsset(tempSisAssetPath);
             
         }
     }
