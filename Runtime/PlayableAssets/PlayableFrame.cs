@@ -29,7 +29,7 @@ internal class PlayableFrame : ScriptableObject {
         DeleteMarker();
     }
 
-    //----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
     internal bool IsUsed() { return m_useImage; }
     internal void SetUsed(bool used) { m_useImage = used; }
     internal double GetLocalTime() { return m_localTime; }
@@ -56,20 +56,24 @@ internal class PlayableFrame : ScriptableObject {
 //----------------------------------------------------------------------------------------------------------------------
 
     void CreateMarker() {
-#if UNITY_EDITOR
-        Undo.RegisterCompleteObjectUndo(this, "PlayableFrame: CreateMarker");
-#endif        
         TimelineClip timelineClip = m_playableAsset.GetTimelineClip();
         m_marker = timelineClip.parentTrack.CreateMarker<UseImageMarker>(m_localTime);
         m_marker.Init(this);
+
+#if UNITY_EDITOR
+        Undo.RegisterCompleteObjectUndo(this, "PlayableFrame: CreateMarker");
+#endif        
+        
     }
 
     void DeleteMarker() {
+        
+        TrackAsset track = m_marker.parent;
+        track.DeleteMarker(m_marker);
 #if UNITY_EDITOR
         Undo.RegisterCompleteObjectUndo(this, "PlayableFrame: DeleteMarker");
 #endif        
-        TrackAsset track = m_marker.parent;
-        track.DeleteMarker(m_marker);
+        
     }
     
 //----------------------------------------------------------------------------------------------------------------------
