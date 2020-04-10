@@ -3,6 +3,7 @@
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.2.1",
     "com.unity.ide.vscode": "1.1.4",
+    "com.unity.package-validation-suite": "0.9.1-preview",
     "com.unity.quicksearch": "1.5.0",
     "com.unity.test-framework": "1.1.13",
     "com.unity.textmeshpro": "2.0.1",
