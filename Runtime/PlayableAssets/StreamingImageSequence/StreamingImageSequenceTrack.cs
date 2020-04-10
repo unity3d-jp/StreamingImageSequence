@@ -14,6 +14,9 @@ namespace UnityEngine.StreamingImageSequence
     public class StreamingImageSequenceTrack : TrackAsset
     {
         LoaderPeriodicJob m_LoaderPeriodicJob;
+        
+        
+        /// <inheritdoc/>
         public StreamingImageSequenceTrack()
         {
             LogUtility.LogDebug("StreamingImageSequenceTrack creating ObserverPeriodicJob");
@@ -47,6 +50,7 @@ namespace UnityEngine.StreamingImageSequence
 
 //---------------------------------------------------------------------------------------------------------------------
 
+        /// <inheritdoc/>
         protected override  void OnAfterTrackDeserialize() {
             //Re-setup the PlayableAsset
             foreach (TimelineClip clip in m_Clips) {
