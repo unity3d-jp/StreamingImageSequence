@@ -3,7 +3,7 @@ using UnityEditor.ShortcutManagement;
 
 namespace UnityEngine.StreamingImageSequence {
 
-public static class Shortcuts  {
+internal static class Shortcuts  {
 
     [Shortcut("StreamingImageSequence/Toggle Use Image Marker", null,  KeyCode.U)]
     static void ToggleUseImageMarker(ShortcutArguments args) {
