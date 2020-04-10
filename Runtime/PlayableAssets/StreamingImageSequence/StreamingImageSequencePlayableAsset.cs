@@ -118,6 +118,13 @@ namespace UnityEngine.StreamingImageSequence {
         /// </summary>
         /// <returns>The folder where the images are located</returns>
         public string GetFolder() { return m_folder; }
+
+//----------------------------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// Returns the texture that contains the active image according to the PlayableDirector's time.
+        /// </summary>
+        /// <returns></returns>
+        public Texture2D GetTexture() { return m_texture; }
         
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -231,7 +238,6 @@ namespace UnityEngine.StreamingImageSequence {
         internal IList<string> GetImagePaths() { return m_imagePaths; }
         internal ImageDimensionInt GetResolution() { return m_resolution; }
         internal System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
-        internal Texture2D GetTexture() { return m_texture; }
         internal TimelineClip GetTimelineClip() { return m_timelineClip; }
 
         //This method must only be called from the track that owns this PlayableAsset, or during deserialization
