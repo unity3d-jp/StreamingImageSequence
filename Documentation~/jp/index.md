@@ -13,11 +13,11 @@ Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Time
 # 機能
 
 ### [一連の画像を再生する](jp/StreamingImageSequencePlayableAsset.md)
-![StreamingImageSequenceDemo](images/StreamingImageSequenceDemo.gif)
+![StreamingImageSequenceDemo](../images/StreamingImageSequenceDemo.gif)
 
 
 ### [Image オブジェクトをフェードさせる](jp/FaderPlayableAsset.md)
-![FaderDemo](images/FaderDemo.gif)
+![FaderDemo](../images/FaderDemo.gif)
 
 
 # その他の言語
