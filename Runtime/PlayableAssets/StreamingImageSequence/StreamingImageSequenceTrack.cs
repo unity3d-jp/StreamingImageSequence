@@ -3,10 +3,15 @@ using UnityEngine.Timeline;
 
 namespace UnityEngine.StreamingImageSequence
 { 
+    /// <summary>
+    /// A track which clip type is StreamingImageSequencePlayableAsset.
+    /// It shows the active image from the images assigned to StreamingImageSequencePlayableAsset,
+    /// into a bound GameObject that has StreamingImageSequenceNativeRenderer component.
+    /// </summary>
     [TrackClipType(typeof(StreamingImageSequencePlayableAsset))]
     [TrackBindingType(typeof(StreamingImageSequenceNativeRenderer))]
     [TrackColor(0.776f, 0.263f, 0.09f)]
-    internal class StreamingImageSequenceTrack : TrackAsset
+    public class StreamingImageSequenceTrack : TrackAsset
     {
         LoaderPeriodicJob m_LoaderPeriodicJob;
         public StreamingImageSequenceTrack()
@@ -26,8 +31,9 @@ namespace UnityEngine.StreamingImageSequence
         }
 #endif
 
+        /// <inheritdoc/>
         public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
-            var mixer = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);            
+            var mixer = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);
             var director = go.GetComponent<PlayableDirector>();
             if (director != null) {
                 var boundGo = director.GetGenericBinding(this);
