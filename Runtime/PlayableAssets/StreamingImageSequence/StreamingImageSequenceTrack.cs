@@ -45,9 +45,22 @@ namespace UnityEngine.StreamingImageSequence
                 bh.m_track = this;
                 bh.Init(null == nativeRenderer ? null : nativeRenderer.gameObject, director, GetClips());
             }
+
+            m_trackMixer = mixer.GetBehaviour();
             return mixer;
         }
 
+//---------------------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Get the currently active PlayableAsset in the track according to the time of PlayableDirector
+        /// </summary>
+        /// <returns>The TimelineClip's asset as StreamingImageSequencePlayableAsset</returns>
+        public StreamingImageSequencePlayableAsset GetActivePlayableAsset() {
+            m_trackMixer.GetActiveTimelineClipInto(out TimelineClip clip, out StreamingImageSequencePlayableAsset asset);
+            return asset;
+        }
+        
 //---------------------------------------------------------------------------------------------------------------------
 
         /// <inheritdoc/>
@@ -63,6 +76,8 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 //---------------------------------------------------------------------------------------------------------------------
+
+        private StreamingImageSequencePlayableMixer m_trackMixer = null;
 
     }
 
