@@ -18,7 +18,7 @@
 ![DragAndDropInspector](../images/DragAndDropInspector.png)
 
 選択されたフォルダーが *StreamingAssets* の配下にない場合、以下のインポートウィンドウが表示され、画像を *StreamingAssets* 内にコピーするかどうか確認されます。   
-チェックボックスをオフにすると、コピーをスキップできます。  
+チェックボックスをオフにすると、コピーをスキップできます。
 
 ![ImporterWindow](../images/ImporterWindow.png)
 

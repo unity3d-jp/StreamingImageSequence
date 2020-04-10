@@ -42,10 +42,23 @@
 
 # 曲線
 
-アセットの曲線を調整してプレイバックのタイミングを変更することも可能です。   
-これを行うには、曲線のセクションを開き、曲線の上で右クリックするとキーの追加を開始できます。
+プレイバックのタイミングはアセットの曲線によって決まります。これは曲線のセクションを開いて曲線の上で右クリックしてキーを追加し、追加したキーを動かすことで調節することができます。
 
 ![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
+
+# UseImageMarker
+
+すべてのフレームに UseImageMarker が存在します。これは特定のフレームに割り当てられた画像をスキップし、最後に使われた画像を代わりに表示するために使うことができます。
+
+![UseImageMarker](../images/UseImageMarker.png)
+
+キーボードショートカット：
+
+1. u キー：画像を使うかスキップするかを切り替えます。このショートカットは Shortcuts ウィンドウの StreamingImageSequence カテゴリで変更することができます。
+1. 左/右の矢印キー：直前（左の矢印キー）または直後（右の矢印キー）の UseImageMarker に移動します。
+
+> UseImageMarker が正しく表示されていない場合は、ヒエラルキーウィンドウの PlayableDirector ゲームオブジェクトをクリックし、タイムラインウィンドウを更新してください。
+
 
 # インスペクター
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAsset.png)
@@ -56,9 +69,13 @@
   画像ファイルが入っているフォルダーです。
 * **Images**  
   フォルダー内の画像です。
-  画像ファイルの名前を上下にドラッグアンドドロップして画像を並び替えることができます。
+  画像ファイルの名前を上下にドラッグアンドドロップして並び替えることができます。
 * **Reset Curve**.  
   PlayableAsset 内の曲線のタイミングをリニアにリセットします。
+* **Show UseImageMarkers**  
+  各フレームの UseImageMarker の表示/非表示を切り替えます。
+* **Reset UseImageMarkers**  
+  すべてのフレームの UseImageMarker をリセットします。
 
 
 

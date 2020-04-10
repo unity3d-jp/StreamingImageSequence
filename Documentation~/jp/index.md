@@ -2,6 +2,8 @@
 
 Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Timeline で一連の画像シーケンスを簡単に再生するためのパッケージです。
 
+**Timeline 1.4.x 以降のご利用を推奨いたします。**
+
 # 対応プラットフォーム
 
 1. Windows
@@ -10,16 +12,17 @@ Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Time
 
 # 機能
 
-### [一連の画像を再生する](StreamingImageSequencePlayableAsset.md)
-
-![StreamingImageSequenceDemo](../images/StreamingImageSequenceDemo.gif)
-
-### [Image オブジェクトをフェードさせる](FaderPlayableAsset.md)
-![FaderDemo](../images/FaderDemo.gif)
+### [一連の画像を再生する](jp/StreamingImageSequencePlayableAsset.md)
+![StreamingImageSequenceDemo](images/StreamingImageSequenceDemo.gif)
 
 
-# 他の言語
+### [Image オブジェクトをフェードさせる](jp/FaderPlayableAsset.md)
+![FaderDemo](images/FaderDemo.gif)
+
+
+# その他の言語
 - [English](../index.md)
+
 
 
 
