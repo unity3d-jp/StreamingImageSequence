@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.1.1-preview] - 2020-04-10
+* api: open StreamingImageSequenceTrack to public 
+* api: open StreamingImageSequencePlayableAsset::GetTexture() to public 
+* docs: Update Japanese docs.
+
 ## [0.1.0-preview] - 2020-04-06
 * feat: markers to indicate the use/skipping of image in StreamingImageSequencePlayableAsset 
 
