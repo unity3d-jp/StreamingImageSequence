@@ -53,9 +53,11 @@ namespace UnityEngine.StreamingImageSequence
 //---------------------------------------------------------------------------------------------------------------------
 
         /// <summary>
-        /// Get the currently active PlayableAsset in the track according to the time of PlayableDirector
+        /// Get the currently active PlayableAsset in the track according to the PlayableDirector's time
         /// </summary>
-        /// <returns>The TimelineClip's asset as StreamingImageSequencePlayableAsset</returns>
+        /// <returns>The TimelineClip's asset as StreamingImageSequencePlayableAsset. Returns null if there is no active
+        /// PlayableAsset.
+        /// </returns>
         public StreamingImageSequencePlayableAsset GetActivePlayableAsset() {
             m_trackMixer.GetActiveTimelineClipInto(out TimelineClip clip, out StreamingImageSequencePlayableAsset asset);
             return asset;
