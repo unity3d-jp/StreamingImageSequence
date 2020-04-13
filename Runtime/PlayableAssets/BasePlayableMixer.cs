@@ -26,7 +26,20 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
         if (m_boundGameObject== null ) {
             return;
         }
+        
+        GetActiveTimelineClipInto(out TimelineClip clip, out T activePlayableAsset);
+        if (null == clip)
+            return;
+        
+        ProcessActiveClipV(activePlayableAsset, m_playableDirector.time, clip);
+        m_boundGameObject.SetActive(true);
+        
+    }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+    public void GetActiveTimelineClipInto( out TimelineClip outClip, out T outAsset) {
+        
         double directorTime = m_playableDirector.time;
         foreach (TimelineClip clip in m_clips) {
             T asset = clip.asset as T;
@@ -34,11 +47,14 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
                 continue;
 
             if ( directorTime >= clip.start && directorTime <= clip.end) {
-                ProcessActiveClipV(asset, directorTime, clip);
-                m_boundGameObject.SetActive(true);
-                break;
+                outClip = clip;
+                outAsset = asset;
+                return;
             }
         }
+
+        outClip = null;
+        outAsset = null;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
