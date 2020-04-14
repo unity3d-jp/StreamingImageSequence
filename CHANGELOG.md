@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.2-preview] - 2020-04-14
+* fix: errors caused by StreamingImageSequenceTrack::GetActivePlayableAsset() when TimelineWindow is not in focus
+* fix: keep processing StreamingImageSequencePlayableAsset even if there is no bound GameObject in the track, as the output texture is still required
+
 ## [0.1.1-preview] - 2020-04-10
 * api: open StreamingImageSequenceTrack to public 
 * api: open StreamingImageSequencePlayableAsset::GetTexture() to public 
