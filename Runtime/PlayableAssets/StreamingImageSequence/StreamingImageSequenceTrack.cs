@@ -37,16 +37,15 @@ namespace UnityEngine.StreamingImageSequence
         /// <inheritdoc/>
         public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
             var mixer = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);
-            var director = go.GetComponent<PlayableDirector>();
+            PlayableDirector director = go.GetComponent<PlayableDirector>();
+            m_trackMixer = mixer.GetBehaviour();
+            
             if (director != null) {
                 var boundGo = director.GetGenericBinding(this);
                 StreamingImageSequenceNativeRenderer nativeRenderer = boundGo as StreamingImageSequenceNativeRenderer;
-                StreamingImageSequencePlayableMixer bh = mixer.GetBehaviour();
-                bh.m_track = this;
-                bh.Init(null == nativeRenderer ? null : nativeRenderer.gameObject, director, GetClips());
+                m_trackMixer.m_track = this;
+                m_trackMixer.Init(null == nativeRenderer ? null : nativeRenderer.gameObject, director, GetClips());
             }
-
-            m_trackMixer = mixer.GetBehaviour();
             return mixer;
         }
 
@@ -59,7 +58,10 @@ namespace UnityEngine.StreamingImageSequence
         /// PlayableAsset.
         /// </returns>
         public StreamingImageSequencePlayableAsset GetActivePlayableAsset() {
-            m_trackMixer.GetActiveTimelineClipInto(out TimelineClip clip, out StreamingImageSequencePlayableAsset asset);
+            double time = (null != m_trackMixer ) ? m_trackMixer.GetDirectorTime() : 0;
+            StreamingImageSequencePlayableMixer.GetActiveTimelineClipInto(m_Clips, time,
+                out TimelineClip clip, out StreamingImageSequencePlayableAsset asset
+            );
             return asset;
         }
         
