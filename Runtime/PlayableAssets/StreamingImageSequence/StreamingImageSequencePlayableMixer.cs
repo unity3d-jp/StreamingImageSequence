@@ -82,13 +82,9 @@ namespace UnityEngine.StreamingImageSequence
                 }
             }
 
-            GameObject go = GetBoundGameObject();
-
-            if (null == go)
-                return;
-
             double directorTime = GetPlayableDirector().time;
 
+            bool activeTimelineClipFound = false;
             int i = 0;
             foreach (TimelineClip clip in GetClips()) {
 
@@ -115,14 +111,20 @@ namespace UnityEngine.StreamingImageSequence
                     ProcessInAdvanceLoading(directorTime, clip, i );
                 }
 
-                if (directorTime >= startTime && directorTime < endTime) {
-
+                if (!activeTimelineClipFound && directorTime >= startTime && directorTime < endTime) {
                     ProcessActiveClipV(asset, directorTime, clip);
-                    go.SetActive(true);
+                    activeTimelineClipFound = true;
                 } 
 
                 ++i;
             }
+
+            //Show game object
+            GameObject go = GetBoundGameObject();
+            if (activeTimelineClipFound && null != go) {
+                go.SetActive(true);
+            }
+            
 
         }
 
