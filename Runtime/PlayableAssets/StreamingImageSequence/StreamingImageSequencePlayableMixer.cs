@@ -1,13 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
-using System.IO;
-using UnityEngine;
 using UnityEngine.Playables;
-using System.Text.RegularExpressions;
-using UnityEngine.Assertions;
-using System.Threading;
-using System.Runtime.InteropServices;
 using UnityEngine.UI;
 using UnityEngine.Timeline;
 #if UNITY_EDITOR
@@ -29,7 +22,6 @@ namespace UnityEngine.StreamingImageSequence
             m_gameView = EditorWindow.GetWindow(type,false,null,false);
 
 #endif
-            m_loadStartOffsetTime = -1.0;
         }
 
         
@@ -74,21 +66,17 @@ namespace UnityEngine.StreamingImageSequence
                 return; // it doesn't work as mixer.
             }
 
-            if (m_nextInadvanceLoadingFrameArray == null) {
-                m_nextInadvanceLoadingFrameArray = new int[inputCount];
+            if (m_nextInAdvanceLoadingFrameArray == null) {
+                m_nextInAdvanceLoadingFrameArray = new int[inputCount];
                 for ( int ii = 0;ii< inputCount;ii++)
                 {
-                    m_nextInadvanceLoadingFrameArray[ii] = 0;
+                    m_nextInAdvanceLoadingFrameArray[ii] = 0;
                 }
             }
 
-            GameObject go = GetBoundGameObject();
-
-            if (null == go)
-                return;
-
             double directorTime = GetPlayableDirector().time;
 
+            bool activeTimelineClipFound = false;
             int i = 0;
             foreach (TimelineClip clip in GetClips()) {
 
@@ -100,29 +88,30 @@ namespace UnityEngine.StreamingImageSequence
                 if (null == imagePaths)
                     continue;
 
-                int count = imagePaths.Count;
-                double clipDuration = clip.duration;
                 double startTime = clip.start;
                 double endTime = clip.end;
 
-                if ( m_loadStartOffsetTime < 0.0) {
-                    m_loadStartOffsetTime = 1.0f + count * 0.1f;
-
-                }
+                double loadStartOffsetTime = 1.0f + imagePaths.Count * 0.1f;
 
                 //Load clips that might still be inactive, in advance
-				if ( directorTime>= startTime - m_loadStartOffsetTime && directorTime < endTime) {
+				if ( directorTime>= startTime - loadStartOffsetTime && directorTime < endTime) {
                     ProcessInAdvanceLoading(directorTime, clip, i );
                 }
 
-                if (directorTime >= startTime && directorTime < endTime) {
-
+                if (!activeTimelineClipFound && directorTime >= startTime && directorTime < endTime) {
                     ProcessActiveClipV(asset, directorTime, clip);
-                    go.SetActive(true);
+                    activeTimelineClipFound = true;
                 } 
 
                 ++i;
             }
+
+            //Show game object
+            GameObject go = GetBoundGameObject();
+            if (activeTimelineClipFound && null != go) {
+                go.SetActive(true);
+            }
+            
 
         }
 
@@ -137,21 +126,20 @@ namespace UnityEngine.StreamingImageSequence
 
             int count = asset.GetImagePaths().Count;
 
-            if (m_nextInadvanceLoadingFrameArray[index] < count)
+            if (m_nextInAdvanceLoadingFrameArray[index] < count)
             {
                 for (int check = 0; check < 4; check++)
                 {
 
-                    if (m_nextInadvanceLoadingFrameArray[index] >= 0 && m_nextInadvanceLoadingFrameArray[index] <= count)
+                    if (m_nextInAdvanceLoadingFrameArray[index] >= 0 && m_nextInAdvanceLoadingFrameArray[index] <= count)
                     {
-                        if (!asset.IsLoadRequested(m_nextInadvanceLoadingFrameArray[index]))
+                        if (!asset.IsLoadRequested(m_nextInAdvanceLoadingFrameArray[index]))
                         {
-                            ReadResult result = new ReadResult();
-                            asset.LoadRequest(m_nextInadvanceLoadingFrameArray[index], false, out result);
+                            asset.LoadRequest(m_nextInAdvanceLoadingFrameArray[index], false, out _);
                         }
                     }
-                    m_nextInadvanceLoadingFrameArray[index]++;
-                    if (m_nextInadvanceLoadingFrameArray[index] >= count)
+                    m_nextInAdvanceLoadingFrameArray[index]++;
+                    if (m_nextInAdvanceLoadingFrameArray[index] >= count)
                     {
                         break;
                     }
@@ -183,7 +171,6 @@ namespace UnityEngine.StreamingImageSequence
 //----------------------------------------------------------------------------------------------------------------------
 
         void Reset() {
-            m_loadStartOffsetTime = -1.0;
             m_spriteRenderer    = null;
             m_image             = null;
             m_meshRenderer      = null;
@@ -238,15 +225,13 @@ namespace UnityEngine.StreamingImageSequence
         private MeshRenderer    m_meshRenderer = null;
         private Image           m_image = null;
 
-        internal TrackAsset m_track;
-        private double m_loadStartOffsetTime;
 #if UNITY_EDITOR
-        EditorWindow m_gameView;
+        readonly EditorWindow m_gameView;
 #endif
-        private int[] m_nextInadvanceLoadingFrameArray;
+        private int[] m_nextInAdvanceLoadingFrameArray;
 
     }
 
 
 
-}
+} //end namespace

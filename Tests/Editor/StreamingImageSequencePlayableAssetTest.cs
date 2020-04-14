@@ -18,6 +18,12 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         public IEnumerator CreatePlayableAsset() {
             PlayableDirector director = NewSceneWithDirector();
             StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
+            
+            //Test the track immediately
+            StreamingImageSequenceTrack track = sisAsset.GetTimelineClip().parentTrack as StreamingImageSequenceTrack;
+            Assert.IsNotNull(track);
+            Assert.IsNotNull(track.GetActivePlayableAsset());
+            
             yield return null;
 
             IList<string> imagePaths = sisAsset.GetImagePaths();
@@ -26,10 +32,6 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.IsTrue(sisAsset.HasImages());
             
             
-            //Test the track
-            StreamingImageSequenceTrack track = sisAsset.GetTimelineClip().parentTrack as StreamingImageSequenceTrack;
-            Assert.IsNotNull(track);
-            Assert.IsNotNull(track.GetActivePlayableAsset());
 
             //Test that there should be no active PlayableAsset at the time above what exists in the track.
             TimelineClip clip = sisAsset.GetTimelineClip();
