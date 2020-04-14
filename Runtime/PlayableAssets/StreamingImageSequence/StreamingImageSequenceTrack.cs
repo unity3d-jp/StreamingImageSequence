@@ -43,7 +43,6 @@ namespace UnityEngine.StreamingImageSequence
             if (director != null) {
                 var boundGo = director.GetGenericBinding(this);
                 StreamingImageSequenceNativeRenderer nativeRenderer = boundGo as StreamingImageSequenceNativeRenderer;
-                m_trackMixer.m_track = this;
                 m_trackMixer.Init(null == nativeRenderer ? null : nativeRenderer.gameObject, director, GetClips());
             }
             return mixer;
