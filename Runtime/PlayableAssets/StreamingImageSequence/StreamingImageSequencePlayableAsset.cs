@@ -19,7 +19,7 @@ namespace UnityEngine.StreamingImageSequence {
     /// </summary>
     [System.Serializable]
     public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
-                                                     , IPlayableBehaviour, ISerializationCallbackReceiver 
+                                                     , IPlayableBehaviour
     {      
 //----------------------------------------------------------------------------------------------------------------------
 #region IPlayableBehaviour interfaces
@@ -236,6 +236,8 @@ namespace UnityEngine.StreamingImageSequence {
 
         internal int GetVersion() { return m_version; }
         internal IList<string> GetImagePaths() { return m_imagePaths; }
+        
+        //May return uninitialized value during initialization because the resolution hasn't been updated
         internal ImageDimensionInt GetResolution() { return m_resolution; }
         internal System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
         internal TimelineClip GetTimelineClip() { return m_timelineClip; }
@@ -637,20 +639,6 @@ namespace UnityEngine.StreamingImageSequence {
         internal void OnAfterTrackDeserialize(TimelineClip clip) {
             SetTimelineClip(clip);
         }
-        
-//----------------------------------------------------------------------------------------------------------------------
-
-#region ISerializationCallbackReceiver implementation
-        /// <inheritdoc/>
-        public void OnBeforeSerialize() {
-        }
-
-        /// <inheritdoc/>
-        public void OnAfterDeserialize() {
-            ForceUpdateResolution();
-        }
-#endregion
-
 
 //----------------------------------------------------------------------------------------------------------------------
         internal void ResetAnimationCurve() {
