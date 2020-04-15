@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.1.3-preview] - 2020-04-15
+* fix: crash caused by performing graphics operation when g_ThreadedGfxDevice is not ready after deserialization	
+
 ## [0.1.2-preview] - 2020-04-14
 * fix: errors caused by StreamingImageSequenceTrack::GetActivePlayableAsset() when TimelineWindow is not in focus
 * fix: keep processing StreamingImageSequencePlayableAsset even if there is no bound GameObject in the track, as the output texture is still required
