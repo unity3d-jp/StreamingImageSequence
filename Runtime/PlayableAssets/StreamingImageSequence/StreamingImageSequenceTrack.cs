@@ -48,7 +48,12 @@ namespace UnityEngine.StreamingImageSequence
             return mixer;
         }
 
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+
+        /// <inheritdoc/>
+        public override string ToString() { return name; }
+        
+//----------------------------------------------------------------------------------------------------------------------
 
         /// <summary>
         /// Get the currently active PlayableAsset in the track according to the PlayableDirector's time
