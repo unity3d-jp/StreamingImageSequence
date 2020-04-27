@@ -1,7 +1,8 @@
 ﻿using UnityEditor.Timeline;
+using UnityEngine.StreamingImageSequence;
 using UnityEngine.Timeline;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace UnityEditor.StreamingImageSequence {
 
 [CustomTimelineEditor(typeof(UseImageMarker))]
 class UseImageMarkerEditor : MarkerEditor {
@@ -14,7 +15,7 @@ class UseImageMarkerEditor : MarkerEditor {
             return;
             
         if (marker.IsImageUsed()) {
-            Graphics.DrawTexture(region.markerRegion, EditorTextures.GetCheckedTexture());
+            UnityEngine.Graphics.DrawTexture(region.markerRegion, EditorTextures.GetCheckedTexture());
         }
         
     }
