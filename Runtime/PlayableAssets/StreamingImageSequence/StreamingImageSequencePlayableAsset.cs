@@ -577,7 +577,7 @@ namespace UnityEngine.StreamingImageSequence {
             
         }
 
-        internal double CalculateTimePerFrame() {
+        private double CalculateTimePerFrame() {
             float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
             double timePerFrame = 1.0f / fps;
             return timePerFrame;
