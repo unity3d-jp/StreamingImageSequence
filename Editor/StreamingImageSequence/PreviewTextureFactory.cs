@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEditor;
+using UnityEngine;
+using UnityEngine.StreamingImageSequence;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace UnityEditor.StreamingImageSequence {
 
 internal static class PreviewTextureFactory {
 

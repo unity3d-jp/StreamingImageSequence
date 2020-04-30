@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.StreamingImageSequence;
 using UnityEngine.Timeline;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace UnityEditor.StreamingImageSequence {
 
 internal class StreamingImageSequencePreview : IDisposable {
 

@@ -1,8 +1,8 @@
-﻿using UnityEditor;
+﻿using UnityEngine.StreamingImageSequence;
 using UnityObject = UnityEngine.Object;
 
 
-namespace UnityEngine.StreamingImageSequence {
+namespace UnityEditor.StreamingImageSequence {
 
 [CustomEditor(typeof(UseImageMarker), true)]
 [CanEditMultipleObjects]

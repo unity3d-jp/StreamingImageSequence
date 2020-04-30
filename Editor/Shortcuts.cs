@@ -1,7 +1,8 @@
-﻿using UnityEditor;
-using UnityEditor.ShortcutManagement;
+﻿using UnityEditor.ShortcutManagement;
+using UnityEngine;
+using UnityEngine.StreamingImageSequence;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace UnityEditor.StreamingImageSequence {
 
 internal static class Shortcuts  {
 

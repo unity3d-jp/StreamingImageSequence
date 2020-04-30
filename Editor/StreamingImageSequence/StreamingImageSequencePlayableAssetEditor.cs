@@ -1,12 +1,12 @@
 ﻿using JetBrains.Annotations;
 using System.IO;
-using UnityEditor;
-using UnityEditor.StreamingImageSequence;
 using UnityEditor.Timeline;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.StreamingImageSequence;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace UnityEditor.StreamingImageSequence {
     [CustomTimelineEditor(typeof(StreamingImageSequencePlayableAsset)), UsedImplicitly]
     internal class StreamingImageSequencePlayableAssetEditor : ClipEditor {
         private const string NO_FOLDER_ASSIGNED_ERROR = "No Folder assigned";

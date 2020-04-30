@@ -1,6 +1,6 @@
-﻿using UnityEditor;
+﻿using UnityEngine;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace UnityEditor.StreamingImageSequence {
 
 internal static class EditorTextures {
 
