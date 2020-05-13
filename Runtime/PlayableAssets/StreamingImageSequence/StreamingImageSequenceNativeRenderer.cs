@@ -30,7 +30,7 @@ internal class StreamingImageSequenceNativeRenderer : MonoBehaviour {
         for (;;)
         {
             yield return new WaitForEndOfFrame();
-            GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), instanceId);
+//            GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), instanceId);
 
         }
     }

@@ -47,6 +47,8 @@ namespace UnityEngine.StreamingImageSequence
         private static Dictionary<PlayableDirector, PlayableDirectorStatus> s_directorStatusDictiornary = new Dictionary<PlayableDirector, PlayableDirectorStatus>();
         private static string s_AppDataPath;
         private static string s_StreamingAssetPath;
+        private static bool m_isResettingPlugin = false;
+        
 #if UNITY_EDITOR        
         public static event SetupBeforePlay m_setupBeforePlayingDelegate = null;
         public static event SetupAfterPlay m_setupAfterPlayingDelegate = null;
@@ -70,15 +72,15 @@ namespace UnityEngine.StreamingImageSequence
 #endif  //UNITY_EDITOR
         }
 #if UNITY_EDITOR
-        static public void ResetPlugin()
-        {
+        static public void ResetPlugin() {
             StreamingImageSequencePlugin.ResetPlugin();
             s_PluginResetTime = EditorApplication.timeSinceStartup;
+            m_isResettingPlugin = true;
         }
 #endif
 
 #if UNITY_EDITOR
-        static private void FinalizeResetPlugin()
+        private static void FinalizeResetPlugin()
         {
             if (!IsPluginResetting())
             {
@@ -90,21 +92,20 @@ namespace UnityEngine.StreamingImageSequence
             {
                 StreamingImageSequencePlugin.ResetOverwrapWindows();
                 StreamingImageSequencePlugin.ResetAllLoadedTexture();
-                StreamingImageSequencePlugin.DoneResetPlugin();
+                m_isResettingPlugin = false;
             }
     }
 #endif  //UNITY_EDITOR
-        static public bool IsPluginResetting()
-        {
-            return (StreamingImageSequencePlugin.IsPluginResetting() != 0);
+        public static bool IsPluginResetting() {
+            return m_isResettingPlugin;
         }
-        static public bool IsInitialized()
+        public static bool IsInitialized()
         {
             return m_bInitialized;
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        static internal void InitInRuntime()
+        internal static void InitInRuntime()
         {
 
 #if !UNITY_EDITOR

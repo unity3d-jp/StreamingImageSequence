@@ -357,10 +357,6 @@ namespace UnityEngine.StreamingImageSequence {
 
         private void LoadStep(int step)
         {
-            if (UpdateManager.IsPluginResetting())
-            {
-                return;
-            }
             int loadRequestMax = m_loadingIndex + step;
             if (loadRequestMax > m_imagePaths.Count)
             {
@@ -432,20 +428,19 @@ namespace UnityEngine.StreamingImageSequence {
 
             if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
 
-                m_texture = StreamingImageSequencePlugin.CreateTexture(ref readResult);
+                m_texture = readResult.CreateCompatibleTexture();
 
                 IntPtr ptr =  m_texture.GetNativeTexturePtr();
                 int texInstanceID = m_texture.GetInstanceID();
                 
                 UpdateResolution(ref readResult);
-                StreamingImageSequencePlugin.SetNativeTexturePtr(ptr, (uint)readResult.Width, (uint)readResult.Height, texInstanceID);
             }
 
             //Update the texture
 			if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS && m_lastIndex != index) {
                 int texInstanceID = m_texture.GetInstanceID();
-                StreamingImageSequencePlugin.SetLoadedTexture (filename, texInstanceID);
-                GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), texInstanceID);
+
+                readResult.CopyBufferToTexture(m_texture);
 			}
 
 			m_lastIndex = index;
@@ -611,7 +606,6 @@ namespace UnityEngine.StreamingImageSequence {
 
 //---------------------------------------------------------------------------------------------------------------------
         void ResetTexture() {
-            StreamingImageSequencePlugin.ResetLoadedTexture(m_texture.GetInstanceID());
             m_texture = null;
         }
 
