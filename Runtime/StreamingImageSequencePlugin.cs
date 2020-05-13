@@ -9,19 +9,6 @@ namespace UnityEngine.StreamingImageSequence {
     //Delegates
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void DelegateStringFunc([MarshalAs(UnmanagedType.LPStr)] string str);
-//----------------------------------------------------------------------------------------------------------------------
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 8)]
-    internal struct ReadResult
-    {
-        public IntPtr Buffer;
-        [MarshalAs(UnmanagedType.I4)]
-        public int Width;
-        [MarshalAs(UnmanagedType.I4)]
-        public int Height;
-        [MarshalAs(UnmanagedType.I4)]
-        public int ReadStatus;
-    };
 
 //----------------------------------------------------------------------------------------------------------------------
     internal static class StreamingImageSequencePlugin {
@@ -59,12 +46,6 @@ namespace UnityEngine.StreamingImageSequence {
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void ResetPlugin();
-
-        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern void  DoneResetPlugin();
-        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern int   IsPluginResetting();
-
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void ResetAllLoadedTexture();
@@ -113,30 +94,6 @@ namespace UnityEngine.StreamingImageSequence {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-
-        public static Texture2D CreateTexture(ref ReadResult readResult) {
-            Assert.IsTrue(StreamingImageSequenceConstants.READ_RESULT_SUCCESS == readResult.ReadStatus);
-            
-            int length = readResult.Width * readResult.Height * 4;
-            Texture2D tex = new Texture2D(readResult.Width, readResult.Height,
-                StreamingImageSequenceConstants.TEXTURE_FORMAT, false, false
-            );
-
-            tex.filterMode = FilterMode.Bilinear;
-            return tex;
-        }
-
-        public static void CopyBufferToTexture(this ReadResult readResult, Texture2D tex) {
-            int length = readResult.Width * readResult.Height * 4;
-            unsafe {
-                void* src = readResult.Buffer.ToPointer();
-                NativeArray<float> rawTextureData = tex.GetRawTextureData<float>();
-                void* dest = rawTextureData.GetUnsafePtr();
-                Buffer.MemoryCopy(src, dest, length, length);
-            }
-            tex.Apply();
-            
-        }        
     }
 
 }
