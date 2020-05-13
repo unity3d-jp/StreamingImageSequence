@@ -17,9 +17,6 @@
 
 using namespace std;
 
-//----------------------------------------------------------------------------------------------------------------------
-
-int g_IsResetting;
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -113,23 +110,11 @@ LOADER_API int    GetSceneStatus(const charType* scenePath)
 	return -1;	// not found;
 }
 
-LOADER_API void  ResetPlugin()
-{
-	StreamingImageSequencePlugin::CriticalSectionController cs2(RESETTING_CS);
-	g_IsResetting = 1;
+//----------------------------------------------------------------------------------------------------------------------
+LOADER_API void  ResetPlugin() {
+	ResetAllLoadedTextures();
 }
 
-LOADER_API void  DoneResetPlugin()
-{
-	StreamingImageSequencePlugin::CriticalSectionController cs2(RESETTING_CS);
-	g_IsResetting = 0;
-}
-
-LOADER_API int   IsPluginResetting()
-{
-	StreamingImageSequencePlugin::CriticalSectionController cs2(RESETTING_CS);
-	return g_IsResetting ;
-}
 
 LOADER_API void  ResetAllLoadedTextures() {
 	using namespace StreamingImageSequencePlugin;
