@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Drawer", "Drawer\DrawerWin.vcxproj", "{A4C60ADD-B0B0-4037-9DB2-0E99111BB7D8}"
-	ProjectSection(ProjectDependencies) = postProject
-		{8812EB8F-FB6B-4975-B0F3-8E881BCA51B9} = {8812EB8F-FB6B-4975-B0F3-8E881BCA51B9}
-		{3EBA0DED-47EC-46EE-880E-00D3EB8E24E8} = {3EBA0DED-47EC-46EE-880E-00D3EB8E24E8}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CommonLib", "CommonLib\CommonLibWin.vcxproj", "{8812EB8F-FB6B-4975-B0F3-8E881BCA51B9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DrawOverWindow", "DrawOverWindow\DrawOverWindow.vcxproj", "{2E07D682-7B03-4F57-9DCC-8CA931CD3A18}"
@@ -30,12 +24,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A4C60ADD-B0B0-4037-9DB2-0E99111BB7D8}.Debug|x64.ActiveCfg = Debug|x64
-		{A4C60ADD-B0B0-4037-9DB2-0E99111BB7D8}.Debug|x64.Build.0 = Debug|x64
-		{A4C60ADD-B0B0-4037-9DB2-0E99111BB7D8}.Debug|x86.ActiveCfg = Debug|x64
-		{A4C60ADD-B0B0-4037-9DB2-0E99111BB7D8}.Release|x64.ActiveCfg = Release|x64
-		{A4C60ADD-B0B0-4037-9DB2-0E99111BB7D8}.Release|x64.Build.0 = Release|x64
-		{A4C60ADD-B0B0-4037-9DB2-0E99111BB7D8}.Release|x86.ActiveCfg = Release|x64
 		{8812EB8F-FB6B-4975-B0F3-8E881BCA51B9}.Debug|x64.ActiveCfg = Debug|x64
 		{8812EB8F-FB6B-4975-B0F3-8E881BCA51B9}.Debug|x64.Build.0 = Debug|x64
 		{8812EB8F-FB6B-4975-B0F3-8E881BCA51B9}.Debug|x86.ActiveCfg = Debug|Win32
