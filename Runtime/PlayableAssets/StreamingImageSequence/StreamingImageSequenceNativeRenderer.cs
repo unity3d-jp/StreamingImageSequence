@@ -1,11 +1,5 @@
 ﻿//#define DEBUG_THREAD
 
-using System.Collections;
-using System.Collections.Generic;
-using System;
-using System.Runtime.InteropServices;
-using UnityEngine;
-
 namespace UnityEngine.StreamingImageSequence
 {
 
@@ -24,16 +18,6 @@ internal class StreamingImageSequenceNativeRenderer : MonoBehaviour {
         m_timer++;
     }
 #endif
-    IEnumerator OnRender()
-    {
-        int instanceId = this.gameObject.GetInstanceID();
-        for (;;)
-        {
-            yield return new WaitForEndOfFrame();
-            GL.IssuePluginEvent(StreamingImageSequencePlugin.GetRenderEventFunc(), instanceId);
-
-        }
-    }
 
 }
 

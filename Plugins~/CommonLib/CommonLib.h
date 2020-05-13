@@ -10,14 +10,6 @@
 #include "ReadStatus.h"
 #include "Types.h"
 
-#include "../Drawer/PlatformBase.h"
-#include "../Drawer/Unity/IUnityGraphics.h"
-
-#if SUPPORT_OPENGL_LEGACY
-#  include "../Drawer/GLEW/glew.h"
-#endif
-
-
 typedef void* TexPointer;
 
 
@@ -25,8 +17,6 @@ typedef void* TexPointer;
 #include "CriticalSection.h"
 
 extern COMMONLIB_API std::map<strType, StReadResult> g_fileNameToPtrMap[StreamingImageSequencePlugin::MAX_CRITICAL_SECTION_TYPE_TEXTURES];
-extern COMMONLIB_API std::map<int, strType>          g_instanceIdToFileName;
-extern COMMONLIB_API std::map<int, void*>            g_instanceIdToUnityTexturePointer;
 extern COMMONLIB_API std::map<strType, int>          g_scenePathToSceneStatus;
 
 //----------------------------------------------------------------------------------------------------------------------

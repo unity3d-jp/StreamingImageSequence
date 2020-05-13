@@ -28,7 +28,7 @@ extern "C"
 
 	LOADER_API void  ListLoadedTextures(const uint32_t textureType, void(* OnNextTexture)(const char*));
 
+	LOADER_API void  ResetAllLoadedTextures();
+
 	LOADER_API void  ResetPlugin();
-	LOADER_API void  DoneResetPlugin();
-	LOADER_API int   IsPluginResetting();
 }

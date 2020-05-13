@@ -35,7 +35,8 @@ internal static class PreviewTextureFactory {
             return m_previewTextures[fullPath].GetTexture();
         }
 
-        Texture2D newTex = StreamingImageSequencePlugin.CreateTexture(ref readResult);
+        Texture2D newTex = readResult.CreateCompatibleTexture();
+        readResult.CopyBufferToTexture(newTex);
         newTex.name = fullPath;
         m_previewTextures[fullPath] = new PreviewTexture(newTex);
         newTex.hideFlags = HideFlags.HideAndDontSave; //This is static. Don't destroy the tex if a new scene is loaded
@@ -47,9 +48,6 @@ internal static class PreviewTextureFactory {
     private static void Update() {
         double curTime = EditorApplication.timeSinceStartup;
         if (!m_removeObsoleteTextures)
-            return;
-
-        if (StreamingImageSequencePlugin.IsResetting())
             return;
 
         //Remove obsolete textures
