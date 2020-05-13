@@ -26,24 +26,7 @@
 
 #include "../CommonLib/CommonLib.h"
 
-
-void UploadTextureToDeviceMetal(TexPointer unityTexture, StReadResult& tResult);
-void UploadTextureToDeviceD3D11(TexPointer unityTexture, StReadResult& tResult);
-void UploadTextureToDeviceD3D9(TexPointer unityTexture, StReadResult& tResult);
-void UploadTextureToDeviceOpenGL(TexPointer unityTexture, StReadResult& tResult);
-
 extern "C"
-{
-
-    UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetLoadedTextureToNativeTexture(const charType* fileName, void* texture, u32 uWidth, u32 height);
-    
-	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetLoadedTexture(const charType* fileName, s32 sObjectID);
-	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetLoadedTexture(s32 sObjectID);
-	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTexture();
-
-	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API UnityPluginUnload();
-	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API UnityPluginLoad(IUnityInterfaces* unityInterfaces);
-
-
+{	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTextures();
 }
 

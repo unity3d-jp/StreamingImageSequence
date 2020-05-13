@@ -22,11 +22,7 @@ using namespace Gdiplus;
 IUnityInterfaces* g_unity = nullptr;
 static IUnityGraphics*   s_Graphics = nullptr;
 
-//Note-sin: 2020-5-13 This was a function that was used to upload CPU texture data to GPU, but the D3D11 version 
-//was causing crashes since it used ID3D11DeviceContext::UpdateSubresource() which requires GPU data as source, 
-//while our design puts the memory of sequence images in CPU.
-
-UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTexture() {
+UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTextures() {
     using namespace StreamingImageSequencePlugin;
 
     CriticalSectionController cs2(INSTANCEID2TEXTURE_CS);
