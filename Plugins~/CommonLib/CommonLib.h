@@ -10,14 +10,6 @@
 #include "ReadStatus.h"
 #include "Types.h"
 
-#include "../Drawer/PlatformBase.h"
-#include "../Drawer/Unity/IUnityGraphics.h"
-
-#if SUPPORT_OPENGL_LEGACY
-#  include "../Drawer/GLEW/glew.h"
-#endif
-
-
 typedef void* TexPointer;
 
 

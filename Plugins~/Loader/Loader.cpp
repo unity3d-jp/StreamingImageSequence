@@ -131,7 +131,7 @@ LOADER_API int   IsPluginResetting()
 	return g_IsResetting ;
 }
 
-UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTextures() {
+LOADER_API void  ResetAllLoadedTextures() {
 	using namespace StreamingImageSequencePlugin;
 
 	CriticalSectionController cs2(INSTANCEID2TEXTURE_CS);
