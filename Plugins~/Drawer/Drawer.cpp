@@ -26,21 +26,6 @@ static IUnityGraphics*   s_Graphics = nullptr;
 //was causing crashes since it used ID3D11DeviceContext::UpdateSubresource() which requires GPU data as source, 
 //while our design puts the memory of sequence images in CPU.
 
-UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetLoadedTexture(const charType* fileName, s32 sObjectID) {
-    using namespace StreamingImageSequencePlugin;
-    StReadResult readResult;
-    if (GetNativeTextureInfo(fileName, &readResult, CRITICAL_SECTION_TYPE_FULL_TEXTURE) && NULL != readResult.buffer) {
-        StreamingImageSequencePlugin::CriticalSectionController cs(INSTANCEID2FILENAME_CS);
-        {
-            strType wstr(fileName);
-            g_instanceIdToFileName[sObjectID] = wstr;
-
-        }
-
-    }
-}
-
-
 UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTexture() {
     using namespace StreamingImageSequencePlugin;
 
@@ -61,8 +46,5 @@ UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetAllLoadedTexture() {
         }
     }
 
-    {
-        g_instanceIdToFileName.clear();
-    }
 }
 

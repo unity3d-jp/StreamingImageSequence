@@ -25,7 +25,6 @@ typedef void* TexPointer;
 #include "CriticalSection.h"
 
 extern COMMONLIB_API std::map<strType, StReadResult> g_fileNameToPtrMap[StreamingImageSequencePlugin::MAX_CRITICAL_SECTION_TYPE_TEXTURES];
-extern COMMONLIB_API std::map<int, strType>          g_instanceIdToFileName;
 extern COMMONLIB_API std::map<strType, int>          g_scenePathToSceneStatus;
 
 //----------------------------------------------------------------------------------------------------------------------
