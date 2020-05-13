@@ -429,6 +429,7 @@ namespace UnityEngine.StreamingImageSequence {
             if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
 
                 m_texture = readResult.CreateCompatibleTexture();
+                readResult.CopyBufferToTexture(m_texture);
 
                 IntPtr ptr =  m_texture.GetNativeTexturePtr();
                 int texInstanceID = m_texture.GetInstanceID();
