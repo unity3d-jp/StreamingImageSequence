@@ -11,7 +11,7 @@ namespace UnityEngine.StreamingImageSequence.Tests {
 
         [UnityTest]
         public IEnumerator QueueFullImageLoadTask() {
-            StreamingImageSequencePlugin.ResetAllLoadedTexture();
+            StreamingImageSequencePlugin.ResetAllLoadedTextures();
             const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
             string fullPath = Path.GetFullPath(PKG_PATH);
             Assert.IsTrue(File.Exists(fullPath));
@@ -39,7 +39,7 @@ namespace UnityEngine.StreamingImageSequence.Tests {
         [UnityTest]
         public IEnumerator QueuePreviewImageLoadTask() {
             
-            StreamingImageSequencePlugin.ResetAllLoadedTexture();
+            StreamingImageSequencePlugin.ResetAllLoadedTextures();
             const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
             string fullPath = Path.GetFullPath(PKG_PATH);
             Assert.IsTrue(File.Exists(fullPath));
