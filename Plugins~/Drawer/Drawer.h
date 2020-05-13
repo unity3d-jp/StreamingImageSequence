@@ -37,7 +37,6 @@ extern "C"
 
     UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetLoadedTextureToNativeTexture(const charType* fileName, void* texture, u32 uWidth, u32 height);
     
-	UNITY_INTERFACE_EXPORT UnityRenderingEvent UNITY_INTERFACE_API GetRenderEventFunc();
 	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetNativeTexturePtr(void* texture, u32 uWidth, u32 height, s32 sObjectID);
 	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API SetLoadedTexture(const charType* fileName, s32 sObjectID);
 	UNITY_INTERFACE_EXPORT void UNITY_INTERFACE_API ResetLoadedTexture(s32 sObjectID);

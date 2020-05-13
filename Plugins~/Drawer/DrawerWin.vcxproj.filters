@@ -25,17 +25,10 @@
       <Filter>Unity</Filter>
     </ClInclude>
     <ClInclude Include="Drawer.h" />
-    <ClInclude Include="RenderAPI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Drawer.cpp" />
-    <ClCompile Include="RenderAPI_D3D9.cpp" />
-    <ClCompile Include="RenderAPI_D3D11.cpp" />
-    <ClCompile Include="RenderAPI_D3D12.cpp" />
-    <ClCompile Include="RenderAPI.cpp" />
-    <ClCompile Include="RenderAPI_OpenGL2.cpp" />
-    <ClCompile Include="RenderAPI_OpenGLCoreES.cpp" />
   </ItemGroup>
 </Project>
