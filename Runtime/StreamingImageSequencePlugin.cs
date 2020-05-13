@@ -1,8 +1,5 @@
 using System;
 using System.Runtime.InteropServices;
-using Unity.Collections;
-using Unity.Collections.LowLevel.Unsafe;
-using UnityEngine.Assertions;
 
 namespace UnityEngine.StreamingImageSequence {
 
@@ -48,7 +45,7 @@ namespace UnityEngine.StreamingImageSequence {
         public static extern void ResetPlugin();
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern void ResetAllLoadedTexture();
+        public static extern void ResetAllLoadedTextures();
 
 
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
