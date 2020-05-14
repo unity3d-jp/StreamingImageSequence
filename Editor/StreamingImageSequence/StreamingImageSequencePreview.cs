@@ -32,6 +32,7 @@ internal class StreamingImageSequencePreview : IDisposable {
         IList<string> imagePaths = m_playableAsset.GetImagePaths();
 
         //Calculate the width if we are showing the whole clip
+        //(visibleWidth / visibleDuration = fullWidth / fullDuration)
         double visibleDuration = m_visibleLocalEndTime - m_visibleLocalStartTime;
         double scaledClipDuration = clip.duration * clip.timeScale; 
         float fullWidth = Mathf.Ceil((float)(visibleRect.width * scaledClipDuration / visibleDuration));
@@ -62,7 +63,9 @@ internal class StreamingImageSequencePreview : IDisposable {
         };
         
         
-        int xCounter = (int) fullWidth / numAllPreviewImages;
+        float xCounter = fullWidth / numAllPreviewImages;
+        //Debug.Log($"Full width: {fullWidth} numAllPreviewImages: {numAllPreviewImages}, xCounter: {xCounter}");
+        
         double localTimeCounter = scaledClipDuration / numAllPreviewImages;
         //Each preview should show the image used in the time in the middle of the span, instead of the left start point
         double localTime = (localTimeCounter * 0.5f);
