@@ -28,21 +28,11 @@ namespace UnityEngine.StreamingImageSequence
 //----------------------------------------------------------------------------------------------------------------------
 
 #region IPlayableBehaviour interfaces
-        public override void OnPlayableCreate(Playable playable)
-        {
-#if UNITY_EDITOR
-            UpdateManager.m_resetDelegate += Reset;
-#endif
+        public override void OnPlayableCreate(Playable playable) {
         }
 
-        public override void OnPlayableDestroy(Playable playable)
-        {
-#if UNITY_EDITOR
-            UpdateManager.m_resetDelegate -= Reset;
-#endif
+        public override void OnPlayableDestroy(Playable playable) {
         }
-
-
 
 //----------------------------------------------------------------------------------------------------------------------
         public override void OnGraphStart(Playable playable){
