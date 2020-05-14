@@ -160,8 +160,9 @@ namespace UnityEngine.StreamingImageSequence {
             }
             
             //Reinitialize to assign the owner
+            double timePerFrame = CalculateTimePerFrame();
             for (int i = 0; i < numIdealFrames; ++i) {
-                m_playableFrames[i].Init(this, m_timePerFrame * i, m_useImageMarkerVisibility);
+                m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);
             }
             
         }
@@ -193,9 +194,11 @@ namespace UnityEngine.StreamingImageSequence {
             m_playableFrames = new List<PlayableFrame>(numIdealFrames);
             m_playableFrames.AddRange(prevPlayableFrames.GetRange(startIndex,numIdealFrames));
 
+            double timePerFrame = CalculateTimePerFrame();
+            
             //Reinitialize to set the time
             for (int i = 0; i < numIdealFrames; ++i) {
-                m_playableFrames[i].Init(this, m_timePerFrame * i, m_useImageMarkerVisibility);
+                m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);
             }
             
         }
@@ -216,12 +219,15 @@ namespace UnityEngine.StreamingImageSequence {
 
         //Calculate the used image index for the passed localTime
         internal int LocalTimeToImageIndex(double localTime) {
+
+            double timePerFrame = CalculateTimePerFrame();
+            
             //Try to check if this frame is "dropped", so that we should use the image in the prev frame
-            int frameIndex = (int) (localTime / m_timePerFrame);
+            int frameIndex = (int) (localTime / timePerFrame);
             if (frameIndex >= 0 && null!=m_playableFrames && frameIndex < m_playableFrames.Count) {
                 while (null!=m_playableFrames[frameIndex] && !m_playableFrames[frameIndex].IsUsed() && frameIndex > 0) {
                     --frameIndex;
-                    localTime = frameIndex * m_timePerFrame;
+                    localTime = frameIndex * timePerFrame;
                 }
             }
 
@@ -243,11 +249,7 @@ namespace UnityEngine.StreamingImageSequence {
         internal TimelineClip GetTimelineClip() { return m_timelineClip; }
 
         //This method must only be called from the track that owns this PlayableAsset, or during deserialization
-        internal void SetTimelineClip(TimelineClip clip) {
-            m_timelineClip = clip; 
-            float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
-            m_timePerFrame = m_timelineClip.timeScale / fps;
-        }
+        internal void SetTimelineClip(TimelineClip clip) { m_timelineClip = clip; }
 
         internal bool GetUseImageMarkerVisibility() {  return m_useImageMarkerVisibility; }
 
@@ -471,7 +473,8 @@ namespace UnityEngine.StreamingImageSequence {
 #if UNITY_EDITOR                    
             AssetDatabase.AddObjectToAsset(playableFrame, this);
 #endif
-            playableFrame.Init(this, m_timePerFrame * index, m_useImageMarkerVisibility);
+            double timePerFrame = CalculateTimePerFrame();
+            playableFrame.Init(this, timePerFrame * index, m_useImageMarkerVisibility);
             m_playableFrames[index] = playableFrame;
         }
         
@@ -573,6 +576,13 @@ namespace UnityEngine.StreamingImageSequence {
             return numFrames;
             
         }
+
+        private double CalculateTimePerFrame() {
+            float fps = m_timelineClip.parentTrack.timelineAsset.editorSettings.fps;
+            double timePerFrame = 1.0f / fps;
+            return timePerFrame;
+        }
+        
 //----------------------------------------------------------------------------------------------------------------------
 
         private void UpdatePlayableFramesSize(int playableFramesSize) {
@@ -590,6 +600,8 @@ namespace UnityEngine.StreamingImageSequence {
                     continue;
                 ObjectUtility.Destroy(lastFrame);
             }
+
+            double timePerFrame = CalculateTimePerFrame();
             
             for (int i = 0; i < playableFramesSize; ++i) {
                 PlayableFrame curPlayableFrame = m_playableFrames[i];
@@ -597,7 +609,7 @@ namespace UnityEngine.StreamingImageSequence {
                 if (null == curPlayableFrame) {
                     CreatePlayableFrameInList(i);
                 }
-                m_playableFrames[i].Init(this, m_timePerFrame * i, m_useImageMarkerVisibility);
+                m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);
             }
             
             
@@ -752,7 +764,6 @@ namespace UnityEngine.StreamingImageSequence {
 
         private int m_lastIndex;
         private bool m_verified;
-        private double m_timePerFrame = 0;
         private StreamingImageSequencePlayableAsset m_clonedFromAsset = null;
 
         Texture2D m_texture = null;

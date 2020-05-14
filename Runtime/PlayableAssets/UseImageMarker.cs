@@ -21,7 +21,7 @@ internal class UseImageMarker : Marker, INotification {
             return;
         
         TimelineClip clip = m_owner.GetPlayableAsset().GetTimelineClip();
-        time = clip.start + (m_owner.GetLocalTime() / clip.timeScale);       
+        time = clip.start + m_owner.GetLocalTime();       
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
