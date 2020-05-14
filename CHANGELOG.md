@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.4-preview] - 2020-05-14
+
+* fix: inaccuracies in placing preview icon positions 
+* fix: bug when stretching PlayableAsset
+* fix: crash bug when entering play mode on Windows 
+* fix: remove invalid alerts in StreamingImageSequenceTrack and FaderTrack 
+* fix: Override ToString() in StreamingImageSequenceTrack
+* chore: update yamato npm registry (#62)
+
 ## [0.1.3-preview] - 2020-04-15
 * fix: crash caused by performing graphics operation when g_ThreadedGfxDevice is not ready after deserialization	
 
