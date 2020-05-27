@@ -2,6 +2,7 @@
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.StreamingImageSequence;
+using UnityEngine.UIElements;
 
 namespace UnityEditor.StreamingImageSequence {
 
@@ -16,10 +17,13 @@ internal class RenderCachePlayableAssetInspector : Editor {
         m_asset = target as RenderCachePlayableAsset;
     }
 
+    
 //----------------------------------------------------------------------------------------------------------------------
-
     public override void OnInspectorGUI() {
-        
+        //[TODO-sin: 2020-5-27] Check the MD5 hash of the folder before overwriting
+        if (GUILayout.Button("Refresh")) {
+            Debug.Log("Clicked the image");
+        }
 
     }
 
