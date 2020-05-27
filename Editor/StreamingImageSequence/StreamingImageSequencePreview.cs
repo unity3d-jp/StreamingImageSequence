@@ -6,17 +6,10 @@ using UnityEngine.Timeline;
 
 namespace UnityEditor.StreamingImageSequence {
 
-internal class StreamingImageSequencePreview : IDisposable {
+internal class StreamingImageSequencePreview {
 
     public StreamingImageSequencePreview(StreamingImageSequencePlayableAsset playableAsset) {
         m_playableAsset = playableAsset;
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-    public void Dispose() {
-        if (m_disposed) return;
-
-        m_disposed= true;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -110,7 +103,6 @@ internal class StreamingImageSequencePreview : IDisposable {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    private bool m_disposed;
     private readonly StreamingImageSequencePlayableAsset m_playableAsset = null;
     private const int MIN_PREVIEW_IMAGE_WIDTH = 60;
     private double m_visibleLocalStartTime;
