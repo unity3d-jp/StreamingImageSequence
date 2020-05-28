@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
 using NUnit.Framework;
 using Unity.EditorCoroutines.Editor;
@@ -24,6 +25,21 @@ internal class RenderCachePlayableAssetInspector : Editor {
     
 //----------------------------------------------------------------------------------------------------------------------
     public override void OnInspectorGUI() {
+        
+
+        string prevFolder = m_asset.GetFolder();
+        string newFolder = DrawFolderSelector ("Cache Output Folder", "Select Folder", 
+            prevFolder,
+            prevFolder,
+            AssetEditorUtility.NormalizeAssetPath
+        );
+
+        if (newFolder != prevFolder) {
+            //[TODO-sin: 2020-5-27] Copy images from prevFolder to newFolder
+            m_asset.SetFolder(newFolder);
+        }
+
+        
         //[TODO-sin: 2020-5-27] Check the MD5 hash of the folder before overwriting
         if (GUILayout.Button("Update Render Cache")) {
 
@@ -36,8 +52,9 @@ internal class RenderCachePlayableAssetInspector : Editor {
                     "PlayableAsset is not loaded in scene. Please load the correct scene before doing this operation.",
                     "Ok");
                 return;
-            }
+            }            
 
+                        
             m_camera = m_director.GetGenericBinding(track) as Camera;
             if (null == m_camera) {
                 EditorUtility.DisplayDialog("Streaming Image Sequence",
@@ -59,6 +76,15 @@ internal class RenderCachePlayableAssetInspector : Editor {
     IEnumerator UpdateRenderCacheCoroutine() {
         Assert.IsNotNull(m_camera);
         Assert.IsNotNull(m_director);
+
+        
+        //Check output folder
+        string outputFolder = m_asset.GetFolder();
+        if (string.IsNullOrEmpty(outputFolder) || !Directory.Exists(outputFolder)) {
+            outputFolder = FileUtil.GetUniqueTempPathInProject();
+            Directory.CreateDirectory(outputFolder);
+            m_asset.SetFolder(outputFolder);
+        }
         
         //Assign custom render texture to camera
         RenderTexture prevTargetTexture = m_camera.targetTexture;
@@ -70,15 +96,18 @@ internal class RenderCachePlayableAssetInspector : Editor {
         m_nextDirectorTime = timelineClip.start;
         
         int  fileCounter = 0;
+        int numDigits = MathUtility.GetNumDigits((int)Math.Ceiling(timelineClip.duration / m_timePerFrame));
+        
         while (m_nextDirectorTime <= timelineClip.end) {
             SetDirectorTime(m_director, m_nextDirectorTime);
             yield return null;
-
-            Capture(m_camera, fileCounter.ToString("000"));
-            m_nextDirectorTime += m_timePerFrame;
             
-            Debug.Log("Time: " + m_nextDirectorTime + " " +
-                (m_nextDirectorTime < m_director.initialTime + m_director.duration).ToString());
+            
+            string fileName       = fileCounter.ToString($"D{numDigits}") + ".png";
+            string outputFilePath = Path.Combine(outputFolder, fileName);
+            
+            Capture(m_camera, outputFilePath);
+            m_nextDirectorTime += m_timePerFrame;
             ++fileCounter;
         }
         
@@ -90,7 +119,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
  
 //----------------------------------------------------------------------------------------------------------------------
     
-    private static void Capture(Camera cam, string fileCounter) {
+    private static void Capture(Camera cam, string outputPath) {
         
         
         RenderTexture prevRenderTexture = RenderTexture.active;
@@ -108,7 +137,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         byte[] bytes = image.EncodeToPNG();
         ObjectUtility.Destroy(image);
  
-        File.WriteAllBytes(Application.dataPath + "/StreamingAssets/" + fileCounter + ".png", bytes);
+        File.WriteAllBytes(outputPath, bytes);
         
         //Set back
         RenderTexture.active = prevRenderTexture;
@@ -135,8 +164,44 @@ internal class RenderCachePlayableAssetInspector : Editor {
         return null;
     }
 
+    
+    private string DrawFolderSelector(string label, 
+        string dialogTitle, 
+        string fieldValue, 
+        string directoryOpenPath, 
+        Func<string, string> onValidFolderSelected = null) 
+    {
+
+        string newDirPath = fieldValue;
+        using(new EditorGUILayout.HorizontalScope()) {
+            if (!string.IsNullOrEmpty (label)) {
+                EditorGUILayout.PrefixLabel(label);
+            } 
+
+            EditorGUILayout.SelectableLabel(fieldValue,
+                EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight)
+            );
+            Rect folderRect = GUILayoutUtility.GetLastRect();
+            
+
+            if(GUILayout.Button("Select", GUILayout.Width(50f))) {
+                string folderSelected = EditorUtility.OpenFolderPanel(dialogTitle, directoryOpenPath, "");
+                if(!string.IsNullOrEmpty(folderSelected)) {
+                    if (onValidFolderSelected != null) {
+                        newDirPath = onValidFolderSelected (folderSelected);
+                    } else {
+                        newDirPath = folderSelected;
+                    }
+                }
+            }
+        }
+        return newDirPath;
+    }
+    
 
 //----------------------------------------------------------------------------------------------------------------------
+
+    
     private RenderCachePlayableAsset m_asset = null;
     private PlayableDirector m_director = null;
     private Camera m_camera = null;
