@@ -5,11 +5,13 @@ namespace UnityEngine.StreamingImageSequence {
 
 /// <summary>
 /// A PlayableAsset that is used to cache render results of a camera.
+/// Implements the following interfaces:
+/// - ITimelineClipAsset: for defining clip capabilities (ClipCaps) 
 /// </summary>
 [System.Serializable]
-internal class RenderCachePlayableAsset : PlayableAsset {
+internal class RenderCachePlayableAsset : PlayableAsset, ITimelineClipAsset {
 
-
+    
 //----------------------------------------------------------------------------------------------------------------------
 
     /// <summary>
@@ -19,6 +21,12 @@ internal class RenderCachePlayableAsset : PlayableAsset {
         
     }
 
+    public ClipCaps clipCaps {
+        get {
+            return ClipCaps.None;
+        }
+    }
+    
     internal void Refresh() {
         //Move the timeline to start of the clip until the end.
         //Access the camera, and store the rendered results somewhere
