@@ -1,4 +1,5 @@
 ﻿using UnityEngine.Playables;
+using UnityEngine.Timeline;
 
 namespace UnityEngine.StreamingImageSequence {
 
@@ -24,8 +25,17 @@ internal class RenderCachePlayableAsset : PlayableAsset {
         
     }
     
+//----------------------------------------------------------------------------------------------------------------------
+    //TODO-sin: 2020-5-27: Factor out common code with StreamingImageSequenceTrack     
+    internal void OnAfterTrackDeserialize(TimelineClip clip) {
+        SetTimelineClip(clip);
+    }
     
-//---------------------------------------------------------------------------------------------------------------------
+    internal TimelineClip GetTimelineClip() { return m_timelineClip; }
+    internal void SetTimelineClip(TimelineClip clip) { m_timelineClip = clip; }
+    
+    
+//----------------------------------------------------------------------------------------------------------------------
     
     #region PlayableAsset functions override
     /// <inheritdoc/>
@@ -37,6 +47,8 @@ internal class RenderCachePlayableAsset : PlayableAsset {
     #endregion         
     
     
+//----------------------------------------------------------------------------------------------------------------------    
+    private TimelineClip m_timelineClip = null;
 
 
 }
