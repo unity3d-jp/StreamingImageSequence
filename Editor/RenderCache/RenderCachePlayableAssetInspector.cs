@@ -27,7 +27,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
         //[TODO-sin: 2020-5-27] Check the MD5 hash of the folder before overwriting
         if (GUILayout.Button("Update Render Cache")) {
 
-            TrackAsset track = m_asset.GetTimelineClip().parentTrack;
+            TimelineClip timelineClip = m_asset.GetTimelineClip();
+            TrackAsset track = timelineClip.parentTrack;
             TimelineAsset timelineAsset = track.timelineAsset;
             m_director = FindDirectorInScene(timelineAsset);
             if (null == m_director) {
@@ -47,8 +48,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
             
             //Loop time             
-            m_timePerFrame     = 1.0f / timelineAsset.editorSettings.fps;
-            m_nextDirectorTime = m_director.initialTime;
+            m_timePerFrame = 1.0f / timelineAsset.editorSettings.fps;
             EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(), this);
                         
         }
@@ -65,9 +65,12 @@ internal class RenderCachePlayableAssetInspector : Editor {
         RenderTexture rt = new RenderTexture(m_camera.pixelWidth, m_camera.pixelHeight, 24);
         rt.Create();
         m_camera.targetTexture = rt;
+
+        TimelineClip timelineClip = m_asset.GetTimelineClip();
+        m_nextDirectorTime = timelineClip.start;
         
         int  fileCounter = 0;
-        while (m_nextDirectorTime <= m_director.initialTime + m_director.duration) {
+        while (m_nextDirectorTime <= timelineClip.end) {
             SetDirectorTime(m_director, m_nextDirectorTime);
             yield return null;
 
