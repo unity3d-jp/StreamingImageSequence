@@ -102,24 +102,31 @@ internal class RenderCachePlayableAssetInspector : Editor {
         m_nextDirectorTime = timelineClip.start;
         
         int  fileCounter = 0;
-        int numDigits = MathUtility.GetNumDigits((int)Math.Ceiling(timelineClip.duration / m_timePerFrame));
-        
-        while (m_nextDirectorTime <= timelineClip.end) {
+        int numFiles = (int) Math.Ceiling(timelineClip.duration / m_timePerFrame) + 1;
+        int numDigits = MathUtility.GetNumDigits(numFiles);
+
+        bool cancelled = false;
+        while (m_nextDirectorTime <= timelineClip.end && !cancelled) {
             SetDirectorTime(m_director, m_nextDirectorTime);
             blitter.SetTexture(rt);
             yield return null;            
             
             string fileName       = fileCounter.ToString($"D{numDigits}") + ".png";
             string outputFilePath = Path.Combine(outputFolder, fileName);
-            
+                        
             //[TODO-sin: 2020-5-27] Call API to unload texture
             
             Capture(m_trackCamera, outputFilePath);
             m_nextDirectorTime += m_timePerFrame;
             ++fileCounter;
+
+            cancelled = EditorUtility.DisplayCancelableProgressBar(
+                "StreamingImageSequence", "Caching render results", ((float)fileCounter / numFiles));            
         }
         
+               
         //Cleanup
+        EditorUtility.ClearProgressBar();
         m_trackCamera.targetTexture = prevTargetTexture;
         ObjectUtility.Destroy(progressGo);
 
