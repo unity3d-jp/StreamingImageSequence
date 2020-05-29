@@ -63,6 +63,13 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 return;                
             }
 
+            if (!m_trackCamera.enabled || !m_trackCamera.gameObject.activeInHierarchy) {
+                EditorUtility.DisplayDialog("Streaming Image Sequence",
+                    "Camera is not active. Please activate it in the scene before doing this operation.",
+                    "Ok");
+                return;                                
+            }
+
             
             //Loop time             
             m_timePerFrame = 1.0f / timelineAsset.editorSettings.fps;
