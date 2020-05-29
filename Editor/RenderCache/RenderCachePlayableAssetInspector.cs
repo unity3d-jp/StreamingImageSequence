@@ -55,8 +55,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
             }            
 
                         
-            m_camera = m_director.GetGenericBinding(track) as Camera;
-            if (null == m_camera) {
+            m_trackCamera = m_director.GetGenericBinding(track) as Camera;
+            if (null == m_trackCamera) {
                 EditorUtility.DisplayDialog("Streaming Image Sequence",
                     "Please bind a camera to the playable asset.",
                     "Ok");
@@ -74,7 +74,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
 //----------------------------------------------------------------------------------------------------------------------
     IEnumerator UpdateRenderCacheCoroutine() {
-        Assert.IsNotNull(m_camera);
+        Assert.IsNotNull(m_trackCamera);
         Assert.IsNotNull(m_director);
 
         
@@ -84,13 +84,19 @@ internal class RenderCachePlayableAssetInspector : Editor {
             outputFolder = FileUtil.GetUniqueTempPathInProject();
             Directory.CreateDirectory(outputFolder);
             m_asset.SetFolder(outputFolder);
-        }
+        }        
         
         //Assign custom render texture to camera
-        RenderTexture prevTargetTexture = m_camera.targetTexture;
-        RenderTexture rt = new RenderTexture(m_camera.pixelWidth, m_camera.pixelHeight, 24);
+        RenderTexture prevTargetTexture = m_trackCamera.targetTexture;
+        RenderTexture rt = new RenderTexture(m_trackCamera.pixelWidth, m_trackCamera.pixelHeight, 24);
         rt.Create();
-        m_camera.targetTexture = rt;
+        m_trackCamera.targetTexture = rt;
+
+        //Show progress in game view
+        GameObject progressGo = new GameObject("Blitter");
+        LegacyTextureBlitter blitter = progressGo.AddComponent<LegacyTextureBlitter>();
+        blitter.SetTexture(rt);
+        blitter.SetCameraDepth(int.MaxValue);
 
         TimelineClip timelineClip = m_asset.GetTimelineClip();
         m_nextDirectorTime = timelineClip.start;
@@ -100,21 +106,22 @@ internal class RenderCachePlayableAssetInspector : Editor {
         
         while (m_nextDirectorTime <= timelineClip.end) {
             SetDirectorTime(m_director, m_nextDirectorTime);
-            yield return null;
-            
+            blitter.SetTexture(rt);
+            yield return null;            
             
             string fileName       = fileCounter.ToString($"D{numDigits}") + ".png";
             string outputFilePath = Path.Combine(outputFolder, fileName);
             
             //[TODO-sin: 2020-5-27] Call API to unload texture
             
-            Capture(m_camera, outputFilePath);
+            Capture(m_trackCamera, outputFilePath);
             m_nextDirectorTime += m_timePerFrame;
             ++fileCounter;
         }
         
-        //Reset camera's target texture
-        m_camera.targetTexture = prevTargetTexture;
+        //Cleanup
+        m_trackCamera.targetTexture = prevTargetTexture;
+        ObjectUtility.Destroy(progressGo);
 
 
     }
@@ -206,7 +213,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
     
     private RenderCachePlayableAsset m_asset = null;
     private PlayableDirector m_director = null;
-    private Camera m_camera = null;
+    private Camera m_trackCamera = null;
     private double m_nextDirectorTime = 0;
     private double m_timePerFrame       = 0;
 
