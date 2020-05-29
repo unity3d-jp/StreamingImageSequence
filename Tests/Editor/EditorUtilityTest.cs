@@ -31,6 +31,14 @@ internal class EditorUtilityTest {
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
+    
+    [Test]
+    public void GetMainViewGameSize() {
+
+        ViewEditorUtility.GetMainGameViewSize();        
+
+    }
+//----------------------------------------------------------------------------------------------------------------------    
     private IEnumerator CopyAndDeleteSampleAsset(string destFolder) {
         
         //

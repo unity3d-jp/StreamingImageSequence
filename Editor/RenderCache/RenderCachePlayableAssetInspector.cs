@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Globalization;
 using System.IO;
 using NUnit.Framework;
 using Unity.EditorCoroutines.Editor;
@@ -25,6 +26,11 @@ internal class RenderCachePlayableAssetInspector : Editor {
     
 //----------------------------------------------------------------------------------------------------------------------
     public override void OnInspectorGUI() {
+        
+        //View resolution
+        Vector2 res = ViewEditorUtility.GetMainGameViewSize();
+        EditorGUILayout.LabelField("Width", res.x.ToString(CultureInfo.InvariantCulture));
+        EditorGUILayout.LabelField("Height", res.y.ToString(CultureInfo.InvariantCulture));        
         
 
         string prevFolder = m_asset.GetFolder();
