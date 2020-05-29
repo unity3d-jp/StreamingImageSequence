@@ -29,9 +29,12 @@ internal class RenderCachePlayableAssetInspector : Editor {
         
         //View resolution
         Vector2 res = ViewEditorUtility.GetMainGameViewSize();
+        EditorGUILayout.LabelField("Resolution (Modify GameView size to change)");
+        ++EditorGUI.indentLevel;
         EditorGUILayout.LabelField("Width", res.x.ToString(CultureInfo.InvariantCulture));
         EditorGUILayout.LabelField("Height", res.y.ToString(CultureInfo.InvariantCulture));        
-        
+        --EditorGUI.indentLevel;
+        EditorGUILayout.Space(15f);
 
         string prevFolder = m_asset.GetFolder();
         string newFolder = DrawFolderSelector ("Cache Output Folder", "Select Folder", 
