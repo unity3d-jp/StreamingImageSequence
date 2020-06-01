@@ -34,6 +34,8 @@ StreamingImageSequence~/*.sln
 StreamingImageSequence~/.idea/**
 StreamingImageSequence~.meta
 StreamingImageSequence~/Assets.meta
+*/Logs/**
+*/UIElementsSchema/**
 .vs/
 Library/
 Temp/
