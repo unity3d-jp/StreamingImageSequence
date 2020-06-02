@@ -23,7 +23,7 @@ Start "Developer Command Prompt for VS 2019" and execute the following:
     $ git clone https://github.com/unity3d-jp/StreamingImageSequence.git
     $ cd StreamingImageSequence\Plugins~\Build 
     $ cmake -G "Visual Studio 16 2019" -A x64 ..
-    $ msbuild MeshSyncPlugin.sln /t:Build /p:Configuration=Release /p:Platform=x64 /m /nologo
+    $ msbuild StreamingImageSequencePlugin.sln /t:Build /p:Configuration=Release /p:Platform=x64 /m /nologo
     ```  
 
 > For a regular "Command Prompt", there is a script: *VsDevCmd_2019.bat* 
