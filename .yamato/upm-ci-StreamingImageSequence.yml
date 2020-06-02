@@ -23,9 +23,6 @@ prepack_{{ platform.name }}:
     image: {{ platform.prepack_image }}
     flavor: {{ platform.flavor }}
   commands:
-{% if platform.name == "mac" -%}
-    - cd Plugins~/Project && xcodebuild -configuration Release build && cd ../..
-{% else -%}
     - cd . 
 {% endif -%}
   artifacts:
