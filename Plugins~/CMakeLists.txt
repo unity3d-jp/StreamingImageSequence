@@ -13,7 +13,7 @@ set(src_root ${CMAKE_CURRENT_SOURCE_DIR}/Src)
 # ----------------------------------------------------------------------------------------------------------------------
 
 if(APPLE)
-    set(PLATFORM "Mac")
+    set(PLATFORM "OSX")
     find_library(CORE_GRAPHICS_LIBRARY CoreGraphics)
     mark_as_advanced(CORE_GRAPHICS_LIBRARY)    
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
