@@ -17,8 +17,6 @@
                                                                                                                         
 #include "../CommonLib/CommonLib.h"
 
-LOADER_API    std::map<strType, StReadResult>  g_fileNameToPtrMap[StreamingImageSequencePlugin::MAX_CRITICAL_SECTION_TYPE_TEXTURES];
-
 
 extern "C"
 {

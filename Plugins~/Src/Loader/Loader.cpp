@@ -18,6 +18,8 @@
 using namespace std;
 
 LOADER_API std::map<strType, int>           g_scenePathToSceneStatus;
+LOADER_API std::map<strType, StReadResult>  g_fileNameToPtrMap[StreamingImageSequencePlugin::MAX_CRITICAL_SECTION_TYPE_TEXTURES];
+
 
 //----------------------------------------------------------------------------------------------------------------------
 

@@ -29,4 +29,5 @@ target_include_directories(Loader PRIVATE
 target_link_libraries( Loader 
     CommonLib
     stb
+    ${CORE_GRAPHICS_LIBRARY}
 )
