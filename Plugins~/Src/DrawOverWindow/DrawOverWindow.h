@@ -4,7 +4,7 @@
 // that uses this DLL. This way any other project whose source files include this file see 
 // DRAWOVERWINDOW_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
-#ifdef DRAWOVERWINDOW_EXPORTS
+#if defined(DRAWOVERWINDOW_EXPORTS) || defined(PLUGIN_DLL_EXPORT)
 #define DRAWOVERWINDOW_API __declspec(dllexport)
 #else
 #define DRAWOVERWINDOW_API __declspec(dllimport)

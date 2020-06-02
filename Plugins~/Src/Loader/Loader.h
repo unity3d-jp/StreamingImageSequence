@@ -5,7 +5,7 @@
 // LOADER_API functions as being imported from a DLL, whereas this DLL sees symbols
 // defined with this macro as being exported.
 #ifdef _WIN32
-#  ifdef LOADERWIN_EXPORTS
+#  if defined(LOADERWIN_EXPORTS) || defined(PLUGIN_DLL_EXPORT)
 #  define LOADER_API __declspec(dllexport)
 #  else
 #  define LOADER_API __declspec(dllimport)
@@ -16,6 +16,8 @@
 
                                                                                                                         
 #include "../CommonLib/CommonLib.h"
+
+LOADER_API    std::map<strType, StReadResult>  g_fileNameToPtrMap[StreamingImageSequencePlugin::MAX_CRITICAL_SECTION_TYPE_TEXTURES];
 
 
 extern "C"

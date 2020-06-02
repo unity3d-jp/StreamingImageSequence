@@ -17,6 +17,7 @@
 
 using namespace std;
 
+LOADER_API std::map<strType, int>           g_scenePathToSceneStatus;
 
 //----------------------------------------------------------------------------------------------------------------------
 

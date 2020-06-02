@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef _WIN32
-#  ifdef COMMONLIBWIN_EXPORTS
+#  if defined(COMMONLIBWIN_EXPORTS) || defined(PLUGIN_DLL_EXPORT)
 #  define COMMONLIB_API __declspec(dllexport)
 #  else
 #  define COMMONLIB_API __declspec(dllimport)

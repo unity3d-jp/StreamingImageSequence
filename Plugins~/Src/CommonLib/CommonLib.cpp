@@ -6,10 +6,5 @@
 
 #include "CriticalSectionObject.h"
 
-using namespace std;
-
-COMMONLIB_API    map<strType, StReadResult>  g_fileNameToPtrMap[StreamingImageSequencePlugin::MAX_CRITICAL_SECTION_TYPE_TEXTURES];
-COMMONLIB_API    map<strType, int>           g_scenePathToSceneStatus;
-
 //----------------------------------------------------------------------------------------------------------------------
 
