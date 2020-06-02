@@ -15,6 +15,8 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(LINUX ON)
 
 elseif(WIN32) 
+
+    add_definitions(-DPLUGIN_DLL_EXPORT)
     
     # To handle DLL loading error related to the requirement of having VCRUNTIME140_1.DLL
     # https://developercommunity.visualstudio.com/content/problem/852548/vcruntime140-1dll-is-missing.html
@@ -36,6 +38,7 @@ option(BUILD_TESTS "Tests" OFF)
 
 
 #Specify available modules
+add_subdirectory(${src_root}/External/stb)
 add_subdirectory(${src_root}/CommonLib)
 add_subdirectory(${src_root}/Loader)
 

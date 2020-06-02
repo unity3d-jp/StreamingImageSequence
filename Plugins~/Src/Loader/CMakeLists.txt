@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.13)
 
 project(Loader)
 
-file(GLOB sources *.cpp *.h)
+file(GLOB sources *.cpp *.h ../)
 set(Loader_dir "${CMAKE_CURRENT_SOURCE_DIR}")
 if(APPLE)
     file(GLOB mac_sources Mac/*.h Mac/*.cpp Mac/*.mm)
@@ -15,7 +15,7 @@ endif()
 set(src_root   "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
 # setup as a library
-add_library(Loader STATIC ${sources} )
+add_library(Loader SHARED ${sources} )
 
 #Include, pch
 target_precompile_headers(Loader PRIVATE "${Loader_dir}/stdafx.h")
@@ -24,3 +24,8 @@ target_include_directories(Loader PRIVATE
     ${src_root}
 )
 
+# Library dependencies
+target_link_libraries( Loader 
+    CommonLib
+    stb
+)

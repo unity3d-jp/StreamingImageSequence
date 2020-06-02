@@ -11,7 +11,7 @@ endif()
 set(src_root   "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
 # setup as a library
-add_library(CommonLib STATIC ${sources} )
+add_library(CommonLib SHARED ${sources} )
 
 #Include, pch
 target_precompile_headers(CommonLib PRIVATE "${CommonLib_dir}/stdafx.h")
