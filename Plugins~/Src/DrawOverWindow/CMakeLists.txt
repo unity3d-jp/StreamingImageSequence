@@ -8,8 +8,7 @@ if(WIN32)
     file(GLOB win_sources Win/*.h Win/*.cpp)
     list(APPEND sources ${win_sources})    
 endif()
-
-set(plugins_dir "${src_root}/../../Runtime/Plugins/x64")
+set(plugins_dir "${src_root}/../../Runtime/Plugins/${PLATFORM}")
 
 # setup as a library
 add_plugin(DrawOverWindow SOURCES ${sources} PLUGINS_DIR ${plugins_dir})

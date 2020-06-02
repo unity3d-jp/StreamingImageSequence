@@ -21,6 +21,7 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(LINUX ON)
 
 elseif(WIN32) 
+    set(PLATFORM "Win64")
 
     add_definitions(-DPLUGIN_DLL_EXPORT)
     
