@@ -25,6 +25,27 @@ internal static class AssetEditorUtility {
     }
 
 
+//---------------------------------------------------------------------------------------------------------------------
+    
+    internal static void DeleteAssets(string path, string searchPattern) {
+        if (string.IsNullOrEmpty(path) || !Directory.Exists(path))
+            return;
+
+
+        bool isUnityAsset = path.StartsWith(Application.dataPath);        
+        DirectoryInfo di    = new DirectoryInfo(path);
+        FileInfo[]    files = di.GetFiles(searchPattern);
+        foreach (FileInfo fi in files) {
+            string filePath = Path.Combine(path, fi.Name);
+            if (isUnityAsset) {
+                AssetDatabase.DeleteAsset(NormalizeAssetPath(filePath));
+            } else {
+                File.Delete(filePath);
+            }
+        }
+
+    }
+    
 }
 
 } //end namespace
