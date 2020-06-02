@@ -4,6 +4,11 @@ project(DrawOverWindow)
 
 file(GLOB sources *.cpp *.h)
 set(DrawOverWindow_dir "${CMAKE_CURRENT_SOURCE_DIR}")
+if(WIN32)
+    file(GLOB win_sources Win/*.h Win/*.cpp)
+    list(APPEND sources ${win_sources})    
+endif()
+
 set(plugins_dir "${src_root}/../../Runtime/Plugins/x64")
 
 # setup as a library
