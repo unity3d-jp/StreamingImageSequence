@@ -6,7 +6,7 @@
 
 ### Prerequisites (Win)
 
-1. Install [cmake](https://cmake.org/)  version 3.5 or later.  
+1. Install [cmake](https://cmake.org/)  version 3.13 or later.  
    Make sure to choose one of the "Add CMake to the System PATH ..." options as shown below.  
    ![CMakeInstallation](../Images/CMakeInstallation.png)
    
