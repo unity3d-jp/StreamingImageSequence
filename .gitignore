@@ -54,3 +54,19 @@ Plugin~/_out/
 *.xcuserdatad/
 Plugins~/**/DerivedData/**
 Plugins~/**/XCBuildData/**
+
+# CMake
+Plugins~/Build/CMakeFiles/*
+Plugins~/Build/CMakeScripts/*
+Plugins~/Build/CMakeCache.txt
+Plugins~/Build/**/cmake_install.cmake
+Plugins~/Build/Makefile
+Plugins~/Build/*.xcodeproj/**
+Plugins~/Build/ispc**
+Plugins~/Build/*.vcxproj**
+Plugins~/Build/*.sln
+Plugins~/Build/x64/**
+
+
+
+
