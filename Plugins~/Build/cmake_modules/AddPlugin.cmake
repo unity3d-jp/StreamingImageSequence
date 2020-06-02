@@ -2,11 +2,10 @@ option(ENABLE_DEPLOY "Copy built binaries to plugins directory." ON)
 
 
 function(add_plugin name)
-    cmake_parse_arguments(arg "" "PLUGINS_DIR" "SOURCES" ${ARGN})
+    cmake_parse_arguments(arg "BUILD_OSX_BUNDLE" "PLUGINS_DIR" "SOURCES" ${ARGN})
     file(TO_NATIVE_PATH ${arg_PLUGINS_DIR} native_plugins_dir)
     
-
-    if(ENABLE_OSX_BUNDLE)
+    if(${arg_BUILD_OSX_BUNDLE})
         add_library(${name} MODULE ${arg_SOURCES})
         set_target_properties(${name} PROPERTIES BUNDLE ON)
     else()
@@ -26,7 +25,7 @@ function(add_plugin name)
             )
         else()
             
-            if(ENABLE_OSX_BUNDLE)            
+            if(${arg_BUILD_OSX_BUNDLE})
                 SET(target_filename \${TARGET_BUILD_DIR}/${name}.bundle)
             else()
                 SET(target_filename $<TARGET_FILE:${name}>)
