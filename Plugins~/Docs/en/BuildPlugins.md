@@ -54,7 +54,7 @@ Open a terminal and execute the following
 $ git clone https://github.com/unity3d-jp/StreamingImageSequence.git
 $ cd StreamingImageSequence/Plugins~/Build 
 $ cmake -GXcode ..
-$ xcodebuild -scheme StreamingImageSequencePlugin -configuration Release build
+$ xcodebuild -scheme ALL_BUILD -configuration Release build
 ```
 
 
