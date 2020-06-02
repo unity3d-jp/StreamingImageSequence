@@ -24,7 +24,6 @@ prepack_{{ platform.name }}:
     flavor: {{ platform.flavor }}
   commands:
     - cd . 
-{% endif -%}
   artifacts:
     {{ yamato_name }}_{{ platform.name }}_prepack_artifacts:
       paths:
