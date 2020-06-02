@@ -14,20 +14,13 @@ internal class LegacyTextureBlitter : MonoBehaviour {
         m_camera.cullingMask = 0;   
     }
 
-
-//----------------------------------------------------------------------------------------------------------------------    
-
-    void OnPostRender() {
-        if (null == m_texture) 
-            return;
-
-        Graphics.Blit(m_texture, null as RenderTexture);
-        
-    }
 //----------------------------------------------------------------------------------------------------------------------    
     
     void OnRenderImage(RenderTexture source, RenderTexture destination) {
-        //[Note-sin: 2020-5-29] In Unity 2019.3.14, the blit won't work if we don't provide this event.
+        if (null == m_texture) 
+            return;
+
+        Graphics.Blit(m_texture, destination);
     }    
 
 //----------------------------------------------------------------------------------------------------------------------    
