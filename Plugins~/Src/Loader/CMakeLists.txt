@@ -16,7 +16,7 @@ set(src_root   "${CMAKE_CURRENT_SOURCE_DIR}/..")
 set(plugins_dir "${src_root}/../../Runtime/Plugins/x64")
 
 # setup as a library
-add_plugin(Loader SOURCES ${sources} PLUGINS_DIR ${plugins_dir})
+add_plugin(Loader SOURCES ${sources} PLUGINS_DIR ${plugins_dir} BUILD_OSX_BUNDLE )
 
 #Include, pch
 target_precompile_headers(Loader PRIVATE "${Loader_dir}/stdafx.h")
