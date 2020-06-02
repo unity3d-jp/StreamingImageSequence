@@ -1,8 +1,12 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.13)
 PROJECT(StreamingImageSequencePlugin)
 
+
 #cmake variables
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Build/cmake_modules)
+
+# Custom scripts
+include(AddPlugin)
 
 set(src_root ${CMAKE_CURRENT_SOURCE_DIR}/Src)
 

@@ -4,10 +4,10 @@ project(DrawOverWindow)
 
 file(GLOB sources *.cpp *.h)
 set(DrawOverWindow_dir "${CMAKE_CURRENT_SOURCE_DIR}")
-set(src_root   "${CMAKE_CURRENT_SOURCE_DIR}/..")
+set(plugins_dir "${src_root}/../../Runtime/Plugins/x64")
 
 # setup as a library
-add_library(DrawOverWindow SHARED ${sources} )
+add_plugin(DrawOverWindow SOURCES ${sources} PLUGINS_DIR ${plugins_dir})
 
 #Include, pch
 target_precompile_headers(DrawOverWindow PRIVATE "${DrawOverWindow_dir}/stdafx.h")
