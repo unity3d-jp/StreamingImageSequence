@@ -1,6 +1,8 @@
 # Building Plugins
 
 1. [Windows](#building-on-windows)
+1. [Mac OSX](#building-on-mac-osx)
+
 
 ## Building on Windows
 
@@ -31,7 +33,29 @@ Start "Developer Command Prompt for VS 2019" and execute the following:
 > "Developer Command Prompt for VS 2019".
 
 
+## Building on Mac OSX
 
+### Prerequisites (Mac)
+
+1. Install [cmake](https://cmake.org/)  version 3.5 or later, if not already installed.
+1. Install [XCode](https://developer.apple.com/xcode/).
+1. Install XCode Command Line tools.
+    ``` 
+    xcode-select --install
+    ```  
+1. Install git. For example: [SourceTree](https://www.sourcetreeapp.com/)
+
+
+### Build Steps (Mac)
+
+Open a terminal and execute the following
+
+``` 
+$ git clone https://github.com/unity3d-jp/StreamingImageSequence.git
+$ cd StreamingImageSequence/Plugins~/Build 
+$ cmake -GXcode ..
+$ xcodebuild -scheme StreamingImageSequencePlugin -configuration Release build
+```
 
 
 
