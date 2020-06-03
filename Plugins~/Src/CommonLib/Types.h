@@ -23,6 +23,7 @@
 
 
 #ifdef _WIN32
+    #include <windows.h>
     typedef UINT64 u64;
     typedef UINT32 u32;
     typedef INT32 s32;
