@@ -27,11 +27,11 @@ extern "C"
 	LOADER_API int   ResetNativeTexture(const charType* fileName);
 
 	LOADER_API void  ListLoadedTextures(const uint32_t textureType, void(* OnNextTexture)(const char*));
+	LOADER_API uint32_t GetNumLoadedTextures(const uint32_t textureType);
 
 	LOADER_API void  ResetAllLoadedTextures();
-
 	LOADER_API void  ResetPlugin();
 }
 
-size_t GetNumLoadedTextures(const uint32_t textureType);
+//----------------------------------------------------------------------------------------------------------------------
 
