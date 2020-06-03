@@ -64,8 +64,12 @@ Plugins~/Build/*.xcodeproj/**
 Plugins~/Build/ispc**
 Plugins~/Build/*.vcxproj**
 Plugins~/Build/*.sln
+Plugins~/Build/CTestTestfile.cmake
+Plugins~/Build/*.tcl
+Plugins~/Build/Testing/**
 Plugins~/Build/x64/**
 Plugins~/Build/Src/**
+Plugins~/Build/Tests/**
 
 
 
