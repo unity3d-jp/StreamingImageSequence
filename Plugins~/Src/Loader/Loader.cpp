@@ -57,20 +57,8 @@ LOADER_API int   ResetNativeTexture(const charType* fileName) {
 
 	//Reset all textures
 	for (uint32_t texType = 0; texType < MAX_CRITICAL_SECTION_TYPE_TEXTURES; ++texType) {
-		StReadResult readResult;
-		GetNativeTextureInfo(fileName, &readResult, texType);
-
-		//Check
-		if (!readResult.buffer || readResult.readStatus != READ_STATUS_SUCCESS) {
-			continue;
-		}
-
 		CriticalSectionController cs0(TEXTURE_CS(texType));
-		{
-			strType wstr(fileName);
-			NativeFree(readResult.buffer);
-			g_fileNameToPtrMap[texType].erase(wstr);
-		}
+		LoaderUtility::UnloadTexture(fileName, texType);
 	}
 
 
@@ -132,7 +120,7 @@ LOADER_API void  ResetAllLoadedTextures() {
 			{
 				StReadResult readResult = itr->second;
 				if (readResult.buffer)
-					NativeFree(readResult.buffer);
+					free(readResult.buffer);
 			}
 			g_fileNameToPtrMap[texType].clear();
 		}
