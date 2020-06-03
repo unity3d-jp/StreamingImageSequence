@@ -79,6 +79,7 @@ LOADER_API void ListLoadedTextures(const uint32_t textureType, void(*OnNextTextu
 //----------------------------------------------------------------------------------------------------------------------
 
 LOADER_API uint32_t GetNumLoadedTextures(const uint32_t textureType) {
+	using namespace StreamingImageSequencePlugin;
 	ASSERT(textureType < MAX_CRITICAL_SECTION_TYPE_TEXTURES);
 	return static_cast<uint32_t>(g_fileNameToPtrMap[textureType].size());
 }
