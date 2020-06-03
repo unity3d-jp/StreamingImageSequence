@@ -51,13 +51,6 @@ LOADER_API bool LoadAndAllocPreviewTexture(const charType* fileName, const uint3
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-
-LOADER_API void   NativeFree(void* ptr) {
-	free(ptr);
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
 // return succ:0 fail:-1
 LOADER_API int   ResetNativeTexture(const charType* fileName) {
     using namespace StreamingImageSequencePlugin;
