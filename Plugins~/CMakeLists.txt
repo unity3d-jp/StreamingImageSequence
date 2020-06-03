@@ -1,4 +1,10 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.13)
+
+# Mac deployment target
+if(APPLE)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.12" CACHE STRING "Minimum OS X deployment version")
+endif()
+
 PROJECT(StreamingImageSequencePlugin)
 
 
