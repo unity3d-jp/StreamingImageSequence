@@ -69,6 +69,7 @@ $ xcodebuild -scheme ALL_BUILD -configuration Release build
     $ mkdir Build
     $ cd Build
     $ cmake .. 
+    $ msbuild googletest-distribution.sln /t:Build /p:Configuration=Debug /p:Platform=x64 /m /nologo
     $ msbuild googletest-distribution.sln /t:Build /p:Configuration=Release /p:Platform=x64 /m /nologo
     $ cmake -DBUILD_TYPE=Release -P cmake_install.cmake
     ```
