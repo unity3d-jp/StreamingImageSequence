@@ -7,7 +7,6 @@ endif()
 
 PROJECT(StreamingImageSequencePlugin)
 
-
 #cmake variables
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Build/cmake_modules)
 
@@ -15,6 +14,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Build/cmake_modules)
 include(AddPlugin)
 
 set(src_root ${CMAKE_CURRENT_SOURCE_DIR}/Src)
+set(tests_root ${CMAKE_CURRENT_SOURCE_DIR}/Tests)
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -59,8 +59,13 @@ if(WIN32)
     add_subdirectory(${src_root}/DrawOverWindow)
 endif()
 
+enable_testing()
+
 # Tests
 if(BUILD_TESTS)
-    add_subdirectory(${src_root}/PluginTest)
+    enable_testing()
+    add_subdirectory(${tests_root}/Loader)
 endif()
+
+
 
