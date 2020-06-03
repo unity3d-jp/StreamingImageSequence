@@ -14,12 +14,10 @@ namespace UnityEngine.StreamingImageSequence {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 
 
+        private const string LOADER_DLL = "Loader";
+
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-        private const string LOADER_DLL             = "Loader";
         private const string DRAW_OVER_WINDOW_DLL   = "DrawOverWindow";
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-        private const string LOADER_DLL             = "Project";
-        private const string DRAW_OVER_WINDOW_DLL   = "Project";
 #endif
 
         // Implemented in Loader dll
