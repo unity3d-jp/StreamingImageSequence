@@ -32,3 +32,6 @@ extern "C"
 
 	LOADER_API void  ResetPlugin();
 }
+
+size_t GetNumLoadedTextures(const uint32_t textureType);
+

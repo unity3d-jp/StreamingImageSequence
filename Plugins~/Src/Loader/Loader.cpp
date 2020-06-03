@@ -93,8 +93,8 @@ LOADER_API void ListLoadedTextures(const uint32_t textureType, void(*OnNextTextu
 	for (auto itr = g_fileNameToPtrMap[textureType].begin(); itr != g_fileNameToPtrMap[textureType].end(); ++itr) {
 		OnNextTexture(itr->first.c_str());
 	}
-
 }
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -139,4 +139,11 @@ LOADER_API void  ResetAllLoadedTextures() {
 		}
 	}
 
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+size_t GetNumLoadedTextures(const uint32_t textureType) {
+	ASSERT(textureType < MAX_CRITICAL_SECTION_TYPE_TEXTURES);
+	return g_fileNameToPtrMap[textureType].size();
 }
