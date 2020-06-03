@@ -7,8 +7,16 @@ endif()
 
 PROJECT(StreamingImageSequencePlugin)
 
+
 #cmake variables
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Build/cmake_modules)
+
+# Change compilation flags for testing
+option(BUILD_UNIT_TESTS "Unit Tests" OFF)
+if(BUILD_UNIT_TESTS)
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+endif()
 
 # Custom scripts
 include(AddPlugin)
@@ -25,7 +33,7 @@ if(APPLE)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(PLATFORM "Linux")
     set(LINUX ON)
-
+    
 elseif(WIN32) 
     set(PLATFORM "Win64")
 
@@ -43,12 +51,6 @@ endif()
 add_definitions(-DUNICODE -D_UNICODE)
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-
-option(BUILD_TESTS "Tests" OFF)
-
-# ----------------------------------------------------------------------------------------------------------------------
-
 
 #Specify available modules
 add_subdirectory(${src_root}/External/stb)
@@ -59,10 +61,9 @@ if(WIN32)
     add_subdirectory(${src_root}/DrawOverWindow)
 endif()
 
-enable_testing()
-
 # Tests
-if(BUILD_TESTS)
+if(BUILD_UNIT_TESTS)
+    find_package(GTest REQUIRED)
     enable_testing()
     add_subdirectory(${tests_root}/Loader)
 endif()
