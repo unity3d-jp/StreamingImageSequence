@@ -11,7 +11,6 @@ target_include_directories(LoaderTest PRIVATE
                
 target_link_libraries(LoaderTest Loader 
     ${GTEST_BOTH_LIBRARIES}
-    ${CORE_SERVICES_LIBRARY}
     ${COCOA_LIBRARY}
 )  
   
