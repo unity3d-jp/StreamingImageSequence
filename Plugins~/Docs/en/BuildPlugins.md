@@ -60,7 +60,7 @@ $ xcodebuild -scheme ALL_BUILD -configuration Release build
 
 ## Running Unit Tests
 
-### Windows 
+### Unit Tests (Windows) 
 
 1. Download [GoogleTest](https://github.com/google/googletest/releases)
 1. Starting "Developer Command Prompt for VS 2019" **as administrator** 
@@ -71,6 +71,7 @@ $ xcodebuild -scheme ALL_BUILD -configuration Release build
     $ cmake .. 
     $ msbuild googletest-distribution.sln /t:Build /p:Configuration=Debug /p:Platform=x64 /m /nologo
     $ msbuild googletest-distribution.sln /t:Build /p:Configuration=Release /p:Platform=x64 /m /nologo
+    $ cmake -DBUILD_TYPE=Debug -P cmake_install.cmake
     $ cmake -DBUILD_TYPE=Release -P cmake_install.cmake
     ```
 1. Add *GTEST_ROOT* environment variable to point to where GoogleTest was installed.
@@ -79,6 +80,27 @@ $ xcodebuild -scheme ALL_BUILD -configuration Release build
     $ cd StreamingImageSequence\Plugins~\Build 
     $ cmake -G "Visual Studio 16 2019" -A x64 .. -DBUILD_UNIT_TESTS=ON
     $ msbuild StreamingImageSequencePlugin.sln /t:Build /p:Configuration=Release /p:Platform=x64 /m /nologo
+    $ ctest -C Release
+    ```
+### Unit Tests (Mac) 
+
+1. Download [GoogleTest](https://github.com/google/googletest/releases)
+1. Starting "Developer Command Prompt for VS 2019" **as administrator** 
+3. Execute the following inside the GoogleTest source directory.
+    ``` 
+    $ mkdir Build
+    $ cd Build
+    $ cmake -GXcode ..
+    $ xcodebuild -scheme ALL_BUILD -configuration Debug build
+    $ xcodebuild -scheme ALL_BUILD -configuration Release build
+    $ sudo cmake -DBUILD_TYPE=Debug -P cmake_install.cmake
+    $ sudo cmake -DBUILD_TYPE=Release -P cmake_install.cmake
+    ```
+1. Go inside the plugin folder of StreamingImageSequence and execute the following:
+    ``` 
+    $ cd StreamingImageSequence\Plugins~\Build 
+    $ cmake -GXcode .. -DBUILD_UNIT_TESTS=ON
+    $ xcodebuild -scheme ALL_BUILD -configuration Release build
     $ ctest -C Release
     ```
 
