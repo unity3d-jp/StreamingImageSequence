@@ -9,7 +9,11 @@ target_include_directories(LoaderTest PRIVATE
     ${GTEST_INCLUDE_DIRS}    
 )
                
-target_link_libraries(LoaderTest Loader ${GTEST_BOTH_LIBRARIES})  
+target_link_libraries(LoaderTest Loader 
+    ${GTEST_BOTH_LIBRARIES}
+    ${CORE_SERVICES_LIBRARY}
+    ${COCOA_LIBRARY}
+)  
   
 
 add_test(NAME LoaderTest COMMAND LoaderTest)
