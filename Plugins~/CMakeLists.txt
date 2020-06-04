@@ -16,6 +16,7 @@ option(BUILD_UNIT_TESTS "Unit Tests" OFF)
 if(BUILD_UNIT_TESTS)
     if(APPLE)
         find_library(COCOA_LIBRARY Cocoa)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
     elseif(WIN32)
         set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
         set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
@@ -49,7 +50,6 @@ elseif(WIN32)
     add_link_options(-d2:-FH4-)
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 # Force Unicode character set
 add_definitions(-DUNICODE -D_UNICODE)
