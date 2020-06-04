@@ -16,15 +16,12 @@ typedef void* TexPointer;
 #include "ReadResult.h"
 #include "CriticalSection.h"
 
-extern COMMONLIB_API std::map<strType, StReadResult> g_fileNameToPtrMap[StreamingImageSequencePlugin::MAX_CRITICAL_SECTION_TYPE_TEXTURES];
 extern COMMONLIB_API std::map<strType, int>          g_scenePathToSceneStatus;
 
 //----------------------------------------------------------------------------------------------------------------------
 
 
 #define TEXTURE_CS(texType)         (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(static_cast<StreamingImageSequencePlugin::CriticalSectionType>(texType)))
-#define INSTANCEID2FILENAME_CS      (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_INSTANCE_ID_TO_FILENAME))
-#define INSTANCEID2TEXTURE_CS       (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_INSTANCE_ID_TO_UNITY_TEXTURE_PTR))
 #define LOADINGCOUNTER_CS           (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_LOADING_COUNTER))
 #define RESETTING_CS                (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_RESETTING))
 

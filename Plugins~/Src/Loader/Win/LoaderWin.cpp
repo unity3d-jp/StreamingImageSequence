@@ -6,6 +6,7 @@
 
 //Loader
 #include "Loader/TGALoader.h"
+#include "Loader/ImageCatalog.h"
 #include "LoaderWin.h"
 
 #pragma comment( lib, "winmm.lib" )
@@ -23,14 +24,15 @@ namespace StreamingImageSequencePlugin {
 	}
 
 
-}
 
 //This is a dummy variable to init and shutdown GDI on Windows
 StreamingImageSequencePlugin::LoaderWin		g_loaderWin;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
+void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType, 
+	StreamingImageSequencePlugin::ImageCatalog* imageCatalog) 
+{
 	u8* pBuffer = NULL;
 
 # if USE_WCHAR
@@ -43,8 +45,8 @@ void LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
 	int ret = MultiByteToWideChar(
 		CP_ACP,
 		MB_PRECOMPOSED,
-		fileName,
-		static_cast<int>(strlen(fileName)),
+		imagePath.c_str(),
+		static_cast<int>(imagePath.length()),
 		wlocal,
 		size);
 	Gdiplus::Bitmap*    pBitmap = Gdiplus::Bitmap::FromFile(wlocal);
@@ -59,17 +61,15 @@ void LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
 	if (status == Gdiplus::Ok)
 	{
 
-		u32 width = pBitmap->GetWidth();
-		u32 height = pBitmap->GetHeight();
+		const u32 width = pBitmap->GetWidth();
+		const u32 height = pBitmap->GetHeight();
+		const uint32_t dataSize = sizeof(u32) * width * height;
 
-		pBuffer = (u8*)malloc(sizeof(u32)* width * height);
+		pBuffer = (u8*)malloc(dataSize);
 		ASSERT(pBuffer !=nullptr);
 		u32* pImage = (u32*)pBuffer;
 
-		pResult->width = width;
-		pResult->height = height;
-		pResult->buffer = pBuffer;
-		pResult->readStatus = StreamingImageSequencePlugin::READ_STATUS_SUCCESS;
+		StReadResult imageData(pBuffer, dataSize, width, height, StreamingImageSequencePlugin::READ_STATUS_SUCCESS);
 
 		Gdiplus::BitmapData bitmapData;
 		pBitmap->LockBits(&Gdiplus::Rect(0, 0, width, height), Gdiplus::ImageLockModeWrite, PixelFormat32bppARGB, &bitmapData);
@@ -83,18 +83,23 @@ void LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
 		//memcpy(pImage, bitmapData.Scan0, width*height*sizeof(UINT32));
 		pBitmap->UnlockBits(&bitmapData);
 		delete pBitmap;
+
+		imageCatalog->SetImage(imagePath, imageType, &imageData);
+
 	}
 	else
 	{
-		pResult->readStatus = StreamingImageSequencePlugin::READ_STATUS_FAIL;
+		StReadResult imageData(nullptr, 0,0,0,READ_STATUS_FAIL);
+		imageCatalog->SetImage(imagePath, imageType, &imageData);
 		ASSERT(0);
 	}
 
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void LoadTGAFileAndAlloc(const charType* fileName, StReadResult* readResult) {
-	
-	loadTGAFileAndAlloc(fileName, readResult);
+void LoadTGAFileAndAlloc(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog) {
+
+	loadTGAFileAndAlloc(imagePath, imageType, imageCatalog);
 }
 
+} // end namespace

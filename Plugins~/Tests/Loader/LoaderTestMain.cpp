@@ -7,6 +7,7 @@
 //Loader
 #include "Loader/Loader.h"
 #include "Loader/LoaderUtility.h"
+#include "Loader/ImageCatalog.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -23,6 +24,8 @@ TEST(Loader, ResetPluginTest) {
 TEST(Loader, LoadTextureTest) {
     using namespace StreamingImageSequencePlugin;
     const std::string filePath = "TestImage.png";
+    ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+
     bool processed = LoadAndAllocFullTexture(filePath.c_str());
 
     ASSERT_EQ(true, processed);
@@ -32,10 +35,14 @@ TEST(Loader, LoadTextureTest) {
     ASSERT_EQ(true, processed);
     ASSERT_EQ(READ_STATUS_SUCCESS, result.readStatus) << "Loading image failed";
 
-    //Unload
-    LoaderUtility::UnloadTexture(filePath.c_str(), CRITICAL_SECTION_TYPE_FULL_TEXTURE);
+    ASSERT_GT(imageCatalog.GetUsedMemory(), 0);
 
-    ASSERT_EQ(0, GetNumLoadedTextures(CRITICAL_SECTION_TYPE_PREVIEW_TEXTURE)) << "Some preview textures are still loaded";
+    //Unload
+    imageCatalog.UnloadImage(filePath, CRITICAL_SECTION_TYPE_FULL_TEXTURE);
+    ASSERT_EQ(imageCatalog.GetUsedMemory(), 0);
+
+    ASSERT_EQ(0, GetNumLoadedTextures(CRITICAL_SECTION_TYPE_FULL_TEXTURE)) << "Some full images are still loaded";
+    ASSERT_EQ(0, GetNumLoadedTextures(CRITICAL_SECTION_TYPE_PREVIEW_TEXTURE)) << "Some preview images are still loaded";
 }
 //----------------------------------------------------------------------------------------------------------------------
 
