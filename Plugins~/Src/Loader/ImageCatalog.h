@@ -4,8 +4,8 @@
 
 //CommonLib
 #include "CommonLib/Types.h" //strType
-#include "CommonLib/ReadResult.h"
-#include "CommonLib/CriticalSectionType.h" //MAX_CRITICAL_SECTION_TYPE_TEXTURES
+#include "CommonLib/ImageData.h"
+#include "CommonLib/CriticalSectionType.h" //MAX_CRITICAL_SECTION_TYPE_IMAGES
 
 namespace StreamingImageSequencePlugin {
 
@@ -15,15 +15,15 @@ public:
     inline static ImageCatalog& GetInstance();
     
     //Returns null if not found
-    const StReadResult* GetImage(const strType& imagePath, const uint32_t imageType) const;
+    const ImageData* GetImage(const strType& imagePath, const uint32_t imageType) const;
 
     void AddImage(const strType& imagePath, const uint32_t imageType);
-    void SetImage(const strType& imagePath, const uint32_t imageType, StReadResult* newImageData);
+    void SetImage(const strType& imagePath, const uint32_t imageType, ImageData* newImageData);
 
     bool UnloadImage(const strType& imagePath, const uint32_t imageType);
     void UnloadAllImages();
 
-    inline const std::map<strType, StReadResult> GetImageCollection(const uint32_t imageType) const;
+    inline const std::map<strType, ImageData> GetImageCollection(const uint32_t imageType) const;
     inline size_t GetNumImages(const uint32_t imageType) const;
     inline uint64_t GetUsedMemory() const;
 private:
@@ -32,11 +32,11 @@ private:
     ImageCatalog& operator=(ImageCatalog const&) = delete;
 
     void IncUsedMemory(const uint64_t mem);
-    void UnloadImageData(StReadResult* imageData);
+    void UnloadImageData(ImageData* imageData);
 
     uint64_t m_usedMemory;
 
-    std::map<strType, StReadResult> m_pathToImageMap[MAX_CRITICAL_SECTION_TYPE_TEXTURES];
+    std::map<strType, ImageData> m_pathToImageMap[MAX_CRITICAL_SECTION_TYPE_IMAGES];
 
 
 };
@@ -48,13 +48,13 @@ ImageCatalog& ImageCatalog::GetInstance() {
     return catalog;
 }
 
-const std::map<strType, StReadResult> ImageCatalog::GetImageCollection(const uint32_t imageType) const { 
-    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_TEXTURES);
+const std::map<strType, ImageData> ImageCatalog::GetImageCollection(const uint32_t imageType) const { 
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
     return m_pathToImageMap[imageType]; 
 }
 
 size_t ImageCatalog::GetNumImages(const uint32_t imageType) const { 
-    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_TEXTURES);
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
     return m_pathToImageMap[imageType].size(); 
 }
 

@@ -91,7 +91,7 @@ namespace UnityEngine.StreamingImageSequence
             if (diff > 0.016f * 60.0f)
             {
                 StreamingImageSequencePlugin.ResetOverwrapWindows();
-                StreamingImageSequencePlugin.ResetAllLoadedTextures();
+                StreamingImageSequencePlugin.UnloadAllImages();
                 m_isResettingPlugin = false;
             }
     }

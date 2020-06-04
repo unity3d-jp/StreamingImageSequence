@@ -11,10 +11,10 @@ ImageCatalog::ImageCatalog() : m_usedMemory(0){
 //----------------------------------------------------------------------------------------------------------------------
 
 
-const StReadResult* ImageCatalog::GetImage(const strType& imagePath, const uint32_t imageType) const {
-    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_TEXTURES);
+const ImageData* ImageCatalog::GetImage(const strType& imagePath, const uint32_t imageType) const {
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 
-    const std::map<strType, StReadResult>& curMap = m_pathToImageMap[imageType];
+    const std::map<strType, ImageData>& curMap = m_pathToImageMap[imageType];
 
     if (curMap.find(imagePath) != curMap.end()) {
         return &(curMap.at(imagePath));
@@ -26,27 +26,27 @@ const StReadResult* ImageCatalog::GetImage(const strType& imagePath, const uint3
 //----------------------------------------------------------------------------------------------------------------------
 
 void ImageCatalog::AddImage(const strType& imagePath, const uint32_t imageType) {
-    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_TEXTURES);
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 
-    std::map<strType, StReadResult>& curMap = m_pathToImageMap[imageType];
+    std::map<strType, ImageData>& curMap = m_pathToImageMap[imageType];
     ASSERT(curMap.find(imagePath) == curMap.end());
 
-    StReadResult& tex = curMap[imagePath];
-    tex.readStatus = READ_STATUS_LOADING;
+    ImageData& imageData = curMap[imagePath];
+    imageData.CurrentReadStatus = READ_STATUS_LOADING;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void ImageCatalog::SetImage(const strType& imagePath, const uint32_t imageType, StReadResult* newImageData) {
+void ImageCatalog::SetImage(const strType& imagePath, const uint32_t imageType, ImageData* newImageData) {
 
-    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_TEXTURES);
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 
-    std::map<strType, StReadResult>& curMap = m_pathToImageMap[imageType];
+    std::map<strType, ImageData>& curMap = m_pathToImageMap[imageType];
     ASSERT(curMap.find(imagePath) != curMap.end());
 
-    StReadResult& imageData = curMap.at(imagePath);
+    ImageData& imageData = curMap.at(imagePath);
     //Deallocate existing image
-    if (nullptr != imageData.buffer) {
+    if (nullptr != imageData.RawData) {
         UnloadImageData(&imageData);
     }  
 
@@ -56,14 +56,15 @@ void ImageCatalog::SetImage(const strType& imagePath, const uint32_t imageType, 
 
 //----------------------------------------------------------------------------------------------------------------------
 bool ImageCatalog::UnloadImage(const strType& imagePath, const uint32_t imageType) {
-    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_TEXTURES);
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 
-    std::map<strType, StReadResult>& curMap = m_pathToImageMap[imageType];
-    ASSERT(curMap.find(imagePath) != curMap.end());
+    std::map<strType, ImageData>& curMap = m_pathToImageMap[imageType];
+    if (curMap.find(imagePath) == curMap.end())
+        return false;
 
-    StReadResult& imageData = curMap.at(imagePath);
+    ImageData& imageData = curMap.at(imagePath);
     //Check if the loading progress is still ongoing
-    if (!imageData.buffer || imageData.readStatus != READ_STATUS_SUCCESS) {
+    if (!imageData.RawData|| imageData.CurrentReadStatus != READ_STATUS_SUCCESS) {
         return false;
     }
 
@@ -75,11 +76,11 @@ bool ImageCatalog::UnloadImage(const strType& imagePath, const uint32_t imageTyp
 //----------------------------------------------------------------------------------------------------------------------
 
 void ImageCatalog::UnloadAllImages() {
-    for (uint32_t imageType = 0; imageType < MAX_CRITICAL_SECTION_TYPE_TEXTURES; ++imageType) {
-        std::map<strType, StReadResult>& curMap = m_pathToImageMap[imageType];
+    for (uint32_t imageType = 0; imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES; ++imageType) {
+        std::map<strType, ImageData>& curMap = m_pathToImageMap[imageType];
 
         for (auto itr = curMap.begin(); itr != curMap.end(); ++itr) {
-            StReadResult* imageData = &(itr->second);
+            ImageData* imageData = &(itr->second);
             UnloadImageData(imageData);
         }
         curMap.clear();
@@ -94,15 +95,15 @@ void ImageCatalog::IncUsedMemory(const uint64_t mem) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void ImageCatalog::UnloadImageData(StReadResult* imageData) {
+void ImageCatalog::UnloadImageData(ImageData* imageData) {
     ASSERT(nullptr!=imageData);
     const uint64_t mem = imageData->DataSize;
     ASSERT(m_usedMemory >= mem);
-    ASSERT(nullptr!=imageData->buffer);
+    ASSERT(nullptr!=imageData->RawData);
 
-    free(imageData->buffer);
+    free(imageData->RawData);
 
-    imageData->buffer = nullptr;
+    imageData->RawData = nullptr;
     imageData->DataSize = 0;
 
     m_usedMemory = (m_usedMemory >= mem) ? m_usedMemory - mem : 0;

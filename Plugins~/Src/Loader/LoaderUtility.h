@@ -1,7 +1,7 @@
 #pragma once
 
 #include "CommonLib/Types.h"
-#include "CommonLib/ReadResult.h"
+#include "CommonLib/ImageData.h"
 #include "FileType.h"
 
 namespace StreamingImageSequencePlugin {
@@ -17,7 +17,7 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType, Ima
 class LoaderUtility {
 public:
     static FileType CheckFileType(const strType& imagePath);
-    static bool GetImageDataInto(const strType& imagePath, const uint32_t imageType, const ImageCatalog*,StReadResult*);
+    static bool GetImageDataInto(const strType& imagePath, const uint32_t imageType, const ImageCatalog*,ImageData*);
     static bool LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* textureCatalog );
 
     static bool LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* textureCatalog,

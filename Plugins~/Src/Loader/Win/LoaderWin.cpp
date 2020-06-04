@@ -2,7 +2,7 @@
 
 //CommonLib
 #include "CommonLib/Types.h"
-#include "CommonLib/ReadResult.h"
+#include "CommonLib/ImageData.h"
 
 //Loader
 #include "Loader/TGALoader.h"
@@ -69,7 +69,7 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 		ASSERT(pBuffer !=nullptr);
 		u32* pImage = (u32*)pBuffer;
 
-		StReadResult imageData(pBuffer, dataSize, width, height, StreamingImageSequencePlugin::READ_STATUS_SUCCESS);
+		ImageData imageData(pBuffer, dataSize, width, height, StreamingImageSequencePlugin::READ_STATUS_SUCCESS);
 
 		Gdiplus::BitmapData bitmapData;
 		pBitmap->LockBits(&Gdiplus::Rect(0, 0, width, height), Gdiplus::ImageLockModeWrite, PixelFormat32bppARGB, &bitmapData);
@@ -89,7 +89,7 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 	}
 	else
 	{
-		StReadResult imageData(nullptr, 0,0,0,READ_STATUS_FAIL);
+		ImageData imageData(nullptr, 0,0,0,READ_STATUS_FAIL);
 		imageCatalog->SetImage(imagePath, imageType, &imageData);
 		ASSERT(0);
 	}

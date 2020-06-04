@@ -1,8 +1,5 @@
 #include "stdafx.h"
 
-//CommonLib
-#include "CommonLib/CriticalSectionType.h" //MAX_CRITICAL_SECTION_TYPE_TEXTURES
-
 //Loader
 #include "LoaderUtility.h"
 #include "FileType.h"
@@ -43,20 +40,20 @@ FileType LoaderUtility::CheckFileType(const strType& imagePath) {
 //Returns whether the file has been processed, or is still processed  (inside readResultMap).
 
 bool LoaderUtility::GetImageDataInto(const strType& imagePath, const uint32_t imageType, 
-    const ImageCatalog* imageCatalog, StReadResult* pResult)
+    const ImageCatalog* imageCatalog, ImageData* pResult)
 {
     using namespace StreamingImageSequencePlugin;
     ASSERT(pResult);
-    pResult->readStatus = READ_STATUS_NONE;
+    pResult->CurrentReadStatus = READ_STATUS_NONE;
     
-    const StReadResult* readResult = imageCatalog->GetImage(imagePath, imageType);
-    if (nullptr == readResult)
+    const ImageData* imageData = imageCatalog->GetImage(imagePath, imageType);
+    if (nullptr == imageData)
         return false;
 
-    *pResult = *readResult;
+    *pResult = *imageData;
 
     //if success, then the buffer must be not null
-    ASSERT(pResult->readStatus != READ_STATUS_SUCCESS || pResult->buffer);
+    ASSERT(pResult->CurrentReadStatus != READ_STATUS_SUCCESS || pResult->RawData);
 
     return true;
 
@@ -68,7 +65,7 @@ bool LoaderUtility::GetImageDataInto(const strType& imagePath, const uint32_t im
 bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog) 
 {
     using namespace StreamingImageSequencePlugin;
-    StReadResult readResult;
+    ImageData readResult;
 
     const bool isProcessed = LoaderUtility::GetImageDataInto(imagePath, imageType, imageCatalog, &readResult );
     if (isProcessed) {
@@ -109,17 +106,17 @@ bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t i
     if (!LoaderUtility::LoadAndAllocImage(imagePath, imageType, imageCatalog))
         return false;
 
-    StReadResult readResult;
-    if (!LoaderUtility::GetImageDataInto(imagePath, imageType, imageCatalog, &readResult ))
+    ImageData imageData;
+    if (!LoaderUtility::GetImageDataInto(imagePath, imageType, imageCatalog, &imageData ))
         return false;
 
     //Buffer is still null. Means, still loading
-    if (NULL == readResult.buffer) {
+    if (NULL == imageData.RawData) {
         return true; 
     }
 
     //Already resized. 
-    if (readResult.width == reqWidth && readResult.height == reqHeight)
+    if (imageData.Width == reqWidth && imageData.Height == reqHeight)
         return true;
 
     {
@@ -127,13 +124,13 @@ bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t i
         const uint64_t BUFFER_SIZE = numChannels * reqWidth * reqHeight;
         u8* resizedBuffer = (u8*)malloc(static_cast<uint32_t>(BUFFER_SIZE));
 
-        stbir_resize_uint8(readResult.buffer, readResult.width, readResult.height, 0,
+        stbir_resize_uint8(imageData.RawData, imageData.Width, imageData.Height, 0,
             resizedBuffer, reqWidth, reqHeight, 0, numChannels);
-        readResult.buffer = resizedBuffer;
-        readResult.width = reqWidth;
-        readResult.height = reqHeight;
+        imageData.RawData = resizedBuffer;
+        imageData.Width   = reqWidth;
+        imageData.Height  = reqHeight;
 
-        imageCatalog->SetImage(imagePath, imageType, &readResult);
+        imageCatalog->SetImage(imagePath, imageType, &imageData);
     }
 
     return true;

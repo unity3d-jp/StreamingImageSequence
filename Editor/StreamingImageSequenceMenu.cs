@@ -66,20 +66,20 @@ namespace UnityEditor.StreamingImageSequence {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Show Loaded Textures",false,52)]
-        static void ShowLoadedTextures() {
+        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Show Loaded Images",false,52)]
+        static void ShowLoadedImages() {
             StringBuilder sb = new StringBuilder();
 
-            for (int textureType = 0; textureType < StreamingImageSequenceConstants.MAX_TEXTURE_TYPES; ++textureType) {
-                sb.AppendLine("TEXTURE_TYPE: " + textureType.ToString());
+            for (int imageType = 0; imageType < StreamingImageSequenceConstants.MAX_IMAGE_TYPES; ++imageType) {
+                sb.AppendLine("TEXTURE_TYPE: " + imageType.ToString());
 
                 List<string> loadedTextures = new List<string>();
-                StreamingImageSequencePlugin.ListLoadedTextures(textureType, (fileName) => {
+                StreamingImageSequencePlugin.ListLoadedImages(imageType, (fileName) => {
                     loadedTextures.Add(fileName);
                 });
 
                 foreach (var fileName in loadedTextures) {
-                    StreamingImageSequencePlugin.GetNativeTextureInfo(fileName, out ReadResult readResult, textureType);
+                    StreamingImageSequencePlugin.GetImageData(fileName,imageType, out ImageData readResult);
                     sb.Append("    ");
                     sb.Append(fileName);
                     sb.Append(". Status: " + readResult.ReadStatus);

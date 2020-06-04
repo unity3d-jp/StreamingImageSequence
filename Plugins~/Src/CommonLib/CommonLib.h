@@ -13,17 +13,14 @@
 typedef void* TexPointer;
 
 
-#include "ReadResult.h"
+#include "ImageData.h"
 #include "CriticalSection.h"
 
 extern COMMONLIB_API std::map<strType, int>          g_scenePathToSceneStatus;
 
 //----------------------------------------------------------------------------------------------------------------------
 
-
 #define TEXTURE_CS(texType)         (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(static_cast<StreamingImageSequencePlugin::CriticalSectionType>(texType)))
-#define LOADINGCOUNTER_CS           (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_LOADING_COUNTER))
-#define RESETTING_CS                (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_RESETTING))
 
 
 #endif //#ifdef COMMONLIB

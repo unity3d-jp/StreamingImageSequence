@@ -31,15 +31,15 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------
 
         public override void Execute() {
-            const int TEX_TYPE = StreamingImageSequenceConstants.TEXTURE_TYPE_FULL;
-            StreamingImageSequencePlugin.GetNativeTextureInfo(m_strFileName, out ReadResult tResult, TEX_TYPE);
+            const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
+            StreamingImageSequencePlugin.GetImageData(m_strFileName, TEX_TYPE, out ImageData tResult);
             switch (tResult.ReadStatus) {
-                case StreamingImageSequenceConstants.READ_RESULT_NONE: {
+                case StreamingImageSequenceConstants.READ_STATUS_NONE: {
                     //Debug.Log("Loading: " + m_strFileName);
-                    StreamingImageSequencePlugin.LoadAndAllocFullTexture(m_strFileName);
+                    StreamingImageSequencePlugin.LoadAndAllocFullImage(m_strFileName);
                     break;
                 }
-                case StreamingImageSequenceConstants.READ_RESULT_REQUESTED: {
+                case StreamingImageSequenceConstants.READ_STATUS_LOADING: {
 #if UNITY_EDITOR
                     LogUtility.LogDebug("Already requested:" + m_strFileName);
 #endif

@@ -102,7 +102,7 @@ extern "C"
 		u8* pImageData = (u8*)malloc(uSizByteImageData);
 
 
-		StReadResult imageData(pImageData, uSizByteImageData, ptHeader->_uWidth, ptHeader->_uHeight,
+		StreamingImageSequencePlugin::ImageData imageData(pImageData, uSizByteImageData, ptHeader->_uWidth, ptHeader->_uHeight,
 			StreamingImageSequencePlugin::READ_STATUS_SUCCESS);
 
 		s32 sSizeByteTgaHeader = sizeof(StTGA_HEADER);
