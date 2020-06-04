@@ -1,5 +1,8 @@
 #include "stdafx.h"
 
+//CommonLib
+#include "CommonLib/CriticalSectionType.h" //MAX_CRITICAL_SECTION_TYPE_TEXTURES
+
 //Loader
 #include "LoaderUtility.h"
 #include "FileType.h"
@@ -7,6 +10,9 @@
 
 //External
 #include "External/stb/stb_image_resize.h"
+
+extern std::map<strType, StReadResult>  g_fileNameToPtrMap[StreamingImageSequencePlugin::MAX_CRITICAL_SECTION_TYPE_TEXTURES];
+
 
 //----------------------------------------------------------------------------------------------------------------------
 //Forward declarations
@@ -142,6 +148,27 @@ bool LoaderUtility::LoadAndAllocTexture(const charType* fileName, std::map<strTy
 
     return true;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+bool LoaderUtility::UnloadTexture(const charType* fileName, const uint32_t texType) {
+    //[TODO-sin: 2020-6-3] Clean this up
+
+    StReadResult readResult;
+    LoaderUtility::GetTextureInfo(fileName, &readResult, &g_fileNameToPtrMap[texType], texType);
+
+    //Check
+    if (!readResult.buffer || readResult.readStatus != READ_STATUS_SUCCESS) {
+        return false;
+    }
+
+    free(readResult.buffer);
+    strType wstr(fileName);
+    g_fileNameToPtrMap[texType].erase(wstr);
+
+    return true;
+}
+
 
 
 } //end namespace

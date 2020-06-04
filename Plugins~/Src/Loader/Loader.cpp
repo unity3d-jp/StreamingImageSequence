@@ -51,33 +51,14 @@ LOADER_API bool LoadAndAllocPreviewTexture(const charType* fileName, const uint3
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-
-LOADER_API void   NativeFree(void* ptr) {
-	free(ptr);
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------
 // return succ:0 fail:-1
 LOADER_API int   ResetNativeTexture(const charType* fileName) {
     using namespace StreamingImageSequencePlugin;
 
 	//Reset all textures
 	for (uint32_t texType = 0; texType < MAX_CRITICAL_SECTION_TYPE_TEXTURES; ++texType) {
-		StReadResult readResult;
-		GetNativeTextureInfo(fileName, &readResult, texType);
-
-		//Check
-		if (!readResult.buffer || readResult.readStatus != READ_STATUS_SUCCESS) {
-			continue;
-		}
-
 		CriticalSectionController cs0(TEXTURE_CS(texType));
-		{
-			strType wstr(fileName);
-			NativeFree(readResult.buffer);
-			g_fileNameToPtrMap[texType].erase(wstr);
-		}
+		LoaderUtility::UnloadTexture(fileName, texType);
 	}
 
 
@@ -93,7 +74,14 @@ LOADER_API void ListLoadedTextures(const uint32_t textureType, void(*OnNextTextu
 	for (auto itr = g_fileNameToPtrMap[textureType].begin(); itr != g_fileNameToPtrMap[textureType].end(); ++itr) {
 		OnNextTexture(itr->first.c_str());
 	}
+}
 
+//----------------------------------------------------------------------------------------------------------------------
+
+LOADER_API uint32_t GetNumLoadedTextures(const uint32_t textureType) {
+	using namespace StreamingImageSequencePlugin;
+	ASSERT(textureType < MAX_CRITICAL_SECTION_TYPE_TEXTURES);
+	return static_cast<uint32_t>(g_fileNameToPtrMap[textureType].size());
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -133,10 +121,11 @@ LOADER_API void  ResetAllLoadedTextures() {
 			{
 				StReadResult readResult = itr->second;
 				if (readResult.buffer)
-					NativeFree(readResult.buffer);
+					free(readResult.buffer);
 			}
 			g_fileNameToPtrMap[texType].clear();
 		}
 	}
 
 }
+

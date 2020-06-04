@@ -11,10 +11,23 @@ PROJECT(StreamingImageSequencePlugin)
 #cmake variables
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Build/cmake_modules)
 
+# Change compilation flags for testing
+option(BUILD_UNIT_TESTS "Unit Tests" OFF)
+if(BUILD_UNIT_TESTS)
+    if(APPLE)
+        find_library(COCOA_LIBRARY Cocoa)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    elseif(WIN32)
+        set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+    endif()
+endif()
+
 # Custom scripts
 include(AddPlugin)
 
 set(src_root ${CMAKE_CURRENT_SOURCE_DIR}/Src)
+set(tests_root ${CMAKE_CURRENT_SOURCE_DIR}/Tests)
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -25,7 +38,7 @@ if(APPLE)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
     set(PLATFORM "Linux")
     set(LINUX ON)
-
+    
 elseif(WIN32) 
     set(PLATFORM "Win64")
 
@@ -37,17 +50,10 @@ elseif(WIN32)
     add_link_options(-d2:-FH4-)
 endif()
 
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 # Force Unicode character set
 add_definitions(-DUNICODE -D_UNICODE)
 
-
-# ----------------------------------------------------------------------------------------------------------------------
-
-option(BUILD_TESTS "Tests" OFF)
-
-# ----------------------------------------------------------------------------------------------------------------------
 
 
 #Specify available modules
@@ -60,7 +66,11 @@ if(WIN32)
 endif()
 
 # Tests
-if(BUILD_TESTS)
-    add_subdirectory(${src_root}/PluginTest)
+if(BUILD_UNIT_TESTS)
+    find_package(GTest REQUIRED)
+    enable_testing()
+    add_subdirectory(${tests_root}/Loader)
 endif()
+
+
 

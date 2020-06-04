@@ -11,12 +11,6 @@
 #endif
 
 
-#ifdef _WIN32
-#  include <d3d11.h>
-#  include <objidl.h>
-#  include <gdiplus.h>
-#endif //_WIN32
-
 #include <thread>
 #include <mutex>
 #include <string>
@@ -29,6 +23,7 @@
 
 
 #ifdef _WIN32
+    #include <windows.h>
     typedef UINT64 u64;
     typedef UINT32 u32;
     typedef INT32 s32;

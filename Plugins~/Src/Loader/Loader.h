@@ -22,13 +22,15 @@ extern "C"
 {
 	LOADER_API bool  LoadAndAllocFullTexture(const charType* ptr);
 	LOADER_API bool  LoadAndAllocPreviewTexture(const charType* ptr, const uint32_t width, const uint32_t height);
-	LOADER_API void  NativeFree(void* ptr);
 	LOADER_API bool  GetNativeTextureInfo(const charType* fileName, StReadResult* pResult, const uint32_t textureType);
 	LOADER_API int   ResetNativeTexture(const charType* fileName);
 
 	LOADER_API void  ListLoadedTextures(const uint32_t textureType, void(* OnNextTexture)(const char*));
+	LOADER_API uint32_t GetNumLoadedTextures(const uint32_t textureType);
 
 	LOADER_API void  ResetAllLoadedTextures();
-
 	LOADER_API void  ResetPlugin();
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+

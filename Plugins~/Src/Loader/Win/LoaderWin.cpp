@@ -1,6 +1,3 @@
-// LoaderWin.cpp : Win implementation of Loader APIs
-//
-
 #include "stdafx.h"
 
 //CommonLib
@@ -9,11 +6,27 @@
 
 //Loader
 #include "Loader/TGALoader.h"
-
+#include "LoaderWin.h"
 
 #pragma comment( lib, "winmm.lib" )
 #pragma comment(lib, "gdiplus.lib")
 
+//----------------------------------------------------------------------------------------------------------------------
+
+namespace StreamingImageSequencePlugin {
+	LoaderWin::LoaderWin() {
+		int status = Gdiplus::GdiplusStartup(&token, &startInput, NULL);
+	}
+
+	LoaderWin::~LoaderWin() {
+		Gdiplus::GdiplusShutdown(token);
+	}
+
+
+}
+
+//This is a dummy variable to init and shutdown GDI on Windows
+StreamingImageSequencePlugin::LoaderWin		g_loaderWin;
 
 //----------------------------------------------------------------------------------------------------------------------
 
