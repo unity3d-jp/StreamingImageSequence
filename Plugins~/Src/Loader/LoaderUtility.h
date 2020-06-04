@@ -1,12 +1,14 @@
 #pragma once
 
 #include "CommonLib/Types.h"
-#include "CommonLib/ImageData.h"
+
+//Loader
 #include "FileType.h"
 
 namespace StreamingImageSequencePlugin {
 
 class ImageCatalog;
+struct ImageData;
 
 //Forward declarations
 void LoadTGAFileAndAlloc(const strType& imagePath, const uint32_t imageType, ImageCatalog*);

@@ -4,8 +4,10 @@
 
 //CommonLib
 #include "CommonLib/Types.h" //strType
-#include "CommonLib/ImageData.h"
 #include "CommonLib/CriticalSectionType.h" //MAX_CRITICAL_SECTION_TYPE_IMAGES
+
+//Loader
+#include "ImageData.h"
 
 namespace StreamingImageSequencePlugin {
 

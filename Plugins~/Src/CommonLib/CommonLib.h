@@ -7,16 +7,9 @@
 #ifndef COMMONLIB
 #define COMMONLIB
 
-#include "ReadStatus.h"
 #include "Types.h"
 
-typedef void* TexPointer;
-
-
-#include "ImageData.h"
 #include "CriticalSection.h"
-
-extern COMMONLIB_API std::map<strType, int>          g_scenePathToSceneStatus;
 
 //----------------------------------------------------------------------------------------------------------------------
 

@@ -16,7 +16,7 @@ ImageData::ImageData()
 
 //----------------------------------------------------------------------------------------------------------------------
 
-ImageData::ImageData(u8* _rawData, uint32_t _dataSize, uint32_t _width, uint32_t _height, ReadStatus _readStatus) 
+ImageData::ImageData(uint8_t* _rawData, uint32_t _dataSize, uint32_t _width, uint32_t _height, ReadStatus _readStatus) 
     : RawData(_rawData)
     , DataSize(_dataSize)
     , Width (_width)

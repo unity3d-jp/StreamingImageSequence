@@ -2,11 +2,11 @@
 
 //CommonLib
 #include "CommonLib/Types.h"
-#include "CommonLib/ImageData.h"
 
 //Loader
 #include "Loader/TGALoader.h"
 #include "Loader/ImageCatalog.h"
+#include "Loader/ImageData.h"
 #include "LoaderWin.h"
 
 #pragma comment( lib, "winmm.lib" )
