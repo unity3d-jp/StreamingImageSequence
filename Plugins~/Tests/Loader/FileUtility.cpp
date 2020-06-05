@@ -12,7 +12,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 
-namespace LoaderTest {
+namespace StreamingImagePluginTest {
 
 bool FileUtility::FileExists(const std::string& filePath) {
     return FileExists(filePath.c_str());

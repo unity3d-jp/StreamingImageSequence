@@ -1,9 +1,6 @@
 //  Loader.mm
-//  Project
-//
 //  Created by Hiroki Omae on 2017/10/10.
 //  Copyright © 2017 Unity Technologies. All rights reserved.
-//
 
 #import <Foundation/Foundation.h>
 #include <ApplicationServices/ApplicationServices.h>
@@ -12,8 +9,13 @@
 
 //Loader
 #include "Loader.h"
+#include "Loader/ImageCatalog.h"
 
 #define DEBUG_MAC_DRAWING (0)
+
+namespace StreamingImageSequencePlugin {
+
+const uint32_t NUM_CHANNELS = 4;
 
 CGImageRef CGImageRefLoad(const char *filename) {
     NSString *path = [NSString stringWithUTF8String:filename];
@@ -27,12 +29,11 @@ CGImageRef CGImageRefLoad(const char *filename) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-u8* CGImageRefRetrievePixelData(const CGImageRef image, u32 width, u32 height) {
-    u8* data = (u8*)malloc(width*height*4);
-    memset(data,0, width*height*4);
-    CGContextRef context = CGBitmapContextCreate(data,
+void CGImageRefRetrievePixelData(const CGImageRef image, u32 width, u32 height, u8* output) {
+
+    CGContextRef context = CGBitmapContextCreate(output,
                                                  width, height,
-                                                 8, width * 4,
+                                                 8, width * NUM_CHANNELS,
                                                  CGImageGetColorSpace(image),
                                                  kCGImageAlphaPremultipliedLast);
 
@@ -47,39 +48,44 @@ u8* CGImageRefRetrievePixelData(const CGImageRef image, u32 width, u32 height) {
                        CGRectMake(0.0, 0.0, (float)width, (float)height),
                        image);
     CGContextRelease(context);
-    
-    return data;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void* LoadPNGFileAndAlloc(const charType* fileName, StReadResult* pResult) {
-    u8* pBuffer = NULL;
-    
-    const CGImageRef image = CGImageRefLoad(fileName);
-    if(image != NULL) {
+void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog) {
+        
+    const CGImageRef image = CGImageRefLoad(imagePath.c_str());
+    ImageData imageData(nullptr,0,0,0,StreamingImageSequencePlugin::READ_STATUS_FAIL);
+    if (nullptr!=image) {
+
         const u32 width = (u32) CGImageGetWidth(image);
         const u32 height = (u32) CGImageGetHeight(image);
-        pBuffer =CGImageRefRetrievePixelData(image, width, height);
+        const uint32_t dataSize = width * height* NUM_CHANNELS;
+        u8* rawData = (u8*)malloc(dataSize);
         
-        if(pBuffer != NULL) {
-            pResult->width  = width;
-            pResult->height = height;
-            pResult->buffer = pBuffer;
-            pResult->readStatus = StreamingImageSequencePlugin::READ_STATUS_SUCCESS;
-        } else {
-            pResult->readStatus = StreamingImageSequencePlugin::READ_STATUS_FAIL;
+        if(nullptr!=rawData) {
+            memset(rawData,0,dataSize);
+
+            CGImageRefRetrievePixelData(image, width, height, rawData);
+
+            imageData.Width  = width;
+            imageData.Height = height;
+            imageData.RawData  = rawData;
+            imageData.DataSize = dataSize;
+            imageData.CurrentReadStatus =StreamingImageSequencePlugin::READ_STATUS_SUCCESS;
         }
-        
-        CGImageRelease(image);
     }
+    imageCatalog->SetImage(imagePath,imageType, &imageData);
+
+    CGImageRelease(image);
     
-    return pBuffer; //  pBuffer;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void LoadTGAFileAndAlloc(const charType* fileName, StReadResult* pResult) {
+void LoadTGAFileAndAlloc(const strType& imagePath, const uint32_t imageType, ImageCatalog*) {
     assert(false);   //Not implemented yet
 }
 //----------------------------------------------------------------------------------------------------------------------
 
+
+} //end namespace

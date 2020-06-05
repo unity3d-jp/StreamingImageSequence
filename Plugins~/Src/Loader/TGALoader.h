@@ -28,8 +28,15 @@ struct StTGA_COLOR
 	u8  rgbAlpha;
 };
 
-extern "C"
-{
-	void* loadTGAFileAndAlloc(const charType* pName, StReadResult* pReadResult);
+namespace StreamingImageSequencePlugin {
+	class ImageCatalog;
 }
+
+
+extern "C" {
+	void loadTGAFileAndAlloc(const strType& imagePath, const uint32_t imageType,
+		StreamingImageSequencePlugin::ImageCatalog* imageCatalog);
+}
+
 #endif //__TGALOADER_H__
+

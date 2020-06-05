@@ -1,9 +1,10 @@
-﻿// TGALoaderPlugin.cpp : Defines the exported functions for the DLL application.
-//
-
+﻿
 #include "stdafx.h"
 #include "../CommonLib/CommonLib.h"
+
+//Loader
 #include "TGALoader.h"
+#include "Loader/ImageCatalog.h"
 
 
 
@@ -51,11 +52,11 @@ extern "C"
 		}
 	}
 
-
-	void* loadTGAFileAndAlloc(const charType* pName, StReadResult* pReadResult)
+//----------------------------------------------------------------------------------------------------------------------
+	void loadTGAFileAndAlloc(const strType& imagePath, const uint32_t imageType,
+		StreamingImageSequencePlugin::ImageCatalog* imageCatalog)
 	{
 		u8* pBuffer = NULL;
-		u8* pImageData = NULL;
 		HANDLE hh =
 #if USE_WCHAR
 			CreateFileW(pName,
@@ -66,7 +67,7 @@ extern "C"
 				FILE_ATTRIBUTE_NORMAL,
 				NULL);
 #else
-			CreateFileA(pName,
+			CreateFileA(imagePath.c_str(),
 				GENERIC_READ,
 				FILE_SHARE_READ,
 				NULL,
@@ -96,19 +97,13 @@ extern "C"
 
 
 
-		u32 uBitPerPixel = ptHeader->_uBitPerPixel;
-		u32 uSizByteImageData = ptHeader->_uWidth * ptHeader->_uHeight * uRGBAByte;
+		const u32 uBitPerPixel = ptHeader->_uBitPerPixel;
+		const u32 uSizByteImageData = ptHeader->_uWidth * ptHeader->_uHeight * uRGBAByte;
+		u8* pImageData = (u8*)malloc(uSizByteImageData);
 
 
-
-		pImageData = (u8*)malloc(uSizByteImageData);
-
-		if (pReadResult)
-		{
-			pReadResult->width = ptHeader->_uWidth;
-			pReadResult->height = ptHeader->_uHeight;
-			pReadResult->buffer = pImageData;
-		}
+		StreamingImageSequencePlugin::ImageData imageData(pImageData, uSizByteImageData, ptHeader->_uWidth, ptHeader->_uHeight,
+			StreamingImageSequencePlugin::READ_STATUS_SUCCESS);
 
 		s32 sSizeByteTgaHeader = sizeof(StTGA_HEADER);
 		s32 sColorMapEntrySizeByte = (ptHeader->_uColorMapEntrySize + 1) / 8;
@@ -256,7 +251,7 @@ extern "C"
 		}
 
 		free(pBuffer);
-		return pImageData;
 
+		imageCatalog->SetImage(imagePath, imageType, &imageData);
 	}
 };

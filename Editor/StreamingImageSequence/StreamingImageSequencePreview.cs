@@ -81,14 +81,14 @@ internal class StreamingImageSequencePreview : IDisposable {
 
                 //Load
                 string fullPath = m_playableAsset.GetCompleteFilePath(imagePaths[imageIndex]);
-                StreamingImageSequencePlugin.GetNativeTextureInfo(fullPath, out ReadResult readResult, 
-                    StreamingImageSequenceConstants.TEXTURE_TYPE_PREVIEW);
+                StreamingImageSequencePlugin.GetImageData(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW,
+                    out ImageData readResult);
                 switch (readResult.ReadStatus) {
-                    case StreamingImageSequenceConstants.READ_RESULT_NONE: {
+                    case StreamingImageSequenceConstants.READ_STATUS_NONE: {
                         PreviewImageLoadBGTask.Queue(fullPath, widthPerPreviewImage, heightPerPreviewImage);
                         break;
                     }
-                    case StreamingImageSequenceConstants.READ_RESULT_SUCCESS: {
+                    case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
                         Texture2D tex = PreviewTextureFactory.GetOrCreate(fullPath, ref readResult);
                         if (null != tex) {
                             Graphics.DrawTexture(drawRect, tex);

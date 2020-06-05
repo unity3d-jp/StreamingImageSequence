@@ -18,17 +18,15 @@ namespace UnityEditor.StreamingImageSequence  {
         }
         public override void Execute()
         {
-            ReadResult tResult = new ReadResult();
-
             int loaded = 0;
             for ( int ii = 0; ii < m_param.m_collorArray.Length; ii++ )
             {
                 string fileName = m_param.m_asset.GetImagePath(ii);
                 //m_collorArray[ii] = notYet;
-                if ( StreamingImageSequencePlugin.GetNativeTextureInfo(m_param.m_asset.GetCompleteFilePath(fileName), 
-                    out tResult, StreamingImageSequenceConstants.TEXTURE_TYPE_FULL) )
+                if ( StreamingImageSequencePlugin.GetImageData(m_param.m_asset.GetCompleteFilePath(fileName)
+                    , StreamingImageSequenceConstants.IMAGE_TYPE_FULL, out ImageData tResult) )
                 {
-                    if ( tResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS )
+                    if ( tResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS )
                     {
                         m_param.m_collorArray[ii] = 0xffffffff;
                         loaded ++;

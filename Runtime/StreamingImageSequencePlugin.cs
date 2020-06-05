@@ -22,25 +22,26 @@ namespace UnityEngine.StreamingImageSequence {
 
         // Implemented in Loader dll
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern bool LoadAndAllocFullTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
+        public static extern bool LoadAndAllocFullImage([MarshalAs(UnmanagedType.LPStr)]string fileName);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern bool LoadAndAllocPreviewTexture([MarshalAs(UnmanagedType.LPStr)]string fileName, int width, int height);
+        public static extern bool LoadAndAllocPreviewImage([MarshalAs(UnmanagedType.LPStr)]string fileName, int width, int height);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern bool GetNativeTextureInfo([MarshalAs(UnmanagedType.LPStr)]string fileName, out ReadResult tResult, int textureType);
+        public static extern bool GetImageData([MarshalAs(UnmanagedType.LPStr)]string fileName, int imageType, out ImageData tResult);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern int ResetNativeTexture([MarshalAs(UnmanagedType.LPStr)]string fileName);
+        public static extern int UnloadImage([MarshalAs(UnmanagedType.LPStr)]string fileName);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        internal static extern void ListLoadedTextures(int textureType, DelegateStringFunc func);
+        public static extern void UnloadAllImages();
+
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        internal static extern void ListLoadedImages(int textureType, DelegateStringFunc func);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void ResetPlugin();
 
-        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern void ResetAllLoadedTextures();
 
 
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN

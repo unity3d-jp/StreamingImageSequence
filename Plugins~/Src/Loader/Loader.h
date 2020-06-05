@@ -17,18 +17,24 @@
                                                                                                                         
 #include "../CommonLib/CommonLib.h"
 
+extern LOADER_API std::map<strType, int>          g_scenePathToSceneStatus;
+
+namespace StreamingImageSequencePlugin {
+struct ImageData;
+} //end namespace
 
 extern "C"
 {
-	LOADER_API bool  LoadAndAllocFullTexture(const charType* ptr);
-	LOADER_API bool  LoadAndAllocPreviewTexture(const charType* ptr, const uint32_t width, const uint32_t height);
-	LOADER_API bool  GetNativeTextureInfo(const charType* fileName, StReadResult* pResult, const uint32_t textureType);
-	LOADER_API int   ResetNativeTexture(const charType* fileName);
+	LOADER_API bool  LoadAndAllocFullImage(const charType* ptr);
+	LOADER_API bool  LoadAndAllocPreviewImage(const charType* ptr, const uint32_t width, const uint32_t height);
+	LOADER_API bool  GetImageData(const charType* fileName, const uint32_t imageType, 
+		StreamingImageSequencePlugin::ImageData* pResult);
+	LOADER_API int   UnloadImage(const charType* fileName);
+	LOADER_API void  UnloadAllImages();
 
-	LOADER_API void  ListLoadedTextures(const uint32_t textureType, void(* OnNextTexture)(const char*));
-	LOADER_API uint32_t GetNumLoadedTextures(const uint32_t textureType);
+	LOADER_API void  ListLoadedImages(const uint32_t imageType, void(* OnNextTexture)(const char*));
+	LOADER_API uint32_t GetNumLoadedTextures(const uint32_t imageType);
 
-	LOADER_API void  ResetAllLoadedTextures();
 	LOADER_API void  ResetPlugin();
 }
 

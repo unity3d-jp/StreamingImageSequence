@@ -18,15 +18,15 @@
 //----------------------------------------------------------------------------------------------------------------------
 
     public override void Execute() {
-        const int TEX_TYPE = StreamingImageSequenceConstants.TEXTURE_TYPE_PREVIEW;
-        StreamingImageSequencePlugin.GetNativeTextureInfo(m_fileName, out ReadResult tResult, TEX_TYPE);
+        const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW;
+        StreamingImageSequencePlugin.GetImageData(m_fileName, TEX_TYPE, out ImageData tResult);
         switch (tResult.ReadStatus) {
-            case StreamingImageSequenceConstants.READ_RESULT_NONE: {
+            case StreamingImageSequenceConstants.READ_STATUS_NONE: {
                 //Debug.Log("Loading: " + m_fileName);
-                StreamingImageSequencePlugin.LoadAndAllocPreviewTexture(m_fileName, m_width, m_height);
+                StreamingImageSequencePlugin.LoadAndAllocPreviewImage(m_fileName, m_width, m_height);
                 break;
             }
-            case StreamingImageSequenceConstants.READ_RESULT_REQUESTED: {
+            case StreamingImageSequenceConstants.READ_STATUS_LOADING: {
 #if UNITY_EDITOR
                 LogUtility.LogDebug("Already requested:" + m_fileName);
 #endif
