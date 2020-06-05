@@ -338,6 +338,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 
         internal void ContinuePreloadingImages() {
+            
             const int NUM_IMAGES_TO_PRELOAD = 3;
             int maxForwardPreloadIndex = Mathf.Min(m_loadingIndex + NUM_IMAGES_TO_PRELOAD, m_imagePaths.Count) -1;
 
@@ -393,11 +394,11 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             //Update the texture
-			if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS && m_lastCopiedImageIndex != index) {
+            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS && m_lastCopiedImageIndex != index) {
 
                 readResult.CopyBufferToTexture(m_texture);
                 m_lastCopiedImageIndex = index;
-			}
+            }
 
             return null!=m_texture;
         }
