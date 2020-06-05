@@ -1,10 +1,15 @@
 #include "stdafx.h"
 #include "ImageCatalog.h"
 
+#include "LoaderConstants.h" //NUM_BYTES_PER_TEXEL
+
+//External
+#include "External/stb/stb_image_resize.h"
+
 
 namespace StreamingImageSequencePlugin {
 
-ImageCatalog::ImageCatalog() : m_usedMemory(0){
+ImageCatalog::ImageCatalog() : m_usedMemory(0) {
 
 }
 
@@ -23,21 +28,86 @@ const ImageData* ImageCatalog::GetImage(const strType& imagePath, const uint32_t
 
 }
 
+
 //----------------------------------------------------------------------------------------------------------------------
 
-void ImageCatalog::AddImage(const strType& imagePath, const uint32_t imageType) {
+void ImageCatalog::PrepareImage(const strType& imagePath, const uint32_t imageType) {
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 
     std::map<strType, ImageData>& curMap = m_pathToImageMap[imageType];
     ASSERT(curMap.find(imagePath) == curMap.end());
 
     ImageData& imageData = curMap[imagePath];
+    ASSERT(nullptr == imageData.RawData);
+
     imageData.CurrentReadStatus = READ_STATUS_LOADING;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+const ImageData* ImageCatalog::AllocateImage(const strType& imagePath, const uint32_t imageType, const uint32_t w, const uint32_t h) {
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 
-void ImageCatalog::SetImage(const strType& imagePath, const uint32_t imageType, ImageData* newImageData) {
+    //Unload existing memory if it exsits
+    std::map<strType, ImageData>& curMap = m_pathToImageMap[imageType];
+    if (curMap.find(imagePath) != curMap.end()) {
+        UnloadImageData(&curMap[imagePath]);
+    }
+
+    //Allocate
+    const uint32_t dataSize = w * h * LoaderConstants::NUM_BYTES_PER_TEXEL;
+    uint8_t*  buffer = static_cast<uint8_t*>(malloc(dataSize));
+    //[TODO-sin: 2020-6-5] Handle automatic memory deallocation
+    if (nullptr == buffer) {
+        return nullptr;
+    }
+
+    ImageData& imageData = curMap[imagePath];
+    imageData.Width = w;
+    imageData.Height = h;
+    imageData.CurrentReadStatus = READ_STATUS_LOADING;
+    imageData.RawData = buffer;
+
+    IncUsedMemory(dataSize);
+
+    return &imageData;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ImageCatalog::ResizeImage(const strType& imagePath, const uint32_t imageType, const uint32_t w, const uint32_t h) {
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
+    std::map<strType, ImageData>& curMap = m_pathToImageMap[imageType];
+    ASSERT(curMap.find(imagePath) != curMap.end());
+
+    //Allocate
+    const uint32_t dataSize = w * h * LoaderConstants::NUM_BYTES_PER_TEXEL;
+    uint8_t*  resizedBuffer = static_cast<uint8_t*>(malloc(dataSize));
+    //[TODO-sin: 2020-6-5] Handle automatic memory deallocation
+    if (nullptr == resizedBuffer) {
+        return;
+    }
+
+    ImageData& imageData = curMap.at(imagePath);
+    ASSERT(nullptr != imageData.RawData);
+    ASSERT(READ_STATUS_SUCCESS == imageData.CurrentReadStatus);
+
+    uint8_t* prevRawData = imageData.RawData;
+    const uint32_t prevDataSize = imageData.DataSize;
+
+    stbir_resize_uint8(imageData.RawData, imageData.Width, imageData.Height, 0,
+        resizedBuffer, w, h, 0, LoaderConstants::NUM_BYTES_PER_TEXEL);
+    imageData.RawData = resizedBuffer;
+    imageData.Width   = w;
+    imageData.Height  = h;
+    imageData.DataSize = dataSize;
+
+    free(prevRawData);
+    DecUsedMemory(prevDataSize);
+
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+void ImageCatalog::SetImageStatus(const strType& imagePath, const uint32_t imageType, const ReadStatus status) {
 
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 
@@ -45,15 +115,8 @@ void ImageCatalog::SetImage(const strType& imagePath, const uint32_t imageType, 
     ASSERT(curMap.find(imagePath) != curMap.end());
 
     ImageData& imageData = curMap.at(imagePath);
-    //Deallocate existing image
-    if (nullptr != imageData.RawData) {
-        UnloadImageData(&imageData);
-    }  
-
-    imageData = *newImageData;
-    IncUsedMemory(imageData.DataSize);
+    imageData.CurrentReadStatus = status;
 }
-
 //----------------------------------------------------------------------------------------------------------------------
 bool ImageCatalog::UnloadImage(const strType& imagePath, const uint32_t imageType) {
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
@@ -63,10 +126,6 @@ bool ImageCatalog::UnloadImage(const strType& imagePath, const uint32_t imageTyp
         return false;
 
     ImageData& imageData = curMap.at(imagePath);
-    //Check if the loading progress is still ongoing
-    if (!imageData.RawData|| imageData.CurrentReadStatus != READ_STATUS_SUCCESS) {
-        return false;
-    }
 
     UnloadImageData(&imageData);
     m_pathToImageMap[imageType].erase(imagePath);
@@ -89,23 +148,28 @@ void ImageCatalog::UnloadAllImages() {
 }
 
 
-//----------------------------------------------------------------------------------------------------------------------
-void ImageCatalog::IncUsedMemory(const uint64_t mem) {
-    m_usedMemory += mem;
-}
 
 //----------------------------------------------------------------------------------------------------------------------
 void ImageCatalog::UnloadImageData(ImageData* imageData) {
     ASSERT(nullptr!=imageData);
     const uint64_t mem = imageData->DataSize;
     ASSERT(m_usedMemory >= mem);
-    ASSERT(nullptr!=imageData->RawData);
 
-    free(imageData->RawData);
+    if (nullptr != imageData->RawData) {
+        ASSERT(mem>0);
+        free(imageData->RawData);
+    }
 
-    imageData->RawData = nullptr;
-    imageData->DataSize = 0;
+    *imageData = ImageData(nullptr, 0, 0, 0, READ_STATUS_NONE);
+    DecUsedMemory(mem);
+}
 
+//----------------------------------------------------------------------------------------------------------------------
+void ImageCatalog::IncUsedMemory(const uint64_t mem) {
+    m_usedMemory += mem;
+}
+
+void ImageCatalog::DecUsedMemory(const uint64_t mem) {
     m_usedMemory = (m_usedMemory >= mem) ? m_usedMemory - mem : 0;
 }
 

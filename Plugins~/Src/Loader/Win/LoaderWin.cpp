@@ -33,7 +33,6 @@ StreamingImageSequencePlugin::LoaderWin		g_loaderWin;
 void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType, 
 	StreamingImageSequencePlugin::ImageCatalog* imageCatalog) 
 {
-	u8* pBuffer = NULL;
 
 # if USE_WCHAR
 	Gdiplus::Bitmap*    pBitmap = Gdiplus::Bitmap::FromFile(fileName);
@@ -53,29 +52,29 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 
 # endif
 	Gdiplus::Status status = Gdiplus::FileNotFound;
-	if (pBitmap )
-	{
+	if (pBitmap ) {
 		status = pBitmap->GetLastStatus();
 	}
 	ASSERT(status == Gdiplus::Ok);
-	if (status == Gdiplus::Ok)
-	{
-
+	if (status == Gdiplus::Ok)	{
 		const u32 width = pBitmap->GetWidth();
 		const u32 height = pBitmap->GetHeight();
 		const uint32_t dataSize = sizeof(u32) * width * height;
 
-		pBuffer = (u8*)malloc(dataSize);
+		const ImageData* imageData = imageCatalog->AllocateImage(imagePath, imageType, width, height);
+		if (nullptr == imageData) {
+			imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_OUT_OF_MEMORY);
+			return;
+		}
+
+		u8* pBuffer = imageData->RawData;
 		ASSERT(pBuffer !=nullptr);
 		u32* pImage = (u32*)pBuffer;
-
-		ImageData imageData(pBuffer, dataSize, width, height, StreamingImageSequencePlugin::READ_STATUS_SUCCESS);
 
 		Gdiplus::BitmapData bitmapData;
 		pBitmap->LockBits(&Gdiplus::Rect(0, 0, width, height), Gdiplus::ImageLockModeWrite, PixelFormat32bppARGB, &bitmapData);
 		u32 *pRawBitmapOrig = (u32*)bitmapData.Scan0;   // for easy access and indexing
-		for (u32 yy = 0; yy < height; yy++)
-		{
+		for (u32 yy = 0; yy < height; yy++) {
 			memcpy(&pImage[yy*width], &pRawBitmapOrig[(height - 1 - yy) * bitmapData.Stride / 4], width*sizeof(u32));
 
 		}
@@ -84,14 +83,10 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 		pBitmap->UnlockBits(&bitmapData);
 		delete pBitmap;
 
-		imageCatalog->SetImage(imagePath, imageType, &imageData);
+		imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_SUCCESS);
 
-	}
-	else
-	{
-		ImageData imageData(nullptr, 0,0,0,READ_STATUS_FAIL);
-		imageCatalog->SetImage(imagePath, imageType, &imageData);
-		ASSERT(0);
+	} else {
+		imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_FAIL);
 	}
 
 }

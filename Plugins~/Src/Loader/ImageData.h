@@ -6,7 +6,7 @@ namespace StreamingImageSequencePlugin {
 
 struct ImageData {
     uint8_t*  RawData;
-    uint32_t DataSize;
+    uint32_t  DataSize;
     uint32_t  Width;
     uint32_t  Height;
     ReadStatus CurrentReadStatus;

@@ -6,9 +6,6 @@
 #include "TGALoader.h"
 #include "ImageCatalog.h"
 
-//External
-#include "External/stb/stb_image_resize.h"
-
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -77,7 +74,7 @@ bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t i
         return false;
 
     //Loading
-    imageCatalog->AddImage(imagePath, imageType);
+    imageCatalog->PrepareImage(imagePath, imageType);
 
     switch (fileType) {
         case FILE_TYPE_TGA: {
@@ -119,19 +116,7 @@ bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t i
     if (imageData.Width == reqWidth && imageData.Height == reqHeight)
         return true;
 
-    {
-        const uint64_t numChannels = 4;
-        const uint64_t BUFFER_SIZE = numChannels * reqWidth * reqHeight;
-        u8* resizedBuffer = (u8*)malloc(static_cast<uint32_t>(BUFFER_SIZE));
-
-        stbir_resize_uint8(imageData.RawData, imageData.Width, imageData.Height, 0,
-            resizedBuffer, reqWidth, reqHeight, 0, numChannels);
-        imageData.RawData = resizedBuffer;
-        imageData.Width   = reqWidth;
-        imageData.Height  = reqHeight;
-
-        imageCatalog->SetImage(imagePath, imageType, &imageData);
-    }
+    imageCatalog->ResizeImage(imagePath, imageType, reqWidth, reqHeight);
 
     return true;
 }
