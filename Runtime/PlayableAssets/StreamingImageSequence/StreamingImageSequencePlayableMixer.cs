@@ -56,14 +56,6 @@ namespace UnityEngine.StreamingImageSequence
                 return; // it doesn't work as mixer.
             }
 
-            if (m_nextInAdvanceLoadingFrameArray == null) {
-                m_nextInAdvanceLoadingFrameArray = new int[inputCount];
-                for ( int ii = 0;ii< inputCount;ii++)
-                {
-                    m_nextInAdvanceLoadingFrameArray[ii] = 0;
-                }
-            }
-
             double directorTime = GetPlayableDirector().time;
 
             bool activeTimelineClipFound = false;
@@ -83,9 +75,9 @@ namespace UnityEngine.StreamingImageSequence
 
                 double loadStartOffsetTime = 1.0f + imagePaths.Count * 0.1f;
 
-                //Load clips that might still be inactive, in advance
+                //Start to preload images before the clip is active
 				if ( directorTime>= startTime - loadStartOffsetTime && directorTime < endTime) {
-                    ProcessInAdvanceLoading(directorTime, clip, i );
+                    asset.ContinuePreloadingImages();                    
                 }
 
                 if (!activeTimelineClipFound && directorTime >= startTime && directorTime < endTime) {
@@ -106,38 +98,7 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 #endregion        
-//----------------------------------------------------------------------------------------------------------------------
 
-        private void ProcessInAdvanceLoading(double time, TimelineClip clip, int index)
-        {
-            var asset = clip.asset as StreamingImageSequencePlayableAsset;
-            if (null == asset)
-                return;
-
-            int count = asset.GetImagePaths().Count;
-
-            if (m_nextInAdvanceLoadingFrameArray[index] < count)
-            {
-                for (int check = 0; check < 4; check++)
-                {
-
-                    if (m_nextInAdvanceLoadingFrameArray[index] >= 0 && m_nextInAdvanceLoadingFrameArray[index] <= count)
-                    {
-                        if (!asset.IsLoadRequested(m_nextInAdvanceLoadingFrameArray[index]))
-                        {
-                            asset.LoadRequest(m_nextInAdvanceLoadingFrameArray[index], false, out _);
-                        }
-                    }
-                    m_nextInAdvanceLoadingFrameArray[index]++;
-                    if (m_nextInAdvanceLoadingFrameArray[index] >= count)
-                    {
-                        break;
-                    }
-
-                }
-            }
-
-        }
 
 //---------------------------------------------------------------------------------------------------------------------
         protected override void ProcessActiveClipV(StreamingImageSequencePlayableAsset asset,
@@ -145,7 +106,7 @@ namespace UnityEngine.StreamingImageSequence
         {
             int index = asset.GlobalTimeToImageIndex(directorTime);
 
-            bool texReady = asset.RequestLoadImage(index, false);
+            bool texReady = asset.RequestLoadImage(index);
             if (texReady) {
                 UpdateRendererTexture(asset);
 
@@ -218,7 +179,6 @@ namespace UnityEngine.StreamingImageSequence
 #if UNITY_EDITOR
         readonly EditorWindow m_gameView;
 #endif
-        private int[] m_nextInAdvanceLoadingFrameArray;
 
     }
 

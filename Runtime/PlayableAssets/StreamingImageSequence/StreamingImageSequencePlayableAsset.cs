@@ -336,88 +336,53 @@ namespace UnityEngine.StreamingImageSequence {
 #endregion         
 //---------------------------------------------------------------------------------------------------------------------
 
-        internal void LoadRequest(bool isDirectorIdle) {
-            if (null == m_imagePaths)
-                return;
 
-            // request loading while editor is idle.
-            if (isDirectorIdle)
-            {
-                LoadStep(4);
-            }
-            else
-            {
-                LoadStep(2);
-            }
-        }
+        internal void ContinuePreloadingImages() {
+            const int NUM_IMAGES_TO_PRELOAD = 3;
+            int maxForwardPreloadIndex = Mathf.Min(m_loadingIndex + NUM_IMAGES_TO_PRELOAD, m_imagePaths.Count) -1;
 
-        private void LoadStep(int step)
-        {
-            int loadRequestMax = m_loadingIndex + step;
-            if (loadRequestMax > m_imagePaths.Count)
-            {
-                loadRequestMax = m_imagePaths.Count;
-            }
-            for (int ii = m_loadingIndex; ii <= loadRequestMax - 1; ii++)
-            {
-                if (ii == -1)
-                {
+            for (int i = m_loadingIndex; i <= maxForwardPreloadIndex; ++i) {
+                if (i < 0 ) {
                     continue;
                 }
 
-                LoadRequest(ii, false, out ImageData readResult);
-
+                QueueImageLoadTask(i, out ImageData readResult);
             }
-            m_loadingIndex = loadRequestMax;
-
+            m_loadingIndex = maxForwardPreloadIndex;
             
         }
 
-        internal bool IsLoadRequested(int index)
-        {
-            string filename = m_imagePaths[index];
-            filename = GetCompleteFilePath(filename);
-            StreamingImageSequencePlugin.GetImageData(filename, StreamingImageSequenceConstants.IMAGE_TYPE_FULL, 
-                out ImageData readResult                
-            );
-            return (readResult.ReadStatus != 0);
-
-        }
-
 //----------------------------------------------------------------------------------------------------------------------        
-        internal string LoadRequest(int index, bool isBlocking, out ImageData imageData) {
+        private string QueueImageLoadTask(int index, out ImageData imageData) {
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
 
             StreamingImageSequencePlugin.GetImageData(filename,TEX_TYPE, out imageData );
             //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);
-            if (imageData.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_NONE) {
+            
+            if (StreamingImageSequenceConstants.READ_STATUS_LOADING != imageData.ReadStatus ) {
                 ImageLoadBGTask.Queue(filename);
             }
-            if ( isBlocking ) {
-                while (imageData.ReadStatus != StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
-                    StreamingImageSequencePlugin.GetImageData(filename, TEX_TYPE, out imageData );
-                }
-            }
-#if false //UNITY_EDITOR
-            if ( imageData.readStatus == 1 )
-            {
-                Util.Log("Already requestd:" + filename);
-            }
-#endif
+            // if ( isBlocking ) {
+            //     while (imageData.ReadStatus != StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
+            //         StreamingImageSequencePlugin.GetImageData(filename, TEX_TYPE, out imageData );
+            //     }
+            // }
+            
             return filename;
         }
 //----------------------------------------------------------------------------------------------------------------------        
         
 
-        internal bool RequestLoadImage(int index, bool isBlocking)
+        internal bool RequestLoadImage(int index)
         {
             if (null == m_imagePaths || index < 0 || index >= m_imagePaths.Count || string.IsNullOrEmpty(m_imagePaths[index])) {
                 return false;
             }
-           
-            string filename = LoadRequest(index,isBlocking, out ImageData readResult);
+
+            m_primaryImageIndex = index;           
+            string filename = QueueImageLoadTask(index, out ImageData readResult);
 
             if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
 
@@ -626,8 +591,8 @@ namespace UnityEngine.StreamingImageSequence {
             if (null!=m_imagePaths && m_imagePaths.Count <= 0)
                 return;
 
-            //Load the first image to update the resolution.
-            LoadRequest(0, false, out ImageData readResult);
+            //Load the primary image to update the resolution.
+            QueueImageLoadTask(m_primaryImageIndex,  out ImageData readResult);
             if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {               
                 UpdateResolution(ref readResult);
             }
@@ -753,6 +718,8 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] internal int m_loadingIndex;
 
         private int m_lastIndex;
+
+        private int m_primaryImageIndex = 0;
         private bool m_verified;
         private StreamingImageSequencePlayableAsset m_clonedFromAsset = null;
 

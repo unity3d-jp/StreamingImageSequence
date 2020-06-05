@@ -123,9 +123,9 @@ internal class LoaderPeriodicJob : PeriodicJob
                 // "as" sometimes fail on first importing time for project.
                 if ( asset.GetType() == typeof(StreamingImageSequencePlayableAsset) )
                 {
-                    var timelineAsset = (StreamingImageSequencePlayableAsset)asset;
+                    StreamingImageSequencePlayableAsset timelineAsset = (StreamingImageSequencePlayableAsset)asset;
                     if (!Application.isPlaying)
-                        timelineAsset.LoadRequest(false);
+                        timelineAsset.ContinuePreloadingImages();
 
                     continue;
                 }
@@ -133,8 +133,7 @@ internal class LoaderPeriodicJob : PeriodicJob
                 // important.
                 // in order to check strictly,
                 // null check of asset value must be here later than above asset.GetType() as operator == null means the object is destroyed.
-                if (asset == null)
-                {
+                if (asset == null) {
                     Debug.LogError("StreamingImageSequencePlayableAsset on " + cl.displayName + " is broken.");
                     continue;
                 }
