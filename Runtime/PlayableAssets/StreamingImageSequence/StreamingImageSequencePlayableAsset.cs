@@ -283,7 +283,6 @@ namespace UnityEngine.StreamingImageSequence {
         internal void Reset() {
             m_loadingIndex = -1;
             m_lastIndex = -1;
-            m_loadRequested = null;
             if (null != m_texture) {
                 ResetTexture();
             }
@@ -341,11 +340,6 @@ namespace UnityEngine.StreamingImageSequence {
             if (null == m_imagePaths)
                 return;
 
-            int numPictures = m_imagePaths.Count;
-            if (m_loadRequested == null && numPictures > 0) {
-                m_loadRequested = new bool[numPictures];
-            }
-
             // request loading while editor is idle.
             if (isDirectorIdle)
             {
@@ -395,9 +389,6 @@ namespace UnityEngine.StreamingImageSequence {
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
-            if (m_loadRequested == null) {
-                m_loadRequested = new bool[m_imagePaths.Count];
-            }
 
             StreamingImageSequencePlugin.GetImageData(filename,TEX_TYPE, out imageData );
             //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);
@@ -752,7 +743,6 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below
         private EditorCurveBinding m_timelineEditorCurveBinding;
 #endif
-        private bool[] m_loadRequested;
         [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = false;
         
         //[Note-sin: 2020-2-13] TimelineClip has to be setup every time (after deserialization, etc) to ensure that
