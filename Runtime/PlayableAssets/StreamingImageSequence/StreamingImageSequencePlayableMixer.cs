@@ -76,7 +76,7 @@ namespace UnityEngine.StreamingImageSequence
                 double loadStartOffsetTime = 1.0f + imagePaths.Count * 0.1f;
 
                 //Start to preload images before the clip is active
-				if ( directorTime>= startTime - loadStartOffsetTime && directorTime < endTime) {
+                if ( directorTime>= startTime - loadStartOffsetTime && directorTime < endTime) {
                     asset.ContinuePreloadingImages();                    
                 }
 
