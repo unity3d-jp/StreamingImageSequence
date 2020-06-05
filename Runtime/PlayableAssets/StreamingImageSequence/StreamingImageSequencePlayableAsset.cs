@@ -69,7 +69,6 @@ namespace UnityEngine.StreamingImageSequence {
         /// Constructor
         /// </summary>
         public StreamingImageSequencePlayableAsset() {
-            m_loadingIndex = -1;
             m_lastCopiedImageIndex = -1;
 #if UNITY_EDITOR            
             m_timelineEditorCurveBinding  = new EditorCurveBinding() {
@@ -281,7 +280,10 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------        
         internal void Reset() {
-            m_loadingIndex = -1;
+            m_primaryImageIndex         = 0;
+            m_forwardPreloadImageIndex  = 0;
+            m_backwardPreloadImageIndex = 0;
+            
             m_lastCopiedImageIndex = -1;
             if (null != m_texture) {
                 ResetTexture();
@@ -339,17 +341,21 @@ namespace UnityEngine.StreamingImageSequence {
 
         internal void ContinuePreloadingImages() {
             
-            const int NUM_IMAGES_TO_PRELOAD = 3;
-            int maxForwardPreloadIndex = Mathf.Min(m_loadingIndex + NUM_IMAGES_TO_PRELOAD, m_imagePaths.Count) -1;
+            const int NUM_IMAGES = 2;
 
-            for (int i = m_loadingIndex; i <= maxForwardPreloadIndex; ++i) {
-                if (i < 0 ) {
-                    continue;
-                }
-
+            //forward
+            int maxForwardPreloadIndex = Mathf.Min(m_forwardPreloadImageIndex + NUM_IMAGES, m_imagePaths.Count) -1;
+            for (int i = m_forwardPreloadImageIndex; i <= maxForwardPreloadIndex; ++i) {
                 QueueImageLoadTask(i, out _ );
             }
-            m_loadingIndex = maxForwardPreloadIndex;
+            m_forwardPreloadImageIndex = maxForwardPreloadIndex;
+            
+            //backward
+            int minBackwardPreloadIndex = Mathf.Max((m_backwardPreloadImageIndex - NUM_IMAGES)+1, 0);
+            for (int i = m_backwardPreloadImageIndex; i >=minBackwardPreloadIndex; --i) {
+                QueueImageLoadTask(i, out _ );
+            }
+            m_backwardPreloadImageIndex = minBackwardPreloadIndex;
             
         }
 
@@ -382,7 +388,11 @@ namespace UnityEngine.StreamingImageSequence {
                 return false;
             }
 
-            m_primaryImageIndex = index;           
+            m_primaryImageIndex         = index;
+            m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, m_imagePaths.Count - 1);
+            m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);
+
+            
             QueueImageLoadTask(index, out ImageData readResult);
 
             if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
@@ -711,12 +721,13 @@ namespace UnityEngine.StreamingImageSequence {
         //we are referring to the same instance rather than having a newly created one
         TimelineClip m_timelineClip  = null; 
 
-        //[TODO-sin: 2020-1-30] Turn this to a non-public var
-        [SerializeField] internal int m_loadingIndex;
 
         private int m_lastCopiedImageIndex; //the index of the image copied to m_texture
 
-        private int m_primaryImageIndex = 0;
+        private int m_primaryImageIndex         = 0;
+        private int m_forwardPreloadImageIndex  = 0;
+        private int m_backwardPreloadImageIndex = 0;
+        
         private bool m_verified;
         private StreamingImageSequencePlayableAsset m_clonedFromAsset = null;
 
