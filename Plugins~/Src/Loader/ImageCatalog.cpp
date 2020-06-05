@@ -66,6 +66,7 @@ const ImageData* ImageCatalog::AllocateImage(const strType& imagePath, const uin
     imageData.Height = h;
     imageData.CurrentReadStatus = READ_STATUS_LOADING;
     imageData.RawData = buffer;
+    imageData.DataSize = dataSize;
 
     IncUsedMemory(dataSize);
 
