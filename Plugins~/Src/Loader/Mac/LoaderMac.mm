@@ -10,12 +10,12 @@
 //Loader
 #include "Loader.h"
 #include "Loader/ImageCatalog.h"
+#include "Loader/LoaderConstants.h"
 
 #define DEBUG_MAC_DRAWING (0)
 
 namespace StreamingImageSequencePlugin {
 
-const uint32_t NUM_CHANNELS = 4;
 
 CGImageRef CGImageRefLoad(const char *filename) {
     NSString *path = [NSString stringWithUTF8String:filename];
@@ -33,7 +33,7 @@ void CGImageRefRetrievePixelData(const CGImageRef image, u32 width, u32 height, 
 
     CGContextRef context = CGBitmapContextCreate(output,
                                                  width, height,
-                                                 8, width * NUM_CHANNELS,
+                                                 8, width * LoaderConstants::NUM_BYTES_PER_TEXEL,
                                                  CGImageGetColorSpace(image),
                                                  kCGImageAlphaPremultipliedLast);
 
@@ -55,27 +55,21 @@ void CGImageRefRetrievePixelData(const CGImageRef image, u32 width, u32 height, 
 void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog) {
         
     const CGImageRef image = CGImageRefLoad(imagePath.c_str());
-    ImageData imageData(nullptr,0,0,0,StreamingImageSequencePlugin::READ_STATUS_FAIL);
+    ReadStatus status = StreamingImageSequencePlugin::READ_STATUS_FAIL;
     if (nullptr!=image) {
 
         const u32 width = (u32) CGImageGetWidth(image);
         const u32 height = (u32) CGImageGetHeight(image);
-        const uint32_t dataSize = width * height* NUM_CHANNELS;
-        u8* rawData = (u8*)malloc(dataSize);
+        
+        const ImageData* imageData = imageCatalog->AllocateImage(imagePath, imageType, width, height);
+        u8* rawData = imageData->RawData;
         
         if(nullptr!=rawData) {
-            memset(rawData,0,dataSize);
-
             CGImageRefRetrievePixelData(image, width, height, rawData);
-
-            imageData.Width  = width;
-            imageData.Height = height;
-            imageData.RawData  = rawData;
-            imageData.DataSize = dataSize;
-            imageData.CurrentReadStatus =StreamingImageSequencePlugin::READ_STATUS_SUCCESS;
+            status = StreamingImageSequencePlugin::READ_STATUS_SUCCESS;
         }
     }
-    imageCatalog->SetImage(imagePath,imageType, &imageData);
+    imageCatalog->SetImageStatus(imagePath,imageType, status);
 
     CGImageRelease(image);
     

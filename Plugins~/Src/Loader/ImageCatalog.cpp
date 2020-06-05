@@ -60,6 +60,8 @@ const ImageData* ImageCatalog::AllocateImage(const strType& imagePath, const uin
     if (nullptr == buffer) {
         return nullptr;
     }
+    
+    //memset(buffer,0,dataSize);
 
     ImageData& imageData = curMap[imagePath];
     imageData.Width = w;
