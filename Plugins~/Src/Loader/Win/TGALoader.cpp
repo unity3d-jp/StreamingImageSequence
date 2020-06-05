@@ -5,9 +5,10 @@
 //Loader
 #include "TGALoader.h"
 #include "Loader/ImageCatalog.h"
+#include "Loader/LoaderConstants.h"
 
 
-
+namespace StreamingImageSequencePlugin {
 
 extern "C"
 {
@@ -56,7 +57,6 @@ extern "C"
 	void loadTGAFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 		StreamingImageSequencePlugin::ImageCatalog* imageCatalog)
 	{
-		u8* pBuffer = NULL;
 		HANDLE hh =
 #if USE_WCHAR
 			CreateFileW(pName,
@@ -77,33 +77,31 @@ extern "C"
 #endif
 		s32 sSizByteFile = GetFileSize(hh, NULL);
 
-		pBuffer = (u8*)malloc(sSizByteFile);
+		//[TODO-sin: 2020-6-5] Should probably move this allocation to imageCatalog
+		u8* pBuffer = (u8*)malloc(sSizByteFile);
 		ASSERT(pBuffer != nullptr);
 
 		s32 sReadDone;
-		BOOL bRead =
-			::ReadFile(hh, pBuffer, sSizByteFile, (LPDWORD)&sReadDone, NULL);
+		BOOL bRead = ::ReadFile(hh, pBuffer, sSizByteFile, (LPDWORD)&sReadDone, NULL);
 		CloseHandle(hh);
 
 		StTGA_HEADER* ptHeader = (StTGA_HEADER*)pBuffer;
-		const u32  uRGBAByte = 4;
+		const u32  uRGBAByte = LoaderConstants::NUM_BYTES_PER_TEXEL;
 		bool bIsRLE = false;
 		u32  uImageType = ptHeader->_uImageType;
-		if (uImageType >= 8)
-		{
+		if (uImageType >= 8) {
 			uImageType -= 8;
 			bIsRLE = true;
 		}
 
-
-
 		const u32 uBitPerPixel = ptHeader->_uBitPerPixel;
-		const u32 uSizByteImageData = ptHeader->_uWidth * ptHeader->_uHeight * uRGBAByte;
-		u8* pImageData = (u8*)malloc(uSizByteImageData);
 
-
-		StreamingImageSequencePlugin::ImageData imageData(pImageData, uSizByteImageData, ptHeader->_uWidth, ptHeader->_uHeight,
-			StreamingImageSequencePlugin::READ_STATUS_SUCCESS);
+		const ImageData* imageData = imageCatalog->AllocateImage(imagePath, imageType, ptHeader->_uWidth, ptHeader->_uHeight);
+		if (nullptr == imageData) {
+			free(pBuffer);
+			imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_OUT_OF_MEMORY);
+			return;
+		}
 
 		s32 sSizeByteTgaHeader = sizeof(StTGA_HEADER);
 		s32 sColorMapEntrySizeByte = (ptHeader->_uColorMapEntrySize + 1) / 8;
@@ -114,7 +112,8 @@ extern "C"
 		bool bReadNextPixel = 1;
 		u8   uRawData[uRGBAByte];
 
-		u8*  pDst = pImageData;
+		u8*  pDst       = imageData->RawData;
+		u8*  pImageData = imageData->RawData;
 		s32  yy = -1;
 
 		// On Unity Windows, Texture coordinate is upside down.
@@ -252,6 +251,9 @@ extern "C"
 
 		free(pBuffer);
 
-		imageCatalog->SetImage(imagePath, imageType, &imageData);
+		imageCatalog->SetImageStatus(imagePath, imageType, READ_STATUS_SUCCESS);
 	}
 };
+
+
+} //end namespace

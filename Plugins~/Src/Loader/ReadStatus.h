@@ -7,6 +7,7 @@ enum ReadStatus {
     READ_STATUS_LOADING,
     READ_STATUS_SUCCESS,
     READ_STATUS_FAIL,
+    READ_STATUS_OUT_OF_MEMORY,
 };
 
 } //end namespace

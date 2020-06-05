@@ -19,8 +19,12 @@ public:
     //Returns null if not found
     const ImageData* GetImage(const strType& imagePath, const uint32_t imageType) const;
 
-    void AddImage(const strType& imagePath, const uint32_t imageType);
-    void SetImage(const strType& imagePath, const uint32_t imageType, ImageData* newImageData);
+    void PrepareImage(const strType& imagePath, const uint32_t imageType);
+    const ImageData* AllocateImage(const strType& imagePath,const uint32_t imageType,const uint32_t w,const uint32_t h);
+
+    void ResizeImage(const strType& imagePath,const uint32_t imageType,const uint32_t w, const uint32_t h);
+
+    void SetImageStatus(const strType& imagePath, const uint32_t imageType, const ReadStatus status);
 
     bool UnloadImage(const strType& imagePath, const uint32_t imageType);
     void UnloadAllImages();
@@ -33,8 +37,10 @@ private:
     ImageCatalog(ImageCatalog const&) = delete;
     ImageCatalog& operator=(ImageCatalog const&) = delete;
 
-    void IncUsedMemory(const uint64_t mem);
     void UnloadImageData(ImageData* imageData);
+    void IncUsedMemory(const uint64_t mem);
+    void DecUsedMemory(const uint64_t mem);
+    static uint32_t CalculateDataSize(const uint32_t w, const uint32_t h);
 
     uint64_t m_usedMemory;
 
