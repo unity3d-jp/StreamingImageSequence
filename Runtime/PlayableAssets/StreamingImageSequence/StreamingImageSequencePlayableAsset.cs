@@ -70,7 +70,7 @@ namespace UnityEngine.StreamingImageSequence {
         /// </summary>
         public StreamingImageSequencePlayableAsset() {
             m_loadingIndex = -1;
-            m_lastIndex = -1;
+            m_lastCopiedImageIndex = -1;
 #if UNITY_EDITOR            
             m_timelineEditorCurveBinding  = new EditorCurveBinding() {
                 path = "",
@@ -282,7 +282,7 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
         internal void Reset() {
             m_loadingIndex = -1;
-            m_lastIndex = -1;
+            m_lastCopiedImageIndex = -1;
             if (null != m_texture) {
                 ResetTexture();
             }
@@ -346,7 +346,7 @@ namespace UnityEngine.StreamingImageSequence {
                     continue;
                 }
 
-                QueueImageLoadTask(i, out ImageData readResult);
+                QueueImageLoadTask(i, out _ );
             }
             m_loadingIndex = maxForwardPreloadIndex;
             
@@ -382,27 +382,23 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             m_primaryImageIndex = index;           
-            string filename = QueueImageLoadTask(index, out ImageData readResult);
+            QueueImageLoadTask(index, out ImageData readResult);
 
             if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
 
                 m_texture = readResult.CreateCompatibleTexture();
                 readResult.CopyBufferToTexture(m_texture);
-
-                IntPtr ptr =  m_texture.GetNativeTexturePtr();
-                int texInstanceID = m_texture.GetInstanceID();
                 
                 UpdateResolution(ref readResult);
             }
 
             //Update the texture
-			if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS && m_lastIndex != index) {
-                int texInstanceID = m_texture.GetInstanceID();
+			if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS && m_lastCopiedImageIndex != index) {
 
                 readResult.CopyBufferToTexture(m_texture);
+                m_lastCopiedImageIndex = index;
 			}
 
-			m_lastIndex = index;
             return null!=m_texture;
         }
 //----------------------------------------------------------------------------------------------------------------------        
@@ -717,7 +713,7 @@ namespace UnityEngine.StreamingImageSequence {
         //[TODO-sin: 2020-1-30] Turn this to a non-public var
         [SerializeField] internal int m_loadingIndex;
 
-        private int m_lastIndex;
+        private int m_lastCopiedImageIndex; //the index of the image copied to m_texture
 
         private int m_primaryImageIndex = 0;
         private bool m_verified;
