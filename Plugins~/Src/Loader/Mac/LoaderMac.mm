@@ -62,9 +62,10 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType, Ima
         const u32 height = (u32) CGImageGetHeight(image);
         
         const ImageData* imageData = imageCatalog->AllocateImage(imagePath, imageType, width, height);
-        u8* rawData = imageData->RawData;
-        
-        if(nullptr!=rawData) {
+        if (nullptr == imageData) {
+            status =StreamingImageSequencePlugin::READ_STATUS_OUT_OF_MEMORY;
+        } else {
+            u8* rawData = imageData->RawData;
             CGImageRefRetrievePixelData(image, width, height, rawData);
             status = StreamingImageSequencePlugin::READ_STATUS_SUCCESS;
         }
