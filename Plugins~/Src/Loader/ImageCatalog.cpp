@@ -54,7 +54,7 @@ const ImageData* ImageCatalog::AllocateImage(const strType& imagePath, const uin
     }
 
     //Allocate
-    const uint32_t dataSize = w * h * LoaderConstants::NUM_BYTES_PER_TEXEL;
+    const uint32_t dataSize = CalculateDataSize(w, h);
     uint8_t*  buffer = static_cast<uint8_t*>(malloc(dataSize));
     //[TODO-sin: 2020-6-5] Handle automatic memory deallocation
     if (nullptr == buffer) {
@@ -66,7 +66,6 @@ const ImageData* ImageCatalog::AllocateImage(const strType& imagePath, const uin
     imageData.Height = h;
     imageData.CurrentReadStatus = READ_STATUS_LOADING;
     imageData.RawData = buffer;
-    imageData.DataSize = dataSize;
 
     IncUsedMemory(dataSize);
 
@@ -80,7 +79,8 @@ void ImageCatalog::ResizeImage(const strType& imagePath, const uint32_t imageTyp
     ASSERT(curMap.find(imagePath) != curMap.end());
 
     //Allocate
-    const uint32_t dataSize = w * h * LoaderConstants::NUM_BYTES_PER_TEXEL;
+    const uint32_t dataSize = CalculateDataSize(w, h);
+    
     uint8_t*  resizedBuffer = static_cast<uint8_t*>(malloc(dataSize));
     //[TODO-sin: 2020-6-5] Handle automatic memory deallocation
     if (nullptr == resizedBuffer) {
@@ -92,14 +92,13 @@ void ImageCatalog::ResizeImage(const strType& imagePath, const uint32_t imageTyp
     ASSERT(READ_STATUS_SUCCESS == imageData.CurrentReadStatus);
 
     uint8_t* prevRawData = imageData.RawData;
-    const uint32_t prevDataSize = imageData.DataSize;
+    const uint32_t prevDataSize = CalculateDataSize(imageData.Width, imageData.Height);
 
     stbir_resize_uint8(imageData.RawData, imageData.Width, imageData.Height, 0,
         resizedBuffer, w, h, 0, LoaderConstants::NUM_BYTES_PER_TEXEL);
     imageData.RawData = resizedBuffer;
     imageData.Width   = w;
     imageData.Height  = h;
-    imageData.DataSize = dataSize;
 
     free(prevRawData);
     DecUsedMemory(prevDataSize);
@@ -153,16 +152,15 @@ void ImageCatalog::UnloadAllImages() {
 //----------------------------------------------------------------------------------------------------------------------
 void ImageCatalog::UnloadImageData(ImageData* imageData) {
     ASSERT(nullptr!=imageData);
-    const uint64_t mem = imageData->DataSize;
-    ASSERT(m_usedMemory >= mem);
 
     if (nullptr != imageData->RawData) {
-        ASSERT(mem>0);
+        const uint64_t mem = CalculateDataSize(imageData->Width, imageData->Height);
+        ASSERT(m_usedMemory >= mem);
+        DecUsedMemory(mem);
         free(imageData->RawData);
     }
 
-    *imageData = ImageData(nullptr, 0, 0, 0, READ_STATUS_NONE);
-    DecUsedMemory(mem);
+    *imageData = ImageData(nullptr, 0, 0, READ_STATUS_NONE);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -174,4 +172,11 @@ void ImageCatalog::DecUsedMemory(const uint64_t mem) {
     m_usedMemory = (m_usedMemory >= mem) ? m_usedMemory - mem : 0;
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+uint32_t ImageCatalog::CalculateDataSize(const uint32_t w, const uint32_t h) {
+    return w * h * LoaderConstants::NUM_BYTES_PER_TEXEL;
 }
+
+
+} //end namespace

@@ -40,6 +40,7 @@ private:
     void UnloadImageData(ImageData* imageData);
     void IncUsedMemory(const uint64_t mem);
     void DecUsedMemory(const uint64_t mem);
+    static uint32_t CalculateDataSize(const uint32_t w, const uint32_t h);
 
     uint64_t m_usedMemory;
 
