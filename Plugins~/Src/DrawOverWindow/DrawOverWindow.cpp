@@ -72,19 +72,6 @@ CDrawOverWindow::~CDrawOverWindow()
 
 
 
-// This is an example of an exported variable
-DRAWOVERWINDOW_API int nDrawOverWindow=0;
-
-// This is an example of an exported function.
-DRAWOVERWINDOW_API int fnDrawOverWindow(void)
-{
-	return 42;
-}
-
-
-
-
-
 DRAWOVERWINDOW_API void  HideOverwrapWindow(int sInstanceId)
 {
 	if (g_instanceIdToWindow.find(sInstanceId) == g_instanceIdToWindow.end())

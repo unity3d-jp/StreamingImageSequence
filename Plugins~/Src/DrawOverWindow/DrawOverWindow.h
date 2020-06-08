@@ -32,10 +32,6 @@ public:
 	// TODO: add your methods here.
 };
 
-extern DRAWOVERWINDOW_API int nDrawOverWindow;
-
-DRAWOVERWINDOW_API int fnDrawOverWindow(void);
-
 extern "C"
 {
 	DRAWOVERWINDOW_API void  HideOverwrapWindow(int sInstanceId);
