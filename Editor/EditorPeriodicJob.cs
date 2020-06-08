@@ -70,7 +70,6 @@ namespace UnityEditor.StreamingImageSequence
                 return;
             }
             ProcessTracks(trackList);
-            ShowOverwrapWindows();
         }
 
 
@@ -141,90 +140,6 @@ namespace UnityEditor.StreamingImageSequence
 
 
 
-        private static void ShowOverwrapWindows()
-        {
-            var timeLineWindow = UpdateManager.GetTimelineWindow();
-            Rect windowPos = ((EditorWindow)timeLineWindow).position;
-            //       Rect windowPos = GetWindowPosition(timeLineWindow);
-
-
-            // Get Treeview
-            var bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField;
-            var type = timeLineWindow.GetType();
-            var info = type.GetProperty("treeView", bf);
-            var treeview = info.GetValue(timeLineWindow, null);
-#if UNITY_2019_2_OR_NEWER
-#else
-            // Get tracksBounds
-            info = type.GetProperty("tracksBounds", bf);
-            Rect trackbounds = (Rect)info.GetValue(timeLineWindow, null);
-
-            if (treeview == null)
-            {
-                return;
-            }
-
-
-            // Get ScrollPosition
-            type = treeview.GetType();
-            info = type.GetProperty("scrollPosition", bf);
-            Vector2 treeviewPos = (Vector2)info.GetValue(treeview, null);
-
-
-
-            // Get Tree view
-            type = treeview.GetType();
-            info = type.GetProperty("allClipGuis", bf);
-            var allClipGui = info.GetValue(treeview, null);
-            IEnumerable en = allClipGui as IEnumerable;
-
-            //        Util.Log("treeviewPos.y:: " + treeviewPos.y);
-            //        Util.Log("trackbounds.y:: " + trackbounds.y);
-            //        Util.Log("window.Pos.y:: " + windowPos.y);
-            //        Util.Log("window.Pos.x:: " + windowPos.x);
-            float offsetY = 24.0f;
-            foreach (var obj in en)
-            {
-                type = obj.GetType();
-                info = type.GetProperty("boundingRect", bf);
-                Rect rect = (Rect)info.GetValue(obj, null);
-
-                info = type.GetProperty("clip", bf);
-                var clip = info.GetValue(obj, null) as UnityEngine.Timeline.TimelineClip;
-                var assetType = clip.asset.GetType();
-                if (assetType != typeof(StreamingImageSequencePlayableAsset))
-                {
-                    continue;
-                }
-                float startX = windowPos.x + rect.x;
-                float startY = trackbounds.y + windowPos.y + rect.y - treeviewPos.y + offsetY;
-                float width = rect.width;
-                int forceChange = 0;
-                if (startX <= trackbounds.x + windowPos.x)
-                {
-                    var orgStartX = startX;
-                    startX = trackbounds.x + windowPos.x;
-                    width -= startX - orgStartX;
-                }
-
-                if (startX + width > windowPos.x + windowPos.width)
-                {
-                    width -= startX + width - (windowPos.x + windowPos.width);
-                }
-                int isLoaded = StreamingImageSequencePlugin.GetAllAreLoaded(clip.asset.GetInstanceID());
-
-                if ((rect.y - treeviewPos.y > 0.0f - offsetY && rect.y - treeviewPos.y < trackbounds.height - trackbounds.y && width > 0.0f - offsetY)
-                      && isLoaded == 0)
-                { 
-                       StreamingImageSequencePlugin.ShowOverwrapWindow(clip.asset.GetInstanceID(), (int)startX, (int)startY, (int)width, 1, forceChange); // (int)rect.height);
-                }
-                else
-                {
-                  StreamingImageSequencePlugin.HideOverwrapWindow(clip.asset.GetInstanceID());
-                }
-            }
-#endif
-        }
     }
 #endif
 }
