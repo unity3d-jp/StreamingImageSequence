@@ -26,7 +26,6 @@ public:
 	int m_sLastPosY;
 	int m_sLastWidth;
 	int m_sLastHeight;
-	CDrawOverWindow(int posX, int posY, int width, int height);
 	virtual ~CDrawOverWindow();
 
 	// TODO: add your methods here.

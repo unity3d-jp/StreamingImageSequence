@@ -21,20 +21,6 @@ CDrawOverWindow::CDrawOverWindow()
 	ASSERT(0);
 }
 
-CDrawOverWindow::CDrawOverWindow(int posX, int posY, int width, int height)
-	:m_hWnd(CreateWindowEx(
-	WS_EX_LEFT | WS_EX_TOPMOST | WS_EX_TOOLWINDOW, TEXT("STATIC"), TEXT("STATIC"),
-	WS_POPUP ,
-	posX, posY, width, height,
-	NULL, NULL, NULL, NULL)),
-	m_sLastPosX(posX),
-	m_sLastPosY(posY),
-	m_sLastWidth(width),
-	m_sLastHeight(height)
-{
-	HBRUSH brush = CreateSolidBrush(RGB(0, 0, 255));
-	SetClassLongPtr(m_hWnd, GCLP_HBRBACKGROUND, (LONG)brush);
-}
 
 
 CDrawOverWindow::~CDrawOverWindow()
