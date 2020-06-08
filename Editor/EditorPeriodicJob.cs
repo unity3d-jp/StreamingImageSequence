@@ -24,9 +24,6 @@ namespace UnityEditor.StreamingImageSequence
             UpdateManager.AddPeriodicJob(this);
         }
 
-        private  void Reinitialize()
-        {
-        }
         public override void Initialize()
         {
 
@@ -56,7 +53,6 @@ namespace UnityEditor.StreamingImageSequence
                 return;
             }
 
-            //ShowOverwrapWindows();
             List<TrackAsset> trackList = UpdateManager.GetTrackList(currentDirector);
             if (trackList == null)
             {
@@ -75,17 +71,9 @@ namespace UnityEditor.StreamingImageSequence
                     // Draw TrackGroupLeftSide
                     ProcessTrackGroup(track as GroupTrack);
                 }
-                else if (track.GetType() == typeof(StreamingImageSequenceTrack))
-                {
-                    // StreamingImageSequence Track
-                     ProcessStreamingImageSequenceTrack( track as StreamingImageSequenceTrack);
-                }
             }
         }
 
-        private static void ProcessStreamingImageSequenceTrack(StreamingImageSequenceTrack  track)
-        {
-        }
 
         private static void ProcessTrackGroup(GroupTrack trackGroup)
         {
