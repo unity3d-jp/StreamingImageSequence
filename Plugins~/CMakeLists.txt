@@ -61,10 +61,6 @@ add_subdirectory(${src_root}/External/stb)
 add_subdirectory(${src_root}/CommonLib)
 add_subdirectory(${src_root}/Loader)
 
-if(WIN32)
-    add_subdirectory(${src_root}/DrawOverWindow)
-endif()
-
 # Tests
 if(BUILD_UNIT_TESTS)
     find_package(GTest REQUIRED)
