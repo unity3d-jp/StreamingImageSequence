@@ -43,27 +43,6 @@ namespace UnityEngine.StreamingImageSequence {
         public static extern void ResetPlugin();
 
 
-
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-
-
-        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern void ResetOverwrapWindows();
-
-#elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-
-        public static IntPtr TestDraw(int posX, int posY) { return IntPtr.Zero; }       
-        public static void LoadAndShowBitMap(int posX, int posY, [MarshalAs(UnmanagedType.LPStr)]string fileName) { }
-        public static void ShowOverwrapWindow(int sInstanceID, int posX, int posY, int sWidth, int sHeight, int forceDraw) { }
-        public static void HideOverwrapWindow(int sInstanceID) { }
-        public static void SetOverwrapWindowData(int sInstanceID, UInt32[] byteArray, int length ) { }
-        public static void HideAllOverwrapWindows() { }
-        public static void SetAllAreLoaded(int sInstanceID,int flag) {}
-        public static int GetAllAreLoaded(int sInstanceID) { return 0; }
-        public static void ResetOverwrapWindows() { }
-#endif //Platform-dependent support
-
-
 #endif //UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 
 

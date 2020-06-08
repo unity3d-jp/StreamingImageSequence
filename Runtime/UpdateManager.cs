@@ -89,7 +89,6 @@ namespace UnityEngine.StreamingImageSequence
             double diff = EditorApplication.timeSinceStartup - s_PluginResetTime;
             if (diff > 0.016f * 60.0f)
             {
-                StreamingImageSequencePlugin.ResetOverwrapWindows();
                 StreamingImageSequencePlugin.UnloadAllImages();
                 m_isResettingPlugin = false;
             }
