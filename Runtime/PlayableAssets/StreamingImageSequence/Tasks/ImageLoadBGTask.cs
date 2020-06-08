@@ -1,42 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System;
-using System.Threading;
-using System.Runtime.InteropServices;
-using UnityEngine;
-using UnityEngine.Assertions;
-using System.IO;
-
-namespace UnityEngine.StreamingImageSequence {
+﻿namespace UnityEngine.StreamingImageSequence {
 
 
-    internal class ImageLoadBGTask : BackGroundTask
-    {
-		internal static bool m_sUpdated;
-        
-        string m_strFileName;
+    internal class ImageLoadBGTask : BackGroundTask {
 
 //----------------------------------------------------------------------------------------------------------------------
-        internal static void Queue(string strFileName) {
-            ImageLoadBGTask task = new ImageLoadBGTask(strFileName);
+        internal static void Queue(string strFileName, int frame) {
+            ImageLoadBGTask task = new ImageLoadBGTask(strFileName, frame);
             UpdateManager.QueueBackGroundTask(task);
             
         }
 
 //----------------------------------------------------------------------------------------------------------------------
-        private ImageLoadBGTask( string strFileName) {
+        private ImageLoadBGTask( string strFileName, int frame) {
             m_strFileName = strFileName;
+            m_frame = frame;
         }
 
 //----------------------------------------------------------------------------------------------------------------------
 
         public override void Execute() {
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
-            StreamingImageSequencePlugin.GetImageData(m_strFileName, TEX_TYPE, out ImageData tResult);
+            StreamingImageSequencePlugin.GetImageData(m_strFileName, TEX_TYPE, m_frame, out ImageData tResult);
             switch (tResult.ReadStatus) {
                 case StreamingImageSequenceConstants.READ_STATUS_NONE: {
                     //Debug.Log("Loading: " + m_strFileName);
-                    StreamingImageSequencePlugin.LoadAndAllocFullImage(m_strFileName);
+                    StreamingImageSequencePlugin.LoadAndAllocFullImage(m_strFileName, Time.frameCount);
                     break;
                 }
                 case StreamingImageSequenceConstants.READ_STATUS_LOADING: {
@@ -47,8 +35,11 @@ namespace UnityEngine.StreamingImageSequence {
                 }
                 default: break;
             }
-
-            m_sUpdated = true;
         }
+        
+//----------------------------------------------------------------------------------------------------------------------
+        readonly string m_strFileName;
+        private readonly int m_frame;
+
     }
-}
+} //end namespace
