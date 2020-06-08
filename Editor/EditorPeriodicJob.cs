@@ -13,7 +13,6 @@ namespace UnityEditor.StreamingImageSequence
 
     internal class EditorPeriodicJob : PeriodicJob
     {
-        private static Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam> m_streamingImageSequencePlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
 
         static EditorPeriodicJob()
         {
@@ -27,7 +26,6 @@ namespace UnityEditor.StreamingImageSequence
 
         private  void Reinitialize()
         {
-            m_streamingImageSequencePlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
         }
         public override void Initialize()
         {
@@ -36,7 +34,6 @@ namespace UnityEditor.StreamingImageSequence
 
         public override void Reset()
         {
-             m_streamingImageSequencePlayableAssetToColorArray = null;
         }
 
         public override void Cleanup()
@@ -49,10 +46,6 @@ namespace UnityEditor.StreamingImageSequence
             {
 
                 return;
-            }
-            if ( m_streamingImageSequencePlayableAssetToColorArray == null )
-            {
-                Reinitialize();
             }
 
             LogUtility.LogDebug("EditorPeriodicJob::Executing");
@@ -92,28 +85,6 @@ namespace UnityEditor.StreamingImageSequence
 
         private static void ProcessStreamingImageSequenceTrack(StreamingImageSequenceTrack  track)
         {
-            foreach (var clip in track.GetClips())
-            {
-                var asset = clip.asset as StreamingImageSequencePlayableAsset;
-                if (null == asset)
-                    continue;
-
-                if (!asset.Verified)
-                {
-                    continue;
-                }
-                if (m_streamingImageSequencePlayableAssetToColorArray.ContainsKey(asset))
-                {
-
-
-                }
-                else
-                {
-                    m_streamingImageSequencePlayableAssetToColorArray.Add(asset, new BGJobCacheParam(asset));
-                }
-
-
-            }
         }
 
         private static void ProcessTrackGroup(GroupTrack trackGroup)
