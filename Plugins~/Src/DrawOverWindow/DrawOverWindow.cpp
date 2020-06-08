@@ -57,7 +57,6 @@ CDrawOverWindow::CDrawOverWindow(int posX, int posY, int width, int height)
 	NULL, NULL, NULL, NULL)),
 	m_size(0),
 	m_pColorArray(nullptr),
-	m_pByteArray(nullptr),
 	m_sLastPosX(posX),
 	m_sLastPosY(posY),
 	m_sLastWidth(width),
@@ -74,10 +73,6 @@ CDrawOverWindow::~CDrawOverWindow()
 	if (m_pColorArray)
 	{
 		delete[] m_pColorArray;
-	}
-	if (m_pByteArray)
-	{
-		delete[] m_pByteArray;
 	}
 }
 
@@ -136,23 +131,12 @@ DRAWOVERWINDOW_API void  SetOverwrapWindowData(int sInstanceId, u32* byteArray, 
 	{
 		pWindow->m_pColorArray = new u32[pWindow->m_size];
 	}
-	if (pWindow->m_pByteArray == nullptr)
-	{ 
-		pWindow->m_pByteArray = new u32[pWindow->m_size];
-		for (int ii = 0; ii < pWindow->m_size;ii++)
-		{
-			pWindow->m_pByteArray[ii] = 0xCCCCCCCC;
-		}
-	}
+
 	u32 uColorWhite = 0xffffffff;
 	u32 uColorBlack = 0xff000000;
 	for (int ii = 0; ii < pWindow->m_size; ii++)
 	{
 		pWindow->m_pColorArray[ii] = byteArray[ii] ? uColorWhite : uColorBlack;
-		if (pWindow->m_pByteArray[ii] != byteArray[ii])
-		{
-			pWindow->m_pByteArray[ii] = byteArray[ii];
-		}
 	}
 
 }
