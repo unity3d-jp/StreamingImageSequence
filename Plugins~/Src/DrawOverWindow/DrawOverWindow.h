@@ -29,7 +29,6 @@ public:
 	int m_sLastPosY;
 	int m_sLastWidth;
 	int m_sLastHeight;
-	bool m_bIsModified;
 	CDrawOverWindow(int posX, int posY, int width, int height);
 	virtual ~CDrawOverWindow();
 

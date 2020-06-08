@@ -61,8 +61,7 @@ CDrawOverWindow::CDrawOverWindow(int posX, int posY, int width, int height)
 	m_sLastPosX(posX),
 	m_sLastPosY(posY),
 	m_sLastWidth(width),
-	m_sLastHeight(height),
-	m_bIsModified(true)
+	m_sLastHeight(height)
 {
 	HBRUSH brush = CreateSolidBrush(RGB(0, 0, 255));
 	SetClassLongPtr(m_hWnd, GCLP_HBRBACKGROUND, (LONG)brush);
@@ -153,7 +152,6 @@ DRAWOVERWINDOW_API void  SetOverwrapWindowData(int sInstanceId, u32* byteArray, 
 		if (pWindow->m_pByteArray[ii] != byteArray[ii])
 		{
 			pWindow->m_pByteArray[ii] = byteArray[ii];
-			pWindow->m_bIsModified = true;
 		}
 	}
 
