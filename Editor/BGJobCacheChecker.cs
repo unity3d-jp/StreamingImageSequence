@@ -40,14 +40,6 @@ namespace UnityEditor.StreamingImageSequence  {
             {
                 m_param.m_allLoaded = true;
             }
-            else if ( m_param.m_asset.m_loadingIndex == length)
-            {
-                // this is neccessary if script files are rebuilt while thread is execuiting in editor.
-                m_param.m_asset.m_loadingIndex = -1;
-#if UNITY_EDITOR
-                //                Util.Log("Fetched the situation");
-#endif
-            }
 
         }
 
