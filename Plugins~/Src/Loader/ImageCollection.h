@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 
 //CommonLib
 #include "CommonLib/Types.h"
@@ -15,7 +16,7 @@ public:
     inline void SetMemoryAllocator(ImageMemoryAllocator*);
 
     //return null if not found
-    const ImageData* GetImage(const strType& imagePath) const;
+    const ImageData* GetImage(const strType& imagePath);
 
     const ImageData* AllocateImage(const strType& imagePath, const uint32_t w, const uint32_t h);
     bool ResizeImage(const strType& imagePath, const uint32_t w, const uint32_t h);
@@ -28,14 +29,24 @@ public:
     inline const std::map<strType, ImageData> GetImageMap() const;
     inline size_t GetNumImages() const;
 
+    void ImageCollection::AdvanceFrame();
+
 private:
+
+    void AddImageOrder(std::map<strType, ImageData>::iterator);
+    void ReorderImage(std::map<strType, ImageData>::iterator);
+    void DeleteImageOrder(std::map<strType, ImageData>::iterator);
 
     ImageMemoryAllocator*           m_memAllocator;
     std::map<strType, ImageData>    m_pathToImageMap;
 
-
+    //Ordering structure
+    std::map<strType, std::list<std::map<strType, ImageData>::iterator>::iterator> m_pathToOrderMap;
+    std::list<std::map<strType, ImageData>::iterator>           m_orderedImageList;
+    std::list<std::map<strType, ImageData>::iterator>::iterator m_curFrameStartPos;
 
 };
+
 void ImageCollection::SetMemoryAllocator(ImageMemoryAllocator* memAllocator) { m_memAllocator = memAllocator; }
 
 inline const std::map<strType, ImageData> ImageCollection::GetImageMap() const { return m_pathToImageMap;  }

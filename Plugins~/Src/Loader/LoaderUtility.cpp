@@ -37,7 +37,7 @@ FileType LoaderUtility::CheckFileType(const strType& imagePath) {
 //Returns whether the file has been processed, or is still processed  (inside readResultMap).
 
 bool LoaderUtility::GetImageDataInto(const strType& imagePath, const uint32_t imageType, 
-    const ImageCatalog* imageCatalog, ImageData* pResult)
+    ImageCatalog* imageCatalog, ImageData* pResult)
 {
     using namespace StreamingImageSequencePlugin;
     ASSERT(pResult);

@@ -19,7 +19,7 @@ public:
     inline static ImageCatalog& GetInstance();
     
     //Wrapper for functions in ImageCollection
-    inline const ImageData* GetImage(const strType& imagePath, const uint32_t imageType) const;
+    inline const ImageData* GetImage(const strType& imagePath, const uint32_t imageType);
     inline void PrepareImage(const strType& imagePath, const uint32_t imageType);
     inline const ImageData* AllocateImage(const strType& imagePath,const uint32_t imageType,const uint32_t w,const uint32_t h);
     inline void ResizeImage(const strType& imagePath,const uint32_t imageType,const uint32_t w, const uint32_t h);
@@ -50,7 +50,7 @@ ImageCatalog& ImageCatalog::GetInstance() {
 
 //----------------------------------------------------------------------------------------------------------------------
 //Wrapper for functions in ImageCollection 
-const ImageData* ImageCatalog::GetImage(const strType& imagePath, const uint32_t imageType) const {
+const ImageData* ImageCatalog::GetImage(const strType& imagePath, const uint32_t imageType) {
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
     return m_imageCollection[imageType].GetImage(imagePath);
 }

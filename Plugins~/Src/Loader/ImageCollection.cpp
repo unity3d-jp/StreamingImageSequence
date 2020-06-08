@@ -11,13 +11,14 @@
 namespace StreamingImageSequencePlugin {
 
 
-const ImageData* ImageCollection::GetImage(const strType& imagePath) const {
-    std::map<strType, ImageData>::const_iterator pathIt = m_pathToImageMap.find(imagePath);
+const ImageData* ImageCollection::GetImage(const strType& imagePath) {
+    std::map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
 
     if (m_pathToImageMap.end() == pathIt) {
         return nullptr;
     }
 
+    ReorderImage(pathIt);
     return &pathIt->second;
 }
 
@@ -27,6 +28,7 @@ std::map<strType, ImageData>::iterator ImageCollection::PrepareImage(const strTy
     ASSERT(m_pathToImageMap.find(imagePath) == m_pathToImageMap.end());
 
     auto it = m_pathToImageMap.insert({ imagePath, ImageData(nullptr,0,0,READ_STATUS_LOADING) });
+    AddImageOrder(it.first);
     return it.first;
 }
 
@@ -105,6 +107,7 @@ bool ImageCollection::UnloadImage(const strType& imagePath) {
         return false;
 
     m_memAllocator->Deallocate(&(it->second));
+    DeleteImageOrder(it);
     m_pathToImageMap.erase(imagePath);
     return true;
 }
@@ -112,6 +115,9 @@ bool ImageCollection::UnloadImage(const strType& imagePath) {
 //----------------------------------------------------------------------------------------------------------------------
 
 void ImageCollection::UnloadAllImages() {
+    m_pathToOrderMap.clear();
+    m_orderedImageList.clear();
+    m_curFrameStartPos = m_orderedImageList.end();
 
     for (auto itr = m_pathToImageMap.begin(); itr != m_pathToImageMap.end(); ++itr) {
         ImageData* imageData = &(itr->second);
@@ -121,6 +127,57 @@ void ImageCollection::UnloadAllImages() {
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+void ImageCollection::AdvanceFrame() {
+
+    //This will imply that images next to this pos were added/used after this frame, 
+    //while the prev nodes were added before and not used since
+    m_curFrameStartPos = m_orderedImageList.end();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void ImageCollection::AddImageOrder(std::map<strType, ImageData>::iterator pathToImageIt) {
+    auto orderIt = m_orderedImageList.insert(m_orderedImageList.end(), pathToImageIt);
+    m_pathToOrderMap.insert({pathToImageIt->first, orderIt});
+}
+//----------------------------------------------------------------------------------------------------------------------
+
+void ImageCollection::ReorderImage(std::map<strType, ImageData>::iterator pathToImageIt) {
+    auto pathToOrderIt = m_pathToOrderMap.find(pathToImageIt->first);
+    if (m_pathToOrderMap.end() == pathToOrderIt) {
+        return;
+    }
+
+    //maintain the position of the current frame
+    if (pathToOrderIt->second == m_curFrameStartPos) {
+        ++m_curFrameStartPos;
+    }
+
+    //Move to the end
+    m_orderedImageList.splice( m_orderedImageList.end(), m_orderedImageList, pathToOrderIt->second);
+
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+//remove the linked data in m_orderedImageList
+void ImageCollection::DeleteImageOrder(std::map<strType, ImageData>::iterator pathToImageIt) {
+    //remove the linked data in the ordering structures
+    auto pathToOrderIt = m_pathToOrderMap.find(pathToImageIt->first);
+    if (m_pathToOrderMap.end() == pathToOrderIt) {
+        return;
+    }
+
+    auto orderIt = pathToOrderIt->second;
+
+    if (orderIt == m_curFrameStartPos) {
+        ++m_curFrameStartPos;
+    }
+    m_orderedImageList.erase(orderIt);
+    m_pathToOrderMap.erase(pathToOrderIt);
+}
 
 
 } //end namespace

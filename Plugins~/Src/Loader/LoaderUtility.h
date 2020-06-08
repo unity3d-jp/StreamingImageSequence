@@ -19,7 +19,7 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType, Ima
 class LoaderUtility {
 public:
     static FileType CheckFileType(const strType& imagePath);
-    static bool GetImageDataInto(const strType& imagePath, const uint32_t imageType, const ImageCatalog*,ImageData*);
+    static bool GetImageDataInto(const strType& imagePath, const uint32_t imageType, ImageCatalog*,ImageData*);
     static bool LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* textureCatalog );
 
     static bool LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* textureCatalog,
