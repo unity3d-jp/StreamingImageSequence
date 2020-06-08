@@ -58,33 +58,7 @@ namespace UnityEditor.StreamingImageSequence
             {
                 return;
             }
-            ProcessTracks(trackList);
         }
-
-
-        static void ProcessTracks(List<TrackAsset> trackList)
-        {
-            foreach (var track in trackList)
-            {
-                if (track.GetType() == typeof(GroupTrack))
-                {
-                    // Draw TrackGroupLeftSide
-                    ProcessTrackGroup(track as GroupTrack);
-                }
-            }
-        }
-
-
-        private static void ProcessTrackGroup(GroupTrack trackGroup)
-        {
-            List<TrackAsset> list = UpdateManager.GetTrackList(trackGroup);
-            if (list.Count >= 1)
-            {
-                ProcessTracks(list);
-            }
-        }
-
-
 
     }
 #endif
