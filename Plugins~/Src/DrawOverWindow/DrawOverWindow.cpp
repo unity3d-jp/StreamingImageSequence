@@ -15,34 +15,6 @@ using namespace Gdiplus;
 
 std::map<int, CDrawOverWindow*>				 g_instanceIdToWindow;
 std::map<int, int>                           g_instanceIdToLoadedFlags;
-void InitLayeredWindow(HWND hWnd)
-{
-	/* The call to UpdateLayeredWindow() is what makes a non-rectangular
-	* window possible. To enable per pixel alpha blending we pass in the
-	* argument ULW_ALPHA, and provide a BLENDFUNCTION structure filled in
-	* to do per pixel alpha blending.
-	*/
-	/*
-	HDC hdc = NULL;
-
-	if (hdc = GetDC(hWnd))
-	{
-		HGDIOBJ hPrevObj = NULL;
-		POINT ptDest = { 0, 0 };
-		POINT ptSrc = { 0, 0 };
-		SIZE client = { g_image.width, g_image.height };
-		BLENDFUNCTION blendFunc = { AC_SRC_OVER, 0, 255, AC_SRC_ALPHA };
-
-		hPrevObj = SelectObject(g_image.hdc, g_image.hBitmap);
-		ClientToScreen(hWnd, &ptDest);
-
-		UpdateLayeredWindow(hWnd, hdc, &ptDest, &client,
-			g_image.hdc, &ptSrc, 0, &blendFunc, ULW_ALPHA);
-
-		SelectObject(g_image.hdc, hPrevObj);
-		ReleaseDC(hWnd, hdc);
-	}*/
-}
 
 CDrawOverWindow::CDrawOverWindow()
 {
