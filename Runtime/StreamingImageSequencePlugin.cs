@@ -16,10 +16,6 @@ namespace UnityEngine.StreamingImageSequence {
 
         private const string LOADER_DLL = "Loader";
 
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-        private const string DRAW_OVER_WINDOW_DLL   = "DrawOverWindow";
-#endif
-
         // Implemented in Loader dll
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern bool LoadAndAllocFullImage([MarshalAs(UnmanagedType.LPStr)]string fileName);
