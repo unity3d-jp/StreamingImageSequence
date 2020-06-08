@@ -15,17 +15,6 @@ using namespace Gdiplus;
 
 std::map<int, int>                           g_instanceIdToLoadedFlags;
 
-CDrawOverWindow::CDrawOverWindow()
-{
-	ASSERT(0);
-}
-
-
-
-CDrawOverWindow::~CDrawOverWindow()
-{
-	::DestroyWindow(m_hWnd);
-}
 
 DRAWOVERWINDOW_API void   SetAllAreLoaded(int sInstanceId, int flag)
 {

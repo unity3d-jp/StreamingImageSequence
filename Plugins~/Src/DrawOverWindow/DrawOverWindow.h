@@ -14,23 +14,6 @@
 
 #include "../CommonLib/CommonLib.h"
 
-
-// This class is exported from the DrawOverWindow.dll
-class DRAWOVERWINDOW_API CDrawOverWindow {
-
-	CDrawOverWindow(void);
-
-public:
-	HWND m_hWnd;
-	int m_sLastPosX;
-	int m_sLastPosY;
-	int m_sLastWidth;
-	int m_sLastHeight;
-	virtual ~CDrawOverWindow();
-
-	// TODO: add your methods here.
-};
-
 extern "C"
 {
 
