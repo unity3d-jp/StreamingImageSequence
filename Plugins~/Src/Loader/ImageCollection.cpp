@@ -11,14 +11,15 @@
 namespace StreamingImageSequencePlugin {
 
 
-const ImageData* ImageCollection::GetImage(const strType& imagePath) {
+const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool isForCurrentOrder) {
     std::map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
 
     if (m_pathToImageMap.end() == pathIt) {
         return nullptr;
     }
 
-    ReorderImage(pathIt);
+    if (isForCurrentOrder)
+        ReorderImage(pathIt);
     return &pathIt->second;
 }
 

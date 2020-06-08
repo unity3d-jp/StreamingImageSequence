@@ -16,7 +16,7 @@ public:
     inline void SetMemoryAllocator(ImageMemoryAllocator*);
 
     //return null if not found
-    const ImageData* GetImage(const strType& imagePath);
+    const ImageData* GetImage(const strType& imagePath, const bool isForCurrentOrder);
 
     const ImageData* AllocateImage(const strType& imagePath, const uint32_t w, const uint32_t h);
     bool ResizeImage(const strType& imagePath, const uint32_t w, const uint32_t h);
