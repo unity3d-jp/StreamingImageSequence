@@ -48,11 +48,6 @@ namespace UnityEngine.StreamingImageSequence {
 
 
         [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern void SetAllAreLoaded(int sInstanceID,int flag);
-        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern int GetAllAreLoaded(int sInstanceID);
-
-        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void ResetOverwrapWindows();
 
 #elif UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
