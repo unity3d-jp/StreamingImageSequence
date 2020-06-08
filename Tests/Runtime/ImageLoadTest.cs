@@ -18,15 +18,15 @@ namespace UnityEngine.StreamingImageSequence.Tests {
 
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
 
-            StreamingImageSequencePlugin.GetImageData(fullPath, TEX_TYPE, out ImageData readResult );
+            StreamingImageSequencePlugin.GetImageData(fullPath, TEX_TYPE, Time.frameCount, out ImageData readResult );
             Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_NONE, readResult.ReadStatus, 
                 "Texture is already or currently being loaded"
             );
 
-            ImageLoadBGTask.Queue(fullPath);
+            ImageLoadBGTask.Queue(fullPath,Time.frameCount);
             yield return new WaitForSeconds(LOAD_TIMEOUT);
             
-            StreamingImageSequencePlugin.GetImageData(fullPath, TEX_TYPE, out readResult );
+            StreamingImageSequencePlugin.GetImageData(fullPath, TEX_TYPE, Time.frameCount, out readResult );
             Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_SUCCESS, readResult.ReadStatus,
                 "Loading texture is not successful."
             );
@@ -46,17 +46,17 @@ namespace UnityEngine.StreamingImageSequence.Tests {
 
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW;
 
-            StreamingImageSequencePlugin.GetImageData(fullPath, TEX_TYPE, out ImageData readResult );
+            StreamingImageSequencePlugin.GetImageData(fullPath, TEX_TYPE, Time.frameCount, out ImageData readResult );
             Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_NONE, readResult.ReadStatus, 
                 "Texture is already or currently being loaded"
             );
 
             const int WIDTH = 256;
             const int HEIGHT= 128;
-            PreviewImageLoadBGTask.Queue(fullPath, WIDTH, HEIGHT);
+            PreviewImageLoadBGTask.Queue(fullPath, WIDTH, HEIGHT, Time.frameCount);
             yield return new WaitForSeconds(LOAD_TIMEOUT);
 
-            StreamingImageSequencePlugin.GetImageData(fullPath,TEX_TYPE, out readResult );
+            StreamingImageSequencePlugin.GetImageData(fullPath,TEX_TYPE, Time.frameCount, out readResult );
             Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_SUCCESS, readResult.ReadStatus, 
                 "Loading texture is not successful."
             );
@@ -75,7 +75,8 @@ namespace UnityEngine.StreamingImageSequence.Tests {
             for (int texType = 0; texType < StreamingImageSequenceConstants.MAX_IMAGE_TYPES;++texType) {
                 if (texType == exceptionTexType)
                     continue;
-                StreamingImageSequencePlugin.GetImageData(fullPath, texType, out ImageData otherReadResult);
+                StreamingImageSequencePlugin.GetImageData(fullPath, texType, Time.frameCount, 
+                    out ImageData otherReadResult);
                 Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_NONE, otherReadResult.ReadStatus, 
                     "AssertUnloaded()"
                 );
@@ -86,7 +87,7 @@ namespace UnityEngine.StreamingImageSequence.Tests {
 
         void ResetAndAssert(string fullPath, int texType) {
             StreamingImageSequencePlugin.UnloadImage(fullPath);
-            StreamingImageSequencePlugin.GetImageData(fullPath, texType, out ImageData readResult);
+            StreamingImageSequencePlugin.GetImageData(fullPath, texType, Time.frameCount, out ImageData readResult);
             Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_NONE, readResult.ReadStatus, "ResetAndAssert");
         }
 
