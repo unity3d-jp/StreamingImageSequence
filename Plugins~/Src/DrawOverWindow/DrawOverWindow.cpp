@@ -82,18 +82,6 @@ CDrawOverWindow::~CDrawOverWindow()
 	}
 }
 
-bool CDrawOverWindow::IsModified(int posX, int posY, int width, int height)
-{
-	if ( m_sLastPosX != posX
-		|| m_sLastPosY != posY
-		|| m_sLastWidth != width
-		|| m_sLastHeight != height
-		|| m_bIsModified)
-	{
-		return true;
-	}
-	return false;
-}
 void CDrawOverWindow::SetNewCondition(int posX, int posY, int width, int height)
 {
 	m_sLastPosX = posX;

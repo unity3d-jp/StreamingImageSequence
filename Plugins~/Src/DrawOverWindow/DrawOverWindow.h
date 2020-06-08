@@ -33,7 +33,6 @@ public:
 	CDrawOverWindow(int posX, int posY, int width, int height);
 	virtual ~CDrawOverWindow();
 
-	bool IsModified(int posX, int posY, int width, int height);
 	void SetNewCondition(int posX, int posY, int width, int height);
 	// TODO: add your methods here.
 };
