@@ -20,7 +20,7 @@ public:
     const ImageData* AllocateImage(const strType& imagePath, const uint32_t w, const uint32_t h);
     bool ResizeImage(const strType& imagePath, const uint32_t w, const uint32_t h);
 
-    void PrepareImage(const strType& imagePath);
+    std::map<strType, ImageData>::iterator PrepareImage(const strType& imagePath);
     void SetImageStatus(const strType& imagePath, const ReadStatus status);
     bool UnloadImage(const strType& imagePath);
     void UnloadAllImages();

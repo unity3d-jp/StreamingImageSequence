@@ -10,7 +10,7 @@ ImageMemoryAllocator::~ImageMemoryAllocator() {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-bool ImageMemoryAllocator::Allocate(ImageData* imageData, const uint32_t w, const uint32_t h) {
+bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, const uint32_t h) {
     //Allocate
     const uint32_t dataSize = CalculateMemSize(w, h);
     uint8_t*  buffer = static_cast<uint8_t*>(malloc(dataSize));
@@ -20,7 +20,7 @@ bool ImageMemoryAllocator::Allocate(ImageData* imageData, const uint32_t w, cons
     }
 
     std::memset(buffer,0,dataSize);
-    *imageData = ImageData(buffer, w, h, READ_STATUS_LOADING);
+    *rawDataPtr = buffer;
 
     IncUsedMem(dataSize);
 

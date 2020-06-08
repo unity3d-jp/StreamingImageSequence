@@ -12,34 +12,43 @@ namespace StreamingImageSequencePlugin {
 
 
 const ImageData* ImageCollection::GetImage(const strType& imagePath) const {
+    std::map<strType, ImageData>::const_iterator pathIt = m_pathToImageMap.find(imagePath);
 
-    if (m_pathToImageMap.find(imagePath) != m_pathToImageMap.end()) {
-        return &(m_pathToImageMap.at(imagePath));
+    if (m_pathToImageMap.end() == pathIt) {
+        return nullptr;
     }
-    return nullptr;
+
+    return &pathIt->second;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void ImageCollection::PrepareImage(const strType& imagePath) {
+std::map<strType, ImageData>::iterator ImageCollection::PrepareImage(const strType& imagePath) {
+    
     ASSERT(m_pathToImageMap.find(imagePath) == m_pathToImageMap.end());
 
-    ImageData& imageData = m_pathToImageMap[imagePath];
-    ASSERT(nullptr == imageData.RawData);
-
-    imageData.CurrentReadStatus = READ_STATUS_LOADING;
+    auto it = m_pathToImageMap.insert({ imagePath, ImageData(nullptr,0,0,READ_STATUS_LOADING) });
+    return it.first;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const uint32_t w, const uint32_t h) {
 
-    //Unload existing memory if it exsits
-    if (m_pathToImageMap.find(imagePath) != m_pathToImageMap.end()) {
+    auto pathIt = m_pathToImageMap.find(imagePath);
+
+    //Unload existing memory if it exists
+    if (m_pathToImageMap.end() != pathIt) {
         m_memAllocator->Deallocate(&m_pathToImageMap[imagePath]);
+    }  else {
+        pathIt = PrepareImage(imagePath);
     }
 
-    ImageData* imageData = &m_pathToImageMap[imagePath];
-    const bool isAllocated = m_memAllocator->Allocate(imageData, w, h);
+    ImageData* imageData = &pathIt->second;
+    imageData->Width = w;
+    imageData->Height = h;
+
+    const bool isAllocated = m_memAllocator->Allocate(&imageData->RawData, w, h);
+
     //[TODO-sin: 2020-6-5] Handle automatic memory deallocation
     if (!isAllocated)
         return nullptr;
@@ -50,28 +59,32 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 //----------------------------------------------------------------------------------------------------------------------
 
 bool ImageCollection::ResizeImage(const strType& imagePath, const uint32_t w, const uint32_t h) {
-    ASSERT(m_pathToImageMap.find(imagePath) != m_pathToImageMap.end());
+
+    auto it = m_pathToImageMap.find(imagePath);
+    ASSERT(it != m_pathToImageMap.end());
 
     //Allocate
-    ImageData resizedImageData;
-    const bool isAllocated = m_memAllocator->Allocate(&resizedImageData, w, h);
+    ImageData resizedImageData(nullptr,w,h,READ_STATUS_LOADING);
+    const bool isAllocated = m_memAllocator->Allocate(&resizedImageData.RawData, w, h);
 
     //[TODO-sin: 2020-6-5] Handle automatic memory deallocation
     if (!isAllocated) {
         return false;
     }
 
-    ImageData& prevImageData = m_pathToImageMap.at(imagePath);
-    ASSERT(nullptr != prevImageData.RawData);
-    ASSERT(READ_STATUS_SUCCESS == prevImageData.CurrentReadStatus);
+    ImageData& imageData = it->second;
+    ASSERT(nullptr != imageData.RawData);
+    ASSERT(READ_STATUS_SUCCESS == imageData.CurrentReadStatus);
+
     
-    stbir_resize_uint8(prevImageData.RawData, prevImageData.Width, prevImageData.Height, 0,
+    stbir_resize_uint8(imageData.RawData, imageData.Width, imageData.Height, 0,
         resizedImageData.RawData, w, h, 0, LoaderConstants::NUM_BYTES_PER_TEXEL);
-    m_memAllocator->Deallocate(&prevImageData);
+    m_memAllocator->Deallocate(&imageData);
 
     //Register to map
     resizedImageData.CurrentReadStatus = READ_STATUS_SUCCESS;
-    m_pathToImageMap[imagePath] = resizedImageData;
+    it->second = resizedImageData;
+
     return true;
 }
 
@@ -87,10 +100,11 @@ void ImageCollection::SetImageStatus(const strType& imagePath, const ReadStatus 
 //----------------------------------------------------------------------------------------------------------------------
 bool ImageCollection::UnloadImage(const strType& imagePath) {
 
-    if (m_pathToImageMap.find(imagePath) == m_pathToImageMap.end())
+    std::map<strType,ImageData>::iterator it = m_pathToImageMap.find(imagePath);
+    if (m_pathToImageMap.end() == it)
         return false;
 
-    m_memAllocator->Deallocate(&m_pathToImageMap[imagePath]);
+    m_memAllocator->Deallocate(&(it->second));
     m_pathToImageMap.erase(imagePath);
     return true;
 }

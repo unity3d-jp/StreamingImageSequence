@@ -13,7 +13,7 @@ struct ImageData;
 class ImageMemoryAllocator {
 public:
     //return true if alloc is successful, false otherwise
-    bool Allocate(ImageData* imageData, const uint32_t w, const uint32_t h);
+    bool Allocate(uint8_t ** rawDataPtr, const uint32_t w, const uint32_t h);
     void Deallocate(ImageData* imageData);
 
     inline uint64_t GetUsedMemory() const;
