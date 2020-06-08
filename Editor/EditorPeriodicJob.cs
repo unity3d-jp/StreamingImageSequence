@@ -120,11 +120,6 @@ namespace UnityEditor.StreamingImageSequence
                 if (allAreLoaded == 0)
                 {
                     new BGJobCacheChecker(m_streamingImageSequencePlayableAssetToColorArray[asset]);
-                    UInt32[] colorArray = m_streamingImageSequencePlayableAssetToColorArray[asset].m_collorArray;
-                    if (colorArray == null)
-                    {
-                        return;
-                    }
                     if (param.m_allLoaded)
                     {
                         StreamingImageSequencePlugin.SetAllAreLoaded(asset.GetInstanceID(), 1);
