@@ -39,25 +39,8 @@ namespace UnityEditor.StreamingImageSequence
         }
         public override void Execute()
         {
-            if ( UpdateManager.IsPluginResetting())
-            {
 
-                return;
-            }
 
-            LogUtility.LogDebug("EditorPeriodicJob::Executing");
-            UpdateManager.GetStreamingAssetPath(); // must be executed in main thread.
-
-            PlayableDirector  currentDirector = UpdateManager.GetCurrentDirector();
-            if (currentDirector == null) {
-                return;
-            }
-
-            List<TrackAsset> trackList = UpdateManager.GetTrackList(currentDirector);
-            if (trackList == null)
-            {
-                return;
-            }
         }
 
     }

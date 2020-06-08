@@ -46,7 +46,6 @@ namespace UnityEngine.StreamingImageSequence
         private static bool s_bShutdown;
         private static Dictionary<PlayableDirector, PlayableDirectorStatus> s_directorStatusDictiornary = new Dictionary<PlayableDirector, PlayableDirectorStatus>();
         private static string s_AppDataPath;
-        private static string s_StreamingAssetPath;
         private static bool m_isResettingPlugin = false;
         
 #if UNITY_EDITOR        
@@ -393,14 +392,6 @@ namespace UnityEngine.StreamingImageSequence
             return newPath;
         }
 
-        static public string GetStreamingAssetPath()
-        {
-            if ( s_StreamingAssetPath == null )
-            {
-                s_StreamingAssetPath = Application.streamingAssetsPath;
-            }
-            return s_StreamingAssetPath;
-        }
 #if UNITY_EDITOR
         static public PlayableDirector GetCurrentDirector()
         {
