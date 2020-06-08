@@ -85,7 +85,7 @@ LOADER_API void ListLoadedImages(const uint32_t imageType, void(*OnNextTexture)(
 	using namespace StreamingImageSequencePlugin;
 	ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 
-	const std::map<strType, ImageData> images = ImageCatalog::GetInstance().GetImageCollection(imageType);
+	const std::map<strType, ImageData> images = ImageCatalog::GetInstance().GetImageMap(imageType);
 	for (auto itr = images.begin(); itr != images.end(); ++itr) {
 		OnNextTexture(itr->first.c_str());
 	}
