@@ -111,17 +111,6 @@ DRAWOVERWINDOW_API void  HideAllOverwrapWindows()
 
 }
 
-DRAWOVERWINDOW_API void  SetOverwrapWindowData(int sInstanceId, u32* byteArray, int size)
-{
-	if (g_instanceIdToWindow.find(sInstanceId) == g_instanceIdToWindow.end())
-	{
-		return;
-	}
-	CDrawOverWindow*  pWindow = g_instanceIdToWindow[sInstanceId];
-	ASSERT(pWindow);
-
-
-}
 
 
 
