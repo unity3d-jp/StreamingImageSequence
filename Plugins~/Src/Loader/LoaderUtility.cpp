@@ -37,13 +37,13 @@ FileType LoaderUtility::CheckFileType(const strType& imagePath) {
 //Returns whether the file has been processed, or is still processed  (inside readResultMap).
 
 bool LoaderUtility::GetImageDataInto(const strType& imagePath, const uint32_t imageType, 
-    ImageCatalog* imageCatalog, ImageData* pResult)
+    ImageCatalog* imageCatalog, const int frame, ImageData* pResult)
 {
     using namespace StreamingImageSequencePlugin;
     ASSERT(pResult);
     pResult->CurrentReadStatus = READ_STATUS_NONE;
     
-    const ImageData* imageData = imageCatalog->GetImage(imagePath, imageType);
+    const ImageData* imageData = imageCatalog->GetImage(imagePath, imageType, frame);
     if (nullptr == imageData)
         return false;
 
@@ -59,12 +59,13 @@ bool LoaderUtility::GetImageDataInto(const strType& imagePath, const uint32_t im
 
 //----------------------------------------------------------------------------------------------------------------------
 //Returns whether the file has been processed, or is still processed  (inside readResultMap).
-bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog) 
+bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog, 
+    const int frame) 
 {
     using namespace StreamingImageSequencePlugin;
     ImageData readResult;
 
-    const bool isProcessed = LoaderUtility::GetImageDataInto(imagePath, imageType, imageCatalog, &readResult );
+    const bool isProcessed = LoaderUtility::GetImageDataInto(imagePath, imageType, imageCatalog, frame, &readResult );
     if (isProcessed) {
         return true;
     }
@@ -74,7 +75,7 @@ bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t i
         return false;
 
     //Loading
-    imageCatalog->PrepareImage(imagePath, imageType);
+    imageCatalog->PrepareImage(imagePath, imageType, frame);
 
     switch (fileType) {
         case FILE_TYPE_TGA: {
@@ -95,16 +96,16 @@ bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t i
 //----------------------------------------------------------------------------------------------------------------------
 //Returns whether the file has been processed, or is still processed  (inside catalog).
 bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog
-    , const uint32_t reqWidth, const uint32_t reqHeight) 
+    , const uint32_t reqWidth, const uint32_t reqHeight, const int frame) 
 {
     //[TODO-sin: 2020-6-4] If the resized version of this tex is not loaded, but the full version is, we can probably
     //do some optimization by resizing the full version directly, instead of loading again.
 
-    if (!LoaderUtility::LoadAndAllocImage(imagePath, imageType, imageCatalog))
+    if (!LoaderUtility::LoadAndAllocImage(imagePath, imageType, imageCatalog, frame))
         return false;
 
     ImageData imageData;
-    if (!LoaderUtility::GetImageDataInto(imagePath, imageType, imageCatalog, &imageData ))
+    if (!LoaderUtility::GetImageDataInto(imagePath, imageType, imageCatalog, frame, &imageData ))
         return false;
 
     //Buffer is still null. Means, still loading
