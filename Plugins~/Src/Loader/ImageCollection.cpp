@@ -150,7 +150,7 @@ void ImageCollection::ReorderImage(std::map<strType, ImageData>::iterator pathTo
         return;
     }
 
-    //don't move the start of the current order to the end as well
+    //don't move the start of the current "order" (frame) to the end as well
     if (pathToOrderIt->second == m_curOrderStartPos) {
         ++m_curOrderStartPos;
     }
