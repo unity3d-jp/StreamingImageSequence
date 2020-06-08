@@ -13,7 +13,6 @@
 
 using namespace Gdiplus;
 
-std::map<int, CDrawOverWindow*>				 g_instanceIdToWindow;
 std::map<int, int>                           g_instanceIdToLoadedFlags;
 
 CDrawOverWindow::CDrawOverWindow()
@@ -32,27 +31,12 @@ CDrawOverWindow::~CDrawOverWindow()
 
 DRAWOVERWINDOW_API void  HideOverwrapWindow(int sInstanceId)
 {
-	if (g_instanceIdToWindow.find(sInstanceId) == g_instanceIdToWindow.end())
-	{
-		return;
-	}
-	CDrawOverWindow*  pWindow = g_instanceIdToWindow[sInstanceId];
-	ASSERT(pWindow);
-	::ShowWindow(pWindow->m_hWnd, SW_HIDE);
 
 }
 
 DRAWOVERWINDOW_API void  HideAllOverwrapWindows()
 {
 
-	for (auto it = g_instanceIdToWindow.begin();
-		it != g_instanceIdToWindow.end();
-		++it)
-	{
-		CDrawOverWindow*  pWindow = it->second;
-		ASSERT(pWindow);
-		::ShowWindow(pWindow->m_hWnd, SW_HIDE);
-	}
 
 }
 
@@ -82,18 +66,6 @@ DRAWOVERWINDOW_API int   GetAllAreLoaded(int sInstanceId)
 DRAWOVERWINDOW_API void ResetOverwrapWindows()
 {
 
-	for (auto itr = g_instanceIdToWindow.begin(); itr != g_instanceIdToWindow.end(); ++itr)
-	{
-		CDrawOverWindow*  pWindow = itr->second;
-
-		if (pWindow)
-		{
-			delete pWindow;
-		}
-
-	}
-
-	g_instanceIdToWindow.clear();
 
 	g_instanceIdToLoadedFlags.clear();
 
