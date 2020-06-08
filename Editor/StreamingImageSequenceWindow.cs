@@ -317,13 +317,6 @@ namespace UnityEditor.StreamingImageSequence
             start = start / duration;
             end = end / duration;
 
-            double startPoint = wholeWidth * start;
-            double endPoint = wholeWidth * end;
- 
-
-
-
-
             int length = asset.GetImagePaths().Count;
             if (m_MovieProxyPlayableAssetToColorArray.ContainsKey(asset))
             {
@@ -334,43 +327,6 @@ namespace UnityEditor.StreamingImageSequence
             {
                 m_MovieProxyPlayableAssetToColorArray.Add(asset, new BGJobCacheParam(asset));
             }
-            /*
-                        if (ImageLoadBGTask.m_sUpdated  )
-                            new BGJobCacheChecker( m_MovieProxyPlayableAssetToColorArray[asset]);
-            
-            UInt32[] colorArray = m_MovieProxyPlayableAssetToColorArray[asset].m_collorArray;
-            if (colorArray == null)
-            {
-                return;
-
-            }
-         */
-         /*
-            var parm = m_MovieProxyPlayableAssetToColorArray[asset];
-
-             StreamingImageSequencePlugin.SetOverwrapWindowData(asset.GetInstanceID(), colorArray, colorArray.Length);
-             */
-            /*
-            //        if (parm.m_NeedUpdate)
-                    {
-                        Texture2D result = parm.m_tex2D;
-                        if ( result != null )
-                        {
-                            result.SetPixels(colorArray);
-                            result.filterMode = FilterMode.Point;
-                            result.Apply();
-                            parm.m_style.normal.background = result;
-                            //    Graphics.DrawTexture(new Rect(-20, -20, 40, 40), result);
-                            parm.m_NeedUpdate = false;
-
-                        }
-                    }
-                    */
-
-
-            float fRectStartX = kHeaderWidth + kLineWidth + 8.0f + (float)startPoint;
-            float fRectWidth = (float)(endPoint - startPoint);
-   //         Rect tRightBodyRect = new Rect(fRectStartX, nextStartY + kHeaderTrackHeight -3.0f, fRectWidth, 1.0f);
 
 
 
