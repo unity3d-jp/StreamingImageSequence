@@ -24,7 +24,7 @@
             switch (tResult.ReadStatus) {
                 case StreamingImageSequenceConstants.READ_STATUS_NONE: {
                     //Debug.Log("Loading: " + m_strFileName);
-                    StreamingImageSequencePlugin.LoadAndAllocFullImage(m_strFileName, Time.frameCount);
+                    StreamingImageSequencePlugin.LoadAndAllocFullImage(m_strFileName,m_frame);
                     break;
                 }
                 case StreamingImageSequenceConstants.READ_STATUS_LOADING: {
