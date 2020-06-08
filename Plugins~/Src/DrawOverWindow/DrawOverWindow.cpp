@@ -55,7 +55,6 @@ CDrawOverWindow::CDrawOverWindow(int posX, int posY, int width, int height)
 	WS_POPUP ,
 	posX, posY, width, height,
 	NULL, NULL, NULL, NULL)),
-	m_size(0),
 	m_sLastPosX(posX),
 	m_sLastPosY(posY),
 	m_sLastWidth(width),
@@ -121,7 +120,6 @@ DRAWOVERWINDOW_API void  SetOverwrapWindowData(int sInstanceId, u32* byteArray, 
 	CDrawOverWindow*  pWindow = g_instanceIdToWindow[sInstanceId];
 	ASSERT(pWindow);
 
-	pWindow->m_size = size;
 
 }
 

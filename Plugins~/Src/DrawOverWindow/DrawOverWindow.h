@@ -22,7 +22,6 @@ class DRAWOVERWINDOW_API CDrawOverWindow {
 
 public:
 	HWND m_hWnd;
-	int m_size;
 	int m_sLastPosX;
 	int m_sLastPosY;
 	int m_sLastWidth;
