@@ -27,26 +27,6 @@ CDrawOverWindow::~CDrawOverWindow()
 	::DestroyWindow(m_hWnd);
 }
 
-
-
-DRAWOVERWINDOW_API void  HideOverwrapWindow(int sInstanceId)
-{
-
-}
-
-DRAWOVERWINDOW_API void  HideAllOverwrapWindows()
-{
-
-
-}
-
-
-
-
-
-
-
-
 DRAWOVERWINDOW_API void   SetAllAreLoaded(int sInstanceId, int flag)
 {
 

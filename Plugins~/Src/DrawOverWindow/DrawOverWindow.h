@@ -33,9 +33,6 @@ public:
 
 extern "C"
 {
-	DRAWOVERWINDOW_API void  HideOverwrapWindow(int sInstanceId);
-	DRAWOVERWINDOW_API void  HideAllOverwrapWindows();
-
 
 	DRAWOVERWINDOW_API void  SetAllAreLoaded(int sInstanceId, int flag);
 	DRAWOVERWINDOW_API int   GetAllAreLoaded(int sInstanceId);
