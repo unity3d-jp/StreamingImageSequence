@@ -54,7 +54,6 @@ namespace UnityEditor.StreamingImageSequence  {
     {
         public StreamingImageSequencePlayableAsset m_asset;
         public UInt32[] m_collorArray;
-        public Texture2D m_tex2D;
         public bool m_allLoaded;
 
  //       public GUIStyle m_style;
@@ -63,8 +62,6 @@ namespace UnityEditor.StreamingImageSequence  {
            m_asset = asset;
            int imageCount = m_asset.GetImagePaths().Count;
            m_collorArray = new UInt32[imageCount];
-
-           m_tex2D = new Texture2D(imageCount, 1);
            m_allLoaded = false;
  //           m_style = new GUIStyle(GUI.skin.box); 
         }
@@ -73,8 +70,6 @@ namespace UnityEditor.StreamingImageSequence  {
         {
             int imageCount = m_asset.GetImagePaths().Count;
             m_collorArray = new UInt32[imageCount];
-
-            m_tex2D = new Texture2D(imageCount, 1);
             m_allLoaded = false;
         }
     }
