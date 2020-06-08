@@ -117,61 +117,6 @@ DRAWOVERWINDOW_API int fnDrawOverWindow(void)
 
 
 
-DRAWOVERWINDOW_API void  ShowOverwrapWindow(int sInstanceId, int posX, int posY, int width, int height, int forceDraw)
-{
-	CDrawOverWindow*  pWindow = NULL;
-	if (g_instanceIdToWindow.find(sInstanceId) == g_instanceIdToWindow.end())
-	{
-		pWindow = new CDrawOverWindow(posX, posY, width, height);
-		g_instanceIdToWindow[sInstanceId] = pWindow;
-
-	}
-	pWindow = g_instanceIdToWindow[sInstanceId];
-	ASSERT(pWindow);
-
-	if (!pWindow->IsModified(posX, posY, width, height))
-	{
-		return;
-	}
-	pWindow->SetNewCondition(posX, posY, width, height);
-	::SetWindowPos(pWindow->m_hWnd, HWND_TOPMOST, posX, posY, width, height, SWP_NOACTIVATE);
-
-
-	if (!::IsWindowVisible(pWindow->m_hWnd))
-	{
-		::ShowWindow(pWindow->m_hWnd, SW_SHOW);
-	}
-
-
-	Gdiplus::GdiplusStartupInput    startInput;
-	ULONG_PTR                       token;
-	if (Gdiplus::GdiplusStartup(&token, &startInput, NULL) != Gdiplus::Ok)
-	{
-
-		return;
-	}
-
-
-	u32* pByte = pWindow->m_pColorArray;
-	int length = pWindow->m_size;
-
-
-
-	Gdiplus::Bitmap*    pBitmap = new Gdiplus::Bitmap(length, 1, length * 4, PixelFormat32bppARGB, (u8*)pByte);
-	{
-		Gdiplus::Graphics graphics(GetDC(pWindow->m_hWnd));
-
-
-		graphics.DrawImage(pBitmap, 0,0, width, height );
-	}
-
-	delete pBitmap;
-
-	Gdiplus::GdiplusShutdown(token);
-
-	::UpdateWindow(pWindow->m_hWnd);
-}
-
 DRAWOVERWINDOW_API void  HideOverwrapWindow(int sInstanceId)
 {
 	if (g_instanceIdToWindow.find(sInstanceId) == g_instanceIdToWindow.end())

@@ -44,9 +44,6 @@ DRAWOVERWINDOW_API int fnDrawOverWindow(void);
 
 extern "C"
 {
-	DRAWOVERWINDOW_API void  TestDraw(int posX, int posY );
-	DRAWOVERWINDOW_API void  LoadAndShowBitMap(int posX, int posY, const charType* fileName);
-	DRAWOVERWINDOW_API void  ShowOverwrapWindow(int sInstanceId, int posX, int posY, int width, int height, int forceDraw);
 	DRAWOVERWINDOW_API void  HideOverwrapWindow(int sInstanceId);
 	DRAWOVERWINDOW_API void  HideAllOverwrapWindows();
 
