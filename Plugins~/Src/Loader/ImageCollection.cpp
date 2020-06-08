@@ -117,7 +117,7 @@ bool ImageCollection::UnloadImage(const strType& imagePath) {
 void ImageCollection::UnloadAllImages() {
     m_pathToOrderMap.clear();
     m_orderedImageList.clear();
-    m_curFrameStartPos = m_orderedImageList.end();
+    m_curOrderStartPos = m_orderedImageList.end();
 
     for (auto itr = m_pathToImageMap.begin(); itr != m_pathToImageMap.end(); ++itr) {
         ImageData* imageData = &(itr->second);
@@ -129,11 +129,11 @@ void ImageCollection::UnloadAllImages() {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void ImageCollection::AdvanceFrame() {
+void ImageCollection::AdvanceOrder() {
 
-    //This will imply that images next to this pos were added/used after this frame, 
-    //while the prev nodes were added before and not used since
-    m_curFrameStartPos = m_orderedImageList.end();
+    //This will imply that images next to this pos were added/used after this current "order" (frame), 
+    //while the prev nodes were added before and not used since the order was advanced.
+    m_curOrderStartPos = m_orderedImageList.end();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -151,8 +151,8 @@ void ImageCollection::ReorderImage(std::map<strType, ImageData>::iterator pathTo
     }
 
     //maintain the position of the current frame
-    if (pathToOrderIt->second == m_curFrameStartPos) {
-        ++m_curFrameStartPos;
+    if (pathToOrderIt->second == m_curOrderStartPos) {
+        ++m_curOrderStartPos;
     }
 
     //Move to the end
@@ -172,8 +172,8 @@ void ImageCollection::DeleteImageOrder(std::map<strType, ImageData>::iterator pa
 
     auto orderIt = pathToOrderIt->second;
 
-    if (orderIt == m_curFrameStartPos) {
-        ++m_curFrameStartPos;
+    if (orderIt == m_curOrderStartPos) {
+        ++m_curOrderStartPos;
     }
     m_orderedImageList.erase(orderIt);
     m_pathToOrderMap.erase(pathToOrderIt);

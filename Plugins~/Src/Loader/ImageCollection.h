@@ -29,7 +29,7 @@ public:
     inline const std::map<strType, ImageData> GetImageMap() const;
     inline size_t GetNumImages() const;
 
-    void ImageCollection::AdvanceFrame();
+    void ImageCollection::AdvanceOrder();
 
 private:
 
@@ -43,7 +43,7 @@ private:
     //Ordering structure
     std::map<strType, std::list<std::map<strType, ImageData>::iterator>::iterator> m_pathToOrderMap;
     std::list<std::map<strType, ImageData>::iterator>           m_orderedImageList;
-    std::list<std::map<strType, ImageData>::iterator>::iterator m_curFrameStartPos;
+    std::list<std::map<strType, ImageData>::iterator>::iterator m_curOrderStartPos;
 
 };
 
