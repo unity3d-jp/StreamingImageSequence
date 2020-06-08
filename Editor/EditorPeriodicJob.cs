@@ -59,9 +59,7 @@ namespace UnityEditor.StreamingImageSequence
             UpdateManager.GetStreamingAssetPath(); // must be executed in main thread.
 
             PlayableDirector  currentDirector = UpdateManager.GetCurrentDirector();
-            if (currentDirector == null)
-            {
-                StreamingImageSequencePlugin.HideAllOverwrapWindows();
+            if (currentDirector == null) {
                 return;
             }
 
@@ -127,15 +125,10 @@ namespace UnityEditor.StreamingImageSequence
                     {
                         return;
                     }
-                    StreamingImageSequencePlugin.SetOverwrapWindowData(asset.GetInstanceID(), colorArray, colorArray.Length);
                     if (param.m_allLoaded)
                     {
                         StreamingImageSequencePlugin.SetAllAreLoaded(asset.GetInstanceID(), 1);
                     }
-                }
-                else
-                {
-                    StreamingImageSequencePlugin.HideOverwrapWindow(asset.GetInstanceID());
                 }
 
 

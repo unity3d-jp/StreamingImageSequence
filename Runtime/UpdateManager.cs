@@ -440,7 +440,6 @@ namespace UnityEngine.StreamingImageSequence
             var sequenceWindowArray = Resources.FindObjectsOfTypeAll<EditorWindow>();
             if (sequenceWindowArray == null)
             {
-                StreamingImageSequencePlugin.HideAllOverwrapWindows();
                 return null;
             }
             foreach (var w in sequenceWindowArray)
@@ -450,10 +449,6 @@ namespace UnityEngine.StreamingImageSequence
                     timelineWindow = w;
                     break;
                 }
-            }
-            if (timelineWindow == null)
-            {
-                StreamingImageSequencePlugin.HideAllOverwrapWindows();
             }
             return timelineWindow;
         }

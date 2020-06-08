@@ -45,21 +45,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
-        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern IntPtr TestDraw(int posX, int posY);
 
-        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern void LoadAndShowBitMap(int posX, int posY, [MarshalAs(UnmanagedType.LPStr)]string fileName);
-
-        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern void ShowOverwrapWindow(int sInstanceID, int posX, int posY, int sWidth, int sHeight, int forceDraw);
-
-        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern void HideOverwrapWindow(int sInstanceID);
-        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern void SetOverwrapWindowData(int sInstanceID, UInt32[] byteArray, int length );
-        [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern void HideAllOverwrapWindows();
 
         [DllImport(DRAW_OVER_WINDOW_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void SetAllAreLoaded(int sInstanceID,int flag);
