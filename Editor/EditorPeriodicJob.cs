@@ -102,8 +102,6 @@ namespace UnityEditor.StreamingImageSequence
                 {
                     continue;
                 }
-                
-                var length = asset.GetImagePaths().Count;
                 if (m_streamingImageSequencePlayableAssetToColorArray.ContainsKey(asset))
                 {
 
@@ -112,17 +110,6 @@ namespace UnityEditor.StreamingImageSequence
                 else
                 {
                     m_streamingImageSequencePlayableAssetToColorArray.Add(asset, new BGJobCacheParam(asset));
-                }
-                var param = m_streamingImageSequencePlayableAssetToColorArray[asset];
-                int allAreLoaded = StreamingImageSequencePlugin.GetAllAreLoaded(asset.GetInstanceID());
-
-                if (allAreLoaded == 0)
-                {
-                    new BGJobCacheChecker(m_streamingImageSequencePlayableAssetToColorArray[asset]);
-                    if (param.m_allLoaded)
-                    {
-                        StreamingImageSequencePlugin.SetAllAreLoaded(asset.GetInstanceID(), 1);
-                    }
                 }
 
 
