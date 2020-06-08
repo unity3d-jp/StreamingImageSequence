@@ -22,7 +22,7 @@ bool ImageMemoryAllocator::Allocate(ImageData* imageData, const uint32_t w, cons
     std::memset(buffer,0,dataSize);
     *imageData = ImageData(buffer, w, h, READ_STATUS_LOADING);
 
-    IncUsedMemory(dataSize);
+    IncUsedMem(dataSize);
 
     return true;
 
@@ -36,7 +36,7 @@ void ImageMemoryAllocator::Deallocate(ImageData* imageData) {
     if (nullptr != imageData->RawData) {
         const uint64_t mem = CalculateMemSize(imageData->Width, imageData->Height);
         ASSERT(m_usedMemory >= mem);
-        DecUsedMemory(mem);
+        DecUsedMem(mem);
         free(imageData->RawData);
     }
 
