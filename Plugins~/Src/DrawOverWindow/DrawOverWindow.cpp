@@ -13,29 +13,3 @@
 
 using namespace Gdiplus;
 
-std::map<int, int>                           g_instanceIdToLoadedFlags;
-
-
-DRAWOVERWINDOW_API void   SetAllAreLoaded(int sInstanceId, int flag)
-{
-
-    g_instanceIdToLoadedFlags[sInstanceId] = flag;
-}
-
-DRAWOVERWINDOW_API int   GetAllAreLoaded(int sInstanceId)
-{
-	if (g_instanceIdToLoadedFlags.find(sInstanceId) == g_instanceIdToLoadedFlags.end())
-	{
-		return 0;
-
-	}
-	return g_instanceIdToLoadedFlags[sInstanceId] ;
-}
-
-DRAWOVERWINDOW_API void ResetOverwrapWindows()
-{
-
-
-	g_instanceIdToLoadedFlags.clear();
-
-}
