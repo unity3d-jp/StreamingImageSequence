@@ -46,7 +46,6 @@ namespace UnityEngine.StreamingImageSequence
         private static bool s_bShutdown;
         private static Dictionary<PlayableDirector, PlayableDirectorStatus> s_directorStatusDictiornary = new Dictionary<PlayableDirector, PlayableDirectorStatus>();
         private static string s_AppDataPath;
-        private static string s_StreamingAssetPath;
         private static bool m_isResettingPlugin = false;
         
 #if UNITY_EDITOR        
@@ -90,7 +89,6 @@ namespace UnityEngine.StreamingImageSequence
             double diff = EditorApplication.timeSinceStartup - s_PluginResetTime;
             if (diff > 0.016f * 60.0f)
             {
-                StreamingImageSequencePlugin.ResetOverwrapWindows();
                 StreamingImageSequencePlugin.UnloadAllImages();
                 m_isResettingPlugin = false;
             }
@@ -393,14 +391,6 @@ namespace UnityEngine.StreamingImageSequence
             return newPath;
         }
 
-        static public string GetStreamingAssetPath()
-        {
-            if ( s_StreamingAssetPath == null )
-            {
-                s_StreamingAssetPath = Application.streamingAssetsPath;
-            }
-            return s_StreamingAssetPath;
-        }
 #if UNITY_EDITOR
         static public PlayableDirector GetCurrentDirector()
         {
@@ -440,7 +430,6 @@ namespace UnityEngine.StreamingImageSequence
             var sequenceWindowArray = Resources.FindObjectsOfTypeAll<EditorWindow>();
             if (sequenceWindowArray == null)
             {
-                StreamingImageSequencePlugin.HideAllOverwrapWindows();
                 return null;
             }
             foreach (var w in sequenceWindowArray)
@@ -450,10 +439,6 @@ namespace UnityEngine.StreamingImageSequence
                     timelineWindow = w;
                     break;
                 }
-            }
-            if (timelineWindow == null)
-            {
-                StreamingImageSequencePlugin.HideAllOverwrapWindows();
             }
             return timelineWindow;
         }

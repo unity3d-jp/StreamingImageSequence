@@ -44,35 +44,13 @@ namespace UnityEditor.StreamingImageSequence
         static float m_fRightAreaWidth = 0.0f;
 
         static PlayableDirector m_currentDirector;
-        static Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam> m_MovieProxyPlayableAssetToColorArray = new Dictionary<StreamingImageSequencePlayableAsset, BGJobCacheParam>();
         public Vector2 m_scrollPosition = Vector2.zero;
 
- 
-        /*
-        [MenuItem("Window/Streaming Image Sequence")]
-
-        public static void ShowWindow()
-        {
-            EditorWindow.GetWindow(typeof(MovieProxyWindow));
-        }
-        */
 
 
 
         void OnGUI()
         {
-#if false
-            {
-                GUILayout.Label("Editor window with Popup example", EditorStyles.boldLabel);
-                buttonRect = new Rect(100, 100, 100, 200);
-              if (GUILayout.Button("Popup Options", GUILayout.Width(200)))
-                {
-                    PopupWindow.Show(buttonRect, new PopupExample());
-                }
-               // if (Event.current.type == EventType.Repaint) buttonRect = GUILayoutUtility.GetLastRect();
-            }
-            return;
-#endif
             m_currentDirector = UpdateManager.GetCurrentDirector();
             if (m_currentDirector == null)
             {
@@ -300,81 +278,8 @@ namespace UnityEditor.StreamingImageSequence
             EditorGUI.DrawRect(
                 new Rect(fRectStartX + fRectWidth -2.0f, nextStartY , 2.0f, kHeaderTrackHeight),
                 colDark);
-            if (clip.asset.GetType() == typeof(StreamingImageSequencePlayableAsset))
-            {
-                DrawCacheStatus(nextStartY, clip);
-            }
         }
 
-        private void DrawCacheStatus(float nextStartY, TimelineClip clip)
-        {
-            var asset = clip.asset as StreamingImageSequencePlayableAsset;
-            float wholeWidth = m_fRightAreaWidth - 16.0f;
-            double start = clip.start;
-            double end = clip.end;
-            double duration = m_currentDirector.duration;
-
-            start = start / duration;
-            end = end / duration;
-
-            double startPoint = wholeWidth * start;
-            double endPoint = wholeWidth * end;
- 
-
-
-
-
-            int length = asset.GetImagePaths().Count;
-            if (m_MovieProxyPlayableAssetToColorArray.ContainsKey(asset))
-            {
-
-
-            }
-            else
-            {
-                m_MovieProxyPlayableAssetToColorArray.Add(asset, new BGJobCacheParam(asset));
-            }
-            /*
-                        if (ImageLoadBGTask.m_sUpdated  )
-                            new BGJobCacheChecker( m_MovieProxyPlayableAssetToColorArray[asset]);
-            
-            UInt32[] colorArray = m_MovieProxyPlayableAssetToColorArray[asset].m_collorArray;
-            if (colorArray == null)
-            {
-                return;
-
-            }
-         */
-         /*
-            var parm = m_MovieProxyPlayableAssetToColorArray[asset];
-
-             StreamingImageSequencePlugin.SetOverwrapWindowData(asset.GetInstanceID(), colorArray, colorArray.Length);
-             */
-            /*
-            //        if (parm.m_NeedUpdate)
-                    {
-                        Texture2D result = parm.m_tex2D;
-                        if ( result != null )
-                        {
-                            result.SetPixels(colorArray);
-                            result.filterMode = FilterMode.Point;
-                            result.Apply();
-                            parm.m_style.normal.background = result;
-                            //    Graphics.DrawTexture(new Rect(-20, -20, 40, 40), result);
-                            parm.m_NeedUpdate = false;
-
-                        }
-                    }
-                    */
-
-
-            float fRectStartX = kHeaderWidth + kLineWidth + 8.0f + (float)startPoint;
-            float fRectWidth = (float)(endPoint - startPoint);
-   //         Rect tRightBodyRect = new Rect(fRectStartX, nextStartY + kHeaderTrackHeight -3.0f, fRectWidth, 1.0f);
-
-
-
-        }
 
         private void InitGUIStyle( ref GUIStyle style, Color col )
         {
