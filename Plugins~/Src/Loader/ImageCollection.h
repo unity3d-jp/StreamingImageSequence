@@ -37,6 +37,10 @@ private:
     void ReorderImage(std::map<strType, ImageData>::iterator);
     void DeleteImageOrder(std::map<strType, ImageData>::iterator);
 
+    //This will unload unused image if memory is not enough
+    bool AllocateRawData(uint8_t** rawData, const uint32_t w, const uint32_t h, const strType& imagePath);
+    bool UnloadUnusedImage(const strType& imagePath); //returns true if one or more images are successfully unloaded
+
     ImageMemoryAllocator*           m_memAllocator;
     std::map<strType, ImageData>    m_pathToImageMap;
 

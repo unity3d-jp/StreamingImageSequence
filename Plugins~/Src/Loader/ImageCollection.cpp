@@ -47,14 +47,13 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
     }
 
     ImageData* imageData = &pathIt->second;
-    imageData->Width = w;
-    imageData->Height = h;
 
-    const bool isAllocated = m_memAllocator->Allocate(&imageData->RawData, w, h);
-
-    //[TODO-sin: 2020-6-5] Handle automatic memory deallocation
+    const bool isAllocated = AllocateRawData(&imageData->RawData, w, h, imagePath);
     if (!isAllocated)
         return nullptr;
+
+    imageData->Width = w;
+    imageData->Height = h;
 
     return imageData;
 }
@@ -68,12 +67,10 @@ bool ImageCollection::ResizeImage(const strType& imagePath, const uint32_t w, co
 
     //Allocate
     ImageData resizedImageData(nullptr,w,h,READ_STATUS_LOADING);
-    const bool isAllocated = m_memAllocator->Allocate(&resizedImageData.RawData, w, h);
-
-    //[TODO-sin: 2020-6-5] Handle automatic memory deallocation
-    if (!isAllocated) {
+    const bool isAllocated = AllocateRawData(&resizedImageData.RawData, w, h, imagePath);
+    if (!isAllocated)
         return false;
-    }
+
 
     ImageData& imageData = it->second;
     ASSERT(nullptr != imageData.RawData);
@@ -178,6 +175,49 @@ void ImageCollection::DeleteImageOrder(std::map<strType, ImageData>::iterator pa
     }
     m_orderedImageList.erase(orderIt);
     m_pathToOrderMap.erase(pathToOrderIt);
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+bool ImageCollection::AllocateRawData(uint8_t** rawData,const uint32_t w,const uint32_t h,const strType& imagePath) 
+{
+
+    bool isAllocated = false;
+    bool unloadSuccessful = true;
+    while (!isAllocated && unloadSuccessful) {
+        isAllocated = m_memAllocator->Allocate(rawData, w, h);
+        if (!isAllocated) {
+            unloadSuccessful = UnloadUnusedImage(imagePath);
+        }
+    }
+
+    return isAllocated;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//returns true if one or more images are successfully unloaded
+bool ImageCollection::UnloadUnusedImage(const strType& imagePathToAllocate) {
+    std::list<std::map<strType, ImageData>::iterator>::iterator orderIt = m_orderedImageList.begin();
+    if (m_curOrderStartPos == orderIt)
+        return false;
+
+    const strType& imagePath = (*orderIt)->first;
+
+    //This should not be happening. The image that we want to allocate should not be located at the start of the list
+    ASSERT(imagePath != imagePathToAllocate);
+    if (imagePath == imagePathToAllocate)
+        return false;
+
+    //Do processes inside UnloadImage((*orderIt)->first), without any checks
+    ImageData* imageData = &(*orderIt)->second;
+
+    m_memAllocator->Deallocate(imageData);
+    m_orderedImageList.erase(orderIt);
+    m_pathToOrderMap.erase(imagePath);
+    m_pathToImageMap.erase(imagePath);
+
+    return true;
+
 }
 
 
