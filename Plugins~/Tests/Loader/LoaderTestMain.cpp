@@ -26,12 +26,12 @@ TEST(Loader, LoadTextureTest) {
     const std::string filePath = "TestImage.png";
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
-    bool processed = LoadAndAllocFullImage(filePath.c_str());
+    bool processed = LoadAndAllocFullImage(filePath.c_str(),0);
 
     ASSERT_EQ(true, processed);
 
     ImageData result;
-    processed = GetImageData(filePath.c_str(), CRITICAL_SECTION_TYPE_FULL_IMAGE, &result );
+    processed = GetImageData(filePath.c_str(), CRITICAL_SECTION_TYPE_FULL_IMAGE, 0, &result );
     ASSERT_EQ(true, processed);
     ASSERT_EQ(READ_STATUS_SUCCESS, result.CurrentReadStatus) << "Loading image failed";
 

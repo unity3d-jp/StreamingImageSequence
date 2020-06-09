@@ -18,13 +18,13 @@ namespace UnityEngine.StreamingImageSequence {
 
         // Implemented in Loader dll
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern bool LoadAndAllocFullImage([MarshalAs(UnmanagedType.LPStr)]string fileName);
+        public static extern bool LoadAndAllocFullImage([MarshalAs(UnmanagedType.LPStr)]string fileName, int frame);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern bool LoadAndAllocPreviewImage([MarshalAs(UnmanagedType.LPStr)]string fileName, int width, int height);
+        public static extern bool LoadAndAllocPreviewImage([MarshalAs(UnmanagedType.LPStr)]string fileName, int width, int height, int frame);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern bool GetImageData([MarshalAs(UnmanagedType.LPStr)]string fileName, int imageType, out ImageData tResult);
+        public static extern bool GetImageData([MarshalAs(UnmanagedType.LPStr)]string fileName, int imageType, int frame, out ImageData tResult);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int UnloadImage([MarshalAs(UnmanagedType.LPStr)]string fileName);

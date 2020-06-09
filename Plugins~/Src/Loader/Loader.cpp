@@ -24,32 +24,32 @@ LOADER_API std::map<strType, int>           g_scenePathToSceneStatus;
 //----------------------------------------------------------------------------------------------------------------------
 
 //Get the texture info and return the result inside ReadResult. Thread-safe
-LOADER_API bool GetImageData(const charType* imagePath, const uint32_t imageType
+LOADER_API bool GetImageData(const charType* imagePath, const uint32_t imageType, const int frame
 	, StreamingImageSequencePlugin::ImageData* readResult) 
 {
     using namespace StreamingImageSequencePlugin;
     CriticalSectionController cs(TEXTURE_CS(imageType));
-    return LoaderUtility::GetImageDataInto(imagePath, imageType, &ImageCatalog::GetInstance(), readResult);
+    return LoaderUtility::GetImageDataInto(imagePath, imageType, &ImageCatalog::GetInstance(), frame, readResult);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 //Returns if the imagePath can be loaded (). Thread-safe
-LOADER_API bool LoadAndAllocFullImage(const charType* imagePath) {
+LOADER_API bool LoadAndAllocFullImage(const charType* imagePath, const int frame) {
 
     using namespace StreamingImageSequencePlugin;
     const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
 	CriticalSectionController cs(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_IMAGE));
-	return LoaderUtility::LoadAndAllocImage(imagePath, imageType, &ImageCatalog::GetInstance());
+	return LoaderUtility::LoadAndAllocImage(imagePath, imageType, &ImageCatalog::GetInstance(), frame);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //Returns if the imagePath can be loaded (). Thread-safe
-LOADER_API bool LoadAndAllocPreviewImage(const charType* imagePath, const uint32_t width, const uint32_t height) {
+LOADER_API bool LoadAndAllocPreviewImage(const charType* imagePath, const uint32_t width, const uint32_t height, const int frame) {
 	using namespace StreamingImageSequencePlugin;
 	const uint32_t imageType = CRITICAL_SECTION_TYPE_PREVIEW_IMAGE;
 	CriticalSectionController cs(TEXTURE_CS(imageType));
-	return LoaderUtility::LoadAndAllocImage(imagePath, imageType, &ImageCatalog::GetInstance(),width,height);
+	return LoaderUtility::LoadAndAllocImage(imagePath, imageType, &ImageCatalog::GetInstance(),width,height, frame);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ LOADER_API void ListLoadedImages(const uint32_t imageType, void(*OnNextTexture)(
 	using namespace StreamingImageSequencePlugin;
 	ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 
-	const std::map<strType, ImageData> images = ImageCatalog::GetInstance().GetImageCollection(imageType);
+	const std::map<strType, ImageData> images = ImageCatalog::GetInstance().GetImageMap(imageType);
 	for (auto itr = images.begin(); itr != images.end(); ++itr) {
 		OnNextTexture(itr->first.c_str());
 	}
