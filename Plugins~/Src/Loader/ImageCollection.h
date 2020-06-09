@@ -29,7 +29,7 @@ public:
     inline const std::map<strType, ImageData> GetImageMap() const;
     inline size_t GetNumImages() const;
 
-    void ImageCollection::AdvanceOrder();
+    void AdvanceOrder();
 
 private:
 
