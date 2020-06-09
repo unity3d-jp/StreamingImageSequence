@@ -34,7 +34,7 @@ public:
 private:
 
     void AddImageOrder(std::map<strType, ImageData>::iterator);
-    void ReorderImage(std::map<strType, ImageData>::iterator);
+    void ReorderImageToEnd(std::map<strType, ImageData>::iterator);
     void DeleteImageOrder(std::map<strType, ImageData>::iterator);
 
     //This will unload unused image if memory is not enough

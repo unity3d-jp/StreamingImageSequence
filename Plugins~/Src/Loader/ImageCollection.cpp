@@ -19,7 +19,7 @@ const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool 
     }
 
     if (isForCurrentOrder)
-        ReorderImage(pathIt);
+        ReorderImageToEnd(pathIt);
     return &pathIt->second;
 }
 
@@ -142,7 +142,7 @@ void ImageCollection::AddImageOrder(std::map<strType, ImageData>::iterator pathT
 }
 //----------------------------------------------------------------------------------------------------------------------
 
-void ImageCollection::ReorderImage(std::map<strType, ImageData>::iterator pathToImageIt) {
+void ImageCollection::ReorderImageToEnd(std::map<strType, ImageData>::iterator pathToImageIt) {
     auto pathToOrderIt = m_pathToOrderMap.find(pathToImageIt->first);
     if (m_pathToOrderMap.end() == pathToOrderIt) {
         return;
