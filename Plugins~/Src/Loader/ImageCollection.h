@@ -26,7 +26,7 @@ public:
     bool UnloadImage(const strType& imagePath);
     void UnloadAllImages();
 
-    inline const std::map<strType, ImageData> GetImageMap() const;
+    inline const std::map<strType, ImageData>& GetImageMap() const;
     inline size_t GetNumImages() const;
 
     void AdvanceOrder();
@@ -53,7 +53,7 @@ private:
 
 void ImageCollection::SetMemoryAllocator(ImageMemoryAllocator* memAllocator) { m_memAllocator = memAllocator; }
 
-inline const std::map<strType, ImageData> ImageCollection::GetImageMap() const { return m_pathToImageMap;  }
+inline const std::map<strType, ImageData>& ImageCollection::GetImageMap() const { return m_pathToImageMap;  }
 inline size_t ImageCollection::GetNumImages() const { return m_pathToImageMap.size(); }
 
 

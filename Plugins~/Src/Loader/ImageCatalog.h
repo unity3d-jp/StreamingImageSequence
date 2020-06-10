@@ -25,7 +25,7 @@ public:
     inline void ResizeImage(const strType& imagePath,const uint32_t imageType,const uint32_t w, const uint32_t h);
     inline void SetImageStatus(const strType& imagePath, const uint32_t imageType, const ReadStatus status);
     inline bool UnloadImage(const strType& imagePath, const uint32_t imageType);
-    inline const std::map<strType, ImageData> GetImageMap(const uint32_t imageType) const;
+    inline const std::map<strType, ImageData>& GetImageMap(const uint32_t imageType) const;
     inline size_t GetNumImages(const uint32_t imageType) const;
 
     void UnloadAllImages();
@@ -79,7 +79,7 @@ bool ImageCatalog::UnloadImage(const strType& imagePath, const uint32_t imageTyp
     return m_imageCollection[imageType].UnloadImage(imagePath);
 }
 
-const std::map<strType, ImageData> ImageCatalog::GetImageMap(const uint32_t imageType) const { 
+const std::map<strType, ImageData>& ImageCatalog::GetImageMap(const uint32_t imageType) const { 
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
     return m_imageCollection[imageType].GetImageMap();
 }
