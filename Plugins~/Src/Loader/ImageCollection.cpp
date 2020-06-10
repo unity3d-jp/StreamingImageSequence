@@ -41,7 +41,7 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 
     //Unload existing memory if it exists
     if (m_pathToImageMap.end() != pathIt) {
-        m_memAllocator->Deallocate(&m_pathToImageMap[imagePath]);
+        m_memAllocator->Deallocate(&(pathIt->second));
     }  else {
         pathIt = PrepareImage(imagePath);
     }
