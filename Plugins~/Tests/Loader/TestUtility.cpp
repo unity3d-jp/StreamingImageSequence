@@ -38,7 +38,7 @@ bool TestUtility::LoadTestImages(const uint32_t imageType, const int frame, cons
 
 //----------------------------------------------------------------------------------------------------------------------
 bool TestUtility::CheckLoadedTestImageData(const uint32_t imageType, const int frame, const uint32_t start, 
-    const uint32_t numImages) 
+    const uint32_t numImages, const StreamingImageSequencePlugin::ReadStatus reqReadStatus) 
 {
     using namespace StreamingImageSequencePlugin;
     const uint32_t endIndex = start + numImages -1;
@@ -48,7 +48,7 @@ bool TestUtility::CheckLoadedTestImageData(const uint32_t imageType, const int f
         const strType filePath = "TestImage_" + TO_STR_TYPE(i) + ".png";
         ImageData imageData;
         const bool processed = GetImageData(filePath.c_str(), imageType, frame, &imageData );
-        ret = (processed && imageData.CurrentReadStatus == READ_STATUS_SUCCESS);
+        ret = (processed && imageData.CurrentReadStatus == reqReadStatus);
     }
 
     return ret;
@@ -97,7 +97,8 @@ uint32_t TestUtility::CleanupAndLoadMaxImages(const uint32_t imageType) {
 
     //Load the remaining images to fill memory to max
     processed = TestUtility::LoadTestImages(imageType, curFrame, 1, maxImages-1);
-    bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, maxImages);
+    bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, maxImages,READ_STATUS_SUCCESS);
+
     ASSERT(processed);
     ASSERT(readSuccessful);
 
@@ -120,7 +121,9 @@ std::map<strType, StreamingImageSequencePlugin::ImageData> TestUtility::LoadAndC
 
     ASSERT(startTestImageIndex + numImages -1 < NUM_TEST_IMAGES);
     const bool processed = TestUtility::LoadTestImages(imageType, frame, startTestImageIndex, numImages);
-    const bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, frame, startTestImageIndex, numImages);
+    const bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, frame, 
+        startTestImageIndex, numImages, READ_STATUS_SUCCESS
+    );
     ASSERT(processed);
     ASSERT(readSuccessful);
     const std::map<strType, ImageData>& curImageMap = imageCatalog.GetImageMap(imageType);

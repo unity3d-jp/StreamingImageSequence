@@ -38,10 +38,11 @@ TEST(Loader, LoadSingleImageTest) {
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
     const int curFrame = 0;
-    const bool processed = TestUtility::LoadTestImages(CRITICAL_SECTION_TYPE_FULL_IMAGE, curFrame, 0, 1);
+    const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
+    const bool processed = TestUtility::LoadTestImages(imageType, curFrame, 0, 1);
     ASSERT_EQ(true, processed);
 
-    const bool readSuccessful = TestUtility::CheckLoadedTestImageData(CRITICAL_SECTION_TYPE_FULL_IMAGE, curFrame, 0, 1);
+    const bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, 1, READ_STATUS_SUCCESS);
     ASSERT_EQ(true, readSuccessful) << "Loading image failed";
 
     ASSERT_GT(imageCatalog.GetUsedMemory(), 0);
@@ -58,10 +59,11 @@ TEST(Loader, LoadMultipleImagesTest) {
 
     const int curFrame = 0;
     const uint32_t numImages = 10;
-    const bool processed = TestUtility::LoadTestImages(CRITICAL_SECTION_TYPE_FULL_IMAGE, curFrame, 0, numImages);
+    const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
+    const bool processed = TestUtility::LoadTestImages(imageType, curFrame, 0, numImages);
     ASSERT_EQ(true, processed);
 
-    const bool readSuccessful = TestUtility::CheckLoadedTestImageData(CRITICAL_SECTION_TYPE_FULL_IMAGE, curFrame, 0, numImages);
+    const bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, numImages, READ_STATUS_SUCCESS);
     ASSERT_EQ(true, readSuccessful) << "Loading image failed";
 
     ASSERT_GT(imageCatalog.GetUsedMemory(), 0);
@@ -77,34 +79,65 @@ TEST(Loader, AutoUnloadUnusedImagesTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
-    const uint32_t maxImages = TestUtility::CleanupAndLoadMaxImages(CRITICAL_SECTION_TYPE_FULL_IMAGE);
-    std::map<strType, ImageData> imageMap = imageCatalog.GetImageMap(CRITICAL_SECTION_TYPE_FULL_IMAGE);
+    const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
+
+    const uint32_t maxImages = TestUtility::CleanupAndLoadMaxImages(imageType);
+    std::map<strType, ImageData> imageMap = imageCatalog.GetImageMap(imageType);
 
     //Test loading images in next frames
     int curFrame = 0;
     uint32_t startIndex = maxImages;
     uint32_t numImages = 3;
-    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(CRITICAL_SECTION_TYPE_FULL_IMAGE, 
+    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
         ++curFrame, startIndex, numImages, imageMap
     );
 
     startIndex += numImages;
     numImages = 5;
-    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(CRITICAL_SECTION_TYPE_FULL_IMAGE, 
+    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
         ++curFrame, startIndex, numImages, imageMap
     );
 
     startIndex += numImages;
     numImages = 7;
-    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(CRITICAL_SECTION_TYPE_FULL_IMAGE, 
+    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
         ++curFrame, startIndex, numImages, imageMap
     );
 
     startIndex += numImages;
     numImages = 9;
-    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(CRITICAL_SECTION_TYPE_FULL_IMAGE, 
+    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
         ++curFrame, startIndex, numImages, imageMap
     );
+
+    //Unload
+    imageCatalog.UnloadAllImages();
+    TestUtility::CheckMemoryCleanup();
+
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+TEST(Loader, StopLoadingRequiredImagesTest) {
+    using namespace StreamingImageSequencePlugin;
+    ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+    const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
+
+    const uint32_t maxImages = TestUtility::CleanupAndLoadMaxImages(imageType);
+
+    const int startIndex = maxImages;
+    uint32_t numImages = 3;
+    const bool processed = TestUtility::LoadTestImages(imageType, 0, startIndex, numImages);
+    ASSERT_EQ(true, processed);
+
+
+    const bool initialImagesLoaded = TestUtility::CheckLoadedTestImageData(
+        imageType, 0, 0, maxImages, READ_STATUS_SUCCESS);
+    ASSERT_EQ(true, initialImagesLoaded) << "Initial images are not loaded in memory anymore";
+
+    const bool laterImagesOutOfMemory = TestUtility::CheckLoadedTestImageData(
+        imageType, 0, startIndex, numImages, READ_STATUS_OUT_OF_MEMORY);
+    ASSERT_EQ(true, laterImagesOutOfMemory) << "Later images are loaded, even though we are out of memory";
 
     //Unload
     imageCatalog.UnloadAllImages();
