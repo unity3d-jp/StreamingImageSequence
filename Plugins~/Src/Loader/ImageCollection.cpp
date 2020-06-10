@@ -10,7 +10,7 @@
 
 namespace StreamingImageSequencePlugin {
 
-
+//----------------------------------------------------------------------------------------------------------------------
 const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool isForCurrentOrder) {
     std::map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
 
@@ -30,6 +30,11 @@ std::map<strType, ImageData>::iterator ImageCollection::PrepareImage(const strTy
 
     auto it = m_pathToImageMap.insert({ imagePath, ImageData(nullptr,0,0,READ_STATUS_LOADING) });
     AddImageOrder(it.first);
+
+    if (m_pathToImageMap.size() == 1) {
+        m_curOrderStartPos = m_orderedImageList.begin();
+    }
+
     return it.first;
 }
 
@@ -115,7 +120,7 @@ bool ImageCollection::UnloadImage(const strType& imagePath) {
 void ImageCollection::UnloadAllImages() {
     m_pathToOrderMap.clear();
     m_orderedImageList.clear();
-    m_curOrderStartPos = m_orderedImageList.end();
+    m_curOrderStartPos = m_orderedImageList.begin();
 
     for (auto itr = m_pathToImageMap.begin(); itr != m_pathToImageMap.end(); ++itr) {
         ImageData* imageData = &(itr->second);
