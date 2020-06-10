@@ -52,6 +52,14 @@ bool CheckLoadedTestImageData(const uint32_t imageType, const int frame, const u
 
     return ret;
 }
+//----------------------------------------------------------------------------------------------------------------------
+
+void CheckMemoryCleanup() {
+    using namespace StreamingImageSequencePlugin;
+    ASSERT(0 == ImageCatalog::GetInstance().GetUsedMemory());
+    ASSERT(0 == GetNumLoadedTextures(CRITICAL_SECTION_TYPE_FULL_IMAGE));
+    ASSERT(0 == GetNumLoadedTextures(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE));
+}
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -68,9 +76,7 @@ TEST(Loader, ResetPluginTest) {
 
     //Unload
     ResetPlugin();
-    ASSERT_EQ(imageCatalog.GetUsedMemory(), 0);
-    ASSERT_EQ(0, GetNumLoadedTextures(CRITICAL_SECTION_TYPE_FULL_IMAGE)) << "Some full textures are still loaded";
-    ASSERT_EQ(0, GetNumLoadedTextures(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE)) << "Some preview textures are still loaded";
+    CheckMemoryCleanup();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -90,10 +96,7 @@ TEST(Loader, LoadSingleImageTest) {
 
     //Unload
     imageCatalog.UnloadAllImages();
-    ASSERT_EQ(imageCatalog.GetUsedMemory(), 0);
-
-    ASSERT_EQ(0, GetNumLoadedTextures(CRITICAL_SECTION_TYPE_FULL_IMAGE)) << "Some full images are still loaded";
-    ASSERT_EQ(0, GetNumLoadedTextures(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE)) << "Some preview images are still loaded";
+    CheckMemoryCleanup();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -113,10 +116,7 @@ TEST(Loader, LoadMultipleImagesTest) {
 
     //Unload
     imageCatalog.UnloadAllImages();
-    ASSERT_EQ(imageCatalog.GetUsedMemory(), 0);
-
-    ASSERT_EQ(0, GetNumLoadedTextures(CRITICAL_SECTION_TYPE_FULL_IMAGE)) << "Some full images are still loaded";
-    ASSERT_EQ(0, GetNumLoadedTextures(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE)) << "Some preview images are still loaded";
+    CheckMemoryCleanup();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
