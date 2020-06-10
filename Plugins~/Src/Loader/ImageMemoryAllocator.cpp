@@ -38,13 +38,14 @@ bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, con
 void ImageMemoryAllocator::Deallocate(ImageData* imageData) {
     ASSERT(nullptr!=imageData);
 
-    if (nullptr != imageData->RawData) {
-        const uint64_t mem = CalculateMemSize(imageData->Width, imageData->Height);
-        ASSERT(m_usedMemory >= mem);
-        DecUsedMem(mem);
-        free(imageData->RawData);
+    if (nullptr == imageData->RawData) {
+        return;
     }
 
+    const uint64_t mem = CalculateMemSize(imageData->Width, imageData->Height);
+    ASSERT(m_usedMemory >= mem);
+    DecUsedMem(mem);
+    free(imageData->RawData);
     *imageData = ImageData(nullptr, 0, 0, READ_STATUS_NONE);
 
 }
