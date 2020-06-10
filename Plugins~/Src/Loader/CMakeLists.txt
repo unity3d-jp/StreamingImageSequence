@@ -31,3 +31,7 @@ target_link_libraries( Loader
     stb
     ${CORE_GRAPHICS_LIBRARY}
 )
+
+if(BUILD_UNIT_TESTS)
+    target_compile_definitions(Loader PRIVATE MAX_IMAGE_MEMORY=104857600) # 100 MB limit
+endif()

@@ -13,7 +13,12 @@ ImageMemoryAllocator::~ImageMemoryAllocator() {
 bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, const uint32_t h) {
     //Allocate
     const uint32_t dataSize = CalculateMemSize(w, h);
+#ifdef MAX_IMAGE_MEMORY
+    if ((m_usedMemory + dataSize) > MAX_IMAGE_MEMORY)
+        return false;
+#endif
     uint8_t*  buffer = static_cast<uint8_t*>(malloc(dataSize));
+
 
     if (nullptr == buffer) {
         return false;
