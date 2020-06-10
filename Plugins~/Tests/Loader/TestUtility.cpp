@@ -76,4 +76,29 @@ uint32_t TestUtility::FindNumDuplicateMapElements(
     return ret;
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+std::map<strType, StreamingImageSequencePlugin::ImageData> TestUtility::LoadAndCheckUnloadingOfUnusedImages(
+    const uint32_t imageType, const int frame, const uint32_t startTestImageIndex, const uint32_t numImages, 
+    const std::map<strType, StreamingImageSequencePlugin::ImageData>& prevImageMap) 
+{
+    //This function assumes that we have reached a state where it's not possible to allocate an image unless we unload.
+
+    using namespace StreamingImageSequencePlugin;
+
+    ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+
+    ASSERT(startTestImageIndex + numImages -1 < NUM_TEST_IMAGES);
+    const bool processed = TestUtility::LoadTestImages(imageType, frame, startTestImageIndex, numImages);
+    const bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, frame, startTestImageIndex, numImages);
+    ASSERT(processed);
+    ASSERT(readSuccessful);
+    const std::map<strType, ImageData>& curImageMap = imageCatalog.GetImageMap(imageType);
+    uint32_t numDuplicates = TestUtility::FindNumDuplicateMapElements(prevImageMap, curImageMap);
+    ASSERT(prevImageMap.size() - numImages == numDuplicates);
+
+    //return a copy
+    return curImageMap;
+}
+
 } //end namespace

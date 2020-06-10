@@ -12,10 +12,15 @@ public:
     static bool CheckLoadedTestImageData(const uint32_t imageType, const int frame, const uint32_t, const uint32_t );
     static void CheckMemoryCleanup();
 
-    static uint32_t TestUtility::FindNumDuplicateMapElements(
+    static uint32_t FindNumDuplicateMapElements(
             const std::map<strType, StreamingImageSequencePlugin::ImageData>& map0, 
             const std::map<strType, StreamingImageSequencePlugin::ImageData>& map1        
     );
+
+    static std::map<strType, StreamingImageSequencePlugin::ImageData> LoadAndCheckUnloadingOfUnusedImages(
+        const uint32_t imageType, const int frame, const uint32_t startTestImageIndex, const uint32_t numImages,
+        const std::map<strType, StreamingImageSequencePlugin::ImageData>& prevImageMap);
+
 
 };
 
