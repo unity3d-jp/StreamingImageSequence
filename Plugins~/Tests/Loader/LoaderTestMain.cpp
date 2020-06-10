@@ -106,11 +106,9 @@ TEST(Loader, AutoUnloadUnusedImagesTest) {
         ++curFrame, startIndex, numImages, imageMap
     );
 
-
     //Unload
     imageCatalog.UnloadAllImages();
     TestUtility::CheckMemoryCleanup();
-
 
 }
 
