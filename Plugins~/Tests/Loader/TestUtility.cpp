@@ -1,5 +1,7 @@
 #include "TestUtility.h"
 
+#include <gtest/gtest.h>
+
 //Loader
 #include "Loader/Loader.h"
 #include "Loader/ImageCatalog.h"
@@ -74,6 +76,34 @@ uint32_t TestUtility::FindNumDuplicateMapElements(
 
     }
     return ret;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+//returns maximum number of images that can be loaded in memory
+uint32_t TestUtility::CleanupAndLoadMaxImages(const uint32_t imageType) {
+    using namespace StreamingImageSequencePlugin;
+    ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+    imageCatalog.UnloadAllImages(); //cleanup
+
+    const int curFrame = 0;
+    bool processed = TestUtility::LoadTestImages(imageType, curFrame, 0, 1);
+    ASSERT(true == processed);
+
+    const uint64_t reqMemForOneImage = imageCatalog.GetUsedMemory();
+    ASSERT(reqMemForOneImage >  0);
+    const uint32_t maxImages = static_cast<uint32_t>(std::floor( static_cast<float>(MAX_IMAGE_MEMORY) / reqMemForOneImage));
+    ASSERT(maxImages < NUM_TEST_IMAGES);
+
+    //Load the remaining images to fill memory to max
+    processed = TestUtility::LoadTestImages(imageType, curFrame, 1, maxImages-1);
+    bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, maxImages);
+    ASSERT(processed);
+    ASSERT(readSuccessful);
+
+    return maxImages;
+
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------

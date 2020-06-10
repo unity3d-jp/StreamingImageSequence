@@ -21,6 +21,8 @@ public:
         const uint32_t imageType, const int frame, const uint32_t startTestImageIndex, const uint32_t numImages,
         const std::map<strType, StreamingImageSequencePlugin::ImageData>& prevImageMap);
 
+    static uint32_t CleanupAndLoadMaxImages(const uint32_t imageType);
+
 
 };
 

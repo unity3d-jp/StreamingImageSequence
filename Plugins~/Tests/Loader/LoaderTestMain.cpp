@@ -77,24 +77,12 @@ TEST(Loader, AutoUnloadUnusedImagesTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
-    int curFrame = 0;
-    bool processed = TestUtility::LoadTestImages(CRITICAL_SECTION_TYPE_FULL_IMAGE, curFrame, 0, 1);
-    ASSERT_EQ(true, processed);
-
-    const uint64_t reqMemForOneImage = imageCatalog.GetUsedMemory();
-    ASSERT_GT(reqMemForOneImage, 0);
-    const uint32_t numImagesLimit = static_cast<uint32_t>(std::floor( static_cast<float>(MAX_IMAGE_MEMORY) / reqMemForOneImage));
-    ASSERT(numImagesLimit < NUM_TEST_IMAGES);
-
-    //Load the remaining images to fill memory to max
-    processed = TestUtility::LoadTestImages(CRITICAL_SECTION_TYPE_FULL_IMAGE, curFrame, 1, numImagesLimit-1);
-    bool readSuccessful = TestUtility::CheckLoadedTestImageData(CRITICAL_SECTION_TYPE_FULL_IMAGE, curFrame, 0, numImagesLimit);
-    ASSERT_EQ(true, processed);
-    ASSERT_EQ(true, readSuccessful) << "Loading image failed";
+    const uint32_t maxImages = TestUtility::CleanupAndLoadMaxImages(CRITICAL_SECTION_TYPE_FULL_IMAGE);
     std::map<strType, ImageData> imageMap = imageCatalog.GetImageMap(CRITICAL_SECTION_TYPE_FULL_IMAGE);
 
     //Test loading images in next frames
-    uint32_t startIndex = numImagesLimit;
+    int curFrame = 0;
+    uint32_t startIndex = maxImages;
     uint32_t numImages = 3;
     imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(CRITICAL_SECTION_TYPE_FULL_IMAGE, 
         ++curFrame, startIndex, numImages, imageMap
