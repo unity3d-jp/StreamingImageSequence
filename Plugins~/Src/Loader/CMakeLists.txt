@@ -33,5 +33,5 @@ target_link_libraries( Loader
 )
 
 if(BUILD_UNIT_TESTS)
-    target_compile_definitions(Loader PRIVATE MAX_IMAGE_MEMORY=104857600) # 100 MB limit
+    target_compile_definitions(Loader PUBLIC MAX_IMAGE_MEMORY=104857600) # 100 MB limit
 endif()
