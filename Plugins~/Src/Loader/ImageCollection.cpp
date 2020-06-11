@@ -146,8 +146,9 @@ void ImageCollection::UnloadAllImages() {
 //----------------------------------------------------------------------------------------------------------------------
 
 void ImageCollection::AdvanceOrder() {
-    //This will imply that images next to this pos were added/used after this current "order" (frame), 
-    //while the prev nodes were added before and not used since the order was advanced.
+    //Turn on the flag, so that at the next GetImage() or PrepareImage(), 
+    //the related image would be the start pos of the current "order".
+    //The prev nodes before this start pos, would be regarded as "unused" for this order, and thus safe to be unloaded
     m_updateOrderStartPos = true;
 }
 

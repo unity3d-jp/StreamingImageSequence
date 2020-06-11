@@ -130,14 +130,13 @@ TEST(Loader, StopLoadingRequiredImagesTest) {
         imageType, 0, 0, maxImages, READ_STATUS_SUCCESS);
     ASSERT_EQ(true, initialImagesLoaded) << "Initial images are not loaded in memory anymore";
 
+    //Load next images in the same frame. This should fail.
     const int startIndex = maxImages;
     uint32_t numImages = 3;
     const bool processed = TestUtility::LoadTestImages(imageType, 0, startIndex, numImages);
-    ASSERT_EQ(true, processed);
-
-    //Load next images in the same frame. This should fail.
     const bool laterImagesOutOfMemory = TestUtility::CheckLoadedTestImageData(
         imageType, 0, startIndex, numImages, READ_STATUS_OUT_OF_MEMORY);
+    ASSERT_EQ(true, processed);
     ASSERT_EQ(true, laterImagesOutOfMemory) << "Later images are loaded, even though we are out of memory";
 
     //Unload
