@@ -22,18 +22,19 @@
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
             StreamingImageSequencePlugin.GetImageDataInto(m_strFileName, TEX_TYPE, m_frame, out ImageData tResult);
             switch (tResult.ReadStatus) {
-                case StreamingImageSequenceConstants.READ_STATUS_NONE: {
-                    //Debug.Log("Loading: " + m_strFileName);
-                    StreamingImageSequencePlugin.LoadAndAllocFullImage(m_strFileName,m_frame);
-                    break;
-                }
-                case StreamingImageSequenceConstants.READ_STATUS_LOADING: {
+                case StreamingImageSequenceConstants.READ_STATUS_LOADING: 
+                case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
 #if UNITY_EDITOR
                     LogUtility.LogDebug("Already requested:" + m_strFileName);
 #endif
                     break;
                 }
-                default: break;
+                default: {
+                    //Debug.Log("Loading: " + m_strFileName);
+                    StreamingImageSequencePlugin.LoadAndAllocFullImage(m_strFileName,m_frame);
+                    break;
+                    
+                }
             }
         }
         

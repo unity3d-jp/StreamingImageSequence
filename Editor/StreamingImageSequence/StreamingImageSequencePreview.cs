@@ -84,11 +84,8 @@ internal class StreamingImageSequencePreview : IDisposable {
                 StreamingImageSequencePlugin.GetImageDataInto(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
                     ,Time.frameCount, out ImageData readResult);
                 switch (readResult.ReadStatus) {
-                    case StreamingImageSequenceConstants.READ_STATUS_NONE: {
-                        PreviewImageLoadBGTask.Queue(fullPath, widthPerPreviewImage, heightPerPreviewImage, 
-                            Time.frameCount);
+                    case StreamingImageSequenceConstants.READ_STATUS_LOADING:
                         break;
-                    }
                     case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
                         Texture2D tex = PreviewTextureFactory.GetOrCreate(fullPath, ref readResult);
                         if (null != tex) {
@@ -97,6 +94,8 @@ internal class StreamingImageSequencePreview : IDisposable {
                         break;
                     }
                     default: {
+                        PreviewImageLoadBGTask.Queue(fullPath, widthPerPreviewImage, heightPerPreviewImage, 
+                            Time.frameCount);
                         break;
                     }
 
