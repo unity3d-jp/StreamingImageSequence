@@ -47,8 +47,8 @@ bool TestUtility::CheckLoadedTestImageData(const uint32_t imageType, const int f
     for (uint32_t i = start; i <= endIndex && ret; ++i) {
         const strType filePath = "TestImage_" + TO_STR_TYPE(i) + ".png";
         ImageData imageData;
-        const bool processed = GetImageData(filePath.c_str(), imageType, frame, &imageData );
-        ret = (processed && imageData.CurrentReadStatus == reqReadStatus);
+        GetImageDataInto(filePath.c_str(), imageType, frame, &imageData );
+        ret = (imageData.CurrentReadStatus == reqReadStatus);
     }
 
     return ret;

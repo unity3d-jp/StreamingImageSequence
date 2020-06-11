@@ -1,6 +1,6 @@
 
 #include <gtest/gtest.h>
-
+#include <iostream>
 //CommonLib
 #include "CommonLib/CriticalSectionType.h" //CRITICAL_SECTION_TYPE_FULL_IMAGE
 
@@ -15,6 +15,7 @@
 namespace StreamingImageSequencePluginTest {
 
 //----------------------------------------------------------------------------------------------------------------------
+
 
 TEST(Loader, ResetPluginTest) {
     using namespace StreamingImageSequencePlugin;
@@ -160,21 +161,21 @@ TEST(Loader, OutOfMemoryTest) {
     //This should unload image loaded in the frame 0
     int curFrame = 1;
     uint32_t startIndex = maxImages;
-    uint32_t numImages = 5;
+    uint32_t numImages = maxImages;
     imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
         curFrame, startIndex, numImages, imageMap
     );
 
     //This shouldn't alloc more image because we are processing the same frame and we are still out of memory
     startIndex += numImages;
-    numImages = maxImages;
+    numImages = 1;
     bool processed = TestUtility::LoadTestImages(imageType, curFrame, startIndex, numImages);
     bool imagesOutOfMemory= TestUtility::CheckLoadedTestImageData( 
         imageType, curFrame, startIndex, numImages, READ_STATUS_OUT_OF_MEMORY);
     ASSERT_EQ(true, processed);
     ASSERT_EQ(true, imagesOutOfMemory) << "Later images are loaded, even though we are out of memory";
 
-    //Advance frame and load previously failed images. This should deallocate the unused images 
+    //Advance frame and load previously failed images. This should deallocate the unused images (loaded in prev frames)
     ++curFrame;
     imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
         curFrame, startIndex, numImages, imageMap

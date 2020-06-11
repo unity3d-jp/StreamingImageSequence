@@ -24,13 +24,13 @@ LOADER_API std::map<strType, int>           g_scenePathToSceneStatus;
 //----------------------------------------------------------------------------------------------------------------------
 
 //Get the texture info and return the result inside ReadResult. Thread-safe
-LOADER_API bool GetImageData(const charType* imagePath, const uint32_t imageType, const int frame
+LOADER_API void GetImageDataInto(const charType* imagePath, const uint32_t imageType, const int frame
 	, StreamingImageSequencePlugin::ImageData* readResult) 
 {
     using namespace StreamingImageSequencePlugin;
     CriticalSectionController cs(TEXTURE_CS(imageType));
 	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
-	return LoaderUtility::GetImageDataInto(imagePath, imageType, &imageCatalog, frame, readResult);
+	*readResult = LoaderUtility::GetImageData(imagePath, imageType, &imageCatalog, frame);
 }
 
 //----------------------------------------------------------------------------------------------------------------------

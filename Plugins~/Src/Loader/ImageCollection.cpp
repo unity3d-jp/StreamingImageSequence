@@ -23,6 +23,12 @@ const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool 
         return nullptr;
     }
 
+    //Check if we have to update the order start pos first
+    if (m_updateOrderStartPos) {
+        MoveOrderStartPosToEnd();
+        m_updateOrderStartPos = false;
+    }
+
     if (isForCurrentOrder)
         ReorderImageToEnd(pathIt);
     return &pathIt->second;
