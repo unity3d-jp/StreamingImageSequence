@@ -11,7 +11,7 @@
 namespace StreamingImageSequencePlugin {
 
 
-ImageCollection::ImageCollection() : m_curOrderStartPos(m_orderedImageList.begin()){
+ImageCollection::ImageCollection() : m_curOrderStartPos(m_orderedImageList.end()), m_updateOrderStartPos(false) {
 
 }
 
@@ -36,8 +36,10 @@ std::map<strType, ImageData>::iterator ImageCollection::PrepareImage(const strTy
     auto it = m_pathToImageMap.insert({ imagePath, ImageData(nullptr,0,0,READ_STATUS_LOADING) });
     AddImageOrder(it.first);
 
-    if (m_pathToImageMap.size() == 1) {
-        m_curOrderStartPos = m_orderedImageList.begin();
+    ASSERT(m_orderedImageList.size() >= 1);
+    if (m_curOrderStartPos == m_orderedImageList.end() || m_updateOrderStartPos) {
+        MoveOrderStartPosToEnd();
+        m_updateOrderStartPos = false;
     }
 
     return it.first;
@@ -125,7 +127,7 @@ bool ImageCollection::UnloadImage(const strType& imagePath) {
 void ImageCollection::UnloadAllImages() {
     m_pathToOrderMap.clear();
     m_orderedImageList.clear();
-    m_curOrderStartPos = m_orderedImageList.begin();
+    m_curOrderStartPos = m_orderedImageList.end();
 
     for (auto itr = m_pathToImageMap.begin(); itr != m_pathToImageMap.end(); ++itr) {
         ImageData* imageData = &(itr->second);
@@ -138,10 +140,9 @@ void ImageCollection::UnloadAllImages() {
 //----------------------------------------------------------------------------------------------------------------------
 
 void ImageCollection::AdvanceOrder() {
-
     //This will imply that images next to this pos were added/used after this current "order" (frame), 
     //while the prev nodes were added before and not used since the order was advanced.
-    m_curOrderStartPos = m_orderedImageList.end();
+    m_updateOrderStartPos = true;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -158,14 +159,19 @@ void ImageCollection::ReorderImageToEnd(std::map<strType, ImageData>::iterator p
         return;
     }
 
-    //don't move the start of the current "order" (frame) to the end as well
+    //Make sure the startPos of the current "order" (frame) is still valid
+    bool invalidStartPos = false;
     if (pathToOrderIt->second == m_curOrderStartPos) {
         ++m_curOrderStartPos;
+        invalidStartPos = (m_curOrderStartPos == m_orderedImageList.end());
     }
 
     //Move to the end
     m_orderedImageList.splice( m_orderedImageList.end(), m_orderedImageList, pathToOrderIt->second);
 
+    if (invalidStartPos) {
+        MoveOrderStartPosToEnd();
+    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -185,7 +191,22 @@ void ImageCollection::DeleteImageOrder(std::map<strType, ImageData>::iterator pa
     }
     m_orderedImageList.erase(orderIt);
     m_pathToOrderMap.erase(pathToOrderIt);
+
+
+    //make sure the start pos is valid
+    if (m_curOrderStartPos == m_orderedImageList.end() && m_pathToOrderMap.size() >= 1) {
+        --m_curOrderStartPos;
+    }
+
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+void ImageCollection::MoveOrderStartPosToEnd() {
+    ASSERT(m_orderedImageList.size() >= 1);
+    m_curOrderStartPos = m_orderedImageList.end();
+    --m_curOrderStartPos;
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 bool ImageCollection::AllocateRawData(uint8_t** rawData,const uint32_t w,const uint32_t h,const strType& imagePath) 

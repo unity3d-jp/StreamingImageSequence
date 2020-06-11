@@ -37,6 +37,7 @@ private:
     void AddImageOrder(std::map<strType, ImageData>::iterator);
     void ReorderImageToEnd(std::map<strType, ImageData>::iterator);
     void DeleteImageOrder(std::map<strType, ImageData>::iterator);
+    void MoveOrderStartPosToEnd();
 
     //This will unload unused image if memory is not enough
     bool AllocateRawData(uint8_t** rawData, const uint32_t w, const uint32_t h, const strType& imagePath);
@@ -49,6 +50,7 @@ private:
     std::map<strType, std::list<std::map<strType, ImageData>::iterator>::iterator> m_pathToOrderMap;
     std::list<std::map<strType, ImageData>::iterator>           m_orderedImageList;
     std::list<std::map<strType, ImageData>::iterator>::iterator m_curOrderStartPos;
+    bool m_updateOrderStartPos;
 
 };
 
