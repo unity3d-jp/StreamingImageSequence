@@ -34,7 +34,6 @@ FileType LoaderUtility::CheckFileType(const strType& imagePath) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//Returns whether the file has been processed, or is still processed  (inside readResultMap).
 
 ImageData LoaderUtility::GetImageData(const strType& imagePath, const uint32_t imageType, 
     ImageCatalog* imageCatalog, const int frame)
