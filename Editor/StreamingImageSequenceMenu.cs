@@ -79,7 +79,7 @@ namespace UnityEditor.StreamingImageSequence {
                 });
 
                 foreach (var fileName in loadedTextures) {
-                    StreamingImageSequencePlugin.GetImageData(fileName,imageType, Time.frameCount, 
+                    StreamingImageSequencePlugin.GetImageDataInto(fileName,imageType, Time.frameCount, 
                         out ImageData readResult);
                     sb.Append("    ");
                     sb.Append(fileName);

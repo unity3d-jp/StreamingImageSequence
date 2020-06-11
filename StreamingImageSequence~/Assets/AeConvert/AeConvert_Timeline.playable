@@ -14,14 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_folder: 
   m_imagePaths: []
+  m_playableFrames: []
   m_version: 1
-  m_resolution:
-    Width: 0
-    Height: 0
   m_time: 0
-  m_dimensionRatio: 0
   m_timelineDefaultAsset: {fileID: 0}
-  m_loadingIndex: -1
+  m_useImageMarkerVisibility: 0
 --- !u!114 &-4198155007055816970
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -128,14 +125,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_folder: 
   m_imagePaths: []
+  m_playableFrames: []
   m_version: 1
-  m_resolution:
-    Width: 0
-    Height: 0
   m_time: 0
-  m_dimensionRatio: 0
   m_timelineDefaultAsset: {fileID: 0}
-  m_loadingIndex: -1
+  m_useImageMarkerVisibility: 0
 --- !u!74 &-479613085316804822
 AnimationClip:
   m_ObjectHideFlags: 0

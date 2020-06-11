@@ -13,7 +13,12 @@ ImageMemoryAllocator::~ImageMemoryAllocator() {
 bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, const uint32_t h) {
     //Allocate
     const uint32_t dataSize = CalculateMemSize(w, h);
+#ifdef MAX_IMAGE_MEMORY
+    if ((m_usedMemory + dataSize) > MAX_IMAGE_MEMORY)
+        return false;
+#endif
     uint8_t*  buffer = static_cast<uint8_t*>(malloc(dataSize));
+
 
     if (nullptr == buffer) {
         return false;
@@ -33,14 +38,15 @@ bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, con
 void ImageMemoryAllocator::Deallocate(ImageData* imageData) {
     ASSERT(nullptr!=imageData);
 
-    if (nullptr != imageData->RawData) {
-        const uint64_t mem = CalculateMemSize(imageData->Width, imageData->Height);
-        ASSERT(m_usedMemory >= mem);
-        DecUsedMem(mem);
-        free(imageData->RawData);
+    if (nullptr == imageData->RawData) {
+        return;
     }
 
-    *imageData = ImageData(nullptr, 0, 0, READ_STATUS_NONE);
+    const uint64_t mem = CalculateMemSize(imageData->Width, imageData->Height);
+    ASSERT(m_usedMemory >= mem);
+    DecUsedMem(mem);
+    free(imageData->RawData);
+    *imageData = ImageData(nullptr, 0, 0, READ_STATUS_IDLE);
 
 }
 

@@ -3,7 +3,8 @@
     internal static class StreamingImageSequenceConstants {
         public const string DIALOG_HEADER = "StreamingImageSequence";
 
-        public const int READ_STATUS_NONE          = 0;
+        public const int READ_STATUS_UNAVAILABLE   = -1;
+        public const int READ_STATUS_IDLE          = 0;
         public const int READ_STATUS_LOADING       = 1;
         public const int READ_STATUS_SUCCESS       = 2;
         public const int READ_STATUS_OUT_OF_MEMORY = 3;

@@ -4,6 +4,7 @@
 
 //Loader
 #include "FileType.h"
+#include "ReadStatus.h"
 
 namespace StreamingImageSequencePlugin {
 
@@ -19,10 +20,13 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType, Ima
 class LoaderUtility {
 public:
     static FileType CheckFileType(const strType& imagePath);
-    static bool GetImageDataInto(const strType& imagePath, const uint32_t imageType,ImageCatalog*,const int,ImageData*);
+    static ImageData GetImageData(const strType& imagePath, const uint32_t imageType,ImageCatalog*,const int);
     static bool LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog*, const int frame);
     static bool LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog*,
         const uint32_t reqWidth, const uint32_t reqHeight, const int frame);
+
+private:
+    static bool IsImageLoadError(const ReadStatus );
 
 };
 

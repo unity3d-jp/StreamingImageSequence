@@ -20,20 +20,20 @@
 
     public override void Execute() {
         const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW;
-        StreamingImageSequencePlugin.GetImageData(m_fileName, TEX_TYPE, m_frame, out ImageData tResult);
+        StreamingImageSequencePlugin.GetImageDataInto(m_fileName, TEX_TYPE, m_frame, out ImageData tResult);
         switch (tResult.ReadStatus) {
-            case StreamingImageSequenceConstants.READ_STATUS_NONE: {
-                //Debug.Log("Loading: " + m_fileName);
-                StreamingImageSequencePlugin.LoadAndAllocPreviewImage(m_fileName, m_width, m_height, m_frame);
-                break;
-            }
-            case StreamingImageSequenceConstants.READ_STATUS_LOADING: {
+            case StreamingImageSequenceConstants.READ_STATUS_LOADING: 
+            case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
 #if UNITY_EDITOR
                 LogUtility.LogDebug("Already requested:" + m_fileName);
 #endif
                 break;
             }
-            default: break;
+            default: {
+                //Debug.Log("Loading: " + m_fileName);
+                StreamingImageSequencePlugin.LoadAndAllocPreviewImage(m_fileName, m_width, m_height, m_frame);
+                break;
+            }
         }
 
     }

@@ -27,7 +27,7 @@ extern "C"
 {
 	LOADER_API bool  LoadAndAllocFullImage(const charType* ptr, const int frame);
 	LOADER_API bool  LoadAndAllocPreviewImage(const charType* ptr, const uint32_t width, const uint32_t height, const int frame);
-	LOADER_API bool  GetImageData(const charType* fileName, const uint32_t imageType, const int frame
+	LOADER_API void  GetImageDataInto(const charType* fileName, const uint32_t imageType, const int frame
 		, StreamingImageSequencePlugin::ImageData* pResult);
 	LOADER_API int   UnloadImage(const charType* fileName);
 	LOADER_API void  UnloadAllImages();

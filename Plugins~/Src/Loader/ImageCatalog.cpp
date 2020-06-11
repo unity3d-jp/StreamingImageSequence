@@ -28,10 +28,11 @@ const ImageData* ImageCatalog::GetImage(const strType& imagePath, const uint32_t
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void ImageCatalog::UnloadAllImages() {
+void ImageCatalog::Reset() {
     for (uint32_t imageType = 0; imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES; ++imageType) {
         m_imageCollection[imageType].UnloadAllImages();
     }
+    m_latestRequestFrame = 0;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

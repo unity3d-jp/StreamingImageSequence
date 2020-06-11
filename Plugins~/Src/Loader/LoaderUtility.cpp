@@ -34,25 +34,19 @@ FileType LoaderUtility::CheckFileType(const strType& imagePath) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//Returns whether the file has been processed, or is still processed  (inside readResultMap).
 
-bool LoaderUtility::GetImageDataInto(const strType& imagePath, const uint32_t imageType, 
-    ImageCatalog* imageCatalog, const int frame, ImageData* pResult)
+ImageData LoaderUtility::GetImageData(const strType& imagePath, const uint32_t imageType, 
+    ImageCatalog* imageCatalog, const int frame)
 {
     using namespace StreamingImageSequencePlugin;
-    ASSERT(pResult);
-    pResult->CurrentReadStatus = READ_STATUS_NONE;
     
     const ImageData* imageData = imageCatalog->GetImage(imagePath, imageType, frame);
-    if (nullptr == imageData)
-        return false;
-
-    *pResult = *imageData;
-
+    if (nullptr == imageData) {
+        return ImageData(nullptr, 0, 0, READ_STATUS_UNAVAILABLE);
+    }
     //if success, then the buffer must be not null
-    ASSERT(pResult->CurrentReadStatus != READ_STATUS_SUCCESS || pResult->RawData);
-
-    return true;
+    ASSERT(imageData->CurrentReadStatus != READ_STATUS_SUCCESS || imageData->RawData);
+    return *imageData;
 
 
 }
@@ -63,19 +57,21 @@ bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t i
     const int frame) 
 {
     using namespace StreamingImageSequencePlugin;
-    ImageData readResult;
 
-    const bool isProcessed = LoaderUtility::GetImageDataInto(imagePath, imageType, imageCatalog, frame, &readResult );
-    if (isProcessed) {
+    ImageData imageData = LoaderUtility::GetImageData(imagePath, imageType, imageCatalog, frame);
+
+    //Just return if the image load doesn't have any error
+    if (!LoaderUtility::IsImageLoadError(imageData.CurrentReadStatus))
         return true;
-    }
 
     const FileType fileType = LoaderUtility::CheckFileType(imagePath);
     if (FILE_TYPE_INVALID == fileType)
         return false;
 
     //Loading
-    imageCatalog->PrepareImage(imagePath, imageType, frame);
+    if (READ_STATUS_UNAVAILABLE == imageData.CurrentReadStatus) {
+        imageCatalog->PrepareImage(imagePath, imageType, frame);
+    }
 
     switch (fileType) {
         case FILE_TYPE_TGA: {
@@ -104,12 +100,13 @@ bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t i
     if (!LoaderUtility::LoadAndAllocImage(imagePath, imageType, imageCatalog, frame))
         return false;
 
-    ImageData imageData;
-    if (!LoaderUtility::GetImageDataInto(imagePath, imageType, imageCatalog, frame, &imageData ))
+    ImageData imageData = LoaderUtility::GetImageData(imagePath, imageType, imageCatalog, frame);
+    if (LoaderUtility::IsImageLoadError(imageData.CurrentReadStatus))
         return false;
 
-    //Buffer is still null. Means, still loading
-    if (NULL == imageData.RawData) {
+
+    //Still loading
+    if (READ_STATUS_LOADING == imageData.CurrentReadStatus) {
         return true; 
     }
 
@@ -121,6 +118,15 @@ bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t i
 
     return true;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+bool LoaderUtility::IsImageLoadError(const ReadStatus readStatus) {
+    //Except these statuses, it's an error
+    return (!(READ_STATUS_LOADING == readStatus || READ_STATUS_SUCCESS == readStatus));
+
+}
+
 
 
 
