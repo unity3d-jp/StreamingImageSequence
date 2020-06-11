@@ -83,8 +83,8 @@ uint32_t TestUtility::FindNumDuplicateMapElements(
 //returns maximum number of images that can be loaded in memory
 uint32_t TestUtility::CleanupAndLoadMaxImages(const uint32_t imageType) {
     using namespace StreamingImageSequencePlugin;
+    UnloadAllImages(); //cleanup
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
-    imageCatalog.UnloadAllImages(); //cleanup
 
     const int curFrame = 0;
     bool processed = TestUtility::LoadTestImages(imageType, curFrame, 0, 1);

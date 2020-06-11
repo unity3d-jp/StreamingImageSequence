@@ -79,7 +79,7 @@ LOADER_API void  UnloadAllImages() {
 	CriticalSectionController cs0(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_IMAGE));
 	CriticalSectionController cs1(TEXTURE_CS(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE));
 
-	ImageCatalog::GetInstance().UnloadAllImages();
+	ImageCatalog::GetInstance().Reset();
 }
 
 

@@ -28,7 +28,7 @@ public:
     inline const std::map<strType, ImageData>& GetImageMap(const uint32_t imageType) const;
     inline size_t GetNumImages(const uint32_t imageType) const;
 
-    void UnloadAllImages();
+    void Reset();
 
     inline uint64_t GetUsedMemory() const;
 private:
