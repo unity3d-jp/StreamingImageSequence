@@ -1,7 +1,6 @@
 *.o
 *.obj
 *.pch
-*.lib
 *.exe
 *.exp
 *.ilk
@@ -18,7 +17,6 @@
 
 *.exe
 *.so
-*.dylib
 *.unitypackage
 
 release/
@@ -34,6 +32,8 @@ StreamingImageSequence~/*.sln
 StreamingImageSequence~/.idea/**
 StreamingImageSequence~.meta
 StreamingImageSequence~/Assets.meta
+*/Logs/**
+*/UIElementsSchema/**
 .vs/
 Library/
 Temp/
@@ -52,3 +52,23 @@ Plugin~/_out/
 *.xcuserdatad/
 Plugins~/**/DerivedData/**
 Plugins~/**/XCBuildData/**
+
+# CMake
+Plugins~/Build/CMakeFiles/*
+Plugins~/Build/CMakeScripts/*
+Plugins~/Build/CMakeCache.txt
+Plugins~/Build/**/cmake_install.cmake
+Plugins~/Build/Makefile
+Plugins~/Build/*.xcodeproj/**
+Plugins~/Build/ispc**
+Plugins~/Build/*.vcxproj**
+Plugins~/Build/*.sln
+Plugins~/Build/CTestTestfile.cmake
+Plugins~/Build/*.tcl
+Plugins~/Build/Testing/**
+Plugins~/Build/x64/**
+Plugins~/Build/Src/**
+Plugins~/Build/Tests/**
+
+
+

@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.5-preview] - 2020-06-01
+* chore: depend on com.unity.ext.nunit 
+* chore: make it explicit that StreamingImageSequence depends on ugui 
+
 ## [0.1.4-preview] - 2020-05-14
 
 * fix: inaccuracies in placing preview icon positions 

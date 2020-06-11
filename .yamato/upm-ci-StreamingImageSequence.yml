@@ -23,11 +23,7 @@ prepack_{{ platform.name }}:
     image: {{ platform.prepack_image }}
     flavor: {{ platform.flavor }}
   commands:
-{% if platform.name == "mac" -%}
-    - cd Plugins~/Project && xcodebuild -configuration Release build && cd ../..
-{% else -%}
     - cd . 
-{% endif -%}
   artifacts:
     {{ yamato_name }}_{{ platform.name }}_prepack_artifacts:
       paths:
@@ -43,19 +39,11 @@ pack:
     flavor: b1.large
   commands:
     - npm install upm-ci-utils@stable -g --registry https://artifactory.prd.cds.internal.unity3d.com/artifactory/api/npm/upm-npm
-{% for platform in platforms %}
-    - unzip -qq -o streamingImageSequence_{{ platform.name }}_prepack_artifacts*
-    - rm streamingImageSequence_{{ platform.name }}_prepack_artifacts*
-{% endfor %}
     - upm-ci package pack
   artifacts:
     {{ yamato_name }}_pack_artifacts:
       paths:
         - "upm-ci~/**/*"
-  dependencies:
-{% for platform in platforms %}
-    - .yamato/upm-ci-{{ yamato_name }}.yml#prepack_{{ platform.name }}
-{% endfor %}
     
 {% for editor in test_editors %}
 {% for platform in platforms %}

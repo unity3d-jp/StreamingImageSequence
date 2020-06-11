@@ -69,8 +69,7 @@ namespace UnityEngine.StreamingImageSequence {
         /// Constructor
         /// </summary>
         public StreamingImageSequencePlayableAsset() {
-            m_loadingIndex = -1;
-            m_lastIndex = -1;
+            m_lastCopiedImageIndex = -1;
 #if UNITY_EDITOR            
             m_timelineEditorCurveBinding  = new EditorCurveBinding() {
                 path = "",
@@ -281,9 +280,11 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------        
         internal void Reset() {
-            m_loadingIndex = -1;
-            m_lastIndex = -1;
-            m_loadRequested = null;
+            m_primaryImageIndex         = 0;
+            m_forwardPreloadImageIndex  = 0;
+            m_backwardPreloadImageIndex = 0;
+            
+            m_lastCopiedImageIndex = -1;
             if (null != m_texture) {
                 ResetTexture();
             }
@@ -337,116 +338,78 @@ namespace UnityEngine.StreamingImageSequence {
 #endregion         
 //---------------------------------------------------------------------------------------------------------------------
 
-        internal void LoadRequest(bool isDirectorIdle) {
-            if (null == m_imagePaths)
-                return;
 
-            int numPictures = m_imagePaths.Count;
-            if (m_loadRequested == null && numPictures > 0) {
-                m_loadRequested = new bool[numPictures];
+        internal void ContinuePreloadingImages() {
+            
+            const int NUM_IMAGES = 2;
+
+            //forward
+            int maxForwardPreloadIndex = Mathf.Min(m_forwardPreloadImageIndex + NUM_IMAGES, m_imagePaths.Count) -1;
+            for (int i = m_forwardPreloadImageIndex; i <= maxForwardPreloadIndex; ++i) {
+                QueueImageLoadTask(i, out _ );
             }
-
-            // request loading while editor is idle.
-            if (isDirectorIdle)
-            {
-                LoadStep(4);
+            m_forwardPreloadImageIndex = maxForwardPreloadIndex;
+            
+            //backward
+            int minBackwardPreloadIndex = Mathf.Max((m_backwardPreloadImageIndex - NUM_IMAGES)+1, 0);
+            for (int i = m_backwardPreloadImageIndex; i >=minBackwardPreloadIndex; --i) {
+                QueueImageLoadTask(i, out _ );
             }
-            else
-            {
-                LoadStep(2);
-            }
-        }
-
-        private void LoadStep(int step)
-        {
-            int loadRequestMax = m_loadingIndex + step;
-            if (loadRequestMax > m_imagePaths.Count)
-            {
-                loadRequestMax = m_imagePaths.Count;
-            }
-            for (int ii = m_loadingIndex; ii <= loadRequestMax - 1; ii++)
-            {
-                if (ii == -1)
-                {
-                    continue;
-                }
-
-                LoadRequest(ii, false, out ReadResult readResult);
-
-            }
-            m_loadingIndex = loadRequestMax;
-
+            m_backwardPreloadImageIndex = minBackwardPreloadIndex;
             
         }
 
-        internal bool IsLoadRequested(int index)
-        {
-            string filename = m_imagePaths[index];
-            filename = GetCompleteFilePath(filename);
-            StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out ReadResult readResult, 
-                StreamingImageSequenceConstants.TEXTURE_TYPE_FULL
-            );
-            return (readResult.ReadStatus != 0);
-
-        }
-
 //----------------------------------------------------------------------------------------------------------------------        
-        internal string LoadRequest(int index, bool isBlocking, out ReadResult readResult) {
-            const int TEX_TYPE = StreamingImageSequenceConstants.TEXTURE_TYPE_FULL;
+        private string QueueImageLoadTask(int index, out ImageData imageData) {
+            const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
-            if (m_loadRequested == null) {
-                m_loadRequested = new bool[m_imagePaths.Count];
-            }
 
-            StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, TEX_TYPE);
-            //Debug.Log("readResult.readStatus " + readResult.readStatus + "Loading " + filename);
-            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_NONE) {
-                ImageLoadBGTask.Queue(filename);
+            StreamingImageSequencePlugin.GetImageData(filename,TEX_TYPE, Time.frameCount, out imageData );
+            //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);
+            
+            if (StreamingImageSequenceConstants.READ_STATUS_LOADING != imageData.ReadStatus ) {
+                ImageLoadBGTask.Queue(filename, Time.frameCount);
             }
-            if ( isBlocking ) {
-                while (readResult.ReadStatus != StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
-                    StreamingImageSequencePlugin.GetNativeTextureInfo(filename, out readResult, TEX_TYPE);
-                }
-            }
-#if false //UNITY_EDITOR
-            if ( readResult.readStatus == 1 )
-            {
-                Util.Log("Already requestd:" + filename);
-            }
-#endif
+            // if ( isBlocking ) {
+            //     while (imageData.ReadStatus != StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
+            //         StreamingImageSequencePlugin.GetImageData(filename, TEX_TYPE, out imageData );
+            //     }
+            // }
+            
             return filename;
         }
 //----------------------------------------------------------------------------------------------------------------------        
         
 
-        internal bool RequestLoadImage(int index, bool isBlocking)
+        internal bool RequestLoadImage(int index)
         {
             if (null == m_imagePaths || index < 0 || index >= m_imagePaths.Count || string.IsNullOrEmpty(m_imagePaths[index])) {
                 return false;
             }
-           
-            string filename = LoadRequest(index,isBlocking, out ReadResult readResult);
 
-            if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {
+            m_primaryImageIndex         = index;
+            m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, m_imagePaths.Count - 1);
+            m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);
+
+            
+            QueueImageLoadTask(index, out ImageData readResult);
+
+            if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
 
                 m_texture = readResult.CreateCompatibleTexture();
                 readResult.CopyBufferToTexture(m_texture);
-
-                IntPtr ptr =  m_texture.GetNativeTexturePtr();
-                int texInstanceID = m_texture.GetInstanceID();
                 
                 UpdateResolution(ref readResult);
             }
 
             //Update the texture
-			if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS && m_lastIndex != index) {
-                int texInstanceID = m_texture.GetInstanceID();
+            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS && m_lastCopiedImageIndex != index) {
 
                 readResult.CopyBufferToTexture(m_texture);
-			}
+                m_lastCopiedImageIndex = index;
+            }
 
-			m_lastIndex = index;
             return null!=m_texture;
         }
 //----------------------------------------------------------------------------------------------------------------------        
@@ -623,9 +586,9 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
 //---------------------------------------------------------------------------------------------------------------------
-        void UpdateResolution(ref ReadResult readResult) {
-            m_resolution.Width  = readResult.Width;
-            m_resolution.Height = readResult.Height;
+        void UpdateResolution(ref ImageData imageData) {
+            m_resolution.Width  = imageData.Width;
+            m_resolution.Height = imageData.Height;
             m_dimensionRatio = m_resolution.CalculateRatio();
         }
 //---------------------------------------------------------------------------------------------------------------------
@@ -635,9 +598,9 @@ namespace UnityEngine.StreamingImageSequence {
             if (null!=m_imagePaths && m_imagePaths.Count <= 0)
                 return;
 
-            //Load the first image to update the resolution.
-            LoadRequest(0, false, out ReadResult readResult);
-            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_RESULT_SUCCESS) {               
+            //Load the primary image to update the resolution.
+            QueueImageLoadTask(m_primaryImageIndex,  out ImageData readResult);
+            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {               
                 UpdateResolution(ref readResult);
             }
             
@@ -752,17 +715,19 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below
         private EditorCurveBinding m_timelineEditorCurveBinding;
 #endif
-        private bool[] m_loadRequested;
         [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = false;
         
         //[Note-sin: 2020-2-13] TimelineClip has to be setup every time (after deserialization, etc) to ensure that
         //we are referring to the same instance rather than having a newly created one
         TimelineClip m_timelineClip  = null; 
 
-        //[TODO-sin: 2020-1-30] Turn this to a non-public var
-        [SerializeField] internal int m_loadingIndex;
 
-        private int m_lastIndex;
+        private int m_lastCopiedImageIndex; //the index of the image copied to m_texture
+
+        private int m_primaryImageIndex         = 0;
+        private int m_forwardPreloadImageIndex  = 0;
+        private int m_backwardPreloadImageIndex = 0;
+        
         private bool m_verified;
         private StreamingImageSequencePlayableAsset m_clonedFromAsset = null;
 

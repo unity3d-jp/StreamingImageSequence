@@ -23,8 +23,8 @@ internal static class PreviewTextureFactory {
     
 //----------------------------------------------------------------------------------------------------------------------    
 
-    public static Texture2D GetOrCreate(string fullPath, ref ReadResult readResult) {
-        Assert.IsTrue(StreamingImageSequenceConstants.READ_RESULT_SUCCESS == readResult.ReadStatus);
+    public static Texture2D GetOrCreate(string fullPath, ref ImageData imageData) {
+        Assert.IsTrue(StreamingImageSequenceConstants.READ_STATUS_SUCCESS == imageData.ReadStatus);
         
         //We only remove obsolete textures if there is any access to PreviewTextures in a particular frame. 
         //For example, if Unity is not in focus, then we don't want to remove them.
@@ -35,8 +35,8 @@ internal static class PreviewTextureFactory {
             return m_previewTextures[fullPath].GetTexture();
         }
 
-        Texture2D newTex = readResult.CreateCompatibleTexture();
-        readResult.CopyBufferToTexture(newTex);
+        Texture2D newTex = imageData.CreateCompatibleTexture();
+        imageData.CopyBufferToTexture(newTex);
         newTex.name = fullPath;
         m_previewTextures[fullPath] = new PreviewTexture(newTex);
         newTex.hideFlags = HideFlags.HideAndDontSave; //This is static. Don't destroy the tex if a new scene is loaded
