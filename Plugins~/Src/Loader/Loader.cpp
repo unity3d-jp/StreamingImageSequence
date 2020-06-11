@@ -24,12 +24,13 @@ LOADER_API std::map<strType, int>           g_scenePathToSceneStatus;
 //----------------------------------------------------------------------------------------------------------------------
 
 //Get the texture info and return the result inside ReadResult. Thread-safe
-LOADER_API bool GetImageData(const charType* imagePath, const uint32_t imageType, const int frame
+LOADER_API void GetImageDataInto(const charType* imagePath, const uint32_t imageType, const int frame
 	, StreamingImageSequencePlugin::ImageData* readResult) 
 {
     using namespace StreamingImageSequencePlugin;
     CriticalSectionController cs(TEXTURE_CS(imageType));
-    return LoaderUtility::GetImageDataInto(imagePath, imageType, &ImageCatalog::GetInstance(), frame, readResult);
+	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+	*readResult = LoaderUtility::GetImageData(imagePath, imageType, &imageCatalog, frame);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -40,7 +41,8 @@ LOADER_API bool LoadAndAllocFullImage(const charType* imagePath, const int frame
     using namespace StreamingImageSequencePlugin;
     const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
 	CriticalSectionController cs(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_IMAGE));
-	return LoaderUtility::LoadAndAllocImage(imagePath, imageType, &ImageCatalog::GetInstance(), frame);
+	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+	return LoaderUtility::LoadAndAllocImage(imagePath, imageType, &imageCatalog, frame);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -49,7 +51,8 @@ LOADER_API bool LoadAndAllocPreviewImage(const charType* imagePath, const uint32
 	using namespace StreamingImageSequencePlugin;
 	const uint32_t imageType = CRITICAL_SECTION_TYPE_PREVIEW_IMAGE;
 	CriticalSectionController cs(TEXTURE_CS(imageType));
-	return LoaderUtility::LoadAndAllocImage(imagePath, imageType, &ImageCatalog::GetInstance(),width,height, frame);
+	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+	return LoaderUtility::LoadAndAllocImage(imagePath, imageType, &imageCatalog,width,height, frame);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -76,7 +79,7 @@ LOADER_API void  UnloadAllImages() {
 	CriticalSectionController cs0(TEXTURE_CS(CRITICAL_SECTION_TYPE_FULL_IMAGE));
 	CriticalSectionController cs1(TEXTURE_CS(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE));
 
-	ImageCatalog::GetInstance().UnloadAllImages();
+	ImageCatalog::GetInstance().Reset();
 }
 
 

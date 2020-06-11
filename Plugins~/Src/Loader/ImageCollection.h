@@ -13,6 +13,7 @@ class ImageMemoryAllocator;
 
 class ImageCollection {
 public:
+    ImageCollection();
     inline void SetMemoryAllocator(ImageMemoryAllocator*);
 
     //return null if not found
@@ -26,7 +27,7 @@ public:
     bool UnloadImage(const strType& imagePath);
     void UnloadAllImages();
 
-    inline const std::map<strType, ImageData> GetImageMap() const;
+    inline const std::map<strType, ImageData>& GetImageMap() const;
     inline size_t GetNumImages() const;
 
     void AdvanceOrder();
@@ -36,6 +37,7 @@ private:
     void AddImageOrder(std::map<strType, ImageData>::iterator);
     void ReorderImageToEnd(std::map<strType, ImageData>::iterator);
     void DeleteImageOrder(std::map<strType, ImageData>::iterator);
+    void MoveOrderStartPosToEnd();
 
     //This will unload unused image if memory is not enough
     bool AllocateRawData(uint8_t** rawData, const uint32_t w, const uint32_t h, const strType& imagePath);
@@ -48,12 +50,13 @@ private:
     std::map<strType, std::list<std::map<strType, ImageData>::iterator>::iterator> m_pathToOrderMap;
     std::list<std::map<strType, ImageData>::iterator>           m_orderedImageList;
     std::list<std::map<strType, ImageData>::iterator>::iterator m_curOrderStartPos;
+    bool m_updateOrderStartPos;
 
 };
 
 void ImageCollection::SetMemoryAllocator(ImageMemoryAllocator* memAllocator) { m_memAllocator = memAllocator; }
 
-inline const std::map<strType, ImageData> ImageCollection::GetImageMap() const { return m_pathToImageMap;  }
+inline const std::map<strType, ImageData>& ImageCollection::GetImageMap() const { return m_pathToImageMap;  }
 inline size_t ImageCollection::GetNumImages() const { return m_pathToImageMap.size(); }
 
 

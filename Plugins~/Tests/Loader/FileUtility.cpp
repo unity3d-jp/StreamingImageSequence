@@ -12,7 +12,7 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 
-namespace StreamingImagePluginTest {
+namespace StreamingImageSequencePluginTest {
 
 bool FileUtility::FileExists(const std::string& filePath) {
     return FileExists(filePath.c_str());

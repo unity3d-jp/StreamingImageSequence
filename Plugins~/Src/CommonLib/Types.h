@@ -42,11 +42,13 @@
 #define  USE_WCHAR 0
 
 #if USE_WCHAR
-  typedef WCHAR charType;
-  typedef std::wstring strType;
+    typedef WCHAR charType;
+    typedef std::wstring strType;
+    #define TO_STR_TYPE std::to_wstring
 #else
-  typedef char charType;
-  typedef std::string strType;
+    typedef char charType;
+    typedef std::string strType;
+    #define TO_STR_TYPE std::to_string
 #endif
 
 
