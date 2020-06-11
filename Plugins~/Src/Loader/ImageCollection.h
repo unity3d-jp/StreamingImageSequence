@@ -13,6 +13,7 @@ class ImageMemoryAllocator;
 
 class ImageCollection {
 public:
+    ImageCollection();
     inline void SetMemoryAllocator(ImageMemoryAllocator*);
 
     //return null if not found

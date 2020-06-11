@@ -10,6 +10,11 @@
 
 namespace StreamingImageSequencePlugin {
 
+
+ImageCollection::ImageCollection() : m_curOrderStartPos(m_orderedImageList.begin()){
+
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool isForCurrentOrder) {
     std::map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
