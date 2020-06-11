@@ -8,7 +8,7 @@ ImageData::ImageData()
     : RawData(NULL)
     , Width (0)
     , Height (0)
-    , CurrentReadStatus(READ_STATUS_NONE)
+    , CurrentReadStatus(READ_STATUS_IDLE)
 
 {
 }

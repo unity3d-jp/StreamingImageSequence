@@ -11,11 +11,22 @@
 namespace StreamingImageSequencePlugin {
 
 
+ImageCollection::ImageCollection() : m_curOrderStartPos(m_orderedImageList.end()), m_updateOrderStartPos(false) {
+
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool isForCurrentOrder) {
     std::map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
 
     if (m_pathToImageMap.end() == pathIt) {
         return nullptr;
+    }
+
+    //Check if we have to update the order start pos first
+    if (m_updateOrderStartPos) {
+        MoveOrderStartPosToEnd();
+        m_updateOrderStartPos = false;
     }
 
     if (isForCurrentOrder)
@@ -30,6 +41,13 @@ std::map<strType, ImageData>::iterator ImageCollection::PrepareImage(const strTy
 
     auto it = m_pathToImageMap.insert({ imagePath, ImageData(nullptr,0,0,READ_STATUS_LOADING) });
     AddImageOrder(it.first);
+
+    ASSERT(m_orderedImageList.size() >= 1);
+    if (m_curOrderStartPos == m_orderedImageList.end() || m_updateOrderStartPos) {
+        MoveOrderStartPosToEnd();
+        m_updateOrderStartPos = false;
+    }
+
     return it.first;
 }
 
@@ -41,7 +59,7 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 
     //Unload existing memory if it exists
     if (m_pathToImageMap.end() != pathIt) {
-        m_memAllocator->Deallocate(&m_pathToImageMap[imagePath]);
+        m_memAllocator->Deallocate(&(pathIt->second));
     }  else {
         pathIt = PrepareImage(imagePath);
     }
@@ -128,10 +146,10 @@ void ImageCollection::UnloadAllImages() {
 //----------------------------------------------------------------------------------------------------------------------
 
 void ImageCollection::AdvanceOrder() {
-
-    //This will imply that images next to this pos were added/used after this current "order" (frame), 
-    //while the prev nodes were added before and not used since the order was advanced.
-    m_curOrderStartPos = m_orderedImageList.end();
+    //Turn on the flag, so that at the next GetImage() or PrepareImage(), 
+    //the related image would be the start pos of the current "order".
+    //The prev nodes before this start pos, would be regarded as "unused" for this order, and thus safe to be unloaded
+    m_updateOrderStartPos = true;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -148,14 +166,19 @@ void ImageCollection::ReorderImageToEnd(std::map<strType, ImageData>::iterator p
         return;
     }
 
-    //don't move the start of the current "order" (frame) to the end as well
+    //Make sure the startPos of the current "order" (frame) is still valid
+    bool invalidStartPos = false;
     if (pathToOrderIt->second == m_curOrderStartPos) {
         ++m_curOrderStartPos;
+        invalidStartPos = (m_curOrderStartPos == m_orderedImageList.end());
     }
 
     //Move to the end
     m_orderedImageList.splice( m_orderedImageList.end(), m_orderedImageList, pathToOrderIt->second);
 
+    if (invalidStartPos) {
+        MoveOrderStartPosToEnd();
+    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -175,7 +198,22 @@ void ImageCollection::DeleteImageOrder(std::map<strType, ImageData>::iterator pa
     }
     m_orderedImageList.erase(orderIt);
     m_pathToOrderMap.erase(pathToOrderIt);
+
+
+    //make sure the start pos is valid
+    if (m_curOrderStartPos == m_orderedImageList.end() && m_pathToOrderMap.size() >= 1) {
+        --m_curOrderStartPos;
+    }
+
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+void ImageCollection::MoveOrderStartPosToEnd() {
+    ASSERT(m_orderedImageList.size() >= 1);
+    m_curOrderStartPos = m_orderedImageList.end();
+    --m_curOrderStartPos;
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 bool ImageCollection::AllocateRawData(uint8_t** rawData,const uint32_t w,const uint32_t h,const strType& imagePath) 

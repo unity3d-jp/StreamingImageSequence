@@ -18,15 +18,15 @@ namespace UnityEngine.StreamingImageSequence.Tests {
 
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
 
-            StreamingImageSequencePlugin.GetImageData(fullPath, TEX_TYPE, Time.frameCount, out ImageData readResult );
-            Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_NONE, readResult.ReadStatus, 
+            StreamingImageSequencePlugin.GetImageDataInto(fullPath, TEX_TYPE, Time.frameCount, out ImageData readResult );
+            Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_UNAVAILABLE, readResult.ReadStatus, 
                 "Texture is already or currently being loaded"
             );
 
             ImageLoadBGTask.Queue(fullPath,Time.frameCount);
             yield return new WaitForSeconds(LOAD_TIMEOUT);
             
-            StreamingImageSequencePlugin.GetImageData(fullPath, TEX_TYPE, Time.frameCount, out readResult );
+            StreamingImageSequencePlugin.GetImageDataInto(fullPath, TEX_TYPE, Time.frameCount, out readResult );
             Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_SUCCESS, readResult.ReadStatus,
                 "Loading texture is not successful."
             );
@@ -46,8 +46,8 @@ namespace UnityEngine.StreamingImageSequence.Tests {
 
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW;
 
-            StreamingImageSequencePlugin.GetImageData(fullPath, TEX_TYPE, Time.frameCount, out ImageData readResult );
-            Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_NONE, readResult.ReadStatus, 
+            StreamingImageSequencePlugin.GetImageDataInto(fullPath, TEX_TYPE, Time.frameCount, out ImageData readResult );
+            Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_UNAVAILABLE, readResult.ReadStatus, 
                 "Texture is already or currently being loaded"
             );
 
@@ -56,7 +56,7 @@ namespace UnityEngine.StreamingImageSequence.Tests {
             PreviewImageLoadBGTask.Queue(fullPath, WIDTH, HEIGHT, Time.frameCount);
             yield return new WaitForSeconds(LOAD_TIMEOUT);
 
-            StreamingImageSequencePlugin.GetImageData(fullPath,TEX_TYPE, Time.frameCount, out readResult );
+            StreamingImageSequencePlugin.GetImageDataInto(fullPath,TEX_TYPE, Time.frameCount, out readResult );
             Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_SUCCESS, readResult.ReadStatus, 
                 "Loading texture is not successful."
             );
@@ -75,9 +75,9 @@ namespace UnityEngine.StreamingImageSequence.Tests {
             for (int texType = 0; texType < StreamingImageSequenceConstants.MAX_IMAGE_TYPES;++texType) {
                 if (texType == exceptionTexType)
                     continue;
-                StreamingImageSequencePlugin.GetImageData(fullPath, texType, Time.frameCount, 
+                StreamingImageSequencePlugin.GetImageDataInto(fullPath, texType, Time.frameCount, 
                     out ImageData otherReadResult);
-                Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_NONE, otherReadResult.ReadStatus, 
+                Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_UNAVAILABLE, otherReadResult.ReadStatus, 
                     "AssertUnloaded()"
                 );
             }
@@ -87,8 +87,8 @@ namespace UnityEngine.StreamingImageSequence.Tests {
 
         void ResetAndAssert(string fullPath, int texType) {
             StreamingImageSequencePlugin.UnloadImage(fullPath);
-            StreamingImageSequencePlugin.GetImageData(fullPath, texType, Time.frameCount, out ImageData readResult);
-            Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_NONE, readResult.ReadStatus, "ResetAndAssert");
+            StreamingImageSequencePlugin.GetImageDataInto(fullPath, texType, Time.frameCount, out ImageData readResult);
+            Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_UNAVAILABLE, readResult.ReadStatus, "ResetAndAssert");
         }
 
 //----------------------------------------------------------------------------------------------------------------------

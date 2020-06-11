@@ -1,6 +1,6 @@
 #include "CommonLib/Types.h" //charType
 
-namespace StreamingImagePluginTest {
+namespace StreamingImageSequencePluginTest {
 
 class FileUtility {
 public:
