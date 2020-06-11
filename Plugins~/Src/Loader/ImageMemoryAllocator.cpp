@@ -46,7 +46,7 @@ void ImageMemoryAllocator::Deallocate(ImageData* imageData) {
     ASSERT(m_usedMemory >= mem);
     DecUsedMem(mem);
     free(imageData->RawData);
-    *imageData = ImageData(nullptr, 0, 0, READ_STATUS_NONE);
+    *imageData = ImageData(nullptr, 0, 0, READ_STATUS_IDLE);
 
 }
 

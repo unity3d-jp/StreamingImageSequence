@@ -41,7 +41,7 @@ bool LoaderUtility::GetImageDataInto(const strType& imagePath, const uint32_t im
 {
     using namespace StreamingImageSequencePlugin;
     ASSERT(pResult);
-    pResult->CurrentReadStatus = READ_STATUS_NONE;
+    pResult->CurrentReadStatus = READ_STATUS_IDLE;
     
     const ImageData* imageData = imageCatalog->GetImage(imagePath, imageType, frame);
     if (nullptr == imageData)
