@@ -81,7 +81,7 @@ internal class StreamingImageSequencePreview : IDisposable {
 
                 //Load
                 string fullPath = m_playableAsset.GetCompleteFilePath(imagePaths[imageIndex]);
-                StreamingImageSequencePlugin.GetImageData(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
+                StreamingImageSequencePlugin.GetImageDataInto(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
                     ,Time.frameCount, out ImageData readResult);
                 switch (readResult.ReadStatus) {
                     case StreamingImageSequenceConstants.READ_STATUS_NONE: {

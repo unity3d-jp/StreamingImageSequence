@@ -20,7 +20,7 @@
 
         public override void Execute() {
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
-            StreamingImageSequencePlugin.GetImageData(m_strFileName, TEX_TYPE, m_frame, out ImageData tResult);
+            StreamingImageSequencePlugin.GetImageDataInto(m_strFileName, TEX_TYPE, m_frame, out ImageData tResult);
             switch (tResult.ReadStatus) {
                 case StreamingImageSequenceConstants.READ_STATUS_NONE: {
                     //Debug.Log("Loading: " + m_strFileName);

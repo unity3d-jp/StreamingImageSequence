@@ -365,7 +365,7 @@ namespace UnityEngine.StreamingImageSequence {
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
 
-            StreamingImageSequencePlugin.GetImageData(filename,TEX_TYPE, Time.frameCount, out imageData );
+            StreamingImageSequencePlugin.GetImageDataInto(filename,TEX_TYPE, Time.frameCount, out imageData );
             //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);
             
             if (StreamingImageSequenceConstants.READ_STATUS_LOADING != imageData.ReadStatus ) {
@@ -373,7 +373,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
             // if ( isBlocking ) {
             //     while (imageData.ReadStatus != StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
-            //         StreamingImageSequencePlugin.GetImageData(filename, TEX_TYPE, out imageData );
+            //         StreamingImageSequencePlugin.GetImageDataInto(filename, TEX_TYPE, out imageData );
             //     }
             // }
             
