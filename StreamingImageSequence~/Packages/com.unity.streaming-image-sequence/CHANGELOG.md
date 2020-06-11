@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.2.0-preview] - 2020-06-12
+* feat: deallocate unused images when there is not enough memory, and stop allocating memory if there is not enough memory for the current frame
+* fix: preload images starting from the active frame as the center instead of always from frame 0
+* chore: cleanup the code to preload images 
+* chore: delete DrawOverWindow project and DLL
+* chore: convert the plugin building process to cmake and add unit tests for the plugin
+
+## [0.1.5-preview] - 2020-06-01
+* chore: depend on com.unity.ext.nunit 
+* chore: make it explicit that StreamingImageSequence depends on ugui 
+
+## [0.1.4-preview] - 2020-05-14
+
+* fix: inaccuracies in placing preview icon positions 
+* fix: bug when stretching PlayableAsset
+* fix: crash bug when entering play mode on Windows 
+* fix: remove invalid alerts in StreamingImageSequenceTrack and FaderTrack 
+* fix: Override ToString() in StreamingImageSequenceTrack
+* chore: update yamato npm registry (#62)
+
+## [0.1.3-preview] - 2020-04-15
+* fix: crash caused by performing graphics operation when g_ThreadedGfxDevice is not ready after deserialization	
+
 ## [0.1.2-preview] - 2020-04-14
 * fix: errors caused by StreamingImageSequenceTrack::GetActivePlayableAsset() when TimelineWindow is not in focus
 * fix: keep processing StreamingImageSequencePlayableAsset even if there is no bound GameObject in the track, as the output texture is still required

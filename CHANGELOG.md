@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0-preview] - 2020-06-12
+* feat: deallocate unused images when there is not enough memory, and stop allocating memory if there is not enough memory for the current frame
+* fix: preload images starting from the active frame as the center instead of always from frame 0
+* chore: cleanup the code to preload images 
+* chore: delete DrawOverWindow project and DLL
+* chore: convert the plugin building process to cmake and add unit tests for the plugin
+
 ## [0.1.5-preview] - 2020-06-01
 * chore: depend on com.unity.ext.nunit 
 * chore: make it explicit that StreamingImageSequence depends on ugui 
