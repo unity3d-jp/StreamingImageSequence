@@ -1,6 +1,7 @@
 #include "TestUtility.h"
 
 #include <gtest/gtest.h>
+#include <cmath> //std::floor
 
 //Loader
 #include "Loader/Loader.h"
