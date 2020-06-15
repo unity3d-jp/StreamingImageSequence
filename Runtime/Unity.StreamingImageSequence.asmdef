@@ -19,7 +19,7 @@
         {
             "name": "com.unity.timeline",
             "expression": "1.4.0-preview",
-            "define": "TIMELINE_NEWER_THAN_1_4_0"
+            "define": "AT_USE_TIMELINE_GE_1_4_0"
         }
     ],
     "noEngineReferences": false
