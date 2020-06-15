@@ -62,23 +62,24 @@ internal class RenderCachePlayableAssetInspector : Editor {
                     "Ok");
                 return;
             }            
-
                         
-            m_trackCamera = m_director.GetGenericBinding(track) as Camera;
-            if (null == m_trackCamera) {
+            m_rtCapturer =  m_director.GetGenericBinding(track) as BaseRTCapturer;
+            if (null == m_rtCapturer) {
                 EditorUtility.DisplayDialog("Streaming Image Sequence",
-                    "Please bind a camera to the playable asset.",
+                    "Please bind an appropriate RTCapturer component to the track.",
                     "Ok");
                 return;                
             }
 
-            if (!m_trackCamera.enabled || !m_trackCamera.gameObject.activeInHierarchy) {
+            bool canCapture = m_rtCapturer.BeginCapture();
+            if (!canCapture) {
                 EditorUtility.DisplayDialog("Streaming Image Sequence",
-                    "Camera is not active. Please activate it in the scene before doing this operation.",
+                    m_rtCapturer.GetLastErrorMessage(),
                     "Ok");
-                return;                                
+                return;                
+                
             }
-
+                       
             
             //Loop time             
             m_timePerFrame = 1.0f / timelineAsset.editorSettings.fps;
@@ -90,9 +91,9 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
 //----------------------------------------------------------------------------------------------------------------------
     IEnumerator UpdateRenderCacheCoroutine() {
-        Assert.IsNotNull(m_trackCamera);
+        Assert.IsNotNull(m_rtCapturer);
         Assert.IsNotNull(m_director);
-
+        
         
         //Check output folder
         string outputFolder = m_asset.GetFolder();
@@ -100,27 +101,23 @@ internal class RenderCachePlayableAssetInspector : Editor {
             outputFolder = FileUtil.GetUniqueTempPathInProject();
             Directory.CreateDirectory(outputFolder);
             m_asset.SetFolder(outputFolder);
-        }        
-        
-        //Assign custom render texture to camera
-        RenderTexture prevTargetTexture = m_trackCamera.targetTexture;
-        RenderTexture rt = new RenderTexture(m_trackCamera.pixelWidth, m_trackCamera.pixelHeight, 24);
-        rt.Create();
-        m_trackCamera.targetTexture = rt;
+        }
 
+        RenderTexture rt = m_rtCapturer.GetRenderTexture();
+               
         //Show progress in game view
         GameObject progressGo = new GameObject("Blitter");
         LegacyTextureBlitter blitter = progressGo.AddComponent<LegacyTextureBlitter>();
         blitter.SetTexture(rt);
         blitter.SetCameraDepth(int.MaxValue);
-
+        
         TimelineClip timelineClip = m_asset.GetTimelineClip();
         m_nextDirectorTime = timelineClip.start;
         
         int  fileCounter = 0;
         int numFiles = (int) Math.Ceiling(timelineClip.duration / m_timePerFrame) + 1;
         int numDigits = MathUtility.GetNumDigits(numFiles);
-
+        
         bool cancelled = false;
         while (m_nextDirectorTime <= timelineClip.end && !cancelled) {
             SetDirectorTime(m_director, m_nextDirectorTime);
@@ -131,11 +128,10 @@ internal class RenderCachePlayableAssetInspector : Editor {
             string outputFilePath = Path.Combine(outputFolder, fileName);
                         
             //[TODO-sin: 2020-5-27] Call API to unload texture
-            
-            Capture(m_trackCamera, outputFilePath);
+            m_rtCapturer.CaptureToFile(outputFilePath);
             m_nextDirectorTime += m_timePerFrame;
             ++fileCounter;
-
+        
             cancelled = EditorUtility.DisplayCancelableProgressBar(
                 "StreamingImageSequence", "Caching render results", ((float)fileCounter / numFiles));            
         }
@@ -143,38 +139,16 @@ internal class RenderCachePlayableAssetInspector : Editor {
                
         //Cleanup
         EditorUtility.ClearProgressBar();
-        m_trackCamera.targetTexture = prevTargetTexture;
+        m_rtCapturer.EndCapture();
         ObjectUtility.Destroy(progressGo);
-
+        
+        
+        yield return null;
 
     }
  
 //----------------------------------------------------------------------------------------------------------------------
     
-    private static void Capture(Camera cam, string outputPath) {
-        
-        
-        RenderTexture prevRenderTexture = RenderTexture.active;
-  
-        RenderTexture camRT = cam.targetTexture;
-        RenderTexture.active = camRT;
- 
-        cam.Render();
-
-        
-        Texture2D image = new Texture2D(camRT.width, camRT.height);
-        image.ReadPixels(new Rect(0, 0, camRT.width, camRT.height), 0, 0);
-        image.Apply();
- 
-        byte[] bytes = image.EncodeToPNG();
-        ObjectUtility.Destroy(image);
- 
-        File.WriteAllBytes(outputPath, bytes);
-        
-        //Set back
-        RenderTexture.active = prevRenderTexture;
-        
-    }
 
 //----------------------------------------------------------------------------------------------------------------------
     private static void SetDirectorTime(PlayableDirector director, double time) {
@@ -196,6 +170,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         return null;
     }
 
+//----------------------------------------------------------------------------------------------------------------------
     
     private string DrawFolderSelector(string label, 
         string dialogTitle, 
@@ -236,7 +211,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
     
     private RenderCachePlayableAsset m_asset = null;
     private PlayableDirector m_director = null;
-    private Camera m_trackCamera = null;
+
+    private BaseRTCapturer m_rtCapturer = null;
     private double m_nextDirectorTime = 0;
     private double m_timePerFrame       = 0;
 
