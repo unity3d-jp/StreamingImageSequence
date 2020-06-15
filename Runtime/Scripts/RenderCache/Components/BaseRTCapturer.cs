@@ -21,7 +21,7 @@ public abstract class BaseRTCapturer : MonoBehaviour {
     public abstract void EndCapture();
 
     /// <summary>
-    /// Gets the render texture, which is going to be saved to disk during the capturing process
+    /// Gets the internal render texture used for the capturing process
     /// </summary>
     /// <returns>The render texture</returns>
     public abstract RenderTexture GetRenderTexture();
