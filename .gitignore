@@ -45,9 +45,6 @@ Adobe\ After\ Effects\ Auto-Save/
 .DS_Store
 
 
-# Plugin
-Plugin~/_out/
-
 # XCode
 *.xcuserdatad/
 Plugins~/**/DerivedData/**
@@ -70,5 +67,6 @@ Plugins~/Build/x64/**
 Plugins~/Build/Src/**
 Plugins~/Build/Tests/**
 
-
+# Internally developed package
+StreamingImageSequence~/Packages/com.unity.pencil-line/**
 
