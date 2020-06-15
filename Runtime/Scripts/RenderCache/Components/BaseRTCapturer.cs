@@ -20,12 +20,19 @@ public abstract class BaseRTCapturer : MonoBehaviour {
     /// </summary>
     public abstract void EndCapture();
 
+
     /// <summary>
-    /// Gets the internal render texture used for the capturing process
+    /// Updates the render texture used for the capturing process
+    /// </summary>
+    /// <returns>The updated render texture</returns>
+    protected abstract RenderTexture UpdateRenderTexture();
+    
+//----------------------------------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Gets the render texture used for the capturing process
     /// </summary>
     /// <returns>The render texture</returns>
-    public abstract RenderTexture GetRenderTexture();
-    
+    public RenderTexture GetRenderTexture() { return m_rt;}
 //----------------------------------------------------------------------------------------------------------------------
     
     /// <summary>
@@ -37,7 +44,7 @@ public abstract class BaseRTCapturer : MonoBehaviour {
         
         RenderTexture prevRenderTexture = RenderTexture.active;
 
-        RenderTexture rt = GetRenderTexture();
+        RenderTexture rt = UpdateRenderTexture();
         RenderTexture.active = rt;
 
         Texture2D tempTex = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
@@ -54,6 +61,18 @@ public abstract class BaseRTCapturer : MonoBehaviour {
     
 //----------------------------------------------------------------------------------------------------------------------
     
+    /// <summary>
+    /// Release Render Texture
+    /// </summary>
+    /// <param name="rt">the RenderTexture</param>
+    protected void ReleaseRenderTexture() {
+        if (null == m_rt)
+            return;
+        m_rt.Release();
+        m_rt = null;        
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
 
 
     /// <summary>
@@ -67,6 +86,8 @@ public abstract class BaseRTCapturer : MonoBehaviour {
 //----------------------------------------------------------------------------------------------------------------------    
 
     private string m_errorMessage;
+    protected  RenderTexture m_rt = null;
+    
 }
 
 } //end namespace

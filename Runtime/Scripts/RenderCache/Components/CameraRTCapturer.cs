@@ -37,25 +37,14 @@ internal class CameraRTCapturer : BaseRTCapturer {
         ReleaseRenderTexture();
     }
     
-    
-//----------------------------------------------------------------------------------------------------------------------
     /// <inheritdoc/>
-    public override RenderTexture GetRenderTexture() { return m_rt; }
-    
-
-//----------------------------------------------------------------------------------------------------------------------
-    
-    void ReleaseRenderTexture() {
-        if (null == m_rt)
-            return;
-        m_rt.Release();
-        m_rt = null;        
+    protected override RenderTexture UpdateRenderTexture() {
+        return m_rt;
     }
-    
+
 //----------------------------------------------------------------------------------------------------------------------
     [SerializeField] private Camera m_camera = null;
 
-    private RenderTexture m_rt = null;
     private RenderTexture m_origCameraTargetTexture = null;
 
 }
