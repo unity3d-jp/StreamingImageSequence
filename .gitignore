@@ -41,9 +41,6 @@ Adobe\ After\ Effects\ Auto-Save/
 .DS_Store
 
 
-# Plugin
-Plugin~/_out/
-
 # XCode
 *.xcuserdatad/
 Plugins~/**/DerivedData/**
