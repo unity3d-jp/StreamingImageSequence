@@ -374,9 +374,15 @@ MonoBehaviour:
   m_ShowToolkit: 0
   m_ShowCustomSorter: 0
   breakBeforeColorGrading: 0
-  m_BeforeTransparentBundles: []
-  m_BeforeStackBundles: []
-  m_AfterStackBundles: []
+  m_BeforeTransparentBundles:
+  - assemblyQualifiedName: Pencil_4.PencilLinePostProcess, PSoft.Pencil-Line.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_BeforeStackBundles:
+  - assemblyQualifiedName: Pencil_4.PencilLinePostProcessBeforeStack, PSoft.Pencil-Line.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_AfterStackBundles:
+  - assemblyQualifiedName: Pencil_4.PencilLinePostProcessAfterStack, PSoft.Pencil-Line.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!1 &1284940779
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,6 +476,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1429942719
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1429942721}
+  - component: {fileID: 1429942720}
+  m_Layer: 0
+  m_Name: CameraRTCapturer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1429942720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429942719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcdd21864ae244f60b352f873c190061, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_camera: {fileID: 1208773840}
+--- !u!4 &1429942721
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429942719}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1548873757
 GameObject:
@@ -599,7 +649,7 @@ PlayableDirector:
   - key: {fileID: -2508715225641638045, guid: 5526695cd2b564d29bf46722a3e4f710, type: 2}
     value: {fileID: 1208773842}
   - key: {fileID: 329456072186374067, guid: 5526695cd2b564d29bf46722a3e4f710, type: 2}
-    value: {fileID: 1208773840}
+    value: {fileID: 1429942720}
   - key: {fileID: -5376475608849519397, guid: 5526695cd2b564d29bf46722a3e4f710, type: 2}
     value: {fileID: 2107947098}
   m_ExposedReferences:
