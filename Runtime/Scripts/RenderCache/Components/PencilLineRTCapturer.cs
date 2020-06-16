@@ -1,6 +1,6 @@
-﻿using Pencil_4;
+﻿#if AT_USE_PENCILLINE
 
-#if AT_USE_PENCILLINE
+using Pencil_4;
 
 namespace UnityEngine.StreamingImageSequence {
 
