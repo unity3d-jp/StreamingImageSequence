@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.StreamingImageSequence;
@@ -74,22 +75,30 @@ namespace UnityEditor.StreamingImageSequence {
                     DoImageGUI();
                 }
             }
-
-            if (GUILayout.Button("Reset Curve")) {
-                //[TODO-sin:2020-1-29] Support undo for this
-                m_asset.ResetAnimationCurve();
-                
-            }
             
-            GUILayout.Space(15);
-            m_asset.SetUseImageMarkerVisibility(GUILayout.Toggle(m_asset.GetUseImageMarkerVisibility(), "Show UseImageMarkers"));
-            if (GUILayout.Button("Reset UseImageMarkers")) {
-                m_asset.ResetPlayableFrames();
+            if (null!= TimelineEditor.selectedClip && TimelineEditor.selectedClip == m_asset.GetTimelineClip()) {
+                ShowTimelinePropertiesGUI();
             }
 
             serializedObject.ApplyModifiedProperties();
             EditorGUI.EndChangeCheck();
 
+        }
+        
+//----------------------------------------------------------------------------------------------------------------------
+        private void ShowTimelinePropertiesGUI() {
+            
+            if (GUILayout.Button("Reset Curve")) {
+                //[TODO-sin:2020-1-29] Support undo for this
+                m_asset.ResetAnimationCurve();                
+            }
+            
+            GUILayout.Space(15);
+            m_asset.SetUseImageMarkerVisibility(GUILayout.Toggle(m_asset.GetUseImageMarkerVisibility(), "Show UseImageMarkers"));
+            if (GUILayout.Button("Reset UseImageMarkers")) {
+                //[TODO-sin:2020-6-29] Support undo for this
+                m_asset.ResetPlayableFrames();
+            }
         }
 
 //----------------------------------------------------------------------------------------------------------------------
