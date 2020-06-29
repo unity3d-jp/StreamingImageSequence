@@ -41,7 +41,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.IsNull(track.GetActivePlayableAsset()); 
             
 
-            DestroyTestTimelineAssets(sisAsset);
+            DestroyTestTimelineAssets(clip);
             yield return null;
         }
         
@@ -69,7 +69,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.AreEqual(0, trackAsset.GetMarkerCount());
             
             
-            DestroyTestTimelineAssets(sisAsset);
+            DestroyTestTimelineAssets(clip);
             yield return null;
         }
         
@@ -110,7 +110,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
             
             
-            DestroyTestTimelineAssets(sisAsset);
+            DestroyTestTimelineAssets(clip);
             yield return null;
         }
 
@@ -170,8 +170,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         }
 
 //----------------------------------------------------------------------------------------------------------------------        
-        void DestroyTestTimelineAssets(StreamingImageSequencePlayableAsset sisAsset) {
-            TrackAsset movieTrack = sisAsset.GetBoundTimelineClip().parentTrack;
+        static void DestroyTestTimelineAssets(TimelineClip clip) {
+            TrackAsset movieTrack = clip.parentTrack;
             TimelineAsset timelineAsset = movieTrack.timelineAsset;
             
             string tempTimelineAssetPath = AssetDatabase.GetAssetPath(timelineAsset);
