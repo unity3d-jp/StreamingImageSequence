@@ -67,7 +67,7 @@ namespace UnityEditor.StreamingImageSequence {
             }
 
 
-            asset.SetTimelineClip(clip);
+            asset.BindTimelineClip(clip);
             asset.ValidateAnimationCurve();
 
             if (null == clonedFrom) {

@@ -138,7 +138,7 @@ namespace UnityEngine.StreamingImageSequence {
             int prevNumPlayableFrames = prevPlayableFrames.Count;
             
             //Check if this clone is a pure duplicate
-            TimelineClip otherTimelineClip = m_clonedFromAsset.GetTimelineClip();
+            TimelineClip otherTimelineClip = m_clonedFromAsset.GetBoundTimelineClip();
                        
             if (Math.Abs(m_curBoundTimelineClip.duration - otherTimelineClip.duration) < 0.0000001f) {
                 for (int i = 0; i < prevNumPlayableFrames; ++i) {
@@ -151,7 +151,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             //Decide which one is on the left side after splitting
-            if (m_curBoundTimelineClip.start < m_clonedFromAsset.GetTimelineClip().start) {
+            if (m_curBoundTimelineClip.start < m_clonedFromAsset.GetBoundTimelineClip().start) {
                 m_playableFrames.AddRange(prevPlayableFrames.GetRange(0,numIdealFrames));
                 m_clonedFromAsset.SplitPlayableFramesFromClonedAsset(numIdealFrames,prevPlayableFrames.Count - numIdealFrames);
             } else {
@@ -247,15 +247,17 @@ namespace UnityEngine.StreamingImageSequence {
         //May return uninitialized value during initialization because the resolution hasn't been updated
         internal ImageDimensionInt GetResolution() { return m_resolution; }
         internal System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
-        internal TimelineClip GetTimelineClip() { return m_curBoundTimelineClip; }
 
-        //This method must only be called from the track that owns this PlayableAsset, or during deserialization
-        internal void SetTimelineClip(TimelineClip clip) { m_curBoundTimelineClip = clip; }
 
         internal bool GetUseImageMarkerVisibility() {  return m_useImageMarkerVisibility; }
 
         internal void SetUseImageMarkerVisibility(bool show) { m_useImageMarkerVisibility = show; }
 
+        //These two methods are necessary "hacks" for knowing which TimelineClips currently own
+        //this StreamingImageSequencePlayableAssets
+        internal void         BindTimelineClip(TimelineClip clip) { m_curBoundTimelineClip = clip; }
+        internal TimelineClip GetBoundTimelineClip()              { return m_curBoundTimelineClip; }
+        
 //----------------------------------------------------------------------------------------------------------------------        
         internal float GetOrUpdateDimensionRatio() {
             if (Mathf.Approximately(0.0f, m_dimensionRatio)) {
@@ -607,10 +609,6 @@ namespace UnityEngine.StreamingImageSequence {
                 UpdateResolution(ref readResult);
             }
             
-        }
-//----------------------------------------------------------------------------------------------------------------------
-        internal void OnAfterTrackDeserialize(TimelineClip clip) {
-            SetTimelineClip(clip);
         }
 
 //----------------------------------------------------------------------------------------------------------------------

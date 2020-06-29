@@ -76,7 +76,7 @@ namespace UnityEditor.StreamingImageSequence {
                 }
             }
             
-            if (null!= TimelineEditor.selectedClip && TimelineEditor.selectedClip == m_asset.GetTimelineClip()) {
+            if (null!= TimelineEditor.selectedClip && TimelineEditor.selectedClip == m_asset.GetBoundTimelineClip()) {
                 ShowTimelinePropertiesGUI();
             }
 

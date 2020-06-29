@@ -35,17 +35,29 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 //----------------------------------------------------------------------------------------------------------------------
-        public override void OnGraphStart(Playable playable){
-            
+        public override void OnGraphStart(Playable playable){           
             
             foreach (TimelineClip clip in GetClips()) {
                 StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
                 if (null == asset)
                     continue;
                 asset.OnGraphStart(playable);
+                asset.BindTimelineClip(clip);
             }
             
 
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+        public override void OnGraphStop(Playable playable) {
+            foreach (TimelineClip clip in GetClips()) {
+                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (null == asset)
+                    continue;
+                asset.OnGraphStop(playable);
+                asset.BindTimelineClip(null);
+            }
+            
         }
         
 //----------------------------------------------------------------------------------------------------------------------
