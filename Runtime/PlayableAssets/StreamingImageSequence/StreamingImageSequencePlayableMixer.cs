@@ -41,8 +41,8 @@ namespace UnityEngine.StreamingImageSequence
                 StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
                 if (null == asset)
                     continue;
-                asset.OnGraphStart(playable);
                 asset.BindTimelineClip(clip);
+                asset.OnGraphStart(playable);
             }
             
 

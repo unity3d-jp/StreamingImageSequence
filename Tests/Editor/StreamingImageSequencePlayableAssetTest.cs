@@ -59,7 +59,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
             yield return null;
             
-            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
             yield return null;
 
 
@@ -88,26 +88,26 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             //Original length
             TimelineClip clip = sisAsset.GetBoundTimelineClip();
             TrackAsset trackAsset = clip.parentTrack;
-            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
             double origClipDuration = clip.duration;
 
             //Resize longer
             ResizeTimelineClip(clip, origClipDuration + 3.0f); yield return null;
-            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
 
             //Undo
             UndoAndRefreshTimelineEditor(); yield return null;
             Assert.AreEqual(origClipDuration, clip.duration);
-            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
             
             //Resize shorter
             ResizeTimelineClip(clip, Mathf.Max(0.1f, ( (float)(origClipDuration) - 3.0f))); yield return null;
-            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
             
             //Undo
             UndoAndRefreshTimelineEditor(); yield return null;
             Assert.AreEqual(origClipDuration, clip.duration);
-            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
             
             
             DestroyTestTimelineAssets(sisAsset);
