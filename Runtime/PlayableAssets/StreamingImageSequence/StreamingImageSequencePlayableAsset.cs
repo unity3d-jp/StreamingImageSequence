@@ -69,15 +69,7 @@ namespace UnityEngine.StreamingImageSequence {
         /// Constructor
         /// </summary>
         public StreamingImageSequencePlayableAsset() {
-            m_lastCopiedImageIndex = -1;
-#if UNITY_EDITOR            
-            m_timelineEditorCurveBinding  = new EditorCurveBinding() {
-                path = "",
-                type = typeof(StreamingImageSequencePlayableAsset),
-                propertyName = "m_time"
-            };
-#endif        
-            
+            m_lastCopiedImageIndex = -1;            
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -204,22 +196,22 @@ namespace UnityEngine.StreamingImageSequence {
             
         }
 //----------------------------------------------------------------------------------------------------------------------
-        private double LocalTimeToCurveTime(double localTime) {
-            AnimationCurve curve = GetAndValidateAnimationCurve();
+        private static double LocalTimeToCurveTime(TimelineClip clip, double localTime) {
+            AnimationCurve curve = GetAndValidateAnimationCurve(clip);
             return curve.Evaluate((float)localTime);
         }
 //----------------------------------------------------------------------------------------------------------------------
 
         //Calculate the used image index for the passed globalTime
-        internal int GlobalTimeToImageIndex(double globalTime) {
-            double localTime = m_curBoundTimelineClip.ToLocalTime(globalTime);
-            return LocalTimeToImageIndex(localTime);
+        internal int GlobalTimeToImageIndex(TimelineClip clip, double globalTime) {
+            double localTime = clip.ToLocalTime(globalTime);
+            return LocalTimeToImageIndex(clip, localTime);
         }
 
 //----------------------------------------------------------------------------------------------------------------------
 
         //Calculate the used image index for the passed localTime
-        internal int LocalTimeToImageIndex(double localTime) {
+        internal int LocalTimeToImageIndex(TimelineClip clip, double localTime) {
 
             double timePerFrame = CalculateTimePerFrame();
             
@@ -232,7 +224,7 @@ namespace UnityEngine.StreamingImageSequence {
                 }
             }
 
-            double imageSequenceTime = LocalTimeToCurveTime(localTime);
+            double imageSequenceTime = LocalTimeToCurveTime(clip, localTime);
             int count = m_imagePaths.Count;
             int index = (int)(count * imageSequenceTime);
             index = Mathf.Clamp(index, 0, count - 1);
@@ -255,7 +247,14 @@ namespace UnityEngine.StreamingImageSequence {
 
         //These two methods are necessary "hacks" for knowing which TimelineClips currently own
         //this StreamingImageSequencePlayableAssets
-        internal void         BindTimelineClip(TimelineClip clip) { m_curBoundTimelineClip = clip; }
+        internal void BindTimelineClip(TimelineClip clip) {
+            m_curBoundTimelineClip = clip;
+            if (null == clip)
+                return;
+            AnimationCurve curve = GetAndValidateAnimationCurve(clip);
+            RefreshTimelineClipCurve(clip, curve);
+            
+        }
         internal TimelineClip GetBoundTimelineClip()              { return m_curBoundTimelineClip; }
         
 //----------------------------------------------------------------------------------------------------------------------        
@@ -611,47 +610,33 @@ namespace UnityEngine.StreamingImageSequence {
             
         }
 
-//----------------------------------------------------------------------------------------------------------------------
-        internal void ResetAnimationCurve() {
-            AnimationCurve animationCurve = new AnimationCurve();
-            ValidateAnimationCurve(ref animationCurve);
-            RefreshAnimationCurveInTimelineClip(animationCurve);
-            m_curBoundTimelineClip.clipIn = 0;
-            m_curBoundTimelineClip.timeScale = 1.0;
-        }
-
-//----------------------------------------------------------------------------------------------------------------------
-        internal void ValidateAnimationCurve() {
-            AnimationCurve curve = GetAndValidateAnimationCurve();
-            RefreshAnimationCurveInTimelineClip(curve);
-        }
 
 //----------------------------------------------------------------------------------------------------------------------
         //Get the animation curve from the TimelineClip.  
-        private AnimationCurve GetAndValidateAnimationCurve() {
+        private static AnimationCurve GetAndValidateAnimationCurve(TimelineClip clip) {
             AnimationCurve animationCurve = null;
 #if UNITY_EDITOR
-            animationCurve = AnimationUtility.GetEditorCurve(m_curBoundTimelineClip.curves, m_timelineEditorCurveBinding);
+            animationCurve = AnimationUtility.GetEditorCurve(clip.curves, m_timelineEditorCurveBinding);
 #endif
             if (null == animationCurve)
                 animationCurve = new AnimationCurve();
             
-            ValidateAnimationCurve(ref animationCurve);
+            ValidateAnimationCurve(ref animationCurve, (float) clip.duration);
             return animationCurve;
         }
 
 //----------------------------------------------------------------------------------------------------------------------
         //Validate: make sure we have at least two keys
-        private void ValidateAnimationCurve(ref AnimationCurve animationCurve) {
+        internal  static void ValidateAnimationCurve(ref AnimationCurve animationCurve, float clipDuration) {
             int numKeys = animationCurve.keys.Length;
             switch (numKeys) {
                 case 0: {
-                    animationCurve = AnimationCurve.Linear(0, 0, (float) m_curBoundTimelineClip.duration,1 );
+                    animationCurve = AnimationCurve.Linear(0, 0, clipDuration,1 );
                     break;
                 }
                 case 1: {
                     animationCurve.keys[0] = new Keyframe(0.0f,0.0f);
-                    animationCurve.AddKey((float)m_curBoundTimelineClip.duration, 1.0f);
+                    animationCurve.AddKey(clipDuration, 1.0f);
                     break;
                 }
                 default: break;
@@ -660,10 +645,9 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------
 
-        private void  RefreshAnimationCurveInTimelineClip(AnimationCurve curve) {
-            m_curBoundTimelineClip.curves.SetCurve("", typeof(StreamingImageSequencePlayableAsset), "m_time", curve);
+        internal static void RefreshTimelineClipCurve(TimelineClip clip, AnimationCurve curve) {
+            clip.curves.SetCurve("", typeof(StreamingImageSequencePlayableAsset), "m_time", curve);
 #if UNITY_EDITOR            
-            //[TODO-sin: 2019-12-25] Is there a way to make this smoother ?
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
 #endif            
         }
@@ -701,6 +685,8 @@ namespace UnityEngine.StreamingImageSequence {
         [SerializeField] private string m_folder = null;
         [SerializeField] List<string> m_imagePaths = null;
         
+        //[TODO-sin: 2020-6-29] PlayableFrames needs to be stored inside the track/TimelineClip instead of this asset
+        //directly
         //The ground truth for using/dropping an image in a particular frame. See the notes below
         [SerializeField] List<PlayableFrame> m_playableFrames = null;
 
@@ -714,7 +700,13 @@ namespace UnityEngine.StreamingImageSequence {
 
 #if UNITY_EDITOR
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below
-        private EditorCurveBinding m_timelineEditorCurveBinding;
+        private static EditorCurveBinding m_timelineEditorCurveBinding =  
+            new EditorCurveBinding() {
+                path         = "",
+                type         = typeof(StreamingImageSequencePlayableAsset),
+                propertyName = "m_time"
+            };
+        
 #endif
         [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = false;
         

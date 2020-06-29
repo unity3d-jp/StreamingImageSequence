@@ -68,7 +68,6 @@ namespace UnityEditor.StreamingImageSequence {
 
 
             asset.BindTimelineClip(clip);
-            asset.ValidateAnimationCurve();
 
             if (null == clonedFrom) {
                 return;
@@ -128,7 +127,7 @@ namespace UnityEditor.StreamingImageSequence {
 
             if (Event.current.type == EventType.Repaint) {
                 preview.SetVisibleLocalTime(region.startTime, region.endTime);
-                preview.Render(quantizedRect);
+                preview.Render(clip, quantizedRect);
             }
         }
 

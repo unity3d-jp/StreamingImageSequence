@@ -26,9 +26,8 @@ internal class StreamingImageSequencePreview : IDisposable {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void Render(Rect visibleRect) {
+    internal void Render(TimelineClip clip, Rect visibleRect) {
 
-        TimelineClip clip = m_playableAsset.GetBoundTimelineClip();
         IList<string> imagePaths = m_playableAsset.GetImagePaths();
 
         //Calculate the width if we are showing the whole clip
@@ -77,7 +76,7 @@ internal class StreamingImageSequencePreview : IDisposable {
         for (int i = 0; i < numAllPreviewImages; ++i) {
             if (drawRect.x >= startVisibleRectX && drawRect.x <= endVisibleRectX) {
 
-                int imageIndex = m_playableAsset.LocalTimeToImageIndex(localTime);
+                int imageIndex = m_playableAsset.LocalTimeToImageIndex(clip, localTime);
 
                 //Load
                 string fullPath = m_playableAsset.GetCompleteFilePath(imagePaths[imageIndex]);

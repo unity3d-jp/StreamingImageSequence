@@ -116,7 +116,7 @@ namespace UnityEngine.StreamingImageSequence
         protected override void ProcessActiveClipV(StreamingImageSequencePlayableAsset asset,
             double directorTime, TimelineClip activeClip) 
         {
-            int index = asset.GlobalTimeToImageIndex(directorTime);
+            int index = asset.GlobalTimeToImageIndex(activeClip, directorTime);
 
             bool texReady = asset.RequestLoadImage(index);
             if (texReady) {

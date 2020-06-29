@@ -3,6 +3,7 @@ using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.StreamingImageSequence;
+using UnityEngine.Timeline;
 
 namespace UnityEditor.StreamingImageSequence {
 
@@ -77,7 +78,7 @@ namespace UnityEditor.StreamingImageSequence {
             }
             
             if (null!= TimelineEditor.selectedClip && TimelineEditor.selectedClip == m_asset.GetBoundTimelineClip()) {
-                ShowTimelinePropertiesGUI();
+                ShowTimelinePropertiesGUI(TimelineEditor.selectedClip);
             }
 
             serializedObject.ApplyModifiedProperties();
@@ -86,11 +87,11 @@ namespace UnityEditor.StreamingImageSequence {
         }
         
 //----------------------------------------------------------------------------------------------------------------------
-        private void ShowTimelinePropertiesGUI() {
+        private void ShowTimelinePropertiesGUI(TimelineClip clip) {
             
             if (GUILayout.Button("Reset Curve")) {
                 //[TODO-sin:2020-1-29] Support undo for this
-                m_asset.ResetAnimationCurve();                
+                ResetTimelineCurve(clip);                
             }
             
             GUILayout.Space(15);
@@ -99,6 +100,15 @@ namespace UnityEditor.StreamingImageSequence {
                 //[TODO-sin:2020-6-29] Support undo for this
                 m_asset.ResetPlayableFrames();
             }
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+        private static void ResetTimelineCurve(TimelineClip clip) {
+            AnimationCurve animationCurve = new AnimationCurve();
+            StreamingImageSequencePlayableAsset.ValidateAnimationCurve(ref animationCurve, (float) clip.duration);
+            StreamingImageSequencePlayableAsset.RefreshTimelineClipCurve(clip, animationCurve);
+            clip.clipIn    = 0;
+            clip.timeScale = 1.0;
         }
 
 //----------------------------------------------------------------------------------------------------------------------
