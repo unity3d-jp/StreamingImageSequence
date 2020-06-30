@@ -1,7 +1,9 @@
 ﻿using System;
+using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.StreamingImageSequence;
+using UnityEngine.Timeline;
 
 namespace UnityEditor.StreamingImageSequence {
 
@@ -74,22 +76,38 @@ namespace UnityEditor.StreamingImageSequence {
                     DoImageGUI();
                 }
             }
-
-            if (GUILayout.Button("Reset Curve")) {
-                //[TODO-sin:2020-1-29] Support undo for this
-                m_asset.ResetAnimationCurve();
-                
-            }
             
-            GUILayout.Space(15);
-            m_asset.SetUseImageMarkerVisibility(GUILayout.Toggle(m_asset.GetUseImageMarkerVisibility(), "Show UseImageMarkers"));
-            if (GUILayout.Button("Reset UseImageMarkers")) {
-                m_asset.ResetPlayableFrames();
+            if (null!= TimelineEditor.selectedClip) {
+                
+                if (GUILayout.Button("Reset Curve")) {
+                    //[TODO-sin:2020-1-29] Support undo for this
+                    ResetTimelineCurve(TimelineEditor.selectedClip);                
+                }
+
+                //[TODO-sin: 2020-6-29] Fix this so that the playable frames are stored inside the timelineClip
+                if (TimelineEditor.selectedClip == m_asset.GetBoundTimelineClip()) {
+                    GUILayout.Space(15);
+                    m_asset.SetUseImageMarkerVisibility(GUILayout.Toggle(m_asset.GetUseImageMarkerVisibility(), "Show UseImageMarkers"));
+                    if (GUILayout.Button("Reset UseImageMarkers")) {
+                        //[TODO-sin:2020-6-29] Support undo for this
+                        m_asset.ResetPlayableFrames();
+                    }
+                }
+                
             }
 
             serializedObject.ApplyModifiedProperties();
             EditorGUI.EndChangeCheck();
 
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+        private static void ResetTimelineCurve(TimelineClip clip) {
+            AnimationCurve animationCurve = new AnimationCurve();
+            StreamingImageSequencePlayableAsset.ValidateAnimationCurve(ref animationCurve, (float) clip.duration);
+            StreamingImageSequencePlayableAsset.RefreshTimelineClipCurve(clip, animationCurve);
+            clip.clipIn    = 0;
+            clip.timeScale = 1.0;
         }
 
 //----------------------------------------------------------------------------------------------------------------------

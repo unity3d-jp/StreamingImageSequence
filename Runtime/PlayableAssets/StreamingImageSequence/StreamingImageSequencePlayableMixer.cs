@@ -35,17 +35,29 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 //----------------------------------------------------------------------------------------------------------------------
-        public override void OnGraphStart(Playable playable){
-            
+        public override void OnGraphStart(Playable playable){           
             
             foreach (TimelineClip clip in GetClips()) {
                 StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
                 if (null == asset)
                     continue;
+                asset.BindTimelineClip(clip);
                 asset.OnGraphStart(playable);
             }
             
 
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+        public override void OnGraphStop(Playable playable) {
+            foreach (TimelineClip clip in GetClips()) {
+                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (null == asset)
+                    continue;
+                asset.OnGraphStop(playable);
+                asset.BindTimelineClip(null);
+            }
+            
         }
         
 //----------------------------------------------------------------------------------------------------------------------
@@ -104,7 +116,7 @@ namespace UnityEngine.StreamingImageSequence
         protected override void ProcessActiveClipV(StreamingImageSequencePlayableAsset asset,
             double directorTime, TimelineClip activeClip) 
         {
-            int index = asset.GlobalTimeToImageIndex(directorTime);
+            int index = asset.GlobalTimeToImageIndex(activeClip, directorTime);
 
             bool texReady = asset.RequestLoadImage(index);
             if (texReady) {

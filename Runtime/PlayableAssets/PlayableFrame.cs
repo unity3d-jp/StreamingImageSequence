@@ -37,7 +37,7 @@ internal class PlayableFrame : ScriptableObject {
 //----------------------------------------------------------------------------------------------------------------------
     internal void Refresh(bool useImageMarkerVisibility) {
         //Delete Marker first if it's not in the correct track (e.g: after the TimelineClip was moved)
-        if (null!= m_marker && m_marker.parent != m_playableAsset.GetTimelineClip().parentTrack) {
+        if (null!= m_marker && m_marker.parent != m_playableAsset.GetBoundTimelineClip().parentTrack) {
             DeleteMarker();
         }
 
@@ -56,7 +56,7 @@ internal class PlayableFrame : ScriptableObject {
 //----------------------------------------------------------------------------------------------------------------------
 
     void CreateMarker() {
-        TimelineClip timelineClip = m_playableAsset.GetTimelineClip();
+        TimelineClip timelineClip = m_playableAsset.GetBoundTimelineClip();
         m_marker = timelineClip.parentTrack.CreateMarker<UseImageMarker>(m_localTime);
         m_marker.Init(this);
 

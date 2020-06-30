@@ -130,8 +130,7 @@ internal class JstimelineImporter : ScriptedImporter
             clip.start = track.Start;
             clip.duration = track.Duration;
             clip.CreateCurves("Curves: " + clip.displayName);
-            sisAsset.SetTimelineClip(clip);
-            sisAsset.ValidateAnimationCurve();
+            sisAsset.BindTimelineClip(clip);
 
 
             if (Object.FindObjectOfType(typeof(UnityEngine.EventSystems.EventSystem)) == null)

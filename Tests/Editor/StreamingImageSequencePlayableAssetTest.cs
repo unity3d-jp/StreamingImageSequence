@@ -20,7 +20,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
             
             //Test the track immediately
-            StreamingImageSequenceTrack track = sisAsset.GetTimelineClip().parentTrack as StreamingImageSequenceTrack;
+            StreamingImageSequenceTrack track = sisAsset.GetBoundTimelineClip().parentTrack as StreamingImageSequenceTrack;
             Assert.IsNotNull(track);
             Assert.IsNotNull(track.GetActivePlayableAsset());
             
@@ -34,14 +34,14 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             
 
             //Test that there should be no active PlayableAsset at the time above what exists in the track.
-            TimelineClip clip = sisAsset.GetTimelineClip();
+            TimelineClip clip = sisAsset.GetBoundTimelineClip();
             director.time = clip.start + clip.duration + 1;
             yield return null;
             
             Assert.IsNull(track.GetActivePlayableAsset()); 
             
 
-            DestroyTestTimelineAssets(sisAsset);
+            DestroyTestTimelineAssets(clip);
             yield return null;
         }
         
@@ -53,13 +53,13 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             yield return null;
             
             //Resize
-            TimelineClip clip = sisAsset.GetTimelineClip();
+            TimelineClip clip = sisAsset.GetBoundTimelineClip();
             TrackAsset trackAsset = clip.parentTrack;
             sisAsset.SetUseImageMarkerVisibility(true);
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
             yield return null;
             
-            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
             yield return null;
 
 
@@ -69,7 +69,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.AreEqual(0, trackAsset.GetMarkerCount());
             
             
-            DestroyTestTimelineAssets(sisAsset);
+            DestroyTestTimelineAssets(clip);
             yield return null;
         }
         
@@ -86,31 +86,31 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             yield return null;
 
             //Original length
-            TimelineClip clip = sisAsset.GetTimelineClip();
+            TimelineClip clip = sisAsset.GetBoundTimelineClip();
             TrackAsset trackAsset = clip.parentTrack;
-            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
             double origClipDuration = clip.duration;
 
             //Resize longer
             ResizeTimelineClip(clip, origClipDuration + 3.0f); yield return null;
-            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
 
             //Undo
             UndoAndRefreshTimelineEditor(); yield return null;
             Assert.AreEqual(origClipDuration, clip.duration);
-            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
             
             //Resize shorter
             ResizeTimelineClip(clip, Mathf.Max(0.1f, ( (float)(origClipDuration) - 3.0f))); yield return null;
-            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
             
             //Undo
             UndoAndRefreshTimelineEditor(); yield return null;
             Assert.AreEqual(origClipDuration, clip.duration);
-            Assert.AreEqual(sisAsset.CalculateIdealNumPlayableFrames(), trackAsset.GetMarkerCount());
+            Assert.AreEqual(StreamingImageSequencePlayableAsset.CalculateIdealNumPlayableFrames(clip), trackAsset.GetMarkerCount());
             
             
-            DestroyTestTimelineAssets(sisAsset);
+            DestroyTestTimelineAssets(clip);
             yield return null;
         }
 
@@ -152,13 +152,12 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.IsNotNull(sisAsset);
 
             clip.CreateCurves("Curves: " + clip.displayName);
-            sisAsset.SetTimelineClip(clip);
-            sisAsset.ValidateAnimationCurve();
+            sisAsset.BindTimelineClip(clip);
 
             //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
             EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
 //            Selection.activeTransform = director.gameObject.transform;
-//            TimelineEditor.selectedClip = sisAsset.GetTimelineClip();
+//            TimelineEditor.selectedClip = sisAsset.GetBoundTimelineClip();
             Selection.activeObject = director;
 
 
@@ -171,8 +170,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         }
 
 //----------------------------------------------------------------------------------------------------------------------        
-        void DestroyTestTimelineAssets(StreamingImageSequencePlayableAsset sisAsset) {
-            TrackAsset movieTrack = sisAsset.GetTimelineClip().parentTrack;
+        static void DestroyTestTimelineAssets(TimelineClip clip) {
+            TrackAsset movieTrack = clip.parentTrack;
             TimelineAsset timelineAsset = movieTrack.timelineAsset;
             
             string tempTimelineAssetPath = AssetDatabase.GetAssetPath(timelineAsset);
