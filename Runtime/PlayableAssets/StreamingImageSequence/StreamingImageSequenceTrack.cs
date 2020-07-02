@@ -12,17 +12,7 @@ namespace UnityEngine.StreamingImageSequence {
 [TrackColor(0.776f, 0.263f, 0.09f)]
 public class StreamingImageSequenceTrack : TrackAsset
 {
-    /// <inheritdoc/>
-    public StreamingImageSequenceTrack() {
-        LogUtility.LogDebug("StreamingImageSequenceTrack creating ObserverPeriodicJob");
-        m_loaderPeriodicJob = new LoaderPeriodicJob(this);
-        UpdateManager.AddPeriodicJob( m_loaderPeriodicJob);
-        // above job is removed when finished to load by calling RemoveIfFinished();
-    }
     
-    void OnDestroy() {
-        UpdateManager.RemovePeriodicJob( m_loaderPeriodicJob);        
-    }    
 
 //----------------------------------------------------------------------------------------------------------------------
     
@@ -64,7 +54,6 @@ public class StreamingImageSequenceTrack : TrackAsset
 //---------------------------------------------------------------------------------------------------------------------
 
     private StreamingImageSequencePlayableMixer m_trackMixer = null;
-    readonly LoaderPeriodicJob m_loaderPeriodicJob;
 
 }
 

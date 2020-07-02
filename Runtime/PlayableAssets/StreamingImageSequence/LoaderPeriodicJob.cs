@@ -7,8 +7,8 @@ namespace UnityEngine.StreamingImageSequence
 {
 internal class LoaderPeriodicJob : PeriodicJob { 
 
-    public LoaderPeriodicJob(StreamingImageSequenceTrack track) : base()  {
-        m_track = track;
+    public LoaderPeriodicJob(StreamingImageSequencePlayableMixer mixer) : base() {
+        m_mixer = mixer;
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
@@ -18,13 +18,13 @@ internal class LoaderPeriodicJob : PeriodicJob {
     
 //----------------------------------------------------------------------------------------------------------------------    
     internal  override void Execute() {
-        Assert.IsNotNull(m_track);
+        Assert.IsNotNull(m_mixer);
 
         //Only continue preloading images when we are not in play mode 
         if (Application.isPlaying)
             return;
 
-        IEnumerable<TimelineClip> clips = m_track.GetClips();
+        IEnumerable<TimelineClip> clips = m_mixer.GetClips();
         foreach (TimelineClip clip in clips) {
             StreamingImageSequencePlayableAsset sisAsset  = clip.asset as StreamingImageSequencePlayableAsset;
             if (null == sisAsset) {
@@ -40,7 +40,7 @@ internal class LoaderPeriodicJob : PeriodicJob {
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    readonly StreamingImageSequenceTrack m_track;
+    readonly StreamingImageSequencePlayableMixer  m_mixer;
 
 }
 

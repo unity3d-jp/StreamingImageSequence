@@ -28,12 +28,20 @@ namespace UnityEngine.StreamingImageSequence
 //----------------------------------------------------------------------------------------------------------------------
 
 #region IPlayableBehaviour interfaces
+
+#if UNITY_EDITOR            
         public override void OnPlayableCreate(Playable playable) {
+            m_loaderPeriodicJob = new LoaderPeriodicJob(this);
+            UpdateManager.AddPeriodicJob( m_loaderPeriodicJob);
+           
         }
 
         public override void OnPlayableDestroy(Playable playable) {
+            UpdateManager.RemovePeriodicJob( m_loaderPeriodicJob);        
         }
 
+#endif //UNITY_EDITOR          
+        
 //----------------------------------------------------------------------------------------------------------------------
         public override void OnGraphStart(Playable playable) {
             //Need to bind TimelineClips first
@@ -193,6 +201,7 @@ namespace UnityEngine.StreamingImageSequence
 
 #if UNITY_EDITOR
         readonly EditorWindow m_gameView;
+        LoaderPeriodicJob m_loaderPeriodicJob;        
 #endif
 
     }
