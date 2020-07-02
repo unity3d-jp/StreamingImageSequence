@@ -21,7 +21,7 @@ namespace UnityEngine.StreamingImageSequence
         {
             LogUtility.LogDebug("StreamingImageSequenceTrack creating ObserverPeriodicJob");
             m_LoaderPeriodicJob = new LoaderPeriodicJob(this);
-            m_LoaderPeriodicJob.AddToUpdateManger();
+            m_LoaderPeriodicJob.AddToUpdateManager();
             // above job is removed when finished to load by calling RemoveIfFinished();
         }
 #if false

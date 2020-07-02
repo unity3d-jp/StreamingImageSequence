@@ -12,7 +12,7 @@
         public  PeriodicJob(UpdateManager.JobOrder order) {
             m_order = order;
         }
-        public void AddToUpdateManger() {
+        public void AddToUpdateManager() {
             UpdateManager.AddPeriodicJob( this);
         }
 
