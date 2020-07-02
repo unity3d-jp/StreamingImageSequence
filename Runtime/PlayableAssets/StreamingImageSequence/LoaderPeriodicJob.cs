@@ -13,11 +13,11 @@ internal class LoaderPeriodicJob : PeriodicJob {
 
 //----------------------------------------------------------------------------------------------------------------------    
 
-    public override void Cleanup() {
+    internal  override void Cleanup() {
     }  
     
 //----------------------------------------------------------------------------------------------------------------------    
-    public override void Execute() {
+    internal  override void Execute() {
         Assert.IsNotNull(m_track);
 
         //Only continue preloading images when we are not in play mode 
