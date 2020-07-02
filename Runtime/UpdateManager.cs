@@ -48,11 +48,6 @@ namespace UnityEngine.StreamingImageSequence
         private static string s_AppDataPath;
         private static bool m_isResettingPlugin = false;
         
-#if UNITY_EDITOR        
-        public static event SetupBeforePlay m_setupBeforePlayingDelegate = null;
-        public static event SetupAfterPlay m_setupAfterPlayingDelegate = null;
-        public static event ResetDelegate m_resetDelegate = null;
-#endif        
         private static JobOrder[] s_orders = new JobOrder[] {
             JobOrder.Top,
             JobOrder.AboveNormal,
@@ -85,11 +80,9 @@ namespace UnityEngine.StreamingImageSequence
 #if UNITY_EDITOR
         private static void FinalizeResetPlugin()
         {
-            if (!IsPluginResetting())
-            {
+            if (!IsPluginResetting()) {
                 return;
             }
-            CallResetDelegate();
             double diff = EditorApplication.timeSinceStartup - s_PluginResetTime;
             if (diff > 0.016f * 60.0f)
             {
@@ -141,7 +134,6 @@ namespace UnityEngine.StreamingImageSequence
             switch (state) {
                 case PlayModeStateChange.ExitingEditMode: {
                     StopThread();
-                    CallSetupBeforePlayingDelegate();
                     // Util.Log("Play button was pressed.");
                     break;
                 }
@@ -155,35 +147,12 @@ namespace UnityEngine.StreamingImageSequence
                     break;
                 }
                 case PlayModeStateChange.EnteredEditMode: {
-                    CallSetupAfterPlayDelegate();
                     // Util.Log("Play  stopped.");
                     break;
                 }
             }
         }
 
-        static void CallResetDelegate()
-        {
-            if (m_resetDelegate != null)
-            {
-                m_resetDelegate();
-            }
-        }
-        static void CallSetupBeforePlayingDelegate()
-        {
-            if (m_setupBeforePlayingDelegate!= null)
-            {
-                m_setupBeforePlayingDelegate();
-            }
-        }
-
-        static void CallSetupAfterPlayDelegate()
-        {
-            if (m_setupAfterPlayingDelegate != null)
-            {
-                m_setupAfterPlayingDelegate();
-            }
-        }
         static void UpdateFromEditor()
         {
             
