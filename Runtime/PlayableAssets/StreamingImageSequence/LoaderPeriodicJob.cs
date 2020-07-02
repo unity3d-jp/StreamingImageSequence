@@ -85,19 +85,10 @@ internal class LoaderPeriodicJob : PeriodicJob
 
                 continue;
             }
-
-            // important.
-            // in order to check strictly,
-            // null check of asset value must be here later than above asset.GetType() as operator == null means the object is destroyed.
-            if (asset == null)
-            {
-
-                continue;
-            }
         }
-
-
     }
+    
+    
     public override void Execute()
     {
         if ( m_track == null )
