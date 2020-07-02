@@ -65,7 +65,6 @@ namespace UnityEngine.StreamingImageSequence
         {
 
 #if !UNITY_EDITOR
-           UpdateManager.GetStreamingAssetPath(); // must be executed in main thread.          
            LogUtility.LogDebug("InitInRuntime()");
            StartThread();
 #endif
