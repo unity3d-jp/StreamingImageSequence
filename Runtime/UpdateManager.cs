@@ -33,8 +33,7 @@ namespace UnityEngine.StreamingImageSequence
         public delegate void SetupAfterPlay();
         public delegate void ResetDelegate();
 
-        public static double s_LasTime;
-        private static double s_PluginResetTime;
+        public static double m_lastUpdateInEditorTime;
         
         const uint NUM_THREAD = 3;
         private static readonly Thread[] m_threads = new Thread[NUM_THREAD];
@@ -42,7 +41,6 @@ namespace UnityEngine.StreamingImageSequence
         private static readonly Queue<BackGroundTask> m_backGroundTaskQueue = new Queue<BackGroundTask>();
         private static Dictionary<JobOrder, List<PeriodicJob>> s_MainThreadJobQueue = new Dictionary<JobOrder, List<PeriodicJob>>();
         private static List<PeriodicJob> toBeAdded = new List<PeriodicJob>();
-        private static bool m_bInitialized = false;
         private static bool m_shuttingDownThreads;
         private static Dictionary<PlayableDirector, PlayableDirectorStatus> s_directorStatusDictiornary = new Dictionary<PlayableDirector, PlayableDirectorStatus>();
         private static string s_AppDataPath;
@@ -68,35 +66,20 @@ namespace UnityEngine.StreamingImageSequence
 #if UNITY_EDITOR
         public static void ResetPlugin() {
             StreamingImageSequencePlugin.ResetPlugin();
-            s_PluginResetTime = EditorApplication.timeSinceStartup;
             m_isResettingPlugin = true;
 
             lock (m_backGroundTaskQueue) {
                 m_backGroundTaskQueue.Clear();
             }
+            
+            StreamingImageSequencePlugin.UnloadAllImages();
+            m_isResettingPlugin = false;
+
         }
 #endif
 
-#if UNITY_EDITOR
-        private static void FinalizeResetPlugin()
-        {
-            if (!IsPluginResetting()) {
-                return;
-            }
-            double diff = EditorApplication.timeSinceStartup - s_PluginResetTime;
-            if (diff > 0.016f * 60.0f)
-            {
-                StreamingImageSequencePlugin.UnloadAllImages();
-                m_isResettingPlugin = false;
-            }
-    }
-#endif  //UNITY_EDITOR
         public static bool IsPluginResetting() {
             return m_isResettingPlugin;
-        }
-        public static bool IsInitialized()
-        {
-            return m_bInitialized;
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -105,28 +88,26 @@ namespace UnityEngine.StreamingImageSequence
 
 #if !UNITY_EDITOR
            UpdateManager.GetStreamingAssetPath(); // must be executed in main thread.          
-           Assert.IsTrue(m_bInitialized == false);
            LogUtility.LogDebug("InitInRuntime()");
            StartThread();
            foreach (var order in s_orders)
            {
                 s_MainThreadJobQueue.Add(order, new List<PeriodicJob>());
            }
-           m_bInitialized = true;
 #endif
         }
 
 
 #if UNITY_EDITOR
-        static void InitInEditor()
-        {
+        static void InitInEditor() {
             EditorApplication.playModeStateChanged += ChangedPlayModeState;
-            EditorApplication.update += UpdateFromEditor;
+            EditorApplication.update += UpdateInEditor;
+
+            StartThread();
         }
 
 
-        static void ChangedPlayModeState(PlayModeStateChange state)
-        {
+        static void ChangedPlayModeState(PlayModeStateChange state) {
             if (EditorApplication.isPaused ) {
                 return;
             }
@@ -152,23 +133,21 @@ namespace UnityEngine.StreamingImageSequence
                 }
             }
         }
+        
+//----------------------------------------------------------------------------------------------------------------------        
 
-        static void UpdateFromEditor()
-        {
+        static void UpdateInEditor() {
             
-            if (!m_bInitialized)
-            {
-                StartThread();
-                m_bInitialized = true;
-            }
-            var time = EditorApplication.timeSinceStartup;
-
-            var timeDifference = time - s_LasTime;
-            if (timeDifference < 0.016f)
-            {
+            double time = EditorApplication.timeSinceStartup;
+            double timeDifference = time - m_lastUpdateInEditorTime;
+            if (timeDifference < 0.016f) {
                 return;
             }
-            s_LasTime = time;
+
+            if (m_isResettingPlugin)
+                return;
+            
+            m_lastUpdateInEditorTime = time;
 
             List<PeriodicJob> toBeRemoved = new List<PeriodicJob>();
             if (! UpdateManager.IsPluginResetting() )
@@ -209,9 +188,6 @@ namespace UnityEngine.StreamingImageSequence
             {
                 RemovePeriodicJob(job);
             }
-#if UNITY_EDITOR
-            FinalizeResetPlugin();
-#endif
         }
 
 #endif  //UNITY_EDITOR
