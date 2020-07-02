@@ -19,12 +19,8 @@
 *.so
 *.unitypackage
 
-release/
-debug/
-dependencies/
-.build/
-*.dblite
-excons.cache
+*/Builds/**
+*/obj/**
 
 StreamingImageSequence~/*.csproj
 StreamingImageSequence~/*.csproj.meta
