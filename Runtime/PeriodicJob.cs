@@ -6,7 +6,7 @@
         internal bool m_InitializedFlag;
         public abstract void Execute();
         public abstract void Initialize();
-        public abstract void Cleanup(); // Uninitialize
+        public abstract void Cleanup(); 
         public  PeriodicJob(UpdateManager.JobOrder order) {
             m_order = order;
         }
@@ -14,12 +14,7 @@
             UpdateManager.AddPeriodicJob( this);
         }
 
-        public void RemoveFromUpdateManager() {
-            UpdateManager.RemovePeriodicJob(this);
-        }
-
-        public void RemoveIfFinished()
-        {
+        public void RemoveIfFinished() {
             m_RemoveRequestFlag = true;
         }
     }

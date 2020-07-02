@@ -178,8 +178,9 @@ namespace UnityEngine.StreamingImageSequence
             }
 
 
-            foreach (var job in m_toRemoveJobs) {
-                RemovePeriodicJob(job);
+            foreach (PeriodicJob job in m_toRemoveJobs) {               
+                s_MainThreadJobQueue[job.m_order].Remove(job);
+                job.Cleanup();
             }
             m_toRemoveJobs.Clear();
         }
@@ -202,13 +203,6 @@ namespace UnityEngine.StreamingImageSequence
             return true;
         }
 
-        public static bool RemovePeriodicJob( PeriodicJob job)
-        {
-            Assert.IsTrue(s_MainThreadJobQueue[job.m_order].Contains(job));
-            s_MainThreadJobQueue[job.m_order].Remove(job);
-            job.Cleanup();
-            return true;
-        }
         public static bool IsMainThread()
         {
             return (mainThread == Thread.CurrentThread);
