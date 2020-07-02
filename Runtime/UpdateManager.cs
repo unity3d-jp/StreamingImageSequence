@@ -160,6 +160,12 @@ namespace UnityEngine.StreamingImageSequence
         }
 
         public static bool RemovePeriodicJob(PeriodicJob job) {
+            //Check if the job hasn't been actually added yet
+            if (m_requestedJobs.Contains(job)) {
+                m_requestedJobs.Remove(job);
+                return true;
+            }
+            
             Assert.IsTrue(m_mainThreadPeriodJobs.Contains(job));
             m_toRemoveJobs.Add(job);
             return true;
