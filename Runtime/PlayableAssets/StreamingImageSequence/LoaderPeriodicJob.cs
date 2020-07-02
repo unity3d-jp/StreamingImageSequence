@@ -66,42 +66,21 @@ internal class LoaderPeriodicJob : PeriodicJob
             return;
         }
 
+        //Only continue preloading images when we are not in play mode 
+        if (Application.isPlaying)
+            return;
 
-        if (m_track != null )
-        {
-            var bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField;
-            var type = m_track.GetType();
-            var info = type.GetProperty("clips", bf);
-            var val = info.GetValue(m_track, null);
-            TimelineClip[] clipList = val as TimelineClip[];
-
-            foreach (var cl in clipList)
-            {
-                var asset = cl.asset;
-
-                // You might want to use "as" rather than compare type.
-                // "as" sometimes fail on first importing time for project.
-                if ( asset.GetType() == typeof(StreamingImageSequencePlayableAsset) )
-                {
-                    StreamingImageSequencePlayableAsset timelineAsset = (StreamingImageSequencePlayableAsset)asset;
-                    if (!Application.isPlaying)
-                        timelineAsset.ContinuePreloadingImages();
-
-                    continue;
-                }
-
-                // important.
-                // in order to check strictly,
-                // null check of asset value must be here later than above asset.GetType() as operator == null means the object is destroyed.
-                if (asset == null) {
-                    Debug.LogError("StreamingImageSequencePlayableAsset on " + cl.displayName + " is broken.");
-                    continue;
-                }
+        IEnumerable<TimelineClip> clips = m_track.GetClips();
+        foreach (TimelineClip clip in clips) {
+            StreamingImageSequencePlayableAsset sisAsset  = clip.asset as StreamingImageSequencePlayableAsset;
+            if (null == sisAsset) {
+                continue;
             }
 
-
-
+            if (!Application.isPlaying)
+                sisAsset.ContinuePreloadingImages();
         }
+
     }
 
 
