@@ -70,5 +70,8 @@ Plugins~/Build/x64/**
 Plugins~/Build/Src/**
 Plugins~/Build/Tests/**
 
+# Custom packages
+StreamingImageSequence~/Packages/com.unity.*/**
+!StreamingImageSequence~/Packages/com.unity.streaming-image-sequence/**
 
 
