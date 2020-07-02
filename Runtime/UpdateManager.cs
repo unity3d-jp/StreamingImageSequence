@@ -141,19 +141,8 @@ namespace UnityEngine.StreamingImageSequence
             }
 
         }
-
-#endif  //UNITY_EDITOR
-
 //----------------------------------------------------------------------------------------------------------------------
-        public static bool QueueBackGroundTask(BackGroundTask task) {
-            lock (m_backGroundTaskQueue) {
-                m_backGroundTaskQueue.Enqueue(task);
-            }
-            return true;
-        }
-        
-//----------------------------------------------------------------------------------------------------------------------
-        
+
         public static bool AddPeriodicJob(PeriodicJob job) {
             m_requestedJobs.Add(job);  
             return true;
@@ -170,6 +159,21 @@ namespace UnityEngine.StreamingImageSequence
             m_toRemoveJobs.Add(job);
             return true;
         }
+        
+//----------------------------------------------------------------------------------------------------------------------
+
+#endif  //UNITY_EDITOR
+
+//----------------------------------------------------------------------------------------------------------------------
+        public static bool QueueBackGroundTask(BackGroundTask task) {
+            lock (m_backGroundTaskQueue) {
+                m_backGroundTaskQueue.Enqueue(task);
+            }
+            return true;
+        }
+        
+//----------------------------------------------------------------------------------------------------------------------
+        
         
         public static bool IsMainThread()
         {
