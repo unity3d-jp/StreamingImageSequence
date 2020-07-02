@@ -42,7 +42,7 @@ namespace UnityEngine.StreamingImageSequence
         private static readonly Queue<BackGroundTask> m_backGroundTaskQueue = new Queue<BackGroundTask>();
         
         //"Jobs" are higher level than tasks
-        private static Dictionary<JobOrder, List<PeriodicJob>> s_MainThreadJobQueue = new Dictionary<JobOrder, List<PeriodicJob>>();
+        private static readonly HashSet<PeriodicJob> m_mainThreadPeriodJobs = new HashSet<PeriodicJob>();
         private static readonly List<PeriodicJob> m_requestedJobs = new List<PeriodicJob>();
         private static readonly HashSet<PeriodicJob> m_toRemoveJobs = new HashSet<PeriodicJob>();
         
@@ -51,20 +51,9 @@ namespace UnityEngine.StreamingImageSequence
         private static string s_AppDataPath;
         private static bool m_isResettingPlugin = false;
         
-        private static JobOrder[] s_orders = new JobOrder[] {
-            JobOrder.Top,
-            JobOrder.AboveNormal,
-            JobOrder.Normal,
-            JobOrder.BelowNormal,
-            JobOrder.Final,
-        };
         static UpdateManager()
         {
 #if UNITY_EDITOR
-            foreach (var order in s_orders)
-            {
-                s_MainThreadJobQueue.Add(order, new List<PeriodicJob>());
-            }
             InitInEditor();
 #endif  //UNITY_EDITOR
         }
@@ -95,10 +84,6 @@ namespace UnityEngine.StreamingImageSequence
            UpdateManager.GetStreamingAssetPath(); // must be executed in main thread.          
            LogUtility.LogDebug("InitInRuntime()");
            StartThread();
-           foreach (var order in s_orders)
-           {
-                s_MainThreadJobQueue.Add(order, new List<PeriodicJob>());
-           }
 #endif
         }
 
@@ -156,23 +141,21 @@ namespace UnityEngine.StreamingImageSequence
 
             //add requested jobs
             foreach (PeriodicJob job in m_requestedJobs) {
-                s_MainThreadJobQueue[0].Add(job);
+                m_mainThreadPeriodJobs.Add(job);
             }           
             m_requestedJobs.Clear();
             
-            foreach (PeriodicJob job in m_toRemoveJobs) {               
-                s_MainThreadJobQueue[0].Remove(job);
+            //Remove jobs
+            foreach (PeriodicJob job in m_toRemoveJobs) {
+                m_mainThreadPeriodJobs.Remove(job);
                 job.Cleanup();
-            }
-            
+            }           
             m_toRemoveJobs.Clear();
-            foreach (JobOrder order in s_orders) {
-                List<PeriodicJob> list = s_MainThreadJobQueue[order];
-                foreach (PeriodicJob job in list) {
-                    job.Execute();
-                }
+            
+            //Execute
+            foreach (PeriodicJob job in m_mainThreadPeriodJobs) {
+                job.Execute();
             }
-
 
         }
 
