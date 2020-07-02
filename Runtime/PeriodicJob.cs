@@ -1,23 +1,11 @@
 ﻿namespace UnityEngine.StreamingImageSequence  { 
 
-    internal abstract class PeriodicJob  {
-        public UpdateManager.JobOrder m_order;
-        internal bool m_RemoveRequestFlag;
-        internal bool m_InitializedFlag;
-        public abstract void Execute();
-        public abstract void Initialize();
-        public abstract void Cleanup(); 
-        public  PeriodicJob(UpdateManager.JobOrder order) {
-            m_order = order;
-        }
-        public void AddToUpdateManager() {
-            UpdateManager.AddPeriodicJob( this);
-        }
+internal abstract class PeriodicJob  {
+    public abstract void Execute();
+    public abstract void Cleanup();
+    protected PeriodicJob() { }
 
-        public void RemoveIfFinished() {
-            m_RemoveRequestFlag = true;
-        }
-    }
+}
 
 } //end namespace
 

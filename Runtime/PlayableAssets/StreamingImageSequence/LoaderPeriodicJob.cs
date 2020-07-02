@@ -1,35 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine.Assertions;
 using UnityEngine.Timeline;
 
 namespace UnityEngine.StreamingImageSequence
 {
-internal class LoaderPeriodicJob : PeriodicJob
-{
-    StreamingImageSequenceTrack m_track;
+internal class LoaderPeriodicJob : PeriodicJob { 
 
-
-
-    public LoaderPeriodicJob(StreamingImageSequenceTrack track) : base(UpdateManager.JobOrder.Normal)
-    {
+    public LoaderPeriodicJob(StreamingImageSequenceTrack track) : base()  {
         m_track = track;
     }
 
-    public override void Initialize()
-    {
-    }
+//----------------------------------------------------------------------------------------------------------------------    
 
     public override void Cleanup() {
     }  
     
 //----------------------------------------------------------------------------------------------------------------------    
-    public override void Execute()
-    {
-        if ( m_track == null )
-        {   // After discarding track, it becomes null as Equals is overriden.
-            RemoveIfFinished();
-            return;
-        }
+    public override void Execute() {
+        Assert.IsNotNull(m_track);
 
         //Only continue preloading images when we are not in play mode 
         if (Application.isPlaying)
@@ -48,6 +37,10 @@ internal class LoaderPeriodicJob : PeriodicJob
 
     }
 
+    
+//----------------------------------------------------------------------------------------------------------------------
+
+    readonly StreamingImageSequenceTrack m_track;
 
 }
 

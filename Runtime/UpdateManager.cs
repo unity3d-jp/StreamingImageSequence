@@ -44,7 +44,7 @@ namespace UnityEngine.StreamingImageSequence
         //"Jobs" are higher level than tasks
         private static Dictionary<JobOrder, List<PeriodicJob>> s_MainThreadJobQueue = new Dictionary<JobOrder, List<PeriodicJob>>();
         private static readonly List<PeriodicJob> m_requestedJobs = new List<PeriodicJob>();
-        private static readonly List<PeriodicJob> m_toRemoveJobs = new List<PeriodicJob>();
+        private static readonly HashSet<PeriodicJob> m_toRemoveJobs = new HashSet<PeriodicJob>();
         
         private static bool m_shuttingDownThreads;
         private static Dictionary<PlayableDirector, PlayableDirectorStatus> s_directorStatusDictiornary = new Dictionary<PlayableDirector, PlayableDirectorStatus>();
@@ -156,33 +156,24 @@ namespace UnityEngine.StreamingImageSequence
 
             //add requested jobs
             foreach (PeriodicJob job in m_requestedJobs) {
-                s_MainThreadJobQueue[job.m_order].Add(job);
+                s_MainThreadJobQueue[0].Add(job);
             }           
             m_requestedJobs.Clear();
             
+            foreach (PeriodicJob job in m_toRemoveJobs) {               
+                s_MainThreadJobQueue[0].Remove(job);
+                job.Cleanup();
+            }
+            
+            m_toRemoveJobs.Clear();
             foreach (JobOrder order in s_orders) {
                 List<PeriodicJob> list = s_MainThreadJobQueue[order];
                 foreach (PeriodicJob job in list) {
-                    if (!job.m_InitializedFlag) {
-                        job.Initialize();
-                        job.m_InitializedFlag = true;
-                    }
-                                       
-                    if (job.m_RemoveRequestFlag) {
-                        m_toRemoveJobs.Add(job);
-                        continue;
-                    }
-                    
                     job.Execute();
                 }
             }
 
 
-            foreach (PeriodicJob job in m_toRemoveJobs) {               
-                s_MainThreadJobQueue[job.m_order].Remove(job);
-                job.Cleanup();
-            }
-            m_toRemoveJobs.Clear();
         }
 
 #endif  //UNITY_EDITOR
@@ -197,12 +188,16 @@ namespace UnityEngine.StreamingImageSequence
         
 //----------------------------------------------------------------------------------------------------------------------
         
-        public static bool AddPeriodicJob(PeriodicJob job)
-        {
+        public static bool AddPeriodicJob(PeriodicJob job) {
             m_requestedJobs.Add(job);  
             return true;
         }
 
+        public static bool RemovePeriodicJob(PeriodicJob job) {
+            m_toRemoveJobs.Add(job);
+            return true;
+        }
+        
         public static bool IsMainThread()
         {
             return (mainThread == Thread.CurrentThread);
