@@ -29,13 +29,6 @@ namespace UnityEngine.StreamingImageSequence
 
 #region IPlayableBehaviour interfaces
         public override void OnPlayableCreate(Playable playable) {
-            IEnumerable<TimelineClip> clips = GetClips();           
-            foreach (TimelineClip clip in clips) {
-                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
-                if (null == asset)
-                    continue;
-                asset.BindTimelineClip(clip);
-            }
         }
 
         public override void OnPlayableDestroy(Playable playable) {
@@ -43,6 +36,14 @@ namespace UnityEngine.StreamingImageSequence
 
 //----------------------------------------------------------------------------------------------------------------------
         public override void OnGraphStart(Playable playable) {
+            //Need to bind TimelineClips first
+            IEnumerable<TimelineClip> clips = GetClips();           
+            foreach (TimelineClip clip in clips) {
+                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (null == asset)
+                    continue;
+                asset.BindTimelineClip(clip);
+            }
             
             IEnumerable<StreamingImageSequencePlayableAsset> clipAssets = GetClipAssets();
             foreach (StreamingImageSequencePlayableAsset asset in clipAssets) {
