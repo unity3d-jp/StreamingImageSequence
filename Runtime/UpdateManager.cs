@@ -35,14 +35,15 @@ namespace UnityEngine.StreamingImageSequence
 
         public static double s_LasTime;
         private static double s_PluginResetTime;
-        public const uint NUM_THREAD = 3;
-        private static Thread[] threads;
+        
+        const uint NUM_THREAD = 3;
+        private static readonly Thread[] m_threads = new Thread[NUM_THREAD];
         private static Thread mainThread = Thread.CurrentThread;
         private static readonly Queue<BackGroundTask> m_backGroundTaskQueue = new Queue<BackGroundTask>();
         private static Dictionary<JobOrder, List<PeriodicJob>> s_MainThreadJobQueue = new Dictionary<JobOrder, List<PeriodicJob>>();
         private static List<PeriodicJob> toBeAdded = new List<PeriodicJob>();
         private static bool m_bInitialized = false;
-        private static bool s_bShutdown;
+        private static bool m_shuttingDownThreads;
         private static Dictionary<PlayableDirector, PlayableDirectorStatus> s_directorStatusDictiornary = new Dictionary<PlayableDirector, PlayableDirectorStatus>();
         private static string s_AppDataPath;
         private static bool m_isResettingPlugin = false;
@@ -274,26 +275,20 @@ namespace UnityEngine.StreamingImageSequence
             return (mainThread == Thread.CurrentThread);
         }
 
-        static void StartThread()
-        {
-            threads = new Thread[NUM_THREAD];
-            for (int i = 0; i < NUM_THREAD; i++) {
-                threads[i] = new Thread(UpdateFunction);
-            }
-            
-            for (int i = 0; i < NUM_THREAD; i++)
-            {
-                threads[i].Start(i);
+//----------------------------------------------------------------------------------------------------------------------        
+        static void StartThread() {
+            for (int i = 0; i < NUM_THREAD; ++i) {
+                m_threads[i] = new Thread(UpdateFunction);
+                m_threads[i].Start();
             }
         }
              
 //----------------------------------------------------------------------------------------------------------------------        
 
-    	static void UpdateFunction(object arg)
-        {
-            var id = Thread.CurrentThread.ManagedThreadId;
+    	static void UpdateFunction() {
+            int id = Thread.CurrentThread.ManagedThreadId;
 
-            while (!s_bShutdown) {
+            while (!m_shuttingDownThreads) {
 
                 LogUtility.LogDebug("alive " + id);
                 BackGroundTask task = null;
@@ -312,38 +307,24 @@ namespace UnityEngine.StreamingImageSequence
                     Thread.Sleep(SLEEP_IN_MS);                    
                 }
                 
-
-                if ( threads == null )
-                {
-                    return; // play button.
-                }
-                   
-
-
             }
         }
 
-        static void StopThread()
-        {
+//----------------------------------------------------------------------------------------------------------------------
+        
+        static void StopThread() {
 
-            s_bShutdown = true;
-            if ( threads != null )
-            {
-                for (int ii = 0; ii < NUM_THREAD; ii++)
-                {
-                    if (threads[ii] != null)
-                    {
-                           threads[ii].Join();
-                    }
+            m_shuttingDownThreads = true;
+            for (int i = 0; i < NUM_THREAD; ++i)  {
+                if (m_threads[i] != null) {
+                    m_threads[i].Join();
                 }
             }
-            else
-            {
-                LogUtility.LogDebug("Unable to stop thread by user program!");
-
-            }
-            s_bShutdown = false;
+            
+            m_shuttingDownThreads = false;
         }
+//----------------------------------------------------------------------------------------------------------------------
+        
         static public string GetApplicationDataPath()
         {
             
