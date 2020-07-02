@@ -55,40 +55,9 @@ internal class LoaderPeriodicJob : PeriodicJob
     }
 
     public override void Cleanup() {
-    }
-
-    public override void Reset()
-    {
-        Debug.Assert(UpdateManager.IsPluginResetting());
-        if (m_track == null)
-        {   
-            return;
-        }
-
-
-        var bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField;
-        var type = m_track.GetType();
-        var info = type.GetProperty("clips", bf);
-        var val = info.GetValue(m_track, null);
-        TimelineClip[] clipList = val as TimelineClip[];
-
-        foreach (var cl in clipList)
-        {
-            var asset = cl.asset;
-
-            // You might want to use "as" rather than compare type.
-            // "as" sometimes fail on first importing time for project.
-            if (asset.GetType() == typeof(StreamingImageSequencePlayableAsset))
-            {
-                var timelineAsset = (StreamingImageSequencePlayableAsset)asset;
-                timelineAsset.Reset();
-
-                continue;
-            }
-        }
-    }
+    }  
     
-    
+//----------------------------------------------------------------------------------------------------------------------    
     public override void Execute()
     {
         if ( m_track == null )

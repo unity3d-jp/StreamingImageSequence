@@ -35,12 +35,17 @@ namespace UnityEngine.StreamingImageSequence
 
         public static double m_lastUpdateInEditorTime;
         
+        //Threads processes tasks
         const uint NUM_THREAD = 3;
         private static readonly Thread[] m_threads = new Thread[NUM_THREAD];
         private static Thread mainThread = Thread.CurrentThread;
         private static readonly Queue<BackGroundTask> m_backGroundTaskQueue = new Queue<BackGroundTask>();
+        
+        //"Jobs" are higher level than tasks
         private static Dictionary<JobOrder, List<PeriodicJob>> s_MainThreadJobQueue = new Dictionary<JobOrder, List<PeriodicJob>>();
-        private static List<PeriodicJob> toBeAdded = new List<PeriodicJob>();
+        private static readonly List<PeriodicJob> m_requestedJobs = new List<PeriodicJob>();
+        private static readonly List<PeriodicJob> m_toRemoveJobs = new List<PeriodicJob>();
+        
         private static bool m_shuttingDownThreads;
         private static Dictionary<PlayableDirector, PlayableDirectorStatus> s_directorStatusDictiornary = new Dictionary<PlayableDirector, PlayableDirectorStatus>();
         private static string s_AppDataPath;
@@ -149,45 +154,34 @@ namespace UnityEngine.StreamingImageSequence
             
             m_lastUpdateInEditorTime = time;
 
-            List<PeriodicJob> toBeRemoved = new List<PeriodicJob>();
-            if (! UpdateManager.IsPluginResetting() )
-            {
-                foreach (var job in toBeAdded)
-                {
-                    s_MainThreadJobQueue[job.m_order].Add(job);
-                }
-            }
-            toBeAdded.Clear();
-            foreach (var order in s_orders)
-            {
-                var list = s_MainThreadJobQueue[order];
-                foreach (var job in list)
-                {
-                    if (!job.m_InitializedFlag)
-                    {
+            //add requested jobs
+            foreach (PeriodicJob job in m_requestedJobs) {
+                s_MainThreadJobQueue[job.m_order].Add(job);
+            }           
+            m_requestedJobs.Clear();
+            
+            foreach (JobOrder order in s_orders) {
+                List<PeriodicJob> list = s_MainThreadJobQueue[order];
+                foreach (PeriodicJob job in list) {
+                    if (!job.m_InitializedFlag) {
                         job.Initialize();
                         job.m_InitializedFlag = true;
                     }
-                    if (! UpdateManager.IsPluginResetting() )
-                    {   
-                        job.Execute();
+                                       
+                    if (job.m_RemoveRequestFlag) {
+                        m_toRemoveJobs.Add(job);
+                        continue;
                     }
-                    else
-                    {
-                        job.Reset();
-                    }
-                    if (job.m_RemoveRequestFlag)
-                    {
-                        toBeRemoved.Add(job);
-                    }
+                    
+                    job.Execute();
                 }
             }
 
 
-            foreach (var job in toBeRemoved)
-            {
+            foreach (var job in m_toRemoveJobs) {
                 RemovePeriodicJob(job);
             }
+            m_toRemoveJobs.Clear();
         }
 
 #endif  //UNITY_EDITOR
@@ -204,7 +198,7 @@ namespace UnityEngine.StreamingImageSequence
         
         public static bool AddPeriodicJob(PeriodicJob job)
         {
-            toBeAdded.Add(job);  
+            m_requestedJobs.Add(job);  
             return true;
         }
 

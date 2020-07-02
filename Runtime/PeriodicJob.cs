@@ -7,8 +7,6 @@
         public abstract void Execute();
         public abstract void Initialize();
         public abstract void Cleanup(); // Uninitialize
-        public abstract void Reset();   // called while resetting.
-
         public  PeriodicJob(UpdateManager.JobOrder order) {
             m_order = order;
         }
