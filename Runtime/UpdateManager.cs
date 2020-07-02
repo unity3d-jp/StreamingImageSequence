@@ -71,10 +71,14 @@ namespace UnityEngine.StreamingImageSequence
 #endif  //UNITY_EDITOR
         }
 #if UNITY_EDITOR
-        static public void ResetPlugin() {
+        public static void ResetPlugin() {
             StreamingImageSequencePlugin.ResetPlugin();
             s_PluginResetTime = EditorApplication.timeSinceStartup;
             m_isResettingPlugin = true;
+
+            lock (m_backGroundTaskQueue) {
+                m_backGroundTaskQueue.Clear();
+            }
         }
 #endif
 
