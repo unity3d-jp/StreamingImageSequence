@@ -39,7 +39,7 @@ namespace UnityEngine.StreamingImageSequence
         private static Thread[] threads;
         private static int[] threadTickCounts;
         private static Thread mainThread = Thread.CurrentThread;
-        private static List<BackGroundTask> s_BackGroundTaskQueue = new List<BackGroundTask>();
+        private static readonly Queue<BackGroundTask> m_backGroundTaskQueue = new Queue<BackGroundTask>();
         private static Dictionary<JobOrder, List<PeriodicJob>> s_MainThreadJobQueue = new Dictionary<JobOrder, List<PeriodicJob>>();
         private static List<PeriodicJob> toBeAdded = new List<PeriodicJob>();
         private static bool m_bInitialized = false;
@@ -251,16 +251,16 @@ namespace UnityEngine.StreamingImageSequence
             return -1;
         }
 
-
-        public static bool QueueBackGroundTask(BackGroundTask task)
-        {
-            lock (s_BackGroundTaskQueue)
-            {
-                s_BackGroundTaskQueue.Add(task);
+//----------------------------------------------------------------------------------------------------------------------
+        public static bool QueueBackGroundTask(BackGroundTask task) {
+            lock (m_backGroundTaskQueue) {
+                m_backGroundTaskQueue.Enqueue(task);
             }
             return true;
         }
-
+        
+//----------------------------------------------------------------------------------------------------------------------
+        
         public static bool AddPeriodicJob(PeriodicJob job)
         {
             toBeAdded.Add(job);  
@@ -283,24 +283,23 @@ namespace UnityEngine.StreamingImageSequence
         {
             threads = new Thread[NUM_THREAD];
             threadTickCounts = new int[NUM_THREAD];
-            for (int i = 0; i < NUM_THREAD; i++)
-            {
-                threads[i] = new Thread(ThreadFunction);
-
+            for (int i = 0; i < NUM_THREAD; i++) {
+                threads[i] = new Thread(UpdateFunction);
             }
+            
             for (int i = 0; i < NUM_THREAD; i++)
             {
                 threads[i].Start(i);
             }
         }
              
+//----------------------------------------------------------------------------------------------------------------------        
 
-    	static void ThreadFunction(object arg)
+    	static void UpdateFunction(object arg)
         {
             var id = Thread.CurrentThread.ManagedThreadId;
 
-            while (!s_bShutdown)
-            {
+            while (!s_bShutdown) {
                 int index = Convert.ToInt32(arg);
                 int val = threadTickCounts[index]++;
                 val++;
@@ -308,27 +307,22 @@ namespace UnityEngine.StreamingImageSequence
 
                 LogUtility.LogDebug("alive " + id);
                 BackGroundTask task = null;
+
+                lock (m_backGroundTaskQueue) {
+                    
+                    if (m_backGroundTaskQueue.Count > 0) {
+                        task = m_backGroundTaskQueue.Dequeue();
+                    }                    
+                }               
                 
-                if ( s_BackGroundTaskQueue.Count > 0)
-                {
-                    lock (s_BackGroundTaskQueue)
-                    {
-                        if (s_BackGroundTaskQueue.Count > 0)
-                        {
-                            task = s_BackGroundTaskQueue[0];
-                            s_BackGroundTaskQueue.RemoveAt(0);
-                        }
-                    }
-                    if (task != null)
-                    {
-                        if (!UpdateManager.IsPluginResetting()  )
-                            task.Execute();
-                    }
+                if (null!=task)  {
+                    task.Execute();
+                } else {
+                    const int SLEEP_IN_MS = 33;
+                    Thread.Sleep(SLEEP_IN_MS);                    
                 }
-                else
-                {
-                    Thread.Sleep(16);
-                }
+                
+
                 if ( threads == null )
                 {
                     return; // play button.
