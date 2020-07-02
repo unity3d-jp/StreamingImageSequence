@@ -52,23 +52,25 @@ internal class StreamingImageSequencePreview : IDisposable {
         if (numAllPreviewImages <= 0)
             return;
         
-        //Find the place to draw the preview image[0], which might not be rendered
-        float xOffset = (float)(fullWidth * (m_visibleLocalStartTime / scaledClipDuration));
-               
-        Rect drawRect = new Rect(visibleRect) {
-            x = visibleRect.x - xOffset, 
-            y = visibleRect.y,
-            width = widthPerPreviewImage,
-            height = heightPerPreviewImage
-        };
         
         
         float xCounter = fullWidth / numAllPreviewImages;
-        //Debug.Log($"Full width: {fullWidth} numAllPreviewImages: {numAllPreviewImages}, xCounter: {xCounter}");
         
         double localTimeCounter = scaledClipDuration / numAllPreviewImages;
         
         double localTime = clip.clipIn;
+        int startFrame = Mathf.RoundToInt((float) clip.clipIn * fps);
+
+        //Find the place to draw the preview image[0], which might not be rendered
+        float xOffset = (float)(fullWidth * (m_visibleLocalStartTime / scaledClipDuration));              
+        Rect drawRect = new Rect(visibleRect) {
+            x      = (visibleRect.x - xOffset) + ((startFrame /(float) clip.timeScale)* xCounter), 
+            y      = visibleRect.y,
+            width  = widthPerPreviewImage,
+            height = heightPerPreviewImage
+        };
+        // Debug.Log($"Full width: {fullWidth} numAllPreviewImages: {numAllPreviewImages}, " +
+        //     $"xCounter: {xCounter}, ScaledClipDuration: {scaledClipDuration}, TimeScale: {clip.timeScale}");
         
         //Loop to render all preview Images, ignoring those outside the visible Rect
         float endVisibleRectX = visibleRect.x + visibleRect.width;
