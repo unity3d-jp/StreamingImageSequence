@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
-using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using System.Reflection;
 using UnityEngine.Timeline;
-using System;
 using System.Text.RegularExpressions;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,20 +17,7 @@ namespace UnityEngine.StreamingImageSequence
 #endif
     internal class UpdateManager
     {
-        public enum JobOrder
-        {
-            Top,
-            AboveNormal,
-            Normal,
-            BelowNormal,
-            Final
-        }
-        
-        public delegate void SetupBeforePlay();
-        public delegate void SetupAfterPlay();
-        public delegate void ResetDelegate();
-
-        public static double m_lastUpdateInEditorTime;
+        private static double m_lastUpdateInEditorTime;
         
         //Threads processes tasks
         const uint NUM_THREAD = 3;
