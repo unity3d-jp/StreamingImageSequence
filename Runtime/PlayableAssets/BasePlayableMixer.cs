@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
@@ -64,6 +65,14 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
         m_playableDirector = director;
         m_clips = clips;
 
+        m_clipAssets = new List<T>();
+        foreach (var clip in m_clips) {
+            T clipAsset = clip.asset as T;
+            Assert.IsNotNull(clipAsset);
+            m_clipAssets.Add(clipAsset);
+        }
+        
+
         InitInternalV(go);
     }
 
@@ -79,12 +88,14 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     protected GameObject GetBoundGameObject() { return m_boundGameObject; }
     protected PlayableDirector GetPlayableDirector() { return m_playableDirector; }
     protected IEnumerable<TimelineClip> GetClips() { return m_clips; }
+    protected IEnumerable<T> GetClipAssets() { return m_clipAssets; }
 
 //----------------------------------------------------------------------------------------------------------------------
 
     private GameObject m_boundGameObject;
     private PlayableDirector m_playableDirector;
     private IEnumerable<TimelineClip> m_clips;
+    private List<T> m_clipAssets;
 
 }
 
