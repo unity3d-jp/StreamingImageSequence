@@ -37,7 +37,6 @@ namespace UnityEngine.StreamingImageSequence
         private static double s_PluginResetTime;
         public const uint NUM_THREAD = 3;
         private static Thread[] threads;
-        private static int[] threadTickCounts;
         private static Thread mainThread = Thread.CurrentThread;
         private static readonly Queue<BackGroundTask> m_backGroundTaskQueue = new Queue<BackGroundTask>();
         private static Dictionary<JobOrder, List<PeriodicJob>> s_MainThreadJobQueue = new Dictionary<JobOrder, List<PeriodicJob>>();
@@ -246,14 +245,6 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 #endif  //UNITY_EDITOR
-        static internal int GetThreadTickCount(int index)
-        {
-            if ( threadTickCounts != null )
-            {
-                return threadTickCounts[index];
-            }
-            return -1;
-        }
 
 //----------------------------------------------------------------------------------------------------------------------
         public static bool QueueBackGroundTask(BackGroundTask task) {
@@ -286,7 +277,6 @@ namespace UnityEngine.StreamingImageSequence
         static void StartThread()
         {
             threads = new Thread[NUM_THREAD];
-            threadTickCounts = new int[NUM_THREAD];
             for (int i = 0; i < NUM_THREAD; i++) {
                 threads[i] = new Thread(UpdateFunction);
             }
@@ -304,10 +294,6 @@ namespace UnityEngine.StreamingImageSequence
             var id = Thread.CurrentThread.ManagedThreadId;
 
             while (!s_bShutdown) {
-                int index = Convert.ToInt32(arg);
-                int val = threadTickCounts[index]++;
-                val++;
-                threadTickCounts[index] = val;
 
                 LogUtility.LogDebug("alive " + id);
                 BackGroundTask task = null;
