@@ -29,23 +29,25 @@ namespace UnityEngine.StreamingImageSequence
 
 #region IPlayableBehaviour interfaces
         public override void OnPlayableCreate(Playable playable) {
+            IEnumerable<TimelineClip> clips = GetClips();           
+            foreach (TimelineClip clip in clips) {
+                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
+                if (null == asset)
+                    continue;
+                asset.BindTimelineClip(clip);
+            }
         }
 
         public override void OnPlayableDestroy(Playable playable) {
         }
 
 //----------------------------------------------------------------------------------------------------------------------
-        public override void OnGraphStart(Playable playable){           
+        public override void OnGraphStart(Playable playable) {
             
-            foreach (TimelineClip clip in GetClips()) {
-                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
-                if (null == asset)
-                    continue;
-                asset.BindTimelineClip(clip);
-                asset.OnGraphStart(playable);
+            IEnumerable<StreamingImageSequencePlayableAsset> clipAssets = GetClipAssets();
+            foreach (StreamingImageSequencePlayableAsset asset in clipAssets) {
+                asset.OnGraphStart(playable);                
             }
-            
-
         }
 
 //----------------------------------------------------------------------------------------------------------------------
