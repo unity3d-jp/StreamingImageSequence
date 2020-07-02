@@ -17,41 +17,6 @@ internal class LoaderPeriodicJob : PeriodicJob
 
     public override void Initialize()
     {
-        // hmmmm. seemingly kinda garbage makes invalid track.
-        // we need to remove such  tracks by checking those are  really included in the timeline asset.
-        if (m_track.parent == null )
-        {
-            RemoveIfFinished();
-            return; // ???
-        }
-        List<TrackAsset> tracks = null;
-
-        if ( m_track.parent.GetType() == typeof(GroupTrack))
-        {
-            tracks = UpdateManager.GetTrackList(m_track.parent as GroupTrack);
-        }
-        else if (m_track.parent.GetType() == typeof(TimelineAsset))
-        {
-            tracks = UpdateManager.GetTrackList(m_track.parent as TimelineAsset);
-        }
-        bool flgFound = false;
-        if (tracks != null)
-        {
-            foreach (var track in tracks)
-            {
-                if (track == m_track)
-                {
-                    flgFound = true;
-                    break;
-                }
-            }
-        }
-        if (flgFound == false) // the track is not included. It must be the garbage.
-        {
-            m_track = null;
-            RemoveIfFinished();
-            return;
-        }
     }
 
     public override void Cleanup() {
