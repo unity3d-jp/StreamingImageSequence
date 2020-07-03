@@ -145,6 +145,41 @@ internal class StreamingImagePreviewTest {
         Assert.AreEqual(131.3333, xDiff, EPSILON);
         
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+    
+    [Test]
+    public void ViewFarScaledClipWithClipIn() {
+            
+        PreviewClipInfo clipInfo = new PreviewClipInfo() {
+            Duration              = 0.25, //15  frames
+            TimeScale             = 1,
+            ClipIn                = 0.25,
+            FramePerSecond        = 60,
+            ImageDimensionRatio   = 1.684f,
+            VisibleLocalStartTime =  0.25,
+            VisibleLocalEndTime   = 0.50,
+            VisibleRect = new Rect() {
+                x      = 0,
+                y      = 1,
+                width  = 652,
+                height = 25,
+            },
+            
+        }; 
+        List<PreviewDrawInfo> drawList = new List<PreviewDrawInfo>();                
+        PreviewUtility.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
+            drawList.Add(drawInfo);
+        });
+
+        Assert.GreaterOrEqual(drawList.Count, 2);
+        Assert.AreEqual(0f, drawList[0].DrawRect.x,EPSILON);
+        Assert.AreEqual(0.25, drawList[0].LocalTime, EPSILON);
+        
+        float xDiff = drawList[1].DrawRect.x - drawList[0].DrawRect.x;
+        Assert.AreEqual(43.46667, xDiff, EPSILON);
+        
+    }
     
 //----------------------------------------------------------------------------------------------------------------------
     
