@@ -50,19 +50,14 @@ internal static class PreviewUtility {
 
         //Find the place to draw the preview image[0], which might not be rendered. Consider clipIn too.
         float firstFrameXOffset = (float)(fullWidth * ((visibleLocalStartTime) / scaledClipDuration));              
-        Rect drawRect = new Rect(visibleRect) {
-            x      = (visibleRect.x - firstFrameXOffset) + (float) clipInXOffset, 
-            y      = visibleRect.y,
-            width  = widthPerPreviewImage,
-            height = heightPerPreviewImage
-        };
-       
+      
         
         //Loop to render all preview Images, ignoring those outside the visible Rect
         float endVisibleRectX = visibleRect.x + visibleRect.width;
         float startVisibleRectX = visibleRect.x - widthPerPreviewImage; //for rendering preview images that are partly visible
         PreviewDrawInfo drawInfo = new PreviewDrawInfo() {
             DrawRect = new Rect() {
+                x = (visibleRect.x - firstFrameXOffset) + (float) clipInXOffset,
                 y = visibleRect.y,
                 width = widthPerPreviewImage,
                 height = heightPerPreviewImage,
@@ -76,18 +71,18 @@ internal static class PreviewUtility {
         for (int i = 0; i < numAllPreviewImages; ++i) {
 
             //already exceeds the visible area
-            if (drawRect.x > endVisibleRectX) {
+            if (drawInfo.DrawRect.x > endVisibleRectX) {
                 break;
             }
             
-            if (drawRect.x >= startVisibleRectX) {
-                
-                drawInfo.DrawRect.x = drawRect.x;
+            if (drawInfo.DrawRect.x >= startVisibleRectX) {
+
+                //drawInfo.DrawRect.x = 0; //drawRect.x;
                 drawInfo.LocalTime = localTime;
                 
 #if DEBUG_PREVIEW_IMAGES        
                  if (null == firstRectDebug) {
-                     firstRectDebug = ($"DrawRectX: {drawRect.x}, LocalTime: {localTime} ");
+                     firstRectDebug = ($"DrawRectX: {drawInfo.DrawRect.x}, LocalTime: {localTime} ");
                  }
 #endif
                                 
@@ -95,13 +90,13 @@ internal static class PreviewUtility {
                 
             }
             //Check if x is inside the visible rect
-            drawRect.x += xCounter;
+            drawInfo.DrawRect.x += xCounter;
             localTime  += localTimeCounter;
         }
 
 #if DEBUG_PREVIEW_IMAGES        
         Debug.Log($"Full width: {fullWidth} numAllPreviewImages: {numAllPreviewImages}, " +
-            $"StartFrame: {startFrame}, " + $"drawRectX: {drawRect.x}, " +
+            $"StartFrame: {startFrame}, " + $"drawRectX: {drawInfo.DrawRect.x}, " +
             $"VisibleRect: {visibleRect}, " +
             $"VisibleLocalStartTime: {visibleLocalStartTime}, VisibleLocalEndTime: {visibleLocalEndTime}, "+
             $"firstFrameXOffset: {firstFrameXOffset}, clipInXOffset: {clipInXOffset}, " +
