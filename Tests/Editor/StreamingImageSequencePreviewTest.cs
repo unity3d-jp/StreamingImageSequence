@@ -33,11 +33,11 @@ internal class StreamingImagePreviewTest {
         });
 
         Assert.GreaterOrEqual(drawList.Count, 1);
-        Assert.AreEqual(drawList[0].DrawRect.x,0f);
-        Assert.AreEqual(drawList[0].LocalTime,0f);
+        Assert.AreEqual(0f, drawList[0].DrawRect.x);
+        Assert.AreEqual(0f, drawList[0].LocalTime);
 
         float  xDiff = drawList[1].DrawRect.x - drawList[0].DrawRect.x;
-        Assert.AreEqual(xDiff,120.3333f, EPSILON);
+        Assert.AreEqual(120.3333f, xDiff, EPSILON);
 
     }
 
@@ -69,12 +69,49 @@ internal class StreamingImagePreviewTest {
         });
 
         Assert.GreaterOrEqual(drawList.Count, 1);
-        Assert.AreEqual(drawList[0].DrawRect.x,1591.562f,EPSILON);
-        Assert.AreEqual(drawList[0].LocalTime,0.08333, EPSILON);
+        Assert.AreEqual(1591.562f, drawList[0].DrawRect.x,EPSILON);
+        Assert.AreEqual(0.08333, drawList[0].LocalTime, EPSILON);
     }
 
     
-//----------------------------------------------------------------------------------------------------------------------    
+//----------------------------------------------------------------------------------------------------------------------
+
+    [Test]
+    public void ViewScaledClipAtBeginning() {
+        
+        PreviewClipInfo clipInfo = new PreviewClipInfo() {
+            Duration              = 30, //1800 frames
+            TimeScale             = 1,
+            ClipIn                = 0,
+            FramePerSecond        = 60,
+            ImageDimensionRatio   = 1.684f,
+            VisibleLocalStartTime =  29.9543800354004,
+            VisibleLocalEndTime   = 30,
+            VisibleRect = new Rect() {
+                x      = 276922,
+                y      = 1,
+                width  = 422,
+                height = 25,
+            },
+            
+        }; 
+        List<PreviewDrawInfo> drawList = new List<PreviewDrawInfo>();
+                
+        PreviewUtility.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
+            drawList.Add(drawInfo);
+        });
+
+        Assert.GreaterOrEqual(drawList.Count, 2);
+        Assert.AreEqual(276881.4687f, drawList[0].DrawRect.x,EPSILON);
+        Assert.AreEqual(29.95f, drawList[0].LocalTime, EPSILON);
+        
+        float xDiff = drawList[1].DrawRect.x - drawList[0].DrawRect.x;
+        Assert.AreEqual(154.187f, xDiff, EPSILON);
+        
+    }
+
+    
+//----------------------------------------------------------------------------------------------------------------------
     
     const float EPSILON = 0.001f;
     
