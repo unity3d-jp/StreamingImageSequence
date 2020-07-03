@@ -77,7 +77,7 @@ internal static class PreviewUtility {
 
             //already exceeds the visible area
             if (drawRect.x > endVisibleRectX) {
-                return;
+                break;
             }
             
             if (drawRect.x >= startVisibleRectX) {
