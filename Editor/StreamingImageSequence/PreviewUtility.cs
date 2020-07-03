@@ -1,5 +1,8 @@
-﻿using System;
+﻿#define DEBUG_PREVIEW_IMAGES         
+
+using System;
 using UnityEngine;
+
 
 namespace UnityEditor.StreamingImageSequence {
 
@@ -66,7 +69,6 @@ internal static class PreviewUtility {
             }
         };
 
-//#define DEBUG_PREVIEW_IMAGES         
 #if DEBUG_PREVIEW_IMAGES        
         string firstRectDebug = null;
 #endif
