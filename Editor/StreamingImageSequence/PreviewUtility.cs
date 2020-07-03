@@ -53,14 +53,7 @@ internal static class PreviewUtility {
             width  = widthPerPreviewImage,
             height = heightPerPreviewImage
         };
-        // Debug.Log($"Full width: {fullWidth} numAllPreviewImages: {numAllPreviewImages}, " +
-        //     $"StartFrame: {startFrame}, " +            
-        //     $"drawRectX: {drawRect.x}, VisibleRectX: {visibleRect.x}, VisibleLocalStartTime: {visibleLocalStartTime}, "+
-        //     $"firstFrameXOffset: {firstFrameXOffset}, clipInXOffset: {clipInXOffset}, " +
-        //     $"FullWidth: {fullWidth}, widthPerPreviewImage: {widthPerPreviewImage}, DimensionRatio: {dimensionRatio}, "+ 
-        //     $"xCounter: {xCounter}, ScaledClipDuration: {scaledClipDuration}, " +
-        //     $"ClipStart: {clip.start}, ClipTimeScale: {clip.timeScale}, ClipIn: {clip.clipIn}");
-        
+       
         
         //Loop to render all preview Images, ignoring those outside the visible Rect
         float endVisibleRectX = visibleRect.x + visibleRect.width;
@@ -72,12 +65,30 @@ internal static class PreviewUtility {
                 height = heightPerPreviewImage,
             }
         };
+
+//#define DEBUG_PREVIEW_IMAGES         
+#if DEBUG_PREVIEW_IMAGES        
+        string firstRectDebug = null;
+#endif
+        
         for (int i = 0; i < numAllPreviewImages; ++i) {
-            if (drawRect.x >= startVisibleRectX && drawRect.x <= endVisibleRectX) {
+
+            //already exceeds the visible area
+            if (drawRect.x > endVisibleRectX) {
+                return;
+            }
+            
+            if (drawRect.x >= startVisibleRectX) {
                 
                 drawInfo.DrawRect.x = drawRect.x;
                 drawInfo.LocalTime = localTime;
                 
+#if DEBUG_PREVIEW_IMAGES        
+                 if (null == firstRectDebug) {
+                     firstRectDebug = ($"DrawRectX: {drawRect.x}, LocalTime: {localTime} ");
+                 }
+#endif
+                                
                 drawPreviewFunc(drawInfo);                
                 
             }
@@ -86,6 +97,17 @@ internal static class PreviewUtility {
             localTime  += localTimeCounter;
         }
 
+#if DEBUG_PREVIEW_IMAGES        
+        Debug.Log($"Full width: {fullWidth} numAllPreviewImages: {numAllPreviewImages}, " +
+            $"StartFrame: {startFrame}, " + $"drawRectX: {drawRect.x}, " +
+            $"VisibleRect: {visibleRect}, " +
+            $"VisibleLocalStartTime: {visibleLocalStartTime}, VisibleLocalEndTime: {visibleLocalEndTime}, "+
+            $"firstFrameXOffset: {firstFrameXOffset}, clipInXOffset: {clipInXOffset}, " +
+            $"FullWidth: {fullWidth}, widthPerPreviewImage: {widthPerPreviewImage}, DimensionRatio: {dimensionRatio}, "+ 
+            $"xCounter: {xCounter}, ScaledClipDuration: {scaledClipDuration}, " +
+            $"ClipTimeScale: {clipInfo.TimeScale}, ClipIn: {clipInfo.ClipIn}, {firstRectDebug}");
+        
+#endif
     }
 
 
