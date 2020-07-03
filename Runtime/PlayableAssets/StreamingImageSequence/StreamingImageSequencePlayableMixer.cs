@@ -84,13 +84,13 @@ namespace UnityEngine.StreamingImageSequence
 
             bool activeTimelineClipFound = false;
             int i = 0;
-            foreach (TimelineClip clip in GetClips()) {
+            var clipAssets = GetClipAssets();
+            foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
+                TimelineClip clip = kv.Key;
+                StreamingImageSequencePlayableAsset sisAsset = kv.Value;
 
-                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
-                if (null == asset)
-                    continue;
 
-                IList<string> imagePaths = asset.GetImagePaths();
+                IList<string> imagePaths = sisAsset.GetImagePaths();
                 if (null == imagePaths)
                     continue;
 
@@ -101,11 +101,11 @@ namespace UnityEngine.StreamingImageSequence
 
                 //Start to preload images before the clip is active
                 if ( directorTime>= startTime - loadStartOffsetTime && directorTime < endTime) {
-                    asset.ContinuePreloadingImages();                    
+                    sisAsset.ContinuePreloadingImages();                    
                 }
 
                 if (!activeTimelineClipFound && directorTime >= startTime && directorTime < endTime) {
-                    ProcessActiveClipV(asset, directorTime, clip);
+                    ProcessActiveClipV(sisAsset, directorTime, clip);
                     activeTimelineClipFound = true;
                 } 
 
