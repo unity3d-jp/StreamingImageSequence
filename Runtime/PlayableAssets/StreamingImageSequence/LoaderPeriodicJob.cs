@@ -24,8 +24,9 @@ internal class LoaderPeriodicJob : PeriodicJob {
         if (Application.isPlaying)
             return;
 
-        IEnumerable<StreamingImageSequencePlayableAsset> clipAssets = m_mixer.GetClipAssets();
-        foreach (StreamingImageSequencePlayableAsset sisAsset in clipAssets) {
+        var clipAssets = m_mixer.GetClipAssets();
+        foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
+            StreamingImageSequencePlayableAsset sisAsset = kv.Value;
             sisAsset.ContinuePreloadingImages();
         }
 

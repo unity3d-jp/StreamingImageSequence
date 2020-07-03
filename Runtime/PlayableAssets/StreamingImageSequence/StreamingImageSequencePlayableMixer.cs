@@ -53,20 +53,21 @@ namespace UnityEngine.StreamingImageSequence
                 asset.BindTimelineClip(clip);
             }
             
-            IEnumerable<StreamingImageSequencePlayableAsset> clipAssets = GetClipAssets();
-            foreach (StreamingImageSequencePlayableAsset asset in clipAssets) {
-                asset.OnGraphStart(playable);                
+            var clipAssets = GetClipAssets();
+            foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
+                StreamingImageSequencePlayableAsset sisAsset = kv.Value;                
+                sisAsset.OnGraphStart(playable);                
             }
         }
 
 //----------------------------------------------------------------------------------------------------------------------
         public override void OnGraphStop(Playable playable) {
             
-            IEnumerable<StreamingImageSequencePlayableAsset> clipAssets = GetClipAssets();           
-           
-            foreach (StreamingImageSequencePlayableAsset asset in clipAssets) {
-                asset.OnGraphStop(playable);
-                asset.BindTimelineClip(null);
+            var clipAssets = GetClipAssets();
+            foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
+                StreamingImageSequencePlayableAsset sisAsset = kv.Value;                
+                sisAsset.OnGraphStop(playable);
+                sisAsset.BindTimelineClip(null);
             }
             
         }

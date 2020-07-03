@@ -65,11 +65,11 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
         m_playableDirector = director;
         m_clips = clips;
 
-        m_clipAssets = new List<T>();
+        m_clipAssets = new Dictionary<TimelineClip, T>();
         foreach (var clip in m_clips) {
             T clipAsset = clip.asset as T;
             Assert.IsNotNull(clipAsset);
-            m_clipAssets.Add(clipAsset);
+            m_clipAssets.Add(clip, clipAsset);
         }
         
 
@@ -88,14 +88,14 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     protected GameObject GetBoundGameObject() { return m_boundGameObject; }
     protected PlayableDirector GetPlayableDirector() { return m_playableDirector; }
     protected IEnumerable<TimelineClip> GetClips() { return m_clips; }
-    internal IEnumerable<T> GetClipAssets() { return m_clipAssets; }
+    internal IEnumerable<KeyValuePair<TimelineClip,T>> GetClipAssets() { return m_clipAssets; }
 
 //----------------------------------------------------------------------------------------------------------------------
 
     private GameObject m_boundGameObject;
     private PlayableDirector m_playableDirector;
     private IEnumerable<TimelineClip> m_clips;
-    private List<T> m_clipAssets;
+    private Dictionary<TimelineClip, T> m_clipAssets;
 
 }
 
