@@ -61,10 +61,10 @@ namespace UnityEngine.StreamingImageSequence
 
 //----------------------------------------------------------------------------------------------------------------------
         public override void OnGraphStop(Playable playable) {
-            foreach (TimelineClip clip in GetClips()) {
-                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
-                if (null == asset)
-                    continue;
+            
+            IEnumerable<StreamingImageSequencePlayableAsset> clipAssets = GetClipAssets();           
+           
+            foreach (StreamingImageSequencePlayableAsset asset in clipAssets) {
                 asset.OnGraphStop(playable);
                 asset.BindTimelineClip(null);
             }
