@@ -94,8 +94,7 @@ namespace UnityEditor.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
         /// <inheritdoc/>
-        public override void OnClipChanged(TimelineClip clip)
-        {
+        public override void OnClipChanged(TimelineClip clip) {
             base.OnClipChanged(clip);
         }
 
@@ -123,11 +122,58 @@ namespace UnityEditor.StreamingImageSequence {
             if (!m_persistentPreviews.TryGetValue(clip, out StreamingImageSequencePreview preview)) {
                 preview = m_persistentPreviews[clip] = new StreamingImageSequencePreview(curAsset);
             }
-
+           
+            
             if (Event.current.type == EventType.Repaint) {
-                preview.Render(clip, region.startTime, region.endTime, rect);
+                PreviewClipInfo clipInfo = new PreviewClipInfo() {
+                    Duration = clip.duration,
+                    TimeScale = clip.timeScale,
+                    ClipIn = clip.clipIn,
+                    FramePerSecond = clip.parentTrack.timelineAsset.editorSettings.fps,
+                    ImageDimensionRatio = curAsset.GetOrUpdateDimensionRatio(),
+                    VisibleLocalStartTime =  region.startTime,
+                    VisibleLocalEndTime   = region.endTime,
+                    VisibleRect = rect,
+                }; 
+                
+                StreamingImageSequencePreview.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
+                    DrawPreviewImage(ref drawInfo, clip, curAsset);
+                });
+                
             }
         }
+        
+//----------------------------------------------------------------------------------------------------------------------
+        void DrawPreviewImage(ref PreviewDrawInfo drawInfo, TimelineClip clip, StreamingImageSequencePlayableAsset sisAsset) {
+            int imageIndex = sisAsset.LocalTimeToImageIndex(clip, drawInfo.LocalTime);
+        
+            IList<string> imagePaths = sisAsset.GetImagePaths();
+
+            //Load
+            string fullPath = sisAsset.GetCompleteFilePath(imagePaths[imageIndex]);
+            StreamingImageSequencePlugin.GetImageDataInto(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
+                ,Time.frameCount, out ImageData readResult);
+            
+            switch (readResult.ReadStatus) {
+                case StreamingImageSequenceConstants.READ_STATUS_LOADING:
+                    break;
+                case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
+                    Texture2D tex = PreviewTextureFactory.GetOrCreate(fullPath, ref readResult);
+                    if (null != tex) {
+                        Graphics.DrawTexture(drawInfo.DrawRect, tex);
+                    }
+                    break;
+                }
+                default: {
+                    PreviewImageLoadBGTask.Queue(fullPath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height, 
+                        Time.frameCount);
+                    break;
+                }
+
+            }
+        
+        }
+        
 
 //----------------------------------------------------------------------------------------------------------------------
         readonly Dictionary<TimelineClip, StreamingImageSequencePreview> m_persistentPreviews 

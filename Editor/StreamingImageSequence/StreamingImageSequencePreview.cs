@@ -21,19 +21,23 @@ internal class StreamingImageSequencePreview : IDisposable {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void Render(TimelineClip clip, double visibleLocalStartTime, double visibleLocalEndTime, Rect visibleRect) {
+    internal static void EnumeratePreviewImages( ref PreviewClipInfo clipInfo, Action<PreviewDrawInfo> drawPreviewFunc) 
+    {
 
-        IList<string> imagePaths = m_playableAsset.GetImagePaths();
-
+        double visibleLocalStartTime = clipInfo.VisibleLocalStartTime;
+        double visibleLocalEndTime = clipInfo.VisibleLocalEndTime;
+        Rect   visibleRect = clipInfo.VisibleRect;
+        
+        
         //Calculate the width if we are showing the whole clip
         //(visibleWidth / visibleDuration = fullWidth / fullDuration)
         double visibleDuration = visibleLocalEndTime - visibleLocalStartTime;
-        double scaledClipDuration = clip.duration * clip.timeScale; 
+        double scaledClipDuration = clipInfo.Duration * clipInfo.TimeScale; 
         float fullWidth = Mathf.Ceil((float)(visibleRect.width * scaledClipDuration / visibleDuration));
         
         
         //Calculate rect for one image.
-        float dimensionRatio = m_playableAsset.GetOrUpdateDimensionRatio();
+        float dimensionRatio = clipInfo.ImageDimensionRatio;
         int widthPerPreviewImage = (int) (dimensionRatio * visibleRect.height);
         int heightPerPreviewImage = (int)visibleRect.height;
 
@@ -41,8 +45,8 @@ internal class StreamingImageSequencePreview : IDisposable {
         int numAllPreviewImages = Mathf.Max(Mathf.FloorToInt(fullWidth / widthPerPreviewImage),1);
 
         //Check the number of frames of this clip
-        float fps = clip.parentTrack.timelineAsset.editorSettings.fps;
-        int numFrames = Mathf.RoundToInt((float)(clip.duration * fps));
+        // float fps = clip.parentTrack.timelineAsset.editorSettings.fps;
+        int numFrames = Mathf.RoundToInt((float)(clipInfo.Duration * clipInfo.FramePerSecond));
         numAllPreviewImages = Mathf.Min(numAllPreviewImages, numFrames);
         if (numAllPreviewImages <= 0)
             return;
@@ -53,9 +57,9 @@ internal class StreamingImageSequencePreview : IDisposable {
         
         double localTimeCounter = scaledClipDuration / numAllPreviewImages;
         
-        double localTime = clip.clipIn;
-        int startFrame = Mathf.RoundToInt((float) clip.clipIn * fps);
-        double clipInXOffset = ((startFrame / (float) clip.timeScale) * xCounter);
+        double localTime = clipInfo.ClipIn;
+        int startFrame = Mathf.RoundToInt((float) clipInfo.ClipIn * clipInfo.FramePerSecond);
+        double clipInXOffset = ((startFrame / (float) clipInfo.TimeScale) * xCounter);
 
         //Find the place to draw the preview image[0], which might not be rendered. Consider clipIn too.
         float firstFrameXOffset = (float)(fullWidth * ((visibleLocalStartTime) / scaledClipDuration));              
@@ -88,9 +92,9 @@ internal class StreamingImageSequencePreview : IDisposable {
             if (drawRect.x >= startVisibleRectX && drawRect.x <= endVisibleRectX) {
                 
                 drawInfo.DrawRect.x = drawRect.x;
-                drawInfo.LocalTime = localTime;               
+                drawInfo.LocalTime = localTime;
                 
-                DrawPreviewImage(drawInfo, clip);
+                drawPreviewFunc(drawInfo);                
                 
             }
             //Check if x is inside the visible rect
@@ -100,36 +104,6 @@ internal class StreamingImageSequencePreview : IDisposable {
 
     }
 
-//----------------------------------------------------------------------------------------------------------------------    
-
-    void DrawPreviewImage(PreviewDrawInfo drawInfo, TimelineClip clip) {
-        int imageIndex = m_playableAsset.LocalTimeToImageIndex(clip, drawInfo.LocalTime);
-        
-        IList<string> imagePaths = m_playableAsset.GetImagePaths();
-
-        //Load
-        string fullPath = m_playableAsset.GetCompleteFilePath(imagePaths[imageIndex]);
-        StreamingImageSequencePlugin.GetImageDataInto(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
-            ,Time.frameCount, out ImageData readResult);
-        switch (readResult.ReadStatus) {
-            case StreamingImageSequenceConstants.READ_STATUS_LOADING:
-                break;
-            case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
-                Texture2D tex = PreviewTextureFactory.GetOrCreate(fullPath, ref readResult);
-                if (null != tex) {
-                    Graphics.DrawTexture(drawInfo.DrawRect, tex);
-                }
-                break;
-            }
-            default: {
-                PreviewImageLoadBGTask.Queue(fullPath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height, 
-                    Time.frameCount);
-                break;
-            }
-
-        }
-        
-    }
 
 //----------------------------------------------------------------------------------------------------------------------
     private bool m_disposed;

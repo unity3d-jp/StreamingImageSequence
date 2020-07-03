@@ -2,7 +2,7 @@
 
 namespace UnityEditor.StreamingImageSequence {
 
-internal class PreviewDrawInfo {
+internal struct PreviewDrawInfo {
     public Rect DrawRect;
     public double LocalTime; //local with respect to the clip
 
