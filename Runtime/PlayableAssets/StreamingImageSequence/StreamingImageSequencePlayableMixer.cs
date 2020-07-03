@@ -29,18 +29,22 @@ namespace UnityEngine.StreamingImageSequence
 
 #region IPlayableBehaviour interfaces
 
-#if UNITY_EDITOR            
         public override void OnPlayableCreate(Playable playable) {
+#if UNITY_EDITOR            
             m_loaderPeriodicJob = new LoaderPeriodicJob(this);
             UpdateManager.AddPeriodicJob( m_loaderPeriodicJob);
+#endif //UNITY_EDITOR          
            
         }
 
         public override void OnPlayableDestroy(Playable playable) {
+            base.OnPlayableDestroy(playable);
+            
+#if UNITY_EDITOR            
             UpdateManager.RemovePeriodicJob( m_loaderPeriodicJob);        
+#endif //UNITY_EDITOR          
         }
 
-#endif //UNITY_EDITOR          
         
 //----------------------------------------------------------------------------------------------------------------------
         public override void OnGraphStart(Playable playable) {
