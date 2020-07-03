@@ -12,9 +12,11 @@ namespace UnityEngine.StreamingImageSequence {
 [TrackColor(0.776f, 0.263f, 0.09f)]
 public class StreamingImageSequenceTrack : TrackAsset
 {
-    
+    private void OnDestroy() {
+        m_trackMixer?.Destroy();
+    }
 
-//----------------------------------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------------------------------
     
     /// <inheritdoc/>
     public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
