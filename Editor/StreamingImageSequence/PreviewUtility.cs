@@ -49,7 +49,7 @@ internal static class PreviewUtility {
         double clipInXOffset = ((startFrame / (float) clipInfo.TimeScale) * xCounter);
 
         //Find the place to draw the preview image[0], which might not be rendered. Consider clipIn too.
-        float firstFrameXOffset = (float)(fullWidth * ((visibleLocalStartTime) / scaledClipDuration));              
+        float firstFrameXOffset = (float)(fullWidth * ((visibleLocalStartTime-clipInfo.ClipIn) / scaledClipDuration));              
       
         
         //Loop to render all preview Images, ignoring those outside the visible Rect
@@ -57,7 +57,7 @@ internal static class PreviewUtility {
         float startVisibleRectX = visibleRect.x - widthPerPreviewImage; //for rendering preview images that are partly visible
         PreviewDrawInfo drawInfo = new PreviewDrawInfo() {
             DrawRect = new Rect() {
-                x = (visibleRect.x - firstFrameXOffset) + (float) clipInXOffset,
+                x = (visibleRect.x - firstFrameXOffset),
                 y = visibleRect.y,
                 width = widthPerPreviewImage,
                 height = heightPerPreviewImage,
