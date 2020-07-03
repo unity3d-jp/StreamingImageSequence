@@ -88,7 +88,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     protected GameObject GetBoundGameObject() { return m_boundGameObject; }
     protected PlayableDirector GetPlayableDirector() { return m_playableDirector; }
     protected IEnumerable<TimelineClip> GetClips() { return m_clips; }
-    protected IEnumerable<T> GetClipAssets() { return m_clipAssets; }
+    internal IEnumerable<T> GetClipAssets() { return m_clipAssets; }
 
 //----------------------------------------------------------------------------------------------------------------------
 
