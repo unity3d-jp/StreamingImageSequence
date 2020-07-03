@@ -77,32 +77,20 @@ internal class StreamingImageSequencePreview : IDisposable {
         //Loop to render all preview Images, ignoring those outside the visible Rect
         float endVisibleRectX = visibleRect.x + visibleRect.width;
         float startVisibleRectX = visibleRect.x - widthPerPreviewImage; //for rendering preview images that are partly visible
+        PreviewDrawInfo drawInfo = new PreviewDrawInfo() {
+            DrawRect = new Rect() {
+                y = visibleRect.y,
+                width = widthPerPreviewImage,
+                height = heightPerPreviewImage,
+            }
+        };
         for (int i = 0; i < numAllPreviewImages; ++i) {
             if (drawRect.x >= startVisibleRectX && drawRect.x <= endVisibleRectX) {
-
-                int imageIndex = m_playableAsset.LocalTimeToImageIndex(clip, localTime);
-
-                //Load
-                string fullPath = m_playableAsset.GetCompleteFilePath(imagePaths[imageIndex]);
-                StreamingImageSequencePlugin.GetImageDataInto(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
-                    ,Time.frameCount, out ImageData readResult);
-                switch (readResult.ReadStatus) {
-                    case StreamingImageSequenceConstants.READ_STATUS_LOADING:
-                        break;
-                    case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
-                        Texture2D tex = PreviewTextureFactory.GetOrCreate(fullPath, ref readResult);
-                        if (null != tex) {
-                            Graphics.DrawTexture(drawRect, tex);
-                        }
-                        break;
-                    }
-                    default: {
-                        PreviewImageLoadBGTask.Queue(fullPath, widthPerPreviewImage, heightPerPreviewImage, 
-                            Time.frameCount);
-                        break;
-                    }
-
-                }
+                
+                drawInfo.DrawRect.x = drawRect.x;
+                drawInfo.LocalTime = localTime;               
+                
+                DrawPreviewImage(drawInfo, clip);
                 
             }
             //Check if x is inside the visible rect
@@ -110,6 +98,37 @@ internal class StreamingImageSequencePreview : IDisposable {
             localTime  += localTimeCounter;
         }
 
+    }
+
+//----------------------------------------------------------------------------------------------------------------------    
+
+    void DrawPreviewImage(PreviewDrawInfo drawInfo, TimelineClip clip) {
+        int imageIndex = m_playableAsset.LocalTimeToImageIndex(clip, drawInfo.LocalTime);
+        
+        IList<string> imagePaths = m_playableAsset.GetImagePaths();
+
+        //Load
+        string fullPath = m_playableAsset.GetCompleteFilePath(imagePaths[imageIndex]);
+        StreamingImageSequencePlugin.GetImageDataInto(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
+            ,Time.frameCount, out ImageData readResult);
+        switch (readResult.ReadStatus) {
+            case StreamingImageSequenceConstants.READ_STATUS_LOADING:
+                break;
+            case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
+                Texture2D tex = PreviewTextureFactory.GetOrCreate(fullPath, ref readResult);
+                if (null != tex) {
+                    Graphics.DrawTexture(drawInfo.DrawRect, tex);
+                }
+                break;
+            }
+            default: {
+                PreviewImageLoadBGTask.Queue(fullPath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height, 
+                    Time.frameCount);
+                break;
+            }
+
+        }
+        
     }
 
 //----------------------------------------------------------------------------------------------------------------------
