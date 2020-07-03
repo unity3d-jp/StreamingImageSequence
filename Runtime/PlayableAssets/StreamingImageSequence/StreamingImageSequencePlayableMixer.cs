@@ -95,7 +95,7 @@ namespace UnityEngine.StreamingImageSequence
 
 
                 IList<string> imagePaths = sisAsset.GetImagePaths();
-                if (null == imagePaths)
+                if (null == imagePaths || null == clip.parentTrack)
                     continue;
 
                 double startTime = clip.start;
