@@ -55,20 +55,23 @@ internal class StreamingImageSequencePreview : IDisposable {
         
         double localTime = clip.clipIn;
         int startFrame = Mathf.RoundToInt((float) clip.clipIn * fps);
+        double clipInXOffset = ((startFrame / (float) clip.timeScale) * xCounter);
 
-        //Find the place to draw the preview image[0], which might not be rendered
-        float xOffset = (float)(fullWidth * (visibleLocalStartTime / scaledClipDuration));              
+        //Find the place to draw the preview image[0], which might not be rendered. Consider clipIn too.
+        float firstFrameXOffset = (float)(fullWidth * ((visibleLocalStartTime) / scaledClipDuration));              
         Rect drawRect = new Rect(visibleRect) {
-            x      = (visibleRect.x - xOffset) + ((startFrame /(float) clip.timeScale)* xCounter), 
+            x      = (visibleRect.x - firstFrameXOffset) + (float) clipInXOffset, 
             y      = visibleRect.y,
             width  = widthPerPreviewImage,
             height = heightPerPreviewImage
         };
-        Debug.Log($"Full width: {fullWidth} numAllPreviewImages: {numAllPreviewImages}, " +
-            $"xPos[0]: {0}, VisibleRectX: {visibleRect.x}, " +
-            $"xOffset: {xOffset}, FullWidth: {fullWidth}, " + 
-            $"xCounter: {xCounter}, ScaledClipDuration: {scaledClipDuration}, " +
-            $"ClipStart: {clip.start}, ClipTimeScale: {clip.timeScale}");
+        // Debug.Log($"Full width: {fullWidth} numAllPreviewImages: {numAllPreviewImages}, " +
+        //     $"StartFrame: {startFrame}, " +            
+        //     $"drawRectX: {drawRect.x}, VisibleRectX: {visibleRect.x}, VisibleLocalStartTime: {visibleLocalStartTime}, "+
+        //     $"firstFrameXOffset: {firstFrameXOffset}, clipInXOffset: {clipInXOffset}, " +
+        //     $"FullWidth: {fullWidth}, widthPerPreviewImage: {widthPerPreviewImage}, DimensionRatio: {dimensionRatio}, "+ 
+        //     $"xCounter: {xCounter}, ScaledClipDuration: {scaledClipDuration}, " +
+        //     $"ClipStart: {clip.start}, ClipTimeScale: {clip.timeScale}, ClipIn: {clip.clipIn}");
         
         
         //Loop to render all preview Images, ignoring those outside the visible Rect
