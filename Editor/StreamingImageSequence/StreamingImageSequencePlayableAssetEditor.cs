@@ -105,7 +105,7 @@ namespace UnityEditor.StreamingImageSequence {
         public override void DrawBackground(TimelineClip clip, ClipBackgroundRegion region) {
             base.DrawBackground(clip, region);
             
-            var rect = region.position;
+            Rect rect = region.position;
             const int VISIBLE_WIDTH_THRESHOLD = 10; //width that is too small will affect the placement of preview imgs
             if (rect.width <= VISIBLE_WIDTH_THRESHOLD)
                 return;
@@ -114,7 +114,6 @@ namespace UnityEditor.StreamingImageSequence {
             if (null == curAsset || !curAsset.HasImages())
                 return;
 
-            Rect quantizedRect = new Rect(Mathf.Ceil(rect.x), Mathf.Ceil(rect.y), Mathf.Ceil(rect.width), Mathf.Ceil(rect.height));
 
             if (QualitySettings.activeColorSpace != m_colorSpace) {
                 m_colorSpace = QualitySettings.activeColorSpace;
@@ -126,8 +125,7 @@ namespace UnityEditor.StreamingImageSequence {
             }
 
             if (Event.current.type == EventType.Repaint) {
-                preview.SetVisibleLocalTime(region.startTime, region.endTime);
-                preview.Render(clip, quantizedRect);
+                preview.Render(clip, region.startTime, region.endTime, rect);
             }
         }
 

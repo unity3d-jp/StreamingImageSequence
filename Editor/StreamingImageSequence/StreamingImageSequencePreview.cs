@@ -19,20 +19,15 @@ internal class StreamingImageSequencePreview : IDisposable {
         m_disposed= true;
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-    internal void SetVisibleLocalTime(double startTime, double endTime) {
-        m_visibleLocalStartTime = startTime;
-        m_visibleLocalEndTime   = endTime;
-    }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void Render(TimelineClip clip, Rect visibleRect) {
+    internal void Render(TimelineClip clip, double visibleLocalStartTime, double visibleLocalEndTime, Rect visibleRect) {
 
         IList<string> imagePaths = m_playableAsset.GetImagePaths();
 
         //Calculate the width if we are showing the whole clip
         //(visibleWidth / visibleDuration = fullWidth / fullDuration)
-        double visibleDuration = m_visibleLocalEndTime - m_visibleLocalStartTime;
+        double visibleDuration = visibleLocalEndTime - visibleLocalStartTime;
         double scaledClipDuration = clip.duration * clip.timeScale; 
         float fullWidth = Mathf.Ceil((float)(visibleRect.width * scaledClipDuration / visibleDuration));
         
@@ -62,7 +57,7 @@ internal class StreamingImageSequencePreview : IDisposable {
         int startFrame = Mathf.RoundToInt((float) clip.clipIn * fps);
 
         //Find the place to draw the preview image[0], which might not be rendered
-        float xOffset = (float)(fullWidth * (m_visibleLocalStartTime / scaledClipDuration));              
+        float xOffset = (float)(fullWidth * (visibleLocalStartTime / scaledClipDuration));              
         Rect drawRect = new Rect(visibleRect) {
             x      = (visibleRect.x - xOffset) + ((startFrame /(float) clip.timeScale)* xCounter), 
             y      = visibleRect.y,
@@ -118,8 +113,6 @@ internal class StreamingImageSequencePreview : IDisposable {
     private bool m_disposed;
     private readonly StreamingImageSequencePlayableAsset m_playableAsset = null;
     private const int MIN_PREVIEW_IMAGE_WIDTH = 60;
-    private double m_visibleLocalStartTime;
-    private double m_visibleLocalEndTime;
 }
 
 } //end namespace
