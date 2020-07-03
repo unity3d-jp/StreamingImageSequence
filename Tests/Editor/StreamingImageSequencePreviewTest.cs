@@ -8,7 +8,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 internal class StreamingImagePreviewTest {
 
     [Test]
-    public void ViewShortClipAtBeginning() {
+    public void ViewNearShortClipAtBeginning() {
 
         PreviewClipInfo clipInfo = new PreviewClipInfo() {
             Duration              = 0.1, //6 frames
@@ -44,7 +44,7 @@ internal class StreamingImagePreviewTest {
 //----------------------------------------------------------------------------------------------------------------------
     
     [Test]
-    public void ViewShortClipAtEnd() {
+    public void ViewNearShortClipAtEnd() {
         
         PreviewClipInfo clipInfo = new PreviewClipInfo() {
             Duration              = 0.1, //6 frames
@@ -77,7 +77,7 @@ internal class StreamingImagePreviewTest {
 //----------------------------------------------------------------------------------------------------------------------
 
     [Test]
-    public void ViewScaledClipAtBeginning() {
+    public void ViewNearScaledClipAtBeginning() {
         
         PreviewClipInfo clipInfo = new PreviewClipInfo() {
             Duration              = 30, //1800 frames
@@ -113,7 +113,7 @@ internal class StreamingImagePreviewTest {
     
 //----------------------------------------------------------------------------------------------------------------------
     [Test]
-    public void ViewShortClipWithClipInAtBeginning() {
+    public void ViewNearShortClipWithClipInAtBeginning() {
                
         PreviewClipInfo clipInfo = new PreviewClipInfo() {
             Duration              = 0.05, //3  frames
