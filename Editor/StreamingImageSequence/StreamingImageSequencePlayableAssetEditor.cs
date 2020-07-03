@@ -114,14 +114,7 @@ namespace UnityEditor.StreamingImageSequence {
                 return;
 
 
-            if (QualitySettings.activeColorSpace != m_colorSpace) {
-                m_colorSpace = QualitySettings.activeColorSpace;
-                m_persistentPreviews.Clear();
-            }
-
-            if (!m_persistentPreviews.TryGetValue(clip, out StreamingImageSequencePreview preview)) {
-                preview = m_persistentPreviews[clip] = new StreamingImageSequencePreview(curAsset);
-            }
+            m_colorSpace = QualitySettings.activeColorSpace;
            
             
             if (Event.current.type == EventType.Repaint) {
@@ -136,7 +129,7 @@ namespace UnityEditor.StreamingImageSequence {
                     VisibleRect = rect,
                 }; 
                 
-                StreamingImageSequencePreview.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
+                PreviewUtility.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
                     DrawPreviewImage(ref drawInfo, clip, curAsset);
                 });
                 
@@ -176,8 +169,6 @@ namespace UnityEditor.StreamingImageSequence {
         
 
 //----------------------------------------------------------------------------------------------------------------------
-        readonly Dictionary<TimelineClip, StreamingImageSequencePreview> m_persistentPreviews 
-            = new Dictionary<TimelineClip, StreamingImageSequencePreview>();
 
         ColorSpace m_colorSpace = ColorSpace.Uninitialized;
 

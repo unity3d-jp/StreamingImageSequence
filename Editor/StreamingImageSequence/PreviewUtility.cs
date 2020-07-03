@@ -1,26 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.StreamingImageSequence;
-using UnityEngine.Timeline;
 
 namespace UnityEditor.StreamingImageSequence {
 
-internal class StreamingImageSequencePreview : IDisposable {
+internal static class PreviewUtility {
 
-    public StreamingImageSequencePreview(StreamingImageSequencePlayableAsset playableAsset) {
-        m_playableAsset = playableAsset;
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-    public void Dispose() {
-        if (m_disposed) return;
-
-        m_disposed= true;
-    }
-
-
-//----------------------------------------------------------------------------------------------------------------------
     internal static void EnumeratePreviewImages( ref PreviewClipInfo clipInfo, Action<PreviewDrawInfo> drawPreviewFunc) 
     {
 
@@ -105,10 +89,6 @@ internal class StreamingImageSequencePreview : IDisposable {
     }
 
 
-//----------------------------------------------------------------------------------------------------------------------
-    private bool m_disposed;
-    private readonly StreamingImageSequencePlayableAsset m_playableAsset = null;
-    private const int MIN_PREVIEW_IMAGE_WIDTH = 60;
 }
 
 } //end namespace
