@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
-using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using System.Reflection;
 using UnityEngine.Timeline;
-using System;
 using System.Text.RegularExpressions;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,86 +17,47 @@ namespace UnityEngine.StreamingImageSequence
 #endif
     internal class UpdateManager
     {
-        public enum JobOrder
-        {
-            Top,
-            AboveNormal,
-            Normal,
-            BelowNormal,
-            Final
-        }
+        private static double m_lastUpdateInEditorTime;
         
-        public delegate void SetupBeforePlay();
-        public delegate void SetupAfterPlay();
-        public delegate void ResetDelegate();
-
-        public static double s_LasTime;
-        private static double s_PluginResetTime;
-        public const uint NUM_THREAD = 3;
-        private static Thread[] threads;
-        private static int[] threadTickCounts;
+        //Threads processes tasks
+        const uint NUM_THREAD = 3;
+        private static readonly Thread[] m_threads = new Thread[NUM_THREAD];
         private static Thread mainThread = Thread.CurrentThread;
-        private static List<BackGroundTask> s_BackGroundTaskQueue = new List<BackGroundTask>();
-        private static Dictionary<JobOrder, List<PeriodicJob>> s_MainThreadJobQueue = new Dictionary<JobOrder, List<PeriodicJob>>();
-        private static List<PeriodicJob> toBeAdded = new List<PeriodicJob>();
-        private static bool m_bInitialized = false;
-        private static bool s_bShutdown;
+        private static readonly Queue<BackGroundTask> m_backGroundTaskQueue = new Queue<BackGroundTask>();
+        
+        //"Jobs" are higher level than tasks
+        private static readonly HashSet<PeriodicJob> m_mainThreadPeriodJobs = new HashSet<PeriodicJob>();
+        private static readonly List<PeriodicJob> m_requestedJobs = new List<PeriodicJob>();
+        private static readonly HashSet<PeriodicJob> m_toRemoveJobs = new HashSet<PeriodicJob>();
+        
+        private static bool m_shuttingDownThreads;
         private static Dictionary<PlayableDirector, PlayableDirectorStatus> s_directorStatusDictiornary = new Dictionary<PlayableDirector, PlayableDirectorStatus>();
         private static string s_AppDataPath;
         private static bool m_isResettingPlugin = false;
         
-#if UNITY_EDITOR        
-        public static event SetupBeforePlay m_setupBeforePlayingDelegate = null;
-        public static event SetupAfterPlay m_setupAfterPlayingDelegate = null;
-        public static event ResetDelegate m_resetDelegate = null;
-#endif        
-        private static JobOrder[] s_orders = new JobOrder[] {
-            JobOrder.Top,
-            JobOrder.AboveNormal,
-            JobOrder.Normal,
-            JobOrder.BelowNormal,
-            JobOrder.Final,
-        };
         static UpdateManager()
         {
 #if UNITY_EDITOR
-            foreach (var order in s_orders)
-            {
-                s_MainThreadJobQueue.Add(order, new List<PeriodicJob>());
-            }
             InitInEditor();
 #endif  //UNITY_EDITOR
         }
 #if UNITY_EDITOR
-        static public void ResetPlugin() {
+        public static void ResetPlugin() {
             StreamingImageSequencePlugin.ResetPlugin();
-            s_PluginResetTime = EditorApplication.timeSinceStartup;
             m_isResettingPlugin = true;
+
+            lock (m_backGroundTaskQueue) {
+                m_backGroundTaskQueue.Clear();
+            }
+            
+            StreamingImageSequencePlugin.UnloadAllImages();
+            m_isResettingPlugin = false;
+
         }
 #endif
 
-#if UNITY_EDITOR
-        private static void FinalizeResetPlugin()
-        {
-            if (!IsPluginResetting())
-            {
-                return;
-            }
-            CallResetDelegate();
-            double diff = EditorApplication.timeSinceStartup - s_PluginResetTime;
-            if (diff > 0.016f * 60.0f)
-            {
-                StreamingImageSequencePlugin.UnloadAllImages();
-                m_isResettingPlugin = false;
-            }
-    }
-#endif  //UNITY_EDITOR
         public static bool IsPluginResetting() {
             return m_isResettingPlugin;
-        }
-        public static bool IsInitialized()
-        {
-            return m_bInitialized;
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -107,29 +65,22 @@ namespace UnityEngine.StreamingImageSequence
         {
 
 #if !UNITY_EDITOR
-           UpdateManager.GetStreamingAssetPath(); // must be executed in main thread.          
-           Assert.IsTrue(m_bInitialized == false);
            LogUtility.LogDebug("InitInRuntime()");
            StartThread();
-           foreach (var order in s_orders)
-           {
-                s_MainThreadJobQueue.Add(order, new List<PeriodicJob>());
-           }
-           m_bInitialized = true;
 #endif
         }
 
 
 #if UNITY_EDITOR
-        static void InitInEditor()
-        {
+        static void InitInEditor() {
             EditorApplication.playModeStateChanged += ChangedPlayModeState;
-            EditorApplication.update += UpdateFromEditor;
+            EditorApplication.update += UpdateInEditor;
+
+            StartThread();
         }
 
 
-        static void ChangedPlayModeState(PlayModeStateChange state)
-        {
+        static void ChangedPlayModeState(PlayModeStateChange state) {
             if (EditorApplication.isPaused ) {
                 return;
             }
@@ -137,7 +88,6 @@ namespace UnityEngine.StreamingImageSequence
             switch (state) {
                 case PlayModeStateChange.ExitingEditMode: {
                     StopThread();
-                    CallSetupBeforePlayingDelegate();
                     // Util.Log("Play button was pressed.");
                     break;
                 }
@@ -151,215 +101,135 @@ namespace UnityEngine.StreamingImageSequence
                     break;
                 }
                 case PlayModeStateChange.EnteredEditMode: {
-                    CallSetupAfterPlayDelegate();
                     // Util.Log("Play  stopped.");
                     break;
                 }
             }
         }
+        
+//----------------------------------------------------------------------------------------------------------------------        
 
-        static void CallResetDelegate()
-        {
-            if (m_resetDelegate != null)
-            {
-                m_resetDelegate();
-            }
-        }
-        static void CallSetupBeforePlayingDelegate()
-        {
-            if (m_setupBeforePlayingDelegate!= null)
-            {
-                m_setupBeforePlayingDelegate();
-            }
-        }
-
-        static void CallSetupAfterPlayDelegate()
-        {
-            if (m_setupAfterPlayingDelegate != null)
-            {
-                m_setupAfterPlayingDelegate();
-            }
-        }
-        static void UpdateFromEditor()
-        {
+        static void UpdateInEditor() {
             
-            if (!m_bInitialized)
-            {
-                StartThread();
-                m_bInitialized = true;
-            }
-            var time = EditorApplication.timeSinceStartup;
-
-            var timeDifference = time - s_LasTime;
-            if (timeDifference < 0.016f)
-            {
+            double time = EditorApplication.timeSinceStartup;
+            double timeDifference = time - m_lastUpdateInEditorTime;
+            if (timeDifference < 0.016f) {
                 return;
             }
-            s_LasTime = time;
 
-            List<PeriodicJob> toBeRemoved = new List<PeriodicJob>();
-            if (! UpdateManager.IsPluginResetting() )
-            {
-                foreach (var job in toBeAdded)
-                {
-                    s_MainThreadJobQueue[job.m_order].Add(job);
-                }
-            }
-            toBeAdded.Clear();
-            foreach (var order in s_orders)
-            {
-                var list = s_MainThreadJobQueue[order];
-                foreach (var job in list)
-                {
-                    if (!job.m_InitializedFlag)
-                    {
-                        job.Initialize();
-                        job.m_InitializedFlag = true;
-                    }
-                    if (! UpdateManager.IsPluginResetting() )
-                    {   
-                        job.Execute();
-                    }
-                    else
-                    {
-                        job.Reset();
-                    }
-                    if (job.m_RemoveRequestFlag)
-                    {
-                        toBeRemoved.Add(job);
-                    }
-                }
+            if (m_isResettingPlugin)
+                return;
+            
+            m_lastUpdateInEditorTime = time;
+
+            //add requested jobs
+            foreach (PeriodicJob job in m_requestedJobs) {
+                m_mainThreadPeriodJobs.Add(job);
+            }           
+            m_requestedJobs.Clear();
+            
+            //Remove jobs
+            foreach (PeriodicJob job in m_toRemoveJobs) {
+                m_mainThreadPeriodJobs.Remove(job);
+                job.Cleanup();
+            }           
+            m_toRemoveJobs.Clear();
+            
+            //Execute
+            foreach (PeriodicJob job in m_mainThreadPeriodJobs) {
+                job.Execute();
             }
 
-
-            foreach (var job in toBeRemoved)
-            {
-                RemovePeriodicJob(job);
-            }
-#if UNITY_EDITOR
-            FinalizeResetPlugin();
-#endif
         }
+//----------------------------------------------------------------------------------------------------------------------
+
+        public static bool AddPeriodicJob(PeriodicJob job) {
+            m_requestedJobs.Add(job);  
+            return true;
+        }
+
+        public static bool RemovePeriodicJob(PeriodicJob job) {
+            //Check if the job hasn't been actually added yet
+            if (m_requestedJobs.Contains(job)) {
+                m_requestedJobs.Remove(job);
+                return true;
+            }
+            
+            Assert.IsTrue(m_mainThreadPeriodJobs.Contains(job));
+            m_toRemoveJobs.Add(job);
+            return true;
+        }
+        
+//----------------------------------------------------------------------------------------------------------------------
 
 #endif  //UNITY_EDITOR
-        static internal int GetThreadTickCount(int index)
-        {
-            if ( threadTickCounts != null )
-            {
-                return threadTickCounts[index];
-            }
-            return -1;
-        }
 
-
-        public static bool QueueBackGroundTask(BackGroundTask task)
-        {
-            lock (s_BackGroundTaskQueue)
-            {
-                s_BackGroundTaskQueue.Add(task);
+//----------------------------------------------------------------------------------------------------------------------
+        public static bool QueueBackGroundTask(BackGroundTask task) {
+            lock (m_backGroundTaskQueue) {
+                m_backGroundTaskQueue.Enqueue(task);
             }
             return true;
         }
-
-        public static bool AddPeriodicJob(PeriodicJob job)
-        {
-            toBeAdded.Add(job);  
-            return true;
-        }
-
-        public static bool RemovePeriodicJob( PeriodicJob job)
-        {
-            Assert.IsTrue(s_MainThreadJobQueue[job.m_order].Contains(job));
-            s_MainThreadJobQueue[job.m_order].Remove(job);
-            job.Cleanup();
-            return true;
-        }
+        
+//----------------------------------------------------------------------------------------------------------------------
+        
+        
         public static bool IsMainThread()
         {
             return (mainThread == Thread.CurrentThread);
         }
 
-        static void StartThread()
-        {
-            threads = new Thread[NUM_THREAD];
-            threadTickCounts = new int[NUM_THREAD];
-            for (int i = 0; i < NUM_THREAD; i++)
-            {
-                threads[i] = new Thread(ThreadFunction);
-
-            }
-            for (int i = 0; i < NUM_THREAD; i++)
-            {
-                threads[i].Start(i);
+//----------------------------------------------------------------------------------------------------------------------        
+        static void StartThread() {
+            for (int i = 0; i < NUM_THREAD; ++i) {
+                m_threads[i] = new Thread(UpdateFunction);
+                m_threads[i].Start();
             }
         }
              
+//----------------------------------------------------------------------------------------------------------------------        
 
-    	static void ThreadFunction(object arg)
-        {
-            var id = Thread.CurrentThread.ManagedThreadId;
+    	static void UpdateFunction() {
+            int id = Thread.CurrentThread.ManagedThreadId;
 
-            while (!s_bShutdown)
-            {
-                int index = Convert.ToInt32(arg);
-                int val = threadTickCounts[index]++;
-                val++;
-                threadTickCounts[index] = val;
+            while (!m_shuttingDownThreads) {
 
                 LogUtility.LogDebug("alive " + id);
                 BackGroundTask task = null;
+
+                lock (m_backGroundTaskQueue) {
+                    
+                    if (m_backGroundTaskQueue.Count > 0) {
+                        task = m_backGroundTaskQueue.Dequeue();
+                    }                    
+                }               
                 
-                if ( s_BackGroundTaskQueue.Count > 0)
-                {
-                    lock (s_BackGroundTaskQueue)
-                    {
-                        if (s_BackGroundTaskQueue.Count > 0)
-                        {
-                            task = s_BackGroundTaskQueue[0];
-                            s_BackGroundTaskQueue.RemoveAt(0);
-                        }
-                    }
-                    if (task != null)
-                    {
-                        if (!UpdateManager.IsPluginResetting()  )
-                            task.Execute();
-                    }
+                if (null!=task)  {
+                    task.Execute();
+                } else {
+                    const int SLEEP_IN_MS = 33;
+                    Thread.Sleep(SLEEP_IN_MS);                    
                 }
-                else
-                {
-                    Thread.Sleep(16);
-                }
-                if ( threads == null )
-                {
-                    return; // play button.
-                }
-                   
-
-
+                
             }
         }
 
-        static void StopThread()
-        {
+//----------------------------------------------------------------------------------------------------------------------
+        
+        static void StopThread() {
 
-            s_bShutdown = true;
-            if ( threads != null )
-            {
-                for (int ii = 0; ii < NUM_THREAD; ii++)
-                {
-                    if (threads[ii] != null)
-                    {
-                           threads[ii].Join();
-                    }
+            m_shuttingDownThreads = true;
+            for (int i = 0; i < NUM_THREAD; ++i)  {
+                if (m_threads[i] != null) {
+                    m_threads[i].Join();
                 }
             }
-            else
-            {
-                LogUtility.LogDebug("Unable to stop thread by user program!");
-
-            }
-            s_bShutdown = false;
+            
+            m_shuttingDownThreads = false;
         }
+//----------------------------------------------------------------------------------------------------------------------
+        
         static public string GetApplicationDataPath()
         {
             
@@ -539,40 +409,6 @@ namespace UnityEngine.StreamingImageSequence
     internal abstract class BackGroundTask
     {
         public abstract void Execute();
-    }
-
-    internal abstract class PeriodicJob
-    {
-        public UpdateManager.JobOrder m_order;
-        internal bool m_RemoveRequestFlag;
-        internal bool m_InitializedFlag;
-        public abstract void Execute();
-        public abstract void Initialize();
-        public abstract void Cleanup(); // Uninitialize
-        public abstract void Reset();   // called while resetting.
-
-        private PeriodicJob()
-        {
-
-        }
-        public  PeriodicJob(UpdateManager.JobOrder order)
-        {
-            m_order = order;
-        }
-        public void AddToUpdateManger()
-        {
-            UpdateManager.AddPeriodicJob( this);
-        }
-
-        public void RemoveFromUpdateManager()
-        {
-            UpdateManager.RemovePeriodicJob(this);
-        }
-
-        public void RemoveIfFinished()
-        {
-            m_RemoveRequestFlag = true;
-        }
     }
 
 }

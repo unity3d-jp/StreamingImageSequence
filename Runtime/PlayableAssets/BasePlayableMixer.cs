@@ -8,6 +8,13 @@ namespace UnityEngine.StreamingImageSequence {
 // A PlayableBehaviour that is attached to a Track via CreateTrackMixer() 
 internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: PlayableAsset {
 
+    #region IPlayableBehaviour interfaces
+    
+    public override void OnPlayableDestroy(Playables.Playable playable) {
+        base.OnPlayableDestroy(playable);
+        Destroy();
+    }
+    
     public override void PrepareFrame(Playable playable, FrameData info) {
         base.PrepareFrame(playable, info);
         if (null == m_boundGameObject)
@@ -15,6 +22,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
 
         m_boundGameObject.SetActive(false); //Always hide first, and show it later 
     }
+    
 
 //----------------------------------------------------------------------------------------------------------------------
     // Called each frame while the state is set to Play
@@ -37,6 +45,8 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
         
     }
 
+    #endregion IPlayableBehaviour interfaces
+    
 //----------------------------------------------------------------------------------------------------------------------
 
     public static void GetActiveTimelineClipInto( IEnumerable<TimelineClip> clips, double directorTime, 
@@ -63,17 +73,24 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     internal void Init(GameObject go, PlayableDirector director, IEnumerable<TimelineClip> clips) {
         m_boundGameObject = go;
         m_playableDirector = director;
-        m_clips = clips;
-
-        m_clipAssets = new List<T>();
+        
+        m_clips = new List<TimelineClip>(clips);
+        m_clipAssets = new Dictionary<TimelineClip, T>();
         foreach (var clip in m_clips) {
             T clipAsset = clip.asset as T;
             Assert.IsNotNull(clipAsset);
-            m_clipAssets.Add(clipAsset);
+            m_clipAssets.Add(clip, clipAsset);
         }
         
 
         InitInternalV(go);
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    internal void Destroy() {
+        m_clips.Clear();
+        m_clipAssets.Clear();
+        
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -88,14 +105,14 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     protected GameObject GetBoundGameObject() { return m_boundGameObject; }
     protected PlayableDirector GetPlayableDirector() { return m_playableDirector; }
     protected IEnumerable<TimelineClip> GetClips() { return m_clips; }
-    protected IEnumerable<T> GetClipAssets() { return m_clipAssets; }
+    internal IEnumerable<KeyValuePair<TimelineClip,T>> GetClipAssets() { return m_clipAssets; }
 
 //----------------------------------------------------------------------------------------------------------------------
 
     private GameObject m_boundGameObject;
     private PlayableDirector m_playableDirector;
-    private IEnumerable<TimelineClip> m_clips;
-    private List<T> m_clipAssets;
+    private List<TimelineClip> m_clips;
+    private Dictionary<TimelineClip, T> m_clipAssets;
 
 }
 

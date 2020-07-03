@@ -28,12 +28,24 @@ namespace UnityEngine.StreamingImageSequence
 //----------------------------------------------------------------------------------------------------------------------
 
 #region IPlayableBehaviour interfaces
+
         public override void OnPlayableCreate(Playable playable) {
+#if UNITY_EDITOR            
+            m_loaderPeriodicJob = new LoaderPeriodicJob(this);
+            UpdateManager.AddPeriodicJob( m_loaderPeriodicJob);
+#endif //UNITY_EDITOR          
+           
         }
 
         public override void OnPlayableDestroy(Playable playable) {
+            base.OnPlayableDestroy(playable);
+            
+#if UNITY_EDITOR            
+            UpdateManager.RemovePeriodicJob( m_loaderPeriodicJob);        
+#endif //UNITY_EDITOR          
         }
 
+        
 //----------------------------------------------------------------------------------------------------------------------
         public override void OnGraphStart(Playable playable) {
             //Need to bind TimelineClips first
@@ -45,20 +57,21 @@ namespace UnityEngine.StreamingImageSequence
                 asset.BindTimelineClip(clip);
             }
             
-            IEnumerable<StreamingImageSequencePlayableAsset> clipAssets = GetClipAssets();
-            foreach (StreamingImageSequencePlayableAsset asset in clipAssets) {
-                asset.OnGraphStart(playable);                
+            var clipAssets = GetClipAssets();
+            foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
+                StreamingImageSequencePlayableAsset sisAsset = kv.Value;                
+                sisAsset.OnGraphStart(playable);                
             }
         }
 
 //----------------------------------------------------------------------------------------------------------------------
         public override void OnGraphStop(Playable playable) {
-            foreach (TimelineClip clip in GetClips()) {
-                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
-                if (null == asset)
-                    continue;
-                asset.OnGraphStop(playable);
-                asset.BindTimelineClip(null);
+            
+            var clipAssets = GetClipAssets();
+            foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
+                StreamingImageSequencePlayableAsset sisAsset = kv.Value;                
+                sisAsset.OnGraphStop(playable);
+                sisAsset.BindTimelineClip(null);
             }
             
         }
@@ -75,13 +88,13 @@ namespace UnityEngine.StreamingImageSequence
 
             bool activeTimelineClipFound = false;
             int i = 0;
-            foreach (TimelineClip clip in GetClips()) {
+            var clipAssets = GetClipAssets();
+            foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
+                TimelineClip clip = kv.Key;
+                StreamingImageSequencePlayableAsset sisAsset = kv.Value;
 
-                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
-                if (null == asset)
-                    continue;
 
-                IList<string> imagePaths = asset.GetImagePaths();
+                IList<string> imagePaths = sisAsset.GetImagePaths();
                 if (null == imagePaths)
                     continue;
 
@@ -92,11 +105,11 @@ namespace UnityEngine.StreamingImageSequence
 
                 //Start to preload images before the clip is active
                 if ( directorTime>= startTime - loadStartOffsetTime && directorTime < endTime) {
-                    asset.ContinuePreloadingImages();                    
+                    sisAsset.ContinuePreloadingImages();                    
                 }
 
                 if (!activeTimelineClipFound && directorTime >= startTime && directorTime < endTime) {
-                    ProcessActiveClipV(asset, directorTime, clip);
+                    ProcessActiveClipV(sisAsset, directorTime, clip);
                     activeTimelineClipFound = true;
                 } 
 
@@ -193,6 +206,7 @@ namespace UnityEngine.StreamingImageSequence
 
 #if UNITY_EDITOR
         readonly EditorWindow m_gameView;
+        LoaderPeriodicJob m_loaderPeriodicJob;        
 #endif
 
     }
