@@ -69,8 +69,12 @@ internal class StreamingImageSequencePreview : IDisposable {
             width  = widthPerPreviewImage,
             height = heightPerPreviewImage
         };
-        // Debug.Log($"Full width: {fullWidth} numAllPreviewImages: {numAllPreviewImages}, " +
-        //     $"xCounter: {xCounter}, ScaledClipDuration: {scaledClipDuration}, TimeScale: {clip.timeScale}");
+        Debug.Log($"Full width: {fullWidth} numAllPreviewImages: {numAllPreviewImages}, " +
+            $"xPos[0]: {0}, VisibleRectX: {visibleRect.x}, " +
+            $"xOffset: {xOffset}, FullWidth: {fullWidth}, " + 
+            $"xCounter: {xCounter}, ScaledClipDuration: {scaledClipDuration}, " +
+            $"ClipStart: {clip.start}, ClipTimeScale: {clip.timeScale}");
+        
         
         //Loop to render all preview Images, ignoring those outside the visible Rect
         float endVisibleRectX = visibleRect.x + visibleRect.width;
