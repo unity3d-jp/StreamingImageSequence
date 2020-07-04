@@ -17,55 +17,33 @@ internal static class PreviewUtility {
         float  visibleRectEnd        = visibleRect.x + visibleRect.width;
         
         double visibleDuration    = visibleLocalEndTime - visibleLocalStartTime;
-        double scaledClipDuration = clipInfo.Duration * clipInfo.TimeScale;
-        
-        //Calculate the time and pos of the first frame to be drawn
-        int    firstFrame = (int )Math.Floor( (float) ((visibleLocalStartTime / clipInfo.TimeScale) * clipInfo.FramePerSecond));
-        //firstFrame = Mathf.Max(firstFrame - 1, 0); //always start from one frame less
-        double firstFrameTime  = (firstFrame / clipInfo.FramePerSecond) * clipInfo.TimeScale;        
-        double firstFrameRectX = FindFrameXPos(firstFrameTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
-        
         
         //Calculate rect for one image.
-        float dimensionRatio = clipInfo.ImageDimensionRatio;
-        int widthPerPreviewImage = (int) (dimensionRatio * visibleRect.height);
-        int heightPerPreviewImage = (int)visibleRect.height;
+        float dimensionRatio        = clipInfo.ImageDimensionRatio;
+        int   widthPerPreviewImage  = (int) (dimensionRatio * visibleRect.height);
+        int   heightPerPreviewImage = (int)visibleRect.height;
+        
+        //Calculate the time and pos of the first frame to be drawn        
+        int    firstFrame = (int )Math.Floor( (float) ((visibleLocalStartTime / clipInfo.TimeScale) * clipInfo.FramePerSecond));
+        double firstFrameTime  = (firstFrame / clipInfo.FramePerSecond) * clipInfo.TimeScale;        
+        double firstFrameRectX = FindFrameXPos(firstFrameTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
 
-        //Set the number of preview images available for this clip, at least 1
+        //Set the number of preview images based on visibleRect, at least 1
         int numPreviewImagesToDraw = Mathf.Max(Mathf.FloorToInt((visibleRectEnd - (float)firstFrameRectX) / widthPerPreviewImage),1);
 
         
-
-        //Calculate xCounter to increment the rectX when drawing the next frame
-        // double secondFrameTime  = (firstFrame + 1) / clipInfo.FramePerSecond;
-        // double secondFrameRectX = FindFrameXPos(secondFrameTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);              
-        // float  xCounter = (float)(secondFrameRectX - firstFrameRectX);
-
-        
         int lastFrame = (int )Math.Ceiling( (float) ((visibleLocalEndTime / clipInfo.TimeScale) * clipInfo.FramePerSecond));
-        //firstFrame = Mathf.Max(firstFrame - 1, 0); //always start from one frame less
         double lastFrameTime  = (lastFrame / clipInfo.FramePerSecond) * clipInfo.TimeScale;        
-        double lastFrameRectX = FindFrameXPos(firstFrameTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
 
-        //Check the number of frames of this clip
+        //Check the number of preview images based on the number of actual frames in Timeline 
         int numFrames = lastFrame - firstFrame;
         numPreviewImagesToDraw = Mathf.Min(numPreviewImagesToDraw, numFrames);
         if (numPreviewImagesToDraw <= 0)
             return;
         
         
-//        double localTimeCounter = (secondFrameTime  - firstFrameTime);
         double localTimeCounter = ((lastFrameTime  - firstFrameTime) / numPreviewImagesToDraw);
-        
-        double localTime = firstFrameTime;
-        int startFrame = Mathf.RoundToInt((float) clipInfo.ClipIn * clipInfo.FramePerSecond);
-
-        //        double clipInXOffset = ((startFrame / (float) clipInfo.TimeScale) * xCounter);
-
-        //Find the place to draw the preview image[0], which might not be rendered. Consider clipIn too.
-        //float firstFrameXOffset = (float)(fullWidth * ((visibleLocalStartTime-clipInfo.ClipIn) / scaledClipDuration));              
-      
-        
+                
         //Loop to render all preview Images, ignoring those outside the visible Rect
         float endVisibleRectX = visibleRect.x + visibleRect.width;
         float startVisibleRectX = visibleRect.x - widthPerPreviewImage; //for rendering preview images that are partly visible
@@ -75,17 +53,14 @@ internal static class PreviewUtility {
                 y = visibleRect.y,
                 width = widthPerPreviewImage,
                 height = heightPerPreviewImage,
-            }
+            },
+            LocalTime = firstFrameTime,
         };
 
-#if DEBUG_PREVIEW_IMAGES        
-        string firstRectDebug = null;
-#endif
         
         for (int i = 0; i < numPreviewImagesToDraw; ++i) {
-
                  
-            drawInfo.DrawRect.x = (float) FindFrameXPos(localTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
+            drawInfo.DrawRect.x = (float) FindFrameXPos(drawInfo.LocalTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
             
             //already exceeds the visible area            
             if (drawInfo.DrawRect.x >= (endVisibleRectX)) {
@@ -93,31 +68,19 @@ internal static class PreviewUtility {
             }
             
             if (drawInfo.DrawRect.x >= startVisibleRectX) {
-
-                drawInfo.LocalTime = localTime;
-                
-#if DEBUG_PREVIEW_IMAGES        
-                 if (null == firstRectDebug) {
-                     firstRectDebug = ($"DrawRectX: {drawInfo.DrawRect.x}, LocalTime: {localTime} ");
-                 }
-#endif
-                                
                 drawPreviewFunc(drawInfo);                
                 
             }
-            //drawInfo.DrawRect.x += xCounter;
-            localTime  += localTimeCounter;
+            drawInfo.LocalTime += localTimeCounter;
         }
 
 #if DEBUG_PREVIEW_IMAGES        
         Debug.Log($"Width: {visibleRect.width} numAllPreviewImages: {numPreviewImagesToDraw}, " +
-            $"StartFrame: {startFrame}, " + $"firstFrameRectX: {firstFrameRectX}, " +
+            $"firstFrameRectX: {firstFrameRectX}, firstFrameTime: {firstFrameTime}, " +
             $"VisibleRect: {visibleRect}, " +
             $"VisibleLocalStartTime: {visibleLocalStartTime}, VisibleLocalEndTime: {visibleLocalEndTime}, "+
-//            $"clipInXOffset: {clipInXOffset}, xCounter: {xCounter}, " +
             $"widthPerPreviewImage: {widthPerPreviewImage}, DimensionRatio: {dimensionRatio}, "+ 
-            $"ScaledClipDuration: {scaledClipDuration}, " +
-            $"ClipTimeScale: {clipInfo.TimeScale}, ClipIn: {clipInfo.ClipIn}, {firstRectDebug}");
+            $"ClipTimeScale: {clipInfo.TimeScale}, ClipIn: {clipInfo.ClipIn}");
         
 #endif
     }
