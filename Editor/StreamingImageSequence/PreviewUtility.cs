@@ -14,9 +14,9 @@ internal static class PreviewUtility {
         double visibleLocalStartTime = clipInfo.VisibleLocalStartTime;
         double visibleLocalEndTime   = clipInfo.VisibleLocalEndTime;
         Rect   visibleRect           = clipInfo.VisibleRect;
-        float  visibleRectEnd        = visibleRect.x + visibleRect.width;
-        
-        double visibleDuration    = visibleLocalEndTime - visibleLocalStartTime;
+        float  visibleRectEnd        = visibleRect.x + visibleRect.width;       
+        double visibleDuration       = visibleLocalEndTime - visibleLocalStartTime;
+        double scaledFramePerSecond  = clipInfo.FramePerSecond / clipInfo.TimeScale; 
         
         //Calculate rect for one image.
         float dimensionRatio        = clipInfo.ImageDimensionRatio;
@@ -24,16 +24,16 @@ internal static class PreviewUtility {
         int   heightPerPreviewImage = (int)visibleRect.height;
         
         //Calculate the time and pos of the first frame to be drawn        
-        int    firstFrame = (int )Math.Floor( (float) ((visibleLocalStartTime / clipInfo.TimeScale) * clipInfo.FramePerSecond));
-        double firstFrameTime  = (firstFrame / clipInfo.FramePerSecond) * clipInfo.TimeScale;        
+        int    firstFrame = (int )Math.Floor( (float) (visibleLocalStartTime * scaledFramePerSecond));
+        double firstFrameTime  = firstFrame / scaledFramePerSecond;        
         double firstFrameRectX = FindFrameXPos(firstFrameTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
 
         //Set the number of preview images based on visibleRect, at least 1
         int numPreviewImagesToDraw = Mathf.Max(Mathf.FloorToInt((visibleRectEnd - (float)firstFrameRectX) / widthPerPreviewImage),1);
 
         
-        int lastFrame = (int )Math.Ceiling( (float) ((visibleLocalEndTime / clipInfo.TimeScale) * clipInfo.FramePerSecond));
-        double lastFrameTime  = (lastFrame / clipInfo.FramePerSecond) * clipInfo.TimeScale;        
+        int lastFrame = (int )Math.Ceiling( (float) (visibleLocalEndTime * scaledFramePerSecond));
+        double lastFrameTime  = lastFrame / scaledFramePerSecond;        
 
         //Check the number of preview images based on the number of actual frames in Timeline 
         int numFrames = lastFrame - firstFrame;
