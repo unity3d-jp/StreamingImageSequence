@@ -57,10 +57,13 @@ internal static class PreviewUtility {
             LocalTime = firstFrameTime,
         };
 
+        //minor optimization by executing FindFrameXPos() less
+        double secondFrameRectX = (float) FindFrameXPos(drawInfo.LocalTime + localTimeCounter, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
+        float xCounter = (float)(secondFrameRectX - firstFrameRectX);
         
         for (int i = 0; i < numPreviewImagesToDraw; ++i) {
                  
-            drawInfo.DrawRect.x = (float) FindFrameXPos(drawInfo.LocalTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
+            //drawInfo.DrawRect.x = (float) FindFrameXPos(drawInfo.LocalTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
             
             //already exceeds the visible area            
             if (drawInfo.DrawRect.x >= (endVisibleRectX)) {
@@ -71,6 +74,8 @@ internal static class PreviewUtility {
                 drawPreviewFunc(drawInfo);                
                 
             }
+
+            drawInfo.DrawRect.x += xCounter;
             drawInfo.LocalTime += localTimeCounter;
         }
 
