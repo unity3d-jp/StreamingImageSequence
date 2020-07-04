@@ -568,9 +568,11 @@ namespace UnityEngine.StreamingImageSequence {
                     PlayableFrame curFrame = m_playableFrames[i];
                     if (null == curFrame)
                         continue;
+                    //[TODO-sin: 2020-7-4] Let's put this in a pool.
                     ObjectUtility.Destroy(curFrame);                
                 }
                 m_playableFrames.RemoveRange(reqPlayableFramesSize, numLastPlayableFrames - reqPlayableFramesSize);
+                
                 
             }
             
