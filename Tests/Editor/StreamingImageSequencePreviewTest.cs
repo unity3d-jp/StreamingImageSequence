@@ -7,8 +7,10 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
 internal class StreamingImagePreviewTest {
 
+    #region Short Clip
+    
     [Test]
-    public void ViewNearShortClipAtBeginning() {
+    public void ViewShortClipFromNearAtBeginning() {
 
         PreviewClipInfo clipInfo = new PreviewClipInfo() {
             Duration              = 0.1, //6 frames
@@ -44,7 +46,7 @@ internal class StreamingImagePreviewTest {
 //----------------------------------------------------------------------------------------------------------------------
     
     [Test]
-    public void ViewNearShortClipAtEnd() {
+    public void ViewShortClipFromNearAtEnd() {
         
         PreviewClipInfo clipInfo = new PreviewClipInfo() {
             Duration              = 0.1, //6 frames
@@ -75,9 +77,47 @@ internal class StreamingImagePreviewTest {
 
     
 //----------------------------------------------------------------------------------------------------------------------
+    [Test]
+    public void ViewShortClipWithClipInFromNearAtBeginning() {
+               
+        PreviewClipInfo clipInfo = new PreviewClipInfo() {
+            Duration              = 0.05, //3  frames
+            TimeScale             = 1,
+            ClipIn                = 0.05,
+            FramePerSecond        = 60,
+            ImageDimensionRatio   = 1.684f,
+            VisibleLocalStartTime =  0.05,
+            VisibleLocalEndTime   = 0.0834165304899216,
+            VisibleRect = new Rect() {
+                x      = 0,
+                y      = 1,
+                width  = 263,
+                height = 25,
+            },
+            
+        }; 
+        List<PreviewDrawInfo> drawList = new List<PreviewDrawInfo>();
+                
+        PreviewUtility.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
+            drawList.Add(drawInfo);
+        });
+
+        Assert.GreaterOrEqual(drawList.Count, 2);
+        Assert.AreEqual(0, drawList[0].DrawRect.x,EPSILON);
+        Assert.AreEqual(0.05, drawList[0].LocalTime, EPSILON);
+        
+        float xDiff = drawList[1].DrawRect.x - drawList[0].DrawRect.x;
+        Assert.AreEqual(131.1726, xDiff, EPSILON);
+        
+    }
+
+    #endregion Short clip
+    
+//----------------------------------------------------------------------------------------------------------------------
+    #region Scaled clip
 
     [Test]
-    public void ViewNearScaledClipAtBeginning() {
+    public void ViewScaledClipFromNearAtBeginning() {
         
         PreviewClipInfo clipInfo = new PreviewClipInfo() {
             Duration              = 30, //1800 frames
@@ -111,45 +151,11 @@ internal class StreamingImagePreviewTest {
     }
 
     
-//----------------------------------------------------------------------------------------------------------------------
-    [Test]
-    public void ViewNearShortClipWithClipInAtBeginning() {
-               
-        PreviewClipInfo clipInfo = new PreviewClipInfo() {
-            Duration              = 0.05, //3  frames
-            TimeScale             = 1,
-            ClipIn                = 0.05,
-            FramePerSecond        = 60,
-            ImageDimensionRatio   = 1.684f,
-            VisibleLocalStartTime =  0.05,
-            VisibleLocalEndTime   = 0.0834165304899216,
-            VisibleRect = new Rect() {
-                x      = 0,
-                y      = 1,
-                width  = 263,
-                height = 25,
-            },
-            
-        }; 
-        List<PreviewDrawInfo> drawList = new List<PreviewDrawInfo>();
-                
-        PreviewUtility.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
-            drawList.Add(drawInfo);
-        });
-
-        Assert.GreaterOrEqual(drawList.Count, 2);
-        Assert.AreEqual(0, drawList[0].DrawRect.x,EPSILON);
-        Assert.AreEqual(0.05, drawList[0].LocalTime, EPSILON);
-        
-        float xDiff = drawList[1].DrawRect.x - drawList[0].DrawRect.x;
-        Assert.AreEqual(131.1726, xDiff, EPSILON);
-        
-    }
 
 //----------------------------------------------------------------------------------------------------------------------
     
     [Test]
-    public void ViewFarScaledClipWithClipIn() {
+    public void ViewScaledClipWithClipInFromFar() {
             
         PreviewClipInfo clipInfo = new PreviewClipInfo() {
             Duration              = 0.25, //15  frames
@@ -184,7 +190,7 @@ internal class StreamingImagePreviewTest {
 //----------------------------------------------------------------------------------------------------------------------
     
     [Test]
-    public void ViewNearScaledClipWithClipInAtEnd() {
+    public void ViewScaledClipWithClipInFromNearAtEnd() {
         
         PreviewClipInfo clipInfo = new PreviewClipInfo() {
             Duration              = 200, 
@@ -215,7 +221,8 @@ internal class StreamingImagePreviewTest {
         float xDiff = drawList[1].DrawRect.x - drawList[0].DrawRect.x;
         Assert.AreEqual(154.125, xDiff, EPSILON);
     }
-    
+
+    #endregion Scaled clip
 //----------------------------------------------------------------------------------------------------------------------
     
     const float EPSILON = 0.001f;
