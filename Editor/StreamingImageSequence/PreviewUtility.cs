@@ -82,7 +82,7 @@ internal static class PreviewUtility {
 #if DEBUG_PREVIEW_IMAGES        
         Debug.Log($"Width: {visibleRect.width} numAllPreviewImages: {numPreviewImagesToDraw}, " +
             $"firstFrameRectX: {firstFrameRectX}, firstFrameTime: {firstFrameTime}, " +
-            $"VisibleRect: {visibleRect}, " +
+            $"VisibleRect: {visibleRect}, xCounter: {xCounter}, " +
             $"VisibleLocalStartTime: {visibleLocalStartTime}, VisibleLocalEndTime: {visibleLocalEndTime}, "+
             $"widthPerPreviewImage: {widthPerPreviewImage}, DimensionRatio: {dimensionRatio}, "+ 
             $"ClipTimeScale: {clipInfo.TimeScale}, ClipIn: {clipInfo.ClipIn}");
