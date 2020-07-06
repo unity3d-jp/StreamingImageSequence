@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
+using UnityEngine.Assertions;
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
 using UnityEditor;
@@ -552,25 +553,34 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------
 
-        private void UpdatePlayableFramesSize(int playableFramesSize) {
+        private void UpdatePlayableFramesSize(int reqPlayableFramesSize) {
 
             //Resize m_playableFrames
-            while (m_playableFrames.Count < playableFramesSize) {
-                m_playableFrames.Add(null);
+            if (m_playableFrames.Count < reqPlayableFramesSize) {
+                int numNewPlayableFrames  = (reqPlayableFramesSize - m_playableFrames.Count);
+                PlayableFrame[] newPlayableFrames = new PlayableFrame[numNewPlayableFrames];
+                m_playableFrames.AddRange(newPlayableFrames);                
+            }
+
+            if (m_playableFrames.Count > reqPlayableFramesSize) {
+                int numLastPlayableFrames = m_playableFrames.Count;
+                for (int i = reqPlayableFramesSize; i < numLastPlayableFrames; ++i) {
+                    PlayableFrame curFrame = m_playableFrames[i];
+                    if (null == curFrame)
+                        continue;
+                    //[TODO-sin: 2020-7-4] Let's put this in a pool.
+                    ObjectUtility.Destroy(curFrame);                
+                }
+                m_playableFrames.RemoveRange(reqPlayableFramesSize, numLastPlayableFrames - reqPlayableFramesSize);
+                
+                
             }
             
-            while (m_playableFrames.Count > playableFramesSize) {
-                int index = m_playableFrames.Count - 1;
-                PlayableFrame lastFrame = m_playableFrames[index];
-                m_playableFrames.RemoveAt(index);
-                if (null ==lastFrame)
-                    continue;
-                ObjectUtility.Destroy(lastFrame);
-            }
+            Assert.IsTrue(m_playableFrames.Count == reqPlayableFramesSize);
 
             double timePerFrame = CalculateTimePerFrame(m_curBoundTimelineClip);
             
-            for (int i = 0; i < playableFramesSize; ++i) {
+            for (int i = 0; i < reqPlayableFramesSize; ++i) {
                 PlayableFrame curPlayableFrame = m_playableFrames[i];
                 
                 if (null == curPlayableFrame) {
