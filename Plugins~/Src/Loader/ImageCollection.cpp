@@ -13,12 +13,17 @@
 namespace StreamingImageSequencePlugin {
 
 
-ImageCollection::ImageCollection(CriticalSectionType csType)
+ImageCollection::ImageCollection()
     : m_curOrderStartPos(m_orderedImageList.end())
     , m_updateOrderStartPos(false)
-    , m_csType( csType)
 {
 
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void ImageCollection::Init(CriticalSectionType csType, ImageMemoryAllocator* memAllocator) {
+    m_csType       = csType;
+    m_memAllocator = memAllocator;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

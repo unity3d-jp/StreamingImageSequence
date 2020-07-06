@@ -14,8 +14,8 @@ class ImageMemoryAllocator;
 
 class ImageCollection {
 public:
-    ImageCollection(CriticalSectionType csType);
-    inline void SetMemoryAllocator(ImageMemoryAllocator*);
+    ImageCollection();
+    void Init(CriticalSectionType csType, ImageMemoryAllocator*);
 
     //return null if not found
     const ImageData* GetImage(const strType& imagePath, const bool isForCurrentOrder);
@@ -57,8 +57,6 @@ private:
     CriticalSectionType m_csType;
 
 };
-
-void ImageCollection::SetMemoryAllocator(ImageMemoryAllocator* memAllocator) { m_memAllocator = memAllocator; }
 
 inline const std::map<strType, ImageData>& ImageCollection::GetImageMap() const { return m_pathToImageMap;  }
 inline size_t ImageCollection::GetNumImages() const { return m_pathToImageMap.size(); }
