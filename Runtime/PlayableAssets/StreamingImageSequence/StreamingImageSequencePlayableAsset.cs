@@ -346,6 +346,9 @@ namespace UnityEngine.StreamingImageSequence {
 
         internal void ContinuePreloadingImages() {
             
+            if (null == m_imagePaths || 0== m_imagePaths.Count)
+                return;
+
             const int NUM_IMAGES = 2;
 
             //forward
