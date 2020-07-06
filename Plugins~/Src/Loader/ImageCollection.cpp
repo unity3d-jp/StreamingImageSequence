@@ -31,7 +31,7 @@ void ImageCollection::Init(CriticalSectionType csType, ImageMemoryAllocator* mem
 //Thread-safe
 const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool isForCurrentOrder) {
     CriticalSectionController cs(IMAGE_CS(m_csType));
-    std::map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
+    std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
     if (m_pathToImageMap.end() == pathIt) {
         return nullptr;
     }
@@ -50,7 +50,7 @@ const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool 
 
 //----------------------------------------------------------------------------------------------------------------------
 //Thread-safe
-std::map<strType, ImageData>::iterator ImageCollection::PrepareImage(const strType& imagePath) {
+std::unordered_map<strType, ImageData>::iterator ImageCollection::PrepareImage(const strType& imagePath) {
     
     CriticalSectionController cs(IMAGE_CS(m_csType));
     return PrepareImageUnsafe(imagePath);
@@ -137,7 +137,7 @@ void ImageCollection::SetImageStatus(const strType& imagePath, const ReadStatus 
 bool ImageCollection::UnloadImage(const strType& imagePath) {
     CriticalSectionController cs(IMAGE_CS(m_csType));
 
-    const std::map<strType,ImageData>::iterator it = m_pathToImageMap.find(imagePath);
+    const std::unordered_map<strType,ImageData>::iterator it = m_pathToImageMap.find(imagePath);
     if (m_pathToImageMap.end() == it)
         return false;
 
@@ -178,7 +178,7 @@ void ImageCollection::AdvanceOrder() {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-std::map<strType, ImageData>::iterator ImageCollection::PrepareImageUnsafe(const strType& imagePath) {
+std::unordered_map<strType, ImageData>::iterator ImageCollection::PrepareImageUnsafe(const strType& imagePath) {
     ASSERT(m_pathToImageMap.find(imagePath) == m_pathToImageMap.end());
     const auto it = m_pathToImageMap.insert({ imagePath, ImageData(nullptr,0,0,READ_STATUS_LOADING) });
     AddImageOrderUnsafe(it.first);
@@ -193,14 +193,14 @@ std::map<strType, ImageData>::iterator ImageCollection::PrepareImageUnsafe(const
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void ImageCollection::AddImageOrderUnsafe(std::map<strType, ImageData>::iterator pathToImageIt) {
+void ImageCollection::AddImageOrderUnsafe(std::unordered_map<strType, ImageData>::iterator pathToImageIt) {
     auto orderIt = m_orderedImageList.insert(m_orderedImageList.end(), pathToImageIt);
     m_pathToOrderMap.insert({pathToImageIt->first, orderIt});
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void ImageCollection::ReorderImageUnsafe(std::map<strType, ImageData>::iterator pathToImageIt) {
+void ImageCollection::ReorderImageUnsafe(std::unordered_map<strType, ImageData>::iterator pathToImageIt) {
     const auto pathToOrderIt = m_pathToOrderMap.find(pathToImageIt->first);
     if (m_pathToOrderMap.end() == pathToOrderIt) {
         return;
@@ -225,7 +225,7 @@ void ImageCollection::ReorderImageUnsafe(std::map<strType, ImageData>::iterator 
 
 
 //Non-thread safe: remove the linked data in m_orderedImageList
-void ImageCollection::DeleteImageOrderUnsafe(std::map<strType, ImageData>::iterator pathToImageIt) {
+void ImageCollection::DeleteImageOrderUnsafe(std::unordered_map<strType, ImageData>::iterator pathToImageIt) {
     //remove the linked data in the ordering structures
     const auto pathToOrderIt = m_pathToOrderMap.find(pathToImageIt->first);
     if (m_pathToOrderMap.end() == pathToOrderIt) {
@@ -282,7 +282,7 @@ bool ImageCollection::AllocateRawDataUnsafe(uint8_t** rawData,const uint32_t w,c
 //----------------------------------------------------------------------------------------------------------------------
 //returns true if one or more images are successfully unloaded
 bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathToAllocate) {
-    std::list<std::map<strType, ImageData>::iterator>::iterator orderIt = m_orderedImageList.begin();
+    std::list<std::unordered_map<strType, ImageData>::iterator>::iterator orderIt = m_orderedImageList.begin();
     if (m_curOrderStartPos == orderIt)
         return false;
 
