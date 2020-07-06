@@ -18,9 +18,6 @@
 
 using namespace std;
 
-LOADER_API std::map<strType, int>           g_scenePathToSceneStatus;
-
-
 //----------------------------------------------------------------------------------------------------------------------
 
 //Get the texture info and return the result inside ReadResult. Thread-safe
@@ -100,23 +97,6 @@ LOADER_API uint32_t GetNumLoadedTextures(const uint32_t imageType) {
 	using namespace StreamingImageSequencePlugin;
 	ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 	return static_cast<uint32_t>(ImageCatalog::GetInstance().GetNumImages(imageType));
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-LOADER_API void   SetSceneStatus(const charType* scenePath, int sceneStatus)
-{
-	g_scenePathToSceneStatus[scenePath] = sceneStatus;
-
-}
-LOADER_API int    GetSceneStatus(const charType* scenePath)
-{
-	strType wstr(scenePath);
-	if (g_scenePathToSceneStatus.find(wstr) != g_scenePathToSceneStatus.end())
-	{
-		return g_scenePathToSceneStatus[wstr];
-	}
-	return -1;	// not found;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
