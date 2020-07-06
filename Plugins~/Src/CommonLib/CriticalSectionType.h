@@ -5,7 +5,7 @@
 namespace StreamingImageSequencePlugin {
 
 enum CriticalSectionType {
-    //Texture section. Must start from 0
+    //Images section. Must start from 0
     CRITICAL_SECTION_TYPE_FULL_IMAGE = 0,
     CRITICAL_SECTION_TYPE_PREVIEW_IMAGE,
 
