@@ -5,55 +5,58 @@
 #include "LoaderConstants.h"
 
 //External
+#include "CommonLib/CommonLib.h" //IMAGE_CS
+#include "CommonLib/CriticalSectionController.h"
 #include "External/stb/stb_image_resize.h"
 
 
 namespace StreamingImageSequencePlugin {
 
 
-ImageCollection::ImageCollection() : m_curOrderStartPos(m_orderedImageList.end()), m_updateOrderStartPos(false) {
+ImageCollection::ImageCollection(CriticalSectionType csType)
+    : m_curOrderStartPos(m_orderedImageList.end())
+    , m_updateOrderStartPos(false)
+    , m_csType( csType)
+{
 
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool isForCurrentOrder) {
-    std::map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
 
+//Thread-safe
+const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool isForCurrentOrder) {
+    CriticalSectionController cs(IMAGE_CS(m_csType));
+    std::map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
     if (m_pathToImageMap.end() == pathIt) {
         return nullptr;
     }
 
     //Check if we have to update the order start pos first
     if (m_updateOrderStartPos) {
-        MoveOrderStartPosToEnd();
-        m_updateOrderStartPos = false;
+        MoveOrderStartPosToEndUnsafe();
     }
 
-    if (isForCurrentOrder)
-        ReorderImageToEnd(pathIt);
+    if (isForCurrentOrder) {
+        ReorderImageUnsafe(pathIt);
+    }
+
     return &pathIt->second;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+//Thread-safe
 std::map<strType, ImageData>::iterator ImageCollection::PrepareImage(const strType& imagePath) {
     
-    ASSERT(m_pathToImageMap.find(imagePath) == m_pathToImageMap.end());
-
-    auto it = m_pathToImageMap.insert({ imagePath, ImageData(nullptr,0,0,READ_STATUS_LOADING) });
-    AddImageOrder(it.first);
-
-    ASSERT(m_orderedImageList.size() >= 1);
-    if (m_curOrderStartPos == m_orderedImageList.end() || m_updateOrderStartPos) {
-        MoveOrderStartPosToEnd();
-        m_updateOrderStartPos = false;
-    }
-
-    return it.first;
+    CriticalSectionController cs(IMAGE_CS(m_csType));
+    return PrepareImageUnsafe(imagePath);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
+//Thread-safe
 const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const uint32_t w, const uint32_t h) {
+
+    CriticalSectionController cs(IMAGE_CS(m_csType));
 
     auto pathIt = m_pathToImageMap.find(imagePath);
 
@@ -61,12 +64,12 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
     if (m_pathToImageMap.end() != pathIt) {
         m_memAllocator->Deallocate(&(pathIt->second));
     }  else {
-        pathIt = PrepareImage(imagePath);
+        pathIt = PrepareImageUnsafe(imagePath);
     }
 
     ImageData* imageData = &pathIt->second;
 
-    const bool isAllocated = AllocateRawData(&imageData->RawData, w, h, imagePath);
+    const bool isAllocated = AllocateRawDataUnsafe(&imageData->RawData, w, h, imagePath);
     if (!isAllocated)
         return nullptr;
 
@@ -78,14 +81,17 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 
 //----------------------------------------------------------------------------------------------------------------------
 
+//Thread-safe
 bool ImageCollection::ResizeImage(const strType& imagePath, const uint32_t w, const uint32_t h) {
+
+    CriticalSectionController cs(IMAGE_CS(m_csType));
 
     auto it = m_pathToImageMap.find(imagePath);
     ASSERT(it != m_pathToImageMap.end());
 
     //Allocate
     ImageData resizedImageData(nullptr,w,h,READ_STATUS_LOADING);
-    const bool isAllocated = AllocateRawData(&resizedImageData.RawData, w, h, imagePath);
+    const bool isAllocated = AllocateRawDataUnsafe(&resizedImageData.RawData, w, h, imagePath);
     if (!isAllocated)
         return false;
 
@@ -107,30 +113,38 @@ bool ImageCollection::ResizeImage(const strType& imagePath, const uint32_t w, co
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void ImageCollection::SetImageStatus(const strType& imagePath, const ReadStatus status) {
-    ASSERT(m_pathToImageMap.find(imagePath) != m_pathToImageMap.end());
 
+//Thread-safe
+void ImageCollection::SetImageStatus(const strType& imagePath, const ReadStatus status) {
+    CriticalSectionController cs(IMAGE_CS(m_csType));
+
+    ASSERT(m_pathToImageMap.find(imagePath) != m_pathToImageMap.end());
     ImageData& imageData = m_pathToImageMap.at(imagePath);
     imageData.CurrentReadStatus = status;
 
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-bool ImageCollection::UnloadImage(const strType& imagePath) {
 
-    std::map<strType,ImageData>::iterator it = m_pathToImageMap.find(imagePath);
+//Thread-safe
+bool ImageCollection::UnloadImage(const strType& imagePath) {
+    CriticalSectionController cs(IMAGE_CS(m_csType));
+
+    const std::map<strType,ImageData>::iterator it = m_pathToImageMap.find(imagePath);
     if (m_pathToImageMap.end() == it)
         return false;
 
     m_memAllocator->Deallocate(&(it->second));
-    DeleteImageOrder(it);
+    DeleteImageOrderUnsafe(it);
     m_pathToImageMap.erase(imagePath);
     return true;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
+//Thread-safe
 void ImageCollection::UnloadAllImages() {
+    CriticalSectionController cs(IMAGE_CS(m_csType));
     m_pathToOrderMap.clear();
     m_orderedImageList.clear();
     m_curOrderStartPos = m_orderedImageList.end();
@@ -145,23 +159,42 @@ void ImageCollection::UnloadAllImages() {
 
 //----------------------------------------------------------------------------------------------------------------------
 
+//Thread-safe
 void ImageCollection::AdvanceOrder() {
+    CriticalSectionController cs(IMAGE_CS(m_csType));
     //Turn on the flag, so that at the next GetImage() or PrepareImage(), 
     //the related image would be the start pos of the current "order".
     //The prev nodes before this start pos, would be regarded as "unused" for this order, and thus safe to be unloaded
     m_updateOrderStartPos = true;
 }
 
+
 //----------------------------------------------------------------------------------------------------------------------
 
-void ImageCollection::AddImageOrder(std::map<strType, ImageData>::iterator pathToImageIt) {
+std::map<strType, ImageData>::iterator ImageCollection::PrepareImageUnsafe(const strType& imagePath) {
+    ASSERT(m_pathToImageMap.find(imagePath) == m_pathToImageMap.end());
+    const auto it = m_pathToImageMap.insert({ imagePath, ImageData(nullptr,0,0,READ_STATUS_LOADING) });
+    AddImageOrderUnsafe(it.first);
+
+    ASSERT(m_orderedImageList.size() >= 1);
+    if (m_curOrderStartPos == m_orderedImageList.end() || m_updateOrderStartPos) {
+        MoveOrderStartPosToEndUnsafe();
+    }
+
+    return it.first;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void ImageCollection::AddImageOrderUnsafe(std::map<strType, ImageData>::iterator pathToImageIt) {
     auto orderIt = m_orderedImageList.insert(m_orderedImageList.end(), pathToImageIt);
     m_pathToOrderMap.insert({pathToImageIt->first, orderIt});
 }
+
 //----------------------------------------------------------------------------------------------------------------------
 
-void ImageCollection::ReorderImageToEnd(std::map<strType, ImageData>::iterator pathToImageIt) {
-    auto pathToOrderIt = m_pathToOrderMap.find(pathToImageIt->first);
+void ImageCollection::ReorderImageUnsafe(std::map<strType, ImageData>::iterator pathToImageIt) {
+    const auto pathToOrderIt = m_pathToOrderMap.find(pathToImageIt->first);
     if (m_pathToOrderMap.end() == pathToOrderIt) {
         return;
     }
@@ -177,21 +210,22 @@ void ImageCollection::ReorderImageToEnd(std::map<strType, ImageData>::iterator p
     m_orderedImageList.splice( m_orderedImageList.end(), m_orderedImageList, pathToOrderIt->second);
 
     if (invalidStartPos) {
-        MoveOrderStartPosToEnd();
+        MoveOrderStartPosToEndUnsafe();
     }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//remove the linked data in m_orderedImageList
-void ImageCollection::DeleteImageOrder(std::map<strType, ImageData>::iterator pathToImageIt) {
+
+//Non-thread safe: remove the linked data in m_orderedImageList
+void ImageCollection::DeleteImageOrderUnsafe(std::map<strType, ImageData>::iterator pathToImageIt) {
     //remove the linked data in the ordering structures
-    auto pathToOrderIt = m_pathToOrderMap.find(pathToImageIt->first);
+    const auto pathToOrderIt = m_pathToOrderMap.find(pathToImageIt->first);
     if (m_pathToOrderMap.end() == pathToOrderIt) {
         return;
     }
 
-    auto orderIt = pathToOrderIt->second;
+    const auto orderIt = pathToOrderIt->second;
 
     if (orderIt == m_curOrderStartPos) {
         ++m_curOrderStartPos;
@@ -201,22 +235,28 @@ void ImageCollection::DeleteImageOrder(std::map<strType, ImageData>::iterator pa
 
 
     //make sure the start pos is valid
-    if (m_curOrderStartPos == m_orderedImageList.end() && m_pathToOrderMap.size() >= 1) {
+    if (m_curOrderStartPos == m_orderedImageList.end() && !m_pathToOrderMap.empty()) {
         --m_curOrderStartPos;
     }
 
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void ImageCollection::MoveOrderStartPosToEnd() {
+
+//Non-thread safe
+void ImageCollection::MoveOrderStartPosToEndUnsafe() {
     ASSERT(m_orderedImageList.size() >= 1);
     m_curOrderStartPos = m_orderedImageList.end();
     --m_curOrderStartPos;
+    m_updateOrderStartPos = false;
+
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
-bool ImageCollection::AllocateRawData(uint8_t** rawData,const uint32_t w,const uint32_t h,const strType& imagePath) 
+
+//Non-thread safe
+bool ImageCollection::AllocateRawDataUnsafe(uint8_t** rawData,const uint32_t w,const uint32_t h,const strType& imagePath) 
 {
 
     bool isAllocated = false;
@@ -224,7 +264,7 @@ bool ImageCollection::AllocateRawData(uint8_t** rawData,const uint32_t w,const u
     while (!isAllocated && unloadSuccessful) {
         isAllocated = m_memAllocator->Allocate(rawData, w, h);
         if (!isAllocated) {
-            unloadSuccessful = UnloadUnusedImage(imagePath);
+            unloadSuccessful = UnloadUnusedImageUnsafe(imagePath);
         }
     }
 
@@ -234,7 +274,7 @@ bool ImageCollection::AllocateRawData(uint8_t** rawData,const uint32_t w,const u
 
 //----------------------------------------------------------------------------------------------------------------------
 //returns true if one or more images are successfully unloaded
-bool ImageCollection::UnloadUnusedImage(const strType& imagePathToAllocate) {
+bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathToAllocate) {
     std::list<std::map<strType, ImageData>::iterator>::iterator orderIt = m_orderedImageList.begin();
     if (m_curOrderStartPos == orderIt)
         return false;
