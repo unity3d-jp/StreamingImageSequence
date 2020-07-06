@@ -100,7 +100,7 @@ bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t i
     if (!LoaderUtility::LoadAndAllocImage(imagePath, imageType, imageCatalog, frame))
         return false;
 
-    ImageData imageData = LoaderUtility::GetImageData(imagePath, imageType, imageCatalog, frame);
+    const ImageData imageData = LoaderUtility::GetImageData(imagePath, imageType, imageCatalog, frame);
     if (LoaderUtility::IsImageLoadError(imageData.CurrentReadStatus))
         return false;
 
