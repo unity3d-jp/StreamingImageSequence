@@ -116,7 +116,9 @@ bool ImageCollection::ResizeImage(const strType& imagePath, const uint32_t w, co
 
 //Thread-safe
 void ImageCollection::SetImageStatus(const strType& imagePath, const ReadStatus status) {
-    CriticalSectionController cs(IMAGE_CS(m_csType));
+
+    //No need to sync. One imagePath should be processed by only one job
+    //CriticalSectionController cs(IMAGE_CS(m_csType)); 
 
     ASSERT(m_pathToImageMap.find(imagePath) != m_pathToImageMap.end());
     ImageData& imageData = m_pathToImageMap.at(imagePath);
