@@ -17,6 +17,7 @@ namespace UnityEngine.StreamingImageSequence
 #endif
     internal class UpdateManager
     {
+        private static double m_lastUpdateInEditorTime;
         
         //Threads processes tasks
         const uint NUM_THREAD = 3;
@@ -109,9 +110,16 @@ namespace UnityEngine.StreamingImageSequence
 
         static void UpdateInEditor() {
             
+            double time = EditorApplication.timeSinceStartup;
+            double timeDifference = time - m_lastUpdateInEditorTime;
+            if (timeDifference < 0.016f) {
+                return;
+            }
+
             if (m_isResettingPlugin)
                 return;
             
+            m_lastUpdateInEditorTime = time;
 
             //add requested jobs
             foreach (PeriodicJob job in m_requestedJobs) {
