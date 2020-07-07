@@ -31,7 +31,6 @@ namespace UnityEngine.StreamingImageSequence
         private static readonly HashSet<PeriodicJob> m_toRemoveJobs = new HashSet<PeriodicJob>();
         
         private static bool m_shuttingDownThreads;
-        private static Dictionary<PlayableDirector, PlayableDirectorStatus> s_directorStatusDictiornary = new Dictionary<PlayableDirector, PlayableDirectorStatus>();
         private static string s_AppDataPath;
         private static bool m_isResettingPlugin = false;
         
@@ -373,41 +372,12 @@ namespace UnityEngine.StreamingImageSequence
             return ret;
         }
 
-        public static bool IsDirectorIdle(PlayableDirector director)
-        {
-            if (director == null)
-            {
-                return true;
-            }
-
-            if (s_directorStatusDictiornary.ContainsKey(director))
-            {
-
-
-            }
-            else
-            {
-                s_directorStatusDictiornary.Add(director, new PlayableDirectorStatus());
-            }
-            if (director.time - s_directorStatusDictiornary[director].m_lastDirectorTick < 0.01f)
-            {
-                s_directorStatusDictiornary[director].m_lastDirectorTick = director.time;
-                return true;
-            }
-            s_directorStatusDictiornary[director].m_lastDirectorTick = director.time;
-            return false;
-        }
 
     }
 
-    internal class PlayableDirectorStatus
-    {
-        public double m_lastDirectorTick = -0.02f;
-    }
 
 
-    internal abstract class BackGroundTask
-    {
+    internal abstract class BackGroundTask {
         public abstract void Execute();
     }
 
