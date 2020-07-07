@@ -20,7 +20,7 @@ public:
     const ImageData* GetImage(const strType& imagePath, const uint32_t imageType, const int frame);
 
     //Wrapper for functions in ImageCollection
-    inline void PrepareImage(const strType& imagePath, const uint32_t imageType, const int frame);
+    inline const ImageData* PrepareImage(const strType& imagePath, const uint32_t imageType, const int frame);
     inline const ImageData* AllocateImage(const strType& imagePath,const uint32_t imageType,const uint32_t w,const uint32_t h);
     inline bool CopyImageFromSrc(const strType& imagePath,const uint32_t imageType, const ImageData*, 
                                  const uint32_t w,const uint32_t h);
@@ -54,10 +54,11 @@ ImageCatalog& ImageCatalog::GetInstance() {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void ImageCatalog::PrepareImage(const strType& imagePath, const uint32_t imageType, const int frame) {
+const ImageData* ImageCatalog::PrepareImage(const strType& imagePath, const uint32_t imageType, const int frame) {
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
     UpdateRequestFrame(frame);
-    m_imageCollection[imageType].PrepareImage(imagePath);
+    const std::unordered_map<strType, ImageData>::const_iterator it = m_imageCollection[imageType].PrepareImage(imagePath);
+    return &it->second;
 }
 
 const ImageData* ImageCatalog::AllocateImage(const strType& imagePath, const uint32_t imageType, const uint32_t w, const uint32_t h) {

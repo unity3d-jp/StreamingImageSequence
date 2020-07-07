@@ -52,7 +52,7 @@ const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool 
 
 //----------------------------------------------------------------------------------------------------------------------
 //Thread-safe
-std::unordered_map<strType, ImageData>::iterator ImageCollection::PrepareImage(const strType& imagePath) {
+std::unordered_map<strType, ImageData>::const_iterator ImageCollection::PrepareImage(const strType& imagePath) {
     
     CriticalSectionController cs(IMAGE_CS(m_csType));
     return PrepareImageUnsafe(imagePath);
