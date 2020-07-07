@@ -20,9 +20,9 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType, Ima
 class LoaderUtility {
 public:
     static FileType CheckFileType(const strType& imagePath);
-    static ImageData GetImageData(const strType& imagePath, const uint32_t imageType,ImageCatalog*,const int);
-    static bool LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog*, const int frame);
-    static bool LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog*,
+    static const ImageData* GetImageData(const strType& imagePath, const uint32_t imageType,ImageCatalog*,const int);
+    static const ImageData* LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog*, const int frame);
+    static const ImageData* LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog*,
         const uint32_t reqWidth, const uint32_t reqHeight, const int frame);
 
 private:

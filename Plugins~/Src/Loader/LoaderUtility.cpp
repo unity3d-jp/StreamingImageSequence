@@ -35,42 +35,43 @@ FileType LoaderUtility::CheckFileType(const strType& imagePath) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-ImageData LoaderUtility::GetImageData(const strType& imagePath, const uint32_t imageType, 
+const ImageData* LoaderUtility::GetImageData(const strType& imagePath, const uint32_t imageType, 
     ImageCatalog* imageCatalog, const int frame)
 {
     using namespace StreamingImageSequencePlugin;
     
     const ImageData* imageData = imageCatalog->GetImage(imagePath, imageType, frame);
     if (nullptr == imageData) {
-        return ImageData(nullptr, 0, 0, READ_STATUS_UNAVAILABLE);
+        return nullptr;
     }
     //if success, then the buffer must be not null
     ASSERT(imageData->CurrentReadStatus != READ_STATUS_SUCCESS || imageData->RawData);
-    return *imageData;
+    return imageData;
 
 
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //Returns whether the file has been processed, or is still processed  (inside readResultMap).
-bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog, 
+const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog, 
     const int frame) 
 {
     using namespace StreamingImageSequencePlugin;
 
-    const ImageData imageData = LoaderUtility::GetImageData(imagePath, imageType, imageCatalog, frame);
-
-    //Just return if the image load doesn't have any error
-    if (!LoaderUtility::IsImageLoadError(imageData.CurrentReadStatus))
-        return true;
+    const ImageData* imageData = LoaderUtility::GetImageData(imagePath, imageType, imageCatalog, frame);
 
     const FileType fileType = LoaderUtility::CheckFileType(imagePath);
     if (FILE_TYPE_INVALID == fileType)
-        return false;
+        return nullptr;
 
-    //Loading
-    if (READ_STATUS_UNAVAILABLE == imageData.CurrentReadStatus) {
-        imageCatalog->PrepareImage(imagePath, imageType, frame);
+    //Just return if the image load doesn't have any error
+    if (nullptr!=imageData) {
+        if (!LoaderUtility::IsImageLoadError(imageData->CurrentReadStatus))
+            return imageData;
+
+    } else {
+        imageData = imageCatalog->PrepareImage(imagePath, imageType, frame);
+
     }
 
     switch (fileType) {
@@ -85,38 +86,38 @@ bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t i
         default: { break; }
     }
 
-    return true;
+    return imageData;
 
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 //Returns whether the file has been processed, or is still processed  (inside catalog).
-bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog
+const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog
     , const uint32_t reqWidth, const uint32_t reqHeight, const int frame) 
 {
     //[TODO-sin: 2020-6-4] If the resized version of this tex is not loaded, but the full version is, we can probably
     //do some optimization by resizing the full version directly, instead of loading again.
 
     if (!LoaderUtility::LoadAndAllocImage(imagePath, imageType, imageCatalog, frame))
-        return false;
+        return nullptr;
 
-    const ImageData imageData = LoaderUtility::GetImageData(imagePath, imageType, imageCatalog, frame);
-    if (LoaderUtility::IsImageLoadError(imageData.CurrentReadStatus))
-        return false;
+    const ImageData* imageData = LoaderUtility::GetImageData(imagePath, imageType, imageCatalog, frame);
+    if (nullptr == imageData || LoaderUtility::IsImageLoadError(imageData->CurrentReadStatus))
+        return nullptr;
 
 
     //Still loading
-    if (READ_STATUS_LOADING == imageData.CurrentReadStatus) {
-        return true; 
+    if (READ_STATUS_LOADING == imageData->CurrentReadStatus) {
+        return imageData; 
     }
 
     //Already resized. 
-    if (imageData.Width == reqWidth && imageData.Height == reqHeight)
-        return true;
+    if (imageData->Width == reqWidth && imageData->Height == reqHeight)
+        return imageData;
 
     imageCatalog->ResizeImage(imagePath, imageType, reqWidth, reqHeight);
 
-    return true;
+    return imageData;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
