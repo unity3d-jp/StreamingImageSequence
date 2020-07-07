@@ -95,29 +95,39 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
 const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog
     , const uint32_t reqWidth, const uint32_t reqHeight, const int frame) 
 {
-    //[TODO-sin: 2020-6-4] If the resized version of this tex is not loaded, but the full version is, we can probably
-    //do some optimization by resizing the full version directly, instead of loading again.
+    switch (imageType) {
+    case CRITICAL_SECTION_TYPE_FULL_IMAGE: {
+        return LoaderUtility::LoadAndAllocImage(imagePath, imageType, imageCatalog, frame);
+    }
+    case CRITICAL_SECTION_TYPE_PREVIEW_IMAGE: {
+        const ImageData* previewImageData = LoaderUtility::GetImageData(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, 
+                                                                        imageCatalog, frame);
 
-    if (!LoaderUtility::LoadAndAllocImage(imagePath, imageType, imageCatalog, frame))
+        //Just return if the image load doesn't have any error
+        if (nullptr!=previewImageData && !LoaderUtility::IsImageLoadError(previewImageData->CurrentReadStatus))
+            return previewImageData;
+
+
+        //Load full image
+        const ImageData* fullImageData = LoadAndAllocImage(imagePath, CRITICAL_SECTION_TYPE_FULL_IMAGE, 
+                                                           imageCatalog, frame);
+        if (nullptr == fullImageData)
+            return nullptr;
+
+        if ((fullImageData->CurrentReadStatus == READ_STATUS_LOADING))
+            return fullImageData;
+
+        previewImageData = imageCatalog->PrepareImage(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, frame);
+
+        imageCatalog->CopyImageFromSrc(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, fullImageData, reqWidth, reqHeight);
+        return previewImageData;
+    }
+    default: {
         return nullptr;
-
-    const ImageData* imageData = LoaderUtility::GetImageData(imagePath, imageType, imageCatalog, frame);
-    if (nullptr == imageData || LoaderUtility::IsImageLoadError(imageData->CurrentReadStatus))
-        return nullptr;
-
-
-    //Still loading
-    if (READ_STATUS_LOADING == imageData->CurrentReadStatus) {
-        return imageData; 
+    }
     }
 
-    //Already resized. 
-    if (imageData->Width == reqWidth && imageData->Height == reqHeight)
-        return imageData;
-
-    imageCatalog->ResizeImage(imagePath, imageType, reqWidth, reqHeight);
-
-    return imageData;
+    return nullptr;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
