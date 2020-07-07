@@ -23,6 +23,7 @@ public:
     const ImageData* GetImage(const strType& imagePath, const bool isForCurrentOrder);
 
     const ImageData* AllocateImage(const strType& imagePath, const uint32_t w, const uint32_t h);
+    bool CopyImageFromSrc(const strType& imagePath, const ImageData* src, const uint32_t w, const uint32_t h);
     bool ResizeImage(const strType& imagePath, const uint32_t w, const uint32_t h);
 
     std::unordered_map<strType, ImageData>::iterator PrepareImage(const strType& imagePath);

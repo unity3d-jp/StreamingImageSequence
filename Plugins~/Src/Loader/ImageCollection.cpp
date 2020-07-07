@@ -119,6 +119,42 @@ bool ImageCollection::ResizeImage(const strType& imagePath, const uint32_t w, co
     return true;
 }
 
+
+bool ImageCollection::CopyImageFromSrc(const strType& imagePath, const ImageData* src, 
+                                           const uint32_t w, const uint32_t h)
+{
+    CriticalSectionController cs(IMAGE_CS(m_csType));
+
+    auto pathIt = m_pathToImageMap.find(imagePath);
+
+    //Unload existing memory if it exists
+    if (m_pathToImageMap.end() != pathIt) {
+        m_memAllocator->Deallocate(&(pathIt->second));
+    }  else {
+        pathIt = PrepareImageUnsafe(imagePath);
+    }
+
+    //Allocate
+    ImageData resizedImageData(nullptr,w,h,READ_STATUS_LOADING);
+    const bool isAllocated = AllocateRawDataUnsafe(&resizedImageData.RawData, w, h, imagePath);
+    if (!isAllocated)
+        return false;
+
+
+    ASSERT(nullptr != src->RawData);
+    ASSERT(READ_STATUS_SUCCESS == src->CurrentReadStatus);
+
+    stbir_resize_uint8(src->RawData, src->Width, src->Height, 0,
+        resizedImageData.RawData, w, h, 0, LoaderConstants::NUM_BYTES_PER_TEXEL);
+
+    //Register to map
+    resizedImageData.CurrentReadStatus = READ_STATUS_SUCCESS;
+    pathIt->second = resizedImageData;
+
+    return true;
+
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
 //Non-Thread-safe
