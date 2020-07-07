@@ -52,9 +52,14 @@ const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool 
 
 //----------------------------------------------------------------------------------------------------------------------
 //Thread-safe
-std::unordered_map<strType, ImageData>::iterator ImageCollection::PrepareImage(const strType& imagePath) {
+std::unordered_map<strType, ImageData>::const_iterator ImageCollection::AddImage(const strType& imagePath) {
     
     CriticalSectionController cs(IMAGE_CS(m_csType));
+
+    const std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
+    if (pathIt !=m_pathToImageMap.end())
+        return pathIt;
+
     return PrepareImageUnsafe(imagePath);
 }
 
@@ -65,7 +70,7 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 
     CriticalSectionController cs(IMAGE_CS(m_csType));
 
-    auto pathIt = m_pathToImageMap.find(imagePath);
+    std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
 
     //Unload existing memory if it exists
     if (m_pathToImageMap.end() != pathIt) {
@@ -88,13 +93,20 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//Thread-safe
-bool ImageCollection::ResizeImage(const strType& imagePath, const uint32_t w, const uint32_t h) {
 
+bool ImageCollection::AddImageFromSrc(const strType& imagePath, const ImageData* src, 
+                                           const uint32_t w, const uint32_t h)
+{
     CriticalSectionController cs(IMAGE_CS(m_csType));
 
-    auto it = m_pathToImageMap.find(imagePath);
-    ASSERT(it != m_pathToImageMap.end());
+    auto pathIt = m_pathToImageMap.find(imagePath);
+
+    //Unload existing memory if it exists
+    if (m_pathToImageMap.end() != pathIt) {
+        m_memAllocator->Deallocate(&(pathIt->second));
+    }  else {
+        pathIt = PrepareImageUnsafe(imagePath);
+    }
 
     //Allocate
     ImageData resizedImageData(nullptr,w,h,READ_STATUS_LOADING);
@@ -102,21 +114,18 @@ bool ImageCollection::ResizeImage(const strType& imagePath, const uint32_t w, co
     if (!isAllocated)
         return false;
 
+    ASSERT(nullptr != src->RawData);
+    ASSERT(READ_STATUS_SUCCESS == src->CurrentReadStatus);
 
-    ImageData& imageData = it->second;
-    ASSERT(nullptr != imageData.RawData);
-    ASSERT(READ_STATUS_SUCCESS == imageData.CurrentReadStatus);
-
-    
-    stbir_resize_uint8(imageData.RawData, imageData.Width, imageData.Height, 0,
+    stbir_resize_uint8(src->RawData, src->Width, src->Height, 0,
         resizedImageData.RawData, w, h, 0, LoaderConstants::NUM_BYTES_PER_TEXEL);
-    m_memAllocator->Deallocate(&imageData);
 
     //Register to map
     resizedImageData.CurrentReadStatus = READ_STATUS_SUCCESS;
-    it->second = resizedImageData;
+    pathIt->second = resizedImageData;
 
     return true;
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -171,7 +180,7 @@ void ImageCollection::UnloadAllImages() {
 //Thread-safe
 void ImageCollection::AdvanceOrder() {
     CriticalSectionController cs(IMAGE_CS(m_csType));
-    //Turn on the flag, so that at the next GetImage() or PrepareImage(), 
+    //Turn on the flag, so that at the next GetImage() or AddImage(), 
     //the related image would be the start pos of the current "order".
     //The prev nodes before this start pos, would be regarded as "unused" for this order, and thus safe to be unloaded
     m_updateOrderStartPos = true;

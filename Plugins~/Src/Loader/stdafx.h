@@ -16,6 +16,7 @@
 #endif // _WIN32
 
 #include <cstdint> //uint64_t
-#include <map> //std::map
+#include <unordered_map> //std::unordered_map
 
 #endif // STDAFX_H
+

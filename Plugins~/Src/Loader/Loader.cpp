@@ -20,7 +20,12 @@ LOADER_API void GetImageDataInto(const charType* imagePath, const uint32_t image
 {
     using namespace StreamingImageSequencePlugin;
 	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
-	*readResult = LoaderUtility::GetImageData(imagePath, imageType, &imageCatalog, frame);
+	const ImageData* imageData = (LoaderUtility::GetImageData(imagePath, imageType, &imageCatalog, frame));
+	if (nullptr != imageData) {
+		*readResult = *imageData;
+	} else {
+		*readResult = ImageData(nullptr, 0, 0, READ_STATUS_UNAVAILABLE);
+	}
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -31,7 +36,8 @@ LOADER_API bool LoadAndAllocFullImage(const charType* imagePath, const int frame
     using namespace StreamingImageSequencePlugin;
     const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
 	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
-	return LoaderUtility::LoadAndAllocImage(imagePath, imageType, &imageCatalog, frame);
+	const ImageData* imageData = LoaderUtility::LoadAndAllocImage(imagePath, imageType, &imageCatalog, frame);
+	return (nullptr!=imageData);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -40,11 +46,12 @@ LOADER_API bool LoadAndAllocPreviewImage(const charType* imagePath, const uint32
 	using namespace StreamingImageSequencePlugin;
 	const uint32_t imageType = CRITICAL_SECTION_TYPE_PREVIEW_IMAGE;
 	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
-	return LoaderUtility::LoadAndAllocImage(imagePath, imageType, &imageCatalog,width,height, frame);
+	const ImageData* imageData = LoaderUtility::LoadAndAllocImage(imagePath, imageType, &imageCatalog,width,height, frame);
+	return (nullptr!=imageData);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-// return succ:0 fail:-1
+// return success:0 fail:-1
 LOADER_API int   UnloadImage(const charType* imagePath) {
     using namespace StreamingImageSequencePlugin;
 	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();

@@ -17,8 +17,6 @@
                                                                                                                         
 #include "../CommonLib/CommonLib.h"
 
-extern LOADER_API std::map<strType, int>          g_scenePathToSceneStatus;
-
 namespace StreamingImageSequencePlugin {
 struct ImageData;
 } //end namespace
