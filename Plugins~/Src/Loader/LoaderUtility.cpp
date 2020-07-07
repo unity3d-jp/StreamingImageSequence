@@ -96,34 +96,34 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
     , const uint32_t reqWidth, const uint32_t reqHeight, const int frame) 
 {
     switch (imageType) {
-    case CRITICAL_SECTION_TYPE_FULL_IMAGE: {
-        return LoaderUtility::LoadAndAllocImage(imagePath, imageType, imageCatalog, frame);
-    }
-    case CRITICAL_SECTION_TYPE_PREVIEW_IMAGE: {
-        const ImageData* previewImageData = LoaderUtility::GetImageData(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, 
-                                                                        imageCatalog, frame);
+        case CRITICAL_SECTION_TYPE_FULL_IMAGE: {
+            return LoaderUtility::LoadAndAllocImage(imagePath, imageType, imageCatalog, frame);
+        }
+        case CRITICAL_SECTION_TYPE_PREVIEW_IMAGE: {
+            const ImageData* previewImageData = LoaderUtility::GetImageData(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, 
+                                                                            imageCatalog, frame);
 
-        //Just return if the image load doesn't have any error
-        if (nullptr!=previewImageData && !LoaderUtility::IsImageLoadError(previewImageData->CurrentReadStatus))
+            //Just return if the image load doesn't have any error
+            if (nullptr!=previewImageData && !LoaderUtility::IsImageLoadError(previewImageData->CurrentReadStatus))
+                return previewImageData;
+
+
+            //Load full image
+            const ImageData* fullImageData = LoadAndAllocImage(imagePath, CRITICAL_SECTION_TYPE_FULL_IMAGE, 
+                                                               imageCatalog, frame);
+            if (nullptr == fullImageData)
+                return nullptr;
+
+            if ((fullImageData->CurrentReadStatus == READ_STATUS_LOADING))
+                return fullImageData;
+
+            imageCatalog->AddImageFromSrc(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, frame, 
+                                          fullImageData, reqWidth, reqHeight);
             return previewImageData;
-
-
-        //Load full image
-        const ImageData* fullImageData = LoadAndAllocImage(imagePath, CRITICAL_SECTION_TYPE_FULL_IMAGE, 
-                                                           imageCatalog, frame);
-        if (nullptr == fullImageData)
+        }
+        default: {
             return nullptr;
-
-        if ((fullImageData->CurrentReadStatus == READ_STATUS_LOADING))
-            return fullImageData;
-
-        imageCatalog->AddImageFromSrc(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, frame, 
-                                      fullImageData, reqWidth, reqHeight);
-        return previewImageData;
-    }
-    default: {
-        return nullptr;
-    }
+        }
     }
 
     return nullptr;

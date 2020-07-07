@@ -12,8 +12,8 @@ struct ImageData {
     ReadStatus CurrentReadStatus;
 
     //Constructors
-    ImageData();
-    ImageData(uint8_t* _rawData, uint32_t _width, uint32_t _height, ReadStatus _readStatus);
+    explicit ImageData();
+    explicit ImageData(uint8_t* _rawData, uint32_t _width, uint32_t _height, ReadStatus _readStatus);
 
 
 };
