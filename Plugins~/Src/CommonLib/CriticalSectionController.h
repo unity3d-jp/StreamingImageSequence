@@ -6,13 +6,13 @@ namespace StreamingImageSequencePlugin {
 
 class CriticalSectionObject;
 
-class COMMONLIB_API CriticalSectionController
-{
-	CriticalSectionObject* m_cs;
-	CriticalSectionController(){};
+class COMMONLIB_API CriticalSectionController {
 public:
 	CriticalSectionController(CriticalSectionObject* cs);
 	virtual ~CriticalSectionController();
+
+private:
+	CriticalSectionObject* m_cs;
 };
 
 } // end namespace

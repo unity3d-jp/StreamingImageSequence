@@ -7,7 +7,7 @@ namespace StreamingImageSequencePlugin {
 
 ImageCatalog::ImageCatalog() : m_latestRequestFrame(0) {
     for (uint32_t imageType = 0; imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES; ++imageType) {
-        m_imageCollection[imageType].SetMemoryAllocator(&m_memAllocator);
+        m_imageCollection[imageType].Init(static_cast<CriticalSectionType>(imageType), &m_memAllocator);
     }
 
 }

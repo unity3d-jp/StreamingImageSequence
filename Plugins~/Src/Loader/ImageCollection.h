@@ -5,7 +5,10 @@
 #include "CommonLib/Types.h"
 
 //Loader
+#include <unordered_map>
+
 #include "ImageData.h"
+#include "CommonLib/CriticalSectionType.h"
 
 namespace StreamingImageSequencePlugin {
 
@@ -14,7 +17,7 @@ class ImageMemoryAllocator;
 class ImageCollection {
 public:
     ImageCollection();
-    inline void SetMemoryAllocator(ImageMemoryAllocator*);
+    void Init(CriticalSectionType csType, ImageMemoryAllocator*);
 
     //return null if not found
     const ImageData* GetImage(const strType& imagePath, const bool isForCurrentOrder);
@@ -22,41 +25,42 @@ public:
     const ImageData* AllocateImage(const strType& imagePath, const uint32_t w, const uint32_t h);
     bool ResizeImage(const strType& imagePath, const uint32_t w, const uint32_t h);
 
-    std::map<strType, ImageData>::iterator PrepareImage(const strType& imagePath);
+    std::unordered_map<strType, ImageData>::iterator PrepareImage(const strType& imagePath);
     void SetImageStatus(const strType& imagePath, const ReadStatus status);
     bool UnloadImage(const strType& imagePath);
     void UnloadAllImages();
 
-    inline const std::map<strType, ImageData>& GetImageMap() const;
+    inline const std::unordered_map<strType, ImageData>& GetImageMap() const;
     inline size_t GetNumImages() const;
 
     void AdvanceOrder();
 
 private:
 
-    void AddImageOrder(std::map<strType, ImageData>::iterator);
-    void ReorderImageToEnd(std::map<strType, ImageData>::iterator);
-    void DeleteImageOrder(std::map<strType, ImageData>::iterator);
-    void MoveOrderStartPosToEnd();
+    std::unordered_map<strType, ImageData>::iterator PrepareImageUnsafe(const strType& imagePath);
+    void AddImageOrderUnsafe(std::unordered_map<strType, ImageData>::iterator);
+    void ReorderImageUnsafe(std::unordered_map<strType, ImageData>::iterator);
+    void DeleteImageOrderUnsafe(std::unordered_map<strType, ImageData>::iterator);
+    void MoveOrderStartPosToEndUnsafe();
 
     //This will unload unused image if memory is not enough
-    bool AllocateRawData(uint8_t** rawData, const uint32_t w, const uint32_t h, const strType& imagePath);
-    bool UnloadUnusedImage(const strType& imagePath); //returns true if one or more images are successfully unloaded
+    bool AllocateRawDataUnsafe(uint8_t** rawData, const uint32_t w, const uint32_t h, const strType& imagePath);
+    bool UnloadUnusedImageUnsafe(const strType& imagePath); //returns true if one or more images are successfully unloaded
 
     ImageMemoryAllocator*           m_memAllocator;
-    std::map<strType, ImageData>    m_pathToImageMap;
+    std::unordered_map<strType, ImageData>    m_pathToImageMap;
 
     //Ordering structure
-    std::map<strType, std::list<std::map<strType, ImageData>::iterator>::iterator> m_pathToOrderMap;
-    std::list<std::map<strType, ImageData>::iterator>           m_orderedImageList;
-    std::list<std::map<strType, ImageData>::iterator>::iterator m_curOrderStartPos;
+    std::unordered_map<strType, std::list<std::unordered_map<strType, ImageData>::iterator>::iterator> m_pathToOrderMap;
+    std::list<std::unordered_map<strType, ImageData>::iterator>           m_orderedImageList;
+    std::list<std::unordered_map<strType, ImageData>::iterator>::iterator m_curOrderStartPos;
     bool m_updateOrderStartPos;
+
+    CriticalSectionType m_csType;
 
 };
 
-void ImageCollection::SetMemoryAllocator(ImageMemoryAllocator* memAllocator) { m_memAllocator = memAllocator; }
-
-inline const std::map<strType, ImageData>& ImageCollection::GetImageMap() const { return m_pathToImageMap;  }
+inline const std::unordered_map<strType, ImageData>& ImageCollection::GetImageMap() const { return m_pathToImageMap;  }
 inline size_t ImageCollection::GetNumImages() const { return m_pathToImageMap.size(); }
 
 

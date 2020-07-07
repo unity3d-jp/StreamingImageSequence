@@ -13,7 +13,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------
 
-#define TEXTURE_CS(texType)         (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(static_cast<StreamingImageSequencePlugin::CriticalSectionType>(texType)))
+#define IMAGE_CS(imageType)     (StreamingImageSequencePlugin::CriticalSection::GetInstance().GetObject(static_cast<StreamingImageSequencePlugin::CriticalSectionType>(imageType)))
 
 
 #endif //#ifdef COMMONLIB
