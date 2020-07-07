@@ -52,7 +52,7 @@ const ImageData* LoaderUtility::GetImageData(const strType& imagePath, const uin
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//Returns whether the file has been processed, or is still processed  (inside readResultMap).
+//Returns the corresponding ImageData. Can be null
 const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog, 
     const int frame) 
 {
@@ -91,7 +91,7 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//Returns whether the file has been processed, or is still processed  (inside catalog).
+//Returns the corresponding ImageData. Can be null
 const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog
     , const uint32_t reqWidth, const uint32_t reqHeight, const int frame) 
 {
