@@ -20,10 +20,11 @@ public:
     const ImageData* GetImage(const strType& imagePath, const uint32_t imageType, const int frame);
 
     //Wrapper for functions in ImageCollection
-    inline const ImageData* PrepareImage(const strType& imagePath, const uint32_t imageType, const int frame);
-    inline const ImageData* AllocateImage(const strType& imagePath,const uint32_t imageType,const uint32_t w,const uint32_t h);
-    inline bool CopyImageFromSrc(const strType& imagePath,const uint32_t imageType, const ImageData*, 
+    inline const ImageData* AddImage(const strType& imagePath, const uint32_t imageType, const int frame);
+    inline bool AddImageFromSrc(const strType& imagePath,const uint32_t imageType, const int frame, const ImageData*, 
                                  const uint32_t w,const uint32_t h);
+
+    inline const ImageData* AllocateImage(const strType& imagePath,const uint32_t imageType,const uint32_t w,const uint32_t h);
     inline void SetImageStatus(const strType& imagePath, const uint32_t imageType, const ReadStatus status);
     inline bool UnloadImage(const strType& imagePath, const uint32_t imageType);
     inline const std::unordered_map<strType, ImageData>& GetImageMap(const uint32_t imageType) const;
@@ -53,22 +54,24 @@ ImageCatalog& ImageCatalog::GetInstance() {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-const ImageData* ImageCatalog::PrepareImage(const strType& imagePath, const uint32_t imageType, const int frame) {
+const ImageData* ImageCatalog::AddImage(const strType& imagePath, const uint32_t imageType, const int frame) {
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
     UpdateRequestFrame(frame);
-    const std::unordered_map<strType, ImageData>::const_iterator it = m_imageCollection[imageType].PrepareImage(imagePath);
+    const std::unordered_map<strType, ImageData>::const_iterator it = m_imageCollection[imageType].AddImage(imagePath);
     return &it->second;
+}
+
+bool ImageCatalog::AddImageFromSrc(const strType& imagePath,const uint32_t imageType, const int frame, const ImageData* src,
+                                   const uint32_t w,const uint32_t h)
+{
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
+    UpdateRequestFrame(frame);
+    return m_imageCollection[imageType].AddImageFromSrc(imagePath, src, w, h);
 }
 
 const ImageData* ImageCatalog::AllocateImage(const strType& imagePath, const uint32_t imageType, const uint32_t w, const uint32_t h) {
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
     return m_imageCollection[imageType].AllocateImage(imagePath, w, h);
-}
-bool ImageCatalog::CopyImageFromSrc(const strType& imagePath,const uint32_t imageType, const ImageData* src,
-                                    const uint32_t w,const uint32_t h)
-{
-    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
-    return m_imageCollection[imageType].CopyImageFromSrc(imagePath, src, w, h);
 }
 
 void ImageCatalog::SetImageStatus(const strType& imagePath, const uint32_t imageType, const ReadStatus status) {

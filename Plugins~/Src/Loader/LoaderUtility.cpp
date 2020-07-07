@@ -70,7 +70,7 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
             return imageData;
 
     } else {
-        imageData = imageCatalog->PrepareImage(imagePath, imageType, frame);
+        imageData = imageCatalog->AddImage(imagePath, imageType, frame);
 
     }
 
@@ -117,9 +117,8 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
         if ((fullImageData->CurrentReadStatus == READ_STATUS_LOADING))
             return fullImageData;
 
-        previewImageData = imageCatalog->PrepareImage(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, frame);
-
-        imageCatalog->CopyImageFromSrc(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, fullImageData, reqWidth, reqHeight);
+        imageCatalog->AddImageFromSrc(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, frame, 
+                                      fullImageData, reqWidth, reqHeight);
         return previewImageData;
     }
     default: {

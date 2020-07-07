@@ -23,9 +23,10 @@ public:
     const ImageData* GetImage(const strType& imagePath, const bool isForCurrentOrder);
 
     const ImageData* AllocateImage(const strType& imagePath, const uint32_t w, const uint32_t h);
-    bool CopyImageFromSrc(const strType& imagePath, const ImageData* src, const uint32_t w, const uint32_t h);
 
-    std::unordered_map<strType, ImageData>::const_iterator PrepareImage(const strType& imagePath);
+    std::unordered_map<strType, ImageData>::const_iterator AddImage(const strType& imagePath);
+    bool AddImageFromSrc(const strType& imagePath, const ImageData* src, const uint32_t w, const uint32_t h);
+
     void SetImageStatus(const strType& imagePath, const ReadStatus status);
     bool UnloadImage(const strType& imagePath);
     void UnloadAllImages();

@@ -52,7 +52,7 @@ const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool 
 
 //----------------------------------------------------------------------------------------------------------------------
 //Thread-safe
-std::unordered_map<strType, ImageData>::const_iterator ImageCollection::PrepareImage(const strType& imagePath) {
+std::unordered_map<strType, ImageData>::const_iterator ImageCollection::AddImage(const strType& imagePath) {
     
     CriticalSectionController cs(IMAGE_CS(m_csType));
 
@@ -94,7 +94,7 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 //----------------------------------------------------------------------------------------------------------------------
 
 
-bool ImageCollection::CopyImageFromSrc(const strType& imagePath, const ImageData* src, 
+bool ImageCollection::AddImageFromSrc(const strType& imagePath, const ImageData* src, 
                                            const uint32_t w, const uint32_t h)
 {
     CriticalSectionController cs(IMAGE_CS(m_csType));
@@ -180,7 +180,7 @@ void ImageCollection::UnloadAllImages() {
 //Thread-safe
 void ImageCollection::AdvanceOrder() {
     CriticalSectionController cs(IMAGE_CS(m_csType));
-    //Turn on the flag, so that at the next GetImage() or PrepareImage(), 
+    //Turn on the flag, so that at the next GetImage() or AddImage(), 
     //the related image would be the start pos of the current "order".
     //The prev nodes before this start pos, would be regarded as "unused" for this order, and thus safe to be unloaded
     m_updateOrderStartPos = true;
