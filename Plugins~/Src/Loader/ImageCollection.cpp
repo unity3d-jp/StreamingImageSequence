@@ -14,8 +14,10 @@ namespace StreamingImageSequencePlugin {
 
 
 ImageCollection::ImageCollection()
-    : m_curOrderStartPos(m_orderedImageList.end())
+    : m_memAllocator(nullptr)
+    , m_curOrderStartPos(m_orderedImageList.end())
     , m_updateOrderStartPos(false)
+    , m_csType(CRITICAL_SECTION_TYPE_FULL_IMAGE)
 {
 
 }
@@ -119,7 +121,7 @@ bool ImageCollection::ResizeImage(const strType& imagePath, const uint32_t w, co
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//Thread-safe
+//Non-Thread-safe
 void ImageCollection::SetImageStatus(const strType& imagePath, const ReadStatus status) {
 
     //No need to sync. One imagePath should be processed by only one job
