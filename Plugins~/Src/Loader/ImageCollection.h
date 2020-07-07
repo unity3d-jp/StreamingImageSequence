@@ -24,7 +24,6 @@ public:
 
     const ImageData* AllocateImage(const strType& imagePath, const uint32_t w, const uint32_t h);
     bool CopyImageFromSrc(const strType& imagePath, const ImageData* src, const uint32_t w, const uint32_t h);
-    bool ResizeImage(const strType& imagePath, const uint32_t w, const uint32_t h);
 
     std::unordered_map<strType, ImageData>::const_iterator PrepareImage(const strType& imagePath);
     void SetImageStatus(const strType& imagePath, const ReadStatus status);

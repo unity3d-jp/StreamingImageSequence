@@ -93,37 +93,6 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//Thread-safe
-bool ImageCollection::ResizeImage(const strType& imagePath, const uint32_t w, const uint32_t h) {
-
-    CriticalSectionController cs(IMAGE_CS(m_csType));
-
-    auto it = m_pathToImageMap.find(imagePath);
-    ASSERT(it != m_pathToImageMap.end());
-
-    //Allocate
-    ImageData resizedImageData(nullptr,w,h,READ_STATUS_LOADING);
-    const bool isAllocated = AllocateRawDataUnsafe(&resizedImageData.RawData, w, h, imagePath);
-    if (!isAllocated)
-        return false;
-
-
-    ImageData& imageData = it->second;
-    ASSERT(nullptr != imageData.RawData);
-    ASSERT(READ_STATUS_SUCCESS == imageData.CurrentReadStatus);
-
-    
-    stbir_resize_uint8(imageData.RawData, imageData.Width, imageData.Height, 0,
-        resizedImageData.RawData, w, h, 0, LoaderConstants::NUM_BYTES_PER_TEXEL);
-    m_memAllocator->Deallocate(&imageData);
-
-    //Register to map
-    resizedImageData.CurrentReadStatus = READ_STATUS_SUCCESS;
-    it->second = resizedImageData;
-
-    return true;
-}
-
 
 bool ImageCollection::CopyImageFromSrc(const strType& imagePath, const ImageData* src, 
                                            const uint32_t w, const uint32_t h)

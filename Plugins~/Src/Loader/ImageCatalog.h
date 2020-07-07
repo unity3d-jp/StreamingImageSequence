@@ -24,7 +24,6 @@ public:
     inline const ImageData* AllocateImage(const strType& imagePath,const uint32_t imageType,const uint32_t w,const uint32_t h);
     inline bool CopyImageFromSrc(const strType& imagePath,const uint32_t imageType, const ImageData*, 
                                  const uint32_t w,const uint32_t h);
-    inline void ResizeImage(const strType& imagePath,const uint32_t imageType,const uint32_t w, const uint32_t h);
     inline void SetImageStatus(const strType& imagePath, const uint32_t imageType, const ReadStatus status);
     inline bool UnloadImage(const strType& imagePath, const uint32_t imageType);
     inline const std::unordered_map<strType, ImageData>& GetImageMap(const uint32_t imageType) const;
@@ -70,11 +69,6 @@ bool ImageCatalog::CopyImageFromSrc(const strType& imagePath,const uint32_t imag
 {
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
     return m_imageCollection[imageType].CopyImageFromSrc(imagePath, src, w, h);
-}
-
-void ImageCatalog::ResizeImage(const strType& imagePath, const uint32_t imageType, const uint32_t w, const uint32_t h) {
-    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
-    m_imageCollection[imageType].ResizeImage(imagePath, w, h);
 }
 
 void ImageCatalog::SetImageStatus(const strType& imagePath, const uint32_t imageType, const ReadStatus status) {
