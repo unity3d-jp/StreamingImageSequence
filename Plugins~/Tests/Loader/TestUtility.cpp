@@ -66,8 +66,8 @@ void TestUtility::CheckMemoryCleanup() {
 //----------------------------------------------------------------------------------------------------------------------
 
 uint32_t TestUtility::FindNumDuplicateMapElements(
-    const std::map<strType, StreamingImageSequencePlugin::ImageData>& map0, 
-    const std::map<strType, StreamingImageSequencePlugin::ImageData>& map1) 
+    const std::unordered_map<strType, StreamingImageSequencePlugin::ImageData>& map0, 
+    const std::unordered_map<strType, StreamingImageSequencePlugin::ImageData>& map1) 
 {
     uint32_t ret = 0;
     for (auto itr = map0.begin(); itr != map0.end(); ++itr) {
@@ -110,9 +110,9 @@ uint32_t TestUtility::CleanupAndLoadMaxImages(const uint32_t imageType) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-std::map<strType, StreamingImageSequencePlugin::ImageData> TestUtility::LoadAndCheckUnloadingOfUnusedImages(
+std::unordered_map<strType, StreamingImageSequencePlugin::ImageData> TestUtility::LoadAndCheckUnloadingOfUnusedImages(
     const uint32_t imageType, const int frame, const uint32_t startTestImageIndex, const uint32_t numImages, 
-    const std::map<strType, StreamingImageSequencePlugin::ImageData>& prevImageMap) 
+    const std::unordered_map<strType, StreamingImageSequencePlugin::ImageData>& prevImageMap) 
 {
     //This function assumes that we have reached a state where it's not possible to allocate an image unless we unload.
 
@@ -127,7 +127,7 @@ std::map<strType, StreamingImageSequencePlugin::ImageData> TestUtility::LoadAndC
     );
     ASSERT(processed);
     ASSERT(readSuccessful);
-    const std::map<strType, ImageData>& curImageMap = imageCatalog.GetImageMap(imageType);
+    const std::unordered_map<strType, ImageData>& curImageMap = imageCatalog.GetImageMap(imageType);
     uint32_t numDuplicates = TestUtility::FindNumDuplicateMapElements(prevImageMap, curImageMap);
     ASSERT(prevImageMap.size() - numImages == numDuplicates);
 

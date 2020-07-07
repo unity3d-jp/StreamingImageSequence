@@ -83,7 +83,7 @@ TEST(Loader, AutoUnloadUnusedImagesTest) {
     const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
 
     const uint32_t maxImages = TestUtility::CleanupAndLoadMaxImages(imageType);
-    std::map<strType, ImageData> imageMap = imageCatalog.GetImageMap(imageType);
+    std::unordered_map<strType, ImageData> imageMap = imageCatalog.GetImageMap(imageType);
 
     //Test loading images in next frames
     int curFrame = 0;
@@ -155,7 +155,7 @@ TEST(Loader, OutOfMemoryTest) {
     const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
 
     const uint32_t maxImages = TestUtility::CleanupAndLoadMaxImages(imageType);
-    std::map<strType, ImageData> imageMap = imageCatalog.GetImageMap(imageType);
+    std::unordered_map<strType, ImageData> imageMap = imageCatalog.GetImageMap(imageType);
 
     //This should unload image loaded in the frame 0
     int curFrame = 1;
