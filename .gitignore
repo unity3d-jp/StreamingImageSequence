@@ -65,6 +65,7 @@ Plugins~/Build/Testing/**
 Plugins~/Build/x64/**
 Plugins~/Build/Src/**
 Plugins~/Build/Tests/**
+Plugins~/Build/*.build/*
 
 # Custom packages
 StreamingImageSequence~/Packages/com.unity.*/**
