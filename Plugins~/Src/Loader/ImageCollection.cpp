@@ -55,6 +55,11 @@ const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool 
 std::unordered_map<strType, ImageData>::const_iterator ImageCollection::PrepareImage(const strType& imagePath) {
     
     CriticalSectionController cs(IMAGE_CS(m_csType));
+
+    const std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
+    if (pathIt !=m_pathToImageMap.end())
+        return pathIt;
+
     return PrepareImageUnsafe(imagePath);
 }
 
@@ -139,7 +144,6 @@ bool ImageCollection::CopyImageFromSrc(const strType& imagePath, const ImageData
     const bool isAllocated = AllocateRawDataUnsafe(&resizedImageData.RawData, w, h, imagePath);
     if (!isAllocated)
         return false;
-
 
     ASSERT(nullptr != src->RawData);
     ASSERT(READ_STATUS_SUCCESS == src->CurrentReadStatus);
