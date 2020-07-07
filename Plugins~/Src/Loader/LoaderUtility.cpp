@@ -58,7 +58,7 @@ bool LoaderUtility::LoadAndAllocImage(const strType& imagePath, const uint32_t i
 {
     using namespace StreamingImageSequencePlugin;
 
-    ImageData imageData = LoaderUtility::GetImageData(imagePath, imageType, imageCatalog, frame);
+    const ImageData imageData = LoaderUtility::GetImageData(imagePath, imageType, imageCatalog, frame);
 
     //Just return if the image load doesn't have any error
     if (!LoaderUtility::IsImageLoadError(imageData.CurrentReadStatus))
