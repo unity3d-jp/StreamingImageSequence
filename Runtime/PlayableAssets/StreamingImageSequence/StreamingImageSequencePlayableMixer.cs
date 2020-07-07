@@ -1,11 +1,7 @@
 ﻿using System.Collections.Generic;
-using System;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 using UnityEngine.Timeline;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace UnityEngine.StreamingImageSequence
 {
@@ -15,13 +11,6 @@ namespace UnityEngine.StreamingImageSequence
 
 
         public StreamingImageSequencePlayableMixer() {
-
-#if UNITY_EDITOR
-            System.Reflection.Assembly assembly = typeof(UnityEditor.EditorWindow).Assembly;
-            Type type = assembly.GetType("UnityEditor.GameView");
-            m_gameView = EditorWindow.GetWindow(type,false,null,false);
-
-#endif
         }
 
         
@@ -138,11 +127,6 @@ namespace UnityEngine.StreamingImageSequence
             if (texReady) {
                 UpdateRendererTexture(asset);
 
-#if UNITY_EDITOR
-                if (!EditorApplication.isPlaying) {
-                    m_gameView.Repaint();
-                }
-#endif
             }
 
         }
@@ -205,7 +189,6 @@ namespace UnityEngine.StreamingImageSequence
         private Image           m_image = null;
 
 #if UNITY_EDITOR
-        readonly EditorWindow m_gameView;
         LoaderPeriodicJob m_loaderPeriodicJob;        
 #endif
 
