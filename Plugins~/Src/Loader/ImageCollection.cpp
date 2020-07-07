@@ -65,7 +65,7 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 
     CriticalSectionController cs(IMAGE_CS(m_csType));
 
-    auto pathIt = m_pathToImageMap.find(imagePath);
+    std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
 
     //Unload existing memory if it exists
     if (m_pathToImageMap.end() != pathIt) {
