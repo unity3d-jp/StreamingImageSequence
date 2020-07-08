@@ -2,36 +2,38 @@
 
 internal class PreviewImageLoadBGTask : BackGroundTask {
 
-    internal static void Queue(string strFileName, int width, int height, int frame) {
-        PreviewImageLoadBGTask task = new PreviewImageLoadBGTask(strFileName, width, height, frame);
+    internal static void Queue(string imagePath, int width, int height, int frame) {
+        PreviewImageLoadBGTask task = new PreviewImageLoadBGTask(new ImageLoadInfo(imagePath, frame), width, height);
         UpdateManager.QueueBackGroundTask(task);
         
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    private PreviewImageLoadBGTask( string fileName, int width, int height, int frame) {
-        m_fileName = fileName;
+    private PreviewImageLoadBGTask( ImageLoadInfo imageLoadInfo, int width, int height) {
+        m_imageLoadInfo = imageLoadInfo; 
         m_width = width;
         m_height = height;
-        m_frame = frame;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
 
     public override void Execute() {
         const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW;
-        StreamingImageSequencePlugin.GetImageDataInto(m_fileName, TEX_TYPE, m_frame, out ImageData tResult);
+        string imagePath    = m_imageLoadInfo.GetImagePath();
+        int    requestFrame = m_imageLoadInfo.GetRequestFrame();
+        
+        StreamingImageSequencePlugin.GetImageDataInto(imagePath, TEX_TYPE, requestFrame, out ImageData tResult);
         switch (tResult.ReadStatus) {
             case StreamingImageSequenceConstants.READ_STATUS_LOADING: 
             case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
 #if UNITY_EDITOR
-                LogUtility.LogDebug("Already requested:" + m_fileName);
+                LogUtility.LogDebug("Already requested:" + imagePath);
 #endif
                 break;
             }
             default: {
                 //Debug.Log("Loading: " + m_fileName);
-                StreamingImageSequencePlugin.LoadAndAllocPreviewImage(m_fileName, m_width, m_height, m_frame);
+                StreamingImageSequencePlugin.LoadAndAllocPreviewImage(imagePath, m_width, m_height, requestFrame);
                 break;
             }
         }
@@ -40,10 +42,9 @@ internal class PreviewImageLoadBGTask : BackGroundTask {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    readonly string m_fileName;
+    private readonly ImageLoadInfo m_imageLoadInfo;
     private readonly int m_width;
     private readonly int m_height;
-    private readonly int m_frame;
 
 }
 } //end namespace
