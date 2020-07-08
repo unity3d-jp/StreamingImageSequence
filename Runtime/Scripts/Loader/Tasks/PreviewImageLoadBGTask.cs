@@ -1,7 +1,8 @@
-﻿
+﻿using System.Collections.Generic;
+
 namespace UnityEngine.StreamingImageSequence {
 
-internal class PreviewImageLoadBGTask : ImageLoadInfo, IBackGroundTask {
+internal class PreviewImageLoadBGTask : BaseImageLoadBGTask, IBackGroundTask {
 
     internal static void Queue(string imagePath, int width, int height, int frame) {
         PreviewImageLoadBGTask task = new PreviewImageLoadBGTask(imagePath, frame, width, height);
