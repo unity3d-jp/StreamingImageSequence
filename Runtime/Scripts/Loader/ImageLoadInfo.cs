@@ -11,10 +11,10 @@ internal class ImageLoadInfo {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    string GetImagePath()                     { return m_imagePath; }
+    internal string GetImagePath()                     { return m_imagePath; }
     
-    void SetRequestFrame(int requestFrame)    { m_requestFrame = requestFrame; } 
-    int GetRequestFrame()                     { return m_requestFrame; } 
+    internal void SetRequestFrame(int requestFrame)    { m_requestFrame = requestFrame; } 
+    internal int GetRequestFrame()                     { return m_requestFrame; } 
 
     
 //----------------------------------------------------------------------------------------------------------------------
