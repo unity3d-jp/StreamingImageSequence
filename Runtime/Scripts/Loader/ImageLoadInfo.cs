@@ -9,6 +9,11 @@ internal class ImageLoadInfo {
         m_imagePath = imagePath;
         m_requestFrame = requestFrame;
     }
+//----------------------------------------------------------------------------------------------------------------------
+    
+    public override int GetHashCode() {
+        return m_imagePath.GetHashCode();
+    }
 
 //----------------------------------------------------------------------------------------------------------------------
     internal string GetImagePath()                     { return m_imagePath; }
