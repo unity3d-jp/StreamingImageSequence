@@ -23,7 +23,7 @@ namespace UnityEngine.StreamingImageSequence.Tests {
                 "Texture is already or currently being loaded"
             );
 
-            ImageLoadBGTask.Queue(fullPath,Time.frameCount);
+            FullImageLoadBGTask.Queue(fullPath,Time.frameCount);
             yield return new WaitForSeconds(LOAD_TIMEOUT);
             
             StreamingImageSequencePlugin.GetImageDataInto(fullPath, IMAGE_TYPE, Time.frameCount, out readResult );

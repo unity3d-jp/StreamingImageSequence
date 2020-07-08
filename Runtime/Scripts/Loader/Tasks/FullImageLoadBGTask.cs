@@ -1,17 +1,17 @@
 ﻿namespace UnityEngine.StreamingImageSequence {
 
 
-internal class ImageLoadBGTask : BackGroundTask {
+internal class FullImageLoadBGTask : BackGroundTask {
 
 //----------------------------------------------------------------------------------------------------------------------
     internal static void Queue(string strFileName, int frame) {
-        ImageLoadBGTask task = new ImageLoadBGTask(strFileName, frame);
+        FullImageLoadBGTask task = new FullImageLoadBGTask(strFileName, frame);
         UpdateManager.QueueBackGroundTask(task);
         
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    private ImageLoadBGTask( string strFileName, int frame) {
+    private FullImageLoadBGTask( string strFileName, int frame) {
         m_strFileName = strFileName;
         m_frame = frame;
     }
