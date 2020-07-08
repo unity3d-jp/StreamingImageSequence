@@ -1,7 +1,7 @@
 ﻿namespace UnityEngine.StreamingImageSequence {
 
 
-internal abstract class BaseImageLoadBGTask {
+internal abstract class BaseImageLoadBGTask : IBackGroundTask {
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -9,6 +9,10 @@ internal abstract class BaseImageLoadBGTask {
         m_imagePath = imagePath;
         m_requestFrame = requestFrame;
     }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    public abstract void Execute();
+    
 //----------------------------------------------------------------------------------------------------------------------
     
     public override int GetHashCode() {
