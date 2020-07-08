@@ -61,18 +61,12 @@ internal static class PreviewUtility {
         double secondFrameRectX = (float) FindFrameXPos(drawInfo.LocalTime + localTimeCounter, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
         float xCounter = (float)(secondFrameRectX - firstFrameRectX);
         
-        for (int i = 0; i < numPreviewImagesToDraw; ++i) {
+        while (drawInfo.DrawRect.x < (endVisibleRectX)) {
                  
             //drawInfo.DrawRect.x = (float) FindFrameXPos(drawInfo.LocalTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
             
-            //already exceeds the visible area            
-            if (drawInfo.DrawRect.x >= (endVisibleRectX)) {
-                break;
-            }
-            
             if (drawInfo.DrawRect.x >= startVisibleRectX) {
-                drawPreviewFunc(drawInfo);                
-                
+                drawPreviewFunc(drawInfo);                                
             }
 
             drawInfo.DrawRect.x += xCounter;
