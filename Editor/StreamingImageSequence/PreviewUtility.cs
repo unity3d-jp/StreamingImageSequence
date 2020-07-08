@@ -1,6 +1,7 @@
 ﻿//#define DEBUG_PREVIEW_IMAGES         
 
 using System;
+using NUnit.Framework;
 using UnityEngine;
 
 
@@ -10,42 +11,48 @@ internal static class PreviewUtility {
 
     internal static void EnumeratePreviewImages( ref PreviewClipInfo clipInfo, Action<PreviewDrawInfo> drawPreviewFunc) 
     {
-
         double visibleLocalStartTime = clipInfo.VisibleLocalStartTime;
         double visibleLocalEndTime   = clipInfo.VisibleLocalEndTime;
         Rect   visibleRect           = clipInfo.VisibleRect;
-        float  visibleRectEnd        = visibleRect.x + visibleRect.width;       
         double visibleDuration       = visibleLocalEndTime - visibleLocalStartTime;
         double scaledFramePerSecond  = clipInfo.FramePerSecond / clipInfo.TimeScale; 
+        double scaledClipDuration    = clipInfo.Duration * clipInfo.TimeScale; 
         
         //Calculate rect for one image.
         float dimensionRatio        = clipInfo.ImageDimensionRatio;
         int   widthPerPreviewImage  = (int) (dimensionRatio * visibleRect.height);
         int   heightPerPreviewImage = (int)visibleRect.height;
         
-        //Calculate the time and pos of the first frame to be drawn        
+        //Calculate the time first visible frame         
         int    firstFrame = (int )Math.Floor( (float) (visibleLocalStartTime * scaledFramePerSecond));
         double firstFrameTime  = firstFrame / scaledFramePerSecond;        
-        double firstFrameRectX = FindFrameXPos(firstFrameTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
+       
+        int numAllPreviewImages = 0;
+        {            
+            //Calculate the width if we are showing the whole clip
+            //Eq: (visibleWidth / visibleDuration = fullClipWidth / fullDuration)
+            float fullClipWidth = Mathf.Ceil((float)(visibleRect.width * scaledClipDuration / visibleDuration));
 
-        //Set the number of preview images based on visibleRect, at least 1
-        int numPreviewImagesToDraw = Mathf.Max(Mathf.FloorToInt((visibleRectEnd - (float)firstFrameRectX) / widthPerPreviewImage),1);
-
+            //Calculate the number of preview images available for this clip, at least 1 (incl. the invisible ones)
+            numAllPreviewImages = Mathf.Max(Mathf.FloorToInt(fullClipWidth / widthPerPreviewImage),1);
         
-        int lastFrame = (int )Math.Ceiling( (float) (visibleLocalEndTime * scaledFramePerSecond));
-        double lastFrameTime  = lastFrame / scaledFramePerSecond;        
-
-        //Check the number of preview images based on the number of actual frames in Timeline 
-        int numFrames = lastFrame - firstFrame;
-        numPreviewImagesToDraw = Mathf.Min(numPreviewImagesToDraw, numFrames);
-        if (numPreviewImagesToDraw <= 0)
+            //All frames for the clip (including the invisible ones)
+            int numAllFrames = Mathf.RoundToInt((float)(clipInfo.Duration * scaledFramePerSecond));
+            numAllPreviewImages = Mathf.Min(numAllPreviewImages, numAllFrames);
+        }        
+        
+        if (numAllPreviewImages <= 0)
             return;
         
+        double localTimeCounter = scaledClipDuration / numAllPreviewImages;        
+
+        //Base the firstFrameTime on localTimeCounter, which was calculated using full clip length and fullWidth,
+        //so that they transition smoothly when we slide the slider in Timeline window
+        firstFrameTime = Mathf.Floor((float)firstFrameTime / (float )localTimeCounter) * localTimeCounter;        
+        double firstFrameRectX = FindFrameXPos(firstFrameTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
         
-        double localTimeCounter = ((lastFrameTime  - firstFrameTime) / numPreviewImagesToDraw);
-                
+
         //Loop to render all preview Images, ignoring those outside the visible Rect
-        float endVisibleRectX = visibleRect.x + visibleRect.width;
         float startVisibleRectX = visibleRect.x - widthPerPreviewImage; //for rendering preview images that are partly visible
         PreviewDrawInfo drawInfo = new PreviewDrawInfo() {
             DrawRect = new Rect() {
@@ -60,7 +67,10 @@ internal static class PreviewUtility {
         //minor optimization by executing FindFrameXPos() less
         double secondFrameRectX = (float) FindFrameXPos(drawInfo.LocalTime + localTimeCounter, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
         float xCounter = (float)(secondFrameRectX - firstFrameRectX);
+
+        Assert.Greater(xCounter, 0);
         
+        float endVisibleRectX = (visibleRect.x + visibleRect.width) - (xCounter * 0.5f);
         while (drawInfo.DrawRect.x < (endVisibleRectX)) {
                  
             //drawInfo.DrawRect.x = (float) FindFrameXPos(drawInfo.LocalTime, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
