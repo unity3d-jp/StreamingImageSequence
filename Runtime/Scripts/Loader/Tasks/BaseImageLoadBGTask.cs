@@ -1,11 +1,11 @@
 ﻿namespace UnityEngine.StreamingImageSequence {
 
 
-internal class ImageLoadInfo {
+internal abstract class BaseImageLoadBGTask : BackGroundTask{
 
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal  ImageLoadInfo( string imagePath, int requestFrame) {
+    internal  BaseImageLoadBGTask( string imagePath, int requestFrame) {
         m_imagePath = imagePath;
         m_requestFrame = requestFrame;
     }

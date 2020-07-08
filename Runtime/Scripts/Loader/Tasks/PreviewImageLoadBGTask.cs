@@ -1,16 +1,17 @@
-﻿namespace UnityEngine.StreamingImageSequence {
+﻿using System.Collections.Generic;
 
-internal class PreviewImageLoadBGTask : BackGroundTask {
+namespace UnityEngine.StreamingImageSequence {
+
+internal class PreviewImageLoadBGTask : BaseImageLoadBGTask {
 
     internal static void Queue(string imagePath, int width, int height, int frame) {
-        PreviewImageLoadBGTask task = new PreviewImageLoadBGTask(new ImageLoadInfo(imagePath, frame), width, height);
+        PreviewImageLoadBGTask task = new PreviewImageLoadBGTask(imagePath, frame, width, height);
         UpdateManager.QueueBackGroundTask(task);
         
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    private PreviewImageLoadBGTask( ImageLoadInfo imageLoadInfo, int width, int height) {
-        m_imageLoadInfo = imageLoadInfo; 
+    private PreviewImageLoadBGTask( string imagePath, int frame, int width, int height) : base(imagePath,frame){
         m_width = width;
         m_height = height;
     }
@@ -19,8 +20,8 @@ internal class PreviewImageLoadBGTask : BackGroundTask {
 
     public override void Execute() {
         const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW;
-        string imagePath    = m_imageLoadInfo.GetImagePath();
-        int    requestFrame = m_imageLoadInfo.GetRequestFrame();
+        string imagePath    = GetImagePath();
+        int    requestFrame = GetRequestFrame();
         
         StreamingImageSequencePlugin.GetImageDataInto(imagePath, TEX_TYPE, requestFrame, out ImageData tResult);
         switch (tResult.ReadStatus) {
@@ -42,7 +43,6 @@ internal class PreviewImageLoadBGTask : BackGroundTask {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    private readonly ImageLoadInfo m_imageLoadInfo;
     private readonly int m_width;
     private readonly int m_height;
 
