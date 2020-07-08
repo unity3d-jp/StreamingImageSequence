@@ -16,9 +16,9 @@ namespace UnityEngine.StreamingImageSequence.Tests {
             string fullPath = Path.GetFullPath(PKG_PATH);
             Assert.IsTrue(File.Exists(fullPath));
 
-            const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
+            const int IMAGE_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
 
-            StreamingImageSequencePlugin.GetImageDataInto(fullPath, TEX_TYPE, Time.frameCount, out ImageData readResult );
+            StreamingImageSequencePlugin.GetImageDataInto(fullPath, IMAGE_TYPE, Time.frameCount, out ImageData readResult );
             Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_UNAVAILABLE, readResult.ReadStatus, 
                 "Texture is already or currently being loaded"
             );
@@ -26,13 +26,13 @@ namespace UnityEngine.StreamingImageSequence.Tests {
             ImageLoadBGTask.Queue(fullPath,Time.frameCount);
             yield return new WaitForSeconds(LOAD_TIMEOUT);
             
-            StreamingImageSequencePlugin.GetImageDataInto(fullPath, TEX_TYPE, Time.frameCount, out readResult );
+            StreamingImageSequencePlugin.GetImageDataInto(fullPath, IMAGE_TYPE, Time.frameCount, out readResult );
             Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_SUCCESS, readResult.ReadStatus,
                 "Loading texture is not successful."
             );
             
-            AssertUnloaded(fullPath, TEX_TYPE);
-            ResetAndAssert(fullPath, TEX_TYPE);
+            AssertUnloaded(fullPath, IMAGE_TYPE);
+            ResetAndAssert(fullPath, IMAGE_TYPE);
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -44,9 +44,10 @@ namespace UnityEngine.StreamingImageSequence.Tests {
             string fullPath = Path.GetFullPath(PKG_PATH);
             Assert.IsTrue(File.Exists(fullPath));
 
-            const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW;
+            //Loading preview type would also load the full type
+            const int IMAGE_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW;
 
-            StreamingImageSequencePlugin.GetImageDataInto(fullPath, TEX_TYPE, Time.frameCount, out ImageData readResult );
+            StreamingImageSequencePlugin.GetImageDataInto(fullPath, IMAGE_TYPE, Time.frameCount, out ImageData readResult );
             Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_UNAVAILABLE, readResult.ReadStatus, 
                 "Texture is already or currently being loaded"
             );
@@ -56,15 +57,14 @@ namespace UnityEngine.StreamingImageSequence.Tests {
             PreviewImageLoadBGTask.Queue(fullPath, WIDTH, HEIGHT, Time.frameCount);
             yield return new WaitForSeconds(LOAD_TIMEOUT);
 
-            StreamingImageSequencePlugin.GetImageDataInto(fullPath,TEX_TYPE, Time.frameCount, out readResult );
+            StreamingImageSequencePlugin.GetImageDataInto(fullPath,IMAGE_TYPE, Time.frameCount, out readResult );
             Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_SUCCESS, readResult.ReadStatus, 
                 "Loading texture is not successful."
             );
             Assert.AreEqual(WIDTH, readResult.Width );
             Assert.AreEqual(HEIGHT, readResult.Height);
 
-            AssertUnloaded(fullPath, TEX_TYPE);
-            ResetAndAssert(fullPath, TEX_TYPE);
+            ResetAndAssert(fullPath, IMAGE_TYPE);
         }
 
 //----------------------------------------------------------------------------------------------------------------------
