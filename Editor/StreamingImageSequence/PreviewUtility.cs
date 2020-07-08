@@ -37,7 +37,7 @@ internal static class PreviewUtility {
             numAllPreviewImages = Mathf.Max(Mathf.FloorToInt(fullClipWidth / widthPerPreviewImage),1);
         
             //All frames for the clip (including the invisible ones)
-            int numAllFrames = Mathf.RoundToInt((float)(clipInfo.Duration * scaledFramePerSecond));
+            int numAllFrames = Mathf.RoundToInt((float)(clipInfo.Duration * clipInfo.FramePerSecond));
             numAllPreviewImages = Mathf.Min(numAllPreviewImages, numAllFrames);
         }        
         
