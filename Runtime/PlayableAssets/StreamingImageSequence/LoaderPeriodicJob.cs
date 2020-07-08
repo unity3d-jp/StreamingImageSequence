@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine.Assertions;
 using UnityEngine.Timeline;
+
+#if UNITY_EDITOR        
 
 namespace UnityEngine.StreamingImageSequence
 {
@@ -18,11 +19,12 @@ internal class LoaderPeriodicJob : PeriodicJob {
     
 //----------------------------------------------------------------------------------------------------------------------    
     internal  override void Execute() {
-        Assert.IsNotNull(m_mixer);
 
         //Only continue preloading images when we are not in play mode 
         if (Application.isPlaying)
             return;
+        
+        Assert.IsNotNull(m_mixer);
 
         var clipAssets = m_mixer.GetClipAssets();
         foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
@@ -40,3 +42,5 @@ internal class LoaderPeriodicJob : PeriodicJob {
 }
 
 } //end namespace
+
+#endif //UNITY_EDITOR
