@@ -216,7 +216,7 @@ internal class StreamingImagePreviewTest {
 
         Assert.GreaterOrEqual(drawList.Count, 2);
         Assert.AreEqual(1849524.125, drawList[0].DrawRect.x,EPSILON);
-        Assert.AreEqual(109.95833, drawList[0].LocalTime, EPSILON);
+        Assert.AreEqual(109.95833333333334, drawList[0].LocalTime, EPSILON);
 
         float xDiff = drawList[1].DrawRect.x - drawList[0].DrawRect.x;
         Assert.AreEqual(154.125, xDiff, EPSILON);
