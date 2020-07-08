@@ -1,7 +1,7 @@
 ﻿namespace UnityEngine.StreamingImageSequence {
 
 
-internal class FullImageLoadBGTask : BaseImageLoadBGTask {
+internal class FullImageLoadBGTask : BaseImageLoadBGTask, BackGroundTask {
 
 //----------------------------------------------------------------------------------------------------------------------
     internal static void Queue(string imagePath, int frame) {
@@ -16,7 +16,7 @@ internal class FullImageLoadBGTask : BaseImageLoadBGTask {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    public override void Execute() {
+    public void Execute() {
         const int IMAGE_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
         string imagePath = GetImagePath();
         int requestFrame = GetRequestFrame();

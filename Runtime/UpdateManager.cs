@@ -166,6 +166,7 @@ namespace UnityEngine.StreamingImageSequence
 //----------------------------------------------------------------------------------------------------------------------
         public static bool QueueBackGroundTask(BackGroundTask task) {
             lock (m_backGroundTaskQueue) {
+//                Debug.Log("Background task count: " + m_backGroundTaskQueue.Count);
                 m_backGroundTaskQueue.Enqueue(task);
             }
             return true;
@@ -377,8 +378,8 @@ namespace UnityEngine.StreamingImageSequence
 
 
 
-    internal abstract class BackGroundTask {
-        public abstract void Execute();
+    internal interface BackGroundTask {
+        void Execute();
     }
 
 }

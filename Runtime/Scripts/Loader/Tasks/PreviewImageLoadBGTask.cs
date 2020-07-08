@@ -2,7 +2,7 @@
 
 namespace UnityEngine.StreamingImageSequence {
 
-internal class PreviewImageLoadBGTask : BaseImageLoadBGTask {
+internal class PreviewImageLoadBGTask : BaseImageLoadBGTask, BackGroundTask {
 
     internal static void Queue(string imagePath, int width, int height, int frame) {
         PreviewImageLoadBGTask task = new PreviewImageLoadBGTask(imagePath, frame, width, height);
@@ -18,7 +18,7 @@ internal class PreviewImageLoadBGTask : BaseImageLoadBGTask {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    public override void Execute() {
+    public void Execute() {
         const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW;
         string imagePath    = GetImagePath();
         int    requestFrame = GetRequestFrame();
