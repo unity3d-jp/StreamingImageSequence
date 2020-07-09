@@ -122,6 +122,7 @@ namespace UnityEditor.StreamingImageSequence {
 
             if (newLoadPath != prevFolder) {
                 ImportImages(newLoadPath);
+                GUIUtility.ExitGUI();
             }
 
             GUILayout.Space(10f);
@@ -186,6 +187,8 @@ namespace UnityEditor.StreamingImageSequence {
                         } else {
                             newDirPath = folderSelected;
                         }
+                    } else {
+                        GUIUtility.ExitGUI();
                     }
                 }
             }
