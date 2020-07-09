@@ -13,18 +13,7 @@ namespace UnityEngine.StreamingImageSequence
 #if UNITY_EDITOR
 [InitializeOnLoad]
 #endif
-internal class UpdateManager
-{
-    private static double m_lastUpdateInEditorTime;
-       
-    //"Jobs" are higher level than tasks
-    private static readonly HashSet<PeriodicJob> m_mainThreadPeriodJobs = new HashSet<PeriodicJob>();
-    private static readonly List<PeriodicJob> m_requestedJobs = new List<PeriodicJob>();
-    private static readonly HashSet<PeriodicJob> m_toRemoveJobs = new HashSet<PeriodicJob>();
-    
-    private static bool m_shuttingDownThreads;
-    private static string s_AppDataPath;
-    private static bool m_isResettingPlugin = false;
+internal class UpdateManager {
     
     static UpdateManager() {
         EditorApplication.update               += UpdateInEditor;        
@@ -44,9 +33,7 @@ internal class UpdateManager
             return;
         }
 
-        if (m_isResettingPlugin)
-            return;
-        
+       
         m_lastUpdateInEditorTime = time;
 
         //add requested jobs
@@ -180,6 +167,17 @@ internal class UpdateManager
     }
 
 
+//----------------------------------------------------------------------------------------------------------------------
+    
+    private static double m_lastUpdateInEditorTime;
+       
+    //"Jobs" are higher level than tasks
+    private static readonly HashSet<PeriodicJob> m_mainThreadPeriodJobs = new HashSet<PeriodicJob>();
+    private static readonly List<PeriodicJob>    m_requestedJobs        = new List<PeriodicJob>();
+    private static readonly HashSet<PeriodicJob> m_toRemoveJobs         = new HashSet<PeriodicJob>();
+    
+    private static string s_AppDataPath;
+    
 }
 
-}
+} //end namespace
