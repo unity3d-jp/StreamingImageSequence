@@ -37,7 +37,6 @@ internal class EditorUpdateManager {
         //Remove jobs
         foreach (IEditorUpdateJob job in m_toRemoveJobs) {
             m_mainThreadPeriodJobs.Remove(job);
-            job.Cleanup();
         }           
         m_toRemoveJobs.Clear();
         
