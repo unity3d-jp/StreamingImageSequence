@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using UnityEngine.Assertions;
 using System.Reflection;
 using UnityEngine.Timeline;
@@ -17,13 +16,7 @@ namespace UnityEngine.StreamingImageSequence
 internal class UpdateManager
 {
     private static double m_lastUpdateInEditorTime;
-    
-    //Threads processes tasks
-    const uint NUM_THREAD = 3;
-    private static readonly Thread[] m_threads = new Thread[NUM_THREAD];
-    private static Thread mainThread = Thread.CurrentThread;
-    private static readonly Queue<IBackGroundTask> m_backGroundTaskQueue = new Queue<IBackGroundTask>();
-    
+       
     //"Jobs" are higher level than tasks
     private static readonly HashSet<PeriodicJob> m_mainThreadPeriodJobs = new HashSet<PeriodicJob>();
     private static readonly List<PeriodicJob> m_requestedJobs = new List<PeriodicJob>();
@@ -33,78 +26,14 @@ internal class UpdateManager
     private static string s_AppDataPath;
     private static bool m_isResettingPlugin = false;
     
-    static UpdateManager()
-    {
-#if UNITY_EDITOR
-        InitInEditor();
-#endif  //UNITY_EDITOR
-    }
-#if UNITY_EDITOR
-    public static void ResetPlugin() {
-        StreamingImageSequencePlugin.ResetPlugin();
-        m_isResettingPlugin = true;
-
-        lock (m_backGroundTaskQueue) {
-            m_backGroundTaskQueue.Clear();
-        }
-        
-        StreamingImageSequencePlugin.UnloadAllImages();
-        m_isResettingPlugin = false;
-
-    }
-#endif
-
-    public static bool IsPluginResetting() {
-        return m_isResettingPlugin;
-    }
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    internal static void InitInRuntime()
-    {
-
-#if !UNITY_EDITOR
-       LogUtility.LogDebug("InitInRuntime()");
-       StartThread();
-#endif
+    static UpdateManager() {
+        EditorApplication.update               += UpdateInEditor;        
     }
 
 
 #if UNITY_EDITOR
-    static void InitInEditor() {
-        EditorApplication.playModeStateChanged += ChangedPlayModeState;
-        EditorApplication.update += UpdateInEditor;
 
-        StartThread();
-    }
-
-
-    static void ChangedPlayModeState(PlayModeStateChange state) {
-        if (EditorApplication.isPaused ) {
-            return;
-        }
-
-        switch (state) {
-            case PlayModeStateChange.ExitingEditMode: {
-                StopThread();
-                // Util.Log("Play button was pressed.");
-                break;
-            }
-            case PlayModeStateChange.EnteredPlayMode: {
-                // Util.Log("Play was started.");
-                break;
-            }
-            case PlayModeStateChange.ExitingPlayMode: {
-                // started to play.
-                // Util.Log("Stop is pressed");
-                break;
-            }
-            case PlayModeStateChange.EnteredEditMode: {
-                // Util.Log("Play  stopped.");
-                break;
-            }
-        }
-    }
-    
+   
 //----------------------------------------------------------------------------------------------------------------------        
 
     static void UpdateInEditor() {
@@ -162,68 +91,12 @@ internal class UpdateManager
 
 #endif  //UNITY_EDITOR
 
-//----------------------------------------------------------------------------------------------------------------------
-    public static bool QueueBackGroundTask(IBackGroundTask task) {
-        lock (m_backGroundTaskQueue) {
-//                Debug.Log("Background task count: " + m_backGroundTaskQueue.Count);
-            m_backGroundTaskQueue.Enqueue(task);
-        }
-        return true;
-    }               
-    
-
-//----------------------------------------------------------------------------------------------------------------------        
-    static void StartThread() {
-        for (int i = 0; i < NUM_THREAD; ++i) {
-            m_threads[i] = new Thread(UpdateFunction);
-            m_threads[i].Start();
-        }
-    }
          
-//----------------------------------------------------------------------------------------------------------------------        
 
-    static void UpdateFunction() {
-        int id = Thread.CurrentThread.ManagedThreadId;
-
-        while (!m_shuttingDownThreads) {
-
-            LogUtility.LogDebug("alive " + id);
-            IBackGroundTask task = null;
-
-            lock (m_backGroundTaskQueue) {
-                
-                if (m_backGroundTaskQueue.Count > 0) {
-                    task = m_backGroundTaskQueue.Dequeue();
-                }                    
-            }               
-            
-            if (null!=task)  {
-                task.Execute();
-            } else {
-                const int SLEEP_IN_MS = 33;
-                Thread.Sleep(SLEEP_IN_MS);                    
-            }
-            
-        }
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-    
-    static void StopThread() {
-
-        m_shuttingDownThreads = true;
-        for (int i = 0; i < NUM_THREAD; ++i)  {
-            if (m_threads[i] != null) {
-                m_threads[i].Join();
-            }
-        }
-        
-        m_shuttingDownThreads = false;
-    }
+   
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static string GetApplicationDataPath()
-    {
+    private static string GetApplicationDataPath() {
         
         // Application.dataPath cant be used in back thread, so we cache it hire.
         if (s_AppDataPath == null)

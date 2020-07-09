@@ -6,7 +6,7 @@ internal class FullImageLoadBGTask : BaseImageLoadBGTask {
 //----------------------------------------------------------------------------------------------------------------------
     internal static void Queue(string imagePath, int frame) {
         FullImageLoadBGTask task = new FullImageLoadBGTask(imagePath, frame);
-        UpdateManager.QueueBackGroundTask(task);
+        ThreadManager.QueueBackGroundTask(task);
         
     }
 

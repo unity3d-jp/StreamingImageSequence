@@ -60,8 +60,10 @@ namespace UnityEditor.StreamingImageSequence {
         [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Reset",false,50)]
         static void Reset()
         {
-            UpdateManager.ResetPlugin();
-            PreviewTextureFactory.Reset();
+
+            StreamingImageSequencePlugin.ResetPlugin();
+            ThreadManager.Reset();            
+            PreviewTextureFactory.Reset();            
         }
 
 
