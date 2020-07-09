@@ -399,8 +399,7 @@ namespace UnityEngine.StreamingImageSequence {
             if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
 
                 ResetTexture();
-                m_texture = readResult.CreateCompatibleTexture();
-                m_texture.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
+                m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
                 readResult.CopyBufferToTexture(m_texture);
                 
                 UpdateResolution(ref readResult);

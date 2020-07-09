@@ -35,7 +35,7 @@ internal static class PreviewTextureFactory {
             return m_previewTextures[fullPath].GetTexture();
         }
 
-        Texture2D newTex = imageData.CreateCompatibleTexture();
+        Texture2D newTex = imageData.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
         imageData.CopyBufferToTexture(newTex);
         newTex.name = fullPath;
         m_previewTextures[fullPath] = new PreviewTexture(newTex);
