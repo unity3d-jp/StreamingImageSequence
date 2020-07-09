@@ -29,6 +29,11 @@ internal static class ImageLoader  {
 
     static void Init() {
         for (int i = 0; i < StreamingImageSequenceConstants.MAX_IMAGE_TYPES; ++i) {
+            if (null != m_imageLoadEditorUpdateTasks[i]) {
+                //Just in case: Elements of m_imageLoadEditorUpdateTasks should be back to null after entering edit mode
+                continue;                 
+            }
+            
             ImageLoadEditorUpdateTask task = new ImageLoadEditorUpdateTask();
             EditorUpdateManager.AddEditorUpdateTask(task);
             m_imageLoadEditorUpdateTasks[i] = task;
