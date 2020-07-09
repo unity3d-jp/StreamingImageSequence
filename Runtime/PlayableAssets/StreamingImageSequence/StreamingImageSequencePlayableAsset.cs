@@ -290,9 +290,7 @@ namespace UnityEngine.StreamingImageSequence {
             m_backwardPreloadImageIndex = 0;
             
             m_lastCopiedImageIndex = -1;
-            if (null != m_texture) {
-                ResetTexture();
-            }
+            ResetTexture();
 
             m_resolution = new ImageDimensionInt();
         }
@@ -400,7 +398,8 @@ namespace UnityEngine.StreamingImageSequence {
 
             if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
 
-                m_texture = readResult.CreateCompatibleTexture();
+                ResetTexture();
+                m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
                 readResult.CopyBufferToTexture(m_texture);
                 
                 UpdateResolution(ref readResult);
@@ -594,7 +593,11 @@ namespace UnityEngine.StreamingImageSequence {
 
 //---------------------------------------------------------------------------------------------------------------------
         void ResetTexture() {
-            m_texture = null;
+            if (null != m_texture) {
+                ObjectUtility.Destroy(m_texture);
+                m_texture = null;
+            }
+
         }
 
 //---------------------------------------------------------------------------------------------------------------------

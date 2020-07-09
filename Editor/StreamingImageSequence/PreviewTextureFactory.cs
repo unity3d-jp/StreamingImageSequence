@@ -35,11 +35,11 @@ internal static class PreviewTextureFactory {
             return m_previewTextures[fullPath].GetTexture();
         }
 
-        Texture2D newTex = imageData.CreateCompatibleTexture();
+        //This is static. Don't destroy the tex if a new scene is loaded
+        Texture2D newTex = imageData.CreateCompatibleTexture(HideFlags.HideAndDontSave);
         imageData.CopyBufferToTexture(newTex);
         newTex.name = fullPath;
         m_previewTextures[fullPath] = new PreviewTexture(newTex);
-        newTex.hideFlags = HideFlags.HideAndDontSave; //This is static. Don't destroy the tex if a new scene is loaded
         
         return newTex;
     }
