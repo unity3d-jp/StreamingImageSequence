@@ -1,24 +1,19 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.Assertions;
+
 #if UNITY_EDITOR
 using UnityEditor;
-#endif
 
 namespace UnityEngine.StreamingImageSequence
 {
     
-#if UNITY_EDITOR
+
 [InitializeOnLoad]
-#endif
 internal class UpdateManager {
     
     static UpdateManager() {
         EditorApplication.update               += UpdateInEditor;        
     }
-
-
-#if UNITY_EDITOR
-
    
 //----------------------------------------------------------------------------------------------------------------------        
 
@@ -71,11 +66,6 @@ internal class UpdateManager {
         return true;
     }
     
-//----------------------------------------------------------------------------------------------------------------------
-
-#endif  //UNITY_EDITOR
-
-
 
 //----------------------------------------------------------------------------------------------------------------------
     
@@ -85,8 +75,10 @@ internal class UpdateManager {
     private static readonly HashSet<PeriodicJob> m_mainThreadPeriodJobs = new HashSet<PeriodicJob>();
     private static readonly List<PeriodicJob>    m_requestedJobs        = new List<PeriodicJob>();
     private static readonly HashSet<PeriodicJob> m_toRemoveJobs         = new HashSet<PeriodicJob>();
-    
-    
 }
 
+
 } //end namespace
+
+
+#endif  //UNITY_EDITOR
