@@ -75,6 +75,12 @@ internal static class ThreadManager {
 
 #endif  //UNITY_EDITOR
 
+    public static int GetNumBackGroundTasks() {
+        lock (m_backGroundTaskQueue) {
+            return m_backGroundTaskQueue.Count;
+        }
+    }               
+    
 //----------------------------------------------------------------------------------------------------------------------
     public static bool QueueBackGroundTask(ITask task) {
         lock (m_backGroundTaskQueue) {
@@ -82,6 +88,7 @@ internal static class ThreadManager {
         }
         return true;
     }               
+
     
 
 //----------------------------------------------------------------------------------------------------------------------        

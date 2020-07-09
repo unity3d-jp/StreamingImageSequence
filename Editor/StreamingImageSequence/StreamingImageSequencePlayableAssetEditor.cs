@@ -158,8 +158,7 @@ namespace UnityEditor.StreamingImageSequence {
                     break;
                 }
                 default: {
-                    PreviewImageLoadBGTask.Queue(fullPath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height, 
-                        Time.frameCount);
+                    ImageLoader.RequestLoadPreviewImage(fullPath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height);                    
                     break;
                 }
 

@@ -377,7 +377,7 @@ namespace UnityEngine.StreamingImageSequence {
             //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);
             
             if (StreamingImageSequenceConstants.READ_STATUS_LOADING != imageData.ReadStatus ) {
-                FullImageLoadBGTask.Queue(filename, Time.frameCount);
+                ImageLoader.RequestLoadFullImage(filename);
             }
             
             return filename;
