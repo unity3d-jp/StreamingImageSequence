@@ -16,6 +16,13 @@ internal static class ThreadManager {
     static void InitInEditor() {
         EditorApplication.playModeStateChanged += ChangedPlayModeState;
         
+        //Avoid calling StartThread() multiple times (with InitInRuntime()) 
+        bool isPlayingOrWillChangePlaymode = EditorApplication.isPlayingOrWillChangePlaymode;
+        if (!isPlayingOrWillChangePlaymode) {
+            StartThread();
+        }
+        
+        
     }
 #endif
     
@@ -79,6 +86,7 @@ internal static class ThreadManager {
 
 //----------------------------------------------------------------------------------------------------------------------        
     static void StartThread() {
+        //Debug.Log("Start Thread");
         for (int i = 0; i < NUM_THREAD; ++i) {
             m_threads[i] = new Thread(UpdateFunction);
             m_threads[i].Start();
@@ -115,6 +123,7 @@ internal static class ThreadManager {
 //----------------------------------------------------------------------------------------------------------------------
     
     static void StopThread() {
+        //Debug.Log("Stop Thread");
 
         m_shuttingDownThreads = true;
         for (int i = 0; i < NUM_THREAD; ++i)  {
