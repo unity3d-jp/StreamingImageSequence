@@ -7,13 +7,6 @@ namespace UnityEditor.StreamingImageSequence {
 
 internal class ImageSequenceImportWindow : EditorWindow {
 
-    void OnEnable() {
-        m_headerStyle = new GUIStyle(EditorStyles.label) {
-            fontSize = 18,
-            fontStyle = FontStyle.Bold
-        };
-        
-    }
     
 //----------------------------------------------------------------------------------------------------------------------    
 
@@ -34,6 +27,8 @@ internal class ImageSequenceImportWindow : EditorWindow {
             Debug.LogError("m_importerParam is null");
             return;
         }
+        
+        InitStyles();
 
 
         Rect rect = new Rect(0, 0, Screen.width, Screen.height);
@@ -50,7 +45,7 @@ internal class ImageSequenceImportWindow : EditorWindow {
             GUILayout.Label(m_importerParam.strSrcFolder);
             
             const int SCROLL_VIEW_COUNT  = 16;
-            const int SCROLL_ITEM_HEIGHT = 16;
+            const int SCROLL_ITEM_HEIGHT = 10;
             const int TOP_MARGIN = 16;
             
             int numDigits = (int) Math.Floor(Math.Log10(numFiles) + 1);
@@ -139,14 +134,27 @@ internal class ImageSequenceImportWindow : EditorWindow {
         GUILayout.Space(Mathf.Max(0,(numItems - firstIndex - viewCount) * itemHeight));
         EditorGUILayout.EndScrollView();
         return scrollPos;
-    }    
+    }
 
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+    
+    void InitStyles() {
+        if (null != m_headerStyle)
+            return;
+        
+        m_headerStyle = new GUIStyle(EditorStyles.label) {
+            fontSize  = 18,
+            fontStyle = FontStyle.Bold
+        };
+        
+    }    
+    
+//----------------------------------------------------------------------------------------------------------------------
     
     ImageFileImporterParam m_importerParam = new ImageFileImporterParam();
 
     //Styles
-    private GUIStyle m_headerStyle;
+    private GUIStyle m_headerStyle = null;
 
     private Vector2 m_scrollPos;
 
