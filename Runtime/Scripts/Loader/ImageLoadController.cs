@@ -10,10 +10,10 @@ internal class ImageLoadController  {
     } 
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void Queue(string imagePath, BackGroundTask task) {
+    internal void Queue(string imagePath, ITask task) {
         
         if (Application.isPlaying)        
-            UpdateManager.QueueBackGroundTask(task);
+            ThreadManager.QueueBackGroundTask(task);
         else {
             
         }
@@ -28,10 +28,10 @@ internal class ImageLoadController  {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    private readonly Queue<PreviewImageLoadInfo> m_loadQueue = new Queue<PreviewImageLoadInfo>();
-
-    private readonly Dictionary<string, PreviewImageLoadInfo> m_loadDictionary =
-        new Dictionary<string, PreviewImageLoadInfo>();
+    // private readonly Queue<PreviewImageLoadInfo> m_loadQueue = new Queue<PreviewImageLoadInfo>();
+    //
+    // private readonly Dictionary<string, PreviewImageLoadInfo> m_loadDictionary =
+    //     new Dictionary<string, PreviewImageLoadInfo>();
     
 //----------------------------------------------------------------------------------------------------------------------
 
