@@ -66,22 +66,22 @@ namespace UnityEngine.StreamingImageSequence
         }
         
 //----------------------------------------------------------------------------------------------------------------------
-        public override void ProcessFrame(Playable playable, FrameData info, object playerData)
-        {
-            int inputCount = playable.GetInputCount<Playable>();
-            if (inputCount == 0) {
-                return; // it doesn't work as mixer.
+        public override void ProcessFrame(Playable playable, FrameData info, object playerData) {
+            
+            base.ProcessFrame(playable, info, playerData); // Calls ProcessActiveClipV()
+
+#if UNITY_EDITOR            
+            if (!Application.isPlaying) {
+                return;
             }
-
-            double directorTime = GetPlayableDirector().time;
-
-            bool activeTimelineClipFound = false;
-            int i = 0;
+#endif            
+            
+            //Preload images here only in play mode
+            double directorTime = GetPlayableDirector().time;            
             var clipAssets = GetClipAssets();
             foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
                 TimelineClip clip = kv.Key;
                 StreamingImageSequencePlayableAsset sisAsset = kv.Value;
-
 
                 IList<string> imagePaths = sisAsset.GetImagePaths();
                 if (null == imagePaths || null == clip.parentTrack)
@@ -89,7 +89,6 @@ namespace UnityEngine.StreamingImageSequence
 
                 double startTime = clip.start;
                 double endTime = clip.end;
-
                 double loadStartOffsetTime = 1.0f + imagePaths.Count * 0.1f;
 
                 //Start to preload images before the clip is active
@@ -97,20 +96,7 @@ namespace UnityEngine.StreamingImageSequence
                     sisAsset.ContinuePreloadingImages();                    
                 }
 
-                if (!activeTimelineClipFound && directorTime >= startTime && directorTime < endTime) {
-                    ProcessActiveClipV(sisAsset, directorTime, clip);
-                    activeTimelineClipFound = true;
-                } 
-
-                ++i;
             }
-
-            //Show game object
-            GameObject go = GetBoundGameObject();
-            if (activeTimelineClipFound && null != go) {
-                go.SetActive(true);
-            }
-            
 
         }
 
@@ -121,12 +107,14 @@ namespace UnityEngine.StreamingImageSequence
         protected override void ProcessActiveClipV(StreamingImageSequencePlayableAsset asset,
             double directorTime, TimelineClip activeClip) 
         {
+            IList<string> imagePaths = asset.GetImagePaths();
+            if (null == imagePaths || null == activeClip.parentTrack)
+                return;
+            
             int index = asset.GlobalTimeToImageIndex(activeClip, directorTime);
-
             bool texReady = asset.RequestLoadImage(index);
             if (texReady) {
                 UpdateRendererTexture(asset);
-
             }
 
         }

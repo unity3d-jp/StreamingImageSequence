@@ -23,7 +23,7 @@ namespace UnityEngine.StreamingImageSequence
         const uint NUM_THREAD = 3;
         private static readonly Thread[] m_threads = new Thread[NUM_THREAD];
         private static Thread mainThread = Thread.CurrentThread;
-        private static readonly Queue<BackGroundTask> m_backGroundTaskQueue = new Queue<BackGroundTask>();
+        private static readonly Queue<IBackGroundTask> m_backGroundTaskQueue = new Queue<IBackGroundTask>();
         
         //"Jobs" are higher level than tasks
         private static readonly HashSet<PeriodicJob> m_mainThreadPeriodJobs = new HashSet<PeriodicJob>();
@@ -164,8 +164,9 @@ namespace UnityEngine.StreamingImageSequence
 #endif  //UNITY_EDITOR
 
 //----------------------------------------------------------------------------------------------------------------------
-        public static bool QueueBackGroundTask(BackGroundTask task) {
+        public static bool QueueBackGroundTask(IBackGroundTask task) {
             lock (m_backGroundTaskQueue) {
+//                Debug.Log("Background task count: " + m_backGroundTaskQueue.Count);
                 m_backGroundTaskQueue.Enqueue(task);
             }
             return true;
@@ -195,7 +196,7 @@ namespace UnityEngine.StreamingImageSequence
             while (!m_shuttingDownThreads) {
 
                 LogUtility.LogDebug("alive " + id);
-                BackGroundTask task = null;
+                IBackGroundTask task = null;
 
                 lock (m_backGroundTaskQueue) {
                     
@@ -373,12 +374,6 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 
-    }
-
-
-
-    internal abstract class BackGroundTask {
-        public abstract void Execute();
     }
 
 }

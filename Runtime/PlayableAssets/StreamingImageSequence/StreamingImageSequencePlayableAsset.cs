@@ -377,13 +377,8 @@ namespace UnityEngine.StreamingImageSequence {
             //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);
             
             if (StreamingImageSequenceConstants.READ_STATUS_LOADING != imageData.ReadStatus ) {
-                ImageLoadBGTask.Queue(filename, Time.frameCount);
+                FullImageLoadBGTask.Queue(filename, Time.frameCount);
             }
-            // if ( isBlocking ) {
-            //     while (imageData.ReadStatus != StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
-            //         StreamingImageSequencePlugin.GetImageDataInto(filename, TEX_TYPE, out imageData );
-            //     }
-            // }
             
             return filename;
         }
