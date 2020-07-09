@@ -1,6 +1,6 @@
 ﻿namespace UnityEngine.StreamingImageSequence  { 
 
-internal interface  IEditorPeriodicJob  {
+internal interface  IEditorUpdateJob  {
     void Execute();
     void Cleanup();
 }
