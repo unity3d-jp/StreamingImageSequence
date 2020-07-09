@@ -69,7 +69,7 @@ internal static class ThreadManager {
 #endif  //UNITY_EDITOR
 
 //----------------------------------------------------------------------------------------------------------------------
-    public static bool QueueBackGroundTask(IBackGroundTask task) {
+    public static bool QueueBackGroundTask(ITask task) {
         lock (m_backGroundTaskQueue) {
             m_backGroundTaskQueue.Enqueue(task);
         }
@@ -93,7 +93,7 @@ internal static class ThreadManager {
         while (!m_shuttingDownThreads) {
 
             LogUtility.LogDebug("alive " + id);
-            IBackGroundTask task = null;
+            ITask task = null;
 
             lock (m_backGroundTaskQueue) {
                 
@@ -131,7 +131,7 @@ internal static class ThreadManager {
     //Threads processes tasks
     const                   uint                   NUM_THREAD            = 3;
     private static readonly Thread[]               m_threads             = new Thread[NUM_THREAD];
-    private static readonly Queue<IBackGroundTask> m_backGroundTaskQueue = new Queue<IBackGroundTask>();
+    private static readonly Queue<ITask> m_backGroundTaskQueue = new Queue<ITask>();
    
     
     private static bool m_shuttingDownThreads;
