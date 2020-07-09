@@ -6,19 +6,19 @@ using UnityEngine.Timeline;
 
 namespace UnityEngine.StreamingImageSequence
 {
-internal class LoaderPeriodicJob : PeriodicJob { 
+internal class LoaderEditorPeriodicJob : IEditorPeriodicJob { 
 
-    public LoaderPeriodicJob(StreamingImageSequencePlayableMixer mixer) : base() {
+    public LoaderEditorPeriodicJob(StreamingImageSequencePlayableMixer mixer) : base() {
         m_mixer = mixer;
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
 
-    internal  override void Cleanup() {
+    public void Cleanup() {
     }  
     
 //----------------------------------------------------------------------------------------------------------------------    
-    internal  override void Execute() {
+    public void Execute() {
 
         //Only continue preloading images when we are not in play mode 
         if (Application.isPlaying)
