@@ -14,26 +14,18 @@ internal class ImageSequenceImportWindow : EditorWindow {
         };
         
     }
-
-    private void OnDisable() {
-        if (m_isSelectingFolder) {
-            UnityEditor.EditorApplication.delayCall += () => {
-                InitWindow();
-            };
-        }
-    }
+    
 //----------------------------------------------------------------------------------------------------------------------    
 
-    internal static void SetParam(ImageFileImporterParam param) {
-        m_importerParam = param;
-    }
-
-    internal static void InitWindow() {
+    internal static ImageSequenceImportWindow  Show(ImageFileImporterParam param) {
         Rect rect = new Rect(160, 160, 0, 0);
-        ImageSequenceImportWindow window = ScriptableObject.CreateInstance<ImageSequenceImportWindow>(); // GetWindow<PictureFileImportWindow>();
-                                                                                                     //      PictureFileImportWindow window = GetWindow<PictureFileImportWindow>();
+        ImageSequenceImportWindow window = EditorWindow.GetWindow<ImageSequenceImportWindow>();
+                                                                                                     
         window.ShowAsDropDown(rect, new Vector2(640, 480));
+        window.m_importerParam = param;
+        return window;
     }
+    
     
 //----------------------------------------------------------------------------------------------------------------------    
 
@@ -44,7 +36,6 @@ internal class ImageSequenceImportWindow : EditorWindow {
         }
 
 
-        m_isSelectingFolder = false;
         Rect rect = new Rect(0, 0, Screen.width, Screen.height);
         Rect rect2 = new Rect(2, 2, Screen.width - 4, Screen.height - 4);
         EditorGUI.DrawRect(rect, Color.gray);
@@ -91,11 +82,9 @@ internal class ImageSequenceImportWindow : EditorWindow {
         EditorGUI.BeginDisabledGroup(!m_importerParam.CopyToStreamingAssets);
         EditorGUILayout.LabelField("Copy to:", GUILayout.Width(120));
         m_importerParam.strDstFolder = EditorGUILayout.TextField(m_importerParam.strDstFolder);
-        if (GUILayout.Button("...", GUILayout.Width(40)))
-        {
+        if (GUILayout.Button("...", GUILayout.Width(40))) {
 
             if (Directory.Exists(m_importerParam.strDstFolder)) {
-                m_isSelectingFolder = true;
                 m_importerParam.strDstFolder = EditorUtility.OpenFolderPanel("Choose folder to copy", m_importerParam.strDstFolder, null);
             }
         }
@@ -146,8 +135,7 @@ internal class ImageSequenceImportWindow : EditorWindow {
 
 //---------------------------------------------------------------------------------------------------------------------
     
-    private bool m_isSelectingFolder;
-    static ImageFileImporterParam m_importerParam = new ImageFileImporterParam();
+    ImageFileImporterParam m_importerParam = new ImageFileImporterParam();
 
     //Styles
     private GUIStyle m_headerStyle;
