@@ -426,7 +426,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             if (Path.IsPathRooted(filePath)) {
-                filePath = Path.Combine(UpdateManager.GetProjectFolder(), filePath).Replace("\\", "/");
+                filePath = Path.Combine(PathUtility.GetProjectFolder(), filePath).Replace("\\", "/");
             }
             return filePath;
         }

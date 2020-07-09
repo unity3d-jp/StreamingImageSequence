@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.Assertions;
-using System.Text.RegularExpressions;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -76,44 +75,6 @@ internal class UpdateManager {
 
 #endif  //UNITY_EDITOR
 
-         
-
-   
-//----------------------------------------------------------------------------------------------------------------------
-
-    private static string GetApplicationDataPath() {
-        
-        // Application.dataPath cant be used in back thread, so we cache it hire.
-        if (s_AppDataPath == null)
-        {
-            s_AppDataPath = Application.dataPath;
-        }
-        return s_AppDataPath;
-    }
-
-
-    public static string GetProjectFolder()
-    {
-        Regex regAssetFolder = new Regex("/Assets$");
-        var strPorjectFolder = UpdateManager.GetApplicationDataPath(); //  Application.dataPath; cant use this in back thread;
-        strPorjectFolder = regAssetFolder.Replace(strPorjectFolder, "");
-
-        return strPorjectFolder;
-    }
-
-    public static string ToRelativePath( string strAbsPath )
-    {
-        string newPath = strAbsPath.Remove(0, GetProjectFolder().Length);
-        while ( newPath.StartsWith("/"))
-        {
-            newPath = newPath.Remove(0, 1);
-        }
-        return newPath;
-    }
-
-
-
-
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -125,7 +86,6 @@ internal class UpdateManager {
     private static readonly List<PeriodicJob>    m_requestedJobs        = new List<PeriodicJob>();
     private static readonly HashSet<PeriodicJob> m_toRemoveJobs         = new HashSet<PeriodicJob>();
     
-    private static string s_AppDataPath;
     
 }
 
