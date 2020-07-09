@@ -4,14 +4,7 @@
 internal class FullImageLoadBGTask : BaseImageLoadBGTask {
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal static void Queue(string imagePath, int frame) {
-        FullImageLoadBGTask task = new FullImageLoadBGTask(imagePath, frame);
-        ThreadManager.QueueBackGroundTask(task);
-        
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-    private FullImageLoadBGTask( string imagePath, int frame)  : base(imagePath, frame){
+    internal FullImageLoadBGTask( string imagePath, int frame)  : base(imagePath, frame){
     }
 
 //----------------------------------------------------------------------------------------------------------------------

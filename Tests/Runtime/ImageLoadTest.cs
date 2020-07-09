@@ -1,8 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Collections;
 using System.IO;
-using UnityEngine;
-using UnityEngine.StreamingImageSequence;
 using UnityEngine.TestTools;
 
 namespace UnityEngine.StreamingImageSequence.Tests {
@@ -23,7 +21,7 @@ namespace UnityEngine.StreamingImageSequence.Tests {
                 "Texture is already or currently being loaded"
             );
 
-            FullImageLoadBGTask.Queue(fullPath,Time.frameCount);
+            ImageLoader.RequestLoadFullImage(fullPath);                                
             yield return new WaitForSeconds(LOAD_TIMEOUT);
             
             StreamingImageSequencePlugin.GetImageDataInto(fullPath, IMAGE_TYPE, Time.frameCount, out readResult );
@@ -54,7 +52,7 @@ namespace UnityEngine.StreamingImageSequence.Tests {
 
             const int WIDTH = 256;
             const int HEIGHT= 128;
-            PreviewImageLoadBGTask.Queue(fullPath, WIDTH, HEIGHT, Time.frameCount);
+            ImageLoader.RequestLoadPreviewImage(fullPath, WIDTH, HEIGHT);
             yield return new WaitForSeconds(LOAD_TIMEOUT);
 
             StreamingImageSequencePlugin.GetImageDataInto(fullPath,IMAGE_TYPE, Time.frameCount, out readResult );
