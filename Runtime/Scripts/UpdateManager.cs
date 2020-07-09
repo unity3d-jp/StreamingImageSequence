@@ -170,15 +170,8 @@ namespace UnityEngine.StreamingImageSequence
                 m_backGroundTaskQueue.Enqueue(task);
             }
             return true;
-        }
+        }               
         
-//----------------------------------------------------------------------------------------------------------------------
-        
-        
-        public static bool IsMainThread()
-        {
-            return (mainThread == Thread.CurrentThread);
-        }
 
 //----------------------------------------------------------------------------------------------------------------------        
         static void StartThread() {
@@ -229,8 +222,8 @@ namespace UnityEngine.StreamingImageSequence
             m_shuttingDownThreads = false;
         }
 //----------------------------------------------------------------------------------------------------------------------
-        
-        static public string GetApplicationDataPath()
+
+        private static string GetApplicationDataPath()
         {
             
             // Application.dataPath cant be used in back thread, so we cache it hire.
@@ -242,7 +235,7 @@ namespace UnityEngine.StreamingImageSequence
         }
 
 
-        static public string GetProjectFolder()
+        public static string GetProjectFolder()
         {
             Regex regAssetFolder = new Regex("/Assets$");
             var strPorjectFolder = UpdateManager.GetApplicationDataPath(); //  Application.dataPath; cant use this in back thread;
@@ -251,7 +244,7 @@ namespace UnityEngine.StreamingImageSequence
             return strPorjectFolder;
         }
 
-        static public string ToRelativePath( string strAbsPath )
+        public static string ToRelativePath( string strAbsPath )
         {
             string newPath = strAbsPath.Remove(0, GetProjectFolder().Length);
             while ( newPath.StartsWith("/"))
@@ -261,68 +254,10 @@ namespace UnityEngine.StreamingImageSequence
             return newPath;
         }
 
-#if UNITY_EDITOR
-        static public PlayableDirector GetCurrentDirector()
-        {
-
-            EditorWindow timelineWindow = UpdateManager.GetTimelineWindow();
-
-            if (timelineWindow == null)
-            {
-                return null;
-            }
-            var bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField;
-            var type = timelineWindow.GetType();
-            var info = type.GetProperty("state", bf);
-            var val = info.GetValue(timelineWindow, null);
-
-            type = val.GetType();
-            info = type.GetProperty("currentDirector", bf);
-
-            // newer than 2018.3?
-            if ( info == null )
-            {
-                info = type.GetProperty("masterSequence",bf);
-                val = info.GetValue(val, null);
-
-                type = val.GetType();
-                info = type.GetProperty("director", bf);
-            }
-            val = info.GetValue(val, null);
-
-            return val as PlayableDirector;
-        }
-
-        static public EditorWindow GetTimelineWindow()
-        {
-            EditorWindow timelineWindow = null;
-
-            var sequenceWindowArray = Resources.FindObjectsOfTypeAll<EditorWindow>();
-            if (sequenceWindowArray == null)
-            {
-                return null;
-            }
-            foreach (var w in sequenceWindowArray)
-            {
-                if (w.GetType().ToString() == "UnityEditor.Timeline.TimelineWindow")
-                {
-                    timelineWindow = w;
-                    break;
-                }
-            }
-            return timelineWindow;
-        }
-#endif
-
-        static public List<TrackAsset> GetTrackList(PlayableDirector director)
-        {
-            TimelineAsset playbleAsset = director.playableAsset as TimelineAsset;
-            return GetTrackList(playbleAsset);
-        }
 
 
-        static public List<TrackAsset> GetTrackList(TimelineAsset timelineAsset)
-        {
+
+        public static List<TrackAsset> GetTrackList(TimelineAsset timelineAsset) {
             Assert.IsTrue(timelineAsset == true);
             var bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField | BindingFlags.GetProperty;
             var type = timelineAsset.GetType();
@@ -351,8 +286,7 @@ namespace UnityEngine.StreamingImageSequence
             return ret;
         }
 
-        static public List<TrackAsset> GetTrackList(GroupTrack groupTrack)
-        {
+        public static List<TrackAsset> GetTrackList(GroupTrack groupTrack)  {
 
             var bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField;
             var type = groupTrack.GetType().BaseType;
