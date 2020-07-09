@@ -55,11 +55,19 @@ internal class ImageSequenceImportWindow : EditorWindow {
         int numFiles = m_importerParam.RelativeFilePaths.Count;
         GUILayout.Label(numFiles.ToString() + " external files found in: ");
         GUILayout.Label(m_importerParam.strSrcFolder);
-        m_scrollPos = EditorGUILayout.BeginScrollView(m_scrollPos, GUILayout.Width(Screen.width - 4));
-        if (m_importerParam.RelativeFilePaths != null)
-        {
-            for (int ii = 0; ii < numFiles; ii++)
-            {
+        if (m_importerParam.RelativeFilePaths != null) {
+
+            int itemHeight = 16;
+            int viewCount = 10;
+               
+            
+            m_scrollPos = EditorGUILayout.BeginScrollView(m_scrollPos, GUILayout.Width(Screen.width - 4));
+            int firstIndex = (int)( m_scrollPos.y / itemHeight);
+            firstIndex = Mathf.Clamp(firstIndex,0,numFiles - viewCount);
+            GUILayout.Space(firstIndex * itemHeight);
+            int lastIndex = Mathf.Min(numFiles, firstIndex + viewCount);
+            
+            for (int ii = firstIndex; ii < lastIndex; ++ii) {
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Space(16);
                 string str = "" + ii + ":";
@@ -69,10 +77,11 @@ internal class ImageSequenceImportWindow : EditorWindow {
                 GUILayout.Space(1);
                 EditorGUILayout.EndHorizontal();
             }
+            GUILayout.Space(Mathf.Max(0,(numFiles-firstIndex-viewCount) * itemHeight));
         }
         EditorGUILayout.EndScrollView();
         GUILayout.Space(4);
-
+        
 
         //Copy Toggle
         EditorGUILayout.BeginHorizontal();
