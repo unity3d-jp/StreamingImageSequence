@@ -46,13 +46,13 @@ internal class ImageSequenceImportWindow : EditorWindow {
             
             const int SCROLL_VIEW_COUNT  = 16;
             const int SCROLL_ITEM_HEIGHT = 10;
-            const int TOP_MARGIN = 16;
+            const int TOP_MARGIN = 12;
             
             int numDigits = (int) Math.Floor(Math.Log10(numFiles) + 1);
 
             m_scrollPos = DrawScrollView(m_scrollPos, TOP_MARGIN, numFiles, SCROLL_VIEW_COUNT, SCROLL_ITEM_HEIGHT, (int index) => {
                 EditorGUILayout.BeginHorizontal();
-                GUILayout.Space(20);
+                GUILayout.Space(30);
 
                 string indexStr = index.ToString();
                 indexStr = indexStr.PadLeft(numDigits - indexStr.Length);
@@ -61,7 +61,6 @@ internal class ImageSequenceImportWindow : EditorWindow {
 
                 EditorGUILayout.LabelField(str, GUILayout.Width(40));
                 EditorGUILayout.LabelField(m_importerParam.RelativeFilePaths[index]);
-                GUILayout.Space(1);
                 EditorGUILayout.EndHorizontal();
             });
             
