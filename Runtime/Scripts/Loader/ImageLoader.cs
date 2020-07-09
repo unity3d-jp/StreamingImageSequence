@@ -26,7 +26,6 @@ internal class ImageLoader  {
 
     internal static void RequestLoadFullImage(string imagePath) {
         FullImageLoadBGTask task = new FullImageLoadBGTask(imagePath, Time.frameCount);
-        ThreadManager.QueueBackGroundTask(task);
         RequestLoadImageInternal(StreamingImageSequenceConstants.IMAGE_TYPE_FULL, task);
     }
 
