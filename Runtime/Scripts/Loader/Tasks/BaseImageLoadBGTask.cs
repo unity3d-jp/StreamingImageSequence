@@ -1,7 +1,7 @@
 ﻿namespace UnityEngine.StreamingImageSequence {
 
 
-internal abstract class BaseImageLoadBGTask : IBackGroundTask {
+internal abstract class BaseImageLoadBGTask : ITask {
 
 
 //----------------------------------------------------------------------------------------------------------------------

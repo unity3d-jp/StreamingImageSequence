@@ -29,39 +29,39 @@ internal class EditorUpdateManager {
         m_lastUpdateInEditorTime = time;
 
         //add requested jobs
-        foreach (IEditorUpdateJob job in m_requestedJobs) {
+        foreach (ITask job in m_requestedTasks) {
             m_mainThreadPeriodJobs.Add(job);
         }           
-        m_requestedJobs.Clear();
+        m_requestedTasks.Clear();
         
         //Remove jobs
-        foreach (IEditorUpdateJob job in m_toRemoveJobs) {
+        foreach (ITask job in m_toRemoveTasks) {
             m_mainThreadPeriodJobs.Remove(job);
         }           
-        m_toRemoveJobs.Clear();
+        m_toRemoveTasks.Clear();
         
         //Execute
-        foreach (IEditorUpdateJob job in m_mainThreadPeriodJobs) {
+        foreach (ITask job in m_mainThreadPeriodJobs) {
             job.Execute();
         }
 
     }
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static bool AddPeriodicJob(IEditorUpdateJob job) {
-        m_requestedJobs.Add(job);  
+    public static bool AddEditorUpdateTask(ITask job) {
+        m_requestedTasks.Add(job);  
         return true;
     }
 
-    public static bool RemovePeriodicJob(IEditorUpdateJob job) {
+    public static bool RemoveEditorUpdateTask(ITask job) {
         //Check if the job hasn't been actually added yet
-        if (m_requestedJobs.Contains(job)) {
-            m_requestedJobs.Remove(job);
+        if (m_requestedTasks.Contains(job)) {
+            m_requestedTasks.Remove(job);
             return true;
         }
         
         Assert.IsTrue(m_mainThreadPeriodJobs.Contains(job));
-        m_toRemoveJobs.Add(job);
+        m_toRemoveTasks.Add(job);
         return true;
     }
     
@@ -71,9 +71,9 @@ internal class EditorUpdateManager {
     private static double m_lastUpdateInEditorTime;
        
     //"Jobs" are higher level than tasks
-    private static readonly HashSet<IEditorUpdateJob> m_mainThreadPeriodJobs = new HashSet<IEditorUpdateJob>();
-    private static readonly List<IEditorUpdateJob>    m_requestedJobs        = new List<IEditorUpdateJob>();
-    private static readonly HashSet<IEditorUpdateJob> m_toRemoveJobs         = new HashSet<IEditorUpdateJob>();
+    private static readonly HashSet<ITask> m_mainThreadPeriodJobs = new HashSet<ITask>();
+    private static readonly List<ITask>    m_requestedTasks        = new List<ITask>();
+    private static readonly HashSet<ITask> m_toRemoveTasks         = new HashSet<ITask>();
 }
 
 

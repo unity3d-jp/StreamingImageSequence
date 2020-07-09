@@ -6,9 +6,9 @@ using UnityEngine.Timeline;
 
 namespace UnityEngine.StreamingImageSequence
 {
-internal class LoaderEditorUpdateJob : IEditorUpdateJob { 
+internal class SISPlayableMixerEditorUpdateTask : ITask { 
 
-    public LoaderEditorUpdateJob(StreamingImageSequencePlayableMixer mixer) : base() {
+    public SISPlayableMixerEditorUpdateTask(StreamingImageSequencePlayableMixer mixer) : base() {
         m_mixer = mixer;
     }
 
