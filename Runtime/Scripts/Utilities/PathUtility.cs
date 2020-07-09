@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using System.Text.RegularExpressions;
-using UnityEngine.Assertions;
-using UnityEngine.Timeline;
+﻿using System.Text.RegularExpressions;
 
 namespace UnityEngine.StreamingImageSequence {
 
