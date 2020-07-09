@@ -4,22 +4,42 @@ using UnityEditor;
 namespace UnityEngine.StreamingImageSequence {
 
 
-internal class ImageLoader  {
+internal static class ImageLoader  {
 
+    
 #if UNITY_EDITOR
     [InitializeOnLoadMethod]
-    static void ImageLoaderInitInEditor() {
-               
+    static void ImageLoaderOnLoad() {
+        
+        EditorApplication.playModeStateChanged += ImageLoader_PlayModeStateChanged;
+        
         bool isPlayingOrWillChangePlaymode = EditorApplication.isPlayingOrWillChangePlaymode;
         if (!isPlayingOrWillChangePlaymode) {
-            for (int i = 0; i < StreamingImageSequenceConstants.MAX_IMAGE_TYPES; ++i) {
-                ImageLoadEditorUpdateTask task = new ImageLoadEditorUpdateTask();
-                EditorUpdateManager.AddEditorUpdateTask(task);
-                m_imageLoadEditorUpdateTasks.Add(task);
-            }
-        }
-        
+            Init();
+        }        
     }
+    
+
+    static void ImageLoader_PlayModeStateChanged(PlayModeStateChange state) {
+        if (PlayModeStateChange.EnteredEditMode != state)
+            return;
+
+        Init();
+    }
+
+    static void Init() {
+        for (int i = 0; i < StreamingImageSequenceConstants.MAX_IMAGE_TYPES; ++i) {
+            if (null != m_imageLoadEditorUpdateTasks[i]) {
+                //Just in case: Elements of m_imageLoadEditorUpdateTasks should be back to null after entering edit mode
+                continue;                 
+            }
+            
+            ImageLoadEditorUpdateTask task = new ImageLoadEditorUpdateTask();
+            EditorUpdateManager.AddEditorUpdateTask(task);
+            m_imageLoadEditorUpdateTasks[i] = task;
+        }
+    }
+    
 #endif
     
 //----------------------------------------------------------------------------------------------------------------------   
@@ -36,7 +56,7 @@ internal class ImageLoader  {
 //----------------------------------------------------------------------------------------------------------------------   
     
     private static void RequestLoadImageInternal(int index, BaseImageLoadBGTask imageLoadBGTask) {
-
+        
 #if UNITY_EDITOR        
         if (!Application.isPlaying) {
             m_imageLoadEditorUpdateTasks[index].RequestLoadImage(imageLoadBGTask);
@@ -51,8 +71,8 @@ internal class ImageLoader  {
 //----------------------------------------------------------------------------------------------------------------------
 
 #if UNITY_EDITOR
-    private static readonly List<ImageLoadEditorUpdateTask> m_imageLoadEditorUpdateTasks 
-        = new List<ImageLoadEditorUpdateTask>(StreamingImageSequenceConstants.MAX_IMAGE_TYPES);
+    private static readonly ImageLoadEditorUpdateTask[] m_imageLoadEditorUpdateTasks 
+        = new ImageLoadEditorUpdateTask[StreamingImageSequenceConstants.MAX_IMAGE_TYPES];
 
 #endif
 }
