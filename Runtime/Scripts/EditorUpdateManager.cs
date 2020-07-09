@@ -9,15 +9,15 @@ namespace UnityEngine.StreamingImageSequence
     
 
 [InitializeOnLoad]
-internal class UpdateManager {
+internal class EditorUpdateManager {
     
-    static UpdateManager() {
-        EditorApplication.update               += UpdateInEditor;        
+    static EditorUpdateManager() {
+        EditorApplication.update               += EditorUpdateManager_Update;        
     }
    
 //----------------------------------------------------------------------------------------------------------------------        
 
-    static void UpdateInEditor() {
+    static void EditorUpdateManager_Update() {
         
         double time = EditorApplication.timeSinceStartup;
         double timeDifference = time - m_lastUpdateInEditorTime;

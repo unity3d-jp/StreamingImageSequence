@@ -11,9 +11,9 @@ internal class StreamingImageSequenceNativeRenderer : MonoBehaviour {
     {
         string str = "" + m_timer;
         GUI.TextArea(new Rect(10, 10, Screen.width - 20, 24), str);
-        for (int ii = 0; ii < UpdateManager.NUM_THREAD; ii++)
+        for (int ii = 0; ii < EditorUpdateManager.NUM_THREAD; ii++)
         {
-            GUI.TextArea(new Rect(10, 26 + 24 * ii, Screen.width - 20, 24), "" + UpdateManager.GetThreadTickCount(ii));
+            GUI.TextArea(new Rect(10, 26 + 24 * ii, Screen.width - 20, 24), "" + EditorUpdateManager.GetThreadTickCount(ii));
         }
         m_timer++;
     }
