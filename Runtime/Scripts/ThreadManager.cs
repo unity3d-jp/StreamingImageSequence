@@ -7,35 +7,22 @@ using UnityEditor;
 namespace UnityEngine.StreamingImageSequence
 {
     
+internal static class ThreadManager {
+
+//----------------------------------------------------------------------------------------------------------------------
+    
 #if UNITY_EDITOR
-[InitializeOnLoad]
-#endif
-internal class ThreadManager {
-    
-    //Threads processes tasks
-    const uint NUM_THREAD = 3;
-    private static readonly Thread[] m_threads = new Thread[NUM_THREAD];
-    private static readonly Queue<IBackGroundTask> m_backGroundTaskQueue = new Queue<IBackGroundTask>();
-   
-    
-    private static bool m_shuttingDownThreads;
-    
-    static ThreadManager()
-    {
-#if UNITY_EDITOR
+    [InitializeOnLoadMethod]
+    static void InitInEditor() {
         EditorApplication.playModeStateChanged += ChangedPlayModeState;
-        StartThread();
-#endif  //UNITY_EDITOR
+        
     }
-
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    internal static void InitInRuntime() {
-
-#if !UNITY_EDITOR
-       LogUtility.LogDebug("InitInRuntime()");
-       StartThread();
 #endif
+    
+    [RuntimeInitializeOnLoadMethod]
+    internal static void InitInRuntime() {
+        LogUtility.LogDebug("ThreadManager::InitInRuntime()");        
+        StartThread();
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
@@ -84,7 +71,6 @@ internal class ThreadManager {
 //----------------------------------------------------------------------------------------------------------------------
     public static bool QueueBackGroundTask(IBackGroundTask task) {
         lock (m_backGroundTaskQueue) {
-//                Debug.Log("Background task count: " + m_backGroundTaskQueue.Count);
             m_backGroundTaskQueue.Enqueue(task);
         }
         return true;
@@ -142,6 +128,13 @@ internal class ThreadManager {
 //----------------------------------------------------------------------------------------------------------------------
 
 
+    //Threads processes tasks
+    const                   uint                   NUM_THREAD            = 3;
+    private static readonly Thread[]               m_threads             = new Thread[NUM_THREAD];
+    private static readonly Queue<IBackGroundTask> m_backGroundTaskQueue = new Queue<IBackGroundTask>();
+   
+    
+    private static bool m_shuttingDownThreads;
 
 }
 
