@@ -595,11 +595,10 @@ MonoBehaviour:
   - {fileID: -1140773816473060974}
   - {fileID: 4014242105826868827}
   m_version: 1
-  m_time: 0
+  m_time: 0.4166666865348816
   m_timelineDefaultAsset: {fileID: 102900000, guid: 28ebc38bfdd481147934ea04bfc829bb,
     type: 3}
   m_useImageMarkerVisibility: 1
-  m_loadingIndex: 6
 --- !u!114 &4014242105826868827
 MonoBehaviour:
   m_ObjectHideFlags: 0
