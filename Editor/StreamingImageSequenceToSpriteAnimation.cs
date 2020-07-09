@@ -107,7 +107,7 @@ namespace UnityEditor.StreamingImageSequence {
             }
 
             // start to modify tracks in the new playable asset.
-            var rootTracks = UpdateManager.GetTrackList(newAsset);
+            var rootTracks = TimelineUtility.GetTrackList(newAsset);
             ProcessTracks(null, rootTracks,goList,0 );
 
             newPlayableDirector = null;
@@ -125,7 +125,7 @@ namespace UnityEditor.StreamingImageSequence {
                 var trackType = track.GetType();
                 if (trackType == typeof(GroupTrack))
                 {
-                    var childTracks = UpdateManager.GetTrackList(track as GroupTrack);
+                    var childTracks = TimelineUtility.GetTrackList(track as GroupTrack);
                     ProcessTracks(track,childTracks, goList, currentIndex);
                 }
                 else if (trackType == typeof(StreamingImageSequenceTrack))
@@ -183,7 +183,7 @@ namespace UnityEditor.StreamingImageSequence {
                     int imageCount = movieProxyAsset.GetImagePaths().Count;
                     Sprite[] sprites = new Sprite[imageCount];
 
-                    string strSrcFolder = Path.Combine(UpdateManager.GetProjectFolder(), movieProxyAsset.GetFolder()).Replace("\\", "/");
+                    string strSrcFolder = Path.Combine(PathUtility.GetProjectFolder(), movieProxyAsset.GetFolder()).Replace("\\", "/");
                     string strDistFolder = GetDistinationFolder(movieProxyAsset.GetImagePath(0));
                     for (int ii = 0; ii < imageCount; ii++)
                     {
@@ -198,7 +198,7 @@ namespace UnityEditor.StreamingImageSequence {
                     for (int ii = 0; ii < imageCount; ii++)
                     {
                         string strAssetPath = Path.Combine(strDistFolder, movieProxyAsset.GetImagePath(ii)).Replace("\\", "/");
-                        strAssetPath = UpdateManager.ToRelativePath(strAssetPath);
+                        strAssetPath = PathUtility.ToRelativePath(strAssetPath);
 
                         AssetDatabase.ImportAsset(strAssetPath);
 
@@ -217,7 +217,7 @@ namespace UnityEditor.StreamingImageSequence {
                     for (int ii = 0; ii < imageCount; ii++)
                     {
                         string strAssetPath = Path.Combine(strDistFolder, movieProxyAsset.GetImagePath(ii)).Replace("\\", "/");
-                        strAssetPath = UpdateManager.ToRelativePath(strAssetPath);
+                        strAssetPath = PathUtility.ToRelativePath(strAssetPath);
                         AssetDatabase.ImportAsset(strAssetPath);
 
                         Sprite sp = (Sprite)AssetDatabase.LoadAssetAtPath(strAssetPath, typeof(Sprite));
@@ -266,7 +266,7 @@ namespace UnityEditor.StreamingImageSequence {
                     counter++;
 
                     AnimationUtility.SetObjectReferenceCurve(newClip, curveBinding, Keyframes);
-                    strDistFolder = UpdateManager.ToRelativePath(strDistFolder);
+                    strDistFolder = PathUtility.ToRelativePath(strDistFolder);
                     var uniquePath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(strDistFolder, "Animation.anim").Replace("\\", "/"));
                     AssetDatabase.CreateAsset(newClip, uniquePath );
 
@@ -309,8 +309,6 @@ namespace UnityEditor.StreamingImageSequence {
 
             Assert.IsTrue(match != null);
 
-            int periodIndex = strFileneWithoutExtention.Length;
-            int digits = match.Value.Length;
             var strBaseName = strFileneWithoutExtention.Substring(0, match.Index);
 
             var strDistFolder = Application.dataPath;

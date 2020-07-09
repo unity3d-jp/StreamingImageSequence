@@ -5,7 +5,7 @@ internal class PreviewImageLoadBGTask : BaseImageLoadBGTask {
 
     internal static void Queue(string imagePath, int width, int height, int frame) {
         PreviewImageLoadBGTask task = new PreviewImageLoadBGTask(imagePath, frame, width, height);
-        UpdateManager.QueueBackGroundTask(task);
+        ThreadManager.QueueBackGroundTask(task);
         
     }
 

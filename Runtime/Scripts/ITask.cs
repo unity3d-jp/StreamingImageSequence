@@ -1,7 +1,7 @@
 ﻿namespace UnityEngine.StreamingImageSequence
 {
     
-internal interface IBackGroundTask {
+internal interface ITask {
     void Execute();
 }
 

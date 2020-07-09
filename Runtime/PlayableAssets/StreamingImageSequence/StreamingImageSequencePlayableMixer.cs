@@ -20,8 +20,8 @@ namespace UnityEngine.StreamingImageSequence
 
         public override void OnPlayableCreate(Playable playable) {
 #if UNITY_EDITOR            
-            m_loaderPeriodicJob = new LoaderPeriodicJob(this);
-            UpdateManager.AddPeriodicJob( m_loaderPeriodicJob);
+            m_editorUpdateTask = new SISPlayableMixerEditorUpdateTask(this);
+            EditorUpdateManager.AddEditorUpdateTask( m_editorUpdateTask);
 #endif //UNITY_EDITOR          
            
         }
@@ -30,7 +30,7 @@ namespace UnityEngine.StreamingImageSequence
             base.OnPlayableDestroy(playable);
             
 #if UNITY_EDITOR            
-            UpdateManager.RemovePeriodicJob( m_loaderPeriodicJob);        
+            EditorUpdateManager.RemoveEditorUpdateTask( m_editorUpdateTask);        
 #endif //UNITY_EDITOR          
         }
 
@@ -177,7 +177,7 @@ namespace UnityEngine.StreamingImageSequence
         private Image           m_image = null;
 
 #if UNITY_EDITOR
-        LoaderPeriodicJob m_loaderPeriodicJob;        
+        SISPlayableMixerEditorUpdateTask m_editorUpdateTask;        
 #endif
 
     }
