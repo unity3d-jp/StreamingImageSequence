@@ -107,7 +107,7 @@ namespace UnityEditor.StreamingImageSequence {
             }
 
             // start to modify tracks in the new playable asset.
-            var rootTracks = UpdateManager.GetTrackList(newAsset);
+            var rootTracks = TimelineUtility.GetTrackList(newAsset);
             ProcessTracks(null, rootTracks,goList,0 );
 
             newPlayableDirector = null;
@@ -125,7 +125,7 @@ namespace UnityEditor.StreamingImageSequence {
                 var trackType = track.GetType();
                 if (trackType == typeof(GroupTrack))
                 {
-                    var childTracks = UpdateManager.GetTrackList(track as GroupTrack);
+                    var childTracks = TimelineUtility.GetTrackList(track as GroupTrack);
                     ProcessTracks(track,childTracks, goList, currentIndex);
                 }
                 else if (trackType == typeof(StreamingImageSequenceTrack))
