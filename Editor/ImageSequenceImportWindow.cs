@@ -14,18 +14,14 @@ internal class ImageSequenceImportWindow : EditorWindow {
         
     }
 
-    static Vector2 m_scrollPos;
-
-    private void OnDisable()
-    {
-        if (m_isSelectingFolder)
-        {
-            UnityEditor.EditorApplication.delayCall += () =>
-            {
+    private void OnDisable() {
+        if (m_isSelectingFolder) {
+            UnityEditor.EditorApplication.delayCall += () => {
                 InitWindow();
             };
         }
     }
+//----------------------------------------------------------------------------------------------------------------------    
 
     internal static void SetParam(ImageFileImporterParam param) {
         m_importerParam = param;
@@ -37,11 +33,11 @@ internal class ImageSequenceImportWindow : EditorWindow {
                                                                                                      //      PictureFileImportWindow window = GetWindow<PictureFileImportWindow>();
         window.ShowAsDropDown(rect, new Vector2(640, 480));
     }
+    
+//----------------------------------------------------------------------------------------------------------------------    
 
-    void OnGUI()
-    {
-        if (m_importerParam == null )
-        {
+    void OnGUI() {
+        if (m_importerParam == null ) {
             Debug.LogError("m_importerParam is null");
             return;
         }
@@ -126,11 +122,14 @@ internal class ImageSequenceImportWindow : EditorWindow {
 
 
 //---------------------------------------------------------------------------------------------------------------------
+    
     private bool m_isSelectingFolder;
     static ImageFileImporterParam m_importerParam = new ImageFileImporterParam();
 
     //Styles
     private GUIStyle m_headerStyle;
+
+    private Vector2 m_scrollPos;
 
 }
 
