@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.StreamingImageSequence;
 
@@ -56,30 +57,22 @@ internal class ImageSequenceImportWindow : EditorWindow {
         GUILayout.Label(numFiles.ToString() + " external files found in: ");
         GUILayout.Label(m_importerParam.strSrcFolder);
         if (m_importerParam.RelativeFilePaths != null) {
+            const int SCROLL_VIEW_COUNT  = 15;
+            const int SCROLL_ITEM_HEIGHT = 16;
 
-            int itemHeight = 16;
-            int viewCount = 10;
-               
-            
-            m_scrollPos = EditorGUILayout.BeginScrollView(m_scrollPos, GUILayout.Width(Screen.width - 4));
-            int firstIndex = (int)( m_scrollPos.y / itemHeight);
-            firstIndex = Mathf.Clamp(firstIndex,0,numFiles - viewCount);
-            GUILayout.Space(firstIndex * itemHeight);
-            int lastIndex = Mathf.Min(numFiles, firstIndex + viewCount);
-            
-            for (int ii = firstIndex; ii < lastIndex; ++ii) {
+            m_scrollPos = DrawScrollView(m_scrollPos, numFiles, SCROLL_VIEW_COUNT, SCROLL_ITEM_HEIGHT, (int index) => {
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.Space(16);
-                string str = "" + ii + ":";
+                string str = "" + index + ":";
 
                 EditorGUILayout.LabelField(str, GUILayout.Width(40));
-                EditorGUILayout.LabelField(m_importerParam.RelativeFilePaths[ii], GUILayout.Width(Screen.width - 130));
+                EditorGUILayout.LabelField(m_importerParam.RelativeFilePaths[index], GUILayout.Width(Screen.width - 130));
                 GUILayout.Space(1);
                 EditorGUILayout.EndHorizontal();
-            }
-            GUILayout.Space(Mathf.Max(0,(numFiles-firstIndex-viewCount) * itemHeight));
+            });
+            
         }
-        EditorGUILayout.EndScrollView();
+        
         GUILayout.Space(4);
         
 
@@ -129,6 +122,27 @@ internal class ImageSequenceImportWindow : EditorWindow {
         EditorGUILayout.EndVertical();
     }
 
+//---------------------------------------------------------------------------------------------------------------------
+
+    static Vector2 DrawScrollView(Vector2 scrollPos, int numItems, int viewCount, int itemHeight, Action<int> drawGUIItem) 
+    {
+        bool showVertical = (numItems > viewCount);
+
+        //Calculate where we should start drawing the visible items
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, false, showVertical);
+        int firstIndex = (int)( scrollPos.y / itemHeight);
+        firstIndex = Mathf.Clamp(firstIndex, 0, numItems - viewCount);
+        GUILayout.Space(firstIndex * itemHeight);
+        
+        int lastIndex = Mathf.Min(numItems, firstIndex + viewCount);
+            
+        for (int ii = firstIndex; ii < lastIndex; ++ii) {
+            drawGUIItem(ii);
+        }
+        GUILayout.Space(Mathf.Max(0,(numItems - firstIndex - viewCount) * itemHeight));
+        EditorGUILayout.EndScrollView();
+        return scrollPos;
+    }    
 
 //---------------------------------------------------------------------------------------------------------------------
     
@@ -139,6 +153,7 @@ internal class ImageSequenceImportWindow : EditorWindow {
     private GUIStyle m_headerStyle;
 
     private Vector2 m_scrollPos;
+
 
 }
 
