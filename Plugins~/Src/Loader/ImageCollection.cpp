@@ -338,8 +338,8 @@ bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathToAllocate
 
     const strType& imagePath = (*orderIt)->first;
 
-    //This should not be happening. The image that we want to allocate should not be located at the start of the list
-    ASSERT(imagePath != imagePathToAllocate);
+    //if this happens, then we can't even allocate memory for one single image
+    //ASSERT(imagePath != imagePathToAllocate);
     if (imagePath == imagePathToAllocate)
         return false;
 
