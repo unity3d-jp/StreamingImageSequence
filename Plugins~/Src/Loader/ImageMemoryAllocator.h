@@ -26,6 +26,7 @@ private:
     static uint32_t CalculateMemSize(const uint32_t w, const uint32_t h);
 
     uint64_t m_usedMemory;
+    uint64_t m_maxMemory;
     float m_inverseTotalRAM;
 
 };

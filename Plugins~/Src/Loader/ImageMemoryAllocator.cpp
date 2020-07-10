@@ -6,8 +6,19 @@
 
 namespace StreamingImageSequencePlugin {
 
-ImageMemoryAllocator::ImageMemoryAllocator() : m_usedMemory(0), m_inverseTotalRAM(1.0f / MemoryUtility::GetTotalRAM()) {
-    
+const uint64_t UNLIMITED_MEMORY = 0;
+const uint64_t DEFAULT_MAX_MEMORY = DEFAULT_MAX_MEMORY;
+
+//----------------------------------------------------------------------------------------------------------------------
+
+ImageMemoryAllocator::ImageMemoryAllocator() : m_usedMemory(0)
+    , m_maxMemory(DEFAULT_MAX_MEMORY)
+    , m_inverseTotalRAM(1.0f / MemoryUtility::GetTotalRAM())
+{
+#ifdef MAX_IMAGE_MEMORY
+    m_maxMemory = MAX_IMAGE_MEMORY;
+#endif
+
 }
 
 
@@ -20,10 +31,9 @@ ImageMemoryAllocator::~ImageMemoryAllocator() {
 bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, const uint32_t h) {
     //Allocate
     const uint32_t dataSize = CalculateMemSize(w, h);
-#ifdef MAX_IMAGE_MEMORY
-    if ((m_usedMemory + dataSize) > MAX_IMAGE_MEMORY)
+
+    if (m_maxMemory != UNLIMITED_MEMORY && (m_usedMemory + dataSize) > m_maxMemory)
         return false;
-#endif
 
     const float MIN_AVAILABLE_RAM_RATIO = 0.2f;
 
