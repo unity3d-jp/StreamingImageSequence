@@ -54,14 +54,21 @@ internal static class ImageLoader  {
     
 //----------------------------------------------------------------------------------------------------------------------   
 
-    internal static void RequestLoadFullImage(string imagePath) {
+    internal static bool RequestLoadFullImage(string imagePath) {
+        if (!StreamingImageSequencePlugin.IsMemoryAvailable())
+            return false;
+                
         FullImageLoadBGTask task = new FullImageLoadBGTask(imagePath);
         RequestLoadImageInternal(StreamingImageSequenceConstants.IMAGE_TYPE_FULL, task);
+        return true;
     }
 
-    internal static void RequestLoadPreviewImage(string imagePath, int width, int height) {
+    internal static bool RequestLoadPreviewImage(string imagePath, int width, int height) {
+        if (!StreamingImageSequencePlugin.IsMemoryAvailable())
+            return false;
         PreviewImageLoadBGTask task = new PreviewImageLoadBGTask(imagePath, width, height);
         RequestLoadImageInternal(StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW, task);
+        return true;
     }
 //----------------------------------------------------------------------------------------------------------------------   
     
