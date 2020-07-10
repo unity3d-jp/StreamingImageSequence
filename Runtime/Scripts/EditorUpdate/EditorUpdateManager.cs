@@ -12,23 +12,26 @@ namespace UnityEngine.StreamingImageSequence
 
 [InitializeOnLoad]
 internal class EditorUpdateManager {
-    
+
     static EditorUpdateManager() {
-        EditorApplication.update       += EditorUpdateManager_Update;
-        EditorSceneManager.sceneOpened += EditorUpdateManager_OnSceneOpened;
+        EditorApplication.update           += EditorUpdateManager_Update;
+        EditorSceneManager.sceneClosed     += EditorUpdateManager_OnSceneClosed;
+        EditorSceneManager.newSceneCreated += EditorUpdateManager_OnSceneCreated;
     }
 
     ~EditorUpdateManager() {
         StreamingImageSequencePlugin.ResetPlugin();        
     }
-    
-    static void EditorUpdateManager_OnSceneOpened( Scene scene, UnityEditor.SceneManagement.OpenSceneMode openSceneMode) {
-        if (OpenSceneMode.Single != openSceneMode)
-            return;
-        
-        //Reset all imageLoading process when loading a new scene (single mode)
+
+    static void EditorUpdateManager_OnSceneClosed(SceneManagement.Scene scene) {
+        //Reset all imageLoading process when closing the scene
         ResetImageLoading();
-    }  
+    }
+
+    static void EditorUpdateManager_OnSceneCreated( SceneManagement.Scene scene, NewSceneSetup setup, NewSceneMode mode) {
+        //Reset all imageLoading process when creating a new scene
+        ResetImageLoading();        
+    }
     
    
 //----------------------------------------------------------------------------------------------------------------------        
