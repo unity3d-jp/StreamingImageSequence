@@ -117,9 +117,17 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
             if ((fullImageData->CurrentReadStatus == READ_STATUS_LOADING))
                 return fullImageData;
 
-            imageCatalog->AddImageFromSrc(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, frame, 
-                                          fullImageData, reqWidth, reqHeight);
-            return previewImageData;
+            //Add image and refresh
+            if (imageCatalog->AddImageFromSrc(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, frame, 
+                                              fullImageData, reqWidth, reqHeight)) 
+            {
+                previewImageData = LoaderUtility::GetImageData(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, 
+                                                               imageCatalog, frame);
+                return previewImageData;
+            }
+
+            //fail
+            return nullptr;
         }
         default: {
             return nullptr;
