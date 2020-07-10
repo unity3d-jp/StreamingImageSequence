@@ -18,6 +18,7 @@ ImageCollection::ImageCollection()
     , m_curOrderStartPos(m_orderedImageList.end())
     , m_updateOrderStartPos(false)
     , m_csType(CRITICAL_SECTION_TYPE_FULL_IMAGE)
+    , m_latestRequestFrame(0)
 {
 
 }
@@ -31,8 +32,11 @@ void ImageCollection::Init(CriticalSectionType csType, ImageMemoryAllocator* mem
 //----------------------------------------------------------------------------------------------------------------------
 
 //Thread-safe
-const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool isForCurrentOrder) {
+const ImageData* ImageCollection::GetImage(const strType& imagePath, const int frame) {
     CriticalSectionController cs(IMAGE_CS(m_csType));
+
+    UpdateRequestFrameUnsafe(frame);
+
     std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
     if (m_pathToImageMap.end() == pathIt) {
         return nullptr;
@@ -43,6 +47,11 @@ const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool 
         MoveOrderStartPosToEndUnsafe();
     }
 
+    //[Note-sin: 2020-6-8] indicate if this image is for the current order by comparing frame and m_latestRequestFrame.
+    //Also check overFlow when frame seems to be higher, but it's actually older
+    const bool isOverFlow = (frame > 0 && m_latestRequestFrame < 0);
+
+    const bool isForCurrentOrder = (frame >= m_latestRequestFrame && !isOverFlow);
     if (isForCurrentOrder) {
         ReorderImageUnsafe(pathIt);
     }
@@ -51,16 +60,22 @@ const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool 
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//Thread-safe
-std::unordered_map<strType, ImageData>::const_iterator ImageCollection::AddImage(const strType& imagePath) {
+//Thread-safe. May return null
+const ImageData* ImageCollection::AddImage(const strType& imagePath, const int frame) {
     
     CriticalSectionController cs(IMAGE_CS(m_csType));
 
-    const std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
-    if (pathIt !=m_pathToImageMap.end())
-        return pathIt;
+    UpdateRequestFrameUnsafe(frame);
+    if (frame < m_latestRequestFrame)
+        return nullptr;
 
-    return AddImageUnsafe(imagePath);
+    std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
+    if (pathIt !=m_pathToImageMap.end())
+        return &pathIt->second;
+
+    pathIt = AddImageUnsafe(imagePath);
+    return &pathIt->second;
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -94,10 +109,14 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 //----------------------------------------------------------------------------------------------------------------------
 
 
-bool ImageCollection::AddImageFromSrc(const strType& imagePath, const ImageData* src, 
+bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame, const ImageData* src, 
                                            const uint32_t w, const uint32_t h)
 {
     CriticalSectionController cs(IMAGE_CS(m_csType));
+
+    UpdateRequestFrameUnsafe(frame);
+    if (frame < m_latestRequestFrame)
+        return false;
 
     auto pathIt = m_pathToImageMap.find(imagePath);
 
@@ -177,19 +196,13 @@ void ImageCollection::UnloadAllImages() {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//Non-Thread-safe
+//Thread-safe
 void ImageCollection::ResetOrder() {
+    CriticalSectionController cs(IMAGE_CS(m_csType));
+
     m_curOrderStartPos = m_orderedImageList.begin();
     m_updateOrderStartPos = false;
-}
-
-
-//Non-Thread-safe !
-void ImageCollection::AdvanceOrder() {
-    //Turn on the flag, so that at the next GetImage() or AddImage(), 
-    //the related image would be the start pos of the current "order".
-    //The prev nodes before this start pos, would be regarded as "unused" for this order, and thus safe to be unloaded
-    m_updateOrderStartPos = true;
+    m_latestRequestFrame = 0;
 }
 
 
@@ -276,6 +289,26 @@ void ImageCollection::MoveOrderStartPosToEndUnsafe() {
 
 }
 
+
+//Non-Thread-safe
+void ImageCollection::UpdateRequestFrameUnsafe(const int frame) {
+
+
+    if (frame <= m_latestRequestFrame) {
+        //overflow check
+        const bool isOverflow = frame < 0 && m_latestRequestFrame >= 0;
+        if (!isOverflow) {
+            return;
+        }
+    }
+
+    m_latestRequestFrame = frame;
+
+    //Turn on the flag, so that at the next GetImage() or AddImage(), 
+    //the related image would be the start pos of the current "order".
+    //The prev nodes before this start pos, would be regarded as "unused" for this order, and thus safe to be unloaded
+    m_updateOrderStartPos = true;
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 

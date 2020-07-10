@@ -20,12 +20,12 @@ public:
     void Init(CriticalSectionType csType, ImageMemoryAllocator*);
 
     //return null if not found
-    const ImageData* GetImage(const strType& imagePath, const bool isForCurrentOrder);
+    const ImageData* GetImage(const strType& imagePath, const int frame);
 
     const ImageData* AllocateImage(const strType& imagePath, const uint32_t w, const uint32_t h);
 
-    std::unordered_map<strType, ImageData>::const_iterator AddImage(const strType& imagePath);
-    bool AddImageFromSrc(const strType& imagePath, const ImageData* src, const uint32_t w, const uint32_t h);
+    const ImageData* AddImage(const strType& imagePath, const int frame);
+    bool AddImageFromSrc(const strType& imagePath, const int frame, const ImageData* src, const uint32_t w, const uint32_t h);
 
     void SetImageStatus(const strType& imagePath, const ReadStatus status);
     bool UnloadImage(const strType& imagePath);
@@ -35,7 +35,6 @@ public:
     inline size_t GetNumImages() const;
 
     void ResetOrder();
-    void AdvanceOrder();
 
 private:
 
@@ -44,6 +43,8 @@ private:
     void ReorderImageUnsafe(std::unordered_map<strType, ImageData>::iterator);
     void DeleteImageOrderUnsafe(std::unordered_map<strType, ImageData>::iterator);
     void MoveOrderStartPosToEndUnsafe();
+
+    void UpdateRequestFrameUnsafe(const int frame);
 
     //This will unload unused image if memory is not enough
     bool AllocateRawDataUnsafe(uint8_t** rawData, const uint32_t w, const uint32_t h, const strType& imagePath);
@@ -59,6 +60,7 @@ private:
     bool m_updateOrderStartPos;
 
     CriticalSectionType m_csType;
+    int m_latestRequestFrame;
 
 };
 
