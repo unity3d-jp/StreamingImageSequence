@@ -391,7 +391,6 @@ namespace UnityEngine.StreamingImageSequence {
                 }
                 default: {
                     return ImageLoader.RequestLoadFullImage(filename);
-                    break;
                 
                 }
             }
