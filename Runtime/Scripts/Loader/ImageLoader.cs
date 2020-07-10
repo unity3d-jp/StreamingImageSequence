@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 
 namespace UnityEngine.StreamingImageSequence {
 
@@ -39,6 +38,7 @@ internal static class ImageLoader  {
             EditorUpdateManager.AddEditorUpdateTask(task);
             m_imageLoadEditorUpdateTasks[i] = task;
         }
+
     }
     
 #endif
@@ -52,35 +52,32 @@ internal static class ImageLoader  {
 //----------------------------------------------------------------------------------------------------------------------   
 
     internal static bool RequestLoadFullImage(string imagePath) {
-        if (!StreamingImageSequencePlugin.IsMemoryAvailable())
-            return false;
                 
         FullImageLoadBGTask task = new FullImageLoadBGTask(imagePath);
-        RequestLoadImageInternal(StreamingImageSequenceConstants.IMAGE_TYPE_FULL, task);
-        return true;
+        return RequestLoadImageInternal(StreamingImageSequenceConstants.IMAGE_TYPE_FULL, task);
     }
 
     internal static bool RequestLoadPreviewImage(string imagePath, int width, int height) {
-        if (!StreamingImageSequencePlugin.IsMemoryAvailable())
-            return false;
         PreviewImageLoadBGTask task = new PreviewImageLoadBGTask(imagePath, width, height);
-        RequestLoadImageInternal(StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW, task);
-        return true;
+        return RequestLoadImageInternal(StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW, task);
     }
 //----------------------------------------------------------------------------------------------------------------------   
     
-    private static void RequestLoadImageInternal(int index, BaseImageLoadBGTask imageLoadBGTask) {
+    private static bool RequestLoadImageInternal(int index, BaseImageLoadBGTask imageLoadBGTask) {
                
 #if UNITY_EDITOR        
         if (!Application.isPlaying) {
             imageLoadBGTask.SetRequestFrame(Time.frameCount);
+            if (null == m_imageLoadEditorUpdateTasks[index])
+                return false;
             m_imageLoadEditorUpdateTasks[index].RequestLoadImage(imageLoadBGTask);            
-            return;
+            return true;
         }
 #endif
-        
+
 
         ThreadManager.QueueBackGroundTask(imageLoadBGTask);
+        return true;
     }
     
 //----------------------------------------------------------------------------------------------------------------------
