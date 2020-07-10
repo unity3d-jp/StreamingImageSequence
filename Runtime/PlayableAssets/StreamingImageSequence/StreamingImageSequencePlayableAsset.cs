@@ -376,10 +376,18 @@ namespace UnityEngine.StreamingImageSequence {
             ImageLoader.GetImageDataInto(filename,TEX_TYPE,out imageData);
             //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);
             
-            if (StreamingImageSequenceConstants.READ_STATUS_LOADING != imageData.ReadStatus ) {
-                ImageLoader.RequestLoadFullImage(filename);
+            switch (imageData.ReadStatus) {
+                case StreamingImageSequenceConstants.READ_STATUS_LOADING: 
+                case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
+                    break;
+                }
+                default: {
+                    ImageLoader.RequestLoadFullImage(filename);
+                    break;
+                
+                }
             }
-            
+                       
             return filename;
         }
 //----------------------------------------------------------------------------------------------------------------------        

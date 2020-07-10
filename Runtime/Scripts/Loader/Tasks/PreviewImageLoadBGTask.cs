@@ -1,4 +1,7 @@
 ﻿
+
+using UnityEngine.Assertions;
+
 namespace UnityEngine.StreamingImageSequence {
 
 internal class PreviewImageLoadBGTask : BaseImageLoadBGTask {
@@ -11,26 +14,17 @@ internal class PreviewImageLoadBGTask : BaseImageLoadBGTask {
 //----------------------------------------------------------------------------------------------------------------------
 
     public override void Execute() {
-        const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW;
         string imagePath    = GetImagePath();
         int    requestFrame = GetRequestFrame();
         
-        StreamingImageSequencePlugin.GetImageDataInto(imagePath, TEX_TYPE, requestFrame, out ImageData tResult);
-        switch (tResult.ReadStatus) {
-            case StreamingImageSequenceConstants.READ_STATUS_LOADING: 
-            case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
-#if UNITY_EDITOR
-                LogUtility.LogDebug("Already requested:" + imagePath);
+#if DEBUG_PREVIEW_IMAGE
+        const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW;
+        StreamingImageSequencePlugin.GetImageDataInto(imagePath, TEX_TYPE, requestFrame, out ImageData imageData);
+        Assert.AreNotEqual(StreamingImageSequenceConstants.READ_STATUS_LOADING, imageData.ReadStatus );
+        Assert.AreNotEqual(StreamingImageSequenceConstants.READ_STATUS_SUCCESS, imageData.ReadStatus );
 #endif
-                break;
-            }
-            default: {
-                //Debug.Log("Loading: " + m_fileName);
-                StreamingImageSequencePlugin.LoadAndAllocPreviewImage(imagePath, m_width, m_height, requestFrame);
-                break;
-            }
-        }
-
+        
+        StreamingImageSequencePlugin.LoadAndAllocPreviewImage(imagePath, m_width, m_height, requestFrame);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
