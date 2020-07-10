@@ -177,17 +177,15 @@ void ImageCollection::UnloadAllImages() {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//Thread-safe
+//Non-Thread-safe
 void ImageCollection::ResetOrder() {
-    CriticalSectionController cs(IMAGE_CS(m_csType));
     m_curOrderStartPos = m_orderedImageList.begin();
     m_updateOrderStartPos = false;
 }
 
 
-//Thread-safe
+//Non-Thread-safe !
 void ImageCollection::AdvanceOrder() {
-    CriticalSectionController cs(IMAGE_CS(m_csType));
     //Turn on the flag, so that at the next GetImage() or AddImage(), 
     //the related image would be the start pos of the current "order".
     //The prev nodes before this start pos, would be regarded as "unused" for this order, and thus safe to be unloaded

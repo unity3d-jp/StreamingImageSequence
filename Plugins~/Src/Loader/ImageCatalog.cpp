@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "ImageCatalog.h"
 
+#include "CommonLib/CommonLib.h"                    //IMAGE_CS
+#include "CommonLib/CriticalSectionController.h"
 
 
 namespace StreamingImageSequencePlugin {
@@ -28,14 +30,26 @@ const ImageData* ImageCatalog::GetImage(const strType& imagePath, const uint32_t
 
 //----------------------------------------------------------------------------------------------------------------------
 
+//Thread-safe
 void ImageCatalog::Reset() {
     for (uint32_t imageType = 0; imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES; ++imageType) {
         m_imageCollection[imageType].UnloadAllImages();
     }
-    m_latestRequestFrame = 0;
+
+    {
+        CriticalSectionController cs0(IMAGE_CS(CRITICAL_SECTION_TYPE_FULL_IMAGE));
+        CriticalSectionController cs1(IMAGE_CS(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE));
+        m_latestRequestFrame = 0;
+
+    }
 }
 
+//Thread-safe
 void ImageCatalog::ResetRequestFrame() {
+
+    CriticalSectionController cs0(IMAGE_CS(CRITICAL_SECTION_TYPE_FULL_IMAGE));
+    CriticalSectionController cs1(IMAGE_CS(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE));
+
     for (uint32_t imageType = 0; imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES; ++imageType) {
         m_imageCollection[imageType].ResetOrder();
     }
@@ -43,7 +57,12 @@ void ImageCatalog::ResetRequestFrame() {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+
+//Thread-safe
 void ImageCatalog::UpdateRequestFrame(const int frame) {
+    CriticalSectionController cs0(IMAGE_CS(CRITICAL_SECTION_TYPE_FULL_IMAGE));
+    CriticalSectionController cs1(IMAGE_CS(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE));
+
 
     if (frame <= m_latestRequestFrame) {
         //overflow check
