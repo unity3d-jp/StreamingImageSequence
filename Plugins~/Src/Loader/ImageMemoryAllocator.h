@@ -18,6 +18,7 @@ public:
 
     inline uint64_t GetUsedMemory() const;
 
+    ImageMemoryAllocator();
     ~ImageMemoryAllocator();
 private:
     void IncUsedMem(const uint64_t mem);
@@ -25,6 +26,7 @@ private:
     static uint32_t CalculateMemSize(const uint32_t w, const uint32_t h);
 
     uint64_t m_usedMemory;
+    float m_inverseTotalRAM;
 
 };
 

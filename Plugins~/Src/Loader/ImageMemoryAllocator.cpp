@@ -1,8 +1,15 @@
 #include "ImageMemoryAllocator.h"
 
+#include "CommonLib/MemoryUtility.h"
+
 #include "LoaderConstants.h"
 
 namespace StreamingImageSequencePlugin {
+
+ImageMemoryAllocator::ImageMemoryAllocator() : m_usedMemory(0), m_inverseTotalRAM(1.0f / MemoryUtility::GetTotalRAM()) {
+    
+}
+
 
 ImageMemoryAllocator::~ImageMemoryAllocator() {
     ASSERT(0 == m_usedMemory);
@@ -17,9 +24,15 @@ bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, con
     if ((m_usedMemory + dataSize) > MAX_IMAGE_MEMORY)
         return false;
 #endif
+
+    const float MIN_AVAILABLE_RAM_RATIO = 0.2f;
+
+    const float availableRAMRatio = MemoryUtility::GetAvailableRAM() * m_inverseTotalRAM;
+    if (availableRAMRatio <= MIN_AVAILABLE_RAM_RATIO)
+        return false;
+
+
     uint8_t*  buffer = static_cast<uint8_t*>(malloc(dataSize));
-
-
     if (nullptr == buffer) {
         return false;
     }
