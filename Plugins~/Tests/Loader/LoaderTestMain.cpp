@@ -132,7 +132,7 @@ TEST(Loader, StopLoadingRequiredImagesTest) {
 
     //Load next images in the same frame. This should fail.
     const int startIndex = maxImages;
-    uint32_t numImages = 3;
+    const uint32_t numImages = 3;
     const bool processed = TestUtility::LoadTestImages(imageType, 0, startIndex, numImages);
     const bool laterImagesOutOfMemory = TestUtility::CheckLoadedTestImageData(
         imageType, 0, startIndex, numImages, READ_STATUS_OUT_OF_MEMORY);
@@ -207,6 +207,52 @@ TEST(Loader, OutOfMemoryTest) {
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+TEST(Loader, ResetImageRequestFrame) {
+    using namespace StreamingImageSequencePlugin;
+    ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+
+    const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
+
+    const uint32_t maxImages = TestUtility::CleanupAndLoadMaxImages(imageType);
+    std::unordered_map<strType, ImageData> imageMap = imageCatalog.GetImageMap(imageType);
+
+    //Test loading images in next frames
+    int curFrame = 10;
+    uint32_t startIndex = maxImages;
+    uint32_t numImages = 3;
+    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
+                                                                ++curFrame, startIndex, numImages, imageMap
+    );
+
+    //Reset
+    ResetImageRequestFrame();
+
+    //Load next images after resetting for frame 0. This should fail.
+    curFrame = 0;
+    startIndex += numImages;
+    numImages = 9;
+    const bool processed = TestUtility::LoadTestImages(imageType, curFrame, startIndex, numImages);
+    const bool laterImagesOutOfMemory = TestUtility::CheckLoadedTestImageData(
+        imageType, 0, startIndex, numImages, READ_STATUS_OUT_OF_MEMORY);
+    ASSERT_EQ(true, processed);
+    ASSERT_EQ(true, laterImagesOutOfMemory) << "Later images are loaded, even though we are out of memory";
+
+    //Request for frame 1, should be prioritized
+    curFrame = 1;
+    startIndex += numImages;
+    numImages = 5;
+    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
+                                                                ++curFrame, startIndex, numImages, imageMap
+    );
+
+
+    //Unload
+    UnloadAllImages();
+    TestUtility::CheckMemoryCleanup();
+
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 
