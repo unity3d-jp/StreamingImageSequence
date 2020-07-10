@@ -670,7 +670,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 #if UNITY_EDITOR         
         internal void SetParam(StreamingImageSequencePlayableAssetParam param) {
-            if (m_resolution.Width > 0 && m_resolution.Height > 0) {
+            if (param.Resolution.Width > 0 && param.Resolution.Height > 0) {
                 m_resolution = param.Resolution;
                 m_dimensionRatio = m_resolution.CalculateRatio();
             }
