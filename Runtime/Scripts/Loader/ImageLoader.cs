@@ -113,7 +113,7 @@ internal static class ImageLoader  {
     private static readonly ImageLoadEditorUpdateTask[] m_imageLoadEditorUpdateTasks 
         = new ImageLoadEditorUpdateTask[StreamingImageSequenceConstants.MAX_IMAGE_TYPES];
 
-    private static bool m_isApplicationPlaying = false;
+    private static bool m_isApplicationPlaying = false; //Application.isPlaying can only be accessed from the main thread
 
 #endif
 }
