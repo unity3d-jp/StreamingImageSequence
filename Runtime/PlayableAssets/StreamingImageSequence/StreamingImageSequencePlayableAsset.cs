@@ -420,7 +420,7 @@ namespace UnityEngine.StreamingImageSequence {
 
                 ResetTexture();
                 m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
-                m_texture.name = "FullTexAsu: " + m_imagePaths[index];
+                m_texture.name = "Full: " + m_imagePaths[index];
                 readResult.CopyBufferToTexture(m_texture);
                 
                 UpdateResolution(ref readResult);
