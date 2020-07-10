@@ -37,7 +37,7 @@ extern "C"
 
 
 	LOADER_API void  ResetPlugin();
-	LOADER_API void  ResetImageRequestFrame();
+	LOADER_API void  ResetImageLoadOrder();
 }
 
 //----------------------------------------------------------------------------------------------------------------------

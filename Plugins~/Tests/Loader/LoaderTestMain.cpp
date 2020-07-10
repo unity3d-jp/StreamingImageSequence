@@ -198,7 +198,7 @@ TEST(Loader, ResetImageRequestFrame) {
     );
 
     //Reset
-    ResetImageRequestFrame();
+    ResetImageLoadOrder();
 
     //Load next images after resetting for frame 0. This should fail.
     curFrame = 0;
