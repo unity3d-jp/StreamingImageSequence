@@ -169,10 +169,7 @@ TEST(Loader, IgnoreLateRequests) {
     startIndex += numImages;
     numImages = 9;
     const bool processed = TestUtility::LoadTestImages(imageType, curFrame, startIndex, numImages);
-    const bool laterImagesOutOfMemory = TestUtility::CheckLoadedTestImageData(
-        imageType, 0, startIndex, numImages, READ_STATUS_OUT_OF_MEMORY);
-    ASSERT_EQ(true, processed);
-    ASSERT_EQ(true, laterImagesOutOfMemory) << "Late requests are prioritized, even though they are late";
+    ASSERT_EQ(false, processed) << "Late requests are still processed, even though they are late";
 
     //Unload
     UnloadAllImages();
