@@ -67,6 +67,7 @@ add_subdirectory(${src_root}/Loader)
 if(BUILD_UNIT_TESTS)
     find_package(GTest REQUIRED)
     enable_testing()
+    add_subdirectory(${tests_root}/CommonLib)
     add_subdirectory(${tests_root}/Loader)
 endif()
 
