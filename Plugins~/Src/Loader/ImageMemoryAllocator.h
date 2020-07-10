@@ -19,6 +19,8 @@ public:
     inline uint64_t GetUsedMemory() const;
     inline void SetMaxMemory(const uint64_t maxMemory);
 
+    bool IsMemoryAvailable() const;
+
     ImageMemoryAllocator();
     ~ImageMemoryAllocator();
 private:

@@ -96,6 +96,12 @@ LOADER_API void  SetMaxImagesMemory(const uint32_t maxImageMemoryMB) {
 	imageCatalog.SetMaxMemory(maxImageMemoryMB * 1024 * 1024); //to bytes
 }
 
+LOADER_API bool  IsMemoryAvailable() {
+	using namespace StreamingImageSequencePlugin;
+	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+	return imageCatalog.IsMemoryAvailable();
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 LOADER_API void  ResetPlugin() {
 	UnloadAllImages();
