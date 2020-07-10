@@ -147,8 +147,7 @@ TEST(Loader, StopLoadingRequiredImagesTest) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(Loader, OutOfMemoryTest) {
-
+TEST(Loader, IgnoreLateRequests) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -157,55 +156,30 @@ TEST(Loader, OutOfMemoryTest) {
     const uint32_t maxImages = TestUtility::CleanupAndLoadMaxImages(imageType);
     std::unordered_map<strType, ImageData> imageMap = imageCatalog.GetImageMap(imageType);
 
-    //This should unload image loaded in the frame 0
-    int curFrame = 1;
+    //Test loading images in next frames
+    int curFrame = 10;
     uint32_t startIndex = maxImages;
-    uint32_t numImages = maxImages;
+    uint32_t numImages = 3;
     imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
-        curFrame, startIndex, numImages, imageMap
+                                                                ++curFrame, startIndex, numImages, imageMap
     );
 
-    //This shouldn't alloc more image because we are processing the same frame and we are still out of memory
+    //Load next images, which are late requests. This should fail.
+    curFrame = 0;
     startIndex += numImages;
-    numImages = 1;
-    bool processed = TestUtility::LoadTestImages(imageType, curFrame, startIndex, numImages);
-    bool imagesOutOfMemory= TestUtility::CheckLoadedTestImageData( 
-        imageType, curFrame, startIndex, numImages, READ_STATUS_OUT_OF_MEMORY);
+    numImages = 9;
+    const bool processed = TestUtility::LoadTestImages(imageType, curFrame, startIndex, numImages);
+    const bool laterImagesOutOfMemory = TestUtility::CheckLoadedTestImageData(
+        imageType, 0, startIndex, numImages, READ_STATUS_OUT_OF_MEMORY);
     ASSERT_EQ(true, processed);
-    ASSERT_EQ(true, imagesOutOfMemory) << "Later images are loaded, even though we are out of memory";
-
-    //Advance frame and load previously failed images. This should deallocate the unused images (loaded in prev frames)
-    ++curFrame;
-    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
-        curFrame, startIndex, numImages, imageMap
-    );
-    const uint32_t lastIndexLoaded = (startIndex + numImages) - 1;
-
-    //Try loading the early images back. This should move them to the end of the "order"
-    ++curFrame;
-    ASSERT_GE(startIndex, maxImages);
-    startIndex = 0;
-    numImages = maxImages;
-    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
-        curFrame, startIndex, numImages, imageMap
-    );
-
-    //Now, try loading the later images. Since the later images should be in the beginning section of the order, they
-    //should have been unloaded, and we shouldn't be able to load them in this frame
-    startIndex += numImages;
-    numImages = maxImages;
-    ASSERT_GE(lastIndexLoaded, startIndex+numImages-1);
-    processed = TestUtility::LoadTestImages(imageType, curFrame, startIndex, numImages);
-    imagesOutOfMemory= TestUtility::CheckLoadedTestImageData( 
-        imageType, curFrame, startIndex, numImages, READ_STATUS_OUT_OF_MEMORY);
-    ASSERT_EQ(true, processed);
-    ASSERT_EQ(true, imagesOutOfMemory) << "Later images are loaded, even though we are out of memory";
+    ASSERT_EQ(true, laterImagesOutOfMemory) << "Late requests are prioritized, even though they are late";
 
     //Unload
     UnloadAllImages();
     TestUtility::CheckMemoryCleanup();
 
 }
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -247,6 +221,68 @@ TEST(Loader, ResetImageRequestFrame) {
                                                                 ++curFrame, startIndex, numImages, imageMap
     );
 
+
+    //Unload
+    UnloadAllImages();
+    TestUtility::CheckMemoryCleanup();
+
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+TEST(Loader, OutOfMemoryTest) {
+
+    using namespace StreamingImageSequencePlugin;
+    ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+
+    const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
+
+    const uint32_t maxImages = TestUtility::CleanupAndLoadMaxImages(imageType);
+    std::unordered_map<strType, ImageData> imageMap = imageCatalog.GetImageMap(imageType);
+
+    //This should unload image loaded in the frame 0
+    int curFrame = 1;
+    uint32_t startIndex = maxImages;
+    uint32_t numImages = maxImages;
+    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
+                                                                curFrame, startIndex, numImages, imageMap
+    );
+
+    //This shouldn't alloc more image because we are processing the same frame and we are still out of memory
+    startIndex += numImages;
+    numImages = 1;
+    bool processed = TestUtility::LoadTestImages(imageType, curFrame, startIndex, numImages);
+    bool imagesOutOfMemory= TestUtility::CheckLoadedTestImageData( 
+        imageType, curFrame, startIndex, numImages, READ_STATUS_OUT_OF_MEMORY);
+    ASSERT_EQ(true, processed);
+    ASSERT_EQ(true, imagesOutOfMemory) << "Later images are loaded, even though we are out of memory";
+
+    //Advance frame and load previously failed images. This should deallocate the unused images (loaded in prev frames)
+    ++curFrame;
+    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
+                                                                curFrame, startIndex, numImages, imageMap
+    );
+    const uint32_t lastIndexLoaded = (startIndex + numImages) - 1;
+
+    //Try loading the early images back. This should move them to the end of the "order"
+    ++curFrame;
+    ASSERT_GE(startIndex, maxImages);
+    startIndex = 0;
+    numImages = maxImages;
+    imageMap = TestUtility::LoadAndCheckUnloadingOfUnusedImages(imageType, 
+                                                                curFrame, startIndex, numImages, imageMap
+    );
+
+    //Now, try loading the later images. Since the later images should be in the beginning section of the order, they
+    //should have been unloaded, and we shouldn't be able to load them in this frame
+    startIndex += numImages;
+    numImages = maxImages;
+    ASSERT_GE(lastIndexLoaded, startIndex+numImages-1);
+    processed = TestUtility::LoadTestImages(imageType, curFrame, startIndex, numImages);
+    imagesOutOfMemory= TestUtility::CheckLoadedTestImageData( 
+        imageType, curFrame, startIndex, numImages, READ_STATUS_OUT_OF_MEMORY);
+    ASSERT_EQ(true, processed);
+    ASSERT_EQ(true, imagesOutOfMemory) << "Later images are loaded, even though we are out of memory";
 
     //Unload
     UnloadAllImages();
