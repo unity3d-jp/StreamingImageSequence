@@ -98,7 +98,7 @@ uint32_t TestUtility::CleanupAndLoadMaxImages(const uint32_t imageType) {
 
     //Load the remaining images to fill memory to max
     processed = TestUtility::LoadTestImages(imageType, curFrame, 1, maxImages-1);
-    bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, maxImages,READ_STATUS_SUCCESS);
+    const bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, maxImages,READ_STATUS_SUCCESS);
 
     ASSERT(processed);
     ASSERT(readSuccessful);
