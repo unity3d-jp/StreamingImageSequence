@@ -1,4 +1,3 @@
-using System;
 using System.Runtime.InteropServices;
 
 namespace UnityEngine.StreamingImageSequence {
@@ -9,6 +8,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
     internal static class StreamingImageSequencePlugin {
+      
 
 //only support Windows and OSX
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
@@ -18,13 +18,13 @@ namespace UnityEngine.StreamingImageSequence {
 
         // Implemented in Loader dll
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern bool LoadAndAllocFullImage([MarshalAs(UnmanagedType.LPStr)]string fileName, int frame);
+        internal static extern bool LoadAndAllocFullImage([MarshalAs(UnmanagedType.LPStr)]string fileName, int frame);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern bool LoadAndAllocPreviewImage([MarshalAs(UnmanagedType.LPStr)]string fileName, int width, int height, int frame);
+        internal static extern bool LoadAndAllocPreviewImage([MarshalAs(UnmanagedType.LPStr)]string fileName, int width, int height, int frame);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern void GetImageDataInto([MarshalAs(UnmanagedType.LPStr)]string fileName, int imageType, int frame, out ImageData tResult);
+        internal static extern void GetImageDataInto([MarshalAs(UnmanagedType.LPStr)]string fileName, int imageType, int frame, out ImageData tResult);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int UnloadImage([MarshalAs(UnmanagedType.LPStr)]string fileName);
@@ -34,6 +34,10 @@ namespace UnityEngine.StreamingImageSequence {
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         internal static extern void ListLoadedImages(int textureType, DelegateStringFunc func);
+        
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        internal static extern void SetMaxImagesMemory(int  maxImageMemoryMB);
+        
 
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
@@ -49,10 +53,16 @@ namespace UnityEngine.StreamingImageSequence {
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         internal static extern void ResetImageLoadOrder();
 
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        internal static extern void ResetImageLoadOrder();
+        
 #endif //UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 
 
+
+       
 //----------------------------------------------------------------------------------------------------------------------
+
     }
 
 }

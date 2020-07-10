@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.SceneManagement;
 
 namespace UnityEngine.StreamingImageSequence
 {
@@ -12,20 +14,34 @@ namespace UnityEngine.StreamingImageSequence
 internal class EditorUpdateManager {
     
     static EditorUpdateManager() {
-        EditorApplication.update               += EditorUpdateManager_Update;        
+        EditorApplication.update       += EditorUpdateManager_Update;
+        EditorSceneManager.sceneOpened += EditorUpdateManager_OnSceneOpened;
     }
+
+    ~EditorUpdateManager() {
+        StreamingImageSequencePlugin.ResetPlugin();        
+    }
+    
+    static void EditorUpdateManager_OnSceneOpened( Scene scene, UnityEditor.SceneManagement.OpenSceneMode openSceneMode) {
+        if (OpenSceneMode.Single != openSceneMode)
+            return;
+        
+        //Reset all imageLoading process when loading a new scene (single mode)
+        ResetImageLoading();
+    }  
+    
    
 //----------------------------------------------------------------------------------------------------------------------        
 
     static void EditorUpdateManager_Update() {
         
+       
         double time = EditorApplication.timeSinceStartup;
         double timeDifference = time - m_lastUpdateInEditorTime;
         if (timeDifference < 0.016f) {
             return;
         }
-
-       
+             
         m_lastUpdateInEditorTime = time;
 
         //add requested jobs
@@ -46,14 +62,20 @@ internal class EditorUpdateManager {
         }
 
     }
+
+    internal static void ResetImageLoading() {
+        StreamingImageSequencePlugin.ResetPlugin();
+        ThreadManager.Reset();            
+        
+    }    
 //----------------------------------------------------------------------------------------------------------------------
 
-    public static bool AddEditorUpdateTask(ITask job) {
+    internal static bool AddEditorUpdateTask(ITask job) {
         m_requestedTasks.Add(job);  
         return true;
     }
 
-    public static bool RemoveEditorUpdateTask(ITask job) {
+    internal static bool RemoveEditorUpdateTask(ITask job) {
         //Check if the job hasn't been actually added yet
         if (m_requestedTasks.Contains(job)) {
             m_requestedTasks.Remove(job);

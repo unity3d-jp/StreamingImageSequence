@@ -144,8 +144,8 @@ namespace UnityEditor.StreamingImageSequence {
 
             //Load
             string fullPath = sisAsset.GetCompleteFilePath(imagePaths[imageIndex]);
-            StreamingImageSequencePlugin.GetImageDataInto(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
-                ,Time.frameCount, out ImageData readResult);
+            ImageLoader.GetImageDataInto(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
+                , out ImageData readResult);
             
             switch (readResult.ReadStatus) {
                 case StreamingImageSequenceConstants.READ_STATUS_LOADING:

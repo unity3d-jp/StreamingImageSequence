@@ -4,7 +4,7 @@
 internal class FullImageLoadBGTask : BaseImageLoadBGTask {
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal FullImageLoadBGTask( string imagePath, int frame)  : base(imagePath, frame){
+    internal FullImageLoadBGTask( string imagePath)  : base(imagePath){
     }
 
 //----------------------------------------------------------------------------------------------------------------------
