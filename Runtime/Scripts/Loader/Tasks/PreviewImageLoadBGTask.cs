@@ -3,7 +3,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 internal class PreviewImageLoadBGTask : BaseImageLoadBGTask {
     
-    internal PreviewImageLoadBGTask( string imagePath, int frame, int width, int height) : base(imagePath,frame){
+    internal PreviewImageLoadBGTask( string imagePath,int width, int height) : base(imagePath){
         m_width = width;
         m_height = height;
     }

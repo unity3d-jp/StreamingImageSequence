@@ -5,9 +5,8 @@ internal abstract class BaseImageLoadBGTask : ITask {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal  BaseImageLoadBGTask( string imagePath, int requestFrame) {
+    internal  BaseImageLoadBGTask( string imagePath) {
         m_imagePath = imagePath;
-        m_requestFrame = requestFrame;
     }
     
 //----------------------------------------------------------------------------------------------------------------------
@@ -28,7 +27,7 @@ internal abstract class BaseImageLoadBGTask : ITask {
     
 //----------------------------------------------------------------------------------------------------------------------
     private readonly string m_imagePath;
-    private int m_requestFrame;
+    private int m_requestFrame = 0;
 
 }
 
