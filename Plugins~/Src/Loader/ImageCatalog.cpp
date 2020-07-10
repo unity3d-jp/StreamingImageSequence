@@ -23,7 +23,7 @@ void ImageCatalog::Reset() {
 }
 
 //Thread-safe
-void ImageCatalog::ResetRequestFrame() {
+void ImageCatalog::ResetOrder() {
 
     for (uint32_t imageType = 0; imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES; ++imageType) {
         m_imageCollection[imageType].ResetOrder();
