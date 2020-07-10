@@ -53,7 +53,7 @@ internal static class PreviewTextureFactory {
         }
 
         //This is static. Don't destroy the tex if a new scene is loaded
-        Texture2D newTex = imageData.CreateCompatibleTexture(HideFlags.HideAndDontSave);
+        Texture2D newTex = imageData.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
         imageData.CopyBufferToTexture(newTex);
         newTex.name = "Preview: " + fullPath;
         m_previewTextures[fullPath] = new PreviewTexture(newTex);
