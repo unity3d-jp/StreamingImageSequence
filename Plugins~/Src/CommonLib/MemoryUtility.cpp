@@ -12,19 +12,19 @@ inline void GetGlobalMemoryStatusInto(MEMORYSTATUSEX* memStatus) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-DWORDLONG MemoryUtility::GetTotalRAM() {
+uint64_t MemoryUtility::GetTotalRAM() {
     MEMORYSTATUSEX memStatus;
     GetGlobalMemoryStatusInto(&memStatus);
     return memStatus.ullTotalPhys;    
 }
 
-DWORDLONG MemoryUtility::GetUsedRAM() {
+uint64_t MemoryUtility::GetUsedRAM() {
     MEMORYSTATUSEX memStatus;
     GetGlobalMemoryStatusInto(&memStatus);
     return (memStatus.ullTotalPhys - memStatus.ullAvailPhys);
 }
 
-DWORDLONG MemoryUtility::GetAvailableRAM() {
+uint64_t MemoryUtility::GetAvailableRAM() {
     MEMORYSTATUSEX memStatus;
     GetGlobalMemoryStatusInto(&memStatus);
     return memStatus.ullAvailPhys;

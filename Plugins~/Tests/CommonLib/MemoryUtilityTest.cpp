@@ -10,7 +10,7 @@ namespace StreamingImageSequencePluginTest {
 
 TEST(CommonLib, GetTotalRAM) {
     using namespace StreamingImageSequencePlugin;
-    const DWORDLONG totalRAM = MemoryUtility::GetTotalRAM();
+    const uint64_t totalRAM = MemoryUtility::GetTotalRAM();
     ASSERT_GT(totalRAM, 0);
 }
 
@@ -18,7 +18,7 @@ TEST(CommonLib, GetTotalRAM) {
 
 TEST(CommonLib, GetUsedRAM) {
     using namespace StreamingImageSequencePlugin;
-    const DWORDLONG usedRAM = MemoryUtility::GetUsedRAM();
+    const uint64_t usedRAM = MemoryUtility::GetUsedRAM();
     ASSERT_GT(usedRAM, 0);
 }
 
@@ -26,7 +26,7 @@ TEST(CommonLib, GetUsedRAM) {
 
 TEST(CommonLib, GetAvailableRAM) {
     using namespace StreamingImageSequencePlugin;
-    const DWORDLONG availableRAM = MemoryUtility::GetAvailableRAM();
+    const uint64_t availableRAM = MemoryUtility::GetAvailableRAM();
     ASSERT_GT(availableRAM, 0);
 }
 

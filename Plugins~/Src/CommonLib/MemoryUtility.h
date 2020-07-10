@@ -1,15 +1,15 @@
 #pragma once
 
-#include "stdafx.h"
+#include <cstdint>
 
 namespace StreamingImageSequencePlugin {
 
 class MemoryUtility {
 public:
 
-    static DWORDLONG GetTotalRAM();
-    static DWORDLONG GetUsedRAM();
-    static DWORDLONG GetAvailableRAM();
+    static uint64_t GetTotalRAM();
+    static uint64_t GetUsedRAM();
+    static uint64_t GetAvailableRAM();
     static float GetUsedRAMRatio();
     static float GetAvailableRAMRatio();
 
