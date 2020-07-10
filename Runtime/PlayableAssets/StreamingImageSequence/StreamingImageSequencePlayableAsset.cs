@@ -294,6 +294,10 @@ namespace UnityEngine.StreamingImageSequence {
 
             m_resolution = new ImageDimensionInt();
         }
+
+        internal void DestroyHiddenResources() {
+            ResetTexture();
+        }
         
         
 //----------------------------------------------------------------------------------------------------------------------        
