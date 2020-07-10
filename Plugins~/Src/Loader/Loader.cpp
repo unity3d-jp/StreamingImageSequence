@@ -101,3 +101,9 @@ LOADER_API void  ResetPlugin() {
 	UnloadAllImages();
 }
 
+LOADER_API void  ResetImageRequestFrame() {
+	using namespace StreamingImageSequencePlugin;
+	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+	imageCatalog.ResetRequestFrame();
+}
+
