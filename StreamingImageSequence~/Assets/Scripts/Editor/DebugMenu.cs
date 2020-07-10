@@ -11,7 +11,7 @@ public static class DebugMenu  {
         StringBuilder sb = new StringBuilder();
         sb.AppendLine($"Found {textures.Length} textures: ");
         foreach (Texture tex in textures) {
-            sb.AppendLine($"    TexName: {tex.name} Dimension: ({tex.width},{tex.height})");
+            sb.AppendLine($"    TexName: {tex.name, -40}, Dimension: ({tex.width},{tex.height})");
         }
         Debug.Log(sb.ToString());
     }
@@ -24,7 +24,7 @@ public static class DebugMenu  {
         StringBuilder sb = new StringBuilder();
         sb.AppendLine($"Found {objects.Length} objects: ");
         foreach (Object obj in objects) {
-            sb.AppendLine($"    ObjectName: {obj.name} ({obj.GetType().ToString()}");
+            sb.AppendLine($"    ObjectName: {obj.name,-40}, Type: {obj.GetType().ToString()}");
         }
         Debug.Log(sb.ToString());
     }
@@ -40,4 +40,5 @@ public static class DebugMenu  {
     private static void UnloadUnusedAssets() {
         Resources.UnloadUnusedAssets();
     }
+
 }
