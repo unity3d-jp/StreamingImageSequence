@@ -98,12 +98,10 @@ LOADER_API void  SetMaxImagesMemory(const uint32_t maxImageMemoryMB) {
 
 //----------------------------------------------------------------------------------------------------------------------
 LOADER_API void  ResetPlugin() {
-	UnloadAllImages();
-}
-
-LOADER_API void  ResetImageLoadOrder() {
 	using namespace StreamingImageSequencePlugin;
+	UnloadAllImages();
 	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 	imageCatalog.ResetOrder();
 }
+
 
