@@ -9,9 +9,6 @@
 #include "LoaderUtility.h"
 #include "ImageCatalog.h"
 
-
-using namespace std;
-
 //----------------------------------------------------------------------------------------------------------------------
 
 //Get the texture info and return the result inside ReadResult. Thread-safe
@@ -91,6 +88,12 @@ LOADER_API uint32_t GetNumLoadedTextures(const uint32_t imageType) {
 	using namespace StreamingImageSequencePlugin;
 	ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 	return static_cast<uint32_t>(ImageCatalog::GetInstance().GetNumImages(imageType));
+}
+
+LOADER_API void  SetMaxImagesMemory(const uint32_t maxImageMemoryMB) {
+	using namespace StreamingImageSequencePlugin;
+	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+	imageCatalog.SetMaxMemory(maxImageMemoryMB * 1024 * 1024); //to bytes
 }
 
 //----------------------------------------------------------------------------------------------------------------------

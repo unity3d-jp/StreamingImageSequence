@@ -33,6 +33,7 @@ public:
     void Reset();
 
     inline uint64_t GetUsedMemory() const;
+    inline void SetMaxMemory(uint64_t maxMemory);
 private:
     ImageCatalog();
     ImageCatalog(ImageCatalog const&) = delete;
@@ -98,6 +99,7 @@ size_t ImageCatalog::GetNumImages(const uint32_t imageType) const {
 
 uint64_t ImageCatalog::GetUsedMemory() const { return m_memAllocator.GetUsedMemory(); }
 
+void ImageCatalog::SetMaxMemory(uint64_t maxMemory) { m_memAllocator.SetMaxMemory(maxMemory); }
 
 
 } //end namespace
