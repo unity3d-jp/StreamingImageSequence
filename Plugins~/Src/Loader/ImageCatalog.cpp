@@ -30,28 +30,6 @@ const ImageData* ImageCatalog::GetImage(const strType& imagePath, const uint32_t
 
 //----------------------------------------------------------------------------------------------------------------------
 
-const ImageData* ImageCatalog::AddImage(const strType& imagePath, const uint32_t imageType, const int frame) {
-    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
-    UpdateRequestFrame(frame);
-    if (frame < m_latestRequestFrame)
-        return nullptr;
-    const std::unordered_map<strType, ImageData>::const_iterator it = m_imageCollection[imageType].AddImage(imagePath);
-    return &it->second;
-}
-
-bool ImageCatalog::AddImageFromSrc(const strType& imagePath,const uint32_t imageType, const int frame, const ImageData* src,
-                                   const uint32_t w,const uint32_t h)
-{
-    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
-    UpdateRequestFrame(frame);
-    if (frame < m_latestRequestFrame)
-        return false;
-
-    return m_imageCollection[imageType].AddImageFromSrc(imagePath, src, w, h);
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
 //Thread-safe
 void ImageCatalog::Reset() {
     for (uint32_t imageType = 0; imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES; ++imageType) {

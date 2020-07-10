@@ -71,10 +71,8 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
 
     } else {
         imageData = imageCatalog->AddImage(imagePath, imageType, frame);
-    }
 
-    if (nullptr == imageData)
-        return nullptr;
+    }
 
     switch (fileType) {
         case FILE_TYPE_TGA: {
