@@ -99,6 +99,7 @@ LOADER_API void  SetMaxImagesMemory(const uint32_t maxImageMemoryMB) {
 //----------------------------------------------------------------------------------------------------------------------
 LOADER_API void  ResetPlugin() {
 	UnloadAllImages();
+	ResetImageLoadOrder();
 }
 
 LOADER_API void  ResetImageLoadOrder() {
