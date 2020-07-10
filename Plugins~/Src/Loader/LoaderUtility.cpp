@@ -1,10 +1,14 @@
 #include "stdafx.h"
 
+//CommonLib
+#include "CommonLib/CommonLib.h" //IMAGE_CS
+
 //Loader
 #include "LoaderUtility.h"
 #include "FileType.h"
 #include "TGALoader.h"
 #include "ImageCatalog.h"
+#include "CommonLib/CriticalSectionController.h"
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -78,10 +82,12 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
 
     switch (fileType) {
         case FILE_TYPE_TGA: {
+            CriticalSectionController cs(IMAGE_CS(imageType));
             LoadTGAFileAndAlloc(imagePath, imageType, imageCatalog);
             break;
         }
         case FILE_TYPE_PNG: {
+            CriticalSectionController cs(IMAGE_CS(imageType));
             LoadPNGFileAndAlloc(imagePath, imageType, imageCatalog);
             break;
         }
