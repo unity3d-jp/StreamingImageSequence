@@ -31,7 +31,7 @@ namespace UnityEngine.StreamingImageSequence
             var clipAssets = GetClipAssets();
             foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
                 StreamingImageSequencePlayableAsset sisAsset = kv.Value;
-                sisAsset.DestroyHiddenResources();;
+                sisAsset.OnPlayableDestroy(playable);
             }
             
             base.OnPlayableDestroy(playable);
