@@ -39,8 +39,6 @@ internal static class ImageLoader  {
             EditorUpdateManager.AddEditorUpdateTask(task);
             m_imageLoadEditorUpdateTasks[i] = task;
         }
-
-        m_isApplicationPlaying = false;
     }
     
 #endif
@@ -48,7 +46,6 @@ internal static class ImageLoader  {
 //----------------------------------------------------------------------------------------------------------------------   
     [RuntimeInitializeOnLoadMethod]
     internal static void ImageLoaderOnRuntimeLoad() {
-        m_isApplicationPlaying = true;
         StreamingImageSequencePlugin.ResetImageLoadOrder();
     }
     
@@ -105,13 +102,7 @@ internal static class ImageLoader  {
     }
     
     private static int GetCurrentFrame() {
-
-#if UNITY_EDITOR            
-        if (!m_isApplicationPlaying)
-            return Time.frameCount;
-#endif            
-        return 0;
-
+        return Time.frameCount; //use Time.frameCount for both playMode and editMode
     }
     
 //----------------------------------------------------------------------------------------------------------------------
@@ -120,7 +111,6 @@ internal static class ImageLoader  {
     private static readonly ImageLoadEditorUpdateTask[] m_imageLoadEditorUpdateTasks 
         = new ImageLoadEditorUpdateTask[StreamingImageSequenceConstants.MAX_IMAGE_TYPES];
 
-    private static bool m_isApplicationPlaying = false; //Application.isPlaying can only be accessed from the main thread
 
 #endif
 }
