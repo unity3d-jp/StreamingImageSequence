@@ -34,6 +34,7 @@ public:
     inline const std::unordered_map<strType, ImageData>& GetImageMap() const;
     inline size_t GetNumImages() const;
 
+    void ResetOrder();
     void AdvanceOrder();
 
 private:

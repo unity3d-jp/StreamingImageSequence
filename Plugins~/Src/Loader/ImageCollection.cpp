@@ -178,6 +178,14 @@ void ImageCollection::UnloadAllImages() {
 //----------------------------------------------------------------------------------------------------------------------
 
 //Thread-safe
+void ImageCollection::ResetOrder() {
+    CriticalSectionController cs(IMAGE_CS(m_csType));
+    m_curOrderStartPos = m_orderedImageList.begin();
+    m_updateOrderStartPos = false;
+}
+
+
+//Thread-safe
 void ImageCollection::AdvanceOrder() {
     CriticalSectionController cs(IMAGE_CS(m_csType));
     //Turn on the flag, so that at the next GetImage() or AddImage(), 

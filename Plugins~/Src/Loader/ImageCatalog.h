@@ -31,6 +31,7 @@ public:
     inline size_t GetNumImages(const uint32_t imageType) const;
 
     void Reset();
+    void ResetRequestFrame();
 
     inline uint64_t GetUsedMemory() const;
     inline void SetMaxMemory(uint64_t maxMemory);
