@@ -22,6 +22,12 @@ ImageCollection::ImageCollection()
 {
 
 }
+//----------------------------------------------------------------------------------------------------------------------
+
+ImageCollection::~ImageCollection() {
+    UnloadAllImages();
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 void ImageCollection::Init(CriticalSectionType csType, ImageMemoryAllocator* memAllocator) {

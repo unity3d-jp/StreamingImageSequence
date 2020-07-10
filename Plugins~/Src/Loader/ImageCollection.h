@@ -17,6 +17,7 @@ class ImageMemoryAllocator;
 class ImageCollection {
 public:
     ImageCollection();
+    ~ImageCollection();
     void Init(CriticalSectionType csType, ImageMemoryAllocator*);
 
     //return null if not found
