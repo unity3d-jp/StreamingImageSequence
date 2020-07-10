@@ -39,7 +39,7 @@ public:
 
 private:
 
-    std::unordered_map<strType, ImageData>::iterator PrepareImageUnsafe(const strType& imagePath);
+    std::unordered_map<strType, ImageData>::iterator AddImageUnsafe(const strType& imagePath);
     void AddImageOrderUnsafe(std::unordered_map<strType, ImageData>::iterator);
     void ReorderImageUnsafe(std::unordered_map<strType, ImageData>::iterator);
     void DeleteImageOrderUnsafe(std::unordered_map<strType, ImageData>::iterator);
