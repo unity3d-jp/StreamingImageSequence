@@ -60,7 +60,7 @@ std::unordered_map<strType, ImageData>::const_iterator ImageCollection::AddImage
     if (pathIt !=m_pathToImageMap.end())
         return pathIt;
 
-    return PrepareImageUnsafe(imagePath);
+    return AddImageUnsafe(imagePath);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
     if (m_pathToImageMap.end() != pathIt) {
         m_memAllocator->Deallocate(&(pathIt->second));
     }  else {
-        pathIt = PrepareImageUnsafe(imagePath);
+        pathIt = AddImageUnsafe(imagePath);
     }
 
     ImageData* imageData = &pathIt->second;
@@ -105,7 +105,7 @@ bool ImageCollection::AddImageFromSrc(const strType& imagePath, const ImageData*
     if (m_pathToImageMap.end() != pathIt) {
         m_memAllocator->Deallocate(&(pathIt->second));
     }  else {
-        pathIt = PrepareImageUnsafe(imagePath);
+        pathIt = AddImageUnsafe(imagePath);
     }
 
     //Allocate
@@ -195,7 +195,7 @@ void ImageCollection::AdvanceOrder() {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-std::unordered_map<strType, ImageData>::iterator ImageCollection::PrepareImageUnsafe(const strType& imagePath) {
+std::unordered_map<strType, ImageData>::iterator ImageCollection::AddImageUnsafe(const strType& imagePath) {
     ASSERT(m_pathToImageMap.find(imagePath) == m_pathToImageMap.end());
     const auto it = m_pathToImageMap.insert({ imagePath, ImageData(nullptr,0,0,READ_STATUS_LOADING) });
     AddImageOrderUnsafe(it.first);
