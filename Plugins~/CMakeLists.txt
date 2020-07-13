@@ -32,6 +32,7 @@ set(tests_root ${CMAKE_CURRENT_SOURCE_DIR}/Tests)
 
 if(APPLE)
     set(PLATFORM "OSX")
+    add_definitions(-DOSX)
     find_library(CORE_GRAPHICS_LIBRARY CoreGraphics)
     mark_as_advanced(CORE_GRAPHICS_LIBRARY)    
 

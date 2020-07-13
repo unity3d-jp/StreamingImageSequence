@@ -12,8 +12,10 @@
 // Windows Header Files:
 #include <windows.h>
 
-#else
+#elif OSX
+#include "sys/sysctl.h"
 
+#else
 #include "sys/types.h"
 #include "sys/sysinfo.h"
 

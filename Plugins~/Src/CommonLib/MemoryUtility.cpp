@@ -47,6 +47,54 @@ float MemoryUtility::GetAvailableRAMRatio() {
     return availableRAM;
 }
 
+#elif OSX
+
+uint64_t MemoryUtility::GetTotalRAM() {
+
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+
+    uint64_t totalRAM = memInfo.totalram;
+    totalRAM *= memInfo.mem_unit;
+    return totalRAM;
+
+}
+uint64_t MemoryUtility::GetUsedRAM() {
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+
+    uint64_t usedRAM = memInfo.totalram - memInfo.freeram;
+    usedRAM *= memInfo.mem_unit;
+
+    return usedRAM;
+
+}
+uint64_t MemoryUtility::GetAvailableRAM() {
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+
+    uint64_t availableRAM = memInfo.freeram;
+    availableRAM *= memInfo.mem_unit;
+    return 0;
+
+}
+float MemoryUtility::GetUsedRAMRatio() {
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+    const float usedRAM = (static_cast<float>(memInfo.totalram - memInfo.freeram)
+                           / static_cast<float>(memInfo.totalram));
+    return usedRAM;
+
+}
+
+float MemoryUtility::GetAvailableRAMRatio() {
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+    const float availableRAM = (static_cast<float>(memInfo.freeram)
+                               / static_cast<float>(memInfo.totalram));
+    return availableRAM;
+}
+
 #else
 
 uint64_t MemoryUtility::GetTotalRAM() {
