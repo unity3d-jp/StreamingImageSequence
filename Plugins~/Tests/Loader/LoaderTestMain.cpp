@@ -180,7 +180,7 @@ TEST(Loader, IgnoreLateRequests) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(Loader, ResetImageRequestFrame) {
+TEST(Loader, ResetImageLoadOrder) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
