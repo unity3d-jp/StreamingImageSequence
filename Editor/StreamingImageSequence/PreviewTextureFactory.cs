@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence {
@@ -13,11 +15,26 @@ internal static class PreviewTextureFactory {
         m_obsoleteTextures = new List<string>();
         m_removeObsoleteTextures = false;
         EditorApplication.update += Update;
+        
+        EditorSceneManager.sceneClosed     += PreviewTextureFactory_OnSceneClosed;
+        EditorSceneManager.newSceneCreated += PreviewTextureFactory_OnSceneCreated;
+        
+    }
+    
+    static void PreviewTextureFactory_OnSceneClosed(Scene scene) {
+        PreviewTextureFactory.Reset();
+    }
+
+    static void PreviewTextureFactory_OnSceneCreated( Scene scene, NewSceneSetup setup, NewSceneMode mode) {
+        PreviewTextureFactory.Reset();
     }
     
 //----------------------------------------------------------------------------------------------------------------------    
 
-    public static void Reset() {
+    public static void Reset() {        
+        foreach (KeyValuePair<string, PreviewTexture> previewTex in m_previewTextures) {
+            previewTex.Value.Dispose();
+        }        
         m_previewTextures.Clear();
     }
     
@@ -36,9 +53,9 @@ internal static class PreviewTextureFactory {
         }
 
         //This is static. Don't destroy the tex if a new scene is loaded
-        Texture2D newTex = imageData.CreateCompatibleTexture(HideFlags.HideAndDontSave);
+        Texture2D newTex = imageData.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
         imageData.CopyBufferToTexture(newTex);
-        newTex.name = fullPath;
+        newTex.name = "Preview: " + fullPath;
         m_previewTextures[fullPath] = new PreviewTexture(newTex);
         
         return newTex;
@@ -58,11 +75,14 @@ internal static class PreviewTextureFactory {
             }
         }
         foreach (string texFullPath in m_obsoleteTextures) {
+            PreviewTexture texToRemove = m_previewTextures[texFullPath];
+            texToRemove.Dispose();
             m_previewTextures.Remove(texFullPath);
         }
 
         m_removeObsoleteTextures = false;
     }
+
     
 //----------------------------------------------------------------------------------------------------------------------    
     
