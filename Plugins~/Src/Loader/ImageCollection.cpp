@@ -25,7 +25,7 @@ ImageCollection::ImageCollection()
 //----------------------------------------------------------------------------------------------------------------------
 
 ImageCollection::~ImageCollection() {
-    UnloadAllImages();
+    UnloadAllImagesUnsafe();
 }
 
 
@@ -188,16 +188,7 @@ bool ImageCollection::UnloadImage(const strType& imagePath) {
 //Thread-safe
 void ImageCollection::UnloadAllImages() {
     CriticalSectionController cs(IMAGE_CS(m_csType));
-    m_pathToOrderMap.clear();
-    m_orderedImageList.clear();
-    m_curOrderStartPos = m_orderedImageList.end();
-
-    for (auto itr = m_pathToImageMap.begin(); itr != m_pathToImageMap.end(); ++itr) {
-        ImageData* imageData = &(itr->second);
-        m_memAllocator->Deallocate(imageData);
-    }
-    m_pathToImageMap.clear();
-
+    UnloadAllImagesUnsafe();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -295,6 +286,22 @@ void ImageCollection::MoveOrderStartPosToEndUnsafe() {
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+//Non-thread safe
+void ImageCollection::UnloadAllImagesUnsafe() {
+    m_pathToOrderMap.clear();
+    m_orderedImageList.clear();
+    m_curOrderStartPos = m_orderedImageList.end();
+
+    for (auto itr = m_pathToImageMap.begin(); itr != m_pathToImageMap.end(); ++itr) {
+        ImageData* imageData = &(itr->second);
+        m_memAllocator->Deallocate(imageData);
+    }
+    m_pathToImageMap.clear();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 
 //Non-Thread-safe
 void ImageCollection::UpdateRequestFrameUnsafe(const int frame) {
