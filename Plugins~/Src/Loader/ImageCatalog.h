@@ -27,6 +27,7 @@ public:
     inline void SetImageStatus(const strType& imagePath, const uint32_t imageType, const ReadStatus status);
     inline bool UnloadImage(const strType& imagePath, const uint32_t imageType);
     inline const std::unordered_map<strType, ImageData>& GetImageMap(const uint32_t imageType) const;
+    inline int GetLatestFrame(const uint32_t imageType) const;
     inline size_t GetNumImages(const uint32_t imageType) const;
 
     void Reset();
@@ -100,6 +101,11 @@ const std::unordered_map<strType, ImageData>& ImageCatalog::GetImageMap(const ui
 size_t ImageCatalog::GetNumImages(const uint32_t imageType) const { 
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
     return m_imageCollection[imageType].GetNumImages();
+}
+
+int ImageCatalog::GetLatestFrame(const uint32_t imageType) const { 
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
+    return m_imageCollection[imageType].GetLatestRequestFrame();
 }
 
 uint64_t ImageCatalog::GetUsedMemory() const { return m_memAllocator.GetUsedMemory(); }

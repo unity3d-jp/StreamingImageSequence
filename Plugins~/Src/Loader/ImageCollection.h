@@ -34,6 +34,7 @@ public:
 
     inline const std::unordered_map<strType, ImageData>& GetImageMap() const;
     inline size_t GetNumImages() const;
+    inline int GetLatestRequestFrame() const;
 
     void ResetOrder();
 
@@ -67,6 +68,7 @@ private:
 
 inline const std::unordered_map<strType, ImageData>& ImageCollection::GetImageMap() const { return m_pathToImageMap;  }
 inline size_t ImageCollection::GetNumImages() const { return m_pathToImageMap.size(); }
+inline int ImageCollection::GetLatestRequestFrame() const { return m_latestRequestFrame;  }
 
 
 } //end namespace
