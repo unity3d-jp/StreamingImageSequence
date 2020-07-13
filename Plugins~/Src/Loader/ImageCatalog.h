@@ -40,8 +40,6 @@ private:
     ImageCatalog(ImageCatalog const&) = delete;
     ImageCatalog& operator=(ImageCatalog const&) = delete;
 
-    void UpdateRequestFrame(const int );
-
     ImageMemoryAllocator m_memAllocator;
     ImageCollection m_imageCollection[MAX_CRITICAL_SECTION_TYPE_IMAGES];
 };
