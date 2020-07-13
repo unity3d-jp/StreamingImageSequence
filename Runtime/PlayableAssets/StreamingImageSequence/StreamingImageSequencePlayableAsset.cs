@@ -50,7 +50,8 @@ namespace UnityEngine.StreamingImageSequence {
         }
         /// <inheritdoc/>
         public void OnPlayableDestroy(Playable playable){
-
+            //Destroy hidden resources
+            ResetTexture();
         }
 
         /// <inheritdoc/>
@@ -284,7 +285,7 @@ namespace UnityEngine.StreamingImageSequence {
         
         
 //----------------------------------------------------------------------------------------------------------------------        
-        internal void Reset() {
+        private void Reset() {
             m_primaryImageIndex         = 0;
             m_forwardPreloadImageIndex  = 0;
             m_backwardPreloadImageIndex = 0;
@@ -294,6 +295,7 @@ namespace UnityEngine.StreamingImageSequence {
 
             m_resolution = new ImageDimensionInt();
         }
+
         
         
 //----------------------------------------------------------------------------------------------------------------------        

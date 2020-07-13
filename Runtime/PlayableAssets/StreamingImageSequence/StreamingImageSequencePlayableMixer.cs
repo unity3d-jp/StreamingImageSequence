@@ -27,6 +27,13 @@ namespace UnityEngine.StreamingImageSequence
         }
 
         public override void OnPlayableDestroy(Playable playable) {
+            
+            var clipAssets = GetClipAssets();
+            foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
+                StreamingImageSequencePlayableAsset sisAsset = kv.Value;
+                sisAsset.OnPlayableDestroy(playable);
+            }
+            
             base.OnPlayableDestroy(playable);
             
 #if UNITY_EDITOR            
