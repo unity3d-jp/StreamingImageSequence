@@ -86,6 +86,7 @@ namespace UnityEngine.StreamingImageSequence.Tests {
             StreamingImageSequencePlugin.UnloadImage(fullPath);
             ImageLoader.GetImageDataInto(fullPath, texType, out ImageData readResult);
             Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_UNAVAILABLE, readResult.ReadStatus, "ResetAndAssert");
+            Assert.AreEqual(0, StreamingImageSequencePlugin.GetUsedImagesMemory());
         }
 
 //----------------------------------------------------------------------------------------------------------------------
