@@ -7,7 +7,7 @@
 namespace StreamingImageSequencePlugin {
 
 const uint64_t UNLIMITED_MEMORY = 0;
-const uint64_t DEFAULT_MAX_MEMORY = DEFAULT_MAX_MEMORY;
+const uint64_t DEFAULT_MAX_MEMORY = UNLIMITED_MEMORY;
 
 //----------------------------------------------------------------------------------------------------------------------
 
