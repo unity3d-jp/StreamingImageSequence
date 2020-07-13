@@ -12,7 +12,24 @@
 // Windows Header Files:
 #include <windows.h>
 
+#elif OSX
+
+//Memory 
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#include <mach/vm_statistics.h>
+#include <mach/mach_types.h>
+#include <mach/mach_init.h>
+#include <mach/mach_host.h>
+
+#else
+
+//Memory
+#include "sys/types.h"
+#include "sys/sysinfo.h"
+
 #endif // _WIN32
+
 #endif
 
 // TODO: reference additional headers your program requires here

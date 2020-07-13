@@ -1,10 +1,14 @@
 #include "stdafx.h"
 
+//CommonLib
+#include "CommonLib/CommonLib.h" //IMAGE_CS
+
 //Loader
 #include "LoaderUtility.h"
 #include "FileType.h"
 #include "TGALoader.h"
 #include "ImageCatalog.h"
+#include "CommonLib/CriticalSectionController.h"
 
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -71,15 +75,19 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
 
     } else {
         imageData = imageCatalog->AddImage(imagePath, imageType, frame);
-
     }
+
+    if (nullptr == imageData)
+        return nullptr;
 
     switch (fileType) {
         case FILE_TYPE_TGA: {
+            CriticalSectionController cs(IMAGE_CS(imageType));
             LoadTGAFileAndAlloc(imagePath, imageType, imageCatalog);
             break;
         }
         case FILE_TYPE_PNG: {
+            CriticalSectionController cs(IMAGE_CS(imageType));
             LoadPNGFileAndAlloc(imagePath, imageType, imageCatalog);
             break;
         }
@@ -117,9 +125,17 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
             if ((fullImageData->CurrentReadStatus == READ_STATUS_LOADING))
                 return fullImageData;
 
-            imageCatalog->AddImageFromSrc(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, frame, 
-                                          fullImageData, reqWidth, reqHeight);
-            return previewImageData;
+            //Add image and refresh
+            if (imageCatalog->AddImageFromSrc(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, frame, 
+                                              fullImageData, reqWidth, reqHeight)) 
+            {
+                previewImageData = LoaderUtility::GetImageData(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, 
+                                                               imageCatalog, frame);
+                return previewImageData;
+            }
+
+            //fail
+            return nullptr;
         }
         default: {
             return nullptr;

@@ -18,9 +18,16 @@ ImageCollection::ImageCollection()
     , m_curOrderStartPos(m_orderedImageList.end())
     , m_updateOrderStartPos(false)
     , m_csType(CRITICAL_SECTION_TYPE_FULL_IMAGE)
+    , m_latestRequestFrame(0)
 {
 
 }
+//----------------------------------------------------------------------------------------------------------------------
+
+ImageCollection::~ImageCollection() {
+    UnloadAllImagesUnsafe();
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 void ImageCollection::Init(CriticalSectionType csType, ImageMemoryAllocator* memAllocator) {
@@ -31,8 +38,11 @@ void ImageCollection::Init(CriticalSectionType csType, ImageMemoryAllocator* mem
 //----------------------------------------------------------------------------------------------------------------------
 
 //Thread-safe
-const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool isForCurrentOrder) {
+const ImageData* ImageCollection::GetImage(const strType& imagePath, const int frame) {
     CriticalSectionController cs(IMAGE_CS(m_csType));
+
+    UpdateRequestFrameUnsafe(frame);
+
     std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
     if (m_pathToImageMap.end() == pathIt) {
         return nullptr;
@@ -43,6 +53,7 @@ const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool 
         MoveOrderStartPosToEndUnsafe();
     }
 
+    const bool isForCurrentOrder = (frame >= m_latestRequestFrame);
     if (isForCurrentOrder) {
         ReorderImageUnsafe(pathIt);
     }
@@ -51,16 +62,22 @@ const ImageData* ImageCollection::GetImage(const strType& imagePath, const bool 
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-//Thread-safe
-std::unordered_map<strType, ImageData>::const_iterator ImageCollection::AddImage(const strType& imagePath) {
+//Thread-safe. May return null
+const ImageData* ImageCollection::AddImage(const strType& imagePath, const int frame) {
     
     CriticalSectionController cs(IMAGE_CS(m_csType));
 
-    const std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
-    if (pathIt !=m_pathToImageMap.end())
-        return pathIt;
+    UpdateRequestFrameUnsafe(frame);
+    if (frame < m_latestRequestFrame)
+        return nullptr;
 
-    return PrepareImageUnsafe(imagePath);
+    std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
+    if (pathIt !=m_pathToImageMap.end())
+        return &pathIt->second;
+
+    pathIt = AddImageUnsafe(imagePath);
+    return &pathIt->second;
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -76,7 +93,7 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
     if (m_pathToImageMap.end() != pathIt) {
         m_memAllocator->Deallocate(&(pathIt->second));
     }  else {
-        pathIt = PrepareImageUnsafe(imagePath);
+        pathIt = AddImageUnsafe(imagePath);
     }
 
     ImageData* imageData = &pathIt->second;
@@ -94,10 +111,14 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 //----------------------------------------------------------------------------------------------------------------------
 
 
-bool ImageCollection::AddImageFromSrc(const strType& imagePath, const ImageData* src, 
+bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame, const ImageData* src, 
                                            const uint32_t w, const uint32_t h)
 {
     CriticalSectionController cs(IMAGE_CS(m_csType));
+
+    UpdateRequestFrameUnsafe(frame);
+    if (frame < m_latestRequestFrame)
+        return false;
 
     auto pathIt = m_pathToImageMap.find(imagePath);
 
@@ -105,7 +126,7 @@ bool ImageCollection::AddImageFromSrc(const strType& imagePath, const ImageData*
     if (m_pathToImageMap.end() != pathIt) {
         m_memAllocator->Deallocate(&(pathIt->second));
     }  else {
-        pathIt = PrepareImageUnsafe(imagePath);
+        pathIt = AddImageUnsafe(imagePath);
     }
 
     //Allocate
@@ -163,33 +184,24 @@ bool ImageCollection::UnloadImage(const strType& imagePath) {
 //Thread-safe
 void ImageCollection::UnloadAllImages() {
     CriticalSectionController cs(IMAGE_CS(m_csType));
-    m_pathToOrderMap.clear();
-    m_orderedImageList.clear();
-    m_curOrderStartPos = m_orderedImageList.end();
-
-    for (auto itr = m_pathToImageMap.begin(); itr != m_pathToImageMap.end(); ++itr) {
-        ImageData* imageData = &(itr->second);
-        m_memAllocator->Deallocate(imageData);
-    }
-    m_pathToImageMap.clear();
-
+    UnloadAllImagesUnsafe();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
 //Thread-safe
-void ImageCollection::AdvanceOrder() {
+void ImageCollection::ResetOrder() {
     CriticalSectionController cs(IMAGE_CS(m_csType));
-    //Turn on the flag, so that at the next GetImage() or AddImage(), 
-    //the related image would be the start pos of the current "order".
-    //The prev nodes before this start pos, would be regarded as "unused" for this order, and thus safe to be unloaded
-    m_updateOrderStartPos = true;
+
+    m_curOrderStartPos = m_orderedImageList.begin();
+    m_updateOrderStartPos = false;
+    m_latestRequestFrame = 0;
 }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 
-std::unordered_map<strType, ImageData>::iterator ImageCollection::PrepareImageUnsafe(const strType& imagePath) {
+std::unordered_map<strType, ImageData>::iterator ImageCollection::AddImageUnsafe(const strType& imagePath) {
     ASSERT(m_pathToImageMap.find(imagePath) == m_pathToImageMap.end());
     const auto it = m_pathToImageMap.insert({ imagePath, ImageData(nullptr,0,0,READ_STATUS_LOADING) });
     AddImageOrderUnsafe(it.first);
@@ -270,6 +282,42 @@ void ImageCollection::MoveOrderStartPosToEndUnsafe() {
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+//Non-thread safe
+void ImageCollection::UnloadAllImagesUnsafe() {
+    m_pathToOrderMap.clear();
+    m_orderedImageList.clear();
+    m_curOrderStartPos = m_orderedImageList.end();
+
+    for (auto itr = m_pathToImageMap.begin(); itr != m_pathToImageMap.end(); ++itr) {
+        ImageData* imageData = &(itr->second);
+        m_memAllocator->Deallocate(imageData);
+    }
+    m_pathToImageMap.clear();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+//Non-Thread-safe
+void ImageCollection::UpdateRequestFrameUnsafe(const int frame) {
+
+
+    if (frame <= m_latestRequestFrame) {
+        //overflow check
+        const bool isOverflow = frame < 0 && m_latestRequestFrame >= 0;
+        if (!isOverflow) {
+            return;
+        }
+    }
+
+    m_latestRequestFrame = frame;
+
+    //Turn on the flag, so that at the next GetImage() or AddImage(), 
+    //the related image would be the start pos of the current "order".
+    //The prev nodes before this start pos, would be regarded as "unused" for this order, and thus safe to be unloaded
+    m_updateOrderStartPos = true;
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -299,8 +347,8 @@ bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathToAllocate
 
     const strType& imagePath = (*orderIt)->first;
 
-    //This should not be happening. The image that we want to allocate should not be located at the start of the list
-    ASSERT(imagePath != imagePathToAllocate);
+    //if this happens, then we can't even allocate memory for one single image
+    //ASSERT(imagePath != imagePathToAllocate);
     if (imagePath == imagePathToAllocate)
         return false;
 
@@ -318,3 +366,4 @@ bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathToAllocate
 
 
 } //end namespace
+

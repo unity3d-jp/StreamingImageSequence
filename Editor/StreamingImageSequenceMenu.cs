@@ -73,7 +73,7 @@ namespace UnityEditor.StreamingImageSequence {
             StringBuilder sb = new StringBuilder();
 
             for (int imageType = 0; imageType < StreamingImageSequenceConstants.MAX_IMAGE_TYPES; ++imageType) {
-                sb.AppendLine("TEXTURE_TYPE: " + imageType.ToString());
+                sb.AppendLine("IMAGE_TYPE: " + imageType.ToString());
 
                 List<string> loadedTextures = new List<string>();
                 StreamingImageSequencePlugin.ListLoadedImages(imageType, (fileName) => {
@@ -97,6 +97,18 @@ namespace UnityEditor.StreamingImageSequence {
             Debug.Log(sb.ToString());
         }
 
+//----------------------------------------------------------------------------------------------------------------------
+        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Show Image Load Order",false,53)]
+        static void ShowImageLoadOrder() {
+            StringBuilder sb = new StringBuilder();
+
+            for (int imageType = 0; imageType < StreamingImageSequenceConstants.MAX_IMAGE_TYPES; ++imageType) {
+                int latestRequestFrame = StreamingImageSequencePlugin.GetImageLoadOrder(imageType);
+                sb.AppendLine($"IMAGE_TYPE: {imageType.ToString()}, order: {latestRequestFrame}");
+                sb.AppendLine();
+            }
+            Debug.Log(sb.ToString());
+        }
 //----------------------------------------------------------------------------------------------------------------------
 
     }

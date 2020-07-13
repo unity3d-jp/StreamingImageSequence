@@ -17,7 +17,9 @@ public:
     void Deallocate(ImageData* imageData);
 
     inline uint64_t GetUsedMemory() const;
+    inline void SetMaxMemory(const uint64_t maxMemory);
 
+    ImageMemoryAllocator();
     ~ImageMemoryAllocator();
 private:
     void IncUsedMem(const uint64_t mem);
@@ -25,6 +27,8 @@ private:
     static uint32_t CalculateMemSize(const uint32_t w, const uint32_t h);
 
     uint64_t m_usedMemory;
+    uint64_t m_maxMemory;
+    float m_inverseTotalRAM;
 
 };
 
@@ -32,6 +36,7 @@ private:
 
 uint64_t ImageMemoryAllocator::GetUsedMemory() const { return m_usedMemory;  }
 
+void ImageMemoryAllocator::SetMaxMemory(const uint64_t maxMemory) { m_maxMemory = maxMemory; }
 
 } //end namespace
 

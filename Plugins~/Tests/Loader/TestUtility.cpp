@@ -59,8 +59,8 @@ bool TestUtility::CheckLoadedTestImageData(const uint32_t imageType, const int f
 void TestUtility::CheckMemoryCleanup() {
     using namespace StreamingImageSequencePlugin;
     ASSERT(0 == ImageCatalog::GetInstance().GetUsedMemory());
-    ASSERT(0 == GetNumLoadedTextures(CRITICAL_SECTION_TYPE_FULL_IMAGE));
-    ASSERT(0 == GetNumLoadedTextures(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE));
+    ASSERT(0 == GetNumLoadedImages(CRITICAL_SECTION_TYPE_FULL_IMAGE));
+    ASSERT(0 == GetNumLoadedImages(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE));
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -98,7 +98,7 @@ uint32_t TestUtility::CleanupAndLoadMaxImages(const uint32_t imageType) {
 
     //Load the remaining images to fill memory to max
     processed = TestUtility::LoadTestImages(imageType, curFrame, 1, maxImages-1);
-    bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, maxImages,READ_STATUS_SUCCESS);
+    const bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, maxImages,READ_STATUS_SUCCESS);
 
     ASSERT(processed);
     ASSERT(readSuccessful);

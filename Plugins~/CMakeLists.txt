@@ -32,6 +32,7 @@ set(tests_root ${CMAKE_CURRENT_SOURCE_DIR}/Tests)
 
 if(APPLE)
     set(PLATFORM "OSX")
+    add_definitions(-DOSX)
     find_library(CORE_GRAPHICS_LIBRARY CoreGraphics)
     mark_as_advanced(CORE_GRAPHICS_LIBRARY)    
 
@@ -67,6 +68,7 @@ add_subdirectory(${src_root}/Loader)
 if(BUILD_UNIT_TESTS)
     find_package(GTest REQUIRED)
     enable_testing()
+    add_subdirectory(${tests_root}/CommonLib)
     add_subdirectory(${tests_root}/Loader)
 endif()
 
