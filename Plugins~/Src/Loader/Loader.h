@@ -31,7 +31,7 @@ extern "C"
 	LOADER_API void  UnloadAllImages();
 
 	LOADER_API void  ListLoadedImages(const uint32_t imageType, void(* OnNextTexture)(const char*));
-	LOADER_API int  GetLatestFrame(const uint32_t imageType);
+	LOADER_API int  GetOrder(const uint32_t imageType);
 	LOADER_API uint32_t GetNumLoadedTextures(const uint32_t imageType);
 
 	LOADER_API void  SetMaxImagesMemory(const uint32_t maxImageMemoryMB);
