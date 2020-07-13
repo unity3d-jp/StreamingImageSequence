@@ -83,7 +83,7 @@ LOADER_API void ListLoadedImages(const uint32_t imageType, void(*OnNextTexture)(
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-LOADER_API int  GetOrder(const uint32_t imageType) {
+LOADER_API int  GetImageLoadOrder(const uint32_t imageType) {
 	using namespace StreamingImageSequencePlugin;
 	ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 	const int latestFrame = ImageCatalog::GetInstance().GetLatestFrame(imageType);
