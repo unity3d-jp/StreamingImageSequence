@@ -8,6 +8,7 @@ namespace UnityEngine.StreamingImageSequence
     [TrackClipType(typeof(FaderPlayableAsset))]
     [TrackBindingType(typeof(Image))]
     [TrackColor(0.263f, 0.09f, 0.263f)]
+    [NotKeyable]
     internal class FaderTrack : TrackAsset {
         public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
 
