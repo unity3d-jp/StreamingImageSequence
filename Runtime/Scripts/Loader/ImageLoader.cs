@@ -26,6 +26,7 @@ internal static class ImageLoader  {
         InitImageLoaderInEditor();
         StreamingImageSequencePlugin.ResetImageLoadOrder();
     }
+    
 
     static void InitImageLoaderInEditor() {
         for (int i = 0; i < StreamingImageSequenceConstants.MAX_IMAGE_TYPES; ++i) {
