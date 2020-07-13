@@ -49,25 +49,50 @@ float MemoryUtility::GetAvailableRAMRatio() {
 
 #else
 
-DWORDLONG MemoryUtility::GetTotalRAM() {
-    return 0;
+uint64_t MemoryUtility::GetTotalRAM() {
+
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+
+    uint64_t totalRAM = memInfo.totalram;
+    totalRAM *= memInfo.mem_unit;
+    return totalRAM;
 
 }
-DWORDLONG MemoryUtility::GetUsedRAM() {
-    return 0;
+uint64_t MemoryUtility::GetUsedRAM() {
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+
+    uint64_t usedRAM = memInfo.totalram - memInfo.freeram;
+    usedRAM *= memInfo.mem_unit;
+
+    return usedRAM;
 
 }
-DWORDLONG MemoryUtility::GetAvailableRAM() {
+uint64_t MemoryUtility::GetAvailableRAM() {
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+
+    uint64_t availableRAM = memInfo.freeram;
+    availableRAM *= memInfo.mem_unit;
     return 0;
 
 }
 float MemoryUtility::GetUsedRAMRatio() {
-    return 0;
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+    const float usedRAM = (static_cast<float>(memInfo.totalram - memInfo.freeram) 
+                           / static_cast<float>(memInfo.totalram));
+    return usedRAM;
 
 }
 
 float MemoryUtility::GetAvailableRAMRatio() {
-    return 0;
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+    const float availableRAM = (static_cast<float>(memInfo.freeram) 
+                               / static_cast<float>(memInfo.totalram));
+    return availableRAM;
 }
 
 #endif //_WIN32

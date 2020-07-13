@@ -12,7 +12,13 @@
 // Windows Header Files:
 #include <windows.h>
 
+#else
+
+#include "sys/types.h"
+#include "sys/sysinfo.h"
+
 #endif // _WIN32
+
 #endif
 
 // TODO: reference additional headers your program requires here
