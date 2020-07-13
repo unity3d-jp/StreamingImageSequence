@@ -34,10 +34,7 @@ namespace UnityEngine.StreamingImageSequence {
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         internal static extern void ListLoadedImages(int textureType, DelegateStringFunc func);
-        
-        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        internal static extern void SetMaxImagesMemory(int  maxImageMemoryMB);
-        
+               
 
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
@@ -53,11 +50,6 @@ namespace UnityEngine.StreamingImageSequence {
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         internal static extern void ResetImageLoadOrder();
 
-        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        internal static extern void ResetImageLoadOrder();
-
-        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        internal static extern bool IsMemoryAvailable();
         
 #endif //UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 
