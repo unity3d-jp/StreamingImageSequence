@@ -370,3 +370,4 @@ bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathToAllocate
 
 
 } //end namespace
+
