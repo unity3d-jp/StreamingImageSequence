@@ -40,9 +40,12 @@ namespace UnityEngine.StreamingImageSequence {
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern int GetImageLoadOrder(int imageType);        
         
-        // Implemented in Loader dll
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         internal static extern void SetMaxImagesMemory(int maxImageMemoryMB);
+        
+        [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
+        internal static extern int GetUsedImagesMemory();
+        
             
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void ResetPlugin();
