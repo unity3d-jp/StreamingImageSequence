@@ -35,6 +35,7 @@ extern "C"
 	LOADER_API uint32_t GetNumLoadedImages(const uint32_t imageType);
 
 	LOADER_API void  SetMaxImagesMemory(const uint32_t maxImageMemoryMB);
+	LOADER_API int GetUsedImagesMemory();
 
 
 	LOADER_API void  ResetPlugin();
