@@ -53,11 +53,7 @@ const ImageData* ImageCollection::GetImage(const strType& imagePath, const int f
         MoveOrderStartPosToEndUnsafe();
     }
 
-    //[Note-sin: 2020-6-8] indicate if this image is for the current order by comparing frame and m_latestRequestFrame.
-    //Also check overFlow when frame seems to be higher, but it's actually older
-    const bool isOverFlow = (frame > 0 && m_latestRequestFrame < 0);
-
-    const bool isForCurrentOrder = (frame >= m_latestRequestFrame && !isOverFlow);
+    const bool isForCurrentOrder = (frame >= m_latestRequestFrame);
     if (isForCurrentOrder) {
         ReorderImageUnsafe(pathIt);
     }
