@@ -55,8 +55,9 @@ uint64_t MemoryUtility::GetTotalRAM() {
     uint64_t totalRAM;
     mib[0] = CTL_HW;
     mib[1] = HW_MEMSIZE;
-    length = sizeof(uint64_t);
+    size_t length = sizeof(uint64_t);
     sysctl(mib, 2, &totalRAM, &length, NULL, 0);
+    
     return totalRAM;
 
 }
@@ -69,7 +70,7 @@ uint64_t MemoryUtility::GetUsedRAM() {
 
     machPort = mach_host_self();
     count = sizeof(vmStats) / sizeof(natural_t);
-    if (KERN_SUCCESS == host_pageSize(machPort, &pageSize) &&
+    if (KERN_SUCCESS == host_page_size(machPort, &pageSize) &&
         KERN_SUCCESS == host_statistics64(machPort, HOST_VM_INFO,
                                           (host_info64_t)&vmStats, &count))
     {
@@ -90,7 +91,7 @@ uint64_t MemoryUtility::GetAvailableRAM() {
 
     machPort = mach_host_self();
     count = sizeof(vmStats) / sizeof(natural_t);
-    if (KERN_SUCCESS == host_pageSize(machPort, &pageSize) &&
+    if (KERN_SUCCESS == host_page_size(machPort, &pageSize) &&
         KERN_SUCCESS == host_statistics64(machPort, HOST_VM_INFO,
                                           (host_info64_t)&vmStats, &count))
     {
@@ -104,8 +105,8 @@ uint64_t MemoryUtility::GetAvailableRAM() {
 float MemoryUtility::GetUsedRAMRatio() {
     const uint64_t usedRAM  = GetUsedRAM();
     const uint64_t totalRAM = GetTotalRAM();
-    const float usedRAM = (static_cast<float>(usedRAM) / static_cast<float>(totalRAM));
-    return usedRAM;
+    const float usedRAMRatio = (static_cast<float>(usedRAM) / static_cast<float>(totalRAM));
+    return usedRAMRatio;
 
 }
 

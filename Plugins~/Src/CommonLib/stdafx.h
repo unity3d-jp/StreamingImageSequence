@@ -13,9 +13,18 @@
 #include <windows.h>
 
 #elif OSX
-#include "sys/sysctl.h"
+
+//Memory 
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#include <mach/vm_statistics.h>
+#include <mach/mach_types.h>
+#include <mach/mach_init.h>
+#include <mach/mach_host.h>
 
 #else
+
+//Memory
 #include "sys/types.h"
 #include "sys/sysinfo.h"
 
