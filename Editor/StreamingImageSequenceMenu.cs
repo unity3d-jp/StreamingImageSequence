@@ -84,8 +84,13 @@ namespace UnityEditor.StreamingImageSequence {
             Debug.Log(sb.ToString());
         }
 
+        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Show Used Image Memory",false,53)]
+        static void ShowUsedImageMemory() {
+            Debug.Log($"Used memory for images: {StreamingImageSequencePlugin.GetUsedImagesMemory().ToString()} MB");
+        }
+        
 //----------------------------------------------------------------------------------------------------------------------
-        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Show Image Load Order",false,53)]
+        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Show Image Load Order",false,54)]
         static void ShowImageLoadOrder() {
             StringBuilder sb = new StringBuilder();
 
