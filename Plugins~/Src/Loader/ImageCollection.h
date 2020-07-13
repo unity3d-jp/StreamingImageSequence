@@ -45,6 +45,7 @@ private:
     void ReorderImageUnsafe(std::unordered_map<strType, ImageData>::iterator);
     void DeleteImageOrderUnsafe(std::unordered_map<strType, ImageData>::iterator);
     void MoveOrderStartPosToEndUnsafe();
+    void UnloadAllImagesUnsafe();
 
     void UpdateRequestFrameUnsafe(const int frame);
 
