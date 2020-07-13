@@ -125,14 +125,18 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
             if ((fullImageData->CurrentReadStatus == READ_STATUS_LOADING))
                 return fullImageData;
 
-            //Add image and refresh
-            if (imageCatalog->AddImageFromSrc(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, frame, 
-                                              fullImageData, reqWidth, reqHeight)) 
             {
-                previewImageData = LoaderUtility::GetImageData(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, 
-                                                               imageCatalog, frame);
-                return previewImageData;
+                CriticalSectionController cs(IMAGE_CS(CRITICAL_SECTION_TYPE_FULL_IMAGE));
+                //Add image and refresh
+                if (imageCatalog->AddImageFromSrc(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, frame, 
+                                                  fullImageData, reqWidth, reqHeight)) 
+                {
+                    previewImageData = LoaderUtility::GetImageData(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, 
+                                                                   imageCatalog, frame);
+                    return previewImageData;
+                }
             }
+
 
             //fail
             return nullptr;
