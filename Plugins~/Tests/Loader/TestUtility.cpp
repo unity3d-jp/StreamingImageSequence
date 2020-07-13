@@ -59,8 +59,8 @@ bool TestUtility::CheckLoadedTestImageData(const uint32_t imageType, const int f
 void TestUtility::CheckMemoryCleanup() {
     using namespace StreamingImageSequencePlugin;
     ASSERT(0 == ImageCatalog::GetInstance().GetUsedMemory());
-    ASSERT(0 == GetNumLoadedTextures(CRITICAL_SECTION_TYPE_FULL_IMAGE));
-    ASSERT(0 == GetNumLoadedTextures(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE));
+    ASSERT(0 == GetNumLoadedImages(CRITICAL_SECTION_TYPE_FULL_IMAGE));
+    ASSERT(0 == GetNumLoadedImages(CRITICAL_SECTION_TYPE_PREVIEW_IMAGE));
 }
 
 //----------------------------------------------------------------------------------------------------------------------
