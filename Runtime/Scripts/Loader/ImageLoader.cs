@@ -66,9 +66,10 @@ internal static class ImageLoader  {
     
     private static bool RequestLoadImageInternal(int index, BaseImageLoadBGTask imageLoadBGTask) {
                
+        imageLoadBGTask.SetRequestFrame(GetCurrentFrame());
+        
 #if UNITY_EDITOR        
         if (!Application.isPlaying) {
-            imageLoadBGTask.SetRequestFrame(Time.frameCount);
             if (null == m_imageLoadEditorUpdateTasks[index])
                 return false;
             m_imageLoadEditorUpdateTasks[index].RequestLoadImage(imageLoadBGTask);            
@@ -90,15 +91,7 @@ internal static class ImageLoader  {
             out readResult);            
     }
 
-    internal static bool LoadAndAllocFullImage(string fileName) {
-        return StreamingImageSequencePlugin.LoadAndAllocFullImage(fileName, GetCurrentFrame());
-    }
-
-    internal  static bool LoadAndAllocPreviewImage(string fileName, int width, int height) {
-        return StreamingImageSequencePlugin.LoadAndAllocPreviewImage(fileName, width, height, GetCurrentFrame());
-            
-    }
-    
+   
     private static int GetCurrentFrame() {
         return Time.frameCount; //use Time.frameCount for both playMode and editMode
     }
