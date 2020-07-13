@@ -17,6 +17,7 @@ internal class EditorUpdateManager {
         EditorApplication.update           += EditorUpdateManager_Update;
         EditorSceneManager.sceneClosed     += EditorUpdateManager_OnSceneClosed;
         EditorSceneManager.newSceneCreated += EditorUpdateManager_OnSceneCreated;
+        EditorSceneManager.sceneOpened     += EditorUpdateManager_OnSceneOpened;
     }
 
     ~EditorUpdateManager() {
@@ -33,6 +34,13 @@ internal class EditorUpdateManager {
         ResetImageLoading();        
     }
     
+    static void EditorUpdateManager_OnSceneOpened( SceneManagement.Scene scene, OpenSceneMode mode) {
+        if (OpenSceneMode.Single != mode)
+            return;
+        
+        
+        ResetImageLoading();         
+    }
    
 //----------------------------------------------------------------------------------------------------------------------        
 

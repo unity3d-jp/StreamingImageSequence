@@ -94,6 +94,7 @@ namespace UnityEditor.StreamingImageSequence {
                 sb.AppendLine($"IMAGE_TYPE: {imageType.ToString()}, order: {latestRequestFrame}");
                 sb.AppendLine();
             }
+            sb.AppendLine("Current Frame: " + ImageLoader.GetCurrentFrame());
             Debug.Log(sb.ToString());
         }
 //----------------------------------------------------------------------------------------------------------------------
