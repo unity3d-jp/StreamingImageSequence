@@ -353,34 +353,49 @@ namespace UnityEngine.StreamingImageSequence {
 
             //forward
             int maxForwardPreloadIndex = Mathf.Min(m_forwardPreloadImageIndex + NUM_IMAGES, m_imagePaths.Count) -1;
-            for (int i = m_forwardPreloadImageIndex; i <= maxForwardPreloadIndex; ++i) {
-                QueueImageLoadTask(i, out _ );
+            int startForwardPreloadIndex = m_forwardPreloadImageIndex;
+            for (int i = startForwardPreloadIndex; i <= maxForwardPreloadIndex; ++i) {
+                if (QueueImageLoadTask(i, out _)) {
+                    ++m_forwardPreloadImageIndex;                    
+                } else {
+                    break;
+                }
             }
-            m_forwardPreloadImageIndex = maxForwardPreloadIndex;
             
             //backward
             int minBackwardPreloadIndex = Mathf.Max((m_backwardPreloadImageIndex - NUM_IMAGES)+1, 0);
-            for (int i = m_backwardPreloadImageIndex; i >=minBackwardPreloadIndex; --i) {
-                QueueImageLoadTask(i, out _ );
+            int startBackwardPreloadIndex = m_backwardPreloadImageIndex;
+            for (int i = startBackwardPreloadIndex; i >=minBackwardPreloadIndex; --i) {
+                if (QueueImageLoadTask(i, out _)) {
+                    --m_backwardPreloadImageIndex;                    
+                } else {
+                    break;
+                }
             }
-            m_backwardPreloadImageIndex = minBackwardPreloadIndex;
             
         }
 
 //----------------------------------------------------------------------------------------------------------------------        
-        private string QueueImageLoadTask(int index, out ImageData imageData) {
+        private bool QueueImageLoadTask(int index, out ImageData imageData) {
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
             string filename = m_imagePaths[index];
             filename = GetCompleteFilePath(filename);
 
-            StreamingImageSequencePlugin.GetImageDataInto(filename,TEX_TYPE, Time.frameCount, out imageData );
+            ImageLoader.GetImageDataInto(filename,TEX_TYPE,out imageData);
             //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);
             
-            if (StreamingImageSequenceConstants.READ_STATUS_LOADING != imageData.ReadStatus ) {
-                ImageLoader.RequestLoadFullImage(filename);
+            switch (imageData.ReadStatus) {
+                case StreamingImageSequenceConstants.READ_STATUS_LOADING: 
+                case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
+                    break;
+                }
+                default: {
+                    return ImageLoader.RequestLoadFullImage(filename);
+                
+                }
             }
-            
-            return filename;
+                       
+            return true;
         }
 //----------------------------------------------------------------------------------------------------------------------        
         
@@ -392,16 +407,20 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             m_primaryImageIndex         = index;
-            m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, m_imagePaths.Count - 1);
-            m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);
 
-            
-            QueueImageLoadTask(index, out ImageData readResult);
+            if (QueueImageLoadTask(index, out ImageData readResult)) {
+                m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, m_imagePaths.Count - 1);
+                m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);                
+            } else {
+                //If we can't queue, try from the primary index again
+                m_forwardPreloadImageIndex = m_backwardPreloadImageIndex = index;
+            }
 
             if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
 
                 ResetTexture();
                 m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
+                m_texture.name = "Full: " + m_imagePaths[index];
                 readResult.CopyBufferToTexture(m_texture);
                 
                 UpdateResolution(ref readResult);

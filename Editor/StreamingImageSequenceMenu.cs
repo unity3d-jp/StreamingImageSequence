@@ -47,22 +47,10 @@ namespace UnityEditor.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-        /*
-
-        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Create MovieProxy/Register files", false, 6)]
-        static void ImportAndCreateSpriteAnimation()
-        {
-            importPictureFiles(PictureFileImporterParam.Mode.SpriteAnimation);
-
-        }
-        */
-
         [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Reset",false,50)]
         static void Reset()
         {
-
-            StreamingImageSequencePlugin.ResetPlugin();
-            ThreadManager.Reset();            
+            EditorUpdateManager.ResetImageLoading();
             PreviewTextureFactory.Reset();            
         }
 
@@ -81,8 +69,7 @@ namespace UnityEditor.StreamingImageSequence {
                 });
 
                 foreach (var fileName in loadedTextures) {
-                    StreamingImageSequencePlugin.GetImageDataInto(fileName,imageType, Time.frameCount, 
-                        out ImageData readResult);
+                    ImageLoader.GetImageDataInto(fileName,imageType, out ImageData readResult);
                     sb.Append("    ");
                     sb.Append(fileName);
                     sb.Append(". Status: " + readResult.ReadStatus);
