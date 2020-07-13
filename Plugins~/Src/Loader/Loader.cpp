@@ -92,7 +92,7 @@ LOADER_API int  GetImageLoadOrder(const uint32_t imageType) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-LOADER_API uint32_t GetNumLoadedTextures(const uint32_t imageType) {
+LOADER_API uint32_t GetNumLoadedImages(const uint32_t imageType) {
 	using namespace StreamingImageSequencePlugin;
 	ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 	return static_cast<uint32_t>(ImageCatalog::GetInstance().GetNumImages(imageType));
