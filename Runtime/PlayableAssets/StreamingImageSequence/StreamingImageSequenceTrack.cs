@@ -10,6 +10,7 @@ namespace UnityEngine.StreamingImageSequence {
 [TrackClipType(typeof(StreamingImageSequencePlayableAsset))]
 [TrackBindingType(typeof(StreamingImageSequenceNativeRenderer))]
 [TrackColor(0.776f, 0.263f, 0.09f)]
+[NotKeyable]
 public class StreamingImageSequenceTrack : TrackAsset
 {
     private void OnDestroy() {
