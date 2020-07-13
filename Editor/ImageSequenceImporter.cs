@@ -86,8 +86,7 @@ namespace UnityEditor.StreamingImageSequence {
                 ImageSequenceImporter.Import(importerParam);
             } else {
                 importerParam.strDstFolder = Path.Combine(streamingAssetsPath, assetName).Replace("\\", "/");
-                ImageSequenceImportWindow.SetParam(importerParam);
-                ImageSequenceImportWindow.InitWindow();
+                ImageSequenceImportWindow.Show(importerParam);
             }
         }
 
