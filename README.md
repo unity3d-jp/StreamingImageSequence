@@ -22,6 +22,9 @@ easily without making Unity 2D Sprites.
 ![FaderDemo](Documentation~/images/FaderDemo.gif)
 
 
+# Plugins
+* [Building](Plugin~/Docs/en/BuildPlugins.md)
+
 # License
 * Source Code: [Unity Companion License](LICENSE.md)
 * Unity-chan Assets: [Unity-Chan License](http://unity-chan.com/contents/guideline_en/), located under the following folder:
