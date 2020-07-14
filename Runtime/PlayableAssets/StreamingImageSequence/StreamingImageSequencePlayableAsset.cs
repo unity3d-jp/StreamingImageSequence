@@ -438,10 +438,12 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
 
         internal string GetFullPath(string fileName) {
-            string fullPath = fileName;
+            string fullPath = null;
             
             if (!string.IsNullOrEmpty(m_folder)) {
                 fullPath = Path.Combine(m_folder, fileName);
+            } else {
+                fullPath = fileName;
             }
 
             if (Path.IsPathRooted(fullPath)) {
