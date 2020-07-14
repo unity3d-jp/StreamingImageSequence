@@ -20,6 +20,8 @@ Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Time
 ### [Image オブジェクトをフェードさせる](./Documentation~/jp/FaderPlayableAsset.md)
 ![FaderDemo](Documentation~/images/FaderDemo.gif)
 
+# プラグイン
+* [ビルド](Plugin~/Docs/en/BuildPlugins.md)
 
 # ライセンス
 * ソースコード: [Unity Companion License](LICENSE.md)
