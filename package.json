@@ -6,7 +6,7 @@
     "dependencies": {
         "com.unity.ext.nunit": "1.0.0",        
         "com.unity.ugui": "1.0.0",
-        "com.unity.timeline": "1.2.14"
+        "com.unity.timeline": "1.3.2"
       
     }, 
     "description": "Streaming Image Sequence is a package for playing sequential image sequences in Unity Timeline easily without making Unity 2D Sprites.",
