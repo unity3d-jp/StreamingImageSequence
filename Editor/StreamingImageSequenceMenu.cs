@@ -56,7 +56,7 @@ namespace UnityEditor.StreamingImageSequence {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Show Loaded Images",false,52)]
+        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Debug/Show Loaded Images",false,52)]
         static void ShowLoadedImages() {
             StringBuilder sb = new StringBuilder();
 
@@ -84,13 +84,13 @@ namespace UnityEditor.StreamingImageSequence {
             Debug.Log(sb.ToString());
         }
 
-        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Show Used Image Memory",false,53)]
+        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Debug/Show Used Image Memory",false,53)]
         static void ShowUsedImageMemory() {
             Debug.Log($"Used memory for images: {StreamingImageSequencePlugin.GetUsedImagesMemory().ToString()} MB");
         }
         
 //----------------------------------------------------------------------------------------------------------------------
-        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Show Image Load Order",false,54)]
+        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Debug/Show Image Load Order",false,54)]
         static void ShowImageLoadOrder() {
             StringBuilder sb = new StringBuilder();
 
