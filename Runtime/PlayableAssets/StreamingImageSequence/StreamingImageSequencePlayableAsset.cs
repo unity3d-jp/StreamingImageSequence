@@ -445,7 +445,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             if (Path.IsPathRooted(fullPath)) {
-                fullPath = Path.Combine(PathUtility.GetProjectFolder(), fileName);
+                fullPath = Path.Combine(PathUtility.GetProjectFolder(), fullPath);
             }
 
            
