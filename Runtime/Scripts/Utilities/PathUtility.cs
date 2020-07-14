@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using UnityEditor;
 
 namespace UnityEngine.StreamingImageSequence {
 
@@ -6,29 +7,29 @@ namespace UnityEngine.StreamingImageSequence {
 //[TODO-sin: 2020-7-9] Can we reuse or put the code to com.unity.anime-toolbox ?
 internal static class PathUtility {
 
-    private static string GetApplicationDataPath() {
+    [InitializeOnLoadMethod]
+    static void PathUtilityOnLoad() {
+        //Cache variables for access by background thread
+        m_appDataPath = Application.dataPath;
+       
+        Regex regAssetFolder = new Regex("/Assets$");
+        m_projectFolder = regAssetFolder.Replace(m_appDataPath, "");
         
-        // Application.dataPath cant be used in back thread, so we cache it hire.
-        if (s_AppDataPath == null)
-        {
-            s_AppDataPath = Application.dataPath;
-        }
-        return s_AppDataPath;
     }
 
+//----------------------------------------------------------------------------------------------------------------------
+    
+    private static string GetApplicationDataPath() {       
+        return m_appDataPath;
+    }
 
-    public static string GetProjectFolder()
-    {
-        Regex regAssetFolder = new Regex("/Assets$");
-        var strPorjectFolder = PathUtility.GetApplicationDataPath(); //  Application.dataPath; cant use this in back thread;
-        strPorjectFolder = regAssetFolder.Replace(strPorjectFolder, "");
-
-        return strPorjectFolder;
+    public static string GetProjectFolder() {
+        return m_projectFolder;
     }
 
     public static string ToRelativePath( string strAbsPath )
     {
-        string newPath = strAbsPath.Remove(0, GetProjectFolder().Length);
+        string newPath = strAbsPath.Remove(0, m_projectFolder.Length);
         while ( newPath.StartsWith("/"))
         {
             newPath = newPath.Remove(0, 1);
@@ -38,7 +39,10 @@ internal static class PathUtility {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-    private static string s_AppDataPath;
+    
+    //Have "/" as the folder separator
+    private static string m_appDataPath;
+    private static string m_projectFolder;
 
 
 }

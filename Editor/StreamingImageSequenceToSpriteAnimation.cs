@@ -180,7 +180,7 @@ namespace UnityEditor.StreamingImageSequence {
                     var movieProxyAsset = srcClip.asset as StreamingImageSequencePlayableAsset;
 
 
-                    int imageCount = movieProxyAsset.GetImagePaths().Count;
+                    int imageCount = movieProxyAsset.GetImageFileNames().Count;
                     Sprite[] sprites = new Sprite[imageCount];
 
                     string strSrcFolder = Path.Combine(PathUtility.GetProjectFolder(), movieProxyAsset.GetFolder()).Replace("\\", "/");

@@ -90,7 +90,7 @@ namespace UnityEngine.StreamingImageSequence
                 TimelineClip clip = kv.Key;
                 StreamingImageSequencePlayableAsset sisAsset = kv.Value;
 
-                IList<string> imagePaths = sisAsset.GetImagePaths();
+                IList<string> imagePaths = sisAsset.GetImageFileNames();
                 if (null == imagePaths || null == clip.parentTrack)
                     continue;
 
@@ -114,7 +114,7 @@ namespace UnityEngine.StreamingImageSequence
         protected override void ProcessActiveClipV(StreamingImageSequencePlayableAsset asset,
             double directorTime, TimelineClip activeClip) 
         {
-            IList<string> imagePaths = asset.GetImagePaths();
+            IList<string> imagePaths = asset.GetImageFileNames();
             if (null == imagePaths || null == activeClip.parentTrack)
                 return;
             

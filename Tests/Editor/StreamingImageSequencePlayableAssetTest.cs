@@ -26,9 +26,9 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             
             yield return null;
 
-            IList<string> imagePaths = sisAsset.GetImagePaths();
-            Assert.IsNotNull(imagePaths);
-            Assert.IsTrue(imagePaths.Count > 0);
+            IList<string> imageFileNames = sisAsset.GetImageFileNames();
+            Assert.IsNotNull(imageFileNames);
+            Assert.IsTrue(imageFileNames.Count > 0);
             Assert.IsTrue(sisAsset.HasImages());
             
             
