@@ -92,7 +92,7 @@ internal static class ImageLoader  {
     }
 
    
-    private static int GetCurrentFrame() {
+    internal static int GetCurrentFrame() {
         return Time.frameCount; //use Time.frameCount for both playMode and editMode
     }
     
