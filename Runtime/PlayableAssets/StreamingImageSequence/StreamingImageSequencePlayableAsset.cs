@@ -379,10 +379,9 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
         private bool QueueImageLoadTask(int index, out ImageData imageData) {
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
-            string filename = m_imageFileNames[index];
-            filename = GetFullPath(filename);
+            string fullpath = GetFullPath(m_imageFileNames[index]);
 
-            ImageLoader.GetImageDataInto(filename,TEX_TYPE,out imageData);
+            ImageLoader.GetImageDataInto(fullpath,TEX_TYPE,out imageData);
             //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);
             
             switch (imageData.ReadStatus) {
@@ -391,7 +390,7 @@ namespace UnityEngine.StreamingImageSequence {
                     break;
                 }
                 default: {
-                    return ImageLoader.RequestLoadFullImage(filename);
+                    return ImageLoader.RequestLoadFullImage(fullpath);
                 
                 }
             }
