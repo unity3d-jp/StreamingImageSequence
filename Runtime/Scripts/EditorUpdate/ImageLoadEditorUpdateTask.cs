@@ -19,7 +19,7 @@ internal class ImageLoadEditorUpdateTask : IUpdateTask {
             return;
         
         //Don't push everything to ThreadManager
-        const int MAX_BACKGROUND_TASKS  = 32;
+        const int MAX_BACKGROUND_TASKS  = 16;
         int       numBackGroundTasks              = ThreadManager.GetNumBackGroundTasks();
         if (numBackGroundTasks >= MAX_BACKGROUND_TASKS) {
             return;
