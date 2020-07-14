@@ -6,13 +6,16 @@ using UnityEngine.Timeline;
 
 namespace UnityEngine.StreamingImageSequence
 {
-internal class SISPlayableMixerEditorUpdateTask : ITask { 
+internal class SISPlayableMixerEditorUpdateTask : IUpdateTask { 
 
     public SISPlayableMixerEditorUpdateTask(StreamingImageSequencePlayableMixer mixer) : base() {
         m_mixer = mixer;
     }
 
-    
+//----------------------------------------------------------------------------------------------------------------------    
+    public void Reset() {
+    }
+
 //----------------------------------------------------------------------------------------------------------------------    
     public void Execute() {
 

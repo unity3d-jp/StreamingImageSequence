@@ -72,8 +72,7 @@ internal static class ImageLoader  {
         if (!Application.isPlaying) {
             if (null == m_imageLoadEditorUpdateTasks[index])
                 return false;
-            m_imageLoadEditorUpdateTasks[index].RequestLoadImage(imageLoadBGTask);            
-            return true;
+            return m_imageLoadEditorUpdateTasks[index].RequestLoadImage(imageLoadBGTask);            
         }
 #endif
 

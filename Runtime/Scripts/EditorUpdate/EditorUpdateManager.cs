@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.Assertions;
-using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -24,17 +23,17 @@ internal class EditorUpdateManager {
         StreamingImageSequencePlugin.ResetPlugin();        
     }
 
-    static void EditorUpdateManager_OnSceneClosed(SceneManagement.Scene scene) {
+    private static void EditorUpdateManager_OnSceneClosed(SceneManagement.Scene scene) {
         //Reset all imageLoading process when closing the scene
         ResetImageLoading();
     }
 
-    static void EditorUpdateManager_OnSceneCreated( SceneManagement.Scene scene, NewSceneSetup setup, NewSceneMode mode) {
+    private static void EditorUpdateManager_OnSceneCreated( SceneManagement.Scene scene, NewSceneSetup setup, NewSceneMode mode) {
         //Reset all imageLoading process when creating a new scene
         ResetImageLoading();        
     }
-    
-    static void EditorUpdateManager_OnSceneOpened( SceneManagement.Scene scene, OpenSceneMode mode) {
+
+    private static void EditorUpdateManager_OnSceneOpened( SceneManagement.Scene scene, OpenSceneMode mode) {
         if (OpenSceneMode.Single != mode)
             return;
         
@@ -56,46 +55,48 @@ internal class EditorUpdateManager {
         m_lastUpdateInEditorTime = time;
 
         //add requested jobs
-        foreach (ITask job in m_requestedTasks) {
+        foreach (IUpdateTask job in m_requestedTasks) {
             m_mainThreadPeriodJobs.Add(job);
         }           
         m_requestedTasks.Clear();
         
         //Remove jobs
-        foreach (ITask job in m_toRemoveTasks) {
+        foreach (IUpdateTask job in m_toRemoveTasks) {
             m_mainThreadPeriodJobs.Remove(job);
         }           
         m_toRemoveTasks.Clear();
         
         //Execute
-        foreach (ITask job in m_mainThreadPeriodJobs) {
+        foreach (IUpdateTask job in m_mainThreadPeriodJobs) {
             job.Execute();
         }
 
     }
 
     internal static void ResetImageLoading() {
+        ThreadManager.Reset();
         StreamingImageSequencePlugin.ResetPlugin();
-        ThreadManager.Reset();            
+        foreach (IUpdateTask job in m_mainThreadPeriodJobs) {
+            job.Reset();
+        }
+        
         
     }    
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal static bool AddEditorUpdateTask(ITask job) {
+    internal static void AddEditorUpdateTask(IUpdateTask job) {
         m_requestedTasks.Add(job);  
-        return true;
     }
 
-    internal static bool RemoveEditorUpdateTask(ITask job) {
+    internal static void RemoveEditorUpdateTask(IUpdateTask job) {
         //Check if the job hasn't been actually added yet
         if (m_requestedTasks.Contains(job)) {
             m_requestedTasks.Remove(job);
-            return true;
+            return;
         }
         
         Assert.IsTrue(m_mainThreadPeriodJobs.Contains(job));
         m_toRemoveTasks.Add(job);
-        return true;
     }
     
 
@@ -104,9 +105,9 @@ internal class EditorUpdateManager {
     private static double m_lastUpdateInEditorTime;
        
     //"Jobs" are higher level than tasks
-    private static readonly HashSet<ITask> m_mainThreadPeriodJobs = new HashSet<ITask>();
-    private static readonly List<ITask>    m_requestedTasks        = new List<ITask>();
-    private static readonly HashSet<ITask> m_toRemoveTasks         = new HashSet<ITask>();
+    private static readonly HashSet<IUpdateTask> m_mainThreadPeriodJobs = new HashSet<IUpdateTask>();
+    private static readonly List<IUpdateTask>    m_requestedTasks        = new List<IUpdateTask>();
+    private static readonly HashSet<IUpdateTask> m_toRemoveTasks         = new HashSet<IUpdateTask>();
 }
 
 
