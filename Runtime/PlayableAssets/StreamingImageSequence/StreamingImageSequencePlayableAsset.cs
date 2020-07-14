@@ -379,7 +379,7 @@ namespace UnityEngine.StreamingImageSequence {
         private bool QueueImageLoadTask(int index, out ImageData imageData) {
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
             string filename = m_imagePaths[index];
-            filename = GetCompleteFilePath(filename);
+            filename = GetFullPath(filename);
 
             ImageLoader.GetImageDataInto(filename,TEX_TYPE,out imageData);
             //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);
@@ -437,18 +437,19 @@ namespace UnityEngine.StreamingImageSequence {
         }
 //----------------------------------------------------------------------------------------------------------------------        
 
-        internal string GetCompleteFilePath(string filePath)
-        {
-            string strOverridePath = m_folder;
-
-            if (!string.IsNullOrEmpty(strOverridePath)) {
-                filePath = Path.Combine(strOverridePath, filePath).Replace("\\", "/");
+        internal string GetFullPath(string fileName) {
+            string fullPath = fileName;
+            
+            if (!string.IsNullOrEmpty(m_folder)) {
+                fullPath = Path.Combine(m_folder, fileName);
             }
 
-            if (Path.IsPathRooted(filePath)) {
-                filePath = Path.Combine(PathUtility.GetProjectFolder(), filePath).Replace("\\", "/");
+            if (Path.IsPathRooted(fullPath)) {
+                fullPath = Path.Combine(PathUtility.GetProjectFolder(), fileName);
             }
-            return filePath;
+
+           
+            return fullPath;
         }
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -714,8 +715,9 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------
 
-        [HideInInspector][SerializeField] private string m_folder = null;
-        [HideInInspector][SerializeField] List<string> m_imagePaths = null;
+        [HideInInspector][SerializeField] private string m_folder = null; //Always have "/" as the directory separator
+        
+        [HideInInspector][SerializeField] List<string> m_imagePaths = null; //These are actually file names, not paths
         
         //[TODO-sin: 2020-6-29] PlayableFrames needs to be stored inside the track/TimelineClip instead of this asset
         //directly

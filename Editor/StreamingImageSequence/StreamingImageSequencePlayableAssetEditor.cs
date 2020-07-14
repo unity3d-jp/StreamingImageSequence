@@ -143,7 +143,7 @@ namespace UnityEditor.StreamingImageSequence {
             IList<string> imagePaths = sisAsset.GetImagePaths();
 
             //Load
-            string fullPath = sisAsset.GetCompleteFilePath(imagePaths[imageIndex]);
+            string fullPath = sisAsset.GetFullPath(imagePaths[imageIndex]);
             ImageLoader.GetImageDataInto(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
                 , out ImageData readResult);
             
