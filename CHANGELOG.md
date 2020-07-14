@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.3.0-preview] - 2020-07-14
+
+feat: reuse previously allocated memory for loading images when there is less than 10% free physical memory on the system.
+
+opt: performance improvement when resizing the length of TimelineClip containing StreamingImageSequencePlayableAsset in TimelineWindow
+opt: optimize the performance of loading images on the plugin side (locking, using full images for loading preview images, etc)
+opt: optimize the performance of loading images on the C# side (preventing duplicate tasks, limiting the number of pending tasks, etc)
+opt: optimize the ScrollView in ImageSequenceImportWindow 
+opt: optimize string-related operations in StreamingImageSequencePlayableAsset 
+opt: reduce StreamingImageSequence properties which are inspected by AnimatedParameterUtility.HasAnyAnimatableParameters 
+
+fix: hide buttons to reset Timeline-related properties of StreamingImageSequencePlayableAsset in non-timeline context 
+fix: render preview images correctly when clipIn is not 0 
+fix: prevent jittering preview images at the end of a long clip
+fix: prevent saving temporary StreamingImageSequencePlayableAsset texture in scenes 
+fix: make sure the image dimension ratio in StreamingImageSequencePlayableAsset is calculated correctly
+fix: fix errors that occurred when interacting with StreamingImageSequencePlayableAsset GUI
+fix: fix StreamingImageSequencePlayableAsset texture leak when closing or opening a new scene
+fix: fix the memory leak of preview textures when closing or opening a new scene
+fix: fix thread-related crashes when loading images
+fix: handle image loading process correctly when switching to playmode/editmode, or opening a new scene
+fix: reset image loading processes when opening a scene in single mode
+
+chore: delete unused StreamingImageSequenceWindow
+
+doc: Add Table of Contents and a link to the plugin building doc in the top Readme
+
+
 ## [0.2.0-preview] - 2020-06-12
 * feat: deallocate unused images when there is not enough memory, and stop allocating memory if there is not enough memory for the current frame
 * fix: preload images starting from the active frame as the center instead of always from frame 0
