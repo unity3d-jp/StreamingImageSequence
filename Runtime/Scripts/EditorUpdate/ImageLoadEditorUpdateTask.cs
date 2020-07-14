@@ -4,17 +4,24 @@
 
 namespace UnityEngine.StreamingImageSequence
 {
-internal class ImageLoadEditorUpdateTask : ITask {
+internal class ImageLoadEditorUpdateTask : IUpdateTask {
+
+    public void Reset() {
+        m_requestedImageLoadBGTasks.Clear();
+        m_taskHashSet.Clear();
+        m_latestFrame = 0;        
+    }
     
+//----------------------------------------------------------------------------------------------------------------------    
     public void Execute() {
 
         if (m_requestedImageLoadBGTasks.Count <= 0)
             return;
         
         //Don't push everything to ThreadManager
-        const int BACKGROUND_TASKS_WAIT_THRESHOLD = 32;
+        const int MAX_BACKGROUND_TASKS  = 32;
         int       numBackGroundTasks              = ThreadManager.GetNumBackGroundTasks();
-        if (numBackGroundTasks >= BACKGROUND_TASKS_WAIT_THRESHOLD) {
+        if (numBackGroundTasks >= MAX_BACKGROUND_TASKS) {
             return;
         }
 
@@ -27,7 +34,7 @@ internal class ImageLoadEditorUpdateTask : ITask {
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal void RequestLoadImage(BaseImageLoadBGTask task) {
+    internal bool RequestLoadImage(BaseImageLoadBGTask task) {
         //Clear old tasks
         int taskRequestFrame = task.GetRequestFrame();
         if (taskRequestFrame > m_latestFrame) {
@@ -35,17 +42,22 @@ internal class ImageLoadEditorUpdateTask : ITask {
             m_requestedImageLoadBGTasks.Clear();
             m_taskHashSet.Clear();
         }
-
+        
+        
+        const int MAX_PENDING_REQUESTS  = 32;
+        if (m_requestedImageLoadBGTasks.Count >= MAX_PENDING_REQUESTS) {
+            return false;
+        }
     
         string imagePath = task.GetImagePath();
         if (m_taskHashSet.Contains(imagePath)) {
-            return;            
+            return true;            
         }
                           
         m_requestedImageLoadBGTasks.Enqueue(task);
         m_taskHashSet.Add(imagePath);
-            
 
+        return true;
     }
 
 
@@ -54,8 +66,6 @@ internal class ImageLoadEditorUpdateTask : ITask {
     
     readonly Queue<BaseImageLoadBGTask> m_requestedImageLoadBGTasks = new Queue<BaseImageLoadBGTask>();
     readonly HashSet<string> m_taskHashSet = new HashSet<string>();
-    
-    
     private int m_latestFrame = 0;
 
 }
