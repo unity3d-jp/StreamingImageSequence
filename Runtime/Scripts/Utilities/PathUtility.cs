@@ -29,7 +29,7 @@ internal static class PathUtility {
 
     public static string ToRelativePath( string strAbsPath )
     {
-        string newPath = strAbsPath.Remove(0, GetProjectFolder().Length);
+        string newPath = strAbsPath.Remove(0, m_projectFolder.Length);
         while ( newPath.StartsWith("/"))
         {
             newPath = newPath.Remove(0, 1);
@@ -39,6 +39,8 @@ internal static class PathUtility {
 
 
 //----------------------------------------------------------------------------------------------------------------------
+    
+    //Have "/" as the folder separator
     private static string m_appDataPath;
     private static string m_projectFolder;
 
