@@ -74,8 +74,8 @@ internal class EditorUpdateManager {
     }
 
     internal static void ResetImageLoading() {
-        StreamingImageSequencePlugin.ResetPlugin();
         ThreadManager.Reset();
+        StreamingImageSequencePlugin.ResetPlugin();
         foreach (IUpdateTask job in m_mainThreadPeriodJobs) {
             job.Reset();
         }
