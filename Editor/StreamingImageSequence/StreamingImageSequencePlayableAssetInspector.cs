@@ -67,7 +67,7 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
             int numImages = 0;
             if (m_asset.HasImages()) {
-                numImages = m_asset.GetImagePaths().Count;
+                numImages = m_asset.GetImageFileNames().Count;
             }
             GUILayout.Label("Images: " + numImages, "BoldLabel");
             GUILayout.Space(4f);
@@ -210,7 +210,7 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
 //----------------------------------------------------------------------------------------------------------------------
     private void RefreshImageList()
     {
-        m_imageList = new ReorderableList(m_asset.GetImagePathsNonGeneric(), typeof(string), true, false, false, false) {
+        m_imageList = new ReorderableList(m_asset.GetImageFileNamesNonGeneric(), typeof(string), true, false, false, false) {
             elementHeight = EditorGUIUtility.singleLineHeight + 8f,
             headerHeight = 3
         };

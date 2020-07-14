@@ -36,7 +36,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
                 StreamingImageSequencePlayableAsset playableAsset = clip.asset as StreamingImageSequencePlayableAsset;
                 Assert.IsNotNull(playableAsset);
                 
-                Assert.AreEqual(10, playableAsset.GetImagePaths().Count);
+                Assert.AreEqual(10, playableAsset.GetImageFileNames().Count);
             }
 
             //Make sure a StreamingImageSequenceNativeRenderer is bound to the trackAsset

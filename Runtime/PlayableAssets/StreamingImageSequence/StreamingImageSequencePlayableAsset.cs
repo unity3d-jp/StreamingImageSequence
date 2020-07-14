@@ -4,6 +4,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
 using UnityEditor;
@@ -227,7 +228,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             double imageSequenceTime = LocalTimeToCurveTime(clip, localTime);
-            int count = m_imagePaths.Count;
+            int count = m_imageFileNames.Count;
             int index = (int)(count * imageSequenceTime);
             index = Mathf.Clamp(index, 0, count - 1);
             return index;
@@ -236,11 +237,11 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------
 
         internal int GetVersion() { return m_version; }
-        internal IList<string> GetImagePaths() { return m_imagePaths; }
+        internal IList<string> GetImageFileNames() { return m_imageFileNames; }
         
         //May return uninitialized value during initialization because the resolution hasn't been updated
         internal ImageDimensionInt GetResolution() { return m_resolution; }
-        internal System.Collections.IList GetImagePathsNonGeneric() { return m_imagePaths; }
+        internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFileNames; }
 
 
         internal bool GetUseImageMarkerVisibility() {  return m_useImageMarkerVisibility; }
@@ -271,16 +272,16 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
 
         internal string GetImagePath(int index) {
-            if (null == m_imagePaths || index >= m_imagePaths.Count)
+            if (null == m_imageFileNames || index >= m_imageFileNames.Count)
                 return null;
 
-            return m_imagePaths[index];
+            return m_imageFileNames[index];
         }
 
 //----------------------------------------------------------------------------------------------------------------------        
 
         internal bool HasImages() {
-            return (!string.IsNullOrEmpty(m_folder) && null != m_imagePaths && m_imagePaths.Count > 0);
+            return (!string.IsNullOrEmpty(m_folder) && null != m_imageFileNames && m_imageFileNames.Count > 0);
         }
         
         
@@ -320,8 +321,8 @@ namespace UnityEngine.StreamingImageSequence {
                     m_verified = !string.IsNullOrEmpty(m_folder) && 
                                  m_folder.StartsWith("Assets/StreamingAssets") &&
                                  Directory.Exists(m_folder) && 
-                                 m_imagePaths != null && 
-                                 m_imagePaths.Count > 0;
+                                 m_imageFileNames != null && 
+                                 m_imageFileNames.Count > 0;
                 }
                 
                 return m_verified;
@@ -346,13 +347,13 @@ namespace UnityEngine.StreamingImageSequence {
 
         internal void ContinuePreloadingImages() {
             
-            if (null == m_imagePaths || 0== m_imagePaths.Count)
+            if (null == m_imageFileNames || 0== m_imageFileNames.Count)
                 return;
 
             const int NUM_IMAGES = 2;
 
             //forward
-            int maxForwardPreloadIndex = Mathf.Min(m_forwardPreloadImageIndex + NUM_IMAGES, m_imagePaths.Count) -1;
+            int maxForwardPreloadIndex = Mathf.Min(m_forwardPreloadImageIndex + NUM_IMAGES, m_imageFileNames.Count) -1;
             int startForwardPreloadIndex = m_forwardPreloadImageIndex;
             for (int i = startForwardPreloadIndex; i <= maxForwardPreloadIndex; ++i) {
                 if (QueueImageLoadTask(i, out _)) {
@@ -378,7 +379,7 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
         private bool QueueImageLoadTask(int index, out ImageData imageData) {
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
-            string filename = m_imagePaths[index];
+            string filename = m_imageFileNames[index];
             filename = GetFullPath(filename);
 
             ImageLoader.GetImageDataInto(filename,TEX_TYPE,out imageData);
@@ -402,14 +403,14 @@ namespace UnityEngine.StreamingImageSequence {
 
         internal bool RequestLoadImage(int index)
         {
-            if (null == m_imagePaths || index < 0 || index >= m_imagePaths.Count || string.IsNullOrEmpty(m_imagePaths[index])) {
+            if (null == m_imageFileNames || index < 0 || index >= m_imageFileNames.Count || string.IsNullOrEmpty(m_imageFileNames[index])) {
                 return false;
             }
 
             m_primaryImageIndex         = index;
 
             if (QueueImageLoadTask(index, out ImageData readResult)) {
-                m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, m_imagePaths.Count - 1);
+                m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, m_imageFileNames.Count - 1);
                 m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);                
             } else {
                 //If we can't queue, try from the primary index again
@@ -420,7 +421,7 @@ namespace UnityEngine.StreamingImageSequence {
 
                 ResetTexture();
                 m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
-                m_texture.name = "Full: " + m_imagePaths[index];
+                m_texture.name = "Full: " + m_imageFileNames[index];
                 readResult.CopyBufferToTexture(m_texture);
                 
                 UpdateResolution(ref readResult);
@@ -634,7 +635,7 @@ namespace UnityEngine.StreamingImageSequence {
         
 
         void ForceUpdateResolution() {
-            if (null!=m_imagePaths && m_imagePaths.Count <= 0)
+            if (null!=m_imageFileNames && m_imageFileNames.Count <= 0)
                 return;
 
             //Load the primary image to update the resolution.
@@ -698,7 +699,7 @@ namespace UnityEngine.StreamingImageSequence {
                 m_resolution = param.Resolution;
                 m_dimensionRatio = m_resolution.CalculateRatio();
             }
-            m_imagePaths = param.Pictures;
+            m_imageFileNames = param.Pictures;
             m_folder = param.Folder;
             if (null!=m_folder && m_folder.StartsWith("Assets")) {
                 m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(m_folder);
@@ -719,7 +720,7 @@ namespace UnityEngine.StreamingImageSequence {
 
         [HideInInspector][SerializeField] private string m_folder = null; //Always have "/" as the directory separator
         
-        [HideInInspector][SerializeField] List<string> m_imagePaths = null; //These are actually file names, not paths
+        [FormerlySerializedAs("m_imagePaths")] [HideInInspector][SerializeField] List<string> m_imageFileNames = null; //These are actually file names, not paths
         
         //[TODO-sin: 2020-6-29] PlayableFrames needs to be stored inside the track/TimelineClip instead of this asset
         //directly
