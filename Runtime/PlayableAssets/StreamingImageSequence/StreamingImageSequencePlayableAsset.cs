@@ -151,7 +151,7 @@ namespace UnityEngine.StreamingImageSequence {
                 m_clonedFromAsset.SplitPlayableFramesFromClonedAsset(0,idx);
             }
             
-            //Reinitialize to assign the owner
+            //Set the owner of the PlayableFrames
             for (int i = 0; i < numIdealFrames; ++i) {
                 m_playableFrames[i].SetOwner(this);;
             }
