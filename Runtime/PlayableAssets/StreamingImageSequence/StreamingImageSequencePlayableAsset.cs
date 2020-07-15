@@ -163,7 +163,7 @@ namespace UnityEngine.StreamingImageSequence {
         void SplitPlayableFramesFromClonedAsset(int startIndex, int count) {
             Assert.IsNotNull(m_playableFrames);
 
-            int numIdealFrames = CalculateIdealNumPlayableFrames(m_boundTimelineClip);
+            int numIdealFrames = TimelineUtility.CalculateNumFrames(m_boundTimelineClip);
             if (numIdealFrames != count) {
                 Debug.LogWarning("StreamingImageSequencePlayableAsset::ReassignPlayableFrames() Count: " + count
                                  + " is not ideal: " + numIdealFrames                
@@ -182,7 +182,7 @@ namespace UnityEngine.StreamingImageSequence {
             m_playableFrames = new List<PlayableFrame>(numIdealFrames);
             m_playableFrames.AddRange(prevPlayableFrames.GetRange(startIndex,numIdealFrames));
 
-            double timePerFrame = CalculateTimePerFrame(m_boundTimelineClip);
+            double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_boundTimelineClip);
             
             //Reinitialize to set the time
             for (int i = 0; i < numIdealFrames; ++i) {
@@ -208,7 +208,7 @@ namespace UnityEngine.StreamingImageSequence {
         //Calculate the used image index for the passed localTime
         internal int LocalTimeToImageIndex(TimelineClip clip, double localTime) {
 
-            double timePerFrame = CalculateTimePerFrame(clip);
+            double timePerFrame = TimelineUtility.CalculateTimePerFrame(clip);
             
             //Try to check if this frame is "dropped", so that we should use the image in the prev frame
             int frameIndex = (int) (localTime / timePerFrame);
@@ -454,7 +454,7 @@ namespace UnityEngine.StreamingImageSequence {
 #if UNITY_EDITOR                    
             AssetDatabase.AddObjectToAsset(playableFrame, this);
 #endif
-            double timePerFrame = CalculateTimePerFrame(m_boundTimelineClip);
+            double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_boundTimelineClip);
             playableFrame.Init(this, timePerFrame * index, m_useImageMarkerVisibility);
             m_playableFrames[index] = playableFrame;
         }
@@ -469,7 +469,7 @@ namespace UnityEngine.StreamingImageSequence {
             DestroyPlayableFrames();
 
             //Recalculate the number of frames and create the marker's ground truth data
-            int numFrames = CalculateIdealNumPlayableFrames(m_boundTimelineClip);
+            int numFrames = TimelineUtility.CalculateNumFrames(m_boundTimelineClip);
             m_playableFrames =  new List<PlayableFrame>(numFrames);
             UpdatePlayableFramesSize(numFrames);
             
@@ -481,7 +481,7 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
         void RefreshPlayableFrames() {
-            int numIdealNumPlayableFrames = CalculateIdealNumPlayableFrames(m_boundTimelineClip);
+            int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(m_boundTimelineClip);
 
             //if this asset was a cloned asset, split the playable frames
             if (null != m_clonedFromAsset) {
@@ -527,19 +527,7 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------
 
-        internal static int CalculateIdealNumPlayableFrames(TimelineClip clip) {
-            //Recalculate the number of frames and create the marker's ground truth data
-            float fps = clip.parentTrack.timelineAsset.editorSettings.fps;
-            int numFrames = Mathf.RoundToInt((float)(clip.duration * fps));
-            return numFrames;
-            
-        }
 
-        private static double CalculateTimePerFrame(TimelineClip clip) {
-            float fps = clip.parentTrack.timelineAsset.editorSettings.fps;
-            double timePerFrame = 1.0f / fps;
-            return timePerFrame;
-        }
         
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -568,7 +556,7 @@ namespace UnityEngine.StreamingImageSequence {
             
             Assert.IsTrue(m_playableFrames.Count == reqPlayableFramesSize);
 
-            double timePerFrame = CalculateTimePerFrame(m_boundTimelineClip);
+            double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_boundTimelineClip);
             
             for (int i = 0; i < reqPlayableFramesSize; ++i) {
                 PlayableFrame curPlayableFrame = m_playableFrames[i];
