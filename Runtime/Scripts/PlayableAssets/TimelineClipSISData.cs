@@ -97,6 +97,7 @@ internal class TimelineClipSISData {
     
 //----------------------------------------------------------------------------------------------------------------------    
     
+    //The ground truth for using/dropping an image in a particular frame. See the notes below
     [SerializeField] private List<PlayableFrame> m_playableFrames;
 
     private StreamingImageSequencePlayableAsset m_playableAsset = null;
@@ -106,4 +107,6 @@ internal class TimelineClipSISData {
 } //end namespace
 
 
-//A structure to store if we should use the image at a particular frame
+//[Note-Sin: 2020-7-15] PlayableFrame
+//StreamingImageSequenceTrack owns PlayableFrame, which is associated with a TimelineClip.
+//PlayableFrame is a ScriptableObject and owns UseImageMarker.

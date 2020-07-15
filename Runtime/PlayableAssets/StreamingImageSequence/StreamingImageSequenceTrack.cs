@@ -150,7 +150,6 @@ public class StreamingImageSequenceTrack : TrackAsset
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    //The ground truth for using/dropping an image in a particular frame. See the notes below
     [HideInInspector][SerializeField] List<TimelineClipSISData> m_serializedSISDataCollection = null;
 
     private Dictionary<StreamingImageSequencePlayableAsset, TimelineClipSISData> m_sisDataCollection = null;
@@ -163,6 +162,3 @@ public class StreamingImageSequenceTrack : TrackAsset
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//[Note-Sin: 2020-7-15] PlayableFrame
-//StreamingImageSequenceTrack owns PlayableFrame, which is associated with a TimelineClip.
-//PlayableFrame is a ScriptableObject and owns UseImageMarker.
