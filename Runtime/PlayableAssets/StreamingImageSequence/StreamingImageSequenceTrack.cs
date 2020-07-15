@@ -27,11 +27,7 @@ public class StreamingImageSequenceTrack : TrackAsset
         
         foreach (TimelineClip clip in GetClips()) {
             TimelineClipSISData sisData = null;
-            if (m_sisDataCollection.ContainsKey(clip)) {
-                sisData = m_sisDataCollection[clip];
-            } else {
-                sisData = new TimelineClipSISData();                
-            }
+            sisData = m_sisDataCollection.ContainsKey(clip) ? m_sisDataCollection[clip] : new TimelineClipSISData();
                        
             m_serializedSISDataCollection.Add(sisData);
         }
@@ -91,15 +87,19 @@ public class StreamingImageSequenceTrack : TrackAsset
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    //[TODO-sin: 2020-6-29] PlayableFrames needs to be stored inside the track/TimelineClip instead of this asset
-    //directly
     //The ground truth for using/dropping an image in a particular frame. See the notes below
     [HideInInspector][SerializeField] List<TimelineClipSISData> m_serializedSISDataCollection = null;
-    
-    Dictionary<TimelineClip, TimelineClipSISData> m_sisDataCollection = null;
+
+    private Dictionary<TimelineClip, TimelineClipSISData> m_sisDataCollection = null;
     
     private StreamingImageSequencePlayableMixer m_trackMixer = null;
 
 }
 
 } //end namespace
+
+//----------------------------------------------------------------------------------------------------------------------
+
+//[Note-Sin: 2020-7-15] PlayableFrame
+//StreamingImageSequenceTrack owns PlayableFrame, which is associated with a TimelineClip.
+//PlayableFrame is a ScriptableObject and owns UseImageMarker.
