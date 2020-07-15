@@ -53,8 +53,14 @@ internal class TimelineClipSISData {
         playableFrame.Init(m_playableAsset, timePerFrame * index, m_playableAsset.GetUseImageMarkerVisibility());
         m_playableFrames[index] = playableFrame;
     }
-    
-    
+
+//----------------------------------------------------------------------------------------------------------------------
+    internal PlayableFrame GetPlayableFrame(int index) {
+        Assert.IsTrue(null!=m_playableFrames && index < m_playableFrames.Count);
+        return m_playableFrames[index];
+    }
+
+
 //----------------------------------------------------------------------------------------------------------------------
     
     private void UpdatePlayableFramesSize(int reqPlayableFramesSize) {
