@@ -581,8 +581,9 @@ namespace UnityEngine.StreamingImageSequence {
                 
                 if (null == curPlayableFrame) {
                     CreatePlayableFrameInList(i);
+                } else {
+                    m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);                    
                 }
-                m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);
             }
             
             
