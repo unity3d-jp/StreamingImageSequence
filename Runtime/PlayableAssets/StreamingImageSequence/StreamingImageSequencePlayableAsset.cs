@@ -122,9 +122,7 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------
         //Need to split the PlayableFrames which are currently shared by both this and m_clonedFromAsset
         void TrySplitPlayableFrames(int numIdealFrames) {
-            if (null == m_playableFrames) {
-                return;
-            }
+            Assert.IsNotNull(m_playableFrames);
 
             List<PlayableFrame> prevPlayableFrames = m_playableFrames;
             m_playableFrames = new List<PlayableFrame>(numIdealFrames);
@@ -154,9 +152,8 @@ namespace UnityEngine.StreamingImageSequence {
             }
             
             //Reinitialize to assign the owner
-            double timePerFrame = CalculateTimePerFrame(m_boundTimelineClip);
             for (int i = 0; i < numIdealFrames; ++i) {
-                m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);
+                m_playableFrames[i].SetOwner(this);;
             }
             
         }
@@ -164,10 +161,7 @@ namespace UnityEngine.StreamingImageSequence {
 
         //This is called by the cloned asset
         void SplitPlayableFramesFromClonedAsset(int startIndex, int count) {
-            if (null == m_playableFrames) {
-                return;
-            }
-
+            Assert.IsNotNull(m_playableFrames);
 
             int numIdealFrames = CalculateIdealNumPlayableFrames(m_boundTimelineClip);
             if (numIdealFrames != count) {
