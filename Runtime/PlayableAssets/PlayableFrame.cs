@@ -20,7 +20,9 @@ internal class PlayableFrame : ScriptableObject {
         }
     }
 
-    internal StreamingImageSequencePlayableAsset GetPlayableAsset() {  return m_playableAsset; }
+    internal void SetOwner(StreamingImageSequencePlayableAsset owner) {  m_playableAsset = owner;}
+
+    internal StreamingImageSequencePlayableAsset GetOwner() {  return m_playableAsset; }
 
     private void OnDestroy() {
         if (null == m_marker)
