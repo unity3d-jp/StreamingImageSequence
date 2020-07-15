@@ -20,7 +20,6 @@ internal class PlayableFrame : ScriptableObject {
         }
     }
 
-    internal StreamingImageSequencePlayableAsset GetPlayableAsset() {  return m_playableAsset; }
 
     private void OnDestroy() {
         if (null == m_marker)
@@ -30,9 +29,13 @@ internal class PlayableFrame : ScriptableObject {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
+    internal void SetOwner(StreamingImageSequencePlayableAsset owner) {  m_playableAsset = owner;}
+
+    internal StreamingImageSequencePlayableAsset GetOwner() {  return m_playableAsset; }
     internal bool IsUsed() { return m_useImage; }
     internal void SetUsed(bool used) { m_useImage = used; }
     internal double GetLocalTime() { return m_localTime; }
+    internal void SetLocalTime(double localTime) {  m_localTime = localTime;}
 
 //----------------------------------------------------------------------------------------------------------------------
     internal void Refresh(bool useImageMarkerVisibility) {

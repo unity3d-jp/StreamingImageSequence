@@ -8,6 +8,24 @@ namespace UnityEngine.StreamingImageSequence {
 
 internal static class TimelineUtility {
 
+//----------------------------------------------------------------------------------------------------------------------
+    internal static int CalculateNumFrames(TimelineClip clip) {
+        float fps       = clip.parentTrack.timelineAsset.editorSettings.fps;
+        int   numFrames = Mathf.RoundToInt((float)(clip.duration * fps));
+        return numFrames;
+            
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    
+    internal static double CalculateTimePerFrame(TimelineClip clip) {
+        float  fps          = clip.parentTrack.timelineAsset.editorSettings.fps;
+        double timePerFrame = 1.0f / fps;
+        return timePerFrame;
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    
     public static List<TrackAsset> GetTrackList(TimelineAsset timelineAsset) {
         Assert.IsTrue(timelineAsset == true);
         var bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField |
