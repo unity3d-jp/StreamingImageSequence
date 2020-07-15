@@ -135,7 +135,8 @@ internal class TimelineClipSISData {
         // }
         
     }
-    
+
+//----------------------------------------------------------------------------------------------------------------------    
     
     //This is called by the cloned asset
     void SplitPlayableFramesFromClonedAsset(int startIndex, int count) {
