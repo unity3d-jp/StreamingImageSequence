@@ -27,7 +27,15 @@ public class StreamingImageSequenceTrack : TrackAsset
         
         foreach (TimelineClip clip in GetClips()) {
             TimelineClipSISData sisData = null;
-            sisData = m_sisDataCollection.ContainsKey(clip) ? m_sisDataCollection[clip] : new TimelineClipSISData();
+            StreamingImageSequencePlayableAsset clipAsset = clip.asset as StreamingImageSequencePlayableAsset;
+
+            if (null != clipAsset && m_sisDataCollection.ContainsKey(clipAsset)) {                
+                sisData =   m_sisDataCollection[clipAsset];
+            }
+            else {                
+                sisData = new TimelineClipSISData();
+            }
+            
                        
             m_serializedSISDataCollection.Add(sisData);
         }
@@ -36,13 +44,17 @@ public class StreamingImageSequenceTrack : TrackAsset
     /// <inheritdoc/>
     protected override  void OnAfterTrackDeserialize() {
         base.OnAfterTrackDeserialize();
-        m_sisDataCollection = new Dictionary<TimelineClip, TimelineClipSISData>();
+        m_sisDataCollection = new Dictionary<StreamingImageSequencePlayableAsset, TimelineClipSISData>();
         
         IEnumerator<TimelineClip> clipEnumerator = GetClips().GetEnumerator();
         List<TimelineClipSISData>.Enumerator sisEnumerator = m_serializedSISDataCollection.GetEnumerator();
         while (clipEnumerator.MoveNext() && sisEnumerator.MoveNext()) {
-            Assert.IsNotNull(clipEnumerator.Current);
-            m_sisDataCollection[clipEnumerator.Current] = sisEnumerator.Current;
+            TimelineClip clip = clipEnumerator.Current;
+            Assert.IsNotNull(clip);
+            StreamingImageSequencePlayableAsset clipAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(clipAsset);
+            
+            m_sisDataCollection[clipAsset] = sisEnumerator.Current;
         }
         clipEnumerator.Dispose();
         sisEnumerator.Dispose();
@@ -88,13 +100,13 @@ public class StreamingImageSequenceTrack : TrackAsset
 //----------------------------------------------------------------------------------------------------------------------
     #region PlayableFrames
 
-    internal void DestroyTimelineClipSISData(TimelineClip clip) {
-        if (!m_sisDataCollection.ContainsKey(clip)) {
-            Debug.LogError($"No clip {clip} in track {this.name}");
+    internal void DestroyTimelineClipSISData(StreamingImageSequencePlayableAsset sisPlayableAsset) {
+        if (!m_sisDataCollection.ContainsKey(sisPlayableAsset)) {
+            Debug.LogError($"No StreamingImageSequencePlayableAsset {sisPlayableAsset} in track {this.name}");
             return;
         }
         
-        m_sisDataCollection[clip].Destroy();
+        m_sisDataCollection[sisPlayableAsset].Destroy();
         
     }
     
@@ -106,7 +118,7 @@ public class StreamingImageSequenceTrack : TrackAsset
     //The ground truth for using/dropping an image in a particular frame. See the notes below
     [HideInInspector][SerializeField] List<TimelineClipSISData> m_serializedSISDataCollection = null;
 
-    private Dictionary<TimelineClip, TimelineClipSISData> m_sisDataCollection = null;
+    private Dictionary<StreamingImageSequencePlayableAsset, TimelineClipSISData> m_sisDataCollection = null;
     
     private StreamingImageSequencePlayableMixer m_trackMixer = null;
 
