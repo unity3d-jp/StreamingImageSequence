@@ -468,24 +468,6 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------
 
         internal void ResetPlayableFrames() {
-            // TrackAsset track = m_curBoundTimelineClip.parentTrack;
-            // List<UseImageMarker> markersToDelete = new List<UseImageMarker>();
-            // foreach (IMarker m in track.GetMarkers()) {
-            //     UseImageMarker marker = m as UseImageMarker;
-            //     if (null == marker)
-            //         continue;
-            //     
-            //     PlayableFrame owner = marker.GetOwner();
-            //     if (null == owner || this == owner.GetPlayableAsset()) {
-            //         markersToDelete.Add(marker);
-            //     }
-            //
-            // }
-            // //Delete all markers in the parent track that has the assigned PlayableAsset set to this object
-            // foreach (UseImageMarker marker in markersToDelete) {
-            //     track.DeleteMarker(marker);
-            // }
-            // markersToDelete.Clear();
 #if UNITY_EDITOR
             Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Resetting Use Image Markers");
 #endif
