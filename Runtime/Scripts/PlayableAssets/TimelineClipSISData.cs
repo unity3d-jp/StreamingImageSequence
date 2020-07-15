@@ -22,7 +22,7 @@ internal class TimelineClipSISData {
 #if UNITY_EDITOR                    
         AssetDatabase.AddObjectToAsset(playableFrame, m_playableAsset);
 #endif
-        double timePerFrame = StreamingImageSequencePlayableAsset.CalculateTimePerFrame(m_playableAsset.GetBoundTimelineClip());
+        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_playableAsset.GetBoundTimelineClip());
         playableFrame.Init(m_playableAsset, timePerFrame * index, m_playableAsset.GetUseImageMarkerVisibility());
         m_playableFrames[index] = playableFrame;
     }

@@ -531,13 +531,12 @@ namespace UnityEngine.StreamingImageSequence {
             int numPlayableFrames = m_playableFrames.Count;
             for (int i = 0; i < numPlayableFrames; ++i) {        
                 if (null == m_playableFrames[i]) {
-                    CreatePlayableFrameInList(i);
+                    CreatePlayableFrameInList(this, i);
                 }                
                 m_playableFrames[i].Refresh(m_useImageMarkerVisibility);                
             }
             
         }        
-        
         
 //----------------------------------------------------------------------------------------------------------------------
 
