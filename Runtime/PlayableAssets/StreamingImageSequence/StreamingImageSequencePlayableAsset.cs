@@ -89,20 +89,6 @@ namespace UnityEngine.StreamingImageSequence {
             Reset();
             DestroyPlayableFrames();
         }
-//----------------------------------------------------------------------------------------------------------------------
-
-        private void DestroyPlayableFrames() {
-            if (null == m_playableFrames)
-                return;
-            
-            foreach (PlayableFrame frame in m_playableFrames) {
-                if (null == frame)
-                    continue;
-                ObjectUtility.Destroy(frame);
-            }
-            
-        }
-        
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -453,6 +439,26 @@ namespace UnityEngine.StreamingImageSequence {
 
         #region PlayableFrames
 
+        StreamingImageSequenceTrack GetTrack() {
+            if (null == m_boundTimelineClip || null == m_boundTimelineClip.parentTrack)
+                return null;
+
+            return m_boundTimelineClip.parentTrack as StreamingImageSequenceTrack;
+
+        }
+
+        private void DestroyPlayableFrames() {
+            if (null == m_playableFrames)
+                return;
+            
+            foreach (PlayableFrame frame in m_playableFrames) {
+                if (null == frame)
+                    continue;
+                ObjectUtility.Destroy(frame);
+            }
+            
+        }
+        
         private void CreatePlayableFrameInList(int index) {
             PlayableFrame playableFrame = ObjectUtility.CreateScriptableObjectInstance<PlayableFrame>();
 #if UNITY_EDITOR                    
