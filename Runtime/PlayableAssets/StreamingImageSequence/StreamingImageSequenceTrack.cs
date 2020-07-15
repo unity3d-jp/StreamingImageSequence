@@ -86,6 +86,22 @@ public class StreamingImageSequenceTrack : TrackAsset
     }
     
 //----------------------------------------------------------------------------------------------------------------------
+    #region PlayableFrames
+
+    internal void DestroyTimelineClipSISData(TimelineClip clip) {
+        if (!m_sisDataCollection.ContainsKey(clip)) {
+            Debug.LogError($"No clip {clip} in track {this.name}");
+            return;
+        }
+        
+        m_sisDataCollection[clip].Destroy();
+        
+    }
+    
+    #endregion
+    
+    
+//----------------------------------------------------------------------------------------------------------------------
 
     //The ground truth for using/dropping an image in a particular frame. See the notes below
     [HideInInspector][SerializeField] List<TimelineClipSISData> m_serializedSISDataCollection = null;
