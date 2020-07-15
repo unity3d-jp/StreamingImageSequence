@@ -121,7 +121,7 @@ namespace UnityEngine.StreamingImageSequence {
             if (Math.Abs(m_boundTimelineClip.duration - otherTimelineClip.duration) < 0.0000001f) {
                 for (int i = 0; i < prevNumPlayableFrames; ++i) {
                     m_playableFrames.Add(null);
-                    CreatePlayableFrameInList(i);
+                    CreatePlayableFrameInList(this, i);
                     m_playableFrames[i].SetUsed(prevPlayableFrames[i].IsUsed());
 
                 }
@@ -459,14 +459,14 @@ namespace UnityEngine.StreamingImageSequence {
             
         }
         
-        private void CreatePlayableFrameInList(int index) {
+        private static void CreatePlayableFrameInList(StreamingImageSequencePlayableAsset sisPlayableAsset, int index) {
             PlayableFrame playableFrame = ObjectUtility.CreateScriptableObjectInstance<PlayableFrame>();
 #if UNITY_EDITOR                    
-            AssetDatabase.AddObjectToAsset(playableFrame, this);
+            AssetDatabase.AddObjectToAsset(playableFrame, sisPlayableAsset);
 #endif
-            double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_boundTimelineClip);
-            playableFrame.Init(this, timePerFrame * index, m_useImageMarkerVisibility);
-            m_playableFrames[index] = playableFrame;
+            double timePerFrame = TimelineUtility.CalculateTimePerFrame(sisPlayableAsset.GetBoundTimelineClip());
+            playableFrame.Init(sisPlayableAsset, timePerFrame * index, sisPlayableAsset.GetUseImageMarkerVisibility());
+            sisPlayableAsset.m_playableFrames[index] = playableFrame;
         }
         
 //----------------------------------------------------------------------------------------------------------------------
@@ -572,7 +572,7 @@ namespace UnityEngine.StreamingImageSequence {
                 PlayableFrame curPlayableFrame = m_playableFrames[i];
                 
                 if (null == curPlayableFrame) {
-                    CreatePlayableFrameInList(i);
+                    CreatePlayableFrameInList(this, i);
                 } else {
                     m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);                    
                 }
