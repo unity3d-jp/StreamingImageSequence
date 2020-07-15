@@ -1,5 +1,7 @@
 ﻿using UnityEngine.Playables;
 using UnityEngine.Timeline;
+using System.Collections.Generic;
+using UnityEngine.Assertions;
 
 namespace UnityEngine.StreamingImageSequence { 
 /// <summary>
@@ -17,6 +19,39 @@ public class StreamingImageSequenceTrack : TrackAsset
         m_trackMixer?.Destroy();
     }
 
+//----------------------------------------------------------------------------------------------------------------------
+    /// <inheritdoc/>
+    protected override void OnBeforeTrackSerialize() {
+        base.OnBeforeTrackSerialize();
+        m_serializedSISDataCollection.Clear();
+        
+        foreach (TimelineClip clip in GetClips()) {
+            TimelineClipSISData sisData = null;
+            if (m_sisDataCollection.ContainsKey(clip)) {
+                sisData = m_sisDataCollection[clip];
+            } else {
+                sisData = new TimelineClipSISData();                
+            }
+                       
+            m_serializedSISDataCollection.Add(sisData);
+        }
+    }
+
+    /// <inheritdoc/>
+    protected override  void OnAfterTrackDeserialize() {
+        base.OnAfterTrackDeserialize();
+        m_sisDataCollection = new Dictionary<TimelineClip, TimelineClipSISData>();
+        
+        IEnumerator<TimelineClip> clipEnumerator = GetClips().GetEnumerator();
+        List<TimelineClipSISData>.Enumerator sisEnumerator = m_serializedSISDataCollection.GetEnumerator();
+        while (clipEnumerator.MoveNext() && sisEnumerator.MoveNext()) {
+            Assert.IsNotNull(clipEnumerator.Current);
+            m_sisDataCollection[clipEnumerator.Current] = sisEnumerator.Current;
+        }
+        clipEnumerator.Dispose();
+        sisEnumerator.Dispose();
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
     
     /// <inheritdoc/>
@@ -54,8 +89,15 @@ public class StreamingImageSequenceTrack : TrackAsset
         return asset;
     }
     
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
+    //[TODO-sin: 2020-6-29] PlayableFrames needs to be stored inside the track/TimelineClip instead of this asset
+    //directly
+    //The ground truth for using/dropping an image in a particular frame. See the notes below
+    [HideInInspector][SerializeField] List<TimelineClipSISData> m_serializedSISDataCollection = null;
+    
+    Dictionary<TimelineClip, TimelineClipSISData> m_sisDataCollection = null;
+    
     private StreamingImageSequencePlayableMixer m_trackMixer = null;
 
 }
