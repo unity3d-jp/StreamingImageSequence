@@ -184,9 +184,9 @@ namespace UnityEngine.StreamingImageSequence {
 
             double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_boundTimelineClip);
             
-            //Reinitialize to set the time
+            //adjust the time 
             for (int i = 0; i < numIdealFrames; ++i) {
-                m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);
+                m_playableFrames[i].SetLocalTime(timePerFrame * i);
             }
             
         }
