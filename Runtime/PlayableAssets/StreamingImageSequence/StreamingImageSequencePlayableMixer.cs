@@ -132,6 +132,7 @@ namespace UnityEngine.StreamingImageSequence
             m_spriteRenderer    = null;
             m_image             = null;
             m_meshRenderer      = null;
+            m_skinnedmeshRenderer = null;
         }
 //---------------------------------------------------------------------------------------------------------------------
 
@@ -151,8 +152,9 @@ namespace UnityEngine.StreamingImageSequence
 
             m_spriteRenderer= go.GetComponent<SpriteRenderer>();
             m_meshRenderer  = go.GetComponent<MeshRenderer>();
+            m_skinnedmeshRenderer  = go.GetComponent<SkinnedMeshRenderer>();
             m_image         = go.GetComponent<Image>();
-            return (null!= m_meshRenderer || null!= m_image || null!=m_spriteRenderer);
+            return (null!= m_meshRenderer || null!= m_image || null!=m_spriteRenderer || null!=m_skinnedmeshRenderer);
         }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -165,10 +167,37 @@ namespace UnityEngine.StreamingImageSequence
                 if (sprite.texture != tex) {
                     m_spriteRenderer.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 2, SpriteMeshType.FullRect);
                 }
-            } else if (null!=m_meshRenderer) {
-                Material mat = m_meshRenderer.sharedMaterial;
-                mat.mainTexture = tex; 
-            } else if (null!= m_image) {
+            } else if (null!=m_meshRenderer)
+            {
+                Material mat;
+               // Debug.Log(m_meshRenderer.sharedMaterial + "single material");
+                if (m_meshRenderer.sharedMaterials.Length > 1)
+                {
+               //     Debug.Log(m_meshRenderer.sharedMaterial + "material");
+                    mat = m_meshRenderer.sharedMaterials[2];
+                }
+                else
+                {
+                    
+                    mat = m_meshRenderer.sharedMaterial;
+                }
+                //mat.mainTexture = tex; 
+                mat.SetTexture("_GraphicsMap",tex);
+            } 
+            else if (null!=m_skinnedmeshRenderer)
+            {
+                Material mat;
+                if (m_skinnedmeshRenderer.sharedMaterials.Length > 1)
+                {
+                    mat = m_skinnedmeshRenderer.sharedMaterials[2];
+                }
+                else
+                {
+                    mat = m_skinnedmeshRenderer.sharedMaterial;
+                }
+                //mat.mainTexture = tex; 
+                mat.SetTexture("_GraphicsMap",tex);
+            }else if (null!= m_image) {
                 Sprite sprite = m_image.sprite;
                 if (null==sprite || sprite.texture != tex) {
                     m_image.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 1, SpriteMeshType.FullRect);
@@ -181,6 +210,7 @@ namespace UnityEngine.StreamingImageSequence
        
         private SpriteRenderer  m_spriteRenderer = null;
         private MeshRenderer    m_meshRenderer = null;
+        private SkinnedMeshRenderer    m_skinnedmeshRenderer = null;
         private Image           m_image = null;
 
 #if UNITY_EDITOR
