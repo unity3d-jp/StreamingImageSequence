@@ -53,8 +53,13 @@ public class StreamingImageSequenceTrack : TrackAsset
             Assert.IsNotNull(clip);
             StreamingImageSequencePlayableAsset clipAsset = clip.asset as StreamingImageSequencePlayableAsset;
             Assert.IsNotNull(clipAsset);
+
+            TimelineClipSISData timelineClipSISData = sisEnumerator.Current;
+            Assert.IsNotNull(timelineClipSISData);
             
-            m_sisDataCollection[clipAsset] = sisEnumerator.Current;
+            m_sisDataCollection[clipAsset] = timelineClipSISData;
+            timelineClipSISData.Init(clipAsset);
+            
         }
         clipEnumerator.Dispose();
         sisEnumerator.Dispose();
@@ -100,6 +105,16 @@ public class StreamingImageSequenceTrack : TrackAsset
 //----------------------------------------------------------------------------------------------------------------------
     #region PlayableFrames
 
+    internal void CreatePlayableFrame(StreamingImageSequencePlayableAsset sisPlayableAsset, int index) {
+        
+        if (!m_sisDataCollection.ContainsKey(sisPlayableAsset)) {
+            Debug.LogError($"No StreamingImageSequencePlayableAsset {sisPlayableAsset} in track {this.name}");
+            return;
+        }
+        
+        m_sisDataCollection[sisPlayableAsset].CreatePlayableFrame(index);
+    }
+    
     internal void DestroyTimelineClipSISData(StreamingImageSequencePlayableAsset sisPlayableAsset) {
         if (!m_sisDataCollection.ContainsKey(sisPlayableAsset)) {
             Debug.LogError($"No StreamingImageSequencePlayableAsset {sisPlayableAsset} in track {this.name}");
