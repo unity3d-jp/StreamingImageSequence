@@ -227,9 +227,10 @@ namespace UnityEngine.StreamingImageSequence {
         internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFileNames; }
 
 
-        internal bool GetUseImageMarkerVisibility() {  return m_useImageMarkerVisibility; }
+        //Should remove these functions
+        internal bool GetUseImageMarkerVisibility() {  return m_timelineClipSISData.GetUseImageMarkerVisibility(); }
 
-        internal void SetUseImageMarkerVisibility(bool show) { m_useImageMarkerVisibility = show; }
+        internal void SetUseImageMarkerVisibility(bool show) { m_timelineClipSISData.SetUseImageMarkerVisibility(show); }
 
 
         //These two methods are necessary "hacks" for knowing which TimelineClips currently own
@@ -612,7 +613,6 @@ namespace UnityEngine.StreamingImageSequence {
             };
         
 #endif
-        [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = false;
         
         //[Note-sin: 2020-6-30] TimelineClip should not be a property of StreamingImageSequencePlayableAsset, because
         //StreamingImageSequencePlayableAsset is an asset, and should be able to be bound to 2 different TimelineClips.

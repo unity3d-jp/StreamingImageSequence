@@ -20,6 +20,12 @@ internal class TimelineClipSISData {
     internal void Destroy() {
     }
     
+
+//----------------------------------------------------------------------------------------------------------------------
+    
+    internal bool GetUseImageMarkerVisibility() {  return m_useImageMarkerVisibility; }
+
+    internal void SetUseImageMarkerVisibility(bool show) { m_useImageMarkerVisibility = show; }
     
 //----------------------------------------------------------------------------------------------------------------------    
     //Should be TimelineClip instead of StreamingImageSequencePlayableAsset
@@ -246,6 +252,7 @@ internal class TimelineClipSISData {
     
     //The ground truth for using/dropping an image in a particular frame. See the notes below
     [SerializeField] private List<PlayableFrame> m_playableFrames;
+    [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = false;
 
     private StreamingImageSequenceTrack m_trackOwner = null;
 
