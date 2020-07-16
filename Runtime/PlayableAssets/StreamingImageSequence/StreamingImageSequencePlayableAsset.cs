@@ -190,11 +190,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
             
         }
-//----------------------------------------------------------------------------------------------------------------------
-        private static double LocalTimeToCurveTime(TimelineClip clip, double localTime) {
-            AnimationCurve curve = GetAndValidateAnimationCurve(clip);
-            return curve.Evaluate((float)localTime);
-        }
+        
 //----------------------------------------------------------------------------------------------------------------------
 
         //Calculate the used image index for the passed globalTime
@@ -208,14 +204,14 @@ namespace UnityEngine.StreamingImageSequence {
         //Calculate the used image index for the passed localTime
         internal int LocalTimeToImageIndex(TimelineClip clip, double localTime) {
 
-            double timePerFrame = TimelineUtility.CalculateTimePerFrame(clip);
+            double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;
             
             //Try to check if this frame is "dropped", so that we should use the image in the prev frame
-            int frameIndex = (int) (localTime / timePerFrame);
-            if (frameIndex >= 0 && null!=m_playableFrames && frameIndex < m_playableFrames.Count) {
-                while (null!=m_playableFrames[frameIndex] && !m_playableFrames[frameIndex].IsUsed() && frameIndex > 0) {
-                    --frameIndex;
-                    localTime = frameIndex * timePerFrame;
+            int playableFrameIndex = (int) (localTime / scaledTimePerFrame);
+            if (playableFrameIndex >= 0 && null!=m_playableFrames && playableFrameIndex < m_playableFrames.Count) {
+                while (null!=m_playableFrames[playableFrameIndex] && !m_playableFrames[playableFrameIndex].IsUsed() && playableFrameIndex > 0) {
+                    --playableFrameIndex;
+                    localTime = playableFrameIndex * scaledTimePerFrame;
                 }
             }
 
@@ -226,6 +222,12 @@ namespace UnityEngine.StreamingImageSequence {
             return index;
         }
 
+//----------------------------------------------------------------------------------------------------------------------
+        private static double LocalTimeToCurveTime(TimelineClip clip, double localTime) {
+            AnimationCurve curve = GetAndValidateAnimationCurve(clip);
+            return curve.Evaluate((float)(localTime));
+        }
+        
 //----------------------------------------------------------------------------------------------------------------------
 
         internal int GetVersion() { return m_version; }

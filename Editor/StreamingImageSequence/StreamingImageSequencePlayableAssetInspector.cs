@@ -81,7 +81,7 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
             
             if (GUILayout.Button("Reset Curve")) {
                 //[TODO-sin:2020-1-29] Support undo for this
-                ResetTimelineCurve(TimelineEditor.selectedClip);                
+                TimelineUtility.ResetTimelineCurve(TimelineEditor.selectedClip);                
             }
 
             //[TODO-sin: 2020-6-29] Fix this so that the playable frames are stored inside the timelineClip
@@ -99,15 +99,6 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
         serializedObject.ApplyModifiedProperties();
         EditorGUI.EndChangeCheck();
 
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-    private static void ResetTimelineCurve(TimelineClip clip) {
-        AnimationCurve animationCurve = new AnimationCurve();
-        StreamingImageSequencePlayableAsset.ValidateAnimationCurve(ref animationCurve, (float) clip.duration);
-        StreamingImageSequencePlayableAsset.RefreshTimelineClipCurve(clip, animationCurve);
-        clip.clipIn    = 0;
-        clip.timeScale = 1.0;
     }
 
 //----------------------------------------------------------------------------------------------------------------------
