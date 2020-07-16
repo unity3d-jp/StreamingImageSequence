@@ -203,11 +203,11 @@ namespace UnityEngine.StreamingImageSequence {
 
         //Calculate the used image index for the passed localTime
         internal int LocalTimeToImageIndex(TimelineClip clip, double localTime) {
-
-            double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;
             
+            double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;            
+          
             //Try to check if this frame is "dropped", so that we should use the image in the prev frame
-            int playableFrameIndex = (int) (localTime / scaledTimePerFrame);
+            int playableFrameIndex = Mathf.RoundToInt((float) localTime / (float)scaledTimePerFrame);
             if (playableFrameIndex >= 0 && null!=m_playableFrames && playableFrameIndex < m_playableFrames.Count) {
                 while (null!=m_playableFrames[playableFrameIndex] && !m_playableFrames[playableFrameIndex].IsUsed() && playableFrameIndex > 0) {
                     --playableFrameIndex;
@@ -217,7 +217,8 @@ namespace UnityEngine.StreamingImageSequence {
 
             double imageSequenceTime = LocalTimeToCurveTime(clip, localTime);
             int count = m_imageFileNames.Count;
-            int index = (int)(count * imageSequenceTime);
+            
+            int index = Mathf.RoundToInt(count * (float) imageSequenceTime);
             index = Mathf.Clamp(index, 0, count - 1);
             return index;
         }
