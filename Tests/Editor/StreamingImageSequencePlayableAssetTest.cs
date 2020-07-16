@@ -143,10 +143,14 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.IsNotNull(track);
             List<UseImageMarker> useImageMarkers = new List<UseImageMarker>();
 
+            int i = 0;
             foreach (var m in track.GetMarkers()) {
                 UseImageMarker marker = m as UseImageMarker;
                 Assert.IsNotNull(marker);
-                useImageMarkers.Add(marker);               
+                useImageMarkers.Add(marker);
+                int imageIndex = sisAsset.GlobalTimeToImageIndex(clip, marker.time);
+                Assert.AreEqual(i, imageIndex);
+                ++i;
             }
             
             //Uncheck and see if the unchecked images became ignored
