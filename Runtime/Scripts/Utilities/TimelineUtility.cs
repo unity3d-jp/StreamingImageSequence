@@ -25,6 +25,16 @@ internal static class TimelineUtility {
     }
     
 //----------------------------------------------------------------------------------------------------------------------
+    internal  static void ResetTimelineCurve(TimelineClip clip) {
+        AnimationCurve animationCurve = new AnimationCurve();
+        StreamingImageSequencePlayableAsset.ValidateAnimationCurve(ref animationCurve, (float) clip.duration);
+        StreamingImageSequencePlayableAsset.RefreshTimelineClipCurve(clip, animationCurve);
+        clip.clipIn    = 0;
+        clip.timeScale = 1.0;
+    }
+    
+    
+//----------------------------------------------------------------------------------------------------------------------
     
     public static List<TrackAsset> GetTrackList(TimelineAsset timelineAsset) {
         Assert.IsTrue(timelineAsset == true);
