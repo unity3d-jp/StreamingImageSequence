@@ -30,13 +30,19 @@ public class StreamingImageSequenceTrack : TrackAsset
         base.OnBeforeTrackSerialize();
         m_serializedSISDataCollection = new List<TimelineClipSISData>();
         
+        
         foreach (TimelineClip clip in GetClips()) {
             TimelineClipSISData sisData = null;
 
             if (m_sisDataCollection.ContainsKey(clip)) {                
                 sisData =   m_sisDataCollection[clip];
+            } else {                
+                StreamingImageSequencePlayableAsset sisPlayableAsset = clip.asset as StreamingImageSequencePlayableAsset;
+                Assert.IsNotNull(sisPlayableAsset);                 
+                sisData = sisPlayableAsset.GetBoundTimelineClipSISData();
             }
-            else {                
+
+            if (null == sisData) {
                 sisData = new TimelineClipSISData();
             }
             
@@ -78,17 +84,17 @@ public class StreamingImageSequenceTrack : TrackAsset
         m_trackMixer = mixer.GetBehaviour();
         
         //Initialize PlayableAssets and TimelineClipSISData       
-        foreach (var it in m_sisDataCollection) {
-            TimelineClip clip = it.Key;
-            TimelineClipSISData timelineClipSISData = it.Value;
+        foreach (TimelineClip clip in GetClips()) {
             StreamingImageSequencePlayableAsset sisPlayableAsset = clip.asset as StreamingImageSequencePlayableAsset;
             Assert.IsNotNull(sisPlayableAsset);               
-                
             sisPlayableAsset.BindTimelineClip(clip);
+
+            TimelineClipSISData timelineClipSISData = GetOrCreateTimelineClipSISData(clip);
+            timelineClipSISData.Init(this, clip);
             sisPlayableAsset.BindTimelineClipSISData(timelineClipSISData);
-            timelineClipSISData.Init(this, clip);            
+            
         }
-        
+                
         if (director != null) {
             var boundGo = director.GetGenericBinding(this);
             StreamingImageSequenceRenderer renderer = boundGo as StreamingImageSequenceRenderer;
@@ -118,7 +124,29 @@ public class StreamingImageSequenceTrack : TrackAsset
         return asset;
     }
     
-   
+    
+
+//----------------------------------------------------------------------------------------------------------------------
+    private TimelineClipSISData GetOrCreateTimelineClipSISData(TimelineClip clip) {
+        if (null == m_sisDataCollection) {
+            m_sisDataCollection = new Dictionary<TimelineClip, TimelineClipSISData>();
+            TimelineClipSISData sisData = new TimelineClipSISData();
+            m_sisDataCollection[clip] = sisData;
+            return sisData;
+        }
+
+        if (m_sisDataCollection.ContainsKey(clip)) {
+            return m_sisDataCollection[clip];            
+        }
+
+        {
+            TimelineClipSISData sisData = new TimelineClipSISData();
+            m_sisDataCollection[clip] = sisData;
+            return sisData;
+            
+        }        
+    }
+        
     
 //----------------------------------------------------------------------------------------------------------------------
 

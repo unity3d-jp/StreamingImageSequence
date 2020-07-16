@@ -246,6 +246,7 @@ namespace UnityEngine.StreamingImageSequence {
             
         }
         internal TimelineClip GetBoundTimelineClip()              { return m_boundTimelineClip; }
+        internal TimelineClipSISData GetBoundTimelineClipSISData() { return m_timelineClipSISData; }
 
         internal void BindTimelineClipSISData(TimelineClipSISData sisData) { m_timelineClipSISData = sisData; } 
         
