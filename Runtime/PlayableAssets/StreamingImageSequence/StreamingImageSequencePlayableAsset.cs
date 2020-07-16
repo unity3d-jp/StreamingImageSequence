@@ -190,16 +190,18 @@ namespace UnityEngine.StreamingImageSequence {
 
         //Calculate the used image index for the passed localTime
         internal int LocalTimeToImageIndex(TimelineClip clip, double localTime) {
-            
-            double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;            
+
+            if (null != m_timelineClipSISData) {
+                double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;            
           
-            //Try to check if this frame is "dropped", so that we should use the image in the prev frame
-            int playableFrameIndex = Mathf.RoundToInt((float) localTime / (float)scaledTimePerFrame);
-            SISPlayableFrame playableFrame = m_timelineClipSISData.GetPlayableFrame(playableFrameIndex);
-            while (playableFrameIndex > 0 && null != playableFrame && !playableFrame.IsUsed()) {
-                --playableFrameIndex;
-                playableFrame = m_timelineClipSISData.GetPlayableFrame(playableFrameIndex);
-                localTime     = playableFrameIndex * scaledTimePerFrame;
+                //Try to check if this frame is "dropped", so that we should use the image in the prev frame
+                int              playableFrameIndex = Mathf.RoundToInt((float) localTime / (float)scaledTimePerFrame);
+                SISPlayableFrame playableFrame      = m_timelineClipSISData.GetPlayableFrame(playableFrameIndex);
+                while (playableFrameIndex > 0 && null != playableFrame && !playableFrame.IsUsed()) {
+                    --playableFrameIndex;
+                    playableFrame = m_timelineClipSISData.GetPlayableFrame(playableFrameIndex);
+                    localTime     = playableFrameIndex * scaledTimePerFrame;
+                }                
             }
 
 
