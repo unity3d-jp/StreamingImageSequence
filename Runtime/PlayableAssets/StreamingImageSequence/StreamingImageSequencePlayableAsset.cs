@@ -588,19 +588,15 @@ namespace UnityEngine.StreamingImageSequence {
         
         [FormerlySerializedAs("m_imagePaths")] [HideInInspector][SerializeField] List<string> m_imageFileNames = null; //These are actually file names, not paths
         
-        //[TODO-sin: 2020-6-29] PlayableFrames needs to be stored inside the track/TimelineClip instead of this asset
-        //directly
-        //The ground truth for using/dropping an image in a particular frame. See the notes below
-        //[HideInInspector][SerializeField] List<SISPlayableFrame> m_playableFrames = null;
         
-        [HideInInspector][SerializeField] TimelineClipSISData m_timelineClipSISData = null;
 
+        
         [HideInInspector][SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;
 
         private ImageDimensionInt  m_resolution;        
         private float m_dimensionRatio;
-
+        private TimelineClipSISData m_timelineClipSISData = null;
 
 
 #if UNITY_EDITOR
