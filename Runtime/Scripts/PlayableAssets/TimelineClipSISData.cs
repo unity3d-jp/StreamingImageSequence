@@ -47,6 +47,50 @@ internal class TimelineClipSISData {
         UpdatePlayableFramesSize(playableAsset, numFrames);
     }
 
+//----------------------------------------------------------------------------------------------------------------------    
+    
+    //Resize PlayableFrames and used the previous values
+    internal void ResizePlayableFrames(StreamingImageSequencePlayableAsset playableAsset) {
+        int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(playableAsset.GetBoundTimelineClip());
+
+        //if this asset was a cloned asset, split the playable frames
+        // if (null != m_clonedFromAsset) {
+        //     TrySplitPlayableFrames(numIdealNumPlayableFrames);
+        //     m_clonedFromAsset = null;
+        // }
+       
+        //Change the size of m_playableFrames and reinitialize if necessary
+        int prevNumPlayableFrames = m_playableFrames.Count;
+        if (numIdealNumPlayableFrames != prevNumPlayableFrames) {
+#if UNITY_EDITOR
+//            Undo.RegisterCompleteObjectUndo(playableAsset, "StreamingImageSequencePlayableAsset: Updating PlayableFrame List");
+#endif                
+            //Change the size of m_playableFrames and reinitialize if necessary
+            List<bool> prevUsedFrames = new List<bool>(prevNumPlayableFrames);
+            foreach (PlayableFrame frame in m_playableFrames) {
+                prevUsedFrames.Add(null == frame || frame.IsUsed()); //if frame ==null, just regard as used.
+            }
+            
+            UpdatePlayableFramesSize(playableAsset, numIdealNumPlayableFrames);
+            
+            //Reinitialize 
+            if (prevNumPlayableFrames > 0) {
+                for (int i = 0; i < numIdealNumPlayableFrames; ++i) {
+                    int prevIndex = (int)(((float)(i) / numIdealNumPlayableFrames) * prevNumPlayableFrames);
+                    m_playableFrames[i].SetUsed(prevUsedFrames[prevIndex]);
+                }
+            }
+            
+        }
+        
+        //Refresh all markers
+        int numPlayableFrames = m_playableFrames.Count;
+        for (int i = 0; i < numPlayableFrames; ++i) {                
+            m_playableFrames[i].Refresh(playableAsset.GetUseImageMarkerVisibility());                
+        }
+        
+    }        
+    
 //----------------------------------------------------------------------------------------------------------------------
     private void DestroyPlayableFrames() {
         if (null == m_playableFrames)
