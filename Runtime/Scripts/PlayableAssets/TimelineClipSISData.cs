@@ -23,7 +23,7 @@ internal class TimelineClipSISData {
     
 //----------------------------------------------------------------------------------------------------------------------    
     //Should be TimelineClip instead of StreamingImageSequencePlayableAsset
-    internal void CreatePlayableFrame(StreamingImageSequencePlayableAsset playableAsset, int index) {
+    private void CreatePlayableFrame(StreamingImageSequencePlayableAsset playableAsset, int index) {
         Assert.IsTrue(null!=m_playableFrames && index < m_playableFrames.Count);
 
         PlayableFrame playableFrame = ObjectUtility.CreateScriptableObjectInstance<PlayableFrame>();

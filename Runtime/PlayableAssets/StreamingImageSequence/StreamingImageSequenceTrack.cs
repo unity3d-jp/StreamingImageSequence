@@ -63,6 +63,7 @@ public class StreamingImageSequenceTrack : TrackAsset
             Assert.IsNotNull(timelineClipSISData);
             
             m_sisDataCollection[clipAsset] = timelineClipSISData;
+            clipAsset.BindTimelineClipSISData(timelineClipSISData);
             timelineClipSISData.Init(this);
             
         }
@@ -107,46 +108,7 @@ public class StreamingImageSequenceTrack : TrackAsset
         return asset;
     }
     
-//----------------------------------------------------------------------------------------------------------------------
-    #region PlayableFrames
-
-    internal void CreatePlayableFrame(StreamingImageSequencePlayableAsset sisPlayableAsset, int index) {
-        
-        if (!m_sisDataCollection.ContainsKey(sisPlayableAsset)) {
-            Debug.LogError($"CreatePlayableFrame(): No StreamingImageSequencePlayableAsset {sisPlayableAsset} in track {this.name}");
-            return;
-        }
-        
-        m_sisDataCollection[sisPlayableAsset].CreatePlayableFrame(sisPlayableAsset, index);
-    }
-
-    internal void ResetTimelineClipSISData(StreamingImageSequencePlayableAsset sisPlayableAsset) {
-        if (!m_sisDataCollection.ContainsKey(sisPlayableAsset)) {
-            Debug.LogError($"ResetPlayableFrames(): No StreamingImageSequencePlayableAsset {sisPlayableAsset} in track {this.name}");
-            return;
-        }
-        
-#if UNITY_EDITOR
-        Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Resetting Use Image Markers");
-#endif
-        m_sisDataCollection[sisPlayableAsset].ResetPlayableFrames(sisPlayableAsset);        
-#if UNITY_EDITOR //Add to AssetDatabase
-        TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
-#endif            
-    }
-    
-    internal void DestroyTimelineClipSISData(StreamingImageSequencePlayableAsset sisPlayableAsset) {
-        if (!m_sisDataCollection.ContainsKey(sisPlayableAsset)) {
-            Debug.LogError($"DestroyTimelineClipSISData(): No StreamingImageSequencePlayableAsset {sisPlayableAsset} in track {this.name}");
-            return;
-        }
-        
-        m_sisDataCollection[sisPlayableAsset].Destroy();
-        
-    }
-    
-    #endregion
-    
+   
     
 //----------------------------------------------------------------------------------------------------------------------
 
