@@ -16,7 +16,12 @@ internal static class TimelineUtility {
 //----------------------------------------------------------------------------------------------------------------------
     
     internal static double CalculateTimePerFrame(TimelineClip clip) {
-        float  fps          = clip.parentTrack.timelineAsset.editorSettings.fps;
+        return CalculateTimePerFrame(clip.parentTrack);
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+    internal static double CalculateTimePerFrame(TrackAsset  trackAsset) {
+        float  fps          = trackAsset.timelineAsset.editorSettings.fps;
         double timePerFrame = 1.0f / fps;
         return timePerFrame;
     }
