@@ -129,7 +129,7 @@ public class StreamingImageSequenceTrack : TrackAsset
 #if UNITY_EDITOR
         Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Resetting Use Image Markers");
 #endif
-        m_sisDataCollection[sisPlayableAsset].Reset();        
+        m_sisDataCollection[sisPlayableAsset].ResetPlayableFrames();        
 #if UNITY_EDITOR //Add to AssetDatabase
         TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
 #endif            

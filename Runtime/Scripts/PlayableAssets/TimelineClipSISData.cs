@@ -17,18 +17,6 @@ internal class TimelineClipSISData {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    
-    internal void Reset() {
-
-        Destroy();
-
-        //Recalculate the number of frames and create the marker's ground truth data
-        int numFrames = TimelineUtility.CalculateNumFrames(m_playableAsset.GetBoundTimelineClip());
-        m_playableFrames = new List<PlayableFrame>(numFrames);
-        UpdatePlayableFramesSize(numFrames);
-    }
-
-//----------------------------------------------------------------------------------------------------------------------    
     internal void Destroy() {
         if (null == m_playableFrames)
             return;
@@ -52,6 +40,18 @@ internal class TimelineClipSISData {
         double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_playableAsset.GetBoundTimelineClip());
         playableFrame.Init(m_playableAsset, timePerFrame * index, m_playableAsset.GetUseImageMarkerVisibility());
         m_playableFrames[index] = playableFrame;
+    }
+
+//----------------------------------------------------------------------------------------------------------------------    
+    
+    internal void ResetPlayableFrames() {
+
+        Destroy();
+
+        //Recalculate the number of frames and create the marker's ground truth data
+        int numFrames = TimelineUtility.CalculateNumFrames(m_playableAsset.GetBoundTimelineClip());
+        m_playableFrames = new List<PlayableFrame>(numFrames);
+        UpdatePlayableFramesSize(numFrames);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
