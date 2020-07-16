@@ -118,7 +118,11 @@ internal class TimelineClipSISData {
     }
     
 //----------------------------------------------------------------------------------------------------------------------
+    //may return null
     internal PlayableFrame GetPlayableFrame(int index) {
+        if (null == m_playableFrames || index >= m_playableFrames.Count)
+            return null;
+        
         Assert.IsTrue(null!=m_playableFrames && index < m_playableFrames.Count);
         return m_playableFrames[index];
     }
