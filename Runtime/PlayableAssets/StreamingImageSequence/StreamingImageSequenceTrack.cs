@@ -63,7 +63,7 @@ public class StreamingImageSequenceTrack : TrackAsset
             Assert.IsNotNull(timelineClipSISData);
             
             m_sisDataCollection[clipAsset] = timelineClipSISData;
-            timelineClipSISData.Init(clipAsset);
+            timelineClipSISData.Init(this);
             
         }
         clipEnumerator.Dispose();
@@ -117,7 +117,7 @@ public class StreamingImageSequenceTrack : TrackAsset
             return;
         }
         
-        m_sisDataCollection[sisPlayableAsset].CreatePlayableFrame(index);
+        m_sisDataCollection[sisPlayableAsset].CreatePlayableFrame(sisPlayableAsset, index);
     }
 
     internal void ResetTimelineClipSISData(StreamingImageSequencePlayableAsset sisPlayableAsset) {
@@ -129,7 +129,7 @@ public class StreamingImageSequenceTrack : TrackAsset
 #if UNITY_EDITOR
         Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Resetting Use Image Markers");
 #endif
-        m_sisDataCollection[sisPlayableAsset].ResetPlayableFrames();        
+        m_sisDataCollection[sisPlayableAsset].ResetPlayableFrames(sisPlayableAsset);        
 #if UNITY_EDITOR //Add to AssetDatabase
         TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
 #endif            
