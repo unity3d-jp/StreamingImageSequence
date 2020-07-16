@@ -9,7 +9,6 @@ namespace UnityEngine.StreamingImageSequence {
 [HideInMenu]
 internal class UseImageMarker : Marker, INotification {
 //----------------------------------------------------------------------------------------------------------------------    
-
     internal void Init(SISPlayableFrame controller) {
         m_owner = controller;
     } 
@@ -25,7 +24,6 @@ internal class UseImageMarker : Marker, INotification {
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
-    internal SISPlayableFrame GetOwner() { return m_owner;}
     internal bool IsImageUsed() { return null!=m_owner && m_owner.IsUsed(); }
     internal void SetImageUsed(bool used) { m_owner.SetUsed(used); }
     
