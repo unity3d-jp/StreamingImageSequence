@@ -37,7 +37,7 @@ internal class TimelineClipSISData {
         AssetDatabase.AddObjectToAsset(playableFrame, playableAsset);
 #endif
         double timePerFrame = TimelineUtility.CalculateTimePerFrame(playableAsset.GetBoundTimelineClip());
-        playableFrame.Init(playableAsset, timePerFrame * index, playableAsset.GetUseImageMarkerVisibility());
+        playableFrame.Init(playableAsset, timePerFrame * index, m_useImageMarkerVisibility);
         m_playableFrames[index] = playableFrame;
     }
 
@@ -106,7 +106,7 @@ internal class TimelineClipSISData {
         //Refresh all markers
         int numPlayableFrames = m_playableFrames.Count;
         for (int i = 0; i < numPlayableFrames; ++i) {                
-            m_playableFrames[i].Refresh(playableAsset.GetUseImageMarkerVisibility());                
+            m_playableFrames[i].Refresh(m_useImageMarkerVisibility);                
         }
         
     }        
@@ -167,7 +167,7 @@ internal class TimelineClipSISData {
                 CreatePlayableFrame(playableAsset, i);
             }
             else {
-                m_playableFrames[i].Init(playableAsset, timePerFrame * i, playableAsset.GetUseImageMarkerVisibility());
+                m_playableFrames[i].Init(playableAsset, timePerFrame * i, m_useImageMarkerVisibility);
                 
             }
         }
@@ -243,7 +243,7 @@ internal class TimelineClipSISData {
         //     
         // //Reinitialize to set the time
         // for (int i = 0; i < numIdealFrames; ++i) {
-        //     m_playableFrames[i].Init(m_playableAsset, timePerFrame * i, m_playableAsset.GetUseImageMarkerVisibility());
+        //     m_playableFrames[i].Init(m_playableAsset, timePerFrame * i, m_useImageMarkerVisibility);
         // }
             
     }
