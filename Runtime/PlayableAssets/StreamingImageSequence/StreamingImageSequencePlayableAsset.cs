@@ -111,8 +111,8 @@ namespace UnityEngine.StreamingImageSequence {
         void TrySplitPlayableFrames(int numIdealFrames) {
             // Assert.IsNotNull(m_playableFrames);
             //
-            // List<PlayableFrame> prevPlayableFrames = m_playableFrames;
-            // m_playableFrames = new List<PlayableFrame>(numIdealFrames);
+            // List<SISPlayableFrame> prevPlayableFrames = m_playableFrames;
+            // m_playableFrames = new List<SISPlayableFrame>(numIdealFrames);
             // int prevNumPlayableFrames = prevPlayableFrames.Count;
             //
             // //Check if this clone is a pure duplicate
@@ -158,7 +158,7 @@ namespace UnityEngine.StreamingImageSequence {
             //     return;
             // }
             //
-            // List<PlayableFrame> prevPlayableFrames = m_playableFrames;
+            // List<SISPlayableFrame> prevPlayableFrames = m_playableFrames;
             // if (startIndex + count > prevPlayableFrames.Count) {
             //     Debug.LogWarning("StreamingImageSequencePlayableAsset::ReassignPlayableFrames() Invalid params. "
             //                      + " StartIndex: " + startIndex +  ", Count: " + count                
@@ -166,7 +166,7 @@ namespace UnityEngine.StreamingImageSequence {
             //     return;
             // }
             //
-            // m_playableFrames = new List<PlayableFrame>(numIdealFrames);
+            // m_playableFrames = new List<SISPlayableFrame>(numIdealFrames);
             // m_playableFrames.AddRange(prevPlayableFrames.GetRange(startIndex,numIdealFrames));
             //
             // double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_boundTimelineClip);
@@ -195,7 +195,7 @@ namespace UnityEngine.StreamingImageSequence {
           
             //Try to check if this frame is "dropped", so that we should use the image in the prev frame
             int playableFrameIndex = Mathf.RoundToInt((float) localTime / (float)scaledTimePerFrame);
-            PlayableFrame playableFrame = m_timelineClipSISData.GetPlayableFrame(playableFrameIndex);
+            SISPlayableFrame playableFrame = m_timelineClipSISData.GetPlayableFrame(playableFrameIndex);
             while (playableFrameIndex > 0 && null != playableFrame && !playableFrame.IsUsed()) {
                 --playableFrameIndex;
                 playableFrame = m_timelineClipSISData.GetPlayableFrame(playableFrameIndex);
@@ -591,7 +591,7 @@ namespace UnityEngine.StreamingImageSequence {
         //[TODO-sin: 2020-6-29] PlayableFrames needs to be stored inside the track/TimelineClip instead of this asset
         //directly
         //The ground truth for using/dropping an image in a particular frame. See the notes below
-        //[HideInInspector][SerializeField] List<PlayableFrame> m_playableFrames = null;
+        //[HideInInspector][SerializeField] List<SISPlayableFrame> m_playableFrames = null;
         
         [HideInInspector][SerializeField] TimelineClipSISData m_timelineClipSISData = null;
 
@@ -643,8 +643,8 @@ namespace UnityEngine.StreamingImageSequence {
 //1. Derive this class from PlayableAsset
 //2. Declare UnityEditor.DefaultAsset variable 
 
-//[Note-Sin: 2020-2-17] PlayableFrame
-//StreamingImageSequencePlayableAsset owns PlayableFrame, which owns UseImageMarker.
-//PlayableFrame is a ScriptableObject, which is stored inside StreamingImageSequencePlayableAsset using
+//[Note-Sin: 2020-2-17] SISPlayableFrame
+//StreamingImageSequencePlayableAsset owns SISPlayableFrame, which owns UseImageMarker.
+//SISPlayableFrame is a ScriptableObject, which is stored inside StreamingImageSequencePlayableAsset using
 //AssetDatabase.AddObjectToAsset
 

@@ -38,7 +38,7 @@ internal class TimelineClipSISData {
     private void CreatePlayableFrame(int index) {
         Assert.IsTrue(null!=m_playableFrames && index < m_playableFrames.Count);
 
-        PlayableFrame playableFrame = new PlayableFrame();
+        SISPlayableFrame playableFrame = new SISPlayableFrame();
         double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_trackOwner);
         playableFrame.Init(this, timePerFrame * index, m_useImageMarkerVisibility);
         m_playableFrames[index] = playableFrame;
@@ -50,7 +50,7 @@ internal class TimelineClipSISData {
 
         //Recalculate the number of frames and create the marker's ground truth data
         int numFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
-        m_playableFrames = new List<PlayableFrame>(numFrames);
+        m_playableFrames = new List<SISPlayableFrame>(numFrames);
         UpdatePlayableFramesSize(numFrames);
                 
     }
@@ -85,11 +85,11 @@ internal class TimelineClipSISData {
         int prevNumPlayableFrames = m_playableFrames.Count;
         if (numIdealNumPlayableFrames != prevNumPlayableFrames) {
 #if UNITY_EDITOR
-//            Undo.RegisterCompleteObjectUndo(playableAsset, "StreamingImageSequencePlayableAsset: Updating PlayableFrame List");
+//            Undo.RegisterCompleteObjectUndo(playableAsset, "StreamingImageSequencePlayableAsset: Updating SISPlayableFrame List");
 #endif                
             //Change the size of m_playableFrames and reinitialize if necessary
             List<bool> prevUsedFrames = new List<bool>(prevNumPlayableFrames);
-            foreach (PlayableFrame frame in m_playableFrames) {
+            foreach (SISPlayableFrame frame in m_playableFrames) {
                 prevUsedFrames.Add(null == frame || frame.IsUsed()); //if frame ==null, just regard as used.
             }
             
@@ -116,7 +116,7 @@ internal class TimelineClipSISData {
     
 //----------------------------------------------------------------------------------------------------------------------
     //may return null
-    internal PlayableFrame GetPlayableFrame(int index) {
+    internal SISPlayableFrame GetPlayableFrame(int index) {
         if (null == m_playableFrames || index >= m_playableFrames.Count)
             return null;
         
@@ -132,7 +132,7 @@ internal class TimelineClipSISData {
         //Resize m_playableFrames
         if (m_playableFrames.Count < reqPlayableFramesSize) {
             int             numNewPlayableFrames = (reqPlayableFramesSize - m_playableFrames.Count);
-            PlayableFrame[] newPlayableFrames    = new PlayableFrame[numNewPlayableFrames];
+            SISPlayableFrame[] newPlayableFrames    = new SISPlayableFrame[numNewPlayableFrames];
             m_playableFrames.AddRange(newPlayableFrames);                
         }
 
@@ -146,7 +146,7 @@ internal class TimelineClipSISData {
         double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_trackOwner);
             
         for (int i = 0; i < reqPlayableFramesSize; ++i) {
-            PlayableFrame curPlayableFrame = m_playableFrames[i];
+            SISPlayableFrame curPlayableFrame = m_playableFrames[i];
                 
             if (null == curPlayableFrame) {
                 CreatePlayableFrame(i);
@@ -168,8 +168,8 @@ internal class TimelineClipSISData {
         // TimelineClip clip = m_playableAsset.GetBoundTimelineClip();
         // int numIdealFrames = TimelineUtility.CalculateNumFrames(clip);
         //
-        // List<PlayableFrame> prevPlayableFrames = m_playableFrames;
-        // m_playableFrames = new List<PlayableFrame>(numIdealFrames);
+        // List<SISPlayableFrame> prevPlayableFrames = m_playableFrames;
+        // m_playableFrames = new List<SISPlayableFrame>(numIdealFrames);
         // int prevNumPlayableFrames = prevPlayableFrames.Count;
         //
         // //Check if this clone is a pure duplicate                   
@@ -213,7 +213,7 @@ internal class TimelineClipSISData {
         //     return;
         // }
         //
-        // List<PlayableFrame> prevPlayableFrames = m_playableFrames;
+        // List<SISPlayableFrame> prevPlayableFrames = m_playableFrames;
         // if (startIndex + count > prevPlayableFrames.Count) {
         //     Debug.LogWarning("StreamingImageSequencePlayableAsset::ReassignPlayableFrames() Invalid params. "
         //         + " StartIndex: " + startIndex +  ", Count: " + count                
@@ -221,7 +221,7 @@ internal class TimelineClipSISData {
         //     return;
         // }
         //     
-        // m_playableFrames = new List<PlayableFrame>(numIdealFrames);
+        // m_playableFrames = new List<SISPlayableFrame>(numIdealFrames);
         // m_playableFrames.AddRange(prevPlayableFrames.GetRange(startIndex,numIdealFrames));
         //
         // double timePerFrame = CalculateTimePerFrame(m_boundTimelineClip);
@@ -236,7 +236,7 @@ internal class TimelineClipSISData {
 //----------------------------------------------------------------------------------------------------------------------    
     
     //The ground truth for using/dropping an image in a particular frame. See the notes below
-    [SerializeField] private List<PlayableFrame> m_playableFrames;
+    [SerializeField] private List<SISPlayableFrame> m_playableFrames;
     [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = false;
 
     private StreamingImageSequenceTrack m_trackOwner = null;
@@ -248,6 +248,6 @@ internal class TimelineClipSISData {
 } //end namespace
 
 
-//[Note-Sin: 2020-7-15] PlayableFrame
-//StreamingImageSequenceTrack owns PlayableFrame, which is associated with a TimelineClip.
-//PlayableFrame is a ScriptableObject and owns UseImageMarker.
+//[Note-Sin: 2020-7-15] SISPlayableFrame
+//StreamingImageSequenceTrack owns SISPlayableFrame, which is associated with a TimelineClip.
+//SISPlayableFrame is a ScriptableObject and owns UseImageMarker.
