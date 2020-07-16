@@ -99,13 +99,12 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 //----------------------------------------------------------------------------------------------------------------------
 
     [SerializeField] private bool m_useImage = true;
-    [SerializeField] private double m_localTime;
-    private UseImageMarker m_marker = null; //ScriptableObject -> Marker -> UseImageMarker
-
-    private TimelineClipSISData m_owner = null; 
+    [SerializeField] private double m_localTime;    
+    [SerializeField] private UseImageMarker m_marker = null; //ScriptableObject -> Marker -> UseImageMarker
+    
+    [NonSerialized] private TimelineClipSISData m_owner = null; 
 
 }
-
 
 } //end namespace
 

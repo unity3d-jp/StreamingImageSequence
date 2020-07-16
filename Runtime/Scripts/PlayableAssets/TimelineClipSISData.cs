@@ -246,8 +246,8 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     [SerializeField] private List<SISPlayableFrame> m_playableFrames;
     [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = false;
 
-    private StreamingImageSequenceTrack m_trackOwner = null;
-    private TimelineClip  m_clipOwner = null;
+    [NonSerialized] private StreamingImageSequenceTrack m_trackOwner = null;
+    [NonSerialized] private TimelineClip  m_clipOwner = null;
 
 }
 

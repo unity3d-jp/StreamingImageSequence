@@ -596,7 +596,7 @@ namespace UnityEngine.StreamingImageSequence {
 
         private ImageDimensionInt  m_resolution;        
         private float m_dimensionRatio;
-        private TimelineClipSISData m_timelineClipSISData = null;
+        [NonSerialized] private TimelineClipSISData m_timelineClipSISData = null;
 
 
 #if UNITY_EDITOR
