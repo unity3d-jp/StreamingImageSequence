@@ -79,22 +79,35 @@ public class StreamingImageSequenceTrack : TrackAsset
     public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
         
         
-        var mixer = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);
-        PlayableDirector director = go.GetComponent<PlayableDirector>();
-        m_trackMixer = mixer.GetBehaviour();
+        if (null == m_sisDataCollection) {
+            m_sisDataCollection = new Dictionary<TimelineClip, TimelineClipSISData>();
+        }
         
         //Initialize PlayableAssets and TimelineClipSISData       
         foreach (TimelineClip clip in GetClips()) {
             StreamingImageSequencePlayableAsset sisPlayableAsset = clip.asset as StreamingImageSequencePlayableAsset;
             Assert.IsNotNull(sisPlayableAsset);               
             sisPlayableAsset.BindTimelineClip(clip);
-
-            TimelineClipSISData timelineClipSISData = GetOrCreateTimelineClipSISData(clip);
+            
+            TimelineClipSISData timelineClipSISData  = sisPlayableAsset.GetBoundTimelineClipSISData();
+            if (null == timelineClipSISData) {
+                timelineClipSISData = GetOrCreateTimelineClipSISData(clip);                
+                sisPlayableAsset.BindTimelineClipSISData(timelineClipSISData);
+            } else {
+                if (!m_sisDataCollection.ContainsKey(clip)) {
+                    m_sisDataCollection.Add(clip, timelineClipSISData);;            
+                }                
+            }
+            
+            //Make sure that this track, and the clip are the owners
             timelineClipSISData.Init(this, clip);
-            sisPlayableAsset.BindTimelineClipSISData(timelineClipSISData);
             
         }
                 
+        var              mixer    = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);
+        PlayableDirector director = go.GetComponent<PlayableDirector>();
+        m_trackMixer = mixer.GetBehaviour();
+
         if (director != null) {
             var boundGo = director.GetGenericBinding(this);
             StreamingImageSequenceRenderer renderer = boundGo as StreamingImageSequenceRenderer;
@@ -128,23 +141,15 @@ public class StreamingImageSequenceTrack : TrackAsset
 
 //----------------------------------------------------------------------------------------------------------------------
     private TimelineClipSISData GetOrCreateTimelineClipSISData(TimelineClip clip) {
-        if (null == m_sisDataCollection) {
-            m_sisDataCollection = new Dictionary<TimelineClip, TimelineClipSISData>();
-            TimelineClipSISData sisData = new TimelineClipSISData();
-            m_sisDataCollection[clip] = sisData;
-            return sisData;
-        }
-
+        Assert.IsNotNull(m_sisDataCollection);
+        
         if (m_sisDataCollection.ContainsKey(clip)) {
             return m_sisDataCollection[clip];            
         }
 
-        {
-            TimelineClipSISData sisData = new TimelineClipSISData();
-            m_sisDataCollection[clip] = sisData;
-            return sisData;
-            
-        }        
+        TimelineClipSISData sisData = new TimelineClipSISData();
+        m_sisDataCollection[clip] = sisData;
+        return sisData;
     }
         
     
