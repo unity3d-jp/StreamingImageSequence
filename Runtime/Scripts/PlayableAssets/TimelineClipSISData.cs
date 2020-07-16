@@ -18,14 +18,6 @@ internal class TimelineClipSISData {
 
 //----------------------------------------------------------------------------------------------------------------------
     internal void Destroy() {
-        if (null == m_playableFrames)
-            return;
-        
-        foreach (PlayableFrame frame in m_playableFrames) {
-            if (null == frame)
-                continue;
-            ObjectUtility.Destroy(frame);
-        }        
     }
     
     
@@ -46,7 +38,7 @@ internal class TimelineClipSISData {
     
     internal void ResetPlayableFrames() {
 
-        Destroy();
+        DestroyPlayableFrames();
 
         //Recalculate the number of frames and create the marker's ground truth data
         int numFrames = TimelineUtility.CalculateNumFrames(m_playableAsset.GetBoundTimelineClip());
@@ -54,6 +46,18 @@ internal class TimelineClipSISData {
         UpdatePlayableFramesSize(numFrames);
     }
 
+//----------------------------------------------------------------------------------------------------------------------
+    private void DestroyPlayableFrames() {
+        if (null == m_playableFrames)
+            return;
+        
+        foreach (PlayableFrame frame in m_playableFrames) {
+            if (null == frame)
+                continue;
+            ObjectUtility.Destroy(frame);
+        }        
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
     internal PlayableFrame GetPlayableFrame(int index) {
         Assert.IsTrue(null!=m_playableFrames && index < m_playableFrames.Count);
