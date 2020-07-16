@@ -28,7 +28,7 @@ public class StreamingImageSequenceTrack : TrackAsset
     /// <inheritdoc/>
     protected override void OnBeforeTrackSerialize() {
         base.OnBeforeTrackSerialize();
-        m_serializedSISDataCollection.Clear();
+        m_serializedSISDataCollection = new List<TimelineClipSISData>(m_sisDataCollection.Count);
         
         foreach (TimelineClip clip in GetClips()) {
             TimelineClipSISData sisData = null;
