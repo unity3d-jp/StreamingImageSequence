@@ -1,5 +1,5 @@
 ﻿using System;
-
+using UnityEngine.Assertions;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -9,10 +9,10 @@ using UnityEngine.Timeline;
 namespace UnityEngine.StreamingImageSequence {
     
 [Serializable]
-internal class PlayableFrame : ScriptableObject {
+internal class PlayableFrame  {
 
-    internal void Init(StreamingImageSequencePlayableAsset asset, double localTime, bool showMarker) {
-        m_playableAsset = asset;
+    internal void Init(TimelineClipSISData owner, double localTime, bool showMarker) {
+        m_owner = owner;
         m_localTime = localTime;
 
         if (null == m_marker && showMarker) {
@@ -21,7 +21,7 @@ internal class PlayableFrame : ScriptableObject {
     }
 
 
-    private void OnDestroy() {
+    ~PlayableFrame() {
         if (null == m_marker)
             return;
 
@@ -29,9 +29,9 @@ internal class PlayableFrame : ScriptableObject {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void SetOwner(StreamingImageSequencePlayableAsset owner) {  m_playableAsset = owner;}
+    internal void SetOwner(TimelineClipSISData owner) {  m_owner = owner;}
 
-    internal StreamingImageSequencePlayableAsset GetOwner() {  return m_playableAsset; }
+    internal TimelineClipSISData GetOwner() {  return m_owner; }
     internal bool IsUsed() { return m_useImage; }
     internal void SetUsed(bool used) { m_useImage = used; }
     internal double GetLocalTime() { return m_localTime; }
@@ -39,15 +39,16 @@ internal class PlayableFrame : ScriptableObject {
 
 //----------------------------------------------------------------------------------------------------------------------
     internal void Refresh(bool useImageMarkerVisibility) {
+        TrackAsset trackAsset = m_owner.GetTrackOwner();
         //Delete Marker first if it's not in the correct track (e.g: after the TimelineClip was moved)
-        if (null!= m_marker && m_marker.parent != m_playableAsset.GetBoundTimelineClip().parentTrack) {
+        if (null!= m_marker && m_marker.parent != trackAsset) {
             DeleteMarker();
         }
 
         //Show/Hide the marker
         if (null != m_marker && !useImageMarkerVisibility) {
             DeleteMarker();
-        } else if (null == m_marker && useImageMarkerVisibility) {
+        } else if (null == m_marker && null!=trackAsset && useImageMarkerVisibility) {
             CreateMarker();
         }
 
@@ -59,22 +60,24 @@ internal class PlayableFrame : ScriptableObject {
 //----------------------------------------------------------------------------------------------------------------------
 
     void CreateMarker() {
-        TimelineClip timelineClip = m_playableAsset.GetBoundTimelineClip();
-        m_marker = timelineClip.parentTrack.CreateMarker<UseImageMarker>(m_localTime);
+        TrackAsset trackAsset = m_owner.GetTrackOwner();        
+        Assert.IsNotNull(trackAsset);
+        m_marker = trackAsset.CreateMarker<UseImageMarker>(m_localTime);
         m_marker.Init(this);
 
 #if UNITY_EDITOR
-        Undo.RegisterCompleteObjectUndo(this, "PlayableFrame: CreateMarker");
+        Undo.RegisterCompleteObjectUndo(trackAsset, "PlayableFrame: CreateMarker");
 #endif        
         
     }
 
     void DeleteMarker() {
+        TrackAsset trackAsset = m_owner.GetTrackOwner();
         
         TrackAsset track = m_marker.parent;
         track.DeleteMarker(m_marker);
 #if UNITY_EDITOR
-        Undo.RegisterCompleteObjectUndo(this, "PlayableFrame: DeleteMarker");
+        Undo.RegisterCompleteObjectUndo(trackAsset, "PlayableFrame: DeleteMarker");
 #endif        
         
     }
@@ -83,7 +86,7 @@ internal class PlayableFrame : ScriptableObject {
 
     [SerializeField] private bool m_useImage = true;
     [SerializeField] private double m_localTime;
-    [SerializeField] private StreamingImageSequencePlayableAsset m_playableAsset = null; 
+    [SerializeField] private TimelineClipSISData m_owner = null; 
     [SerializeField] private UseImageMarker m_marker = null; //ScriptableObject -> Marker -> UseImageMarker
 
 }

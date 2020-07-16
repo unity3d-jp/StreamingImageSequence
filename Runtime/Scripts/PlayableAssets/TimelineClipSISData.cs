@@ -12,8 +12,10 @@ namespace UnityEngine.StreamingImageSequence {
 [Serializable]
 internal class TimelineClipSISData {
 
-    internal void Init(StreamingImageSequenceTrack track) {
+    internal void Init(StreamingImageSequenceTrack track, TimelineClip clip) {
         m_trackOwner = track;
+        m_clipOwner = clip;
+        
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -26,37 +28,37 @@ internal class TimelineClipSISData {
     internal bool GetUseImageMarkerVisibility() {  return m_useImageMarkerVisibility; }
 
     internal void SetUseImageMarkerVisibility(bool show) { m_useImageMarkerVisibility = show; }
+
+    internal StreamingImageSequenceTrack GetTrackOwner() {
+        return m_trackOwner;
+    }
+    internal TimelineClip GetClipOwner() { return m_clipOwner; }
     
 //----------------------------------------------------------------------------------------------------------------------    
-    //Should be TimelineClip instead of StreamingImageSequencePlayableAsset
-    private void CreatePlayableFrame(StreamingImageSequencePlayableAsset playableAsset, int index) {
+    private void CreatePlayableFrame(int index) {
         Assert.IsTrue(null!=m_playableFrames && index < m_playableFrames.Count);
 
-        PlayableFrame playableFrame = ObjectUtility.CreateScriptableObjectInstance<PlayableFrame>();
-#if UNITY_EDITOR                    
-        AssetDatabase.AddObjectToAsset(playableFrame, playableAsset);
-#endif
-        double timePerFrame = TimelineUtility.CalculateTimePerFrame(playableAsset.GetBoundTimelineClip());
-        playableFrame.Init(playableAsset, timePerFrame * index, m_useImageMarkerVisibility);
+        PlayableFrame playableFrame = new PlayableFrame();
+        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_trackOwner);
+        playableFrame.Init(this, timePerFrame * index, m_useImageMarkerVisibility);
         m_playableFrames[index] = playableFrame;
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
     
-    internal void ResetPlayableFrames(StreamingImageSequencePlayableAsset playableAsset) {
-
-        DestroyPlayableFrames();
+    internal void ResetPlayableFrames() {
 
         //Recalculate the number of frames and create the marker's ground truth data
-        int numFrames = TimelineUtility.CalculateNumFrames(playableAsset.GetBoundTimelineClip());
+        int numFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
         m_playableFrames = new List<PlayableFrame>(numFrames);
-        UpdatePlayableFramesSize(playableAsset, numFrames);
+        UpdatePlayableFramesSize(numFrames);
+                
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
     
     //Resize PlayableFrames and used the previous values
-    internal void RefreshPlayableFrames(StreamingImageSequencePlayableAsset playableAsset) {
+    internal void RefreshPlayableFrames() {
 
         //if this asset was a cloned asset, split the playable frames
         // if (null != m_clonedFromAsset) {
@@ -65,10 +67,10 @@ internal class TimelineClipSISData {
         // }
         
         if (null == m_playableFrames) {
-            ResetPlayableFrames(playableAsset);
+            ResetPlayableFrames();
         }
         else {
-            ResizePlayableFrames(playableAsset);
+            ResizePlayableFrames();
         }        
         
     }        
@@ -76,8 +78,8 @@ internal class TimelineClipSISData {
 //----------------------------------------------------------------------------------------------------------------------
     
     //Resize PlayableFrames and used the previous values
-    private void ResizePlayableFrames(StreamingImageSequencePlayableAsset playableAsset) {
-        int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(playableAsset.GetBoundTimelineClip());
+    private void ResizePlayableFrames() {
+        int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
       
         //Change the size of m_playableFrames and reinitialize if necessary
         int prevNumPlayableFrames = m_playableFrames.Count;
@@ -91,7 +93,7 @@ internal class TimelineClipSISData {
                 prevUsedFrames.Add(null == frame || frame.IsUsed()); //if frame ==null, just regard as used.
             }
             
-            UpdatePlayableFramesSize(playableAsset, numIdealNumPlayableFrames);
+            UpdatePlayableFramesSize(numIdealNumPlayableFrames);
             
             //Reinitialize 
             if (prevNumPlayableFrames > 0) {
@@ -111,17 +113,6 @@ internal class TimelineClipSISData {
         
     }        
     
-//----------------------------------------------------------------------------------------------------------------------
-    private void DestroyPlayableFrames() {
-        if (null == m_playableFrames)
-            return;
-        
-        foreach (PlayableFrame frame in m_playableFrames) {
-            if (null == frame)
-                continue;
-            ObjectUtility.Destroy(frame);
-        }        
-    }
     
 //----------------------------------------------------------------------------------------------------------------------
     //may return null
@@ -136,7 +127,7 @@ internal class TimelineClipSISData {
 
 //----------------------------------------------------------------------------------------------------------------------
     
-    private void UpdatePlayableFramesSize(StreamingImageSequencePlayableAsset playableAsset, int reqPlayableFramesSize) {
+    private void UpdatePlayableFramesSize(int reqPlayableFramesSize) {
 
         //Resize m_playableFrames
         if (m_playableFrames.Count < reqPlayableFramesSize) {
@@ -147,27 +138,21 @@ internal class TimelineClipSISData {
 
         if (m_playableFrames.Count > reqPlayableFramesSize) {
             int numLastPlayableFrames = m_playableFrames.Count;
-            for (int i = reqPlayableFramesSize; i < numLastPlayableFrames; ++i) {
-                PlayableFrame curFrame = m_playableFrames[i];
-                if (null == curFrame)
-                    continue;
-                ObjectUtility.Destroy(curFrame);                
-            }
             m_playableFrames.RemoveRange(reqPlayableFramesSize, numLastPlayableFrames - reqPlayableFramesSize);
         }
             
         Assert.IsTrue(m_playableFrames.Count == reqPlayableFramesSize);
 
-        double timePerFrame = TimelineUtility.CalculateTimePerFrame(playableAsset.GetBoundTimelineClip());
+        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_trackOwner);
             
         for (int i = 0; i < reqPlayableFramesSize; ++i) {
             PlayableFrame curPlayableFrame = m_playableFrames[i];
                 
             if (null == curPlayableFrame) {
-                CreatePlayableFrame(playableAsset, i);
+                CreatePlayableFrame(i);
             }
             else {
-                m_playableFrames[i].Init(playableAsset, timePerFrame * i, m_useImageMarkerVisibility);
+                m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);
                 
             }
         }
@@ -255,6 +240,7 @@ internal class TimelineClipSISData {
     [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = false;
 
     private StreamingImageSequenceTrack m_trackOwner = null;
+    private TimelineClip  m_clipOwner = null;
 
 }
 

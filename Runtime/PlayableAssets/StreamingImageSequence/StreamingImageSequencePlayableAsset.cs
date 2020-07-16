@@ -459,7 +459,7 @@ namespace UnityEngine.StreamingImageSequence {
 #if UNITY_EDITOR
             Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Resetting Use Image Markers");
 #endif
-            m_timelineClipSISData.ResetPlayableFrames(this);
+            m_timelineClipSISData.ResetPlayableFrames();
             
 #if UNITY_EDITOR //Add to AssetDatabase
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
@@ -475,7 +475,7 @@ namespace UnityEngine.StreamingImageSequence {
             // }
 
             Assert.IsNotNull(m_timelineClipSISData);
-            m_timelineClipSISData.RefreshPlayableFrames(this);
+            m_timelineClipSISData.RefreshPlayableFrames();
             
             
         }        

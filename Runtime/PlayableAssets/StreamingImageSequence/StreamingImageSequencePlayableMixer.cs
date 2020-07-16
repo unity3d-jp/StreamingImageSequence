@@ -45,14 +45,7 @@ namespace UnityEngine.StreamingImageSequence
         
 //----------------------------------------------------------------------------------------------------------------------
         public override void OnGraphStart(Playable playable) {
-            //Need to bind TimelineClips first
-            IEnumerable<TimelineClip> clips = GetClips();           
-            foreach (TimelineClip clip in clips) {
-                StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
-                if (null == asset)
-                    continue;
-                asset.BindTimelineClip(clip);
-            }
+            Debug.Log("Mixer:OnGraphStart");
             
             var clipAssets = GetClipAssets();
             foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
@@ -68,7 +61,6 @@ namespace UnityEngine.StreamingImageSequence
             foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
                 StreamingImageSequencePlayableAsset sisAsset = kv.Value;                
                 sisAsset.OnGraphStop(playable);
-                sisAsset.BindTimelineClip(null);
             }
             
         }

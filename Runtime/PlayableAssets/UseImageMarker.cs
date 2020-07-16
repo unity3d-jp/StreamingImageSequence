@@ -20,13 +20,13 @@ internal class UseImageMarker : Marker, INotification {
         if (null == m_owner)
             return;
         
-        TimelineClip clip = m_owner.GetOwner().GetBoundTimelineClip();
+        TimelineClip clip = m_owner.GetOwner().GetClipOwner();
         time = clip.start + m_owner.GetLocalTime();       
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
     internal PlayableFrame GetOwner() { return m_owner;}
-    internal bool IsImageUsed() { return m_owner && m_owner.IsUsed(); }
+    internal bool IsImageUsed() { return null!=m_owner && m_owner.IsUsed(); }
     internal void SetImageUsed(bool used) { m_owner.SetUsed(used); }
     
 //----------------------------------------------------------------------------------------------------------------------    

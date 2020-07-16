@@ -32,10 +32,9 @@ public class StreamingImageSequenceTrack : TrackAsset
         
         foreach (TimelineClip clip in GetClips()) {
             TimelineClipSISData sisData = null;
-            StreamingImageSequencePlayableAsset clipAsset = clip.asset as StreamingImageSequencePlayableAsset;
 
-            if (null != clipAsset && m_sisDataCollection.ContainsKey(clipAsset)) {                
-                sisData =   m_sisDataCollection[clipAsset];
+            if (m_sisDataCollection.ContainsKey(clip)) {                
+                sisData =   m_sisDataCollection[clip];
             }
             else {                
                 sisData = new TimelineClipSISData();
@@ -49,22 +48,19 @@ public class StreamingImageSequenceTrack : TrackAsset
     /// <inheritdoc/>
     protected override  void OnAfterTrackDeserialize() {
         base.OnAfterTrackDeserialize();
-        m_sisDataCollection = new Dictionary<StreamingImageSequencePlayableAsset, TimelineClipSISData>();
+        m_sisDataCollection = new Dictionary<TimelineClip, TimelineClipSISData>();
+        
         
         IEnumerator<TimelineClip> clipEnumerator = GetClips().GetEnumerator();
         List<TimelineClipSISData>.Enumerator sisEnumerator = m_serializedSISDataCollection.GetEnumerator();
         while (clipEnumerator.MoveNext() && sisEnumerator.MoveNext()) {
             TimelineClip clip = clipEnumerator.Current;
             Assert.IsNotNull(clip);
-            StreamingImageSequencePlayableAsset clipAsset = clip.asset as StreamingImageSequencePlayableAsset;
-            Assert.IsNotNull(clipAsset);
 
             TimelineClipSISData timelineClipSISData = sisEnumerator.Current;
-            Assert.IsNotNull(timelineClipSISData);
+            Assert.IsNotNull(timelineClipSISData);           
             
-            m_sisDataCollection[clipAsset] = timelineClipSISData;
-            clipAsset.BindTimelineClipSISData(timelineClipSISData);
-            timelineClipSISData.Init(this);
+            m_sisDataCollection[clip] = timelineClipSISData;
             
         }
         clipEnumerator.Dispose();
@@ -75,9 +71,24 @@ public class StreamingImageSequenceTrack : TrackAsset
     
     /// <inheritdoc/>
     public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
+        
+        Debug.Log("Track:CreateTrackMixer");
+        
         var mixer = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);
         PlayableDirector director = go.GetComponent<PlayableDirector>();
         m_trackMixer = mixer.GetBehaviour();
+        
+        //Initialize PlayableAssets and TimelineClipSISData       
+        foreach (var it in m_sisDataCollection) {
+            TimelineClip clip = it.Key;
+            TimelineClipSISData timelineClipSISData = it.Value;
+            StreamingImageSequencePlayableAsset sisPlayableAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(sisPlayableAsset);               
+                
+            sisPlayableAsset.BindTimelineClip(clip);
+            sisPlayableAsset.BindTimelineClipSISData(timelineClipSISData);
+            timelineClipSISData.Init(this, clip);            
+        }
         
         if (director != null) {
             var boundGo = director.GetGenericBinding(this);
@@ -114,7 +125,7 @@ public class StreamingImageSequenceTrack : TrackAsset
 
     [HideInInspector][SerializeField] List<TimelineClipSISData> m_serializedSISDataCollection = null;
 
-    private Dictionary<StreamingImageSequencePlayableAsset, TimelineClipSISData> m_sisDataCollection = null;
+    private Dictionary<TimelineClip, TimelineClipSISData> m_sisDataCollection = null;
     
     private StreamingImageSequencePlayableMixer m_trackMixer = null;
 
