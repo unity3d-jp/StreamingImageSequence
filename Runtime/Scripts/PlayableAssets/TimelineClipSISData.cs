@@ -51,14 +51,28 @@ internal class TimelineClipSISData {
     
     //Resize PlayableFrames and used the previous values
     internal void RefreshPlayableFrames(StreamingImageSequencePlayableAsset playableAsset) {
-        int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(playableAsset.GetBoundTimelineClip());
 
         //if this asset was a cloned asset, split the playable frames
         // if (null != m_clonedFromAsset) {
         //     TrySplitPlayableFrames(numIdealNumPlayableFrames);
         //     m_clonedFromAsset = null;
         // }
-       
+        
+        if (null == m_playableFrames) {
+            ResetPlayableFrames(playableAsset);
+        }
+        else {
+            ResizePlayableFrames(playableAsset);
+        }        
+        
+    }        
+
+//----------------------------------------------------------------------------------------------------------------------
+    
+    //Resize PlayableFrames and used the previous values
+    private void ResizePlayableFrames(StreamingImageSequencePlayableAsset playableAsset) {
+        int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(playableAsset.GetBoundTimelineClip());
+      
         //Change the size of m_playableFrames and reinitialize if necessary
         int prevNumPlayableFrames = m_playableFrames.Count;
         if (numIdealNumPlayableFrames != prevNumPlayableFrames) {
