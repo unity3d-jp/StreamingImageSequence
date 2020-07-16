@@ -9,7 +9,7 @@ using UnityEngine.Timeline;
 namespace UnityEngine.StreamingImageSequence {
     
 [Serializable]
-internal class SISPlayableFrame  {
+internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
     internal void Init(TimelineClipSISData owner, double localTime, bool showMarker) {
         m_owner = owner;
@@ -19,6 +19,20 @@ internal class SISPlayableFrame  {
             CreateMarker();
         }
     }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    #region ISerializationCallbackReceiver
+    public void OnBeforeSerialize() {
+    }
+
+    public void OnAfterDeserialize() {
+        if (null == m_marker)
+            return;
+
+        m_marker.Init(this);
+    }    
+    #endregion
+    
 
 
     ~SISPlayableFrame() {
@@ -86,8 +100,9 @@ internal class SISPlayableFrame  {
 
     [SerializeField] private bool m_useImage = true;
     [SerializeField] private double m_localTime;
-    [SerializeField] private TimelineClipSISData m_owner = null; 
     [SerializeField] private UseImageMarker m_marker = null; //ScriptableObject -> Marker -> UseImageMarker
+
+    private TimelineClipSISData m_owner = null; 
 
 }
 

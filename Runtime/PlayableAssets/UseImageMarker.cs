@@ -32,7 +32,7 @@ internal class UseImageMarker : Marker, INotification {
 //----------------------------------------------------------------------------------------------------------------------    
     public PropertyName id { get; } //use default implementation
 
-    [SerializeField] private SISPlayableFrame m_owner;
+    private SISPlayableFrame m_owner;
        
     //[TODO-sin: 2020-2-7] Refresh the texture immediately when m_owner.useImage is modified
 }

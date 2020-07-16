@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEditor.Timeline;
 using UnityEngine.Assertions;
 using UnityEngine.Timeline;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 namespace UnityEngine.StreamingImageSequence {
     
 [Serializable]
-internal class TimelineClipSISData {
+internal class TimelineClipSISData : ISerializationCallbackReceiver {
 
     internal void Init(StreamingImageSequenceTrack track, TimelineClip clip) {
         m_trackOwner = track;
@@ -18,6 +14,17 @@ internal class TimelineClipSISData {
         
     }
 
+//----------------------------------------------------------------------------------------------------------------------
+    #region ISerializationCallbackReceiver
+    public void OnBeforeSerialize() {
+    }
+
+    public void OnAfterDeserialize() {
+        foreach (SISPlayableFrame playableFrame in m_playableFrames) {
+            playableFrame.SetOwner(this);
+        }
+    }    
+    #endregion
 //----------------------------------------------------------------------------------------------------------------------
     internal void Destroy() {
     }
