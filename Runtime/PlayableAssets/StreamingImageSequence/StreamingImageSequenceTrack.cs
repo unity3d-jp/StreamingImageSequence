@@ -72,7 +72,6 @@ public class StreamingImageSequenceTrack : TrackAsset
     /// <inheritdoc/>
     public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
         
-        Debug.Log("Track:CreateTrackMixer");
         
         var mixer = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);
         PlayableDirector director = go.GetComponent<PlayableDirector>();
