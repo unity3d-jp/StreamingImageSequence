@@ -5,10 +5,10 @@ namespace UnityEngine.StreamingImageSequence {
 /// <summary>
 /// A track which clip type is StreamingImageSequencePlayableAsset.
 /// It shows the active image from the images assigned to StreamingImageSequencePlayableAsset,
-/// into a bound GameObject that has StreamingImageSequenceRenderer component.
+/// into a bound GameObject that has StreamingImageSequenceOutput component.
 /// </summary>
 [TrackClipType(typeof(StreamingImageSequencePlayableAsset))]
-[TrackBindingType(typeof(StreamingImageSequenceRenderer))]
+[TrackBindingType(typeof(StreamingImageSequenceOutput))]
 [TrackColor(0.776f, 0.263f, 0.09f)]
 [NotKeyable]
 public class StreamingImageSequenceTrack : TrackAsset
@@ -27,8 +27,8 @@ public class StreamingImageSequenceTrack : TrackAsset
         
         if (director != null) {
             var boundGo = director.GetGenericBinding(this);
-            StreamingImageSequenceRenderer renderer = boundGo as StreamingImageSequenceRenderer;
-            m_trackMixer.Init(null == renderer ? null : renderer.gameObject, director, GetClips());
+            StreamingImageSequenceOutput output = boundGo as StreamingImageSequenceOutput;
+            m_trackMixer.Init(null == output ? null : output.gameObject, director, GetClips());
         }
         return mixer;
     }

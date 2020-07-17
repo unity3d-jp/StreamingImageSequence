@@ -4,8 +4,9 @@ namespace UnityEngine.StreamingImageSequence
 {
 
 //[ExecuteInEditMode]
-internal class StreamingImageSequenceRenderer : MonoBehaviour {
+internal class StreamingImageSequenceOutput : MonoBehaviour {
 
+    
 
 }
 
