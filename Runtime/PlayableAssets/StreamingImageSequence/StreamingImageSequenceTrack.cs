@@ -66,7 +66,7 @@ public class StreamingImageSequenceTrack : TrackAsset {
             }
 
             if (null == sisData) {
-                sisData = new TimelineClipSISData();
+                sisData = new TimelineClipSISData(this);
             }
             
                        
@@ -156,7 +156,7 @@ public class StreamingImageSequenceTrack : TrackAsset {
             return m_sisDataCollection[clip];            
         }
 
-        TimelineClipSISData sisData = new TimelineClipSISData();
+        TimelineClipSISData sisData = new TimelineClipSISData(this);
         m_sisDataCollection[clip] = sisData;
         return sisData;
     }
@@ -167,21 +167,21 @@ public class StreamingImageSequenceTrack : TrackAsset {
         foreach (TimelineClip clip in GetClips()) {
             StreamingImageSequencePlayableAsset sisPlayableAsset = clip.asset as StreamingImageSequencePlayableAsset;
             Assert.IsNotNull(sisPlayableAsset);               
-            sisPlayableAsset.BindTimelineClip(clip);
             
             TimelineClipSISData timelineClipSISData = sisPlayableAsset.GetBoundTimelineClipSISData();
             if (null == timelineClipSISData) {
                 timelineClipSISData = GetOrCreateTimelineClipSISData(clip);                
-                sisPlayableAsset.BindTimelineClipSISData(timelineClipSISData);
             } else {
                 if (!m_sisDataCollection.ContainsKey(clip)) {
                     m_sisDataCollection.Add(clip, timelineClipSISData);;            
                 }                
             }
+
             
             //Make sure that this track, and the clip are the owners
             timelineClipSISData.SetOwner(clip);
-            
+
+            sisPlayableAsset.BindTimelineClip(clip,timelineClipSISData);            
         }
         
     }
@@ -195,10 +195,7 @@ public class StreamingImageSequenceTrack : TrackAsset {
 
             if (!marker.Refresh()) {
                 m_markersToDelete.Add(marker);                
-            }
-            else {
-                Debug.Log("Refreshing Marker: " + marker.name);
-            }           
+            }      
         }
 
         foreach (UseImageMarker marker in m_markersToDelete) {

@@ -38,6 +38,7 @@ namespace UnityEngine.StreamingImageSequence {
         
         /// <inheritdoc/>
         public void OnGraphStart(Playable playable) {
+
             RefreshPlayableFrames();
         }
         
@@ -237,18 +238,18 @@ namespace UnityEngine.StreamingImageSequence {
 
         //These two methods are necessary "hacks" for knowing which TimelineClips currently own
         //this StreamingImageSequencePlayableAssets
-        internal void BindTimelineClip(TimelineClip clip) {
+        internal void BindTimelineClip(TimelineClip clip, TimelineClipSISData sisData) {
+            Assert.IsNotNull(clip);
+            
             m_boundTimelineClip = clip;
-            if (null == clip)
-                return;
             AnimationCurve curve = GetAndValidateAnimationCurve(clip);
             RefreshTimelineClipCurve(clip, curve);
             
+            m_timelineClipSISData = sisData;            
         }
         internal TimelineClip GetBoundTimelineClip()              { return m_boundTimelineClip; }
         internal TimelineClipSISData GetBoundTimelineClipSISData() { return m_timelineClipSISData; }
 
-        internal void BindTimelineClipSISData(TimelineClipSISData sisData) { m_timelineClipSISData = sisData; } 
         
 //----------------------------------------------------------------------------------------------------------------------        
         internal float GetOrUpdateDimensionRatio() {

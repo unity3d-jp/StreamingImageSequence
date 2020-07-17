@@ -4,6 +4,7 @@ using UnityEditor.Timeline;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence {
@@ -39,13 +40,16 @@ namespace UnityEditor.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------
 
         /// <inheritdoc/>
-        public override void OnCreate(TimelineClip clip, TrackAsset track, TimelineClip clonedFrom)
-        {
+        public override void OnCreate(TimelineClip clip, TrackAsset track, TimelineClip clonedFrom) {
             StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
             if (null == asset) {
                 Debug.LogError("Asset is not a StreamingImageSequencePlayableAsset: " + clip.asset);
                 return;
             }
+            
+            StreamingImageSequenceTrack sisTrack = track as StreamingImageSequenceTrack;
+            Assert.IsNotNull(sisTrack);
+            
 
             //This callback occurs before the clip is assigned to the track, but we need the track for creating curves.
             clip.parentTrack = track; 
@@ -67,7 +71,8 @@ namespace UnityEditor.StreamingImageSequence {
             }
 
 
-            asset.BindTimelineClip(clip);
+            TimelineClipSISData sisData = new TimelineClipSISData(sisTrack);
+            asset.BindTimelineClip(clip, sisData);
 
             if (null == clonedFrom) {
                 return;

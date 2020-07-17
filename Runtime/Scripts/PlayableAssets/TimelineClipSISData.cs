@@ -8,6 +8,10 @@ namespace UnityEngine.StreamingImageSequence {
 [Serializable]
 internal class TimelineClipSISData : ISerializationCallbackReceiver {
 
+    internal TimelineClipSISData(StreamingImageSequenceTrack owner) {
+        m_trackOwner = owner;
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
     #region ISerializationCallbackReceiver
     public void OnBeforeSerialize() {

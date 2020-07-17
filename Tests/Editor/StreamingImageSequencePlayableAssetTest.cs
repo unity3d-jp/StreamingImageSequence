@@ -207,7 +207,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.IsNotNull(sisAsset);
 
             clip.CreateCurves("Curves: " + clip.displayName);
-            sisAsset.BindTimelineClip(clip);
+            TimelineClipSISData sisData = new TimelineClipSISData(movieTrack);
+            sisAsset.BindTimelineClip(clip, sisData);           
 
             //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
             EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
