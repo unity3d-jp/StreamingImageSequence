@@ -18,8 +18,31 @@ namespace UnityEngine.StreamingImageSequence {
 [TrackBindingType(typeof(StreamingImageSequenceRenderer))]
 [TrackColor(0.776f, 0.263f, 0.09f)]
 [NotKeyable]
-public class StreamingImageSequenceTrack : TrackAsset
-{
+public class StreamingImageSequenceTrack : TrackAsset {
+    
+#if UNITY_EDITOR        
+    [InitializeOnLoadMethod]
+    static void Onload() {
+        Undo.undoRedoPerformed += StreamingImageSequenceTrack_OnUndoRedoPerformed;
+    }
+    
+    static void StreamingImageSequenceTrack_OnUndoRedoPerformed() {
+        m_undoRedo = true;
+    } 
+    
+
+    void RefreshTimelineEditorAfterUndoRedo() {        
+        if (m_undoRedo && null!= TimelineEditor.inspectedDirector) {
+            //After undo, the UseImageMarkers are not refreshed
+            TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved);
+            m_undoRedo = false;
+        }
+        
+    }
+    
+#endif
+    
+//----------------------------------------------------------------------------------------------------------------------
     private void OnDestroy() {
         m_trackMixer?.Destroy();
     }
@@ -77,32 +100,13 @@ public class StreamingImageSequenceTrack : TrackAsset
     
     /// <inheritdoc/>
     public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
-        
-        
+               
         if (null == m_sisDataCollection) {
             m_sisDataCollection = new Dictionary<TimelineClip, TimelineClipSISData>();
         }
-        
-        //Initialize PlayableAssets and TimelineClipSISData       
-        foreach (TimelineClip clip in GetClips()) {
-            StreamingImageSequencePlayableAsset sisPlayableAsset = clip.asset as StreamingImageSequencePlayableAsset;
-            Assert.IsNotNull(sisPlayableAsset);               
-            sisPlayableAsset.BindTimelineClip(clip);
-            
-            TimelineClipSISData timelineClipSISData  = sisPlayableAsset.GetBoundTimelineClipSISData();
-            if (null == timelineClipSISData) {
-                timelineClipSISData = GetOrCreateTimelineClipSISData(clip);                
-                sisPlayableAsset.BindTimelineClipSISData(timelineClipSISData);
-            } else {
-                if (!m_sisDataCollection.ContainsKey(clip)) {
-                    m_sisDataCollection.Add(clip, timelineClipSISData);;            
-                }                
-            }
-            
-            //Make sure that this track, and the clip are the owners
-            timelineClipSISData.Init(this, clip);
-            
-        }
+
+        RefreshTimelineClip();
+        RefreshMarkers();
                 
         var              mixer    = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);
         PlayableDirector director = go.GetComponent<PlayableDirector>();
@@ -113,6 +117,11 @@ public class StreamingImageSequenceTrack : TrackAsset
             StreamingImageSequenceRenderer renderer = boundGo as StreamingImageSequenceRenderer;
             m_trackMixer.Init(null == renderer ? null : renderer.gameObject, director, GetClips());
         }
+
+#if UNITY_EDITOR        
+        RefreshTimelineEditorAfterUndoRedo();
+#endif        
+        
         return mixer;
     }
 
@@ -152,6 +161,51 @@ public class StreamingImageSequenceTrack : TrackAsset
         return sisData;
     }
         
+//----------------------------------------------------------------------------------------------------------------------
+    private void RefreshTimelineClip() {
+        //Initialize PlayableAssets and TimelineClipSISData       
+        foreach (TimelineClip clip in GetClips()) {
+            StreamingImageSequencePlayableAsset sisPlayableAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(sisPlayableAsset);               
+            sisPlayableAsset.BindTimelineClip(clip);
+            
+            TimelineClipSISData timelineClipSISData = sisPlayableAsset.GetBoundTimelineClipSISData();
+            if (null == timelineClipSISData) {
+                timelineClipSISData = GetOrCreateTimelineClipSISData(clip);                
+                sisPlayableAsset.BindTimelineClipSISData(timelineClipSISData);
+            } else {
+                if (!m_sisDataCollection.ContainsKey(clip)) {
+                    m_sisDataCollection.Add(clip, timelineClipSISData);;            
+                }                
+            }
+            
+            //Make sure that this track, and the clip are the owners
+            timelineClipSISData.Init(this, clip);
+            
+        }
+        
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+    private void RefreshMarkers() {
+        foreach(IMarker m in GetMarkers()) {
+            UseImageMarker marker = m as UseImageMarker;
+            if (null == marker)
+                continue;
+
+            if (!marker.Refresh()) {
+                m_markersToDelete.Add(marker);                
+            }
+            else {
+                Debug.Log("Refreshing Marker: " + marker.name);
+            }           
+        }
+
+        foreach (UseImageMarker marker in m_markersToDelete) {
+            DeleteMarker(marker);
+        }
+    }
+
     
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -160,6 +214,11 @@ public class StreamingImageSequenceTrack : TrackAsset
     private Dictionary<TimelineClip, TimelineClipSISData> m_sisDataCollection = null;
     
     private StreamingImageSequencePlayableMixer m_trackMixer = null;
+    private readonly List<UseImageMarker> m_markersToDelete = new List<UseImageMarker>();
+
+#if UNITY_EDITOR    
+    private static bool m_undoRedo = false;
+#endif    
 
 }
 

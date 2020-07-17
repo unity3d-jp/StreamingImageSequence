@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor.Timeline;
 using UnityEngine.Assertions;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -12,7 +13,7 @@ namespace UnityEngine.StreamingImageSequence {
 internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
     internal void Init(TimelineClipSISData owner, double localTime, bool showMarker) {
-        m_owner = owner;
+        m_timelineClipSISDataOwner = owner;
         m_localTime = localTime;
 
         if (null == m_marker && showMarker) {
@@ -29,7 +30,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         if (null == m_marker)
             return;
 
-        m_marker.Init(this);
+        m_marker.SetOwner(this);
     }    
     #endregion
     
@@ -44,17 +45,22 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void SetOwner(TimelineClipSISData owner) {  m_owner = owner;}
+    internal void SetOwner(TimelineClipSISData owner) {  m_timelineClipSISDataOwner = owner;}
 
-    internal TimelineClipSISData GetOwner() {  return m_owner; }
+    internal TimelineClipSISData GetOwner() {  return m_timelineClipSISDataOwner; }
     internal bool IsUsed() { return m_useImage; }
     internal void SetUsed(bool used) { m_useImage = used; }
     internal double GetLocalTime() { return m_localTime; }
     internal void SetLocalTime(double localTime) {  m_localTime = localTime;}
 
+    internal TimelineClip GetClipOwner() {
+        TimelineClip clip = m_timelineClipSISDataOwner?.GetClipOwner();
+        return clip;
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
     internal void Refresh(bool useImageMarkerVisibility) {
-        TrackAsset trackAsset = m_owner.GetTrackOwner();
+        TrackAsset trackAsset = m_timelineClipSISDataOwner.GetTrackOwner();
         //Delete Marker first if it's not in the correct track (e.g: after the TimelineClip was moved)
         if (null!= m_marker && m_marker.parent != trackAsset) {
             DeleteMarker();
@@ -68,32 +74,25 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         }
 
         if (m_marker) {
-            m_marker.Init(this);
-            m_marker.Refresh();
+            m_marker.SetOwner(this);
         }
     }
 //----------------------------------------------------------------------------------------------------------------------
 
     void CreateMarker() {
-        TrackAsset trackAsset = m_owner.GetTrackOwner();        
+        TrackAsset trackAsset = m_timelineClipSISDataOwner.GetTrackOwner();        
+               
         Assert.IsNotNull(trackAsset);
+        Assert.IsNull(m_marker);
         m_marker = trackAsset.CreateMarker<UseImageMarker>(m_localTime);
-        m_marker.Init(this);
-
-#if UNITY_EDITOR
-        Undo.RegisterCompleteObjectUndo(trackAsset, "SISPlayableFrame: CreateMarker");
-#endif        
-        
+        m_marker.Init(this, GetClipOwner().start + m_localTime);
     }
 
     void DeleteMarker() {
-        TrackAsset trackAsset = m_owner.GetTrackOwner();
+        Assert.IsNotNull(m_marker);
         
         TrackAsset track = m_marker.parent;
         track.DeleteMarker(m_marker);
-#if UNITY_EDITOR
-        Undo.RegisterCompleteObjectUndo(trackAsset, "SISPlayableFrame: DeleteMarker");
-#endif        
         
     }
     
@@ -101,10 +100,11 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
     [SerializeField] private bool m_useImage = true;
     [SerializeField] private double m_localTime;    
-    [SerializeField] private UseImageMarker m_marker = null; //ScriptableObject -> Marker -> UseImageMarker
+    [SerializeField] private UseImageMarker m_marker = null; 
     
-    [NonSerialized] private TimelineClipSISData m_owner = null; 
+    [NonSerialized] private TimelineClipSISData m_timelineClipSISDataOwner = null; 
 
+    
 }
 
 } //end namespace
