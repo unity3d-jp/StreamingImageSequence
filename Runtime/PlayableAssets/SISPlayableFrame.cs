@@ -1,10 +1,5 @@
 ﻿using System;
-using UnityEditor.Timeline;
 using UnityEngine.Assertions;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
 using UnityEngine.Timeline;
 
 namespace UnityEngine.StreamingImageSequence {
@@ -54,13 +49,13 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     internal void SetLocalTime(double localTime) {  m_localTime = localTime;}
 
     internal TimelineClip GetClipOwner() {
-        TimelineClip clip = m_timelineClipSISDataOwner?.GetClipOwner();
+        TimelineClip clip = m_timelineClipSISDataOwner?.GetOwner();
         return clip;
     }
     
 //----------------------------------------------------------------------------------------------------------------------
     internal void Refresh(bool useImageMarkerVisibility) {
-        TrackAsset trackAsset = m_timelineClipSISDataOwner.GetTrackOwner();
+        TrackAsset trackAsset = m_timelineClipSISDataOwner.GetOwner()?.parentTrack;
         //Delete Marker first if it's not in the correct track (e.g: after the TimelineClip was moved)
         if (null!= m_marker && m_marker.parent != trackAsset) {
             DeleteMarker();
@@ -80,7 +75,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 //----------------------------------------------------------------------------------------------------------------------
 
     void CreateMarker() {
-        TrackAsset trackAsset = m_timelineClipSISDataOwner.GetTrackOwner();        
+        TrackAsset trackAsset = m_timelineClipSISDataOwner.GetOwner()?.parentTrack;        
                
         Assert.IsNotNull(trackAsset);
         Assert.IsNull(m_marker);

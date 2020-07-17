@@ -4,15 +4,9 @@ using UnityEngine.Assertions;
 using UnityEngine.Timeline;
 
 namespace UnityEngine.StreamingImageSequence {
-    
+
 [Serializable]
 internal class TimelineClipSISData : ISerializationCallbackReceiver {
-
-    internal void Init(StreamingImageSequenceTrack track, TimelineClip clip) {
-        m_trackOwner = track;
-        m_clipOwner = clip;
-        
-    }
 
 //----------------------------------------------------------------------------------------------------------------------
     #region ISerializationCallbackReceiver
@@ -36,10 +30,9 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 
     internal void SetUseImageMarkerVisibility(bool show) { m_useImageMarkerVisibility = show; }
 
-    internal StreamingImageSequenceTrack GetTrackOwner() {
-        return m_trackOwner;
-    }
-    internal TimelineClip GetClipOwner() { return m_clipOwner; }
+    internal void SetOwner(TimelineClip clip) { m_clipOwner = clip;}
+    
+    internal TimelineClip GetOwner() { return m_clipOwner; }
     
 //----------------------------------------------------------------------------------------------------------------------    
     private void CreatePlayableFrame(int index) {
