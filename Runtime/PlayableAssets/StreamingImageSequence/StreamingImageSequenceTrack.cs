@@ -28,7 +28,7 @@ public class StreamingImageSequenceTrack : TrackAsset
         if (director != null) {
             var boundGo = director.GetGenericBinding(this);
             StreamingImageSequenceRenderer renderer = boundGo as StreamingImageSequenceRenderer;
-            m_trackMixer.Init(null == renderer ? null : renderer.gameObject.GetComponent<StreamingImageSequenceRenderer>(), director, GetClips());
+            m_trackMixer.Init(null == renderer ? null : renderer.gameObject, director, GetClips());
         }
         return mixer;
     }

@@ -33,11 +33,11 @@ internal class FaderPlayableMixer : BasePlayableMixer<FaderPlayableAsset> {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected override void InitInternalV(StreamingImageSequenceRenderer renderer) {
-        if (null == renderer)
+    protected override void InitInternalV(GameObject gameObject) {
+        if (null == gameObject)
             return;
         
-        m_image = renderer.gameObject.GetComponent<Image>();
+        m_image = gameObject.GetComponent<Image>();
     }
 
 //----------------------------------------------------------------------------------------------------------------------

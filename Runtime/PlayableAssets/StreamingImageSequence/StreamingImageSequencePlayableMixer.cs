@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.UI;
 using UnityEngine.Timeline;
@@ -135,8 +136,8 @@ namespace UnityEngine.StreamingImageSequence
         }
 //---------------------------------------------------------------------------------------------------------------------
 
-        protected override void InitInternalV(StreamingImageSequenceRenderer renderer) {
-            bool ret = (null!=renderer && InitRenderers(renderer.gameObject));
+        protected override void InitInternalV(GameObject gameObject) {
+            bool ret = (null!=gameObject && InitRenderers(gameObject));
             if (!ret) {
                 Reset();
             }
@@ -145,6 +146,7 @@ namespace UnityEngine.StreamingImageSequence
 
 //---------------------------------------------------------------------------------------------------------------------
         private bool InitRenderers(GameObject go) {
+            Assert.IsNotNull(go);
 
             m_spriteRenderer= go.GetComponent<SpriteRenderer>();
             m_meshRenderer  = go.GetComponent<MeshRenderer>();
@@ -153,18 +155,18 @@ namespace UnityEngine.StreamingImageSequence
             }
             
             m_image         = go.GetComponent<Image>();
-            return (null!= m_meshRenderer || null!= m_image || null!=m_spriteRenderer);
+            m_sisRenderer = go.GetComponent<StreamingImageSequenceRenderer>();
+            return (null!= m_sisRenderer);
         }
 
 //---------------------------------------------------------------------------------------------------------------------
 
         void UpdateRendererTexture(StreamingImageSequencePlayableAsset asset) {
             Texture2D tex = asset.GetTexture();
-            StreamingImageSequenceRenderer renderer = GetOutput();
 
             const int NO_MATERIAL_OUTPUT = -1;
 
-            renderer.SetOutputTexture(tex);
+            m_sisRenderer.SetOutputTexture(tex);
             
             if (null!=m_spriteRenderer ) {
                 Sprite sprite = m_spriteRenderer.sprite;
@@ -174,7 +176,7 @@ namespace UnityEngine.StreamingImageSequence
                 
             } else if (null!=m_meshRenderer) {
                 Material mat;
-                int materialIndex = renderer.GetMaterialIndexToUpdate();
+                int materialIndex = m_sisRenderer.GetMaterialIndexToUpdate();
                 if (NO_MATERIAL_OUTPUT == materialIndex) {
                     return;
                 }
@@ -203,6 +205,7 @@ namespace UnityEngine.StreamingImageSequence
         private SpriteRenderer  m_spriteRenderer = null;
         private Renderer        m_meshRenderer = null;
         private Image           m_image = null;
+        private StreamingImageSequenceRenderer m_sisRenderer = null;
 
 #if UNITY_EDITOR
         SISPlayableMixerEditorUpdateTask m_editorUpdateTask;        

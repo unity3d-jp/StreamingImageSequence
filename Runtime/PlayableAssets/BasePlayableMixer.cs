@@ -17,10 +17,10 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     
     public override void PrepareFrame(Playable playable, FrameData info) {
         base.PrepareFrame(playable, info);
-        if (null == m_sisRenderer)
+        if (null == m_boundGameObject)
             return;
 
-        m_sisRenderer.gameObject.SetActive(false); //Always hide first, and show it later 
+        m_boundGameObject.gameObject.SetActive(false); //Always hide first, and show it later 
     }
     
 
@@ -32,7 +32,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
             return; // it doesn't work as mixer.
         }
 
-        if (m_sisRenderer== null ) {
+        if (m_boundGameObject== null ) {
             return;
         }
         
@@ -41,7 +41,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
             return;
         
         ProcessActiveClipV(activePlayableAsset, m_playableDirector.time, clip);
-        m_sisRenderer.gameObject.SetActive(true);
+        m_boundGameObject.gameObject.SetActive(true);
         
     }
 
@@ -88,20 +88,20 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     }
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal void Init(StreamingImageSequenceRenderer renderer, PlayableDirector director, IEnumerable<TimelineClip> clips) {
-        m_sisRenderer = renderer;
+    internal void Init(GameObject obj, PlayableDirector director, IEnumerable<TimelineClip> clips) {
+        m_boundGameObject = obj;
         m_playableDirector = director;
         
         m_clips = new List<TimelineClip>(clips);
         m_clipAssets = new Dictionary<TimelineClip, T>();
-        foreach (var clip in m_clips) {
+        foreach (TimelineClip clip in m_clips) {
             T clipAsset = clip.asset as T;
             Assert.IsNotNull(clipAsset);
             m_clipAssets.Add(clip, clipAsset);
         }
         
 
-        InitInternalV(renderer);
+        InitInternalV(obj);
     }
     
 //----------------------------------------------------------------------------------------------------------------------
@@ -116,18 +116,18 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected abstract void InitInternalV(StreamingImageSequenceRenderer renderer);
+    protected abstract void InitInternalV(GameObject obj);
     protected abstract void ProcessActiveClipV(T asset, double directorTime, TimelineClip activeClip);
 
 //----------------------------------------------------------------------------------------------------------------------
-    protected StreamingImageSequenceRenderer GetOutput() { return m_sisRenderer; }
+    protected GameObject GetBoundGameObject() { return m_boundGameObject; }
     protected PlayableDirector GetPlayableDirector() { return m_playableDirector; }
     protected IEnumerable<TimelineClip> GetClips() { return m_clips; }
     internal IEnumerable<KeyValuePair<TimelineClip,T>> GetClipAssets() { return m_clipAssets; }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    private StreamingImageSequenceRenderer m_sisRenderer;
+    private GameObject m_boundGameObject;
     private PlayableDirector m_playableDirector;
     private List<TimelineClip> m_clips;
     private Dictionary<TimelineClip, T> m_clipAssets;
