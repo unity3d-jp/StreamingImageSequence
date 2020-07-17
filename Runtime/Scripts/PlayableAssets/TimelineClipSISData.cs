@@ -25,6 +25,11 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     #endregion
 //----------------------------------------------------------------------------------------------------------------------
     internal void Destroy() {
+
+        foreach (SISPlayableFrame playableFrame in m_playableFrames) {
+            playableFrame.Destroy();
+        }
+
     }
     
 
@@ -107,7 +112,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
             foreach (SISPlayableFrame frame in m_playableFrames) {
                 prevUsedFrames.Add(null == frame || frame.IsUsed()); //if frame ==null, just regard as used.
             }
-            
+
             UpdatePlayableFramesSize(numIdealNumPlayableFrames);
             
             //Reinitialize 

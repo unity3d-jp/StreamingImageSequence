@@ -84,11 +84,13 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------
 
-        /// <inheritdoc cref="PlayableAsset" />
+        //[Note-sin: 2020-7-17] This is also called when the TimelineClip in TimelineWindow is deleted, instead of just
+        //The TimelineClipAsset (on file, for example) is deleted
         private void OnDestroy() {
 
             Reset();
-            DestroyPlayableFrames();
+           
+            m_timelineClipSISData?.Destroy();           
         }
 
 //----------------------------------------------------------------------------------------------------------------------
