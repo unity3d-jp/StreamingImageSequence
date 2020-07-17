@@ -24,7 +24,7 @@ namespace UnityEditor.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------
 
         [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Import AE Timeline", false, 10)]
-        static void ImportAeTimeline() {
+        private static void ImportAETimeline() {
             string strPath = EditorUtility.OpenFilePanel("Open File", "", "jstimeline");
             if (strPath.Length != 0) {
                 JstimelineImporter.ImportTimeline(strPath);
