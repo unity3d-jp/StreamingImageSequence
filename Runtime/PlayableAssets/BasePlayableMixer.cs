@@ -17,10 +17,10 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     
     public override void PrepareFrame(Playable playable, FrameData info) {
         base.PrepareFrame(playable, info);
-        if (null == m_sisOutput)
+        if (null == m_sisRenderer)
             return;
 
-        m_sisOutput.gameObject.SetActive(false); //Always hide first, and show it later 
+        m_sisRenderer.gameObject.SetActive(false); //Always hide first, and show it later 
     }
     
 
@@ -32,7 +32,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
             return; // it doesn't work as mixer.
         }
 
-        if (m_sisOutput== null ) {
+        if (m_sisRenderer== null ) {
             return;
         }
         
@@ -41,7 +41,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
             return;
         
         ProcessActiveClipV(activePlayableAsset, m_playableDirector.time, clip);
-        m_sisOutput.gameObject.SetActive(true);
+        m_sisRenderer.gameObject.SetActive(true);
         
     }
 
@@ -88,8 +88,8 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     }
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal void Init(StreamingImageSequenceOutput output, PlayableDirector director, IEnumerable<TimelineClip> clips) {
-        m_sisOutput = output;
+    internal void Init(StreamingImageSequenceRenderer renderer, PlayableDirector director, IEnumerable<TimelineClip> clips) {
+        m_sisRenderer = renderer;
         m_playableDirector = director;
         
         m_clips = new List<TimelineClip>(clips);
@@ -101,7 +101,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
         }
         
 
-        InitInternalV(output);
+        InitInternalV(renderer);
     }
     
 //----------------------------------------------------------------------------------------------------------------------
@@ -116,18 +116,18 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected abstract void InitInternalV(StreamingImageSequenceOutput output);
+    protected abstract void InitInternalV(StreamingImageSequenceRenderer renderer);
     protected abstract void ProcessActiveClipV(T asset, double directorTime, TimelineClip activeClip);
 
 //----------------------------------------------------------------------------------------------------------------------
-    protected StreamingImageSequenceOutput GetOutput() { return m_sisOutput; }
+    protected StreamingImageSequenceRenderer GetOutput() { return m_sisRenderer; }
     protected PlayableDirector GetPlayableDirector() { return m_playableDirector; }
     protected IEnumerable<TimelineClip> GetClips() { return m_clips; }
     internal IEnumerable<KeyValuePair<TimelineClip,T>> GetClipAssets() { return m_clipAssets; }
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    private StreamingImageSequenceOutput m_sisOutput;
+    private StreamingImageSequenceRenderer m_sisRenderer;
     private PlayableDirector m_playableDirector;
     private List<TimelineClip> m_clips;
     private Dictionary<TimelineClip, T> m_clipAssets;

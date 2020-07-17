@@ -19,7 +19,7 @@ internal class FaderTrack : TrackAsset {
         //Initialize mixer
         Image image = director.GetGenericBinding(this) as Image;           
         FaderPlayableMixer mixer = mixerScriptPlayable.GetBehaviour();
-        mixer.Init(null==image ? null : image.gameObject.GetComponent<StreamingImageSequenceOutput>(), director, GetClips());
+        mixer.Init(null==image ? null : image.gameObject.GetComponent<StreamingImageSequenceRenderer>(), director, GetClips());
         
         
         return mixerScriptPlayable;

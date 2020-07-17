@@ -4,7 +4,7 @@ namespace UnityEngine.StreamingImageSequence  {
 /// <summary>
 /// A component that stores the output of StreamingImageSequence 
 /// </summary>
-public sealed class StreamingImageSequenceOutput : MonoBehaviour {
+public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     
     
     /// <summary>
@@ -14,7 +14,8 @@ public sealed class StreamingImageSequenceOutput : MonoBehaviour {
     public int GetMaterialIndexToUpdate() { return m_materialIndexToUpdate; }
     
     /// <summary>
-    /// Set the index of the material to be updated by StreamingImageSequence 
+    /// Set the index of the material to be updated by StreamingImageSequence.
+    /// Only used if the gameObject has MeshRenderer or SkinnedMeshRenderer 
     /// </summary>
     /// <param name="index"></param>
     public void SetMaterialIndexToUpdate(int index) { m_materialIndexToUpdate = index; }

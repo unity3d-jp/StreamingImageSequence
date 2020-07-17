@@ -39,8 +39,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
                 Assert.AreEqual(10, playableAsset.GetImageFileNames().Count);
             }
 
-            //Make sure a StreamingImageSequenceOutput is bound to the trackAsset
-            StreamingImageSequenceOutput r = pd.GetGenericBinding(trackAsset) as StreamingImageSequenceOutput;
+            //Make sure a StreamingImageSequenceRenderer is bound to the trackAsset
+            StreamingImageSequenceRenderer r = pd.GetGenericBinding(trackAsset) as StreamingImageSequenceRenderer;
             Assert.IsNotNull(r);
         }
         

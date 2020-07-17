@@ -135,8 +135,8 @@ namespace UnityEngine.StreamingImageSequence
         }
 //---------------------------------------------------------------------------------------------------------------------
 
-        protected override void InitInternalV(StreamingImageSequenceOutput output) {
-            bool ret = (null!=output && InitRenderers(output.gameObject));
+        protected override void InitInternalV(StreamingImageSequenceRenderer renderer) {
+            bool ret = (null!=renderer && InitRenderers(renderer.gameObject));
             if (!ret) {
                 Reset();
             }
@@ -160,11 +160,11 @@ namespace UnityEngine.StreamingImageSequence
 
         void UpdateRendererTexture(StreamingImageSequencePlayableAsset asset) {
             Texture2D tex = asset.GetTexture();
-            StreamingImageSequenceOutput output = GetOutput();
+            StreamingImageSequenceRenderer renderer = GetOutput();
 
             const int NO_MATERIAL_OUTPUT = -1;
 
-            output.SetOutputTexture(tex);
+            renderer.SetOutputTexture(tex);
             
             if (null!=m_spriteRenderer ) {
                 Sprite sprite = m_spriteRenderer.sprite;
@@ -174,7 +174,7 @@ namespace UnityEngine.StreamingImageSequence
                 
             } else if (null!=m_meshRenderer) {
                 Material mat;
-                int materialIndex = output.GetMaterialIndexToUpdate();
+                int materialIndex = renderer.GetMaterialIndexToUpdate();
                 if (NO_MATERIAL_OUTPUT == materialIndex) {
                     return;
                 }

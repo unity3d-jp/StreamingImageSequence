@@ -162,7 +162,7 @@ internal class JstimelineImporter : ScriptedImporter
             }
 
             Image image = imageGo.GetOrAddComponent<Image>();
-            StreamingImageSequenceOutput output = imageGo.GetOrAddComponent<StreamingImageSequenceOutput>();
+            StreamingImageSequenceRenderer renderer = imageGo.GetOrAddComponent<StreamingImageSequenceRenderer>();
 
             RectTransform rectTransform = imageGo.GetComponent<RectTransform>();
             rectTransform.SetParent(directorT);
@@ -170,7 +170,7 @@ internal class JstimelineImporter : ScriptedImporter
             rectTransform.sizeDelta = new Vector2(trackMovieContainer.Resolution.Width,
                                                   trackMovieContainer.Resolution.Height);
 
-            director.SetGenericBinding(movieTrack, output);
+            director.SetGenericBinding(movieTrack, renderer);
             EditorUtility.SetDirty(director);
         }
 
