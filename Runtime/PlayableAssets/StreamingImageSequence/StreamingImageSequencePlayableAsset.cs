@@ -523,7 +523,10 @@ namespace UnityEngine.StreamingImageSequence {
             
             //Refresh all markers
             int numPlayableFrames = m_playableFrames.Count;
-            for (int i = 0; i < numPlayableFrames; ++i) {                
+            for (int i = 0; i < numPlayableFrames; ++i) {        
+                if (null == m_playableFrames[i]) {
+                    CreatePlayableFrameInList(i);
+                }                
                 m_playableFrames[i].Refresh(m_useImageMarkerVisibility);                
             }
             
