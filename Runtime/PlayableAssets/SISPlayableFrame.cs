@@ -34,8 +34,9 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     #endregion
     
 
+//----------------------------------------------------------------------------------------------------------------------
 
-    ~SISPlayableFrame() {
+    internal void Destroy() {
         if (null == m_marker)
             return;
 

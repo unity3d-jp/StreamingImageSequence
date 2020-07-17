@@ -54,6 +54,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 //----------------------------------------------------------------------------------------------------------------------    
     
     internal void ResetPlayableFrames() {
+        DestroyPlayableFrames();
 
         //Recalculate the number of frames and create the marker's ground truth data
         int numFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
@@ -62,6 +63,16 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
                 
     }
 
+//----------------------------------------------------------------------------------------------------------------------
+    private void DestroyPlayableFrames() {
+        if (null == m_playableFrames)
+            return;
+        
+        foreach (SISPlayableFrame frame in m_playableFrames) {
+            frame?.Destroy();
+        }        
+    } 
+    
 //----------------------------------------------------------------------------------------------------------------------    
     
     //Resize PlayableFrames and used the previous values
@@ -145,6 +156,10 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 
         if (m_playableFrames.Count > reqPlayableFramesSize) {
             int numLastPlayableFrames = m_playableFrames.Count;
+            for (int i = reqPlayableFramesSize; i < numLastPlayableFrames; ++i) {
+                SISPlayableFrame curFrame = m_playableFrames[i];
+                curFrame?.Destroy();
+            }            
             m_playableFrames.RemoveRange(reqPlayableFramesSize, numLastPlayableFrames - reqPlayableFramesSize);
         }
             
