@@ -22,23 +22,9 @@ namespace UnityEditor.StreamingImageSequence {
         }
 
 //----------------------------------------------------------------------------------------------------------------------
-        [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Convert MovieProxy to SpriteAnimation", false, 5)]
-        private static void ConvertToSpriteAnimation()
-        {
-            if (Selection.gameObjects == null || 0 == Selection.gameObjects.Length)
-            {
-                return;
-            }
-            foreach (var orgGo in Selection.gameObjects)
-            {
-                StreamingImageSequenceToSpriteAnimation.ConvertIt(orgGo);
-            }
-        }
-
-//----------------------------------------------------------------------------------------------------------------------
 
         [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Import AE Timeline", false, 10)]
-        static void ImportAETimeline() {
+        private static void ImportAETimeline() {
             string strPath = EditorUtility.OpenFilePanel("Open File", "", "jstimeline");
             if (strPath.Length != 0) {
                 JstimelineImporter.ImportTimeline(strPath);
@@ -48,7 +34,7 @@ namespace UnityEditor.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------
 
         [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Reset",false,50)]
-        static void Reset()
+        private static void Reset()
         {
             EditorUpdateManager.ResetImageLoading();
             PreviewTextureFactory.Reset();            
@@ -57,7 +43,7 @@ namespace UnityEditor.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
         [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Debug/Show Loaded Images",false,52)]
-        static void ShowLoadedImages() {
+        private static void ShowLoadedImages() {
             StringBuilder sb = new StringBuilder();
 
             for (int imageType = 0; imageType < StreamingImageSequenceConstants.MAX_IMAGE_TYPES; ++imageType) {
@@ -85,13 +71,13 @@ namespace UnityEditor.StreamingImageSequence {
         }
 
         [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Debug/Show Used Image Memory",false,53)]
-        static void ShowUsedImageMemory() {
+        private static void ShowUsedImageMemory() {
             Debug.Log($"Used memory for images: {StreamingImageSequencePlugin.GetUsedImagesMemory().ToString()} MB");
         }
         
 //----------------------------------------------------------------------------------------------------------------------
         [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Debug/Show Image Load Order",false,54)]
-        static void ShowImageLoadOrder() {
+        private static void ShowImageLoadOrder() {
             StringBuilder sb = new StringBuilder();
 
             for (int imageType = 0; imageType < StreamingImageSequenceConstants.MAX_IMAGE_TYPES; ++imageType) {
