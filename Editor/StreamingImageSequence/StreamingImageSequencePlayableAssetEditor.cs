@@ -71,7 +71,7 @@ namespace UnityEditor.StreamingImageSequence {
             }
 
 
-            TimelineClipSISData sisData = new TimelineClipSISData(sisTrack);
+            TimelineClipSISData sisData = new TimelineClipSISData(clip);
             asset.BindTimelineClip(clip, sisData);
 
             if (null == clonedFrom) {

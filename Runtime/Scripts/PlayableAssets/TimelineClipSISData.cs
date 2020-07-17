@@ -8,8 +8,8 @@ namespace UnityEngine.StreamingImageSequence {
 [Serializable]
 internal class TimelineClipSISData : ISerializationCallbackReceiver {
 
-    internal TimelineClipSISData(StreamingImageSequenceTrack owner) {
-        m_trackOwner = owner;
+    internal TimelineClipSISData(TimelineClip owner) {
+        m_clipOwner = owner;
     }
     
 //----------------------------------------------------------------------------------------------------------------------
@@ -42,8 +42,8 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     private void CreatePlayableFrame(int index) {
         Assert.IsTrue(null!=m_playableFrames && index < m_playableFrames.Count);
 
-        SISPlayableFrame playableFrame = new SISPlayableFrame();
-        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_trackOwner);
+        SISPlayableFrame playableFrame = new SISPlayableFrame(this);
+        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_clipOwner);
         playableFrame.Init(this, timePerFrame * index, m_useImageMarkerVisibility);
         m_playableFrames[index] = playableFrame;
     }
@@ -143,6 +143,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 //----------------------------------------------------------------------------------------------------------------------
     
     private void UpdatePlayableFramesSize(int reqPlayableFramesSize) {
+        Assert.IsNotNull(m_clipOwner);
 
         //Resize m_playableFrames
         if (m_playableFrames.Count < reqPlayableFramesSize) {
@@ -162,7 +163,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
             
         Assert.IsTrue(m_playableFrames.Count == reqPlayableFramesSize);
 
-        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_trackOwner);
+        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_clipOwner);
             
         for (int i = 0; i < reqPlayableFramesSize; ++i) {
             SISPlayableFrame curPlayableFrame = m_playableFrames[i];
@@ -258,7 +259,6 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     [SerializeField] private List<SISPlayableFrame> m_playableFrames;
     [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = false;
 
-    [NonSerialized] private StreamingImageSequenceTrack m_trackOwner = null;
     [NonSerialized] private TimelineClip  m_clipOwner = null;
 
 }

@@ -66,7 +66,7 @@ public class StreamingImageSequenceTrack : TrackAsset {
             }
 
             if (null == sisData) {
-                sisData = new TimelineClipSISData(this);
+                sisData = new TimelineClipSISData(clip);
             }
             
                        
@@ -156,7 +156,7 @@ public class StreamingImageSequenceTrack : TrackAsset {
             return m_sisDataCollection[clip];            
         }
 
-        TimelineClipSISData sisData = new TimelineClipSISData(this);
+        TimelineClipSISData sisData = new TimelineClipSISData(clip);
         m_sisDataCollection[clip] = sisData;
         return sisData;
     }

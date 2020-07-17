@@ -7,6 +7,12 @@ namespace UnityEngine.StreamingImageSequence {
 [Serializable]
 internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
+    internal SISPlayableFrame(TimelineClipSISData owner) {
+        m_timelineClipSISDataOwner = owner;        
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    
     internal void Init(TimelineClipSISData owner, double localTime, bool showMarker) {
         m_timelineClipSISDataOwner = owner;
         m_localTime = localTime;
