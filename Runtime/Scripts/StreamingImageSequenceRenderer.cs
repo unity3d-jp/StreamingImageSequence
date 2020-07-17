@@ -15,6 +15,7 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     
     /// <summary>
     /// Set the index of the material to be updated by StreamingImageSequence.
+    /// No material will be updated if index is less than 0.
     /// Only used if the gameObject has MeshRenderer or SkinnedMeshRenderer 
     /// </summary>
     /// <param name="index"></param>
