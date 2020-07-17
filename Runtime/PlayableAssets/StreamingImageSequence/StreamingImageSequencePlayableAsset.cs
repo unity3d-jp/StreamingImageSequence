@@ -87,6 +87,7 @@ namespace UnityEngine.StreamingImageSequence {
         private void OnDestroy() {
 
             Reset();
+            DestroyPlayableFrames();
         }
 //----------------------------------------------------------------------------------------------------------------------
 
