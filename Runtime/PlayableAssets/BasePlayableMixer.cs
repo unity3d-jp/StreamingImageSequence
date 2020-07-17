@@ -20,7 +20,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
         if (null == m_boundGameObject)
             return;
 
-        m_boundGameObject.gameObject.SetActive(false); //Always hide first, and show it later 
+        m_boundGameObject.SetActive(false); //Always hide first, and show it later 
     }
     
 
@@ -41,7 +41,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
             return;
         
         ProcessActiveClipV(activePlayableAsset, m_playableDirector.time, clip);
-        m_boundGameObject.gameObject.SetActive(true);
+        m_boundGameObject.SetActive(true);
         
     }
 
@@ -88,8 +88,8 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     }
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal void Init(GameObject obj, PlayableDirector director, IEnumerable<TimelineClip> clips) {
-        m_boundGameObject = obj;
+    internal void Init(GameObject go, PlayableDirector director, IEnumerable<TimelineClip> clips) {
+        m_boundGameObject = go;
         m_playableDirector = director;
         
         m_clips = new List<TimelineClip>(clips);
@@ -101,7 +101,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
         }
         
 
-        InitInternalV(obj);
+        InitInternalV(go);
     }
     
 //----------------------------------------------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected abstract void InitInternalV(GameObject obj);
+    protected abstract void InitInternalV(GameObject go);
     protected abstract void ProcessActiveClipV(T asset, double directorTime, TimelineClip activeClip);
 
 //----------------------------------------------------------------------------------------------------------------------
