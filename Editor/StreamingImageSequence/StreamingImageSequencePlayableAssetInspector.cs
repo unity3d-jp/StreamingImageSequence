@@ -91,9 +91,12 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
                 Assert.IsNotNull(timelineClipSISData);
                     
                 GUILayout.Space(15);
-                timelineClipSISData.SetUseImageMarkerVisibility(
-                    GUILayout.Toggle(timelineClipSISData.GetUseImageMarkerVisibility(), "Show UseImageMarkers")
-                );
+                bool prevMarkerVisibility = timelineClipSISData.GetUseImageMarkerVisibility();
+                bool markerVisibility = GUILayout.Toggle(prevMarkerVisibility, "Show UseImageMarkers");
+                if (markerVisibility != prevMarkerVisibility) {
+                    timelineClipSISData.SetUseImageMarkerVisibility(markerVisibility);
+                }
+                
                 
                 if (GUILayout.Button("Reset UseImageMarkers")) {
                     //[TODO-sin:2020-6-29] Support undo for this
