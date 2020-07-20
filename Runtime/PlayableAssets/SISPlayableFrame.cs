@@ -15,14 +15,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         m_timelineClipSISDataOwner = owner;
         m_useImage = otherFrame.m_useImage;
         m_localTime = otherFrame.m_localTime;
-    }
-    
-//----------------------------------------------------------------------------------------------------------------------
-    
-    internal void Init(TimelineClipSISData owner, double localTime) {
-        m_timelineClipSISDataOwner = owner;
-        m_localTime = localTime;
-    }
+    }       
     
 //----------------------------------------------------------------------------------------------------------------------
     #region ISerializationCallbackReceiver
