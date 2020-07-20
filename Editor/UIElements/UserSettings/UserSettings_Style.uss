@@ -1,0 +1,31 @@
+
+.header {
+    margin-left:       10px;      
+    font-size:         20px;
+    -unity-font-style: bold;
+}
+
+
+
+/*----------------------------------------------- Content--------------------------------------------------- */
+
+.content-container {
+    width: 600px;
+    -unity-font-style: normal;
+    font-size:  12px;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+
+/*---------------------------------------------- Footer ----------------------------------------------------- */
+
+.footer-container  {
+    height: 30px;
+    justify-content: space-between;
+    flex-direction: row;
+    margin-top: 10px;
+    margin-left: 30px;
+    margin-right: 45px;
+    flex-shrink: 0;
+}
