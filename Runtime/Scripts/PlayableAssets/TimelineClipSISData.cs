@@ -92,7 +92,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 //----------------------------------------------------------------------------------------------------------------------
     
     //Resize PlayableFrames and used the previous values
-    internal void ResizePlayableFrames() {
+    internal void RefreshPlayableFrames() {
         int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
       
         //Change the size of m_playableFrames and reinitialize if necessary
@@ -120,9 +120,11 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         }
         
         //Refresh all markers
+        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_clipOwner);                
         int numPlayableFrames = m_playableFrames.Count;
         for (int i = 0; i < numPlayableFrames; ++i) {                
-            m_playableFrames[i].Refresh(m_useImageMarkerVisibility);                
+            m_playableFrames[i].SetLocalTime(i * timePerFrame);
+            m_playableFrames[i].Refresh(m_useImageMarkerVisibility);
         }
         
     }        

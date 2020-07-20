@@ -40,7 +40,7 @@ namespace UnityEngine.StreamingImageSequence {
         public void OnGraphStart(Playable playable) {
 
             Assert.IsNotNull(m_timelineClipSISData);
-            m_timelineClipSISData.ResizePlayableFrames();
+            m_timelineClipSISData.RefreshPlayableFrames();
 
             if (null != m_clonedFromAsset) {                
                 //Refresh TimelineEditor if this asset was cloned
