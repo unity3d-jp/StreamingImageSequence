@@ -43,8 +43,8 @@ namespace UnityEngine.StreamingImageSequence {
             m_timelineClipSISData.RefreshPlayableFrames();
 
             if (null != m_clonedFromAsset) {                
-                //Refresh TimelineEditor if this asset was cloned
 #if UNITY_EDITOR 
+                //Refresh TimelineEditor if this asset was cloned
                 TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
 #endif                           
                 m_clonedFromAsset = null;
@@ -263,11 +263,22 @@ namespace UnityEngine.StreamingImageSequence {
             //Dummy. We just need to implement this from PlayableAsset because folder D&D support. See notes below
             return Playable.Null;
         }
-        
+
         /// <inheritdoc/>
-        public sealed override double duration {  get {  return (null!=m_boundTimelineClip) ? m_boundTimelineClip.duration : 0;  }  }
+        public sealed override double duration { get { return m_boundTimelineClip?.duration ?? 0; } }
        
-#endregion         
+#endregion    
+        
+//---------------------------------------------------------------------------------------------------------------------
+        internal void SetDuration(double clipDuration) {
+            if (null == m_boundTimelineClip)
+                return;
+
+            Undo.RegisterFullObjectHierarchyUndo(m_boundTimelineClip.parentTrack,"StreamingImageSequence: Set Duration");
+            m_boundTimelineClip.duration = clipDuration;
+            
+        }
+        
 //---------------------------------------------------------------------------------------------------------------------
 
 

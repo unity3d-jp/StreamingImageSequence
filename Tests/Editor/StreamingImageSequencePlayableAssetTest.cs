@@ -95,7 +95,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             double origClipDuration = clip.duration;
 
             //Resize longer
-            ResizeTimelineClip(clip, origClipDuration + 3.0f); yield return null;
+            ResizeSISPlayableAsset(sisAsset, origClipDuration + 3.0f); yield return null;
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
 
             //Undo
@@ -104,7 +104,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
             
             //Resize shorter
-            ResizeTimelineClip(clip, Mathf.Max(0.1f, ( (float)(origClipDuration) - 3.0f))); yield return null;
+            ResizeSISPlayableAsset(sisAsset, Mathf.Max(0.1f, ( (float)(origClipDuration) - 3.0f))); yield return null;
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
             
             //Undo
@@ -130,7 +130,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             double timePerFrame = TimelineUtility.CalculateTimePerFrame(clip);
             int numImages = sisAsset.GetImageFileNames().Count;
             clip.timeScale = 3.75f; //use scaling
-            ResizeTimelineClip(clip, (timePerFrame * numImages));
+            ResizeSISPlayableAsset(sisAsset, (timePerFrame * numImages));
             yield return null;
             
             int numFrames = TimelineUtility.CalculateNumFrames(clip);
@@ -175,8 +175,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         
 //----------------------------------------------------------------------------------------------------------------------                
 
-        private void ResizeTimelineClip(TimelineClip clip, double duration) {
-            clip.duration = duration;
+        private void ResizeSISPlayableAsset(StreamingImageSequencePlayableAsset sisAsset, double duration) {            
+            sisAsset.SetDuration(duration);
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
         }
 
