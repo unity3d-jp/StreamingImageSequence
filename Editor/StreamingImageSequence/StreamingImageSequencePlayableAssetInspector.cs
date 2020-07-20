@@ -80,9 +80,9 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
         
         if (null!= TimelineEditor.selectedClip) {
             
-            if (GUILayout.Button("Reset Curve")) {
-                //[TODO-sin:2020-1-29] Support undo for this
-                TimelineUtility.ResetTimelineCurve(TimelineEditor.selectedClip);                
+            if (GUILayout.Button("Reset Curve (Undoable)")) {
+                //AnimationClip.SetCurve() doesn't seem to be undoable
+                TimelineUtility.ResetTimelineClipCurve(TimelineEditor.selectedClip);                
             }
 
             //Image markers

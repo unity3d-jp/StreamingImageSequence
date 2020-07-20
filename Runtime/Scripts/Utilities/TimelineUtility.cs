@@ -27,7 +27,8 @@ internal static class TimelineUtility {
     }
     
 //----------------------------------------------------------------------------------------------------------------------
-    internal  static void ResetTimelineCurve(TimelineClip clip) {
+    internal  static void ResetTimelineClipCurve(TimelineClip clip) {
+        
         AnimationCurve animationCurve = new AnimationCurve();
         StreamingImageSequencePlayableAsset.ValidateAnimationCurve(ref animationCurve, (float) (clip.duration * clip.timeScale));
         StreamingImageSequencePlayableAsset.RefreshTimelineClipCurve(clip, animationCurve);

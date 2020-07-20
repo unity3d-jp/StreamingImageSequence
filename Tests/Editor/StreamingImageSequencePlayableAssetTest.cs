@@ -137,7 +137,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.AreEqual(numImages, numFrames);
             
             //Reset: make sure that the curve is a simple straight line from 0 to 1
-            TimelineUtility.ResetTimelineCurve(clip);
+            TimelineUtility.ResetTimelineClipCurve(clip);
             yield return null;
             
             sisAsset.ResetPlayableFrames();            
