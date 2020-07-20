@@ -71,18 +71,25 @@ namespace UnityEditor.StreamingImageSequence {
             }
 
 
-            TimelineClipSISData sisData = new TimelineClipSISData(clip);
-            asset.BindTimelineClip(clip, sisData);
+            TimelineClipSISData sisData = null;
 
             if (null == clonedFrom) {
+                sisData = new TimelineClipSISData(clip);
+                asset.BindTimelineClip(clip, sisData);
                 return;
             }
-            
+
+            //Cloning process            
             StreamingImageSequencePlayableAsset clonedFromAsset = clonedFrom.asset as StreamingImageSequencePlayableAsset;
-            if (null == clonedFromAsset) {
-                return;
-            }
+            Assert.IsNotNull(clonedFromAsset);
             
+            TimelineClipSISData otherSISData = clonedFromAsset.GetBoundTimelineClipSISData();
+            sisData = new TimelineClipSISData(clip, otherSISData);
+            asset.BindTimelineClip(clip, sisData);
+            
+            clip.displayName = clonedFrom.displayName + " (Cloned)"; 
+                
+               
             asset.OnClonedFrom(clonedFromAsset);
 
         }
