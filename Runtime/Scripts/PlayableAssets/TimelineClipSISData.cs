@@ -10,18 +10,19 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 
     internal TimelineClipSISData(TimelineClip owner) {
         m_clipOwner = owner;
-    }
-
-    internal TimelineClipSISData(TimelineClip owner, TimelineClipSISData other) {
-        m_clipOwner = owner;
-        m_useImageMarkerVisibility = other.m_useImageMarkerVisibility;
-
         int numFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
         m_playableFrames = new List<SISPlayableFrame>(numFrames);
+    }
+
+    internal TimelineClipSISData(TimelineClip owner, TimelineClipSISData other) : this(owner){
+        Assert.IsNotNull(m_playableFrames);
+        
         foreach (SISPlayableFrame otherFrame in other.m_playableFrames) {
             SISPlayableFrame newFrame = new SISPlayableFrame(this, otherFrame);
             m_playableFrames.Add(newFrame);
         }
+        
+        m_useImageMarkerVisibility = other.m_useImageMarkerVisibility;
         
     }
     
@@ -88,30 +89,10 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         }        
     } 
     
-//----------------------------------------------------------------------------------------------------------------------    
-    
-    //Resize PlayableFrames and used the previous values
-    internal void RefreshPlayableFrames() {
-
-        //if this asset was a cloned asset, split the playable frames
-        // if (null != m_clonedFromAsset) {
-        //     TrySplitPlayableFrames(numIdealNumPlayableFrames);
-        //     m_clonedFromAsset = null;
-        // }
-        
-        if (null == m_playableFrames) {
-            ResetPlayableFrames();
-        }
-        else {
-            ResizePlayableFrames();
-        }        
-        
-    }        
-
 //----------------------------------------------------------------------------------------------------------------------
     
     //Resize PlayableFrames and used the previous values
-    private void ResizePlayableFrames() {
+    internal void ResizePlayableFrames() {
         int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
       
         //Change the size of m_playableFrames and reinitialize if necessary

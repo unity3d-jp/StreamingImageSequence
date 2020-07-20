@@ -481,9 +481,8 @@ namespace UnityEngine.StreamingImageSequence {
             // }
 
             Assert.IsNotNull(m_timelineClipSISData);
-            m_timelineClipSISData.RefreshPlayableFrames();
-            
-            
+            m_timelineClipSISData.ResizePlayableFrames();
+                        
         }        
         
         #endregion
