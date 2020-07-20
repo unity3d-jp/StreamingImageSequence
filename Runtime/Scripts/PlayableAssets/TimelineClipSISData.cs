@@ -11,6 +11,19 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     internal TimelineClipSISData(TimelineClip owner) {
         m_clipOwner = owner;
     }
+
+    internal TimelineClipSISData(TimelineClip owner, TimelineClipSISData other) {
+        m_clipOwner = owner;
+        m_useImageMarkerVisibility = other.m_useImageMarkerVisibility;
+
+        int numFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
+        m_playableFrames = new List<SISPlayableFrame>(numFrames);
+        foreach (SISPlayableFrame otherFrame in other.m_playableFrames) {
+            SISPlayableFrame newFrame = new SISPlayableFrame(this, otherFrame);
+            m_playableFrames.Add(newFrame);
+        }
+        
+    }
     
 //----------------------------------------------------------------------------------------------------------------------
     #region ISerializationCallbackReceiver
