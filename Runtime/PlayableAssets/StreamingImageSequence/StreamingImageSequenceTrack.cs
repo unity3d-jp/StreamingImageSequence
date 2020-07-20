@@ -53,11 +53,10 @@ public class StreamingImageSequenceTrack : TrackAsset {
         base.OnBeforeTrackSerialize();
         m_serializedSISDataCollection = new List<TimelineClipSISData>();
         
-        
         foreach (TimelineClip clip in GetClips()) {
             TimelineClipSISData sisData = null;
 
-            if (m_sisDataCollection.ContainsKey(clip)) {                
+            if (null != m_sisDataCollection && m_sisDataCollection.ContainsKey(clip)) {                
                 sisData =   m_sisDataCollection[clip];
             } else {                
                 StreamingImageSequencePlayableAsset sisPlayableAsset = clip.asset as StreamingImageSequencePlayableAsset;
