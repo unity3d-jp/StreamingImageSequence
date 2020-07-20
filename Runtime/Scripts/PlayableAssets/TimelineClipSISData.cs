@@ -74,13 +74,11 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     internal TimelineClip GetOwner() { return m_clipOwner; }
     
 //----------------------------------------------------------------------------------------------------------------------    
-    private void CreatePlayableFrame(int index) {
-        Assert.IsTrue(null!=m_playableFrames && index < m_playableFrames.Count);
-
-        SISPlayableFrame playableFrame = new SISPlayableFrame(this);
-        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_clipOwner);
-        playableFrame.Init(this, timePerFrame * index, m_useImageMarkerVisibility);
-        m_playableFrames[index] = playableFrame;
+    private static SISPlayableFrame CreatePlayableFrame(TimelineClipSISData owner, int index, double timePerFrame, bool useImageMarker) 
+    {
+        SISPlayableFrame playableFrame = new SISPlayableFrame(owner);
+        playableFrame.Init(owner, timePerFrame * index, useImageMarker);
+        return playableFrame;
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
@@ -162,10 +160,14 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     private void UpdatePlayableFramesSize(int reqPlayableFramesSize) {
         Assert.IsNotNull(m_clipOwner);
 
+        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_clipOwner);
         //Resize m_playableFrames
         if (m_playableFrames.Count < reqPlayableFramesSize) {
             int             numNewPlayableFrames = (reqPlayableFramesSize - m_playableFrames.Count);
-            SISPlayableFrame[] newPlayableFrames    = new SISPlayableFrame[numNewPlayableFrames];
+            List<SISPlayableFrame> newPlayableFrames = new List<SISPlayableFrame>(numNewPlayableFrames);           
+            for (int i = m_playableFrames.Count; i < reqPlayableFramesSize; ++i) {
+                newPlayableFrames.Add(CreatePlayableFrame(this,i, timePerFrame, m_useImageMarkerVisibility));
+            }            
             m_playableFrames.AddRange(newPlayableFrames);                
         }
 
@@ -179,19 +181,13 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         }
             
         Assert.IsTrue(m_playableFrames.Count == reqPlayableFramesSize);
-
-        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_clipOwner);
-            
+           
         for (int i = 0; i < reqPlayableFramesSize; ++i) {
             SISPlayableFrame curPlayableFrame = m_playableFrames[i];
+            Assert.IsNotNull(curPlayableFrame);
                 
-            if (null == curPlayableFrame) {
-                CreatePlayableFrame(i);
-            }
-            else {
-                m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);
-                
-            }
+            m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);
+            
         }
             
             
