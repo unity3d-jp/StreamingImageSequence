@@ -2,6 +2,7 @@
 using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
 using UnityEngine.Timeline;
 
@@ -86,8 +87,14 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
 
             //[TODO-sin: 2020-6-29] Fix this so that the playable frames are stored inside the timelineClip
             if (TimelineEditor.selectedClip == m_asset.GetBoundTimelineClip()) {
+                TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
+                Assert.IsNotNull(timelineClipSISData);
+                    
                 GUILayout.Space(15);
-                m_asset.SetUseImageMarkerVisibility(GUILayout.Toggle(m_asset.GetUseImageMarkerVisibility(), "Show UseImageMarkers"));
+                timelineClipSISData.SetUseImageMarkerVisibility(
+                    GUILayout.Toggle(timelineClipSISData.GetUseImageMarkerVisibility(), "Show UseImageMarkers")
+                );
+                
                 if (GUILayout.Button("Reset UseImageMarkers")) {
                     //[TODO-sin:2020-6-29] Support undo for this
                     m_asset.ResetPlayableFrames();

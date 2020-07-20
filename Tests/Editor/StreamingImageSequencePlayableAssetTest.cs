@@ -54,8 +54,10 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             
             //Show
             TimelineClip clip = sisAsset.GetBoundTimelineClip();
+            TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
+            
             TrackAsset trackAsset = clip.parentTrack;
-            sisAsset.SetUseImageMarkerVisibility(true);
+            timelineClipSISData.SetUseImageMarkerVisibility(true);
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
             yield return null;
             
@@ -65,7 +67,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
             //Undo showing UseImageMarkers
             UndoAndRefreshTimelineEditor(); yield return null;
-            Assert.False(sisAsset.GetUseImageMarkerVisibility());
+            Assert.False(timelineClipSISData.GetUseImageMarkerVisibility());
             Assert.AreEqual(0, trackAsset.GetMarkerCount());
             
             
@@ -78,9 +80,10 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         public IEnumerator ResizePlayableAsset() {
             PlayableDirector director = NewSceneWithDirector();
             StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
+            TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
             yield return null;
             
-            sisAsset.SetUseImageMarkerVisibility(true); 
+            timelineClipSISData.SetUseImageMarkerVisibility(true); 
             Undo.IncrementCurrentGroup(); //the base of undo is here. UseImageMarkerVisibility is still true after undo
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
             yield return null;
@@ -119,7 +122,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         public IEnumerator UncheckUseImageMarkers() {
             PlayableDirector director = NewSceneWithDirector();
             StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
-            sisAsset.SetUseImageMarkerVisibility(true);
+            TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
+            timelineClipSISData.SetUseImageMarkerVisibility(true);
             yield return null;
 
             TimelineClip clip = sisAsset.GetBoundTimelineClip();

@@ -170,13 +170,8 @@ namespace UnityEngine.StreamingImageSequence {
         internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFileNames; }
 
 
-        //Should remove these functions
-        internal bool GetUseImageMarkerVisibility() {  return m_timelineClipSISData.GetUseImageMarkerVisibility(); }
 
-        internal void SetUseImageMarkerVisibility(bool show) { m_timelineClipSISData.SetUseImageMarkerVisibility(show); }
-
-
-        //These two methods are necessary "hacks" for knowing which TimelineClips currently own
+        //These methods are necessary "hacks" for knowing which TimelineClips currently own
         //this StreamingImageSequencePlayableAssets
         internal void BindTimelineClip(TimelineClip clip, TimelineClipSISData sisData) {
             Assert.IsNotNull(clip);
