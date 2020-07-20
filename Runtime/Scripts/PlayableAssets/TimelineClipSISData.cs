@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine.Assertions;
 using UnityEngine.Timeline;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+
+
 namespace UnityEngine.StreamingImageSequence {
 
 [Serializable]
@@ -51,7 +57,17 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     
     internal bool GetUseImageMarkerVisibility() {  return m_useImageMarkerVisibility; }
 
-    internal void SetUseImageMarkerVisibility(bool show) { m_useImageMarkerVisibility = show; }
+    internal void SetUseImageMarkerVisibility(bool show) {
+
+        if (show == m_useImageMarkerVisibility)
+            return;
+        
+#if UNITY_EDITOR        
+        Undo.RegisterFullObjectHierarchyUndo( m_clipOwner.parentTrack, "StreamingImageSequence Show/Hide UseImageMarker");
+#endif        
+        m_useImageMarkerVisibility = show;        
+        RefreshPlayableFrames();        
+    }
 
     internal void SetOwner(TimelineClip clip) { m_clipOwner = clip;}
     
