@@ -172,6 +172,44 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             DestroyTestTimelineAssets(clip);
             yield return null;
         }
+
+//----------------------------------------------------------------------------------------------------------------------                
+        [UnityTest]
+        public IEnumerator ResetUseImageMarkers() {
+            PlayableDirector director = NewSceneWithDirector();
+            StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
+            TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
+            timelineClipSISData.SetUseImageMarkerVisibility(true);
+            yield return null;
+            
+            //Change image to false
+            StreamingImageSequenceTrack track = sisAsset.GetBoundTimelineClip().parentTrack as StreamingImageSequenceTrack;
+            Assert.IsNotNull(track);           
+            foreach (var m in track.GetMarkers()) {
+                UseImageMarker marker = m as UseImageMarker;
+                Assert.IsNotNull(marker);
+                marker.SetImageUsed(false);
+                
+                UnityEngine.Assertions.Assert.IsFalse(marker.IsImageUsed());
+            }            
+            yield return null;
+            
+            sisAsset.ResetPlayableFrames();            
+            yield return null;
+            
+            //Check if all markers have been reset to used
+            foreach (var m in track.GetMarkers()) {
+                UseImageMarker marker = m as UseImageMarker;
+                Assert.IsNotNull(marker);                
+                UnityEngine.Assertions.Assert.IsTrue(marker.IsImageUsed());
+            }
+            yield return null;
+
+                       
+            TimelineClip clip = sisAsset.GetBoundTimelineClip();
+            DestroyTestTimelineAssets(clip);
+            yield return null;
+        }
         
 //----------------------------------------------------------------------------------------------------------------------                
 
