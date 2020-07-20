@@ -79,16 +79,15 @@ namespace UnityEditor.StreamingImageSequence {
                 return;
             }
 
-            //Cloning process            
+            //Duplicate/Split process
             StreamingImageSequencePlayableAsset clonedFromAsset = clonedFrom.asset as StreamingImageSequencePlayableAsset;
             Assert.IsNotNull(clonedFromAsset);
             
             TimelineClipSISData otherSISData = clonedFromAsset.GetBoundTimelineClipSISData();
             sisData = new TimelineClipSISData(clip, otherSISData);
-            asset.BindTimelineClip(clip, sisData);
-            
-            clip.displayName = clonedFrom.displayName + " (Cloned)"; 
-                
+            asset.BindTimelineClip(clip, sisData);            
+            clip.displayName = clonedFrom.displayName + " (Cloned)";
+                           
                
             asset.OnClonedFrom(clonedFromAsset);
 

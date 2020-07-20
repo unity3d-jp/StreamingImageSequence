@@ -87,12 +87,14 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 //----------------------------------------------------------------------------------------------------------------------
 
     void CreateMarker() {
-        TrackAsset trackAsset = m_timelineClipSISDataOwner.GetOwner()?.parentTrack;        
-               
+        TimelineClip clipOwner = m_timelineClipSISDataOwner.GetOwner();
+        TrackAsset trackAsset = clipOwner?.parentTrack;
+                       
         Assert.IsNotNull(trackAsset);
         Assert.IsNull(m_marker);
+               
         m_marker = trackAsset.CreateMarker<UseImageMarker>(m_localTime);
-        m_marker.Init(this, GetClipOwner().start + m_localTime);
+        m_marker.Init(this, clipOwner.start + m_localTime);
     }
 
     void DeleteMarker() {
