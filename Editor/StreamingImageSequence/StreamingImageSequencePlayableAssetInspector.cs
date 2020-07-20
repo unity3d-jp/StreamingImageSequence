@@ -85,7 +85,7 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
                 TimelineUtility.ResetTimelineCurve(TimelineEditor.selectedClip);                
             }
 
-            //[TODO-sin: 2020-6-29] Fix this so that the playable frames are stored inside the timelineClip
+            //Image markers
             if (TimelineEditor.selectedClip == m_asset.GetBoundTimelineClip()) {
                 TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
                 Assert.IsNotNull(timelineClipSISData);
