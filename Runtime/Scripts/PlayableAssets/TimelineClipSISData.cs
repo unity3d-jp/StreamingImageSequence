@@ -74,10 +74,10 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     internal TimelineClip GetOwner() { return m_clipOwner; }
     
 //----------------------------------------------------------------------------------------------------------------------    
-    private static SISPlayableFrame CreatePlayableFrame(TimelineClipSISData owner, int index, double timePerFrame, bool useImageMarker) 
+    private static SISPlayableFrame CreatePlayableFrame(TimelineClipSISData owner, int index, double timePerFrame) 
     {
         SISPlayableFrame playableFrame = new SISPlayableFrame(owner);
-        playableFrame.Init(owner, timePerFrame * index, useImageMarker);
+        playableFrame.Init(owner, timePerFrame * index);
         return playableFrame;
     }
 
@@ -166,7 +166,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
             int             numNewPlayableFrames = (reqPlayableFramesSize - m_playableFrames.Count);
             List<SISPlayableFrame> newPlayableFrames = new List<SISPlayableFrame>(numNewPlayableFrames);           
             for (int i = m_playableFrames.Count; i < reqPlayableFramesSize; ++i) {
-                newPlayableFrames.Add(CreatePlayableFrame(this,i, timePerFrame, m_useImageMarkerVisibility));
+                newPlayableFrames.Add(CreatePlayableFrame(this,i, timePerFrame));
             }            
             m_playableFrames.AddRange(newPlayableFrames);                
         }
@@ -186,7 +186,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
             SISPlayableFrame curPlayableFrame = m_playableFrames[i];
             Assert.IsNotNull(curPlayableFrame);
                 
-            m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);
+            m_playableFrames[i].Init(this, timePerFrame * i);
             
         }
             

@@ -19,13 +19,9 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     
 //----------------------------------------------------------------------------------------------------------------------
     
-    internal void Init(TimelineClipSISData owner, double localTime, bool showMarker) {
+    internal void Init(TimelineClipSISData owner, double localTime) {
         m_timelineClipSISDataOwner = owner;
         m_localTime = localTime;
-
-        if (null == m_marker && showMarker) {
-            CreateMarker();
-        }
     }
     
 //----------------------------------------------------------------------------------------------------------------------
