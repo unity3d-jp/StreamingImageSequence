@@ -99,7 +99,6 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
                 
                 
                 if (GUILayout.Button("Reset UseImageMarkers")) {
-                    //[TODO-sin:2020-6-29] Support undo for this
                     m_asset.ResetPlayableFrames();
                 }
             }
