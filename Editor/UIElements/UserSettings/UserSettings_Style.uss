@@ -17,12 +17,28 @@
     margin-top: 15px;
 }
 
+.field-container {
+    width: 600px;
+    -unity-font-style: normal;
+    font-size:  12px;
+    flex-direction: row;
+    
+}
+
+.field-container > SliderInt {
+    width: 500px;
+    -unity-font-style: normal;
+    font-size:  12px;
+    margin-right: 10px;
+
+}
 
 /*---------------------------------------------- Footer ----------------------------------------------------- */
 
 .footer-container  {
     height: 30px;
-    justify-content: space-between;
+    width: 500px;
+    justify-content: flex-end;
     flex-direction: row;
     margin-top: 10px;
     margin-left: 30px;

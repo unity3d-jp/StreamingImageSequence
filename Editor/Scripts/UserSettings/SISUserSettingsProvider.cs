@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using Unity.AnimeToolbox.Editor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UIElements;
@@ -10,12 +11,12 @@ internal class SISUserSettingsProvider : SettingsProvider {
 	
 	// ReSharper disable once ClassNeverInstantiated.Local
 	private class Contents {
- 		public static readonly GUIContent MaxMemoryForImagesMB = EditorGUIUtility.TrTextContent("Max Memory for Images (MB)");
+ 		internal static readonly GUIContent MAX_MEMORY_FOR_IMAGES_MB = EditorGUIUtility.TrTextContent("Max Memory for Images (MB)");
 	}
 	
 //----------------------------------------------------------------------------------------------------------------------	
-	
-	SISUserSettingsProvider() : base(USER_SETTINGS_MENU_PATH,SettingsScope.User) {
+
+	private SISUserSettingsProvider() : base(USER_SETTINGS_MENU_PATH,SettingsScope.User) {
 		
 		//activateHandler is called when the user clicks on the Settings item in the Settings window.
 		activateHandler = (string searchContext, VisualElement root) => {
@@ -27,16 +28,23 @@ internal class SISUserSettingsProvider : SettingsProvider {
 			main.CloneTree(root);			
 			
 			//Style
-			UIElementsEditorUtility.LoadAndAddStyle( root.styleSheets, SISEditorConstants.USER_SETTINGS_STYLE_PATH);
-			
+			UIElementsEditorUtility.LoadAndAddStyle( root.styleSheets, SISEditorConstants.USER_SETTINGS_STYLE_PATH);			
 			VisualElement content = root.Query<VisualElement>("Content");
 			Assert.IsNotNull(content);
-
-			SISUserSettings userSettings = SISUserSettings.GetInstance();
-			m_maxMemoryForImagesMBField = AddField<IntegerField, int>(content, 
-				Contents.MaxMemoryForImagesMB, userSettings.GetMaxImagesMemoryMB()
+			
+			//Template
+			VisualTreeAsset sliderIntTemplate = UIElementsEditorUtility.LoadVisualTreeAsset(
+				Path.Combine(SISEditorConstants.USER_SETTINGS_PATH,"SliderIntTemplate")				
 			);
 			
+			SISUserSettings userSettings = SISUserSettings.GetInstance();
+
+			
+			m_maxMemoryForImagesMBField = AddFieldFromTemplate<int>(sliderIntTemplate, content, Contents.MAX_MEMORY_FOR_IMAGES_MB,
+				userSettings.GetMaxImagesMemoryMB(), (int newValue) => {
+				}
+			);
+
 
 
 		};
@@ -68,6 +76,29 @@ internal class SISUserSettingsProvider : SettingsProvider {
 		return field;
 	}
 
+//----------------------------------------------------------------------------------------------------------------------
+	
+
+	//[TODO-sin: 2020-7-20] Move to Anime-toolbox ?
+	private TemplateContainer AddFieldFromTemplate<V>(VisualTreeAsset template, VisualElement parent, GUIContent content,
+		V initialValue, Action<V> onValueChanged)   where V : IComparable<V>
+	{
+		TemplateContainer templateInstance = template.CloneTree();
+		BaseField<V> field = templateInstance.Query<BaseField<V>>();
+		Assert.IsNotNull(field);
+		field.label = content.text;
+		field.tooltip = content.tooltip;	
+		
+		field.SetValueWithoutNotify(initialValue);
+		field.RegisterValueChangedCallback((ChangeEvent<V> changeEvent) => {		
+			onValueChanged(changeEvent.newValue);
+		});				
+		parent.Add(templateInstance);
+		return templateInstance;
+	}
+
+	
+	
 	
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -83,7 +114,7 @@ internal class SISUserSettingsProvider : SettingsProvider {
 
 	private static SISUserSettingsProvider m_settingsProvider = null;
 	private const string USER_SETTINGS_MENU_PATH = "Preferences/StreamingImageSequence";
-	private IntegerField m_maxMemoryForImagesMBField = null;
+	private TemplateContainer m_maxMemoryForImagesMBField = null;
 
 	
 //----------------------------------------------------------------------------------------------------------------------
