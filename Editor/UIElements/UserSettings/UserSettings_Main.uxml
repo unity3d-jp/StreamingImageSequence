@@ -3,11 +3,12 @@
     <Label text="Streaming Image Sequence" class="header"/>
             
     <VisualElement name="Content"  class="content-container">
+
         
     </VisualElement>
 
     <VisualElement name="Buttons" class="footer-container">
-        <Button text="Apply and Save"/>
+        <Button name="SaveButton" text="Save"/>
     </VisualElement>
     
 </UXML>
