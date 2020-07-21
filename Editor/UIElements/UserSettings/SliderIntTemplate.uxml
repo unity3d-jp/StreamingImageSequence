@@ -1,0 +1,8 @@
+<UXML xmlns="UnityEngine.UIElements">
+
+    <VisualElement name="FieldContainer" class="field-container">
+        <SliderInt name="SliderIntField"/>            
+        <Label text="label"/>        
+    </VisualElement>
+
+</UXML>
