@@ -2,7 +2,8 @@
 
     <VisualElement name="FieldContainer" class="field-container">
         <SliderInt name="SliderIntField"/>            
-        <Label text="label"/>        
+        <TextField name="SliderIntValueTextField"/>
+        <Label name="SliderIntValuePostLabel" text=""/>
     </VisualElement>
 
 </UXML>
