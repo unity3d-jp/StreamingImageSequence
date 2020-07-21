@@ -10,7 +10,7 @@
 /*----------------------------------------------- Content--------------------------------------------------- */
 
 .content-container {
-    width: 600px;
+    width: 480px;
     -unity-font-style: normal;
     font-size:  12px;
     flex-direction: column;
@@ -18,7 +18,7 @@
 }
 
 .field-container {
-    width: 600px;
+    width: 480px;
     -unity-font-style: normal;
     font-size:  12px;
     flex-direction: row;
@@ -26,27 +26,33 @@
 }
 
 .field-container > SliderInt {
-    width: 500px;
+    width: 320px;
+    
     -unity-font-style: normal;
     font-size:  12px;
     margin-right: 10px;
 
 }
 
+.field-container > IntegerField {
+    width: 60px;
+    -unity-text-align: middle-right;
+    
+}
+
 .field-container > Label {
     -unity-font-style: normal;
     font-size:  12px;
-
+    align-self: flex-end;
 }
+
 /*---------------------------------------------- Footer ----------------------------------------------------- */
 
 .footer-container  {
     height: 30px;
-    width: 500px;
+    width: 480px;
     justify-content: flex-end;
     flex-direction: row;
     margin-top: 10px;
-    margin-left: 30px;
-    margin-right: 45px;
     flex-shrink: 0;
 }
