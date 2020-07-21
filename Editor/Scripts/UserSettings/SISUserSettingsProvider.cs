@@ -38,12 +38,11 @@ internal class SISUserSettingsProvider : SettingsProvider {
 			
 			//Style
 			UIElementsEditorUtility.LoadAndAddStyle( root.styleSheets, SISEditorConstants.USER_SETTINGS_STYLE_PATH);			
-			VisualElement content = root.Query<VisualElement>("Content");
-			Assert.IsNotNull(content);
 			
-		
+			VisualElement content = root.Query<VisualElement>("Content");
+			Assert.IsNotNull(content);				
 			SISUserSettings userSettings = SISUserSettings.GetInstance();
-
+			int maxImagesMemoryMB = userSettings.GetMaxImagesMemoryMB();
 
 			//Prepare objects for binding
 			m_maxMemoryForImagesScriptableObject       = ScriptableObject.CreateInstance<IntScriptableObject>();
@@ -51,35 +50,39 @@ internal class SISUserSettingsProvider : SettingsProvider {
 			m_maxMemoryForImagesSerializedObject       = new SerializedObject(m_maxMemoryForImagesScriptableObject);
 			
 			//Slider
-			VisualTreeAsset sliderIntTemplate = UIElementsEditorUtility.LoadVisualTreeAsset(
-				Path.Combine(SISEditorConstants.USER_SETTINGS_PATH,"SliderIntTemplate")				
-			);
-			m_maxMemoryForImagesMBContainer = AddFieldFromTemplate<int>(sliderIntTemplate, content, 
-				Contents.MAX_MEMORY_FOR_IMAGES_MB,
-				userSettings.GetMaxImagesMemoryMB(), (int newValue) => {
-				}
-			);
-			m_maxMemoryForImagesSliderInt = m_maxMemoryForImagesMBContainer.Query<SliderInt>();
+			VisualElement fieldContainer = AddElement<VisualElement>(content, "field-container");
+			m_maxMemoryForImagesSliderInt = AddField<SliderInt, int>(fieldContainer, Contents.MAX_MEMORY_FOR_IMAGES_MB,
+				maxImagesMemoryMB);
+			
 			m_maxMemoryForImagesSliderInt.lowValue = 4096;
 			m_maxMemoryForImagesSliderInt.highValue = 65536;
 			m_maxMemoryForImagesSliderInt.bindingPath = nameof(IntScriptableObject.Value);
 			m_maxMemoryForImagesSliderInt.Bind(m_maxMemoryForImagesSerializedObject);			
 
-
-			m_maxMemoryForImagesTextField = m_maxMemoryForImagesMBContainer.Query<TextField>("SliderIntValueTextField");
-			m_maxMemoryForImagesTextField.bindingPath = nameof(IntScriptableObject.Value);			
-			m_maxMemoryForImagesTextField.Bind(m_maxMemoryForImagesSerializedObject);	
+			m_maxMemoryForImagesIntField = AddField<IntegerField, int>(fieldContainer, null,
+				maxImagesMemoryMB);
+			m_maxMemoryForImagesIntField.bindingPath = nameof(IntScriptableObject.Value);			
+			m_maxMemoryForImagesIntField.Bind(m_maxMemoryForImagesSerializedObject);
+			m_maxMemoryForImagesIntField.isReadOnly = true;
 			
-			Label sliderIntValuePostLabel = m_maxMemoryForImagesMBContainer.Query<Label>("SliderIntValuePostLabel");
+			Label sliderIntValuePostLabel = AddElement<Label>(fieldContainer);			
 			sliderIntValuePostLabel.text = "MB";
-			m_activated = true;
+			
+
+			//Buttons setup
+			Button saveButton = root.Query<Button>("SaveButton");
+			saveButton.clicked += () => {
+
+				Debug.Log(m_maxMemoryForImagesSliderInt.value);
+			};
+			
 
 		};
 				
 		deactivateHandler = () => {
 			if (m_activated) {
 				m_maxMemoryForImagesSliderInt.Unbind();
-				m_maxMemoryForImagesTextField.Unbind();
+				m_maxMemoryForImagesIntField.Unbind();
 			
 				Object.DestroyImmediate(m_maxMemoryForImagesScriptableObject);
 				m_maxMemoryForImagesScriptableObject = null;
@@ -98,8 +101,40 @@ internal class SISUserSettingsProvider : SettingsProvider {
 	}
 
 
+//----------------------------------------------------------------------------------------------------------------------
+	
+	//[TODO-sin: 2020-7-20] Move to Anime-toolbox ?
+	private static T AddElement<T>(VisualElement parent, string className =null) 
+		where T: VisualElement, new()  
+	{
+        
+		T element = new T();
+		if (!string.IsNullOrEmpty(className)) {
+			element.AddToClassList(className);
+		}
+        
+		parent.Add(element);
+		return element;
+	}	
 
 //----------------------------------------------------------------------------------------------------------------------
+	
+	//[TODO-sin: 2020-7-20] Move to Anime-toolbox ?
+	private static F AddField<F,V>(VisualElement parent, GUIContent content, V initialValue) 
+		where F: BaseField<V>,INotifyValueChanged<V>, new()  
+	{
+        
+		F field = new F();
+		field.SetValueWithoutNotify(initialValue);
+
+		if (null != content) {
+			field.tooltip = content.tooltip;
+			field.label   = content.text;			
+		}
+        
+		parent.Add(field);
+		return field;
+	}	
 	
 
 	//[TODO-sin: 2020-7-20] Move to Anime-toolbox ?
@@ -143,7 +178,7 @@ internal class SISUserSettingsProvider : SettingsProvider {
 	private IntScriptableObject m_maxMemoryForImagesScriptableObject = null;
 	private SerializedObject m_maxMemoryForImagesSerializedObject = null;
 	private SliderInt m_maxMemoryForImagesSliderInt = null;
-	private TextField m_maxMemoryForImagesTextField = null;
+	private IntegerField m_maxMemoryForImagesIntField = null;
 	private bool m_activated = false;
 
 //----------------------------------------------------------------------------------------------------------------------
