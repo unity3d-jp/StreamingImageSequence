@@ -12,7 +12,6 @@ public static class UIElementsUtility  {
 //----------------------------------------------------------------------------------------------------------------------
 	
     
-    //[TODO-sin: 2020-7-20] Move to Anime-toolbox ?
     /// <summary>
     /// Add a VisualElement
     /// </summary>
@@ -35,7 +34,6 @@ public static class UIElementsUtility  {
 
 //----------------------------------------------------------------------------------------------------------------------
 	
-    //[TODO-sin: 2020-7-20] Move to Anime-toolbox ?
     /// <summary>
     /// Add a UIElements field  
     /// </summary>
@@ -63,4 +61,4 @@ public static class UIElementsUtility  {
     
 }
    
-}
+} //end namespace
