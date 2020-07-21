@@ -28,6 +28,7 @@ internal class SISUserSettingsProvider : SettingsProvider {
 		
 	
 		//activateHandler is called when the user clicks on the Settings item in the Settings window.
+		
 		activateHandler = (string searchContext, VisualElement root) => {
 
 			
@@ -47,7 +48,7 @@ internal class SISUserSettingsProvider : SettingsProvider {
 			//Prepare objects for binding
 			m_maxMemoryForImagesScriptableObject       = ScriptableObject.CreateInstance<IntScriptableObject>();
 			m_maxMemoryForImagesScriptableObject.Value = userSettings.GetMaxImagesMemoryMB();
-			m_maxMemoryForImagesSerializedObject       = new SerializedObject(m_maxMemoryForImagesScriptableObject);
+			SerializedObject maxMemoryForImagesSerializedObject = new SerializedObject(m_maxMemoryForImagesScriptableObject);
 			
 			//Slider
 			VisualElement fieldContainer = AddElement<VisualElement>(content, "field-container");
@@ -57,12 +58,12 @@ internal class SISUserSettingsProvider : SettingsProvider {
 			m_maxMemoryForImagesSliderInt.lowValue = 4096;
 			m_maxMemoryForImagesSliderInt.highValue = 65536;
 			m_maxMemoryForImagesSliderInt.bindingPath = nameof(IntScriptableObject.Value);
-			m_maxMemoryForImagesSliderInt.Bind(m_maxMemoryForImagesSerializedObject);			
+			m_maxMemoryForImagesSliderInt.Bind(maxMemoryForImagesSerializedObject);			
 
 			m_maxMemoryForImagesIntField = AddField<IntegerField, int>(fieldContainer, null,
 				maxImagesMemoryMB);
 			m_maxMemoryForImagesIntField.bindingPath = nameof(IntScriptableObject.Value);			
-			m_maxMemoryForImagesIntField.Bind(m_maxMemoryForImagesSerializedObject);
+			m_maxMemoryForImagesIntField.Bind(maxMemoryForImagesSerializedObject);
 			m_maxMemoryForImagesIntField.isReadOnly = true;
 			
 			Label sliderIntValuePostLabel = AddElement<Label>(fieldContainer);			
@@ -85,7 +86,6 @@ internal class SISUserSettingsProvider : SettingsProvider {
 			
 				Object.DestroyImmediate(m_maxMemoryForImagesScriptableObject);
 				m_maxMemoryForImagesScriptableObject = null;
-				m_maxMemoryForImagesSerializedObject = null;
 				m_activated = false;
 			 	
 			}
@@ -151,9 +151,7 @@ internal class SISUserSettingsProvider : SettingsProvider {
 	private const string USER_SETTINGS_MENU_PATH = "Preferences/StreamingImageSequence";
 	
 	
-	private TemplateContainer m_maxMemoryForImagesMBContainer = null;
 	private IntScriptableObject m_maxMemoryForImagesScriptableObject = null;
-	private SerializedObject m_maxMemoryForImagesSerializedObject = null;
 	private SliderInt m_maxMemoryForImagesSliderInt = null;
 	private IntegerField m_maxMemoryForImagesIntField = null;
 	private bool m_activated = false;
