@@ -97,26 +97,7 @@ internal class SISUserSettingsProvider : SettingsProvider {
 		
 	}
 
-	~SISUserSettingsProvider() {
-		
-	}
-	
 
-//----------------------------------------------------------------------------------------------------------------------	
-
-	//[TODO-sin: 2020-7-20] Move to Anime-toolbox ?
-	private static F AddField<F,V>(VisualElement parent, GUIContent content, V initialValue) 
-		where F: BaseField<V>,INotifyValueChanged<V>, new()  
-	{
-		
-		F field = new F();
-		field.SetValueWithoutNotify(initialValue);
-		field.tooltip = content.tooltip;
-		field.label = content.text;
-		
-		parent.Add(field);
-		return field;
-	}
 
 //----------------------------------------------------------------------------------------------------------------------
 	
