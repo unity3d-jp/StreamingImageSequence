@@ -54,7 +54,10 @@ internal class SISUserSettings {
 
     internal int GetVersion() { return m_classVersion; }
 
-    internal void SetMaxImagesMemoryMB(int value) { m_maxImagesMemoryMB = value; }
+    internal void SetMaxImagesMemoryMB(int value) {
+        m_maxImagesMemoryMB = value;
+        StreamingImageSequencePlugin.SetMaxImagesMemory(m_maxImagesMemoryMB);        
+    }
     internal int GetMaxImagesMemoryMB() {  return m_maxImagesMemoryMB;}
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -71,7 +74,7 @@ internal class SISUserSettings {
         return settings;
     }
     
-    void SaveUserSettings() {
+    internal void SaveUserSettings() {
         string dir = Path.GetDirectoryName(SIS_USER_SETTINGS_PATH);
         Assert.IsFalse(string.IsNullOrEmpty(dir));
         
