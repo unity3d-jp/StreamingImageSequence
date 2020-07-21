@@ -72,10 +72,9 @@ internal class SISUserSettingsProvider : SettingsProvider {
 			//Buttons setup
 			Button saveButton = root.Query<Button>("SaveButton");
 			saveButton.clicked += () => {
-
-				Debug.Log(m_maxMemoryForImagesSliderInt.value);
-			};
-			
+				userSettings.SetMaxImagesMemoryMB(m_maxMemoryForImagesSliderInt.value);
+				userSettings.SaveUserSettings();
+			};			
 
 		};
 				
