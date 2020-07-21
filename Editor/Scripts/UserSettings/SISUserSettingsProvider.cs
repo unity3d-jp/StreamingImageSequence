@@ -137,28 +137,6 @@ internal class SISUserSettingsProvider : SettingsProvider {
 	}	
 	
 
-	//[TODO-sin: 2020-7-20] Move to Anime-toolbox ?
-	private TemplateContainer AddFieldFromTemplate<V>(VisualTreeAsset template, VisualElement parent, GUIContent content,
-		V initialValue, Action<V> onValueChanged)   where V : IComparable<V>
-	{
-		TemplateContainer templateInstance = template.CloneTree();
-		BaseField<V> field = templateInstance.Query<BaseField<V>>();
-		Assert.IsNotNull(field);
-		field.label = content.text;
-		field.tooltip = content.tooltip;	
-		
-		field.SetValueWithoutNotify(initialValue);
-		field.RegisterValueChangedCallback((ChangeEvent<V> changeEvent) => {		
-			onValueChanged(changeEvent.newValue);
-		});				
-		parent.Add(templateInstance);
-		return templateInstance;
-	}
-
-	
-	
-	
-
 //----------------------------------------------------------------------------------------------------------------------
 
     [SettingsProvider]
