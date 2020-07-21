@@ -51,8 +51,8 @@ internal class SISUserSettingsProvider : SettingsProvider {
 			SerializedObject maxMemoryForImagesSerializedObject = new SerializedObject(m_maxMemoryForImagesScriptableObject);
 			
 			//Slider
-			VisualElement fieldContainer = AddElement<VisualElement>(content, "field-container");
-			m_maxMemoryForImagesSliderInt = AddField<SliderInt, int>(fieldContainer, Contents.MAX_MEMORY_FOR_IMAGES_MB,
+			VisualElement fieldContainer = UIElementsUtility.AddElement<VisualElement>(content, "field-container");
+			m_maxMemoryForImagesSliderInt = UIElementsUtility.AddField<SliderInt, int>(fieldContainer, Contents.MAX_MEMORY_FOR_IMAGES_MB,
 				maxImagesMemoryMB);
 			
 			m_maxMemoryForImagesSliderInt.lowValue = 4096;
@@ -60,16 +60,16 @@ internal class SISUserSettingsProvider : SettingsProvider {
 			m_maxMemoryForImagesSliderInt.bindingPath = nameof(IntScriptableObject.Value);
 			m_maxMemoryForImagesSliderInt.Bind(maxMemoryForImagesSerializedObject);			
 
-			m_maxMemoryForImagesIntField = AddField<IntegerField, int>(fieldContainer, null,
+			m_maxMemoryForImagesIntField = UIElementsUtility.AddField<IntegerField, int>(fieldContainer, null,
 				maxImagesMemoryMB);
 			m_maxMemoryForImagesIntField.bindingPath = nameof(IntScriptableObject.Value);			
 			m_maxMemoryForImagesIntField.Bind(maxMemoryForImagesSerializedObject);
 			m_maxMemoryForImagesIntField.isReadOnly = true;
 			
-			Label sliderIntValuePostLabel = AddElement<Label>(fieldContainer);			
+			Label sliderIntValuePostLabel = UIElementsUtility.AddElement<Label>(fieldContainer);			
 			sliderIntValuePostLabel.text = "MB     ";
 
-			m_curMaxMemoryForImagesLabel = AddElement<Label>(fieldContainer);			
+			m_curMaxMemoryForImagesLabel = UIElementsUtility.AddElement<Label>(fieldContainer);			
 			m_curMaxMemoryForImagesLabel.text = $"({maxImagesMemoryMB} MB)";
 			
 
@@ -104,40 +104,6 @@ internal class SISUserSettingsProvider : SettingsProvider {
 	}
 
 
-//----------------------------------------------------------------------------------------------------------------------
-	
-	//[TODO-sin: 2020-7-20] Move to Anime-toolbox ?
-	private static T AddElement<T>(VisualElement parent, string className =null) 
-		where T: VisualElement, new()  
-	{
-        
-		T element = new T();
-		if (!string.IsNullOrEmpty(className)) {
-			element.AddToClassList(className);
-		}
-        
-		parent.Add(element);
-		return element;
-	}	
-
-//----------------------------------------------------------------------------------------------------------------------
-	
-	//[TODO-sin: 2020-7-20] Move to Anime-toolbox ?
-	private static F AddField<F,V>(VisualElement parent, GUIContent content, V initialValue) 
-		where F: BaseField<V>,INotifyValueChanged<V>, new()  
-	{
-        
-		F field = new F();
-		field.SetValueWithoutNotify(initialValue);
-
-		if (null != content) {
-			field.tooltip = content.tooltip;
-			field.label   = content.text;			
-		}
-        
-		parent.Add(field);
-		return field;
-	}	
 	
 
 //----------------------------------------------------------------------------------------------------------------------
