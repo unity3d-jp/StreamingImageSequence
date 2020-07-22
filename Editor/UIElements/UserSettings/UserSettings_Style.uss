@@ -1,0 +1,58 @@
+
+.header {
+    margin-left:       10px;      
+    font-size:         20px;
+    -unity-font-style: bold;
+}
+
+
+
+/*----------------------------------------------- Content--------------------------------------------------- */
+
+.content-container {
+    width: 480px;
+    -unity-font-style: normal;
+    font-size:  12px;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+.field-container {
+    width: 480px;
+    -unity-font-style: normal;
+    font-size:  12px;
+    flex-direction: row;
+    
+}
+
+.field-container > SliderInt {
+    width: 320px;
+    
+    -unity-font-style: normal;
+    font-size:  12px;
+    margin-right: 10px;
+
+}
+
+.field-container > IntegerField {
+    width: 60px;
+    -unity-text-align: middle-right;
+    
+}
+
+.field-container > Label {
+    -unity-font-style: normal;
+    font-size:  12px;
+    align-self: flex-end;
+}
+
+/*---------------------------------------------- Footer ----------------------------------------------------- */
+
+.footer-container  {
+    height: 30px;
+    width: 480px;
+    justify-content: flex-end;
+    flex-direction: row;
+    margin-top: 30px;
+    flex-shrink: 0;
+}
