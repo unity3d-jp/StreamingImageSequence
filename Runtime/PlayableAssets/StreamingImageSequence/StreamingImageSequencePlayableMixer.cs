@@ -182,7 +182,7 @@ namespace UnityEngine.StreamingImageSequence
             } else if (null!=m_meshRenderer) {
                 Material mat;
                 int materialIndex = m_sisRenderer.GetMaterialIndexToUpdate();
-                if (NO_MATERIAL_OUTPUT == materialIndex) {
+                if (materialIndex <= NO_MATERIAL_OUTPUT) {
                     return;
                 }
                 
