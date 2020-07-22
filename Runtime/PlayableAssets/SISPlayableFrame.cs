@@ -51,10 +51,12 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     internal bool IsUsed() { return m_useImage; }
 
     internal void SetUsed(bool used) {
-        m_useImage = used;
 #if UNITY_EDITOR
-        EditorSceneManager.MarkAllScenesDirty();
+        if (m_useImage != used) {
+            EditorSceneManager.MarkAllScenesDirty();            
+        }
 #endif        
+        m_useImage = used;
         
     }
     internal double GetLocalTime() { return m_localTime; }
