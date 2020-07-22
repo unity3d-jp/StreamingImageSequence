@@ -162,7 +162,7 @@ internal class JstimelineImporter : ScriptedImporter
             }
 
             Image image = imageGo.GetOrAddComponent<Image>();
-            StreamingImageSequenceNativeRenderer renderer = imageGo.GetOrAddComponent<StreamingImageSequenceNativeRenderer>();
+            StreamingImageSequenceRenderer renderer = imageGo.GetOrAddComponent<StreamingImageSequenceRenderer>();
 
             RectTransform rectTransform = imageGo.GetComponent<RectTransform>();
             rectTransform.SetParent(directorT);

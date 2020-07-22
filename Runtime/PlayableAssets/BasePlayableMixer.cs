@@ -94,7 +94,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
         
         m_clips = new List<TimelineClip>(clips);
         m_clipAssets = new Dictionary<TimelineClip, T>();
-        foreach (var clip in m_clips) {
+        foreach (TimelineClip clip in m_clips) {
             T clipAsset = clip.asset as T;
             Assert.IsNotNull(clipAsset);
             m_clipAssets.Add(clip, clipAsset);
@@ -116,7 +116,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected abstract void InitInternalV(GameObject boundGameObject);
+    protected abstract void InitInternalV(GameObject go);
     protected abstract void ProcessActiveClipV(T asset, double directorTime, TimelineClip activeClip);
 
 //----------------------------------------------------------------------------------------------------------------------
