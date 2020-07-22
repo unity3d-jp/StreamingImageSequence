@@ -4,7 +4,6 @@ using UnityEditor.Timeline;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence {
@@ -97,10 +96,6 @@ namespace UnityEditor.StreamingImageSequence {
         /// <inheritdoc/>
         public override void OnClipChanged(TimelineClip clip) {
             base.OnClipChanged(clip);
-
-            StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
-            Assert.IsNotNull(sisAsset);
-            sisAsset.RefreshPlayableFrames();
         }
 
 //----------------------------------------------------------------------------------------------------------------------

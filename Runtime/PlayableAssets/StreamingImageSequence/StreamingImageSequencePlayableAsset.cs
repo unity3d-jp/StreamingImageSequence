@@ -38,6 +38,7 @@ namespace UnityEngine.StreamingImageSequence {
         
         /// <inheritdoc/>
         public void OnGraphStart(Playable playable) {
+            RefreshPlayableFrames();
         }
         
         /// <inheritdoc/>
@@ -483,7 +484,7 @@ namespace UnityEngine.StreamingImageSequence {
            
         }
 
-        internal void RefreshPlayableFrames() {
+        void RefreshPlayableFrames() {
             int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(m_boundTimelineClip);
 
             //if this asset was a cloned asset, split the playable frames
