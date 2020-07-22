@@ -73,12 +73,6 @@ namespace UnityEngine.StreamingImageSequence {
         public StreamingImageSequencePlayableAsset() {
             m_lastCopiedImageIndex = -1;            
         }
-
-//----------------------------------------------------------------------------------------------------------------------
-        internal void OnClonedFrom(StreamingImageSequencePlayableAsset otherAsset) {
-            m_clonedFromAsset = otherAsset; 
-            
-        }
         
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -554,7 +548,6 @@ namespace UnityEngine.StreamingImageSequence {
         private int m_backwardPreloadImageIndex = 0;
         
         private bool m_verified;
-        private StreamingImageSequencePlayableAsset m_clonedFromAsset = null;
 
         Texture2D m_texture = null;
 

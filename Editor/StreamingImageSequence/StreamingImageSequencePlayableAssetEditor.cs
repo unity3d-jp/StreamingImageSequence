@@ -87,9 +87,6 @@ namespace UnityEditor.StreamingImageSequence {
             sisData = new TimelineClipSISData(clip, otherSISData);
             asset.BindTimelineClip(clip, sisData);            
             clip.displayName = clonedFrom.displayName + " (Cloned)";
-                           
-               
-            asset.OnClonedFrom(clonedFromAsset);
 
         }
 
