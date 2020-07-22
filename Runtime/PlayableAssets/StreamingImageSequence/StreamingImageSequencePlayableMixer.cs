@@ -166,7 +166,11 @@ namespace UnityEngine.StreamingImageSequence
 
             const int NO_MATERIAL_OUTPUT = -1;
 
-            m_sisRenderer.SetOutputTexture(tex);
+            RenderTexture rt = m_sisRenderer.GetRenderTexture();
+            if (null != rt) {
+                Graphics.Blit(tex, rt);                
+            }
+            
             
             if (null!=m_spriteRenderer ) {
                 Sprite sprite = m_spriteRenderer.sprite;
