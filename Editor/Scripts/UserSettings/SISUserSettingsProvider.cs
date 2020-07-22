@@ -57,7 +57,6 @@ internal class SISUserSettingsProvider : SettingsProvider {
 				maxImagesMemoryMB);
 			m_maxMemoryForImagesIntField.bindingPath = nameof(IntScriptableObject.Value);			
 			m_maxMemoryForImagesIntField.Bind(maxMemoryForImagesSerializedObject);
-			m_maxMemoryForImagesIntField.isReadOnly = true;
 			
 			Label sliderIntValuePostLabel = UIElementsUtility.AddElement<Label>(fieldContainer);			
 			sliderIntValuePostLabel.text = "MB     ";
