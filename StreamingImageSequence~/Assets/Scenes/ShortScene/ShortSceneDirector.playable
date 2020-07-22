@@ -388,10 +388,10 @@ MonoBehaviour:
     - m_useImage: 1
       m_localTime: 0.13333333333333333
       m_marker: {fileID: 297372272455302596}
-    - m_useImage: 0
+    - m_useImage: 1
       m_localTime: 0.15
       m_marker: {fileID: 8511343134002695645}
-    - m_useImage: 0
+    - m_useImage: 1
       m_localTime: 0.16666666666666666
       m_marker: {fileID: 531377380332451724}
     - m_useImage: 1
