@@ -24,7 +24,8 @@ internal class SISUserSettings {
     
 
 //----------------------------------------------------------------------------------------------------------------------
-    
+
+    //[TODO-sin: 2020-7-22] Put the singleton structure to Anime-Toolbox
 
     internal static SISUserSettings GetInstance() {
         if (null != m_instance)

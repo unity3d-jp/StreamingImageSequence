@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using Unity.AnimeToolbox;
 using Unity.AnimeToolbox.Editor;
 using UnityEditor.UIElements;
@@ -17,11 +15,6 @@ internal class SISUserSettingsProvider : SettingsProvider {
  		internal static readonly GUIContent MAX_MEMORY_FOR_IMAGES_MB = EditorGUIUtility.TrTextContent("Max Memory for Images ");
 	}
 		
-//----------------------------------------------------------------------------------------------------------------------	
-
-
-//	private static bool once = false;
-
 //----------------------------------------------------------------------------------------------------------------------	
 
 	private SISUserSettingsProvider() : base(USER_SETTINGS_MENU_PATH,SettingsScope.User) {
@@ -79,7 +72,9 @@ internal class SISUserSettingsProvider : SettingsProvider {
 				userSettings.SetMaxImagesMemoryMB(m_maxMemoryForImagesSliderInt.value);
 				m_curMaxMemoryForImagesLabel.text = $"({userSettings.GetMaxImagesMemoryMB()} MB)";
 				userSettings.SaveUserSettings();
-			};			
+			};
+
+			m_activated = true;
 
 		};
 				
@@ -91,7 +86,6 @@ internal class SISUserSettingsProvider : SettingsProvider {
 				Object.DestroyImmediate(m_maxMemoryForImagesScriptableObject);
 				m_maxMemoryForImagesScriptableObject = null;
 				m_activated = false;
-			 	
 			}
 		};
 
