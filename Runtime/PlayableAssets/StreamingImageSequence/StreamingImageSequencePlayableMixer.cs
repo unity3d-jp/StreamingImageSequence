@@ -161,6 +161,7 @@ namespace UnityEngine.StreamingImageSequence
 
 //---------------------------------------------------------------------------------------------------------------------
 
+        //[TODO-sin: 2020-7-22] This should be moved to StreamingImageSequenceRenderer
         void UpdateRendererTexture(StreamingImageSequencePlayableAsset asset) {
             Texture2D tex = asset.GetTexture();
 
