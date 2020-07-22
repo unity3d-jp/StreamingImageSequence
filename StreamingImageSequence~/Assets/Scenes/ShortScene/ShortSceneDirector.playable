@@ -574,7 +574,7 @@ MonoBehaviour:
   m_Name: StreamingImageSequencePlayableAsset
   m_EditorClassIdentifier: 
   m_folder: Assets/StreamingAssets/ShortSceneFootage
-  m_imagePaths:
+  m_imageFileNames:
   - ShortSceneFootage_00000.png
   - ShortSceneFootage_00001.png
   - ShortSceneFootage_00002.png
@@ -595,7 +595,7 @@ MonoBehaviour:
   - {fileID: -1140773816473060974}
   - {fileID: 4014242105826868827}
   m_version: 1
-  m_time: 0.4166666865348816
+  m_time: 0.3333333432674408
   m_timelineDefaultAsset: {fileID: 102900000, guid: 28ebc38bfdd481147934ea04bfc829bb,
     type: 3}
   m_useImageMarkerVisibility: 1
