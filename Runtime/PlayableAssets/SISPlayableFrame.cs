@@ -2,6 +2,10 @@
 using UnityEngine.Assertions;
 using UnityEngine.Timeline;
 
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
+
 namespace UnityEngine.StreamingImageSequence {
     
 [Serializable]
@@ -45,7 +49,14 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
     internal TimelineClipSISData GetOwner() {  return m_timelineClipSISDataOwner; }
     internal bool IsUsed() { return m_useImage; }
-    internal void SetUsed(bool used) { m_useImage = used; }
+
+    internal void SetUsed(bool used) {
+        m_useImage = used;
+#if UNITY_EDITOR
+        EditorSceneManager.MarkAllScenesDirty();
+#endif        
+        
+    }
     internal double GetLocalTime() { return m_localTime; }
     internal void SetLocalTime(double localTime) {  m_localTime = localTime;}
 
