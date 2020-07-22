@@ -166,7 +166,7 @@ namespace UnityEngine.StreamingImageSequence
 
             const int NO_MATERIAL_OUTPUT = -1;
 
-            RenderTexture rt = m_sisRenderer.GetRenderTexture();
+            RenderTexture rt = m_sisRenderer.GetTargetTexture();
             if (null != rt) {
                 Graphics.Blit(tex, rt);                
             }

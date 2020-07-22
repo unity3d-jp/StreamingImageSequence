@@ -22,20 +22,20 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     public void SetMaterialIndexToUpdate(int index) { m_materialIndexToUpdate = index; }
     
     /// <summary>
-    /// Get the assigned RenderTexture  
+    /// Get the target render texture   
     /// </summary>
-    /// <returns>The assigned RenderTexture</returns>
-    public RenderTexture GetRenderTexture() { return m_renderTexture; }
+    /// <returns>The target RenderTexture</returns>
+    public RenderTexture GetTargetTexture() { return m_targetTexture; }
 
     /// <summary>
-    /// Sets a RenderTexture to which StreamingImageSequence will copy its internal texture     
+    /// Sets StreamingImageSequence to copy its internal texture into a target RenderTexture.     
     /// </summary>
-    public void SetRenderTexture(RenderTexture tex) { m_renderTexture = tex;}
+    public void SetTargetTexture(RenderTexture tex) { m_targetTexture = tex;}
     
 //----------------------------------------------------------------------------------------------------------------------    
     
     [SerializeField] private int m_materialIndexToUpdate;
-    [SerializeField] private RenderTexture m_renderTexture;
+    [SerializeField] private RenderTexture m_targetTexture;
 
 
 }
