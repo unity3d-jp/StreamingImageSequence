@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using UnityEditor;
+using UnityEditor.Timeline;
 using UnityEngine;
 
 public static class DebugMenu  {
@@ -41,4 +42,10 @@ public static class DebugMenu  {
         Resources.UnloadUnusedAssets();
     }
 
+//----------------------------------------------------------------------------------------------------------------------    
+    [MenuItem("Debug/Refresh TimelineEditor")]
+    private static void RefreshTimelineEditor() {
+        TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved);
+    }
+    
 }
