@@ -107,6 +107,10 @@ namespace UnityEditor.StreamingImageSequence {
         /// <inheritdoc/>
         public override void OnClipChanged(TimelineClip clip) {
             base.OnClipChanged(clip);
+                        
+            StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(sisAsset);
+            sisAsset.RefreshPlayableFrames();            
         }
 
 //----------------------------------------------------------------------------------------------------------------------

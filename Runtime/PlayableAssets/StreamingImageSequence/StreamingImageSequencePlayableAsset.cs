@@ -38,17 +38,6 @@ namespace UnityEngine.StreamingImageSequence {
         
         /// <inheritdoc/>
         public void OnGraphStart(Playable playable) {
-
-            Assert.IsNotNull(m_timelineClipSISData);
-            m_timelineClipSISData.RefreshPlayableFrames();
-
-            if (null != m_clonedFromAsset) {                
-#if UNITY_EDITOR 
-                //Refresh TimelineEditor if this asset was cloned
-                TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
-#endif                           
-                m_clonedFromAsset = null;
-            }
         }
         
         /// <inheritdoc/>
@@ -394,17 +383,6 @@ namespace UnityEngine.StreamingImageSequence {
 
         #region PlayableFrames
 
-        StreamingImageSequenceTrack GetTrack() {
-            if (null == m_boundTimelineClip || null == m_boundTimelineClip.parentTrack)
-                return null;
-
-            return m_boundTimelineClip.parentTrack as StreamingImageSequenceTrack;
-
-        }
-        
-        
-//----------------------------------------------------------------------------------------------------------------------
-
         internal void ResetPlayableFrames() {
 #if UNITY_EDITOR
             Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Resetting Use Image Markers");
@@ -415,6 +393,20 @@ namespace UnityEngine.StreamingImageSequence {
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
 #endif            
            
+        }
+
+        internal void RefreshPlayableFrames() {
+            
+            //Haven't been assigned yet. May happen during recompile
+            if (null == m_timelineClipSISData)
+                return;
+
+            //Clip doesn't have parent. Might be because the clip is being moved 
+            if (null == m_boundTimelineClip.parentTrack) {
+                return;
+            }
+                       
+            m_timelineClipSISData.RefreshPlayableFrames();            
         }
         
         #endregion

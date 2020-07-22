@@ -70,7 +70,8 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         }
 
         if (m_marker) {
-            m_marker.SetOwner(this);
+            TimelineClip clipOwner = m_timelineClipSISDataOwner.GetOwner();
+            m_marker.Init(this, clipOwner.start + m_localTime);
         }
     }
 //----------------------------------------------------------------------------------------------------------------------
@@ -83,7 +84,6 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         Assert.IsNull(m_marker);
                
         m_marker = trackAsset.CreateMarker<UseImageMarker>(m_localTime);
-        m_marker.Init(this, clipOwner.start + m_localTime);
     }
 
     void DeleteMarker() {
