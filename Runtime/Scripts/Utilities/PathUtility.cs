@@ -1,14 +1,28 @@
 ﻿using System.Text.RegularExpressions;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 namespace UnityEngine.StreamingImageSequence {
 
 
-//[TODO-sin: 2020-7-9] Can we reuse or put the code to com.unity.anime-toolbox ?
 internal static class PathUtility {
 
+#if UNITY_EDITOR
     [InitializeOnLoadMethod]
-    static void PathUtilityOnLoad() {
+    static void PathUtility_OnLoad() {
+        Init();
+    }
+#endif
+    
+    [RuntimeInitializeOnLoadMethod]
+    static void PathUtility_OnLoadRuntime() {
+        Init();
+
+    }
+    
+    static void Init() {
         //Cache variables for access by background thread
         m_appDataPath = Application.dataPath;
        
