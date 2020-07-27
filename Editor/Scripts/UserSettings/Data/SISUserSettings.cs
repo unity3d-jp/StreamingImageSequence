@@ -1,8 +1,6 @@
 ﻿using System;
-using System.IO;
 using Unity.AnimeToolbox;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
 
 
