@@ -2,7 +2,7 @@
     "displayName": "Streaming Image Sequence",
     "name": "com.unity.streaming-image-sequence",
     "unity": "2019.3",
-    "version": "0.3.0-preview",
+    "version": "0.3.1-preview",
     "dependencies": {
         "com.unity.anime-toolbox": "0.1.4-preview",
         "com.unity.ext.nunit": "1.0.0",        
