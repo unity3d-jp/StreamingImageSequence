@@ -26,8 +26,22 @@ It is designed with the following principles in mind:
 ### [Fading Image objects](en/FaderPlayableAsset.md)
 ![FaderDemo](images/FaderDemo.gif)
 
+## Preferences
 
-# Other Languages
+StreamingImageSequence loads images to memory to ensure smooth image playback. 
+The maximum amount of memory used for this purpose can be configured on the
+**Edit > Preferences** window.
+
+![Preferences](images/Preferences.png)
+
+| Legend  | Use                                                                                       | 
+| ------- | ---------------------------------------------------------------------- | 
+| A       | Preferences to configure                                               |   
+| B       | Currently applied values                                               |   
+| C       | Apply and save                                                         |  
+
+
+## Other Languages
 - [日本語](jp/index.md)
 
 

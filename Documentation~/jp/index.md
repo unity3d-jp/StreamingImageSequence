@@ -25,8 +25,20 @@ Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Time
 ### [Image オブジェクトをフェードさせる](FaderPlayableAsset.md)
 ![FaderDemo](../images/FaderDemo.gif)
 
+## 環境設定
 
-# その他の言語
+StreamingImageSequence は、スムーズな画像再生を提供するために、画像をメモリにロードしています。
+このメモリの最大量は、**編集 > 環境設定** ウィンドウで設定できます。
+
+![Preferences](../images/Preferences.png)
+
+| 記号    | 用途                                                                    | 
+| ------- | ---------------------------------------------------------------------- | 
+| A       | 設定できる環境変数                                                       |   
+| B       | 現在の設定値                                                            |   
+| C       | 適応し、保存する                                                        |  
+
+## その他の言語
 - [English](../index.md)
 
 
