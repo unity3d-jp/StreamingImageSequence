@@ -29,10 +29,12 @@ It is designed with the following principles in mind:
 ### [Fading Image objects](./Documentation~/en/FaderPlayableAsset.md)
 ![FaderDemo](Documentation~/images/FaderDemo.gif)
 
-## Preferences
+## Memory
 
-StreamingImageSequence loads images to memory to ensure smooth image playback. 
-The maximum amount of memory used for this purpose can be configured on the
+StreamingImageSequence allocates physical memory to ensure smooth image playback.  
+This allocation is set to satisfy the following requirements:
+1. Does not exceed 90% of the total physical memory of the system.
+2. Does not exceed the maximum amount of memory, which can be configured on the
 **Edit > Preferences** window.
 
 ![Preferences](Documentation~/images/Preferences.png)
