@@ -73,7 +73,7 @@ internal class SISUserSettings {
     private const string SIS_USER_SETTINGS_PATH = "Library/StreamingImageSequence/SISUserSettings.asset";
 
 
-    [SerializeField] private int m_maxImagesMemoryMB = 8096;
+    [SerializeField] private int m_maxImagesMemoryMB = 65536;
     
     // ReSharper disable once NotAccessedField.Local
     [SerializeField] private int m_classVersion = 1;
