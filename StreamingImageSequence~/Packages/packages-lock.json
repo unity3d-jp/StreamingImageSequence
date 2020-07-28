@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.unity.anime-toolbox": {
+      "version": "0.1.4-preview",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.recorder": "2.1.0-preview.1"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.ext.nunit": {
       "version": "1.0.0",
       "depth": 0,
@@ -23,12 +32,21 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.package-validation-suite": {
-      "version": "0.9.1-preview",
-      "depth": 0,
+    "com.unity.nuget.mono-cecil": {
+      "version": "0.1.6-preview.2",
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "nuget.mono-cecil": "0.1.6-preview"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.package-validation-suite": {
+      "version": "0.13.0-preview",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.nuget.mono-cecil": "0.1.6-preview.2"
       },
       "url": "https://packages.unity.com"
     },
@@ -39,11 +57,21 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.recorder": {
+      "version": "2.1.0-preview.1",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.timeline": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.streaming-image-sequence": {
       "version": "file:com.unity.streaming-image-sequence",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
+        "com.unity.anime-toolbox": "0.1.4-preview",
         "com.unity.ext.nunit": "1.0.0",
         "com.unity.ugui": "1.0.0",
         "com.unity.timeline": "1.2.14"
@@ -86,7 +114,7 @@
     },
     "nuget.mono-cecil": {
       "version": "0.1.6-preview",
-      "depth": 1,
+      "depth": 2,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"

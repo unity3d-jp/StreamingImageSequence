@@ -1,7 +1,6 @@
 ﻿using System;
-using System.IO;
+using Unity.AnimeToolbox;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
 
 
@@ -24,8 +23,6 @@ internal class SISUserSettings {
     
 
 //----------------------------------------------------------------------------------------------------------------------
-
-    //[TODO-sin: 2020-7-22] Put the singleton structure to Anime-Toolbox
 
     internal static SISUserSettings GetInstance() {
         if (null != m_instance)
@@ -62,30 +59,13 @@ internal class SISUserSettings {
     internal int GetMaxImagesMemoryMB() {  return m_maxImagesMemoryMB;}
 
 //----------------------------------------------------------------------------------------------------------------------
-    #region File Load/Save for Serialization/deserialization
     static SISUserSettings LoadUserSettings() {
-        string path = SIS_USER_SETTINGS_PATH;
-        if (!File.Exists(path)) {
-            return null;
-        }
-        
-        string json = File.ReadAllText(path);
-        SISUserSettings settings = JsonUtility.FromJson<SISUserSettings>(json);
-        
-        return settings;
+        return FileUtility.DeserializeFromJson<SISUserSettings>(SIS_USER_SETTINGS_PATH);
     }
     
     internal void SaveUserSettings() {
-        string dir = Path.GetDirectoryName(SIS_USER_SETTINGS_PATH);
-        Assert.IsFalse(string.IsNullOrEmpty(dir));
-        
-        Directory.CreateDirectory(dir);
-        string json = JsonUtility.ToJson(this);
-        File.WriteAllText(SIS_USER_SETTINGS_PATH, json);
-        
-    }
-    #endregion
-    
+        FileUtility.SerializeToJson<SISUserSettings>(this, SIS_USER_SETTINGS_PATH);
+    }    
 
 //----------------------------------------------------------------------------------------------------------------------
 
