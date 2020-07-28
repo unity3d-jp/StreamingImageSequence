@@ -49,7 +49,7 @@ internal class SISUserSettingsProvider : SettingsProvider {
 				maxImagesMemoryMB);
 			
 			m_maxMemoryForImagesSliderInt.lowValue = 4096;
-			m_maxMemoryForImagesSliderInt.highValue = 65536;
+			m_maxMemoryForImagesSliderInt.highValue = 131072;
 			m_maxMemoryForImagesSliderInt.bindingPath = nameof(IntScriptableObject.Value);
 			m_maxMemoryForImagesSliderInt.Bind(maxMemoryForImagesSerializedObject);			
 
