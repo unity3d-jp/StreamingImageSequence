@@ -1,19 +1,27 @@
 # Streaming Image Sequence
 
+## Other Languages
+* [日本語](README_JP.md)
+
+## Introduction
+
 Streaming Image Sequence is a package for playing sequential image sequences in Unity Timeline 
-easily without making Unity 2D Sprites.
+easily without making Unity 2D Sprites.  
+It is designed with the following principles in mind:
 
-**Timeline 1.4.x or above is recommended.**
+1. Can avoid texture importing time entirely by using 
+   [StreamingAssets](https://docs.unity3d.com/Manual/StreamingAssets.html).
+1. Offers smooth image playback, both in play mode and in timeline editing mode.
+1. Supports multiple OS.
 
-# Other Languages
-- [日本語](README_JP.md)
+**Using Timeline 1.4.x or above is recommended.**
 
-# Supported Platforms
+## Supported Platforms
 
 1. Windows
 2. Mac
 
-# Features
+## Features
 
 ### [Playing Sequential Images](./Documentation~/en/StreamingImageSequencePlayableAsset.md)
 ![StreamingImageSequenceDemo](Documentation~/images/StreamingImageSequenceDemo.gif)
@@ -22,10 +30,10 @@ easily without making Unity 2D Sprites.
 ![FaderDemo](Documentation~/images/FaderDemo.gif)
 
 
-# Plugins
+## Plugins
 * [Building](Plugins~/Docs/en/BuildPlugins.md)
 
-# License
+## License
 * Source Code: [Unity Companion License](LICENSE.md)
 * Third-Party Software Components: [Third Party Notices](Third%20Party%20Notices.md)
 * Unity-chan Assets: [Unity-Chan License](http://unity-chan.com/contents/guideline_en/)  
@@ -34,7 +42,7 @@ easily without making Unity 2D Sprites.
   - `StreamingImageSequence~/Assets/StreamingAssets`  
 
 # Tutorial Videos
-- [Usage Video](https://youtu.be/mlRbwqJ74CM)
-- [Example](https://youtu.be/4og6rgQdb3c)
+* [Usage Video](https://youtu.be/mlRbwqJ74CM)
+* [Example](https://youtu.be/4og6rgQdb3c)
 
 
