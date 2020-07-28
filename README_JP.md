@@ -26,7 +26,7 @@ Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Time
 # ライセンス
 * ソースコード: [Unity Companion License](LICENSE.md)
 * サードパーティのソフトウェア　コンポーネント: [Third Party Notices](Third%20Party%20Notices.md) 
-* Unity-chan アセット: [Unity-Chan License](https://unity-chan.com/contents/guideline/)。  
+* Unity-chan アセット: [Unity-Chan License](https://unity-chan.com/contents/guideline/)  
   このアセットは下記のフォルダーに配置されていますが、これらのみに限定されない。
   - `AE~/Samples`
   - `StreamingImageSequence~/Assets/StreamingAssets`

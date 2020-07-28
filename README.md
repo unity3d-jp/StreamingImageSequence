@@ -28,7 +28,7 @@ easily without making Unity 2D Sprites.
 # License
 * Source Code: [Unity Companion License](LICENSE.md)
 * Third-Party Software Components: [Third Party Notices](Third%20Party%20Notices.md)
-* Unity-chan Assets: [Unity-Chan License](http://unity-chan.com/contents/guideline_en/).
+* Unity-chan Assets: [Unity-Chan License](http://unity-chan.com/contents/guideline_en/)  
   These assets can be located under, but not limited to, the following folder:
   - `AE~/Samples`
   - `StreamingImageSequence~/Assets/StreamingAssets`  
