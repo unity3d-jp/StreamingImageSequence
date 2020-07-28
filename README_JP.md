@@ -21,11 +21,13 @@ Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Time
 ![FaderDemo](Documentation~/images/FaderDemo.gif)
 
 # プラグイン
-* [ビルド](Plugin~/Docs/en/BuildPlugins.md)
+* [ビルド](Plugins~/Docs/en/BuildPlugins.md)
 
 # ライセンス
 * ソースコード: [Unity Companion License](LICENSE.md)
-* Unity-chan アセット: [Unity-Chan License](https://unity-chan.com/contents/guideline/), located under the following folder:
+* サードパーティのソフトウェア　コンポーネント: [Third Party Notices](Third%20Party%20Notices.md) 
+* Unity-chan アセット: [Unity-Chan License](https://unity-chan.com/contents/guideline/)  
+  このアセットは下記のフォルダーに配置されていますが、これらのみに限定されない。
   - `AE~/Samples`
   - `StreamingImageSequence~/Assets/StreamingAssets`
 
