@@ -7,7 +7,11 @@
 //External
 #include "CommonLib/CommonLib.h" //IMAGE_CS
 #include "CommonLib/CriticalSectionController.h"
-#include "stb/stb_image_resize.h"
+
+//External/stb
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
+#define STBIR_DEFAULT_FILTER_DOWNSAMPLE  STBIR_FILTER_CATMULLROM
+#include "External/stb/stb_image_resize.h"
 
 
 namespace StreamingImageSequencePlugin {
