@@ -127,7 +127,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
             string fileName       = fileCounter.ToString($"D{numDigits}") + ".png";
             string outputFilePath = Path.Combine(outputFolder, fileName);
                         
-            //[TODO-sin: 2020-5-27] Call API to unload texture
+            //[TODO-sin: 2020-5-27] Call StreamingImageSequencePlugin API to unload texture because it may be overwritten
+           
             m_renderCapturer.CaptureToFile(outputFilePath);
             m_nextDirectorTime += m_timePerFrame;
             ++fileCounter;
