@@ -2,7 +2,7 @@
 
 namespace UnityEngine.StreamingImageSequence.Tests {
 
-public class UtilityTest {
+internal class MathUtilityTest {
 
 
 //----------------------------------------------------------------------------------------------------------------------    
