@@ -45,10 +45,9 @@ bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, con
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void* ImageMemoryAllocator::Allocate(const size_t memSize) {
+void* ImageMemoryAllocator::Allocate(const size_t memSize, bool forceAllocate) {
 
-
-    if (m_maxMemory != UNLIMITED_MEMORY && (m_usedMemory + memSize) > m_maxMemory)
+    if (!forceAllocate && m_maxMemory != UNLIMITED_MEMORY && (m_usedMemory + memSize) > m_maxMemory)
         return nullptr;
 
 #if OSX
@@ -61,7 +60,7 @@ void* ImageMemoryAllocator::Allocate(const size_t memSize) {
 #else
     const float MIN_AVAILABLE_RAM_RATIO = 0.1f;
     const float availableRAMRatio = MemoryUtility::GetAvailableRAM() * m_inverseTotalRAM;
-    if (availableRAMRatio <= MIN_AVAILABLE_RAM_RATIO)
+    if (!forceAllocate && availableRAMRatio <= MIN_AVAILABLE_RAM_RATIO)
         return nullptr;
 
     void* buffer = (malloc(memSize));
@@ -74,6 +73,29 @@ void* ImageMemoryAllocator::Allocate(const size_t memSize) {
     IncUsedMem(memSize);
 
     return buffer;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+void* ImageMemoryAllocator::Reallocate(void* buffer, const size_t memSize, bool forceAllocate) {
+
+    if (nullptr == buffer) {
+        return nullptr;
+    }
+    const auto allocatedBuffer = m_allocatedBuffers.find(buffer);
+    if (m_allocatedBuffers.end() == allocatedBuffer ) {
+        return nullptr;
+    }
+
+    const size_t prevSize = allocatedBuffer->second;
+
+    void* newBuffer = Allocate(memSize, forceAllocate);
+    if (nullptr == newBuffer)
+        return nullptr;
+
+    std::memcpy(newBuffer, buffer, min(prevSize, memSize));
+    Deallocate(buffer);
+    return newBuffer;
 }
 
 

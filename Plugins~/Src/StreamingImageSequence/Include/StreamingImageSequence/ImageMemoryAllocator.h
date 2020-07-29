@@ -23,7 +23,8 @@ public:
     bool Allocate(uint8_t ** rawDataPtr, const uint32_t w, const uint32_t h);
 
     //return nullptr if not successful
-    void* Allocate(const size_t memSize);
+    void* Allocate(const size_t memSize, bool forceAllocate = false);
+    void* Reallocate(void* buffer, const size_t memSize, bool forceAllocate = false);
 
     bool Deallocate(ImageData* imageData);
     bool Deallocate(void* buffer);
