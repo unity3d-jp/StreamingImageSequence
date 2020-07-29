@@ -86,6 +86,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
             EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(), this);
                         
         }
+        
+        //[TODO-sin: 2020-7-29] Add a button to delete all images in the folder
 
     }
 

@@ -14,12 +14,6 @@ internal class RenderCachePlayableAsset : PlayableAsset, ITimelineClipAsset {
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    public RenderCachePlayableAsset() {
-        
-    }
 
     public ClipCaps clipCaps {
         get {
@@ -27,12 +21,6 @@ internal class RenderCachePlayableAsset : PlayableAsset, ITimelineClipAsset {
         }
     }
     
-    internal void Refresh() {
-        //Move the timeline to start of the clip until the end.
-        //Access the camera, and store the rendered results somewhere
-        
-    }
-
     
 //----------------------------------------------------------------------------------------------------------------------
     
@@ -44,9 +32,7 @@ internal class RenderCachePlayableAsset : PlayableAsset, ITimelineClipAsset {
     internal string GetFolder() { return m_folder;}
     internal void SetFolder(string folder) { m_folder = folder;}
 
-    internal bool GetDeleteImagesBeforeUpdating() { return m_deleteImagesBeforeUpdating;}
-    internal void SetDeleteImagesBeforeUpdating(bool deleteImages) { m_deleteImagesBeforeUpdating = deleteImages;}   
-    
+   
     
 //----------------------------------------------------------------------------------------------------------------------
     
@@ -62,7 +48,6 @@ internal class RenderCachePlayableAsset : PlayableAsset, ITimelineClipAsset {
 //----------------------------------------------------------------------------------------------------------------------    
     private TimelineClip m_timelineClip = null;
     [SerializeField] private string m_folder = null;
-    [SerializeField] private bool m_deleteImagesBeforeUpdating = true;
 
 
 }
