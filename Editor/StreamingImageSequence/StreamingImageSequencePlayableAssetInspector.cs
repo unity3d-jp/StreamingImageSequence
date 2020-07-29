@@ -80,7 +80,7 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
         
         if (null!= TimelineEditor.selectedClip) {
             
-            if (GUILayout.Button("Reset Curve (Undoable)")) {
+            if (GUILayout.Button("Reset Curve (Not Undoable)")) {
                 //AnimationClip.SetCurve() doesn't seem to be undoable
                 TimelineUtility.ResetTimelineClipCurve(TimelineEditor.selectedClip);                
             }
