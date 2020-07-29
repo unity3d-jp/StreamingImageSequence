@@ -33,8 +33,23 @@ bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, con
     //Allocate
     const uint32_t dataSize = CalculateMemSize(w, h);
 
-    if (m_maxMemory != UNLIMITED_MEMORY && (m_usedMemory + dataSize) > m_maxMemory)
+    uint8_t*  buffer = static_cast<uint8_t*>(Allocate(dataSize));
+    if (nullptr == buffer) {
         return false;
+    }
+
+    *rawDataPtr = buffer;
+
+    return true;
+
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void* ImageMemoryAllocator::Allocate(uint32_t memSize) {
+
+
+    if (m_maxMemory != UNLIMITED_MEMORY && (m_usedMemory + memSize) > m_maxMemory)
+        return nullptr;
 
 #if OSX
     //Mac (10.9+) compresses inactive memory automatically to free memory to be used by other application, and therefore
@@ -47,22 +62,19 @@ bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, con
     const float MIN_AVAILABLE_RAM_RATIO = 0.1f;
     const float availableRAMRatio = MemoryUtility::GetAvailableRAM() * m_inverseTotalRAM;
     if (availableRAMRatio <= MIN_AVAILABLE_RAM_RATIO)
-        return false;
-#endif
+        return nullptr;
 
-    uint8_t*  buffer = static_cast<uint8_t*>(malloc(dataSize));
-    if (nullptr == buffer) {
-        return false;
+    void* buffer = (malloc(memSize));
+    if (nullptr==buffer) {
+        return nullptr;
     }
 
-    std::memset(buffer,0,dataSize);
-    *rawDataPtr = buffer;
+    std::memset(buffer,0,memSize);
+    IncUsedMem(memSize);
 
-    IncUsedMem(dataSize);
-
-    return true;
-
+    return buffer;
 }
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
