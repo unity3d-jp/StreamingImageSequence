@@ -17,7 +17,7 @@ public class StreamingImageSequenceTrack : TrackAsset
         m_trackMixer?.Destroy();
     }
 
-    //----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
     
     /// <inheritdoc/>
     public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
