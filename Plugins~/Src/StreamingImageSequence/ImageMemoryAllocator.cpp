@@ -45,7 +45,7 @@ bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, con
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-void* ImageMemoryAllocator::Allocate(uint32_t memSize) {
+void* ImageMemoryAllocator::Allocate(const size_t memSize) {
 
 
     if (m_maxMemory != UNLIMITED_MEMORY && (m_usedMemory + memSize) > m_maxMemory)
@@ -70,6 +70,7 @@ void* ImageMemoryAllocator::Allocate(uint32_t memSize) {
     }
 
     std::memset(buffer,0,memSize);
+    m_allocatedBuffers[buffer] = memSize;
     IncUsedMem(memSize);
 
     return buffer;
@@ -78,20 +79,37 @@ void* ImageMemoryAllocator::Allocate(uint32_t memSize) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-void ImageMemoryAllocator::Deallocate(ImageData* imageData) {
+bool ImageMemoryAllocator::Deallocate(ImageData* imageData) {
     ASSERT(nullptr!=imageData);
-
-    if (nullptr == imageData->RawData) {
-        return;
+    if (!Deallocate(imageData->RawData)) {
+        return false;
     }
 
-    const uint64_t mem = CalculateMemSize(imageData->Width, imageData->Height);
-    ASSERT(m_usedMemory >= mem);
-    DecUsedMem(mem);
-    free(imageData->RawData);
     *imageData = ImageData(nullptr, 0, 0, READ_STATUS_IDLE);
-
+    return true;
 }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+bool ImageMemoryAllocator::Deallocate(void* buffer) {
+
+    if (nullptr == buffer) {
+        return false;
+    }
+    const auto allocatedBuffer = m_allocatedBuffers.find(buffer);
+    if (m_allocatedBuffers.end() == allocatedBuffer ) {
+        return false;
+    }
+
+    const size_t memSize = allocatedBuffer->second;
+    ASSERT(m_usedMemory >= memSize);
+    m_allocatedBuffers.erase(buffer);
+    DecUsedMem(memSize);
+    free(buffer);
+
+    return true;
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 void ImageMemoryAllocator::IncUsedMem(const uint64_t mem) {
@@ -102,12 +120,10 @@ void ImageMemoryAllocator::DecUsedMem(const uint64_t mem) {
     m_usedMemory = (m_usedMemory >= mem) ? m_usedMemory - mem : 0;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
-
 uint32_t ImageMemoryAllocator::CalculateMemSize(const uint32_t w, const uint32_t h) {
     return w * h * LoaderConstants::NUM_BYTES_PER_TEXEL;
 }
-
+//----------------------------------------------------------------------------------------------------------------------
 
 
 } //end namespace
