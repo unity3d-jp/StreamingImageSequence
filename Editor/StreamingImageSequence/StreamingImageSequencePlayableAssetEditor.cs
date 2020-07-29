@@ -4,6 +4,7 @@ using UnityEditor.Timeline;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence {
@@ -39,13 +40,16 @@ namespace UnityEditor.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------
 
         /// <inheritdoc/>
-        public override void OnCreate(TimelineClip clip, TrackAsset track, TimelineClip clonedFrom)
-        {
+        public override void OnCreate(TimelineClip clip, TrackAsset track, TimelineClip clonedFrom) {
             StreamingImageSequencePlayableAsset asset = clip.asset as StreamingImageSequencePlayableAsset;
             if (null == asset) {
                 Debug.LogError("Asset is not a StreamingImageSequencePlayableAsset: " + clip.asset);
                 return;
             }
+            
+            StreamingImageSequenceTrack sisTrack = track as StreamingImageSequenceTrack;
+            Assert.IsNotNull(sisTrack);
+            
 
             //This callback occurs before the clip is assigned to the track, but we need the track for creating curves.
             clip.parentTrack = track; 
@@ -67,18 +71,22 @@ namespace UnityEditor.StreamingImageSequence {
             }
 
 
-            asset.BindTimelineClip(clip);
+            TimelineClipSISData sisData = null;
 
             if (null == clonedFrom) {
+                sisData = new TimelineClipSISData(clip);
+                asset.BindTimelineClip(clip, sisData);
                 return;
             }
-            
+
+            //Duplicate/Split process
             StreamingImageSequencePlayableAsset clonedFromAsset = clonedFrom.asset as StreamingImageSequencePlayableAsset;
-            if (null == clonedFromAsset) {
-                return;
-            }
+            Assert.IsNotNull(clonedFromAsset);
             
-            asset.OnClonedFrom(clonedFromAsset);
+            TimelineClipSISData otherSISData = clonedFromAsset.GetBoundTimelineClipSISData();
+            sisData = new TimelineClipSISData(clip, otherSISData);
+            asset.BindTimelineClip(clip, sisData);            
+            clip.displayName = clonedFrom.displayName + " (Cloned)";
 
         }
 
@@ -96,6 +104,10 @@ namespace UnityEditor.StreamingImageSequence {
         /// <inheritdoc/>
         public override void OnClipChanged(TimelineClip clip) {
             base.OnClipChanged(clip);
+                        
+            StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(sisAsset);
+            sisAsset.RefreshPlayableFrames();            
         }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -38,7 +38,6 @@ namespace UnityEngine.StreamingImageSequence {
         
         /// <inheritdoc/>
         public void OnGraphStart(Playable playable) {
-            RefreshPlayableFrames();
         }
         
         /// <inheritdoc/>
@@ -74,35 +73,17 @@ namespace UnityEngine.StreamingImageSequence {
         public StreamingImageSequencePlayableAsset() {
             m_lastCopiedImageIndex = -1;            
         }
-
-//----------------------------------------------------------------------------------------------------------------------
-        internal void OnClonedFrom(StreamingImageSequencePlayableAsset otherAsset) {
-            m_clonedFromAsset = otherAsset; 
-            
-        }
         
 //----------------------------------------------------------------------------------------------------------------------
 
-        /// <inheritdoc cref="PlayableAsset" />
+        //[Note-sin: 2020-7-17] This is also called when the TimelineClip in TimelineWindow is deleted, instead of just
+        //The TimelineClipAsset (on file, for example) is deleted
         private void OnDestroy() {
 
             Reset();
-            DestroyPlayableFrames();
+           
+            m_timelineClipSISData?.Destroy();           
         }
-//----------------------------------------------------------------------------------------------------------------------
-
-        private void DestroyPlayableFrames() {
-            if (null == m_playableFrames)
-                return;
-            
-            foreach (PlayableFrame frame in m_playableFrames) {
-                if (null == frame)
-                    continue;
-                ObjectUtility.Destroy(frame);
-            }
-            
-        }
-        
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -120,77 +101,6 @@ namespace UnityEngine.StreamingImageSequence {
         public Texture2D GetTexture() { return m_texture; }
         
 
-//----------------------------------------------------------------------------------------------------------------------
-        //Need to split the PlayableFrames which are currently shared by both this and m_clonedFromAsset
-        void TrySplitPlayableFrames(int numIdealFrames) {
-            Assert.IsNotNull(m_playableFrames);
-
-            List<PlayableFrame> prevPlayableFrames = m_playableFrames;
-            m_playableFrames = new List<PlayableFrame>(numIdealFrames);
-            int prevNumPlayableFrames = prevPlayableFrames.Count;
-            
-            //Check if this clone is a pure duplicate
-            TimelineClip otherTimelineClip = m_clonedFromAsset.GetBoundTimelineClip();
-                       
-            if (Math.Abs(m_boundTimelineClip.duration - otherTimelineClip.duration) < 0.0000001f) {
-                for (int i = 0; i < prevNumPlayableFrames; ++i) {
-                    m_playableFrames.Add(null);
-                    CreatePlayableFrameInList(i);
-                    m_playableFrames[i].SetUsed(prevPlayableFrames[i].IsUsed());
-
-                }
-                return;
-            }
-
-            //Decide which one is on the left side after splitting
-            if (m_boundTimelineClip.start < m_clonedFromAsset.GetBoundTimelineClip().start) {
-                m_playableFrames.AddRange(prevPlayableFrames.GetRange(0,numIdealFrames));
-                m_clonedFromAsset.SplitPlayableFramesFromClonedAsset(numIdealFrames,prevPlayableFrames.Count - numIdealFrames);
-            } else {
-                int idx = prevPlayableFrames.Count - numIdealFrames;
-                m_playableFrames.AddRange(prevPlayableFrames.GetRange(idx, idx + numIdealFrames -1));
-                m_clonedFromAsset.SplitPlayableFramesFromClonedAsset(0,idx);
-            }
-            
-            //Set the owner of the PlayableFrames
-            for (int i = 0; i < numIdealFrames; ++i) {
-                m_playableFrames[i].SetOwner(this);;
-            }
-            
-        }
-
-
-        //This is called by the cloned asset
-        void SplitPlayableFramesFromClonedAsset(int startIndex, int count) {
-            Assert.IsNotNull(m_playableFrames);
-
-            int numIdealFrames = TimelineUtility.CalculateNumFrames(m_boundTimelineClip);
-            if (numIdealFrames != count) {
-                Debug.LogWarning("StreamingImageSequencePlayableAsset::ReassignPlayableFrames() Count: " + count
-                                 + " is not ideal: " + numIdealFrames                
-                );
-                return;
-            }
-
-            List<PlayableFrame> prevPlayableFrames = m_playableFrames;
-            if (startIndex + count > prevPlayableFrames.Count) {
-                Debug.LogWarning("StreamingImageSequencePlayableAsset::ReassignPlayableFrames() Invalid params. "
-                                 + " StartIndex: " + startIndex +  ", Count: " + count                
-                );
-                return;
-            }
-            
-            m_playableFrames = new List<PlayableFrame>(numIdealFrames);
-            m_playableFrames.AddRange(prevPlayableFrames.GetRange(startIndex,numIdealFrames));
-
-            double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_boundTimelineClip);
-            
-            //adjust the time 
-            for (int i = 0; i < numIdealFrames; ++i) {
-                m_playableFrames[i].SetLocalTime(timePerFrame * i);
-            }
-            
-        }
         
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -204,17 +114,20 @@ namespace UnityEngine.StreamingImageSequence {
 
         //Calculate the used image index for the passed localTime
         internal int LocalTimeToImageIndex(TimelineClip clip, double localTime) {
-            
-            double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;            
+
+            if (null != m_timelineClipSISData) {
+                double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;            
           
-            //Try to check if this frame is "dropped", so that we should use the image in the prev frame
-            int playableFrameIndex = Mathf.RoundToInt((float) localTime / (float)scaledTimePerFrame);
-            if (playableFrameIndex >= 0 && null!=m_playableFrames && playableFrameIndex < m_playableFrames.Count) {
-                while (null!=m_playableFrames[playableFrameIndex] && !m_playableFrames[playableFrameIndex].IsUsed() && playableFrameIndex > 0) {
+                //Try to check if this frame is "dropped", so that we should use the image in the prev frame
+                int              playableFrameIndex = Mathf.RoundToInt((float) localTime / (float)scaledTimePerFrame);
+                SISPlayableFrame playableFrame      = m_timelineClipSISData.GetPlayableFrame(playableFrameIndex);
+                while (playableFrameIndex > 0 && null != playableFrame && !playableFrame.IsUsed()) {
                     --playableFrameIndex;
-                    localTime = playableFrameIndex * scaledTimePerFrame;
-                }
+                    playableFrame = m_timelineClipSISData.GetPlayableFrame(playableFrameIndex);
+                    localTime     = playableFrameIndex * scaledTimePerFrame;
+                }                
             }
+
 
             double imageSequenceTime = LocalTimeToCurveTime(clip, localTime);
             int count = m_imageFileNames.Count;
@@ -240,21 +153,21 @@ namespace UnityEngine.StreamingImageSequence {
         internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFileNames; }
 
 
-        internal bool GetUseImageMarkerVisibility() {  return m_useImageMarkerVisibility; }
 
-        internal void SetUseImageMarkerVisibility(bool show) { m_useImageMarkerVisibility = show; }
-
-        //These two methods are necessary "hacks" for knowing which TimelineClips currently own
+        //These methods are necessary "hacks" for knowing which TimelineClips currently own
         //this StreamingImageSequencePlayableAssets
-        internal void BindTimelineClip(TimelineClip clip) {
+        internal void BindTimelineClip(TimelineClip clip, TimelineClipSISData sisData) {
+            Assert.IsNotNull(clip);
+            
             m_boundTimelineClip = clip;
-            if (null == clip)
-                return;
             AnimationCurve curve = GetAndValidateAnimationCurve(clip);
             RefreshTimelineClipCurve(clip, curve);
             
+            m_timelineClipSISData = sisData;            
         }
         internal TimelineClip GetBoundTimelineClip()              { return m_boundTimelineClip; }
+        internal TimelineClipSISData GetBoundTimelineClipSISData() { return m_timelineClipSISData; }
+
         
 //----------------------------------------------------------------------------------------------------------------------        
         internal float GetOrUpdateDimensionRatio() {
@@ -333,11 +246,24 @@ namespace UnityEngine.StreamingImageSequence {
             //Dummy. We just need to implement this from PlayableAsset because folder D&D support. See notes below
             return Playable.Null;
         }
-        
+
         /// <inheritdoc/>
-        public sealed override double duration {  get {  return (null!=m_boundTimelineClip) ? m_boundTimelineClip.duration : 0;  }  }
+        public sealed override double duration { get { return m_boundTimelineClip?.duration ?? 0; } }
        
-#endregion         
+#endregion    
+        
+//---------------------------------------------------------------------------------------------------------------------
+        internal void SetDuration(double clipDuration) {
+            if (null == m_boundTimelineClip)
+                return;
+
+#if UNITY_EDITOR            
+            Undo.RegisterFullObjectHierarchyUndo(m_boundTimelineClip.parentTrack,"StreamingImageSequence: Set Duration");
+#endif            
+            m_boundTimelineClip.duration = clipDuration;
+            
+        }
+        
 //---------------------------------------------------------------------------------------------------------------------
 
 
@@ -453,126 +379,30 @@ namespace UnityEngine.StreamingImageSequence {
 
         #region PlayableFrames
 
-        private void CreatePlayableFrameInList(int index) {
-            PlayableFrame playableFrame = ObjectUtility.CreateScriptableObjectInstance<PlayableFrame>();
-#if UNITY_EDITOR                    
-            AssetDatabase.AddObjectToAsset(playableFrame, this);
-#endif
-            double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_boundTimelineClip);
-            playableFrame.Init(this, timePerFrame * index, m_useImageMarkerVisibility);
-            m_playableFrames[index] = playableFrame;
-        }
-        
-//----------------------------------------------------------------------------------------------------------------------
-
         internal void ResetPlayableFrames() {
 #if UNITY_EDITOR
             Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Resetting Use Image Markers");
 #endif
-
-            DestroyPlayableFrames();
-
-            //Recalculate the number of frames and create the marker's ground truth data
-            int numFrames = TimelineUtility.CalculateNumFrames(m_boundTimelineClip);
-            m_playableFrames =  new List<PlayableFrame>(numFrames);
-            UpdatePlayableFramesSize(numFrames);
+            m_timelineClipSISData.ResetPlayableFrames();
             
-            
-#if UNITY_EDITOR //Add to AssetDatabase
+#if UNITY_EDITOR 
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
 #endif            
            
         }
 
-        void RefreshPlayableFrames() {
-            int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(m_boundTimelineClip);
+        internal void RefreshPlayableFrames() {
+            
+            //Haven't been assigned yet. May happen during recompile
+            if (null == m_timelineClipSISData)
+                return;
 
-            //if this asset was a cloned asset, split the playable frames
-            if (null != m_clonedFromAsset) {
-                TrySplitPlayableFrames(numIdealNumPlayableFrames);
-                m_clonedFromAsset = null;
+            //Clip doesn't have parent. Might be because the clip is being moved 
+            if (null == m_boundTimelineClip.parentTrack) {
+                return;
             }
-            
-            if (null == m_playableFrames) {
-                ResetPlayableFrames();
-            }
-
-            //Change the size of m_playableFrames and reinitialize if necessary
-            int prevNumPlayableFrames = m_playableFrames.Count;
-            if (numIdealNumPlayableFrames != prevNumPlayableFrames) {
-#if UNITY_EDITOR
-                Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Updating PlayableFrame List");
-#endif                
-                //Change the size of m_playableFrames and reinitialize if necessary
-                List<bool> prevUsedFrames = new List<bool>(prevNumPlayableFrames);
-                foreach (PlayableFrame frame in m_playableFrames) {
-                    prevUsedFrames.Add(null == frame || frame.IsUsed()); //if frame ==null, just regard as used.
-                }
-                
-                UpdatePlayableFramesSize(numIdealNumPlayableFrames);
-                
-                //Reinitialize 
-                if (prevNumPlayableFrames > 0) {
-                    for (int i = 0; i < numIdealNumPlayableFrames; ++i) {
-                        int prevIndex = (int)(((float)(i) / numIdealNumPlayableFrames) * prevNumPlayableFrames);
-                        m_playableFrames[i].SetUsed(prevUsedFrames[prevIndex]);
-                    }
-                }
-                
-            }
-            
-            //Refresh all markers
-            int numPlayableFrames = m_playableFrames.Count;
-            for (int i = 0; i < numPlayableFrames; ++i) {        
-                if (null == m_playableFrames[i]) {
-                    CreatePlayableFrameInList(i);
-                }                
-                m_playableFrames[i].Refresh(m_useImageMarkerVisibility);                
-            }
-            
-        }        
-        
-        
-//----------------------------------------------------------------------------------------------------------------------
-
-        private void UpdatePlayableFramesSize(int reqPlayableFramesSize) {
-
-            //Resize m_playableFrames
-            if (m_playableFrames.Count < reqPlayableFramesSize) {
-                int numNewPlayableFrames  = (reqPlayableFramesSize - m_playableFrames.Count);
-                PlayableFrame[] newPlayableFrames = new PlayableFrame[numNewPlayableFrames];
-                m_playableFrames.AddRange(newPlayableFrames);                
-            }
-
-            if (m_playableFrames.Count > reqPlayableFramesSize) {
-                int numLastPlayableFrames = m_playableFrames.Count;
-                for (int i = reqPlayableFramesSize; i < numLastPlayableFrames; ++i) {
-                    PlayableFrame curFrame = m_playableFrames[i];
-                    if (null == curFrame)
-                        continue;
-                    //[TODO-sin: 2020-7-4] Let's put this in a pool.
-                    ObjectUtility.Destroy(curFrame);                
-                }
-                m_playableFrames.RemoveRange(reqPlayableFramesSize, numLastPlayableFrames - reqPlayableFramesSize);
-                
-                
-            }
-            
-            Assert.IsTrue(m_playableFrames.Count == reqPlayableFramesSize);
-
-            double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_boundTimelineClip);
-            
-            for (int i = 0; i < reqPlayableFramesSize; ++i) {
-                PlayableFrame curPlayableFrame = m_playableFrames[i];
-                
-                if (null == curPlayableFrame) {
-                    CreatePlayableFrameInList(i);
-                } else {
-                    m_playableFrames[i].Init(this, timePerFrame * i, m_useImageMarkerVisibility);                    
-                }
-            }
-            
-            
+                       
+            m_timelineClipSISData.RefreshPlayableFrames();            
         }
         
         #endregion
@@ -683,17 +513,15 @@ namespace UnityEngine.StreamingImageSequence {
         
         [FormerlySerializedAs("m_imagePaths")] [HideInInspector][SerializeField] List<string> m_imageFileNames = null; //These are actually file names, not paths
         
-        //[TODO-sin: 2020-6-29] PlayableFrames needs to be stored inside the track/TimelineClip instead of this asset
-        //directly
-        //The ground truth for using/dropping an image in a particular frame. See the notes below
-        [HideInInspector][SerializeField] List<PlayableFrame> m_playableFrames = null;
+        
 
+        
         [HideInInspector][SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;
 
         private ImageDimensionInt  m_resolution;        
         private float m_dimensionRatio;
-
+        [NonSerialized] private TimelineClipSISData m_timelineClipSISData = null;
 
 
 #if UNITY_EDITOR
@@ -706,7 +534,6 @@ namespace UnityEngine.StreamingImageSequence {
             };
         
 #endif
-        [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = false;
         
         //[Note-sin: 2020-6-30] TimelineClip should not be a property of StreamingImageSequencePlayableAsset, because
         //StreamingImageSequencePlayableAsset is an asset, and should be able to be bound to 2 different TimelineClips.
@@ -723,7 +550,6 @@ namespace UnityEngine.StreamingImageSequence {
         private int m_backwardPreloadImageIndex = 0;
         
         private bool m_verified;
-        private StreamingImageSequencePlayableAsset m_clonedFromAsset = null;
 
         Texture2D m_texture = null;
 
@@ -737,8 +563,4 @@ namespace UnityEngine.StreamingImageSequence {
 //1. Derive this class from PlayableAsset
 //2. Declare UnityEditor.DefaultAsset variable 
 
-//[Note-Sin: 2020-2-17] PlayableFrame
-//StreamingImageSequencePlayableAsset owns PlayableFrame, which owns UseImageMarker.
-//PlayableFrame is a ScriptableObject, which is stored inside StreamingImageSequencePlayableAsset using
-//AssetDatabase.AddObjectToAsset
 

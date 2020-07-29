@@ -2,6 +2,7 @@
 using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
 using UnityEngine.Timeline;
 
@@ -79,17 +80,25 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
         
         if (null!= TimelineEditor.selectedClip) {
             
-            if (GUILayout.Button("Reset Curve")) {
-                //[TODO-sin:2020-1-29] Support undo for this
-                TimelineUtility.ResetTimelineCurve(TimelineEditor.selectedClip);                
+            if (GUILayout.Button("Reset Curve (Not Undoable)")) {
+                //AnimationClip.SetCurve() doesn't seem to be undoable
+                TimelineUtility.ResetTimelineClipCurve(TimelineEditor.selectedClip);                
             }
 
-            //[TODO-sin: 2020-6-29] Fix this so that the playable frames are stored inside the timelineClip
+            //Image markers
             if (TimelineEditor.selectedClip == m_asset.GetBoundTimelineClip()) {
+                TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
+                Assert.IsNotNull(timelineClipSISData);
+                    
                 GUILayout.Space(15);
-                m_asset.SetUseImageMarkerVisibility(GUILayout.Toggle(m_asset.GetUseImageMarkerVisibility(), "Show UseImageMarkers"));
+                bool prevMarkerVisibility = timelineClipSISData.GetUseImageMarkerVisibility();
+                bool markerVisibility = GUILayout.Toggle(prevMarkerVisibility, "Show UseImageMarkers");
+                if (markerVisibility != prevMarkerVisibility) {
+                    timelineClipSISData.SetUseImageMarkerVisibility(markerVisibility);
+                }
+                
+                
                 if (GUILayout.Button("Reset UseImageMarkers")) {
-                    //[TODO-sin:2020-6-29] Support undo for this
                     m_asset.ResetPlayableFrames();
                 }
             }

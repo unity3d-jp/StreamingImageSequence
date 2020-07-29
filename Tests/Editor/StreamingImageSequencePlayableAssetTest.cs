@@ -54,8 +54,10 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             
             //Show
             TimelineClip clip = sisAsset.GetBoundTimelineClip();
+            TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
+            
             TrackAsset trackAsset = clip.parentTrack;
-            sisAsset.SetUseImageMarkerVisibility(true);
+            timelineClipSISData.SetUseImageMarkerVisibility(true);
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
             yield return null;
             
@@ -65,7 +67,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
             //Undo showing UseImageMarkers
             UndoAndRefreshTimelineEditor(); yield return null;
-            Assert.False(sisAsset.GetUseImageMarkerVisibility());
+            Assert.False(timelineClipSISData.GetUseImageMarkerVisibility());
             Assert.AreEqual(0, trackAsset.GetMarkerCount());
             
             
@@ -78,9 +80,10 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         public IEnumerator ResizePlayableAsset() {
             PlayableDirector director = NewSceneWithDirector();
             StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
+            TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
             yield return null;
             
-            sisAsset.SetUseImageMarkerVisibility(true); 
+            timelineClipSISData.SetUseImageMarkerVisibility(true); 
             Undo.IncrementCurrentGroup(); //the base of undo is here. UseImageMarkerVisibility is still true after undo
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
             yield return null;
@@ -92,7 +95,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             double origClipDuration = clip.duration;
 
             //Resize longer
-            ResizeTimelineClip(clip, origClipDuration + 3.0f); yield return null;
+            ResizeSISPlayableAsset(sisAsset, origClipDuration + 3.0f); yield return null;
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
 
             //Undo
@@ -101,7 +104,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
             
             //Resize shorter
-            ResizeTimelineClip(clip, Mathf.Max(0.1f, ( (float)(origClipDuration) - 3.0f))); yield return null;
+            ResizeSISPlayableAsset(sisAsset, Mathf.Max(0.1f, ( (float)(origClipDuration) - 3.0f))); yield return null;
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
             
             //Undo
@@ -119,21 +122,22 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         public IEnumerator UncheckUseImageMarkers() {
             PlayableDirector director = NewSceneWithDirector();
             StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
-            sisAsset.SetUseImageMarkerVisibility(true);
+            TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
+            timelineClipSISData.SetUseImageMarkerVisibility(true);
             yield return null;
 
             TimelineClip clip = sisAsset.GetBoundTimelineClip();
             double timePerFrame = TimelineUtility.CalculateTimePerFrame(clip);
             int numImages = sisAsset.GetImageFileNames().Count;
             clip.timeScale = 3.75f; //use scaling
-            ResizeTimelineClip(clip, (timePerFrame * numImages));
+            ResizeSISPlayableAsset(sisAsset, (timePerFrame * numImages));
             yield return null;
             
             int numFrames = TimelineUtility.CalculateNumFrames(clip);
             Assert.AreEqual(numImages, numFrames);
             
             //Reset: make sure that the curve is a simple straight line from 0 to 1
-            TimelineUtility.ResetTimelineCurve(clip);
+            TimelineUtility.ResetTimelineClipCurve(clip);
             yield return null;
             
             sisAsset.ResetPlayableFrames();            
@@ -168,11 +172,49 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             DestroyTestTimelineAssets(clip);
             yield return null;
         }
+
+//----------------------------------------------------------------------------------------------------------------------                
+        [UnityTest]
+        public IEnumerator ResetUseImageMarkers() {
+            PlayableDirector director = NewSceneWithDirector();
+            StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
+            TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
+            timelineClipSISData.SetUseImageMarkerVisibility(true);
+            yield return null;
+            
+            //Change image to false
+            StreamingImageSequenceTrack track = sisAsset.GetBoundTimelineClip().parentTrack as StreamingImageSequenceTrack;
+            Assert.IsNotNull(track);           
+            foreach (var m in track.GetMarkers()) {
+                UseImageMarker marker = m as UseImageMarker;
+                Assert.IsNotNull(marker);
+                marker.SetImageUsed(false);
+                
+                UnityEngine.Assertions.Assert.IsFalse(marker.IsImageUsed());
+            }            
+            yield return null;
+            
+            sisAsset.ResetPlayableFrames();            
+            yield return null;
+            
+            //Check if all markers have been reset to used
+            foreach (var m in track.GetMarkers()) {
+                UseImageMarker marker = m as UseImageMarker;
+                Assert.IsNotNull(marker);                
+                UnityEngine.Assertions.Assert.IsTrue(marker.IsImageUsed());
+            }
+            yield return null;
+
+                       
+            TimelineClip clip = sisAsset.GetBoundTimelineClip();
+            DestroyTestTimelineAssets(clip);
+            yield return null;
+        }
         
 //----------------------------------------------------------------------------------------------------------------------                
 
-        private void ResizeTimelineClip(TimelineClip clip, double duration) {
-            clip.duration = duration;
+        private void ResizeSISPlayableAsset(StreamingImageSequencePlayableAsset sisAsset, double duration) {            
+            sisAsset.SetDuration(duration);
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
         }
 
@@ -207,7 +249,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.IsNotNull(sisAsset);
 
             clip.CreateCurves("Curves: " + clip.displayName);
-            sisAsset.BindTimelineClip(clip);
+            TimelineClipSISData sisData = new TimelineClipSISData(clip);
+            sisAsset.BindTimelineClip(clip, sisData);           
 
             //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
             EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
