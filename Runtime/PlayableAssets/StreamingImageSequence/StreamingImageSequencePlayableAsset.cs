@@ -257,7 +257,9 @@ namespace UnityEngine.StreamingImageSequence {
             if (null == m_boundTimelineClip)
                 return;
 
+#if UNITY_EDITOR            
             Undo.RegisterFullObjectHierarchyUndo(m_boundTimelineClip.parentTrack,"StreamingImageSequence: Set Duration");
+#endif            
             m_boundTimelineClip.duration = clipDuration;
             
         }
