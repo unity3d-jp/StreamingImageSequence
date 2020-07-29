@@ -103,12 +103,12 @@ internal class RenderCachePlayableAssetInspector : Editor {
             m_asset.SetFolder(outputFolder);
         }
 
-        RenderTexture rt = m_renderCapturer.GetRenderTexture();
+        Texture capturerTex = m_renderCapturer.GetInternalTexture();
                
         //Show progress in game view
         GameObject progressGo = new GameObject("Blitter");
         LegacyTextureBlitter blitter = progressGo.AddComponent<LegacyTextureBlitter>();
-        blitter.SetTexture(rt);
+        blitter.SetTexture(capturerTex);
         blitter.SetCameraDepth(int.MaxValue);
         
         TimelineClip timelineClip = m_asset.GetTimelineClip();
@@ -121,7 +121,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         bool cancelled = false;
         while (m_nextDirectorTime <= timelineClip.end && !cancelled) {
             SetDirectorTime(m_director, m_nextDirectorTime);
-            blitter.SetTexture(rt);
+            blitter.SetTexture(capturerTex);
             yield return null;            
             
             string fileName       = fileCounter.ToString($"D{numDigits}") + ".png";

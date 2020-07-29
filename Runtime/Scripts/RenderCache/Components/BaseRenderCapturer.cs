@@ -3,28 +3,29 @@
 namespace UnityEngine.StreamingImageSequence {
 
 /// <summary>
-/// An abstract MonoBehaviour class for writing the render result of another component to disk as texture
+/// An abstract MonoBehaviour class for capturing the render result of another component
+/// and writing it to disk as a texture
 /// </summary>
 public abstract class BaseRenderCapturer : MonoBehaviour {
 
 
     /// <summary>
-    /// Prepare the component for capturing RenderTexture
+    /// Prepare the component for capturing
     /// </summary>
     /// <returns>True if capturing can be executed, false otherwise</returns>
     public abstract bool BeginCapture();
 
 
     /// <summary>
-    /// Clean up the component after capturing RenderTexture
+    /// Clean up the component after capturing
     /// </summary>
     public abstract void EndCapture();
 
     /// <summary>
-    /// Gets the render texture used for the capturing process
+    /// Gets the internal texture used for the capturing process
     /// </summary>
-    /// <returns>The render texture</returns>
-    public RenderTexture GetRenderTexture() { return m_rt;}
+    /// <returns>The internal texture</returns>
+    public Texture GetInternalTexture() { return m_rt;}
 
     /// <summary>
     /// Capture the contents of RenderTexture into file
