@@ -342,8 +342,9 @@ bool ImageCollection::AllocateRawDataUnsafe(uint8_t** rawData,const uint32_t w,c
 
 //----------------------------------------------------------------------------------------------------------------------
 //returns true if one or more images are successfully unloaded
-bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathToAllocate) {
-    std::list<std::unordered_map<strType, ImageData>::iterator>::iterator orderIt = m_orderedImageList.begin();
+//imagePathContext stores why we need to unload an image (because we want to load imagePathContext, for example)
+bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathContext) {
+    const std::list<std::unordered_map<strType, ImageData>::iterator>::iterator orderIt = m_orderedImageList.begin();
     if (m_curOrderStartPos == orderIt)
         return false;
 
@@ -351,7 +352,7 @@ bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathToAllocate
 
     //if this happens, then we can't even allocate memory for one single image
     //ASSERT(imagePath != imagePathToAllocate);
-    if (imagePath == imagePathToAllocate)
+    if (imagePath == imagePathContext)
         return false;
 
     //Do processes inside UnloadImage((*orderIt)->first), without any checks
