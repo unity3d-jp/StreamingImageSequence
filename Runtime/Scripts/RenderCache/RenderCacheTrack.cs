@@ -7,7 +7,7 @@ namespace UnityEngine.StreamingImageSequence
 /// A track which clip type is RenderCachePlayableAsset.
 /// </summary>
 [TrackClipType(typeof(RenderCachePlayableAsset))]
-[TrackBindingType(typeof(BaseRTCapturer))]
+[TrackBindingType(typeof(BaseRenderCapturer))]
 [TrackColor(0.776f, 0.263f, 0.09f)]
 public class RenderCacheTrack : TrackAsset
 {

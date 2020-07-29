@@ -6,7 +6,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 
 [ExecuteAlways]
-internal class PencilLineRTCapturer : BaseRTCapturer {
+internal class PencilLineRenderCapturer : BaseRenderCapturer {
 
 
     /// <inheritdoc/>

@@ -63,18 +63,18 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 return;
             }            
                         
-            m_rtCapturer =  m_director.GetGenericBinding(track) as BaseRTCapturer;
-            if (null == m_rtCapturer) {
+            m_renderCapturer =  m_director.GetGenericBinding(track) as BaseRenderCapturer;
+            if (null == m_renderCapturer) {
                 EditorUtility.DisplayDialog("Streaming Image Sequence",
                     "Please bind an appropriate RTCapturer component to the track.",
                     "Ok");
                 return;                
             }
 
-            bool canCapture = m_rtCapturer.BeginCapture();
+            bool canCapture = m_renderCapturer.BeginCapture();
             if (!canCapture) {
                 EditorUtility.DisplayDialog("Streaming Image Sequence",
-                    m_rtCapturer.GetLastErrorMessage(),
+                    m_renderCapturer.GetLastErrorMessage(),
                     "Ok");
                 return;                
                 
@@ -91,7 +91,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
 //----------------------------------------------------------------------------------------------------------------------
     IEnumerator UpdateRenderCacheCoroutine() {
-        Assert.IsNotNull(m_rtCapturer);
+        Assert.IsNotNull(m_renderCapturer);
         Assert.IsNotNull(m_director);
         
         
@@ -103,7 +103,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
             m_asset.SetFolder(outputFolder);
         }
 
-        RenderTexture rt = m_rtCapturer.GetRenderTexture();
+        RenderTexture rt = m_renderCapturer.GetRenderTexture();
                
         //Show progress in game view
         GameObject progressGo = new GameObject("Blitter");
@@ -128,7 +128,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
             string outputFilePath = Path.Combine(outputFolder, fileName);
                         
             //[TODO-sin: 2020-5-27] Call API to unload texture
-            m_rtCapturer.CaptureToFile(outputFilePath);
+            m_renderCapturer.CaptureToFile(outputFilePath);
             m_nextDirectorTime += m_timePerFrame;
             ++fileCounter;
         
@@ -139,7 +139,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
                
         //Cleanup
         EditorUtility.ClearProgressBar();
-        m_rtCapturer.EndCapture();
+        m_renderCapturer.EndCapture();
         ObjectUtility.Destroy(progressGo);
         
         
@@ -212,7 +212,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
     private RenderCachePlayableAsset m_asset = null;
     private PlayableDirector m_director = null;
 
-    private BaseRTCapturer m_rtCapturer = null;
+    private BaseRenderCapturer m_renderCapturer = null;
     private double m_nextDirectorTime = 0;
     private double m_timePerFrame       = 0;
 
