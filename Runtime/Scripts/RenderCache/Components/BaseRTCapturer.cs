@@ -3,7 +3,7 @@
 namespace UnityEngine.StreamingImageSequence {
 
 /// <summary>
-/// An abstract class for capturing RenderTexture to disk
+/// An abstract class for writing the render result of another component to disk as texture
 /// </summary>
 public abstract class BaseRTCapturer : MonoBehaviour {
 
