@@ -66,7 +66,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
             m_renderCapturer =  m_director.GetGenericBinding(track) as BaseRenderCapturer;
             if (null == m_renderCapturer) {
                 EditorUtility.DisplayDialog("Streaming Image Sequence",
-                    "Please bind an appropriate RTCapturer component to the track.",
+                    "Please bind an appropriate RenderCapturer component to the track.",
                     "Ok");
                 return;                
             }
@@ -148,7 +148,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
     }
  
-//----------------------------------------------------------------------------------------------------------------------
     
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -188,9 +187,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
             EditorGUILayout.SelectableLabel(fieldValue,
                 EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight)
-            );
-            Rect folderRect = GUILayoutUtility.GetLastRect();
-            
+            );           
 
             if(GUILayout.Button("Select", GUILayout.Width(50f))) {
                 string folderSelected = EditorUtility.OpenFolderPanel(dialogTitle, directoryOpenPath, "");
@@ -215,7 +212,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
     private BaseRenderCapturer m_renderCapturer = null;
     private double m_nextDirectorTime = 0;
-    private double m_timePerFrame       = 0;
+    private double m_timePerFrame     = 0;
 
 }
 
