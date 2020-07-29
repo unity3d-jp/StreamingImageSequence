@@ -4,7 +4,7 @@ using UnityEngine.Timeline;
 namespace UnityEngine.StreamingImageSequence {
 
 /// <summary>
-/// A PlayableAsset that is used to cache render results of a camera.
+/// A PlayableAsset that is used to capture the render results of BaseRenderCapturer in Timeline.
 /// Implements the following interfaces:
 /// - ITimelineClipAsset: for defining clip capabilities (ClipCaps) 
 /// </summary>
@@ -35,13 +35,9 @@ internal class RenderCachePlayableAsset : PlayableAsset, ITimelineClipAsset {
 
     
 //----------------------------------------------------------------------------------------------------------------------
-    //TODO-sin: 2020-5-27: Factor out common code with StreamingImageSequenceTrack     
-    internal void OnAfterTrackDeserialize(TimelineClip clip) {
-        SetTimelineClip(clip);
-    }
     
     internal TimelineClip GetTimelineClip() { return m_timelineClip; }
-    internal void SetTimelineClip(TimelineClip clip) { m_timelineClip = clip; }
+    internal void BindTimelineClip(TimelineClip clip) { m_timelineClip = clip; }
 
     
 //----------------------------------------------------------------------------------------------------------------------

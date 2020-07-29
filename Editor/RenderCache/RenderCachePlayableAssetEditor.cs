@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence {
+
 [CustomTimelineEditor(typeof(RenderCachePlayableAsset)), UsedImplicitly]
 internal class RenderCachePlayableAssetEditor : ClipEditor {
 
@@ -21,7 +22,7 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
         }
 
         clip.parentTrack = track; 
-        asset.SetTimelineClip(clip);
+        asset.BindTimelineClip(clip);
     }
 
 

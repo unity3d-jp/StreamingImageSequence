@@ -1,28 +1,39 @@
 ﻿using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace UnityEngine.StreamingImageSequence
-{ 
+namespace UnityEngine.StreamingImageSequence  {
+
 /// <summary>
 /// A track which clip type is RenderCachePlayableAsset.
 /// </summary>
 [TrackClipType(typeof(RenderCachePlayableAsset))]
 [TrackBindingType(typeof(BaseRenderCapturer))]
 [TrackColor(0.776f, 0.263f, 0.09f)]
-public class RenderCacheTrack : TrackAsset
-{
+public class RenderCacheTrack : TrackAsset {
 
-    //TODO-sin: 2020-5-27: Factor out common code with StreamingImageSequenceTrack
-    protected override void OnAfterTrackDeserialize() {
-        //Re-setup the PlayableAsset
-        foreach (TimelineClip clip in m_Clips) {
-            RenderCachePlayableAsset playableAsset = clip.asset as RenderCachePlayableAsset;
-            if (null == playableAsset)
-                continue;
-                
-            playableAsset.OnAfterTrackDeserialize(clip);
-        }
+    
+    private void OnDestroy() {
+        m_trackMixer?.Destroy();
     }
+
+//----------------------------------------------------------------------------------------------------------------------    
+    /// <inheritdoc/>
+    public override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount) {
+        ScriptPlayable<RenderCachePlayableMixer> mixer = ScriptPlayable<RenderCachePlayableMixer>.Create(graph, inputCount);
+        PlayableDirector director = go.GetComponent<PlayableDirector>();
+        m_trackMixer = mixer.GetBehaviour();
+        
+        if (director != null) {
+            Object    boundObject  = director.GetGenericBinding(this);
+            BaseRenderCapturer capturer = boundObject as BaseRenderCapturer;
+            m_trackMixer.Init(null == capturer ? null : capturer.gameObject, director, GetClips());
+        }
+        return mixer;
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------    
+   
+    private RenderCachePlayableMixer m_trackMixer = null;
 
 }
 
