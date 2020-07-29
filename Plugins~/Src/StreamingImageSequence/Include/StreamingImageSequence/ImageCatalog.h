@@ -31,14 +31,11 @@ public:
     void Reset();
     void ResetOrder();
 
-    inline uint64_t GetUsedMemory() const;
-    inline void SetMaxMemory(uint64_t maxMemory);
 private:
     ImageCatalog();
     ImageCatalog(ImageCatalog const&) = delete;
     ImageCatalog& operator=(ImageCatalog const&) = delete;
 
-    ImageMemoryAllocator m_memAllocator;
     ImageCollection m_imageCollection[MAX_CRITICAL_SECTION_TYPE_IMAGES];
 };
 
@@ -103,10 +100,6 @@ int ImageCatalog::GetLatestFrame(const uint32_t imageType) const {
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
     return m_imageCollection[imageType].GetLatestRequestFrame();
 }
-
-uint64_t ImageCatalog::GetUsedMemory() const { return m_memAllocator.GetUsedMemory(); }
-
-void ImageCatalog::SetMaxMemory(uint64_t maxMemory) { m_memAllocator.SetMaxMemory(maxMemory); }
 
 
 } //end namespace

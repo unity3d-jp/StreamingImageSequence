@@ -104,14 +104,13 @@ LOADER_API uint32_t GetNumLoadedImages(const uint32_t imageType) {
 
 LOADER_API void  SetMaxImagesMemory(const uint32_t maxImageMemoryMB) {
 	using namespace StreamingImageSequencePlugin;
-	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
-	imageCatalog.SetMaxMemory(maxImageMemoryMB * TO_MB); //to bytes
+	ImageMemoryAllocator::GetInstance().SetMaxMemory(maxImageMemoryMB * TO_MB);
 }
 
 LOADER_API int GetUsedImagesMemory() {
 	using namespace StreamingImageSequencePlugin;
-	ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
-	return static_cast<int>(static_cast<float>(imageCatalog.GetUsedMemory()) / static_cast<float>(TO_MB));
+	ImageMemoryAllocator& imageMemoryAllocator= ImageMemoryAllocator::GetInstance();
+	return static_cast<int>(static_cast<float>(imageMemoryAllocator.GetUsedMemory()) / static_cast<float>(TO_MB));
 }
 
 //----------------------------------------------------------------------------------------------------------------------

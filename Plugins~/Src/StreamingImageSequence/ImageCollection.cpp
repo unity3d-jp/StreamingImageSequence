@@ -18,8 +18,7 @@ namespace StreamingImageSequencePlugin {
 
 
 ImageCollection::ImageCollection()
-    : m_memAllocator(nullptr)
-    , m_curOrderStartPos(m_orderedImageList.end())
+    : m_curOrderStartPos(m_orderedImageList.end())
     , m_updateOrderStartPos(false)
     , m_csType(CRITICAL_SECTION_TYPE_FULL_IMAGE)
     , m_latestRequestFrame(0)
@@ -34,9 +33,8 @@ ImageCollection::~ImageCollection() {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-void ImageCollection::Init(CriticalSectionType csType, ImageMemoryAllocator* memAllocator) {
+void ImageCollection::Init(CriticalSectionType csType) {
     m_csType       = csType;
-    m_memAllocator = memAllocator;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -95,7 +93,7 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 
     //Unload existing memory if it exists
     if (m_pathToImageMap.end() != pathIt) {
-        m_memAllocator->Deallocate(&(pathIt->second));
+        ImageMemoryAllocator::GetInstance().Deallocate(&(pathIt->second));
     }  else {
         pathIt = AddImageUnsafe(imagePath);
     }
@@ -128,7 +126,7 @@ bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame,
 
     //Unload existing memory if it exists
     if (m_pathToImageMap.end() != pathIt) {
-        m_memAllocator->Deallocate(&(pathIt->second));
+        ImageMemoryAllocator::GetInstance().Deallocate(&(pathIt->second));
     }  else {
         pathIt = AddImageUnsafe(imagePath);
     }
@@ -177,7 +175,7 @@ bool ImageCollection::UnloadImage(const strType& imagePath) {
     if (m_pathToImageMap.end() == it)
         return false;
 
-    m_memAllocator->Deallocate(&(it->second));
+    ImageMemoryAllocator::GetInstance().Deallocate(&(it->second));
     DeleteImageOrderUnsafe(it);
     m_pathToImageMap.erase(imagePath);
     return true;
@@ -296,7 +294,7 @@ void ImageCollection::UnloadAllImagesUnsafe() {
 
     for (auto itr = m_pathToImageMap.begin(); itr != m_pathToImageMap.end(); ++itr) {
         ImageData* imageData = &(itr->second);
-        m_memAllocator->Deallocate(imageData);
+        ImageMemoryAllocator::GetInstance().Deallocate(imageData);
     }
     m_pathToImageMap.clear();
 }
@@ -332,7 +330,7 @@ bool ImageCollection::AllocateRawDataUnsafe(uint8_t** rawData,const uint32_t w,c
     bool isAllocated = false;
     bool unloadSuccessful = true;
     while (!isAllocated && unloadSuccessful) {
-        isAllocated = m_memAllocator->Allocate(rawData, w, h);
+        isAllocated = ImageMemoryAllocator::GetInstance().Allocate(rawData, w, h);
         if (!isAllocated) {
             unloadSuccessful = UnloadUnusedImageUnsafe(imagePath);
         }
@@ -359,7 +357,7 @@ bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathToAllocate
     //Do processes inside UnloadImage((*orderIt)->first), without any checks
     ImageData* imageData = &(*orderIt)->second;
 
-    m_memAllocator->Deallocate(imageData);
+    ImageMemoryAllocator::GetInstance().Deallocate(imageData);
     m_orderedImageList.erase(orderIt);
     m_pathToOrderMap.erase(imagePath);
     m_pathToImageMap.erase(imagePath);

@@ -18,7 +18,7 @@ class ImageCollection {
 public:
     ImageCollection();
     ~ImageCollection();
-    void Init(CriticalSectionType csType, ImageMemoryAllocator*);
+    void Init(CriticalSectionType csType);
 
     //return null if not found
     const ImageData* GetImage(const strType& imagePath, const int frame);
@@ -53,7 +53,6 @@ private:
     bool AllocateRawDataUnsafe(uint8_t** rawData, const uint32_t w, const uint32_t h, const strType& imagePath);
     bool UnloadUnusedImageUnsafe(const strType& imagePath); //returns true if one or more images are successfully unloaded
 
-    ImageMemoryAllocator*           m_memAllocator;
     std::unordered_map<strType, ImageData>    m_pathToImageMap;
 
     //Ordering structure

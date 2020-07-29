@@ -12,6 +12,11 @@ struct ImageData;
 
 class ImageMemoryAllocator {
 public:
+    static ImageMemoryAllocator& GetInstance() {
+        static ImageMemoryAllocator instance;
+        return instance;
+    };
+
     //return true if alloc is successful, false otherwise
     bool Allocate(uint8_t ** rawDataPtr, const uint32_t w, const uint32_t h);
 
@@ -23,9 +28,14 @@ public:
     inline uint64_t GetUsedMemory() const;
     inline void SetMaxMemory(const uint64_t maxMemory);
 
+private:
     ImageMemoryAllocator();
     ~ImageMemoryAllocator();
-private:
+
+    ImageMemoryAllocator(ImageMemoryAllocator const&) = delete; 
+    void operator=(ImageMemoryAllocator const&) = delete; 
+
+
     void IncUsedMem(const uint64_t mem);
     void DecUsedMem(const uint64_t mem);
     static uint32_t CalculateMemSize(const uint32_t w, const uint32_t h);
