@@ -2,6 +2,7 @@
 using UnityEditor.Timeline;
 using UnityEngine.Timeline;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
 
 namespace UnityEditor.StreamingImageSequence {
@@ -13,13 +14,9 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
 //----------------------------------------------------------------------------------------------------------------------
 
     /// <inheritdoc/>
-    public override void OnCreate(TimelineClip clip, TrackAsset track, TimelineClip clonedFrom)
-    {
+    public override void OnCreate(TimelineClip clip, TrackAsset track, TimelineClip clonedFrom) {
         RenderCachePlayableAsset asset = clip.asset as RenderCachePlayableAsset;
-        if (null == asset) {
-            Debug.LogError("Asset is not a RenderCachePlayableAsset: " + clip.asset);
-            return;
-        }
+        Assert.IsNotNull(asset);
 
         clip.parentTrack = track; 
         asset.BindTimelineClip(clip);

@@ -9,7 +9,7 @@ namespace UnityEngine.StreamingImageSequence  {
 [TrackClipType(typeof(RenderCachePlayableAsset))]
 [TrackBindingType(typeof(BaseRenderCapturer))]
 [TrackColor(0.776f, 0.263f, 0.09f)]
-public class RenderCacheTrack : TrackAsset {
+internal class RenderCacheTrack : TrackAsset {
 
     
     private void OnDestroy() {
