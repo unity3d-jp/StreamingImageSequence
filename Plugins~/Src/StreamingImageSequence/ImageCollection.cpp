@@ -8,13 +8,13 @@
 #include "CommonLib/CommonLib.h" //IMAGE_CS
 #include "CommonLib/CriticalSectionController.h"
 
-//External/stb
-#define STB_IMAGE_RESIZE_IMPLEMENTATION
-#define STBIR_DEFAULT_FILTER_DOWNSAMPLE  STBIR_FILTER_CATMULLROM
-#include "External/stb/stb_image_resize.h"
-
 
 namespace StreamingImageSequencePlugin {
+
+void* g_resizeBuffer[MAX_CRITICAL_SECTION_TYPE_IMAGES];
+size_t g_resizeBufferSize[MAX_CRITICAL_SECTION_TYPE_IMAGES];
+
+//----------------------------------------------------------------------------------------------------------------------
 
 
 ImageCollection::ImageCollection()
@@ -28,6 +28,11 @@ ImageCollection::ImageCollection()
 //----------------------------------------------------------------------------------------------------------------------
 
 ImageCollection::~ImageCollection() {
+    //static
+    ImageMemoryAllocator::GetInstance().Deallocate(g_resizeBuffer[m_csType]);
+    g_resizeBuffer[m_csType] = nullptr;
+    g_resizeBufferSize[m_csType] = 0;
+
     UnloadAllImagesUnsafe();
 }
 
@@ -35,6 +40,12 @@ ImageCollection::~ImageCollection() {
 //----------------------------------------------------------------------------------------------------------------------
 void ImageCollection::Init(CriticalSectionType csType) {
     m_csType       = csType;
+
+    //static
+    ASSERT(nullptr == g_resizeBuffer[m_csType]);
+    g_resizeBufferSize[m_csType] = 1;
+    g_resizeBuffer[m_csType] = ImageMemoryAllocator::GetInstance().Allocate(g_resizeBufferSize[m_csType]);
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -111,7 +122,32 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+//Not thread safe
+void* GetOrAllocateResizeBuffer(size_t bufferSize, void* context) {
+    const uint32_t imageType = * (static_cast<uint32_t*>(context));
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 
+    if (bufferSize > g_resizeBufferSize[imageType]) {
+        const bool FORCE_ALLOCATE = true;
+        const size_t newResizeBufferSize = bufferSize * 4;
+        void* newResizeBuffer = ImageMemoryAllocator::GetInstance().Reallocate(g_resizeBuffer[imageType], newResizeBufferSize, FORCE_ALLOCATE);
+        if (nullptr != newResizeBuffer) {
+            g_resizeBuffer[imageType] = newResizeBuffer;
+            g_resizeBufferSize[imageType] = newResizeBufferSize;
+        }
+
+
+    }
+    return g_resizeBuffer[imageType];   
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
+#define STBIR_DEFAULT_FILTER_DOWNSAMPLE  STBIR_FILTER_CATMULLROM
+#define STBIR_MALLOC(size,context) GetOrAllocateResizeBuffer(size, context)
+#define STBIR_FREE(ptr,context)   
+#include "External/stb/stb_image_resize.h"
 
 bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame, const ImageData* src, 
                                            const uint32_t w, const uint32_t h)
@@ -140,8 +176,12 @@ bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame,
     ASSERT(nullptr != src->RawData);
     ASSERT(READ_STATUS_SUCCESS == src->CurrentReadStatus);
 
-    stbir_resize_uint8(src->RawData, src->Width, src->Height, 0,
-        resizedImageData.RawData, w, h, 0, LoaderConstants::NUM_BYTES_PER_TEXEL);
+    stbir__resize_arbitrary(&m_csType, src->RawData, src->Width, src->Height, 0,
+                            resizedImageData.RawData, w, h, 0,
+                            0,0,1,1,nullptr, LoaderConstants::NUM_BYTES_PER_TEXEL,-1,0, 
+                            STBIR_TYPE_UINT8, STBIR_FILTER_DEFAULT, STBIR_FILTER_DEFAULT,
+                            STBIR_EDGE_CLAMP, STBIR_EDGE_CLAMP, STBIR_COLORSPACE_LINEAR);
+
 
     //Register to map
     resizedImageData.CurrentReadStatus = READ_STATUS_SUCCESS;
@@ -150,6 +190,10 @@ bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame,
     return true;
 
 }
+
+#undef STBIR_MALLOC
+#undef STBIR_FREE
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -199,7 +243,6 @@ void ImageCollection::ResetOrder() {
     m_updateOrderStartPos = false;
     m_latestRequestFrame = 0;
 }
-
 
 //----------------------------------------------------------------------------------------------------------------------
 
