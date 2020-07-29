@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 31a3d78afe593c54a823386b038b04ac
+=======
+guid: d0a5793ca42ad4fdf9f10d71a18e5232
+>>>>>>> feat: initial implementation of RenderCache (#75)
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
