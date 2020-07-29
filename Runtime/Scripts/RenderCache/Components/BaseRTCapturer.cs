@@ -20,21 +20,12 @@ public abstract class BaseRTCapturer : MonoBehaviour {
     /// </summary>
     public abstract void EndCapture();
 
-
-    /// <summary>
-    /// Updates the render texture used for the capturing process
-    /// </summary>
-    /// <returns>The updated render texture</returns>
-    protected abstract RenderTexture UpdateRenderTexture();
-    
-//----------------------------------------------------------------------------------------------------------------------
     /// <summary>
     /// Gets the render texture used for the capturing process
     /// </summary>
     /// <returns>The render texture</returns>
     public RenderTexture GetRenderTexture() { return m_rt;}
-//----------------------------------------------------------------------------------------------------------------------
-    
+
     /// <summary>
     /// Capture the contents of RenderTexture into file
     /// </summary>
@@ -58,13 +49,19 @@ public abstract class BaseRTCapturer : MonoBehaviour {
         RenderTexture.active = prevRenderTexture;
         
     }
-    
+
 //----------------------------------------------------------------------------------------------------------------------
+    
+    /// <summary>
+    /// Updates the render texture used for the capturing process
+    /// </summary>
+    /// <returns>The updated render texture</returns>
+    protected abstract RenderTexture UpdateRenderTexture();
+    
     
     /// <summary>
     /// Release Render Texture
     /// </summary>
-    /// <param name="rt">the RenderTexture</param>
     protected void ReleaseRenderTexture() {
         if (null == m_rt)
             return;
