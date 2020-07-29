@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Reflection;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace UnityEditor.StreamingImageSequence {
@@ -6,13 +7,13 @@ namespace UnityEditor.StreamingImageSequence {
 internal static class ViewEditorUtility 
 {
     internal static Vector2 GetMainGameViewSize() {
-        System.Type                  t                     = System.Type.GetType("UnityEditor.GameView,UnityEditor");
+        System.Type t = System.Type.GetType("UnityEditor.GameView,UnityEditor");
         Assert.IsNotNull(t);
-        System.Reflection.MethodInfo getSizeOfMainGameView = t.GetMethod("GetSizeOfMainGameView",System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+        MethodInfo getSizeOfMainGameView = t.GetMethod("GetSizeOfMainGameView", BindingFlags.NonPublic | BindingFlags.Static);
         Assert.IsNotNull(getSizeOfMainGameView);
-        System.Object                res                   = getSizeOfMainGameView.Invoke(null,null);
+        System.Object res = getSizeOfMainGameView.Invoke(null, null);
         Assert.IsNotNull(res);
-        return (Vector2)res;
+        return (Vector2) res;
     }    
 }
 
