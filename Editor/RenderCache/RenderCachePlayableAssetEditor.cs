@@ -37,10 +37,6 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    // readonly Dictionary<TimelineClip, StreamingImageSequencePreview> m_persistentPreviews 
-    //     = new Dictionary<TimelineClip, StreamingImageSequencePreview>();
-    //
-    // ColorSpace m_colorSpace = ColorSpace.Uninitialized;
 
 }
 
