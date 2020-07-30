@@ -165,7 +165,6 @@ namespace UnityEngine.StreamingImageSequence {
             
             m_timelineClipSISData = sisData;            
         }
-        internal TimelineClip GetBoundTimelineClip()              { return m_boundTimelineClip; }
         internal TimelineClipSISData GetBoundTimelineClipSISData() { return m_timelineClipSISData; }
 
         
@@ -243,27 +242,12 @@ namespace UnityEngine.StreamingImageSequence {
 #region PlayableAsset functions override
         /// <inheritdoc/>
         public sealed override Playable CreatePlayable(PlayableGraph graph, GameObject go) {
-            //Dummy. We just need to implement this from PlayableAsset because folder D&D support. See notes below
             return Playable.Null;
         }
-
-        /// <inheritdoc/>
-        public sealed override double duration { get { return m_boundTimelineClip?.duration ?? 0; } }
        
 #endregion    
         
-//---------------------------------------------------------------------------------------------------------------------
-        internal void SetDuration(double clipDuration) {
-            if (null == m_boundTimelineClip)
-                return;
-
-#if UNITY_EDITOR            
-            Undo.RegisterFullObjectHierarchyUndo(m_boundTimelineClip.parentTrack,"StreamingImageSequence: Set Duration");
-#endif            
-            m_boundTimelineClip.duration = clipDuration;
-            
-        }
-        
+       
 //---------------------------------------------------------------------------------------------------------------------
 
 
@@ -396,11 +380,6 @@ namespace UnityEngine.StreamingImageSequence {
             //Haven't been assigned yet. May happen during recompile
             if (null == m_timelineClipSISData)
                 return;
-
-            //Clip doesn't have parent. Might be because the clip is being moved 
-            if (null == m_boundTimelineClip.parentTrack) {
-                return;
-            }
                        
             m_timelineClipSISData.RefreshPlayableFrames();            
         }
