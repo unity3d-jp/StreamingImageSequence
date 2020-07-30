@@ -37,11 +37,6 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
 #endif
     
 //----------------------------------------------------------------------------------------------------------------------
-    private void OnDestroy() {
-        m_trackMixer?.Destroy();
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
     /// <inheritdoc/>
     protected override void OnBeforeTrackSerialize() {
         base.OnBeforeTrackSerialize();
@@ -97,8 +92,8 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
         if (null == m_sisDataCollection) {
             m_sisDataCollection = new Dictionary<TimelineClip, TimelineClipSISData>();
         }
-        RefreshTimelineClipSISData();
-        RefreshMarkers();
+        InitTimelineClipSISData();
+        DeleteInvalidMarkers();
                 
 
         Playable mixer = CreateTrackMixerInternal(graph, go, inputCount);
@@ -118,23 +113,6 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
     /// <inheritdoc/>
     public override string ToString() { return name; }
     
-//----------------------------------------------------------------------------------------------------------------------
-
-    /// <summary>
-    /// Get the currently active PlayableAsset in the track according to the PlayableDirector's time
-    /// </summary>
-    /// <returns>The TimelineClip's asset as StreamingImageSequencePlayableAsset. Returns null if there is no active
-    /// PlayableAsset.
-    /// </returns>
-    public StreamingImageSequencePlayableAsset GetActivePlayableAsset() {
-        double time = (null != m_trackMixer ) ? m_trackMixer.GetDirectorTime() : 0;
-        StreamingImageSequencePlayableMixer.GetActiveTimelineClipInto(m_Clips, time,
-            out TimelineClip clip, out StreamingImageSequencePlayableAsset asset
-        );
-        return asset;
-    }
-    
-    
 
 //----------------------------------------------------------------------------------------------------------------------
     private TimelineClipSISData GetOrCreateTimelineClipSISData(TimelineClip clip) {
@@ -150,7 +128,7 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
     }
         
 //----------------------------------------------------------------------------------------------------------------------
-    private void RefreshTimelineClipSISData() {
+    private void InitTimelineClipSISData() {
         //Initialize PlayableAssets and TimelineClipSISData       
         foreach (TimelineClip clip in GetClips()) {
             T sisPlayableAsset = clip.asset as T;
@@ -165,16 +143,15 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
                 }                
             }
             
-            //Make sure that this track, and the clip are the owners
+            //Make sure that the clip is the owner
             timelineClipSISData.SetOwner(clip);
-
             sisPlayableAsset.BindTimelineClipSISData(timelineClipSISData);            
         }
         
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    private void RefreshMarkers() {
+    private void DeleteInvalidMarkers() {
         foreach(IMarker m in GetMarkers()) {
             UseImageMarker marker = m as UseImageMarker;
             if (null == marker)
@@ -196,9 +173,7 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
     [HideInInspector][SerializeField] List<TimelineClipSISData> m_serializedSISDataCollection = null;
 
     private Dictionary<TimelineClip, TimelineClipSISData> m_sisDataCollection = null;
-    
-    private BasePlayableMixer<T> m_trackMixer = null;
-    
+        
     private readonly List<UseImageMarker> m_markersToDelete = new List<UseImageMarker>();
 
 #if UNITY_EDITOR    
