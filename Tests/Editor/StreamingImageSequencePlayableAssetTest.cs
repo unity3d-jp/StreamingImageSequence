@@ -98,7 +98,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             double origClipDuration = clip.duration;
 
             //Resize longer
-            ResizeSISPlayableAsset(sisAsset, origClipDuration + 3.0f); yield return null;
+            ResizeSISTimelineClip(clip, origClipDuration + 3.0f); yield return null;
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
 
             //Undo
@@ -107,7 +107,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
             
             //Resize shorter
-            ResizeSISPlayableAsset(sisAsset, Mathf.Max(0.1f, ( (float)(origClipDuration) - 3.0f))); yield return null;
+            ResizeSISTimelineClip(clip, Mathf.Max(0.1f, ( (float)(origClipDuration) - 3.0f))); yield return null;
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
             
             //Undo
@@ -134,7 +134,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             double timePerFrame = TimelineUtility.CalculateTimePerFrame(clip);
             int numImages = sisAsset.GetImageFileNames().Count;
             clip.timeScale = 3.75f; //use scaling
-            ResizeSISPlayableAsset(sisAsset, (timePerFrame * numImages));
+            ResizeSISTimelineClip(clip, (timePerFrame * numImages));
             yield return null;
             
             int numFrames = TimelineUtility.CalculateNumFrames(clip);
@@ -218,8 +218,13 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         
 //----------------------------------------------------------------------------------------------------------------------                
 
-        private void ResizeSISPlayableAsset(StreamingImageSequencePlayableAsset sisAsset, double duration) {            
-            sisAsset.SetDuration(duration);
+        private void ResizeSISTimelineClip(TimelineClip clip, double duration) {
+            
+#if UNITY_EDITOR            
+            Undo.RegisterFullObjectHierarchyUndo(clip.parentTrack,"StreamingImageSequence: Set Duration");
+#endif            
+            clip.duration = duration;
+            
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
         }
 
