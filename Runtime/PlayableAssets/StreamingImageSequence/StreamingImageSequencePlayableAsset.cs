@@ -161,7 +161,7 @@ namespace UnityEngine.StreamingImageSequence {
             
             m_boundTimelineClip = clip;
             AnimationCurve curve = GetAndValidateAnimationCurve(clip);
-            RefreshTimelineClipCurve(clip, curve);
+            SetTimelineClipCurve(clip, curve);
             
             m_timelineClipSISData = sisData;            
         }
@@ -451,7 +451,7 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------
 
-        internal static void RefreshTimelineClipCurve(TimelineClip clip, AnimationCurve curve) {
+        private static void SetTimelineClipCurve(TimelineClip clip, AnimationCurve curve) {
             clip.curves.SetCurve("", typeof(StreamingImageSequencePlayableAsset), "m_time", curve);
 #if UNITY_EDITOR            
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
@@ -459,6 +459,17 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
 
+//----------------------------------------------------------------------------------------------------------------------
+        internal void ResetTimelineClipCurve() {
+            TimelineClip clip = m_boundTimelineClip;
+            
+            Assert.IsNotNull(clip);
+            AnimationCurve animationCurve = new AnimationCurve();
+            ValidateAnimationCurve(ref animationCurve, (float) (clip.duration * clip.timeScale));
+            SetTimelineClipCurve(clip, animationCurve);
+            clip.clipIn = 0;
+        }
+        
 //----------------------------------------------------------------------------------------------------------------------        
 
 #region Unity Editor code
