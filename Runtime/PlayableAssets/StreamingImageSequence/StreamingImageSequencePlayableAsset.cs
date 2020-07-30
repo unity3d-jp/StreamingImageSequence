@@ -20,7 +20,7 @@ namespace UnityEngine.StreamingImageSequence {
     /// - ISerializationCallbackReceiver: for serialization
     /// </summary>
     [System.Serializable]
-    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
+    internal class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
                                                      , IPlayableBehaviour
     {      
 //----------------------------------------------------------------------------------------------------------------------

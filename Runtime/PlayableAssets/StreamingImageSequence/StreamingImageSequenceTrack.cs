@@ -137,7 +137,7 @@ public class StreamingImageSequenceTrack : TrackAsset {
     /// <returns>The TimelineClip's asset as StreamingImageSequencePlayableAsset. Returns null if there is no active
     /// PlayableAsset.
     /// </returns>
-    public StreamingImageSequencePlayableAsset GetActivePlayableAsset() {
+    internal StreamingImageSequencePlayableAsset GetActivePlayableAsset() {
         double time = (null != m_trackMixer ) ? m_trackMixer.GetDirectorTime() : 0;
         StreamingImageSequencePlayableMixer.GetActiveTimelineClipInto(m_Clips, time,
             out TimelineClip clip, out StreamingImageSequencePlayableAsset asset
