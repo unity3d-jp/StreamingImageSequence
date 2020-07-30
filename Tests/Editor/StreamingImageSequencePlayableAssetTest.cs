@@ -141,7 +141,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.AreEqual(numImages, numFrames);
             
             //Reset: make sure that the curve is a simple straight line from 0 to 1
-            sisAsset.ResetTimelineClipCurve();
+            StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(clip);
             yield return null;
             
             sisAsset.ResetPlayableFrames();            
@@ -260,7 +260,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
             clip.CreateCurves("Curves: " + clip.displayName);
             TimelineClipSISData sisData = new TimelineClipSISData(clip);
-            sisAsset.BindTimelineClip(clip, sisData);           
+            sisAsset.InitTimelineClipCurve(clip);
+            sisAsset.BindTimelineClipSISData(sisData);           
 
             //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
             EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");

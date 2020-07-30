@@ -72,10 +72,11 @@ namespace UnityEditor.StreamingImageSequence {
 
 
             TimelineClipSISData sisData = null;
-
+            asset.InitTimelineClipCurve(clip);
+            
             if (null == clonedFrom) {
                 sisData = new TimelineClipSISData(clip);
-                asset.BindTimelineClip(clip, sisData);
+                asset.BindTimelineClipSISData(sisData);
                 return;
             }
 
@@ -85,7 +86,7 @@ namespace UnityEditor.StreamingImageSequence {
             
             TimelineClipSISData otherSISData = clonedFromAsset.GetBoundTimelineClipSISData();
             sisData = new TimelineClipSISData(clip, otherSISData);
-            asset.BindTimelineClip(clip, sisData);            
+            asset.BindTimelineClipSISData(sisData);
             clip.displayName = clonedFrom.displayName + " (Cloned)";
 
         }

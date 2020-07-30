@@ -132,7 +132,8 @@ internal class JstimelineImporter : ScriptedImporter
             clip.CreateCurves("Curves: " + clip.displayName);
             
             TimelineClipSISData sisData = new TimelineClipSISData(clip);
-            sisAsset.BindTimelineClip(clip, sisData);
+            sisAsset.InitTimelineClipCurve(clip);
+            sisAsset.BindTimelineClipSISData(sisData);
 
 
             if (Object.FindObjectOfType(typeof(UnityEngine.EventSystems.EventSystem)) == null)
