@@ -12,7 +12,7 @@ namespace UnityEngine.StreamingImageSequence {
 /// <summary>
 /// A track which requires its TimelineClip to store TimelineClipSISData as an extension
 /// </summary>
-internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: PlayableAsset, IHasTimelineClipSISData{
+internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: BaseTimelineClipSISDataPlayableAsset {
     
 #if UNITY_EDITOR        
     [InitializeOnLoadMethod]
