@@ -18,7 +18,7 @@ namespace UnityEngine.StreamingImageSequence {
 [TrackBindingType(typeof(StreamingImageSequenceRenderer))]
 [TrackColor(0.776f, 0.263f, 0.09f)]
 [NotKeyable]
-public class StreamingImageSequenceTrack : TrackAsset {
+internal class StreamingImageSequenceTrack : TrackAsset {
     
 #if UNITY_EDITOR        
     [InitializeOnLoadMethod]
