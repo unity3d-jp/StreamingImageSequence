@@ -95,6 +95,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         
         
         
+        //[TODO-sin: 2020-7-30] Remove duplicate code with StreamingImageSequencePlayableAssetInspector
         TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
         Assert.IsNotNull(timelineClipSISData);
                     
