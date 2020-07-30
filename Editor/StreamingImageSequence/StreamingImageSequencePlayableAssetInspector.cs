@@ -86,7 +86,7 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
             }
 
             //Image markers
-            if (TimelineEditor.selectedClip == m_asset.GetBoundTimelineClip()) {
+            if (TimelineEditor.selectedClip.asset == m_asset) {
                 TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
                 Assert.IsNotNull(timelineClipSISData);
                     
