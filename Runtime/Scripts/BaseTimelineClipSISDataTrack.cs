@@ -12,7 +12,7 @@ namespace UnityEngine.StreamingImageSequence {
 /// <summary>
 /// A track which requires its TimelineClip to store TimelineClipSISData as an extension
 /// </summary>
-internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: PlayableAsset{
+internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: PlayableAsset, IHasTimelineClipSISData{
     
 #if UNITY_EDITOR        
     [InitializeOnLoadMethod]
@@ -97,7 +97,7 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Pl
         if (null == m_sisDataCollection) {
             m_sisDataCollection = new Dictionary<TimelineClip, TimelineClipSISData>();
         }
-        RefreshTimelineClip();
+        RefreshTimelineClipSISData();
         RefreshMarkers();
                 
 
@@ -150,7 +150,7 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Pl
     }
         
 //----------------------------------------------------------------------------------------------------------------------
-    private void RefreshTimelineClip() {
+    private void RefreshTimelineClipSISData() {
         //Initialize PlayableAssets and TimelineClipSISData       
         foreach (TimelineClip clip in GetClips()) {
             T sisPlayableAsset = clip.asset as T;
@@ -164,12 +164,11 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Pl
                     m_sisDataCollection.Add(clip, timelineClipSISData);;            
                 }                
             }
-
             
             //Make sure that this track, and the clip are the owners
             timelineClipSISData.SetOwner(clip);
 
-            sisPlayableAsset.BindTimelineClip(clip,timelineClipSISData);            
+            sisPlayableAsset.BindTimelineClipSISData(timelineClipSISData);            
         }
         
     }
