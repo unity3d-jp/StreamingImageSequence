@@ -1,12 +1,6 @@
 ﻿using UnityEngine.Playables;
 using UnityEngine.Timeline;
-using System.Collections.Generic;
 using UnityEngine.Assertions;
-
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditor.Timeline;
-#endif
 
 namespace UnityEngine.StreamingImageSequence { 
 /// <summary>
