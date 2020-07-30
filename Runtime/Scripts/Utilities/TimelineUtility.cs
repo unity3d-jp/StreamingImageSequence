@@ -26,15 +26,6 @@ internal static class TimelineUtility {
         return timePerFrame;
     }
     
-//----------------------------------------------------------------------------------------------------------------------
-    internal  static void ResetTimelineClipCurve(TimelineClip clip) {
-        
-        AnimationCurve animationCurve = new AnimationCurve();
-        StreamingImageSequencePlayableAsset.ValidateAnimationCurve(ref animationCurve, (float) (clip.duration * clip.timeScale));
-        StreamingImageSequencePlayableAsset.RefreshTimelineClipCurve(clip, animationCurve);
-        clip.clipIn    = 0;
-    }
-    
     
 //----------------------------------------------------------------------------------------------------------------------
    

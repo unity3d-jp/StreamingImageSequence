@@ -139,7 +139,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
         private static double LocalTimeToCurveTime(TimelineClip clip, double localTime) {
-            AnimationCurve curve = GetAndValidateAnimationCurve(clip);
+            AnimationCurve curve = GetAndValidateAnimationCurve(clip);                       
             return curve.Evaluate((float)(localTime));
         }
         
@@ -152,20 +152,9 @@ namespace UnityEngine.StreamingImageSequence {
         internal ImageDimensionInt GetResolution() { return m_resolution; }
         internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFileNames; }
 
-
-
-        //These methods are necessary "hacks" for knowing which TimelineClips currently own
-        //this StreamingImageSequencePlayableAssets
-        internal void BindTimelineClip(TimelineClip clip, TimelineClipSISData sisData) {
-            Assert.IsNotNull(clip);
-            
-            m_boundTimelineClip = clip;
-            AnimationCurve curve = GetAndValidateAnimationCurve(clip);
-            RefreshTimelineClipCurve(clip, curve);
-            
-            m_timelineClipSISData = sisData;            
-        }
-        internal TimelineClip GetBoundTimelineClip()              { return m_boundTimelineClip; }
+        //These methods are necessary "hacks" for knowing the PlayableFrames/UseImageMarkers that belong to this
+        //this StreamingImageSequencePlayableAssets        
+        internal void BindTimelineClipSISData(TimelineClipSISData sisData) { m_timelineClipSISData = sisData;}         
         internal TimelineClipSISData GetBoundTimelineClipSISData() { return m_timelineClipSISData; }
 
         
@@ -243,27 +232,12 @@ namespace UnityEngine.StreamingImageSequence {
 #region PlayableAsset functions override
         /// <inheritdoc/>
         public sealed override Playable CreatePlayable(PlayableGraph graph, GameObject go) {
-            //Dummy. We just need to implement this from PlayableAsset because folder D&D support. See notes below
             return Playable.Null;
         }
-
-        /// <inheritdoc/>
-        public sealed override double duration { get { return m_boundTimelineClip?.duration ?? 0; } }
        
 #endregion    
         
-//---------------------------------------------------------------------------------------------------------------------
-        internal void SetDuration(double clipDuration) {
-            if (null == m_boundTimelineClip)
-                return;
-
-#if UNITY_EDITOR            
-            Undo.RegisterFullObjectHierarchyUndo(m_boundTimelineClip.parentTrack,"StreamingImageSequence: Set Duration");
-#endif            
-            m_boundTimelineClip.duration = clipDuration;
-            
-        }
-        
+       
 //---------------------------------------------------------------------------------------------------------------------
 
 
@@ -396,11 +370,6 @@ namespace UnityEngine.StreamingImageSequence {
             //Haven't been assigned yet. May happen during recompile
             if (null == m_timelineClipSISData)
                 return;
-
-            //Clip doesn't have parent. Might be because the clip is being moved 
-            if (null == m_boundTimelineClip.parentTrack) {
-                return;
-            }
                        
             m_timelineClipSISData.RefreshPlayableFrames();            
         }
@@ -437,11 +406,29 @@ namespace UnityEngine.StreamingImageSequence {
             
         }
 
+//----------------------------------------------------------------------------------------------------------------------
+        //Make sure to set the curve of the TimelineClip 
+        internal void InitTimelineClipCurve(TimelineClip clip) {
+            Assert.IsNotNull(clip);            
+            AnimationCurve curve = GetAndValidateAnimationCurve(clip);
+            SetTimelineClipCurve(clip, curve);            
+        }
+        
+        internal static void ResetTimelineClipCurve(TimelineClip clip) {
+            
+            Assert.IsNotNull(clip);
+            AnimationCurve animationCurve = new AnimationCurve();
+            ValidateAnimationCurve(ref animationCurve, (float) (clip.duration * clip.timeScale));
+            SetTimelineClipCurve(clip, animationCurve);
+            clip.clipIn = 0;
+        }
 
 //----------------------------------------------------------------------------------------------------------------------
         //Get the animation curve from the TimelineClip.  
         private static AnimationCurve GetAndValidateAnimationCurve(TimelineClip clip) {
             AnimationCurve animationCurve = null;
+            
+            //[TODO-sin: 2020-7-30] Support getting animation curve in Runtime
 #if UNITY_EDITOR
             animationCurve = AnimationUtility.GetEditorCurve(clip.curves, m_timelineEditorCurveBinding);
 #endif
@@ -472,14 +459,14 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------
 
-        internal static void RefreshTimelineClipCurve(TimelineClip clip, AnimationCurve curve) {
+        private static void SetTimelineClipCurve(TimelineClip clip, AnimationCurve curve) {
             clip.curves.SetCurve("", typeof(StreamingImageSequencePlayableAsset), "m_time", curve);
 #if UNITY_EDITOR            
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
 #endif            
         }
 
-
+        
 //----------------------------------------------------------------------------------------------------------------------        
 
 #region Unity Editor code
@@ -521,8 +508,7 @@ namespace UnityEngine.StreamingImageSequence {
 
         private ImageDimensionInt  m_resolution;        
         private float m_dimensionRatio;
-        [NonSerialized] private TimelineClipSISData m_timelineClipSISData = null;
-
+        
 
 #if UNITY_EDITOR
         [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below
@@ -535,14 +521,14 @@ namespace UnityEngine.StreamingImageSequence {
         
 #endif
         
-        //[Note-sin: 2020-6-30] TimelineClip should not be a property of StreamingImageSequencePlayableAsset, because
-        //StreamingImageSequencePlayableAsset is an asset, and should be able to be bound to 2 different TimelineClips.
-        //However, for UseImageMarker to work, we need to know which TimelineClip is bound to the
+        //[Note-sin: 2020-6-30] TimelineClipSISData stores extra data of TimelineClip, because we can't extend
+        //TimelineClip at the moment. Ideally, it should not be a property of StreamingImageSequencePlayableAsset, because
+        //StreamingImageSequencePlayableAsset is an asset, and should be able to be bound to 2 different TimelineClipsSISData.
+        //However, for UseImageMarker to work, we need to know which TimelineClipSISData is bound to the
         //StreamingImageSequencePlayableAsset, because Marker is originally designed to be owned by TrackAsset, but not
-        //TimelineAsset
-        TimelineClip m_boundTimelineClip  = null; 
-
-
+        //TimelineClip        
+        [NonSerialized] private TimelineClipSISData m_timelineClipSISData = null;
+        
         private int m_lastCopiedImageIndex; //the index of the image copied to m_texture
 
         private int m_primaryImageIndex         = 0;

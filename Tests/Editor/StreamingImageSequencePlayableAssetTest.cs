@@ -17,10 +17,12 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         [UnityTest]
         public IEnumerator CreatePlayableAsset() {
             PlayableDirector director = NewSceneWithDirector();
-            StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
+            TimelineClip clip = CreateTestTimelineClip(director);
+            StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(sisAsset);
             
             //Test the track immediately
-            StreamingImageSequenceTrack track = sisAsset.GetBoundTimelineClip().parentTrack as StreamingImageSequenceTrack;
+            StreamingImageSequenceTrack track = clip.parentTrack as StreamingImageSequenceTrack;
             Assert.IsNotNull(track);
             Assert.IsNotNull(track.GetActivePlayableAsset());
             
@@ -34,7 +36,6 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             
 
             //Test that there should be no active PlayableAsset at the time above what exists in the track.
-            TimelineClip clip = sisAsset.GetBoundTimelineClip();
             director.time = clip.start + clip.duration + 1;
             yield return null;
             
@@ -49,11 +50,12 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         [UnityTest]
         public IEnumerator ShowUseImageMarkers() {
             PlayableDirector director = NewSceneWithDirector();
-            StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
+            TimelineClip                        clip     = CreateTestTimelineClip(director);
+            StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(sisAsset);
             yield return null;
             
             //Show
-            TimelineClip clip = sisAsset.GetBoundTimelineClip();
             TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
             
             TrackAsset trackAsset = clip.parentTrack;
@@ -79,7 +81,9 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         [UnityTest]
         public IEnumerator ResizePlayableAsset() {
             PlayableDirector director = NewSceneWithDirector();
-            StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
+            TimelineClip                        clip     = CreateTestTimelineClip(director);
+            StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(sisAsset);
             TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
             yield return null;
             
@@ -89,13 +93,12 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             yield return null;
 
             //Original length
-            TimelineClip clip = sisAsset.GetBoundTimelineClip();
             TrackAsset trackAsset = clip.parentTrack;
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
             double origClipDuration = clip.duration;
 
             //Resize longer
-            ResizeSISPlayableAsset(sisAsset, origClipDuration + 3.0f); yield return null;
+            ResizeSISTimelineClip(clip, origClipDuration + 3.0f); yield return null;
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
 
             //Undo
@@ -104,7 +107,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
             
             //Resize shorter
-            ResizeSISPlayableAsset(sisAsset, Mathf.Max(0.1f, ( (float)(origClipDuration) - 3.0f))); yield return null;
+            ResizeSISTimelineClip(clip, Mathf.Max(0.1f, ( (float)(origClipDuration) - 3.0f))); yield return null;
             Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
             
             //Undo
@@ -121,29 +124,30 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         [UnityTest]
         public IEnumerator UncheckUseImageMarkers() {
             PlayableDirector director = NewSceneWithDirector();
-            StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
+            TimelineClip                        clip     = CreateTestTimelineClip(director);
+            StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(sisAsset);
             TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
             timelineClipSISData.SetUseImageMarkerVisibility(true);
             yield return null;
 
-            TimelineClip clip = sisAsset.GetBoundTimelineClip();
             double timePerFrame = TimelineUtility.CalculateTimePerFrame(clip);
             int numImages = sisAsset.GetImageFileNames().Count;
             clip.timeScale = 3.75f; //use scaling
-            ResizeSISPlayableAsset(sisAsset, (timePerFrame * numImages));
+            ResizeSISTimelineClip(clip, (timePerFrame * numImages));
             yield return null;
             
             int numFrames = TimelineUtility.CalculateNumFrames(clip);
             Assert.AreEqual(numImages, numFrames);
             
             //Reset: make sure that the curve is a simple straight line from 0 to 1
-            TimelineUtility.ResetTimelineClipCurve(clip);
+            StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(clip);
             yield return null;
             
             sisAsset.ResetPlayableFrames();            
             yield return null;
             
-            StreamingImageSequenceTrack track = sisAsset.GetBoundTimelineClip().parentTrack as StreamingImageSequenceTrack;
+            StreamingImageSequenceTrack track = clip.parentTrack as StreamingImageSequenceTrack;
             Assert.IsNotNull(track);
             List<UseImageMarker> useImageMarkers = new List<UseImageMarker>();
 
@@ -177,13 +181,15 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         [UnityTest]
         public IEnumerator ResetUseImageMarkers() {
             PlayableDirector director = NewSceneWithDirector();
-            StreamingImageSequencePlayableAsset sisAsset = CreateTestTimelineAssets(director);
+            TimelineClip                        clip     = CreateTestTimelineClip(director);
+            StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(sisAsset);
             TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
             timelineClipSISData.SetUseImageMarkerVisibility(true);
             yield return null;
             
             //Change image to false
-            StreamingImageSequenceTrack track = sisAsset.GetBoundTimelineClip().parentTrack as StreamingImageSequenceTrack;
+            StreamingImageSequenceTrack track = clip.parentTrack as StreamingImageSequenceTrack;
             Assert.IsNotNull(track);           
             foreach (var m in track.GetMarkers()) {
                 UseImageMarker marker = m as UseImageMarker;
@@ -206,15 +212,19 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             yield return null;
 
                        
-            TimelineClip clip = sisAsset.GetBoundTimelineClip();
             DestroyTestTimelineAssets(clip);
             yield return null;
         }
         
 //----------------------------------------------------------------------------------------------------------------------                
 
-        private void ResizeSISPlayableAsset(StreamingImageSequencePlayableAsset sisAsset, double duration) {            
-            sisAsset.SetDuration(duration);
+        private void ResizeSISTimelineClip(TimelineClip clip, double duration) {
+            
+#if UNITY_EDITOR            
+            Undo.RegisterFullObjectHierarchyUndo(clip.parentTrack,"StreamingImageSequence: Set Duration");
+#endif            
+            clip.duration = duration;
+            
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
         }
 
@@ -234,7 +244,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         
 //----------------------------------------------------------------------------------------------------------------------                
 
-        StreamingImageSequencePlayableAsset CreateTestTimelineAssets(PlayableDirector director) {
+        TimelineClip CreateTestTimelineClip(PlayableDirector director) {
             string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempTimelineForTestRunner.playable");
 
             //Create timeline asset
@@ -243,14 +253,15 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             AssetDatabase.CreateAsset(timelineAsset, tempTimelineAssetPath);
             
             //Create empty asset
-            StreamingImageSequenceTrack movieTrack = timelineAsset.CreateTrack<StreamingImageSequenceTrack>(null, "Footage");
-            TimelineClip clip = movieTrack.CreateDefaultClip();
+            StreamingImageSequenceTrack sisTrack = timelineAsset.CreateTrack<StreamingImageSequenceTrack>(null, "Footage");
+            TimelineClip clip = sisTrack.CreateDefaultClip();
             StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
             Assert.IsNotNull(sisAsset);
 
             clip.CreateCurves("Curves: " + clip.displayName);
             TimelineClipSISData sisData = new TimelineClipSISData(clip);
-            sisAsset.BindTimelineClip(clip, sisData);           
+            sisAsset.InitTimelineClipCurve(clip);
+            sisAsset.BindTimelineClipSISData(sisData);           
 
             //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
             EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
@@ -264,7 +275,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, fullPath, sisAsset,false);
             
             
-            return sisAsset;
+            return clip;
         }
 
 //----------------------------------------------------------------------------------------------------------------------        

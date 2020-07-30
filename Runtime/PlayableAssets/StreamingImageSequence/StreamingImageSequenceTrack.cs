@@ -180,9 +180,9 @@ public class StreamingImageSequenceTrack : TrackAsset {
             //Make sure that this track, and the clip are the owners
             timelineClipSISData.SetOwner(clip);
 
-            sisPlayableAsset.BindTimelineClip(clip,timelineClipSISData);            
-        }
-        
+            sisPlayableAsset.InitTimelineClipCurve(clip);
+            sisPlayableAsset.BindTimelineClipSISData(timelineClipSISData);            
+        }        
     }
 
 //----------------------------------------------------------------------------------------------------------------------

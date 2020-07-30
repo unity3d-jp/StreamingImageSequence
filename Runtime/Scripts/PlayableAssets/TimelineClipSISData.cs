@@ -107,6 +107,12 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     
     //Resize PlayableFrames and used the previous values
     internal void RefreshPlayableFrames() {
+        
+        //Clip doesn't have parent. Might be because the clip is being moved 
+        if (null == m_clipOwner.parentTrack) {
+            return;
+        }        
+        
         int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
       
         //Change the size of m_playableFrames and reinitialize if necessary
