@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine.Assertions;
 
 #if UNITY_EDITOR
-using UnityEditor;
 using UnityEditor.Timeline;
 #endif
 
@@ -13,28 +12,19 @@ namespace UnityEngine.StreamingImageSequence {
 /// A track which requires its TimelineClip to store TimelineClipSISData as an extension
 /// </summary>
 internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: BaseTimelineClipSISDataPlayableAsset {
-    
+   
 #if UNITY_EDITOR        
-    [InitializeOnLoadMethod]
-    static void Onload() {
-        Undo.undoRedoPerformed += BaseTimelineClipSISDataTrack_OnUndoRedoPerformed;
-    }
     
-    static void BaseTimelineClipSISDataTrack_OnUndoRedoPerformed() {
-        m_undoRedo = true;
-    } 
-    
-
     void RefreshTimelineEditorAfterUndoRedo() {        
         if (m_undoRedo && null!= TimelineEditor.inspectedDirector) {
             //After undo, the UseImageMarkers are not refreshed
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved);
             m_undoRedo = false;
-        }
-        
+        }        
     }
     
 #endif
+    
     
 //----------------------------------------------------------------------------------------------------------------------
     /// <inheritdoc/>
@@ -93,8 +83,7 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
             m_sisDataCollection = new Dictionary<TimelineClip, TimelineClipSISData>();
         }
         InitTimelineClipSISData();
-        DeleteInvalidMarkers();
-                
+        DeleteInvalidMarkers();                
 
         Playable mixer = CreateTrackMixerInternal(graph, go, inputCount);
 
@@ -177,9 +166,9 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
     private readonly List<UseImageMarker> m_markersToDelete = new List<UseImageMarker>();
 
 #if UNITY_EDITOR    
-    private static bool m_undoRedo = false;
+    protected static bool m_undoRedo = false;
 #endif    
-
+    
 }
 
 } //end namespace

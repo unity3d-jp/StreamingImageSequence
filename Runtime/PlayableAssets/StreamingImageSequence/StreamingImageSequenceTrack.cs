@@ -2,6 +2,11 @@
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+
 namespace UnityEngine.StreamingImageSequence { 
 /// <summary>
 /// A track which clip type is StreamingImageSequencePlayableAsset.
@@ -13,6 +18,18 @@ namespace UnityEngine.StreamingImageSequence {
 [TrackColor(0.776f, 0.263f, 0.09f)]
 [NotKeyable]
 internal class StreamingImageSequenceTrack : BaseTimelineClipSISDataTrack<StreamingImageSequencePlayableAsset> {
+
+#if UNITY_EDITOR        
+    [InitializeOnLoadMethod]
+    static void Onload() {
+        Undo.undoRedoPerformed += StreamingImageSequenceTrack_OnUndoRedoPerformed;
+    }
+    
+    static void StreamingImageSequenceTrack_OnUndoRedoPerformed() {
+        m_undoRedo = true;
+    } 
+    
+#endif
     
 //----------------------------------------------------------------------------------------------------------------------
     private void OnDestroy() {
@@ -35,7 +52,7 @@ internal class StreamingImageSequenceTrack : BaseTimelineClipSISDataTrack<Stream
             StreamingImageSequenceRenderer renderer = boundObject as StreamingImageSequenceRenderer;
             m_trackMixer.Init(null == renderer ? null : renderer.gameObject, director, GetClips());
         }
-
+        
         return mixer;
     }     
 
@@ -73,8 +90,9 @@ internal class StreamingImageSequenceTrack : BaseTimelineClipSISDataTrack<Stream
     
 //----------------------------------------------------------------------------------------------------------------------    
     
-    private StreamingImageSequencePlayableMixer m_trackMixer = null;    
+    private StreamingImageSequencePlayableMixer m_trackMixer = null;   
     
+   
 }
 
 } //end namespace
