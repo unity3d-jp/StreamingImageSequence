@@ -1,6 +1,10 @@
 ﻿using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace UnityEngine.StreamingImageSequence  {
 
 /// <summary>
@@ -11,6 +15,17 @@ namespace UnityEngine.StreamingImageSequence  {
 [TrackColor(0.263f, 0.776f, 0.09f)]
 internal class RenderCacheTrack : BaseTimelineClipSISDataTrack<RenderCachePlayableAsset> {
 
+#if UNITY_EDITOR        
+    [InitializeOnLoadMethod]
+    static void Onload() {
+        Undo.undoRedoPerformed += RenderCacheTrack_OnUndoRedoPerformed;
+    }
+    
+    static void RenderCacheTrack_OnUndoRedoPerformed() {
+        m_undoRedo = true;
+    } 
+    
+#endif
     
     private void OnDestroy() {
         m_trackMixer?.Destroy();
