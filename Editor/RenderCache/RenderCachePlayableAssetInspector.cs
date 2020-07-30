@@ -92,6 +92,20 @@ internal class RenderCachePlayableAssetInspector : Editor {
         }
         
         //[TODO-sin: 2020-7-29] Add a button to delete all images in the folder
+        
+        
+        
+        TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
+        Assert.IsNotNull(timelineClipSISData);
+                    
+        GUILayout.Space(15);
+        bool prevMarkerVisibility = timelineClipSISData.GetUseImageMarkerVisibility();
+        bool markerVisibility     = GUILayout.Toggle(prevMarkerVisibility, "Show UseImageMarkers");
+        if (markerVisibility != prevMarkerVisibility) {
+            timelineClipSISData.SetUseImageMarkerVisibility(markerVisibility);
+        }
+
+        
 
     }
 
