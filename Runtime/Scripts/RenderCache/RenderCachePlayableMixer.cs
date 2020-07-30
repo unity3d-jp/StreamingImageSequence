@@ -17,15 +17,6 @@ internal class RenderCachePlayableMixer : BasePlayableMixer<RenderCachePlayableA
 
 
     public override void OnGraphStart(Playable playable) {
-        //Need to bind TimelineClips first
-        IEnumerable<TimelineClip> clips = GetClips();
-        foreach (TimelineClip clip in clips) {
-            RenderCachePlayableAsset asset = clip.asset as RenderCachePlayableAsset;
-            Assert.IsNotNull(asset);
-            
-            asset.BindTimelineClip(clip);
-        }
-
     }
 
 

@@ -19,7 +19,9 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
         Assert.IsNotNull(asset);
 
         clip.parentTrack = track; 
-        asset.BindTimelineClip(clip);
+        
+        TimelineClipSISData sisData = new TimelineClipSISData(clip);        
+        asset.BindTimelineClipSISData(sisData);
     }
 
 

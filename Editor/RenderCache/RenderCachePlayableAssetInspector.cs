@@ -48,11 +48,15 @@ internal class RenderCachePlayableAssetInspector : Editor {
             m_asset.SetFolder(newFolder);
         }
 
+
+        if (TimelineEditor.selectedClip.asset == m_asset) {
+            return;
+        }
         
         //[TODO-sin: 2020-5-27] Check the MD5 hash of the folder before overwriting
         if (GUILayout.Button("Update Render Cache")) {
-
-            TimelineClip timelineClip = m_asset.GetTimelineClip();
+            
+            TimelineClip timelineClip = TimelineEditor.selectedClip;
             TrackAsset track = timelineClip.parentTrack;
             TimelineAsset timelineAsset = track.timelineAsset;
             m_director = FindDirectorInScene(timelineAsset);
@@ -112,8 +116,9 @@ internal class RenderCachePlayableAssetInspector : Editor {
         LegacyTextureBlitter blitter = progressGo.AddComponent<LegacyTextureBlitter>();
         blitter.SetTexture(capturerTex);
         blitter.SetCameraDepth(int.MaxValue);
-        
-        TimelineClip timelineClip = m_asset.GetTimelineClip();
+
+        TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
+        TimelineClip timelineClip = timelineClipSISData.GetOwner();
         m_nextDirectorTime = timelineClip.start;
         
         int  fileCounter = 0;
