@@ -49,7 +49,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         }
 
 
-        if (TimelineEditor.selectedClip.asset == m_asset) {
+        if (TimelineEditor.selectedClip.asset != m_asset) {
             return;
         }
         
