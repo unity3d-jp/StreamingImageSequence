@@ -149,29 +149,29 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             
             StreamingImageSequenceTrack track = clip.parentTrack as StreamingImageSequenceTrack;
             Assert.IsNotNull(track);
-            List<FrameMarker> useImageMarkers = new List<FrameMarker>();
+            List<FrameMarker> frameMarkers = new List<FrameMarker>();
 
             int i = 0;
             foreach (var m in track.GetMarkers()) {
                 FrameMarker marker = m as FrameMarker;
                 Assert.IsNotNull(marker);
-                useImageMarkers.Add(marker);
+                frameMarkers.Add(marker);
                 int imageIndex = sisAsset.GlobalTimeToImageIndex(clip, marker.time);
                 Assert.AreEqual(i, imageIndex);
                 ++i;
             }
             
             //Uncheck and see if the unchecked images became ignored
-            useImageMarkers[4].SetFrameUsed(false);
-            useImageMarkers[5].SetFrameUsed(false);
-            Assert.AreEqual(3, sisAsset.GlobalTimeToImageIndex(clip, useImageMarkers[4].time));
-            Assert.AreEqual(3, sisAsset.GlobalTimeToImageIndex(clip, useImageMarkers[5].time));
+            frameMarkers[4].SetFrameUsed(false);
+            frameMarkers[5].SetFrameUsed(false);
+            Assert.AreEqual(3, sisAsset.GlobalTimeToImageIndex(clip, frameMarkers[4].time));
+            Assert.AreEqual(3, sisAsset.GlobalTimeToImageIndex(clip, frameMarkers[5].time));
             
 
-            useImageMarkers[7].SetFrameUsed(false);
-            useImageMarkers[8].SetFrameUsed(false);
-            Assert.AreEqual(6, sisAsset.GlobalTimeToImageIndex(clip, useImageMarkers[7].time));
-            Assert.AreEqual(6, sisAsset.GlobalTimeToImageIndex(clip, useImageMarkers[8].time));
+            frameMarkers[7].SetFrameUsed(false);
+            frameMarkers[8].SetFrameUsed(false);
+            Assert.AreEqual(6, sisAsset.GlobalTimeToImageIndex(clip, frameMarkers[7].time));
+            Assert.AreEqual(6, sisAsset.GlobalTimeToImageIndex(clip, frameMarkers[8].time));
                        
             DestroyTestTimelineAssets(clip);
             yield return null;
