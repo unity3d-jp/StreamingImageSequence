@@ -229,6 +229,11 @@ internal class RenderCachePlayableAssetInspector : Editor {
             );
 
             newDirPath = InspectorUtility.ShowSelectFolderButton(dialogTitle, directoryOpenPath, onValidFolderSelected);
+
+            if (GUILayout.Button("Show", GUILayout.Width(50f))) {
+                EditorUtility.RevealInFinder(newDirPath);
+            }
+
         }
         return newDirPath;
     }
