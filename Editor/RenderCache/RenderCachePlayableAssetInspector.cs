@@ -100,10 +100,10 @@ internal class RenderCachePlayableAssetInspector : Editor {
         Assert.IsNotNull(timelineClipSISData);
                     
         GUILayout.Space(15);
-        bool prevMarkerVisibility = timelineClipSISData.GetUseImageMarkerVisibility();
-        bool markerVisibility     = GUILayout.Toggle(prevMarkerVisibility, "Show UseImageMarkers");
+        bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
+        bool markerVisibility     = GUILayout.Toggle(prevMarkerVisibility, "Show Frame Markers");
         if (markerVisibility != prevMarkerVisibility) {
-            timelineClipSISData.SetUseImageMarkerVisibility(markerVisibility);
+            timelineClipSISData.ShowFrameMarkers(markerVisibility);
         }
 
         

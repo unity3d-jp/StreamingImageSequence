@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 using UnityEngine.Timeline;
 
 #if UNITY_EDITOR
@@ -28,7 +29,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
             m_playableFrames.Add(newFrame);
         }
         
-        m_useImageMarkerVisibility = other.m_useImageMarkerVisibility;
+        m_frameMarkersVisibility = other.m_frameMarkersVisibility;
         
     }
     
@@ -55,17 +56,17 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 
 //----------------------------------------------------------------------------------------------------------------------
     
-    internal bool GetUseImageMarkerVisibility() {  return m_useImageMarkerVisibility; }
+    internal bool AreFrameMarkersVisible() {  return m_frameMarkersVisibility; }
 
-    internal void SetUseImageMarkerVisibility(bool show) {
+    internal void ShowFrameMarkers(bool show) {
 
-        if (show == m_useImageMarkerVisibility)
+        if (show == m_frameMarkersVisibility)
             return;
         
 #if UNITY_EDITOR        
         Undo.RegisterFullObjectHierarchyUndo( m_clipOwner.parentTrack, "StreamingImageSequence Show/Hide FrameMarker");
 #endif        
-        m_useImageMarkerVisibility = show;        
+        m_frameMarkersVisibility = show;        
         RefreshPlayableFrames();        
     }
 
@@ -142,7 +143,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         int numPlayableFrames = m_playableFrames.Count;
         for (int i = 0; i < numPlayableFrames; ++i) {                
             m_playableFrames[i].SetLocalTime(i * timePerFrame);
-            m_playableFrames[i].Refresh(m_useImageMarkerVisibility);
+            m_playableFrames[i].Refresh(m_frameMarkersVisibility);
         }
         
     }        
@@ -202,7 +203,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     
     //The ground truth for using/dropping an image in a particular frame. See the notes below
     [SerializeField] private List<SISPlayableFrame> m_playableFrames;
-    [SerializeField] [HideInInspector] private bool m_useImageMarkerVisibility = false;
+    [FormerlySerializedAs("m_useImageMarkerVisibility")] [SerializeField] [HideInInspector] private bool m_frameMarkersVisibility = false;
 
     [NonSerialized] private TimelineClip  m_clipOwner = null;
 
