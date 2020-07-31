@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using UnityEditor.Timeline;
+﻿using System;
 using UnityEngine;
 using UnityEngine.StreamingImageSequence;
 
@@ -9,7 +8,8 @@ internal static class InspectorUtility {
     internal static void ShowFrameMarkersGUI(BaseTimelineClipSISDataPlayableAsset timelineClipSISDataPlayableAsset) {        
 
         TimelineClipSISData timelineClipSISData = timelineClipSISDataPlayableAsset.GetBoundTimelineClipSISData();
-        Assert.IsNotNull(timelineClipSISData);
+        if (null == timelineClipSISData)
+            return;
                 
         GUILayout.Space(15);
         bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
@@ -21,8 +21,27 @@ internal static class InspectorUtility {
             
         if (GUILayout.Button("Reset FrameMarkers")) {
             timelineClipSISDataPlayableAsset.ResetPlayableFrames();
+        }            
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+    
+    internal static string ShowSelectFolderButton(string title, string folderPath, Func<string, string> onValidFolderSelected) {
+        if(GUILayout.Button("Select", GUILayout.Width(50f))) {
+            string folderSelected = EditorUtility.OpenFolderPanel(title, folderPath, "");
+            if(!string.IsNullOrEmpty(folderSelected)) {
+                string newDirPath = null;                    
+                if (onValidFolderSelected != null) {
+                    newDirPath = onValidFolderSelected (folderSelected);
+                } else {
+                    newDirPath = folderSelected;
+                }
+
+                return newDirPath;
+            } 
         }
-            
+
+        return folderPath;
     }
     
 }

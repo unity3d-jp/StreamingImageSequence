@@ -163,19 +163,7 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
                 default:
                     break;
             }
-
-            if(GUILayout.Button("Select", GUILayout.Width(50f))) {
-                string folderSelected = EditorUtility.OpenFolderPanel(dialogTitle, directoryOpenPath, "");
-                if(!string.IsNullOrEmpty(folderSelected)) {
-                    if (onValidFolderSelected != null) {
-                        newDirPath = onValidFolderSelected (folderSelected);
-                    } else {
-                        newDirPath = folderSelected;
-                    }
-                } else {
-                    GUIUtility.ExitGUI();
-                }
-            }
+            newDirPath = InspectorUtility.ShowSelectFolderButton(dialogTitle, directoryOpenPath, onValidFolderSelected);
         }
         return newDirPath;
     }        
