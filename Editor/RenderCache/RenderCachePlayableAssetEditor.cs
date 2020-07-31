@@ -1,7 +1,6 @@
 ﻿using JetBrains.Annotations;
 using UnityEditor.Timeline;
 using UnityEngine.Timeline;
-using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
 
@@ -19,10 +18,23 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
         Assert.IsNotNull(asset);
 
         clip.parentTrack = track; 
-        asset.BindTimelineClip(clip);
+        
+        TimelineClipSISData sisData = new TimelineClipSISData(clip);        
+        asset.BindTimelineClipSISData(sisData);
     }
 
 
+//----------------------------------------------------------------------------------------------------------------------
+    
+    /// <inheritdoc/>
+    public override void OnClipChanged(TimelineClip clip) {
+        base.OnClipChanged(clip);
+                        
+        RenderCachePlayableAsset renderCachePlayableAsset = clip.asset as RenderCachePlayableAsset;
+        Assert.IsNotNull(renderCachePlayableAsset);
+        renderCachePlayableAsset.RefreshPlayableFrames();            
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
 
     /// <inheritdoc/>

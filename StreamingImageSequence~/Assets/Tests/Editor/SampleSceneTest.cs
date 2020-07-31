@@ -17,9 +17,8 @@ namespace Tests {
             };
 
             foreach (string path in playableAssetPaths) {
-                StreamingImageSequencePlayableAsset playableAsset = AssetDatabase.LoadAssetAtPath<StreamingImageSequencePlayableAsset>(path);
+                PlayableAsset playableAsset = AssetDatabase.LoadAssetAtPath<PlayableAsset>(path);
                 Assert.IsNotNull(playableAsset);
-                Assert.IsTrue(playableAsset.GetFolder().StartsWith("Assets/"));
             }
         }
 

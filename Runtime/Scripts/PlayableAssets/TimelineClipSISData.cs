@@ -118,9 +118,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         //Change the size of m_playableFrames and reinitialize if necessary
         int prevNumPlayableFrames = m_playableFrames.Count;
         if (numIdealNumPlayableFrames != prevNumPlayableFrames) {
-#if UNITY_EDITOR
-//            Undo.RegisterCompleteObjectUndo(playableAsset, "StreamingImageSequencePlayableAsset: Updating SISPlayableFrame List");
-#endif                
+            
             //Change the size of m_playableFrames and reinitialize if necessary
             List<bool> prevUsedFrames = new List<bool>(prevNumPlayableFrames);
             foreach (SISPlayableFrame frame in m_playableFrames) {

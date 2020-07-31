@@ -20,7 +20,7 @@ namespace UnityEngine.StreamingImageSequence {
     /// - ISerializationCallbackReceiver: for serialization
     /// </summary>
     [System.Serializable]
-    public class StreamingImageSequencePlayableAsset : PlayableAsset, ITimelineClipAsset
+    internal class StreamingImageSequencePlayableAsset : BaseTimelineClipSISDataPlayableAsset, ITimelineClipAsset
                                                      , IPlayableBehaviour
     {      
 //----------------------------------------------------------------------------------------------------------------------
@@ -78,11 +78,10 @@ namespace UnityEngine.StreamingImageSequence {
 
         //[Note-sin: 2020-7-17] This is also called when the TimelineClip in TimelineWindow is deleted, instead of just
         //The TimelineClipAsset (on file, for example) is deleted
-        private void OnDestroy() {
+        protected override void OnDestroy() {
+            base.OnDestroy();
 
             Reset();
-           
-            m_timelineClipSISData?.Destroy();           
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -115,15 +114,17 @@ namespace UnityEngine.StreamingImageSequence {
         //Calculate the used image index for the passed localTime
         internal int LocalTimeToImageIndex(TimelineClip clip, double localTime) {
 
-            if (null != m_timelineClipSISData) {
+            TimelineClipSISData timelineSISData = GetBoundTimelineClipSISData();
+
+            if (null != timelineSISData) {
                 double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;            
           
                 //Try to check if this frame is "dropped", so that we should use the image in the prev frame
                 int              playableFrameIndex = Mathf.RoundToInt((float) localTime / (float)scaledTimePerFrame);
-                SISPlayableFrame playableFrame      = m_timelineClipSISData.GetPlayableFrame(playableFrameIndex);
+                SISPlayableFrame playableFrame      = timelineSISData.GetPlayableFrame(playableFrameIndex);
                 while (playableFrameIndex > 0 && null != playableFrame && !playableFrame.IsUsed()) {
                     --playableFrameIndex;
-                    playableFrame = m_timelineClipSISData.GetPlayableFrame(playableFrameIndex);
+                    playableFrame = timelineSISData.GetPlayableFrame(playableFrameIndex);
                     localTime     = playableFrameIndex * scaledTimePerFrame;
                 }                
             }
@@ -151,12 +152,6 @@ namespace UnityEngine.StreamingImageSequence {
         //May return uninitialized value during initialization because the resolution hasn't been updated
         internal ImageDimensionInt GetResolution() { return m_resolution; }
         internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFileNames; }
-
-        //These methods are necessary "hacks" for knowing the PlayableFrames/UseImageMarkers that belong to this
-        //this StreamingImageSequencePlayableAssets        
-        internal void BindTimelineClipSISData(TimelineClipSISData sisData) { m_timelineClipSISData = sisData;}         
-        internal TimelineClipSISData GetBoundTimelineClipSISData() { return m_timelineClipSISData; }
-
         
 //----------------------------------------------------------------------------------------------------------------------        
         internal float GetOrUpdateDimensionRatio() {
@@ -351,30 +346,6 @@ namespace UnityEngine.StreamingImageSequence {
         }
 //----------------------------------------------------------------------------------------------------------------------
 
-        #region PlayableFrames
-
-        internal void ResetPlayableFrames() {
-#if UNITY_EDITOR
-            Undo.RegisterCompleteObjectUndo(this, "StreamingImageSequencePlayableAsset: Resetting Use Image Markers");
-#endif
-            m_timelineClipSISData.ResetPlayableFrames();
-            
-#if UNITY_EDITOR 
-            TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
-#endif            
-           
-        }
-
-        internal void RefreshPlayableFrames() {
-            
-            //Haven't been assigned yet. May happen during recompile
-            if (null == m_timelineClipSISData)
-                return;
-                       
-            m_timelineClipSISData.RefreshPlayableFrames();            
-        }
-        
-        #endregion
 
 //---------------------------------------------------------------------------------------------------------------------
         void ResetTexture() {
@@ -520,14 +491,7 @@ namespace UnityEngine.StreamingImageSequence {
             };
         
 #endif
-        
-        //[Note-sin: 2020-6-30] TimelineClipSISData stores extra data of TimelineClip, because we can't extend
-        //TimelineClip at the moment. Ideally, it should not be a property of StreamingImageSequencePlayableAsset, because
-        //StreamingImageSequencePlayableAsset is an asset, and should be able to be bound to 2 different TimelineClipsSISData.
-        //However, for UseImageMarker to work, we need to know which TimelineClipSISData is bound to the
-        //StreamingImageSequencePlayableAsset, because Marker is originally designed to be owned by TrackAsset, but not
-        //TimelineClip        
-        [NonSerialized] private TimelineClipSISData m_timelineClipSISData = null;
+       
         
         private int m_lastCopiedImageIndex; //the index of the image copied to m_texture
 

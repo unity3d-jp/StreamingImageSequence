@@ -9,9 +9,8 @@ namespace UnityEngine.StreamingImageSequence {
 /// - ITimelineClipAsset: for defining clip capabilities (ClipCaps) 
 /// </summary>
 [System.Serializable]
-internal class RenderCachePlayableAsset : PlayableAsset, ITimelineClipAsset {
-
-    
+internal class RenderCachePlayableAsset : BaseTimelineClipSISDataPlayableAsset, ITimelineClipAsset {
+   
 //----------------------------------------------------------------------------------------------------------------------
 
 
@@ -20,13 +19,7 @@ internal class RenderCachePlayableAsset : PlayableAsset, ITimelineClipAsset {
             return ClipCaps.None;
         }
     }
-    
-    
-//----------------------------------------------------------------------------------------------------------------------
-    
-    internal TimelineClip GetTimelineClip() { return m_timelineClip; }
-    internal void BindTimelineClip(TimelineClip clip) { m_timelineClip = clip; }
-
+   
     
 //----------------------------------------------------------------------------------------------------------------------
     internal string GetFolder() { return m_folder;}
@@ -36,17 +29,12 @@ internal class RenderCachePlayableAsset : PlayableAsset, ITimelineClipAsset {
     
 //----------------------------------------------------------------------------------------------------------------------
     
-    #region PlayableAsset functions override
     /// <inheritdoc/>
     public sealed override Playable CreatePlayable(PlayableGraph graph, GameObject go) {
         return Playable.Null;
     }
     
-    #endregion         
-    
-    
 //----------------------------------------------------------------------------------------------------------------------    
-    private TimelineClip m_timelineClip = null;
     [SerializeField] private string m_folder = null;
 
 
