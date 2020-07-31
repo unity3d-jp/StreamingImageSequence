@@ -2,9 +2,7 @@
 using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
-using UnityEngine.Timeline;
 
 namespace UnityEditor.StreamingImageSequence {
 
@@ -12,7 +10,7 @@ namespace UnityEditor.StreamingImageSequence {
 /// The inspector of StreamingImageSequencePlayableAsset
 /// </summary>
 [CustomEditor(typeof(StreamingImageSequencePlayableAsset))]
-public class StreamingImageSequencePlayableAssetInspector : Editor {
+internal class StreamingImageSequencePlayableAssetInspector : Editor {
 
 //----------------------------------------------------------------------------------------------------------------------
     void OnEnable() {
@@ -85,22 +83,9 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
                 StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(TimelineEditor.selectedClip);
             }
 
-            //Image markers
+            //Frame markers
             if (TimelineEditor.selectedClip.asset == m_asset) {
-                TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
-                Assert.IsNotNull(timelineClipSISData);
-                    
-                GUILayout.Space(15);
-                bool prevMarkerVisibility = timelineClipSISData.GetUseImageMarkerVisibility();
-                bool markerVisibility = GUILayout.Toggle(prevMarkerVisibility, "Show UseImageMarkers");
-                if (markerVisibility != prevMarkerVisibility) {
-                    timelineClipSISData.SetUseImageMarkerVisibility(markerVisibility);
-                }
-                
-                
-                if (GUILayout.Button("Reset UseImageMarkers")) {
-                    m_asset.ResetPlayableFrames();
-                }
+                InspectorUtility.ShowFrameMarkersGUI(m_asset);
             }
             
         }

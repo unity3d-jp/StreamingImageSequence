@@ -1,4 +1,4 @@
-.UseImageMarker {
+.FrameMarker {
     /* GUIStyle.alignment */
     -unity-text-align: middle-center;
 

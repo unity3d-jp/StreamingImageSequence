@@ -48,7 +48,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         
 //----------------------------------------------------------------------------------------------------------------------                
         [UnityTest]
-        public IEnumerator ShowUseImageMarkers() {
+        public IEnumerator ShowFrameMarkers() {
             PlayableDirector director = NewSceneWithDirector();
             TimelineClip                        clip     = CreateTestTimelineClip(director);
             StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
@@ -59,7 +59,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
             
             TrackAsset trackAsset = clip.parentTrack;
-            timelineClipSISData.SetUseImageMarkerVisibility(true);
+            timelineClipSISData.ShowFrameMarkers(true);
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
             yield return null;
             
@@ -67,9 +67,9 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             yield return null;
 
 
-            //Undo showing UseImageMarkers
+            //Undo showing FrameMarkers
             UndoAndRefreshTimelineEditor(); yield return null;
-            Assert.False(timelineClipSISData.GetUseImageMarkerVisibility());
+            Assert.False(timelineClipSISData.AreFrameMarkersVisible());
             Assert.AreEqual(0, trackAsset.GetMarkerCount());
             
             
@@ -87,8 +87,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
             yield return null;
             
-            timelineClipSISData.SetUseImageMarkerVisibility(true); 
-            Undo.IncrementCurrentGroup(); //the base of undo is here. UseImageMarkerVisibility is still true after undo
+            timelineClipSISData.ShowFrameMarkers(true); 
+            Undo.IncrementCurrentGroup(); //the base of undo is here. FrameMarkerVisibility is still true after undo
             TimelineEditor.Refresh(RefreshReason.ContentsModified);
             yield return null;
 
@@ -122,13 +122,13 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
 //----------------------------------------------------------------------------------------------------------------------                
         [UnityTest]
-        public IEnumerator UncheckUseImageMarkers() {
+        public IEnumerator UncheckFrameMarkers() {
             PlayableDirector director = NewSceneWithDirector();
             TimelineClip                        clip     = CreateTestTimelineClip(director);
             StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
             Assert.IsNotNull(sisAsset);
             TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
-            timelineClipSISData.SetUseImageMarkerVisibility(true);
+            timelineClipSISData.ShowFrameMarkers(true);
             yield return null;
 
             double timePerFrame = TimelineUtility.CalculateTimePerFrame(clip);
@@ -149,29 +149,29 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             
             StreamingImageSequenceTrack track = clip.parentTrack as StreamingImageSequenceTrack;
             Assert.IsNotNull(track);
-            List<UseImageMarker> useImageMarkers = new List<UseImageMarker>();
+            List<FrameMarker> frameMarkers = new List<FrameMarker>();
 
             int i = 0;
             foreach (var m in track.GetMarkers()) {
-                UseImageMarker marker = m as UseImageMarker;
+                FrameMarker marker = m as FrameMarker;
                 Assert.IsNotNull(marker);
-                useImageMarkers.Add(marker);
+                frameMarkers.Add(marker);
                 int imageIndex = sisAsset.GlobalTimeToImageIndex(clip, marker.time);
                 Assert.AreEqual(i, imageIndex);
                 ++i;
             }
             
             //Uncheck and see if the unchecked images became ignored
-            useImageMarkers[4].SetImageUsed(false);
-            useImageMarkers[5].SetImageUsed(false);
-            Assert.AreEqual(3, sisAsset.GlobalTimeToImageIndex(clip, useImageMarkers[4].time));
-            Assert.AreEqual(3, sisAsset.GlobalTimeToImageIndex(clip, useImageMarkers[5].time));
+            frameMarkers[4].SetFrameUsed(false);
+            frameMarkers[5].SetFrameUsed(false);
+            Assert.AreEqual(3, sisAsset.GlobalTimeToImageIndex(clip, frameMarkers[4].time));
+            Assert.AreEqual(3, sisAsset.GlobalTimeToImageIndex(clip, frameMarkers[5].time));
             
 
-            useImageMarkers[7].SetImageUsed(false);
-            useImageMarkers[8].SetImageUsed(false);
-            Assert.AreEqual(6, sisAsset.GlobalTimeToImageIndex(clip, useImageMarkers[7].time));
-            Assert.AreEqual(6, sisAsset.GlobalTimeToImageIndex(clip, useImageMarkers[8].time));
+            frameMarkers[7].SetFrameUsed(false);
+            frameMarkers[8].SetFrameUsed(false);
+            Assert.AreEqual(6, sisAsset.GlobalTimeToImageIndex(clip, frameMarkers[7].time));
+            Assert.AreEqual(6, sisAsset.GlobalTimeToImageIndex(clip, frameMarkers[8].time));
                        
             DestroyTestTimelineAssets(clip);
             yield return null;
@@ -179,24 +179,24 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
 //----------------------------------------------------------------------------------------------------------------------                
         [UnityTest]
-        public IEnumerator ResetUseImageMarkers() {
+        public IEnumerator ResetFrameMarkers() {
             PlayableDirector director = NewSceneWithDirector();
             TimelineClip                        clip     = CreateTestTimelineClip(director);
             StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
             Assert.IsNotNull(sisAsset);
             TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
-            timelineClipSISData.SetUseImageMarkerVisibility(true);
+            timelineClipSISData.ShowFrameMarkers(true);
             yield return null;
             
             //Change image to false
             StreamingImageSequenceTrack track = clip.parentTrack as StreamingImageSequenceTrack;
             Assert.IsNotNull(track);           
             foreach (var m in track.GetMarkers()) {
-                UseImageMarker marker = m as UseImageMarker;
+                FrameMarker marker = m as FrameMarker;
                 Assert.IsNotNull(marker);
-                marker.SetImageUsed(false);
+                marker.SetFrameUsed(false);
                 
-                UnityEngine.Assertions.Assert.IsFalse(marker.IsImageUsed());
+                UnityEngine.Assertions.Assert.IsFalse(marker.IsFrameUsed());
             }            
             yield return null;
             
@@ -205,9 +205,9 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             
             //Check if all markers have been reset to used
             foreach (var m in track.GetMarkers()) {
-                UseImageMarker marker = m as UseImageMarker;
+                FrameMarker marker = m as FrameMarker;
                 Assert.IsNotNull(marker);                
-                UnityEngine.Assertions.Assert.IsTrue(marker.IsImageUsed());
+                UnityEngine.Assertions.Assert.IsTrue(marker.IsFrameUsed());
             }
             yield return null;
 

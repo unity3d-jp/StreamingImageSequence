@@ -68,7 +68,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     }
     
 //----------------------------------------------------------------------------------------------------------------------
-    internal void Refresh(bool useImageMarkerVisibility) {
+    internal void Refresh(bool frameMarkerVisibility) {
         TrackAsset trackAsset = m_timelineClipSISDataOwner.GetOwner()?.parentTrack;
         //Delete Marker first if it's not in the correct track (e.g: after the TimelineClip was moved)
         if (null!= m_marker && m_marker.parent != trackAsset) {
@@ -76,9 +76,9 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         }
 
         //Show/Hide the marker
-        if (null != m_marker && !useImageMarkerVisibility) {
+        if (null != m_marker && !frameMarkerVisibility) {
             DeleteMarker();
-        } else if (null == m_marker && null!=trackAsset && useImageMarkerVisibility) {
+        } else if (null == m_marker && null!=trackAsset && frameMarkerVisibility) {
             CreateMarker();
         }
 
@@ -96,7 +96,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         Assert.IsNotNull(trackAsset);
         Assert.IsNull(m_marker);
                
-        m_marker = trackAsset.CreateMarker<UseImageMarker>(m_localTime);
+        m_marker = trackAsset.CreateMarker<FrameMarker>(m_localTime);
     }
 
     void DeleteMarker() {
@@ -111,7 +111,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
     [SerializeField] private bool m_useImage = true;
     [SerializeField] private double m_localTime;    
-    [SerializeField] private UseImageMarker m_marker = null; 
+    [SerializeField] private FrameMarker m_marker = null; 
     
     [NonSerialized] private TimelineClipSISData m_timelineClipSISDataOwner = null; 
 

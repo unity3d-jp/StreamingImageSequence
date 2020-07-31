@@ -6,15 +6,15 @@ namespace UnityEditor.StreamingImageSequence {
 
 internal static class Shortcuts  {
 
-    [Shortcut("StreamingImageSequence/Toggle Use Image Marker", null,  KeyCode.U)]
-    static void ToggleUseImageMarker(ShortcutArguments args) {
+    [Shortcut("StreamingImageSequence/Toggle Frame Marker", null,  KeyCode.U)]
+    static void ToggleFrameMarker(ShortcutArguments args) {
         foreach (Object obj in Selection.objects) {
-            UseImageMarker marker = obj as UseImageMarker;
+            FrameMarker marker = obj as FrameMarker;
             if (null == marker) {
                 continue;
             }
             
-            marker.SetImageUsed(!marker.IsImageUsed());
+            marker.SetFrameUsed(!marker.IsFrameUsed());
 
         }
         
