@@ -63,7 +63,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
             return;
         
 #if UNITY_EDITOR        
-        Undo.RegisterFullObjectHierarchyUndo( m_clipOwner.parentTrack, "StreamingImageSequence Show/Hide UseImageMarker");
+        Undo.RegisterFullObjectHierarchyUndo( m_clipOwner.parentTrack, "StreamingImageSequence Show/Hide FrameMarker");
 #endif        
         m_useImageMarkerVisibility = show;        
         RefreshPlayableFrames();        
@@ -214,4 +214,4 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 
 //[Note-Sin: 2020-7-15] SISPlayableFrame
 //StreamingImageSequenceTrack owns SISPlayableFrame, which is associated with a TimelineClip.
-//SISPlayableFrame is a ScriptableObject and owns UseImageMarker.
+//SISPlayableFrame is a ScriptableObject and owns FrameMarker.

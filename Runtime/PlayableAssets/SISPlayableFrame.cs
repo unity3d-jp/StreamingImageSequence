@@ -96,7 +96,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         Assert.IsNotNull(trackAsset);
         Assert.IsNull(m_marker);
                
-        m_marker = trackAsset.CreateMarker<UseImageMarker>(m_localTime);
+        m_marker = trackAsset.CreateMarker<FrameMarker>(m_localTime);
     }
 
     void DeleteMarker() {
@@ -111,7 +111,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
     [SerializeField] private bool m_useImage = true;
     [SerializeField] private double m_localTime;    
-    [SerializeField] private UseImageMarker m_marker = null; 
+    [SerializeField] private FrameMarker m_marker = null; 
     
     [NonSerialized] private TimelineClipSISData m_timelineClipSISDataOwner = null; 
 

@@ -142,7 +142,7 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
 //----------------------------------------------------------------------------------------------------------------------
     private void DeleteInvalidMarkers() {
         foreach(IMarker m in GetMarkers()) {
-            UseImageMarker marker = m as UseImageMarker;
+            FrameMarker marker = m as FrameMarker;
             if (null == marker)
                 continue;
 
@@ -151,7 +151,7 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
             }      
         }
 
-        foreach (UseImageMarker marker in m_markersToDelete) {
+        foreach (FrameMarker marker in m_markersToDelete) {
             DeleteMarker(marker);
         }
     }
@@ -163,7 +163,7 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
 
     private Dictionary<TimelineClip, TimelineClipSISData> m_sisDataCollection = null;
         
-    private readonly List<UseImageMarker> m_markersToDelete = new List<UseImageMarker>();
+    private readonly List<FrameMarker> m_markersToDelete = new List<FrameMarker>();
 
 #if UNITY_EDITOR    
     protected static bool m_undoRedo = false;
