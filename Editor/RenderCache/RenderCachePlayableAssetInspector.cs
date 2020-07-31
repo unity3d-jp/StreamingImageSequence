@@ -133,16 +133,26 @@ internal class RenderCachePlayableAssetInspector : Editor {
         
         bool cancelled = false;
         while (m_nextDirectorTime <= timelineClip.end && !cancelled) {
-            SetDirectorTime(m_director, m_nextDirectorTime);
+            
+            SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);
+            bool useFrame = (null!=playableFrame && (playableFrame.IsUsed()) || fileCounter == 0);
+            
+            if (useFrame) {
+                SetDirectorTime(m_director, m_nextDirectorTime);
+                yield return null;
+            }
+
             blitter.SetTexture(capturerTex);
-            yield return null;            
+            yield return null;
+
             
             string fileName       = fileCounter.ToString($"D{numDigits}") + ".png";
             string outputFilePath = Path.Combine(outputFolder, fileName);
-                        
-            //[TODO-sin: 2020-5-27] Call StreamingImageSequencePlugin API to unload texture because it may be overwritten
-           
+
+            //[TODO-sin: 2020-5-27] Call StreamingImageSequencePlugin API to unload texture because it may be overwritten           
             m_renderCapturer.CaptureToFile(outputFilePath);
+
+
             m_nextDirectorTime += m_timePerFrame;
             ++fileCounter;
         
