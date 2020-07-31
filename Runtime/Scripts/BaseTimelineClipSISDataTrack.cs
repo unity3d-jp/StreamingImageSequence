@@ -17,7 +17,7 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
     
     void RefreshTimelineEditorAfterUndoRedo() {        
         if (m_undoRedo && null!= TimelineEditor.inspectedDirector) {
-            //After undo, the UseImageMarkers are not refreshed
+            //After undo, the FrameMarkers are not refreshed
             TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved);
             m_undoRedo = false;
         }        
