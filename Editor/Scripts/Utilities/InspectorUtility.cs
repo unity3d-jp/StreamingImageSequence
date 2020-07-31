@@ -9,7 +9,8 @@ internal static class InspectorUtility {
     internal static void ShowFrameMarkersGUI(BaseTimelineClipSISDataPlayableAsset timelineClipSISDataPlayableAsset) {        
 
         TimelineClipSISData timelineClipSISData = timelineClipSISDataPlayableAsset.GetBoundTimelineClipSISData();
-        Assert.IsNotNull(timelineClipSISData);
+        if (null == timelineClipSISData)
+            return;
                 
         GUILayout.Space(15);
         bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
