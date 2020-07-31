@@ -48,7 +48,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
         
 //----------------------------------------------------------------------------------------------------------------------                
         [UnityTest]
-        public IEnumerator ShowUseImageMarkers() {
+        public IEnumerator ShowFrameMarkers() {
             PlayableDirector director = NewSceneWithDirector();
             TimelineClip                        clip     = CreateTestTimelineClip(director);
             StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;

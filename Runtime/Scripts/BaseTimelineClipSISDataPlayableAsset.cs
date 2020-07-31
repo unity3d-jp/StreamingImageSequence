@@ -17,7 +17,7 @@ internal abstract class BaseTimelineClipSISDataPlayableAsset : PlayableAsset{
     
 //----------------------------------------------------------------------------------------------------------------------
     
-    //These methods are necessary "hacks" for knowing the PlayableFrames/UseImageMarkers that belong to this
+    //These methods are necessary "hacks" for knowing the PlayableFrames/FrameMarkers that belong to this
     //this StreamingImageSequencePlayableAssets        
     internal void BindTimelineClipSISData(TimelineClipSISData sisData) { m_timelineClipSISData = sisData;}         
     internal TimelineClipSISData GetBoundTimelineClipSISData() { return m_timelineClipSISData; }
