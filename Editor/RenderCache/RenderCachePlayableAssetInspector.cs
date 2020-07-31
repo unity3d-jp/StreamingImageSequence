@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using NUnit.Framework;
@@ -130,6 +131,12 @@ internal class RenderCachePlayableAssetInspector : Editor {
         int  fileCounter = 0;
         int numFiles = (int) Math.Ceiling(timelineClip.duration / m_timePerFrame) + 1;
         int numDigits = MathUtility.GetNumDigits(numFiles);
+
+        string prefix = $"{m_asset.name}_";
+ 
+        //Store old files that has the same pattern
+        string[] existingFiles = Directory.GetFiles (outputFolder, $"{prefix}*.png");
+        HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
         
         bool cancelled = false;
         while (m_nextDirectorTime <= timelineClip.end && !cancelled) {
@@ -146,8 +153,12 @@ internal class RenderCachePlayableAssetInspector : Editor {
             yield return null;
 
             
-            string fileName       = fileCounter.ToString($"D{numDigits}") + ".png";
+            string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
             string outputFilePath = Path.Combine(outputFolder, fileName);
+
+            if (filesToDelete.Contains(outputFilePath)) {
+                filesToDelete.Remove(outputFilePath);
+            }
 
             //[TODO-sin: 2020-5-27] Call StreamingImageSequencePlugin API to unload texture because it may be overwritten           
             m_renderCapturer.CaptureToFile(outputFilePath);
@@ -158,6 +169,11 @@ internal class RenderCachePlayableAssetInspector : Editor {
         
             cancelled = EditorUtility.DisplayCancelableProgressBar(
                 "StreamingImageSequence", "Caching render results", ((float)fileCounter / numFiles));            
+        }
+        
+        //Delete old files
+        foreach (string oldFile in filesToDelete) {
+            File.Delete(oldFile);
         }
         
                
