@@ -46,6 +46,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         if (newFolder != prevFolder) {
             //[TODO-sin: 2020-5-27] Copy images from prevFolder to newFolder
             m_asset.SetFolder(newFolder);
+            GUIUtility.ExitGUI();
         }
 
 
@@ -199,18 +200,9 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
             EditorGUILayout.SelectableLabel(fieldValue,
                 EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight)
-            );           
+            );
 
-            if(GUILayout.Button("Select", GUILayout.Width(50f))) {
-                string folderSelected = EditorUtility.OpenFolderPanel(dialogTitle, directoryOpenPath, "");
-                if(!string.IsNullOrEmpty(folderSelected)) {
-                    if (onValidFolderSelected != null) {
-                        newDirPath = onValidFolderSelected (folderSelected);
-                    } else {
-                        newDirPath = folderSelected;
-                    }
-                }
-            }
+            newDirPath = InspectorUtility.ShowSelectFolderButton(dialogTitle, directoryOpenPath, onValidFolderSelected);
         }
         return newDirPath;
     }
