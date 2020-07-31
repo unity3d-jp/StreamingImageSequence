@@ -45,7 +45,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
         );
 
         if (newFolder != prevFolder) {
-            //[TODO-sin: 2020-5-27] Copy images from prevFolder to newFolder
             m_asset.SetFolder(newFolder);
             GUIUtility.ExitGUI();
         }
