@@ -85,22 +85,9 @@ public class StreamingImageSequencePlayableAssetInspector : Editor {
                 StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(TimelineEditor.selectedClip);
             }
 
-            //Image markers
+            //Frame markers
             if (TimelineEditor.selectedClip.asset == m_asset) {
-                TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
-                Assert.IsNotNull(timelineClipSISData);
-                    
-                GUILayout.Space(15);
-                bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
-                bool markerVisibility = GUILayout.Toggle(prevMarkerVisibility, "Show FrameMarkers");
-                if (markerVisibility != prevMarkerVisibility) {
-                    timelineClipSISData.ShowFrameMarkers(markerVisibility);
-                }
-                
-                
-                if (GUILayout.Button("Reset FrameMarkers")) {
-                    m_asset.ResetPlayableFrames();
-                }
+                InspectorUtility.ShowFrameMarkersGUI(m_asset);
             }
             
         }

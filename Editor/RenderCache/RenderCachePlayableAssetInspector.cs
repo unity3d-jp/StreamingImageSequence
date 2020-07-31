@@ -94,17 +94,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         //[TODO-sin: 2020-7-29] Add a button to delete all images in the folder
         
         
-        
-        //[TODO-sin: 2020-7-30] Remove duplicate code with StreamingImageSequencePlayableAssetInspector
-        TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
-        Assert.IsNotNull(timelineClipSISData);
-                    
-        GUILayout.Space(15);
-        bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
-        bool markerVisibility     = GUILayout.Toggle(prevMarkerVisibility, "Show Frame Markers");
-        if (markerVisibility != prevMarkerVisibility) {
-            timelineClipSISData.ShowFrameMarkers(markerVisibility);
-        }
+        InspectorUtility.ShowFrameMarkersGUI(m_asset);
 
         
 
