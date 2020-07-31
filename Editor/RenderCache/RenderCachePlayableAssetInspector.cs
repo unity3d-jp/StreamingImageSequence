@@ -59,57 +59,67 @@ internal class RenderCachePlayableAssetInspector : Editor {
             
             TimelineClip timelineClip = TimelineEditor.selectedClip;
             TrackAsset track = timelineClip.parentTrack;
-            TimelineAsset timelineAsset = track.timelineAsset;
-            m_director = FindDirectorInScene(timelineAsset);
-            if (null == m_director) {
+            PlayableDirector director = TimelineEditor.inspectedDirector;
+            if (null == director) {
                 EditorUtility.DisplayDialog("Streaming Image Sequence",
                     "PlayableAsset is not loaded in scene. Please load the correct scene before doing this operation.",
                     "Ok");
                 return;
             }            
-                        
-            m_renderCapturer =  m_director.GetGenericBinding(track) as BaseRenderCapturer;
-            if (null == m_renderCapturer) {
-                EditorUtility.DisplayDialog("Streaming Image Sequence",
-                    "Please bind an appropriate RenderCapturer component to the track.",
-                    "Ok");
-                return;                
-            }
-
-            bool canCapture = m_renderCapturer.BeginCapture();
-            if (!canCapture) {
-                EditorUtility.DisplayDialog("Streaming Image Sequence",
-                    m_renderCapturer.GetLastErrorMessage(),
-                    "Ok");
-                return;                
-                
-            }
-                       
             
             //Loop time             
-            m_timePerFrame = 1.0f / timelineAsset.editorSettings.fps;
-            EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(), this);
+            EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(director, m_asset), this);
                         
         }
         InspectorUtility.ShowFrameMarkersGUI(m_asset);
-
     }
 
+    
+    
 //----------------------------------------------------------------------------------------------------------------------
-    IEnumerator UpdateRenderCacheCoroutine() {
-        Assert.IsNotNull(m_renderCapturer);
-        Assert.IsNotNull(m_director);
+    internal static IEnumerator UpdateRenderCacheCoroutine(PlayableDirector director, RenderCachePlayableAsset renderCachePlayableAsset) {
+        Assert.IsNotNull(director);
+        Assert.IsNotNull(renderCachePlayableAsset);
+        
+        TimelineClipSISData timelineClipSISData = renderCachePlayableAsset.GetBoundTimelineClipSISData();
+        if (null == timelineClipSISData) {
+            EditorUtility.DisplayDialog("Streaming Image Sequence",
+                "RenderCachePlayableAsset is not ready",
+                "Ok");
+            yield break;
+            
+        }
+            
+
+        TrackAsset track = renderCachePlayableAsset.GetBoundTimelineClipSISData().GetOwner().parentTrack;        
+        BaseRenderCapturer renderCapturer = director.GetGenericBinding(track) as BaseRenderCapturer;
+        if (null == renderCapturer) {
+            EditorUtility.DisplayDialog("Streaming Image Sequence",
+                "Please bind an appropriate RenderCapturer component to the track.",
+                "Ok");
+            yield break;                
+        }
+
+
+        //begin capture
+        bool canCapture = renderCapturer.BeginCapture();
+        if (!canCapture) {
+            EditorUtility.DisplayDialog("Streaming Image Sequence",
+                renderCapturer.GetLastErrorMessage(),
+                "Ok");
+            yield break;                                
+        }
         
         
         //Check output folder
-        string outputFolder = m_asset.GetFolder();
+        string outputFolder = renderCachePlayableAsset.GetFolder();
         if (string.IsNullOrEmpty(outputFolder) || !Directory.Exists(outputFolder)) {
             outputFolder = FileUtil.GetUniqueTempPathInProject();
             Directory.CreateDirectory(outputFolder);
-            m_asset.SetFolder(outputFolder);
+            renderCachePlayableAsset.SetFolder(outputFolder);
         }
 
-        Texture capturerTex = m_renderCapturer.GetInternalTexture();
+        Texture capturerTex = renderCapturer.GetInternalTexture();
                
         //Show progress in game view
         GameObject progressGo = new GameObject("Blitter");
@@ -117,28 +127,28 @@ internal class RenderCachePlayableAssetInspector : Editor {
         blitter.SetTexture(capturerTex);
         blitter.SetCameraDepth(int.MaxValue);
 
-        TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
         TimelineClip timelineClip = timelineClipSISData.GetOwner();
-        m_nextDirectorTime = timelineClip.start;
+        double nextDirectorTime = timelineClip.start;
+        double timePerFrame = 1.0f / track.timelineAsset.editorSettings.fps;
         
         int  fileCounter = 0;
-        int numFiles = (int) Math.Ceiling(timelineClip.duration / m_timePerFrame) + 1;
+        int numFiles = (int) Math.Ceiling(timelineClip.duration / timePerFrame) + 1;
         int numDigits = MathUtility.GetNumDigits(numFiles);
 
-        string prefix = $"{m_asset.name}_";
+        string prefix = $"{renderCachePlayableAsset.name}_";
  
         //Store old files that has the same pattern
         string[] existingFiles = Directory.GetFiles (outputFolder, $"{prefix}*.png");
         HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
         
         bool cancelled = false;
-        while (m_nextDirectorTime <= timelineClip.end && !cancelled) {
+        while (nextDirectorTime <= timelineClip.end && !cancelled) {
             
             SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);
             bool useFrame = (null!=playableFrame && (playableFrame.IsUsed()) || fileCounter == 0);
             
             if (useFrame) {
-                SetDirectorTime(m_director, m_nextDirectorTime);
+                SetDirectorTime(director, nextDirectorTime);
                 yield return null;
             }
 
@@ -154,10 +164,10 @@ internal class RenderCachePlayableAssetInspector : Editor {
             }
 
             //[TODO-sin: 2020-5-27] Call StreamingImageSequencePlugin API to unload texture because it may be overwritten           
-            m_renderCapturer.CaptureToFile(outputFilePath);
+            renderCapturer.CaptureToFile(outputFilePath);
 
 
-            m_nextDirectorTime += m_timePerFrame;
+            nextDirectorTime += timePerFrame;
             ++fileCounter;
         
             cancelled = EditorUtility.DisplayCancelableProgressBar(
@@ -172,7 +182,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
                
         //Cleanup
         EditorUtility.ClearProgressBar();
-        m_renderCapturer.EndCapture();
+        renderCapturer.EndCapture();
         ObjectUtility.Destroy(progressGo);
         
         
@@ -189,18 +199,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
     }    
 
     
-//----------------------------------------------------------------------------------------------------------------------
-
-    PlayableDirector FindDirectorInScene(TimelineAsset timelineAsset) {
-        PlayableDirector[] directors = UnityEngine.Object.FindObjectsOfType<PlayableDirector>();
-        foreach (PlayableDirector director in directors) {
-            if (timelineAsset == director.playableAsset) {
-                return director;
-            }            
-        }
-
-        return null;
-    }
 
 //----------------------------------------------------------------------------------------------------------------------
     
@@ -236,12 +234,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
     
     private RenderCachePlayableAsset m_asset = null;
-    private PlayableDirector m_director = null;
-
-    private BaseRenderCapturer m_renderCapturer = null;
-    private double m_nextDirectorTime = 0;
-    private double m_timePerFrame     = 0;
-
+ 
 }
 
 }
