@@ -2,9 +2,7 @@
 using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
-using UnityEngine.Timeline;
 
 namespace UnityEditor.StreamingImageSequence {
 
@@ -12,7 +10,7 @@ namespace UnityEditor.StreamingImageSequence {
 /// The inspector of StreamingImageSequencePlayableAsset
 /// </summary>
 [CustomEditor(typeof(StreamingImageSequencePlayableAsset))]
-public class StreamingImageSequencePlayableAssetInspector : Editor {
+internal class StreamingImageSequencePlayableAssetInspector : Editor {
 
 //----------------------------------------------------------------------------------------------------------------------
     void OnEnable() {
