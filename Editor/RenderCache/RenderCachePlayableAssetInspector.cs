@@ -163,7 +163,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 renderCapturer.CaptureToFile(outputFilePath);
                 
             } else {
-                File.Copy(prevOutputFilePath,fileName, true);
+                File.Copy(prevOutputFilePath,outputFilePath, true);
             }
 
 
