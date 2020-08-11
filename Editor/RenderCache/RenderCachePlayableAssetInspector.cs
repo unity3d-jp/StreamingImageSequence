@@ -142,36 +142,37 @@ internal class RenderCachePlayableAssetInspector : Editor {
         HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
         
         bool cancelled = false;
+        string prevOutputFilePath = "";
         while (nextDirectorTime <= timelineClip.end && !cancelled) {
             
-            SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);
-            bool useFrame = (null!=playableFrame && (playableFrame.IsUsed()) || fileCounter == 0);
+            //frame 0 is always used
+            SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);                
+            bool useFrame = (null!=playableFrame && (playableFrame.IsUsed()) || fileCounter == 0);             
+            
+            string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
+            string outputFilePath = Path.Combine(outputFolder, fileName);
+            if (filesToDelete.Contains(outputFilePath)) {
+                filesToDelete.Remove(outputFilePath);
+            }
             
             if (useFrame) {
                 SetDirectorTime(director, nextDirectorTime);
                 yield return null;
+                
+                //[TODO-sin: 2020-5-27] Call StreamingImageSequencePlugin API to unload texture because it may be overwritten           
+                renderCapturer.CaptureToFile(outputFilePath);
+                
+            } else {
+                File.Copy(prevOutputFilePath,fileName, true);
             }
-
-            blitter.SetTexture(capturerTex);
-            yield return null;
-
-            
-            string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
-            string outputFilePath = Path.Combine(outputFolder, fileName);
-
-            if (filesToDelete.Contains(outputFilePath)) {
-                filesToDelete.Remove(outputFilePath);
-            }
-
-            //[TODO-sin: 2020-5-27] Call StreamingImageSequencePlugin API to unload texture because it may be overwritten           
-            renderCapturer.CaptureToFile(outputFilePath);
 
 
             nextDirectorTime += timePerFrame;
             ++fileCounter;
         
             cancelled = EditorUtility.DisplayCancelableProgressBar(
-                "StreamingImageSequence", "Caching render results", ((float)fileCounter / numFiles));            
+                "StreamingImageSequence", "Caching render results", ((float)fileCounter / numFiles));
+            prevOutputFilePath = outputFilePath;
         }
         
         //Delete old files
