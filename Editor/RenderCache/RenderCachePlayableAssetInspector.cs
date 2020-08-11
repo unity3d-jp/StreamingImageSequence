@@ -141,13 +141,28 @@ internal class RenderCachePlayableAssetInspector : Editor {
         string[] existingFiles = Directory.GetFiles (outputFolder, $"{prefix}*.png");
         HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
         
+        //Physics
+        bool prevAutoPhysicsSimulation = Physics.autoSimulation;
+        Physics.autoSimulation = false;
+        Rigidbody[]      rigidBodies        = GameObject.FindObjectsOfType<Rigidbody>();
+        int              numRigidBodies     = rigidBodies.Length;
+        List<Vector3>    rigidBodyPositions = new List<Vector3>(rigidBodies.Length);
+        List<Quaternion> rigidBodyRotations = new List<Quaternion>(rigidBodies.Length);
+        for(int i=0; i < numRigidBodies;++i) {
+            Transform t = rigidBodies[i].transform;
+            rigidBodyPositions.Add(t.position); 
+            rigidBodyRotations.Add(t.rotation); 
+        }
+        
         bool cancelled = false;
+
+        int delayedPhysicsCount = 0;
         string prevOutputFilePath = "";
         while (nextDirectorTime <= timelineClip.end && !cancelled) {
-            
+           
             //frame 0 is always used
-            SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);                
-            bool useFrame = (null!=playableFrame && (playableFrame.IsUsed()) || fileCounter == 0);             
+            SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);
+            bool useFrame = (null!=playableFrame && (playableFrame.IsUsed()) || fileCounter == 0);
             
             string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
             string outputFilePath = Path.Combine(outputFolder, fileName);
@@ -159,11 +174,19 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 SetDirectorTime(director, nextDirectorTime);
                 yield return null;
                 
+                //Physics
+                for (int i = 0; i < delayedPhysicsCount; ++i) {
+                    Physics.Simulate(Time.fixedDeltaTime);                
+                }
+                delayedPhysicsCount = 0;
+                Physics.Simulate(Time.fixedDeltaTime);
+                
                 //[TODO-sin: 2020-5-27] Call StreamingImageSequencePlugin API to unload texture because it may be overwritten           
                 renderCapturer.CaptureToFile(outputFilePath);
                 
             } else {
                 File.Copy(prevOutputFilePath,outputFilePath, true);
+                ++delayedPhysicsCount;                    
             }
 
 
@@ -181,6 +204,17 @@ internal class RenderCachePlayableAssetInspector : Editor {
         }
         
                
+        //Cleanup physics
+        Physics.autoSimulation = prevAutoPhysicsSimulation;
+        for (int i = 0; i < numRigidBodies; ++i) {
+            if (rigidBodies[i].isKinematic)
+                continue;
+            Transform t = rigidBodies[i].transform;
+            t.position = rigidBodyPositions[i];
+            t.rotation = rigidBodyRotations[i];
+            rigidBodies[i].velocity = rigidBodies[i].angularVelocity = Vector3.zero;
+        }
+        
         //Cleanup
         EditorUtility.ClearProgressBar();
         renderCapturer.EndCapture();
