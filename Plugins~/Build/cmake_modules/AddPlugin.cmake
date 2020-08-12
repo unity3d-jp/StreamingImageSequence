@@ -18,8 +18,8 @@ function(add_plugin name)
         set_target_properties(${name} PROPERTIES PREFIX "")
     endif()
 
-    if(ENABLE_DEPLOY)
-              
+    # Don't deploy if we are building unit tests
+    if(ENABLE_DEPLOY AND !BUILD_UNIT_TESTS)              
         if(WIN32) 
  
             # Win: Visual Studio Settings
