@@ -19,7 +19,7 @@ function(add_plugin name)
     endif()
 
     # Don't deploy if we are building unit tests
-    if(ENABLE_DEPLOY AND !BUILD_UNIT_TESTS)              
+    if(ENABLE_DEPLOY AND NOT BUILD_UNIT_TESTS)     
         if(WIN32) 
  
             # Win: Visual Studio Settings
