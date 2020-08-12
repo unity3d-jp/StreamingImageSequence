@@ -167,11 +167,12 @@ internal class RenderCachePlayableAssetInspector : Editor {
         HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
         
         bool cancelled = false;
-        string prevOutputFilePath = "";
         while (nextDirectorTime <= timelineClip.end && !cancelled) {
             
             SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);                
-            bool useFrame = (null!=playableFrame && (playableFrame.IsUsed()));             
+            bool useFrame = (!timelineClipSISData.AreFrameMarkersVisible() //if not visible, use it
+                || (null!=playableFrame && (playableFrame.IsUsed()))
+            );             
             
             string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
             string outputFilePath = Path.Combine(outputFolder, fileName);
@@ -194,7 +195,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
         
             cancelled = EditorUtility.DisplayCancelableProgressBar(
                 "StreamingImageSequence", "Caching render results", ((float)fileCounter / numFiles));
-            prevOutputFilePath = outputFilePath;
         }
         
         //Delete old files
