@@ -35,12 +35,13 @@ bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, con
     if (m_maxMemory != UNLIMITED_MEMORY && (m_usedMemory + dataSize) > m_maxMemory)
         return false;
 
+#ifndef OSX
+    //Can't get available RAM accurately in Mac at the moment
     const float MIN_AVAILABLE_RAM_RATIO = 0.1f;
-
     const float availableRAMRatio = MemoryUtility::GetAvailableRAM() * m_inverseTotalRAM;
     if (availableRAMRatio <= MIN_AVAILABLE_RAM_RATIO)
         return false;
-
+#endif
 
     uint8_t*  buffer = static_cast<uint8_t*>(malloc(dataSize));
     if (nullptr == buffer) {
