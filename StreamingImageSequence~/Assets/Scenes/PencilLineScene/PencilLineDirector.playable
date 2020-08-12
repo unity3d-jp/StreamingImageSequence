@@ -288,6 +288,9 @@ MonoBehaviour:
     m_DisplayName: RenderCachePlayableAsset
   m_Markers:
     m_Objects: []
+  m_serializedSISDataCollection:
+  - m_playableFrames: []
+    m_frameMarkersVisibility: 0
 --- !u!114 &-221817260743349573
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -749,4 +752,3 @@ MonoBehaviour:
   m_Name: RenderCachePlayableAsset
   m_EditorClassIdentifier: 
   m_folder: 
-  m_deleteImagesBeforeUpdating: 1

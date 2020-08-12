@@ -38,7 +38,9 @@ internal static class InspectorUtility {
                 }
 
                 return newDirPath;
-            } 
+            } else {
+                GUIUtility.ExitGUI(); //prevent error when cancel is pressed                
+            }
         }
 
         return folderPath;

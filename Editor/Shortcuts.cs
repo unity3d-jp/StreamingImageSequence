@@ -1,6 +1,9 @@
-﻿using UnityEditor.ShortcutManagement;
+﻿using Unity.EditorCoroutines.Editor;
+using UnityEditor.ShortcutManagement;
+using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.StreamingImageSequence;
+using UnityEngine.Timeline;
 
 namespace UnityEditor.StreamingImageSequence {
 
@@ -18,6 +21,22 @@ internal static class Shortcuts  {
 
         }
         
+    }    
+
+    [Shortcut("StreamingImageSequence/Update Render Cache", null,  KeyCode.C, ShortcutModifiers.Alt)]
+    static void UpdateRenderCache(ShortcutArguments args) {
+
+        TimelineClip clip = TimelineEditor.selectedClip;
+        if (null == clip)
+            return;
+
+        RenderCachePlayableAsset renderCachePlayableAsset = clip.asset as RenderCachePlayableAsset;
+        if (null == renderCachePlayableAsset)
+            return;
+
+        //Loop time             
+        EditorCoroutineUtility.StartCoroutineOwnerless(RenderCachePlayableAssetInspector.UpdateRenderCacheCoroutine(TimelineEditor.inspectedDirector, renderCachePlayableAsset));
+
     }    
     
 }
