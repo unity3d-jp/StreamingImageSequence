@@ -145,9 +145,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
         string prevOutputFilePath = "";
         while (nextDirectorTime <= timelineClip.end && !cancelled) {
             
-            //frame 0 is always used
             SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);                
-            bool useFrame = (null!=playableFrame && (playableFrame.IsUsed()) || fileCounter == 0);             
+            bool useFrame = (null!=playableFrame && (playableFrame.IsUsed()));             
             
             string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
             string outputFilePath = Path.Combine(outputFolder, fileName);
@@ -162,9 +161,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 //[TODO-sin: 2020-5-27] Call StreamingImageSequencePlugin API to unload texture because it may be overwritten           
                 renderCapturer.CaptureToFile(outputFilePath);
                 
-            } else {
-                File.Copy(prevOutputFilePath,outputFilePath, true);
-            }
+            } 
 
 
             nextDirectorTime += timePerFrame;
