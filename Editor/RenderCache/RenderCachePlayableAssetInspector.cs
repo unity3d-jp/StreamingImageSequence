@@ -54,11 +54,37 @@ internal class RenderCachePlayableAssetInspector : Editor {
             return;
         }
         
+        TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
+        if (null == timelineClipSISData)
+            return;
+                
+        GUILayout.Space(15);
+        bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
+        TimelineClip timelineClip = TimelineEditor.selectedClip;
+        TrackAsset   track        = timelineClip.parentTrack;
+
+        
+        //Capture Selected Frames
+        GUILayout.BeginHorizontal();
+        bool markerVisibility = EditorGUILayout.Toggle("Capture Selected Frames", prevMarkerVisibility);
+        if (markerVisibility != prevMarkerVisibility) {
+            timelineClipSISData.ShowFrameMarkers(markerVisibility);
+        }
+        GUILayout.FlexibleSpace();
+        if (GUILayout.Button("All", GUILayout.Width(40))) {
+            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
+            timelineClipSISData.SetAllPlayableFrames(true);
+        }
+        if (GUILayout.Button("None", GUILayout.Width(40))) {
+            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frames");
+            timelineClipSISData.SetAllPlayableFrames(false);
+            
+        }
+        GUILayout.EndHorizontal();
+       
         //[TODO-sin: 2020-5-27] Check the MD5 hash of the folder before overwriting
         if (GUILayout.Button("Update Render Cache")) {
             
-            TimelineClip timelineClip = TimelineEditor.selectedClip;
-            TrackAsset track = timelineClip.parentTrack;
             PlayableDirector director = TimelineEditor.inspectedDirector;
             if (null == director) {
                 EditorUtility.DisplayDialog("Streaming Image Sequence",
@@ -71,7 +97,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
             EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(director, m_asset), this);
                         
         }
-        InspectorUtility.ShowFrameMarkersGUI(m_asset);
     }
 
     
