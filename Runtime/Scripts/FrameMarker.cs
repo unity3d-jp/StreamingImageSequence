@@ -32,6 +32,7 @@ internal class FrameMarker : Marker, INotification {
 //----------------------------------------------------------------------------------------------------------------------
     
     internal void SetOwner(SISPlayableFrame controller) { m_playableFrameOwner = controller; } 
+    internal SISPlayableFrame GetOwner() { return m_playableFrameOwner; } 
     
     internal bool IsFrameUsed() {        
         return m_playableFrameOwner.IsUsed();

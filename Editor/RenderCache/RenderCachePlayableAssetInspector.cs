@@ -19,6 +19,32 @@ namespace UnityEditor.StreamingImageSequence {
 [CustomEditor(typeof(RenderCachePlayableAsset))]
 internal class RenderCachePlayableAssetInspector : Editor {
 
+    [InitializeOnLoadMethod]
+    static void RenderCachePlayableAssetInspector_OnEditorLoad() {
+        Selection.selectionChanged += RenderCachePlayableAssetInspector_OnSelectionChanged;
+    }
+
+    static void RenderCachePlayableAssetInspector_OnSelectionChanged() {
+        if (!m_lockMode)
+            return;
+        
+        //Abort lock mode if we are not selecting marker
+        foreach (var selectedObj in Selection.objects) {
+            FrameMarker marker = selectedObj as FrameMarker;
+            if (null == marker) {
+                m_lockMode = false;
+                return;                
+            }
+
+            if (m_lockedClip != marker.GetOwner().GetClipOwner()) {
+                m_lockMode = false;
+                return;
+            }
+
+        }         
+    }
+
+    
 //----------------------------------------------------------------------------------------------------------------------
     void OnEnable() {
         m_asset = target as RenderCachePlayableAsset;
@@ -228,9 +254,11 @@ internal class RenderCachePlayableAssetInspector : Editor {
             EditorGUILayout.PrefixLabel("Lock Frames");
             
             bool lockMode = GUILayout.Toggle(m_lockMode, EditorTextures.GetLockTexture(), "Button", 
-                GUILayout.Height(20f), GUILayout.Width(30f));
-            if (lockMode != m_lockMode) {
-                Debug.Log("Change lock mode");
+                GUILayout.Height(20f), GUILayout.Width(30f));            
+            if (lockMode != m_lockMode) { //lock state changed
+                if (lockMode) {
+                    m_lockedClip = timelineClip;
+                }
             }
             m_lockMode = lockMode;
             
@@ -290,7 +318,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
     
     private RenderCachePlayableAsset m_asset = null;
-    private bool m_lockMode = false;
+    private static bool m_lockMode = false;
+    private static TimelineClip m_lockedClip = null;
 
 }
 
