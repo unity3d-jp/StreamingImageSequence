@@ -94,9 +94,9 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void SetAllPlayableFrames(bool used) {
+    internal void SetAllPlayableFramesProperty(string propertyName, bool val) {
         foreach (SISPlayableFrame playableFrame in m_playableFrames) {
-            playableFrame.SetUsed(used);
+            playableFrame.SetBoolProperty(propertyName, val);
         }
     }
 

@@ -74,11 +74,11 @@ internal class RenderCachePlayableAssetInspector : Editor {
         EditorGUI.BeginDisabledGroup(!markerVisibility);        
         if (GUILayout.Button("All", GUILayout.Width(40))) {
             Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
-            timelineClipSISData.SetAllPlayableFrames(true);
+            timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyName.USED, true);
         }
         if (GUILayout.Button("None", GUILayout.Width(40))) {
             Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frames");
-            timelineClipSISData.SetAllPlayableFrames(false);            
+            timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyName.USED, false);            
         }
         EditorGUI.EndDisabledGroup();
         GUILayout.EndHorizontal();

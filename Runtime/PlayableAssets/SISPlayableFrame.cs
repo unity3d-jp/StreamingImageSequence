@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine.Assertions;
 using UnityEngine.Timeline;
 
@@ -17,22 +18,48 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
     internal SISPlayableFrame(TimelineClipSISData owner, SISPlayableFrame otherFrame) {
         m_timelineClipSISDataOwner = owner;
-        m_useImage = otherFrame.m_useImage;
+        m_boolProperties = otherFrame.m_boolProperties;
         m_localTime = otherFrame.m_localTime;
     }       
+    
     
 //----------------------------------------------------------------------------------------------------------------------
     #region ISerializationCallbackReceiver
     public void OnBeforeSerialize() {
+        if (null != m_boolProperties) {
+            m_serializedBoolProperties = new List<PlayableFrameBoolProperty>(m_boolProperties.Count);
+            foreach (KeyValuePair<string, PlayableFrameBoolProperty> kv in m_boolProperties) {
+                m_serializedBoolProperties.Add(kv.Value);
+            }        
+            
+        } else {
+            m_serializedBoolProperties = new List<PlayableFrameBoolProperty>();            
+        }
+        
     }
 
+    
+    
+    
     public void OnAfterDeserialize() {
+        if (null != m_serializedBoolProperties) {
+            m_boolProperties = new Dictionary<string, PlayableFrameBoolProperty>(m_serializedBoolProperties.Count);
+            foreach (PlayableFrameBoolProperty prop in m_serializedBoolProperties) {
+                string propName = prop.GetName();
+                m_boolProperties[propName] = new PlayableFrameBoolProperty(propName, prop.GetValue());
+            }            
+        } else {
+            m_boolProperties = new Dictionary<string, PlayableFrameBoolProperty>();  
+        }
+        
+        
+        
         if (null == m_marker)
             return;
 
         m_marker.SetOwner(this);
     }    
-    #endregion
+    #endregion //ISerializationCallbackReceiver
     
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -46,26 +73,41 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
 //----------------------------------------------------------------------------------------------------------------------
     internal void SetOwner(TimelineClipSISData owner) {  m_timelineClipSISDataOwner = owner;}
-
     internal TimelineClipSISData GetOwner() {  return m_timelineClipSISDataOwner; }
-    internal bool IsUsed() { return m_useImage; }
-
-    internal void SetUsed(bool used) {
-#if UNITY_EDITOR
-        if (m_useImage != used) {
-            EditorSceneManager.MarkAllScenesDirty();            
-        }
-#endif        
-        m_useImage = used;
-        
-    }
-    internal double GetLocalTime() { return m_localTime; }
-    internal void SetLocalTime(double localTime) {  m_localTime = localTime;}
+    internal double GetLocalTime()                 { return m_localTime; }
+    internal void   SetLocalTime(double localTime) {  m_localTime = localTime;}
 
     internal TimelineClip GetClipOwner() {
         TimelineClip clip = m_timelineClipSISDataOwner?.GetOwner();
         return clip;
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+    //Property
+    internal bool GetBoolProperty(string propertyName) {
+        if (null!=m_boolProperties && m_boolProperties.ContainsKey(propertyName)) {
+            return m_boolProperties[propertyName].GetValue();
+        }
+
+        switch (propertyName) {
+            case PlayableFramePropertyName.USED: return true;
+            case PlayableFramePropertyName.LOCKED: return false;
+                default: return false;
+        }        
+    }
+    
+    
+
+    internal void SetBoolProperty(string propertyName, bool val) {
+#if UNITY_EDITOR        
+        if (GetBoolProperty(propertyName) != val) {
+            EditorSceneManager.MarkAllScenesDirty();            
+        }
+#endif
+        m_boolProperties[propertyName] = new PlayableFrameBoolProperty(propertyName, val);
+        
+    }
+    
     
 //----------------------------------------------------------------------------------------------------------------------
     internal void Refresh(bool frameMarkerVisibility) {
@@ -107,15 +149,21 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         
     }
     
+    
 //----------------------------------------------------------------------------------------------------------------------
 
-    [SerializeField] private bool m_useImage = true;
+    [SerializeField] private List<PlayableFrameBoolProperty> m_serializedBoolProperties;
     [SerializeField] private double m_localTime;    
     [SerializeField] private FrameMarker m_marker = null; 
     
-    [NonSerialized] private TimelineClipSISData m_timelineClipSISDataOwner = null; 
+    [NonSerialized] private TimelineClipSISData m_timelineClipSISDataOwner = null;
 
     
+    private Dictionary<string, PlayableFrameBoolProperty> m_boolProperties;
+
+
+
+
 }
 
 } //end namespace
