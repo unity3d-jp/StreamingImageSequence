@@ -13,9 +13,10 @@ const uint64_t DEFAULT_MAX_MEMORY = UNLIMITED_MEMORY;
 
 ImageMemoryAllocator::ImageMemoryAllocator() : m_usedMemory(0)
     , m_maxMemory(DEFAULT_MAX_MEMORY)
+    , m_totalRAM(MemoryUtility::GetTotalRAM())
     , m_inverseTotalRAM(1.0f / MemoryUtility::GetTotalRAM())
 {
-#ifdef MAX_IMAGE_MEMORY
+#ifdef MAX_IMAGE_MEMORY //overwrite for testing
     m_maxMemory = MAX_IMAGE_MEMORY;
 #endif
 
@@ -35,12 +36,19 @@ bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, con
     if (m_maxMemory != UNLIMITED_MEMORY && (m_usedMemory + dataSize) > m_maxMemory)
         return false;
 
-    const float MIN_AVAILABLE_RAM_RATIO = 0.1f;
+#if OSX
+    //Mac (10.9+) compresses inactive memory automatically to free memory to be used by other application, and therefore
+    //we can't directly use the amount of free RAM returned by the OS (the value is often near zero).
+    //For now, we simply check if the number of used memory has exceeded the total RAM.
+    if (m_usedMemory + dataSize > m_totalRAM)
+        return false;
 
+#else
+    const float MIN_AVAILABLE_RAM_RATIO = 0.1f;
     const float availableRAMRatio = MemoryUtility::GetAvailableRAM() * m_inverseTotalRAM;
     if (availableRAMRatio <= MIN_AVAILABLE_RAM_RATIO)
         return false;
-
+#endif
 
     uint8_t*  buffer = static_cast<uint8_t*>(malloc(dataSize));
     if (nullptr == buffer) {

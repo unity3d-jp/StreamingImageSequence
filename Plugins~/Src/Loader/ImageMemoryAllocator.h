@@ -28,6 +28,7 @@ private:
 
     uint64_t m_usedMemory;
     uint64_t m_maxMemory;
+    float m_totalRAM;
     float m_inverseTotalRAM;
 
 };
