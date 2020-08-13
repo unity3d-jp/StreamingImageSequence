@@ -14,6 +14,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
     internal SISPlayableFrame(TimelineClipSISData owner) {
         m_timelineClipSISDataOwner = owner;        
+        m_boolProperties = new Dictionary<string, PlayableFrameBoolProperty>();  
     }
 
     internal SISPlayableFrame(TimelineClipSISData owner, SISPlayableFrame otherFrame) {
@@ -38,21 +39,14 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         
     }
 
-    
-    
-    
     public void OnAfterDeserialize() {
+        m_boolProperties = new Dictionary<string, PlayableFrameBoolProperty>();
         if (null != m_serializedBoolProperties) {
-            m_boolProperties = new Dictionary<string, PlayableFrameBoolProperty>(m_serializedBoolProperties.Count);
             foreach (PlayableFrameBoolProperty prop in m_serializedBoolProperties) {
                 string propName = prop.GetName();
                 m_boolProperties[propName] = new PlayableFrameBoolProperty(propName, prop.GetValue());
             }            
-        } else {
-            m_boolProperties = new Dictionary<string, PlayableFrameBoolProperty>();  
-        }
-        
-        
+        } 
         
         if (null == m_marker)
             return;
@@ -103,7 +97,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         if (GetBoolProperty(propertyName) != val) {
             EditorSceneManager.MarkAllScenesDirty();            
         }
-#endif
+#endif        
         m_boolProperties[propertyName] = new PlayableFrameBoolProperty(propertyName, val);
         
     }
