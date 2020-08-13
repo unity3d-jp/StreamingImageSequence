@@ -59,29 +59,9 @@ internal class RenderCachePlayableAssetInspector : Editor {
             return;
                 
         GUILayout.Space(15);
-        bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
-        TimelineClip timelineClip = TimelineEditor.selectedClip;
-        TrackAsset   track        = timelineClip.parentTrack;
-
         
         //Capture Selected Frames
-        GUILayout.BeginHorizontal();
-        bool markerVisibility = EditorGUILayout.Toggle("Capture Selected Frames", prevMarkerVisibility);
-        if (markerVisibility != prevMarkerVisibility) {
-            timelineClipSISData.ShowFrameMarkers(markerVisibility);
-        }
-        GUILayout.FlexibleSpace();
-        EditorGUI.BeginDisabledGroup(!markerVisibility);        
-        if (GUILayout.Button("All", GUILayout.Width(40))) {
-            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
-            timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyName.USED, true);
-        }
-        if (GUILayout.Button("None", GUILayout.Width(40))) {
-            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frames");
-            timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyName.USED, false);            
-        }
-        EditorGUI.EndDisabledGroup();
-        GUILayout.EndHorizontal();
+        ShowCaptureSelectedFramesGUI(timelineClipSISData);
        
         //[TODO-sin: 2020-5-27] Check the MD5 hash of the folder before overwriting
         if (GUILayout.Button("Update Render Cache")) {
@@ -99,8 +79,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
                         
         }
     }
-
-    
     
 //----------------------------------------------------------------------------------------------------------------------
     internal static IEnumerator UpdateRenderCacheCoroutine(PlayableDirector director, RenderCachePlayableAsset renderCachePlayableAsset) {
@@ -213,8 +191,33 @@ internal class RenderCachePlayableAssetInspector : Editor {
         yield return null;
 
     }
- 
-    
+//----------------------------------------------------------------------------------------------------------------------
+
+
+    private void ShowCaptureSelectedFramesGUI(TimelineClipSISData timelineClipSISData) {
+        bool         prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
+        TimelineClip timelineClip         = TimelineEditor.selectedClip;
+        TrackAsset   track                = timelineClip.parentTrack;
+        
+        GUILayout.BeginHorizontal();
+        bool markerVisibility = EditorGUILayout.Toggle("Capture Selected Frames", prevMarkerVisibility);
+        if (markerVisibility != prevMarkerVisibility) {
+            timelineClipSISData.ShowFrameMarkers(markerVisibility);
+        }
+        GUILayout.FlexibleSpace();
+        EditorGUI.BeginDisabledGroup(!markerVisibility);        
+        if (GUILayout.Button("All", GUILayout.Width(40))) {
+            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
+            timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyName.USED, true);
+        }
+        if (GUILayout.Button("None", GUILayout.Width(40))) {
+            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frames");
+            timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyName.USED, false);            
+        }
+        EditorGUI.EndDisabledGroup();
+        GUILayout.EndHorizontal();
+        
+    }
 
 //----------------------------------------------------------------------------------------------------------------------
     private static void SetDirectorTime(PlayableDirector director, double time) {
