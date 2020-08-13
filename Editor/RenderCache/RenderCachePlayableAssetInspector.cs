@@ -61,7 +61,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
         GUILayout.Space(15);
         
         //Capture Selected Frames
-        ShowCaptureSelectedFramesGUI(timelineClipSISData);
+        ShowCaptureSelectedFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
+        ShowLockFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
        
         //[TODO-sin: 2020-5-27] Check the MD5 hash of the folder before overwriting
         if (GUILayout.Button("Update Render Cache")) {
@@ -194,9 +195,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
 //----------------------------------------------------------------------------------------------------------------------
 
 
-    private void ShowCaptureSelectedFramesGUI(TimelineClipSISData timelineClipSISData) {
+    private void ShowCaptureSelectedFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
         bool         prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
-        TimelineClip timelineClip         = TimelineEditor.selectedClip;
         TrackAsset   track                = timelineClip.parentTrack;
         
         GUILayout.BeginHorizontal();
@@ -219,6 +219,35 @@ internal class RenderCachePlayableAssetInspector : Editor {
         
     }
 
+//----------------------------------------------------------------------------------------------------------------------
+
+
+    private void ShowLockFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
+        
+        using(new EditorGUILayout.HorizontalScope()) {
+            EditorGUILayout.PrefixLabel("Lock Frames");
+            
+            bool lockMode = GUILayout.Toggle(m_lockMode, EditorTextures.GetLockTexture(), "Button", 
+                GUILayout.Height(20f), GUILayout.Width(30f));
+            if (lockMode != m_lockMode) {
+                Debug.Log("Change lock mode");
+            }
+            m_lockMode = lockMode;
+            
+            GUILayout.FlexibleSpace();
+            EditorGUI.BeginDisabledGroup(!m_lockMode);        
+            if (GUILayout.Button("All", GUILayout.Width(40))) {
+            }
+            if (GUILayout.Button("None", GUILayout.Width(40))) {
+            }
+            EditorGUI.EndDisabledGroup();
+
+
+        }
+        
+        
+        
+    }
 //----------------------------------------------------------------------------------------------------------------------
     private static void SetDirectorTime(PlayableDirector director, double time) {
         director.time = time;
@@ -261,7 +290,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
     
     private RenderCachePlayableAsset m_asset = null;
- 
+    private bool m_lockMode = false;
+
 }
 
 }
