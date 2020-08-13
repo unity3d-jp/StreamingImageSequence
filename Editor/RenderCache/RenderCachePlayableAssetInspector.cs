@@ -234,11 +234,11 @@ internal class RenderCachePlayableAssetInspector : Editor {
         EditorGUI.BeginDisabledGroup(!markerVisibility);        
         if (GUILayout.Button("All", GUILayout.Width(40))) {
             Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
-            timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyName.USED, true);
+            timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.USED, true);
         }
         if (GUILayout.Button("None", GUILayout.Width(40))) {
             Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frames");
-            timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyName.USED, false);            
+            timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.USED, false);            
         }
         EditorGUI.EndDisabledGroup();
         GUILayout.EndHorizontal();
@@ -276,13 +276,13 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
     static void LockSISData(TimelineClipSISData timelineClipSISData) {
         m_inspectedSISDataForLocking = timelineClipSISData;
-        m_inspectedSISDataForLocking.SetInspectedPropertyName(PlayableFramePropertyName.LOCKED);
+        m_inspectedSISDataForLocking.SetInspectedProperty(PlayableFramePropertyID.LOCKED);
         m_lockMode = true;
     }
     
     static void UnlockSISData() {
         Assert.IsNotNull(m_inspectedSISDataForLocking);
-        m_inspectedSISDataForLocking.SetInspectedPropertyName(PlayableFramePropertyName.USED);
+        m_inspectedSISDataForLocking.SetInspectedProperty(PlayableFramePropertyID.USED);
         m_inspectedSISDataForLocking = null;
         m_lockMode = false;
     }

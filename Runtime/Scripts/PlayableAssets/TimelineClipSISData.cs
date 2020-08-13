@@ -75,12 +75,12 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     internal TimelineClip GetOwner() { return m_clipOwner; }
 
 #if UNITY_EDITOR
-    internal void SetInspectedPropertyName(string propertyName) {
-        m_inspectedPropertyName = propertyName;
+    internal void SetInspectedProperty(PlayableFramePropertyID id) {
+        m_inspectedPropertyID = id;
     }
 
-    internal string GetInspectedPropertyName() {
-        return m_inspectedPropertyName;
+    internal PlayableFramePropertyID GetInspectedProperty() {
+        return m_inspectedPropertyID;
     }
     
 #endif    
@@ -105,9 +105,9 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void SetAllPlayableFramesProperty(string propertyName, bool val) {
+    internal void SetAllPlayableFramesProperty(PlayableFramePropertyID id, bool val) {
         foreach (SISPlayableFrame playableFrame in m_playableFrames) {
-            playableFrame.SetBoolProperty(propertyName, val);
+            playableFrame.SetBoolProperty(id, val);
         }
     }
 
@@ -227,7 +227,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     [NonSerialized] private TimelineClip  m_clipOwner = null;
 
 #if UNITY_EDITOR    
-    private string m_inspectedPropertyName = PlayableFramePropertyName.USED;
+    private PlayableFramePropertyID m_inspectedPropertyID = PlayableFramePropertyID.USED;
 #endif    
 
 }

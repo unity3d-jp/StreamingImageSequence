@@ -14,7 +14,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
     internal SISPlayableFrame(TimelineClipSISData owner) {
         m_timelineClipSISDataOwner = owner;        
-        m_boolProperties = new Dictionary<string, PlayableFrameBoolProperty>();  
+        m_boolProperties = new Dictionary<PlayableFramePropertyID, PlayableFrameBoolProperty>();  
     }
 
     internal SISPlayableFrame(TimelineClipSISData owner, SISPlayableFrame otherFrame) {
@@ -29,7 +29,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     public void OnBeforeSerialize() {
         if (null != m_boolProperties) {
             m_serializedBoolProperties = new List<PlayableFrameBoolProperty>(m_boolProperties.Count);
-            foreach (KeyValuePair<string, PlayableFrameBoolProperty> kv in m_boolProperties) {
+            foreach (KeyValuePair<PlayableFramePropertyID, PlayableFrameBoolProperty> kv in m_boolProperties) {
                 m_serializedBoolProperties.Add(kv.Value);
             }        
             
@@ -40,11 +40,11 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     }
 
     public void OnAfterDeserialize() {
-        m_boolProperties = new Dictionary<string, PlayableFrameBoolProperty>();
+        m_boolProperties = new Dictionary<PlayableFramePropertyID, PlayableFrameBoolProperty>();
         if (null != m_serializedBoolProperties) {
             foreach (PlayableFrameBoolProperty prop in m_serializedBoolProperties) {
-                string propName = prop.GetName();
-                m_boolProperties[propName] = new PlayableFrameBoolProperty(propName, prop.GetValue());
+                PlayableFramePropertyID id = prop.GetID();
+                m_boolProperties[id] = new PlayableFrameBoolProperty(id, prop.GetValue());
             }            
         } 
         
@@ -78,27 +78,27 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
 //----------------------------------------------------------------------------------------------------------------------
     //Property
-    internal bool GetBoolProperty(string propertyName) {
-        if (null!=m_boolProperties && m_boolProperties.ContainsKey(propertyName)) {
-            return m_boolProperties[propertyName].GetValue();
+    internal bool GetBoolProperty(PlayableFramePropertyID propertyID) {
+        if (null!=m_boolProperties && m_boolProperties.ContainsKey(propertyID)) {
+            return m_boolProperties[propertyID].GetValue();
         }
 
-        switch (propertyName) {
-            case PlayableFramePropertyName.USED: return true;
-            case PlayableFramePropertyName.LOCKED: return false;
+        switch (propertyID) {
+            case PlayableFramePropertyID.USED: return true;
+            case PlayableFramePropertyID.LOCKED: return false;
                 default: return false;
         }        
     }
     
     
 
-    internal void SetBoolProperty(string propertyName, bool val) {
+    internal void SetBoolProperty(PlayableFramePropertyID id, bool val) {
 #if UNITY_EDITOR        
-        if (GetBoolProperty(propertyName) != val) {
+        if (GetBoolProperty(id) != val) {
             EditorSceneManager.MarkAllScenesDirty();            
         }
 #endif        
-        m_boolProperties[propertyName] = new PlayableFrameBoolProperty(propertyName, val);
+        m_boolProperties[id] = new PlayableFrameBoolProperty(id, val);
         
     }
     
@@ -158,7 +158,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     [NonSerialized] private TimelineClipSISData m_timelineClipSISDataOwner = null;
 
     
-    private Dictionary<string, PlayableFrameBoolProperty> m_boolProperties;
+    private Dictionary<PlayableFramePropertyID, PlayableFrameBoolProperty> m_boolProperties;
 
 
 

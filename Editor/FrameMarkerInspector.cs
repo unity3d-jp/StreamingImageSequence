@@ -34,13 +34,13 @@ internal class FrameMarkerInspector: Editor {
     private static void SetMarkerValueByContext(FrameMarker frameMarker, bool value) {
         SISPlayableFrame    playableFrame       = frameMarker.GetOwner();
         TimelineClipSISData timelineClipSISData = playableFrame.GetOwner();
-        string inspectedPropertyName = timelineClipSISData.GetInspectedPropertyName();
-        switch (inspectedPropertyName) {
-            case PlayableFramePropertyName.USED: {
+        PlayableFramePropertyID inspectedPropertyID = timelineClipSISData.GetInspectedProperty();
+        switch (inspectedPropertyID) {
+            case PlayableFramePropertyID.USED: {
                 playableFrame.SetUsed(value);
                 break;
             }
-            case PlayableFramePropertyName.LOCKED: {
+            case PlayableFramePropertyID.LOCKED: {
                 playableFrame.SetLocked(value);
                 break;
             }
@@ -52,13 +52,13 @@ internal class FrameMarkerInspector: Editor {
     internal static void ToggleMarkerValueByContext(FrameMarker frameMarker) {
         SISPlayableFrame    playableFrame         = frameMarker.GetOwner();
         TimelineClipSISData timelineClipSISData   = playableFrame.GetOwner();
-        string              inspectedPropertyName = timelineClipSISData.GetInspectedPropertyName();
-        switch (inspectedPropertyName) {
-            case PlayableFramePropertyName.USED: {
+        PlayableFramePropertyID inspectedPropertyID = timelineClipSISData.GetInspectedProperty();
+        switch (inspectedPropertyID) {
+            case PlayableFramePropertyID.USED: {
                 playableFrame.SetUsed(!playableFrame.IsUsed());
                 break;
             }
-            case PlayableFramePropertyName.LOCKED: {
+            case PlayableFramePropertyID.LOCKED: {
                 playableFrame.SetLocked(!playableFrame.IsLocked());
                 break;
             }

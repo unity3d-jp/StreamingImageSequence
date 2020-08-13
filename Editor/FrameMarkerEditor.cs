@@ -18,24 +18,24 @@ class FrameMarkerEditor : MarkerEditor {
 
         SISPlayableFrame playableFrame = marker.GetOwner();
         TimelineClipSISData timelineClipSISData = playableFrame.GetOwner();
-        string inspectedPropertyName = timelineClipSISData.GetInspectedPropertyName();
-        switch (inspectedPropertyName) {
-            case PlayableFramePropertyName.USED: {
+        PlayableFramePropertyID inspectedPropertyID = timelineClipSISData.GetInspectedProperty();
+        switch (inspectedPropertyID) {
+            case PlayableFramePropertyID.USED: {
                 if (playableFrame.IsUsed()) {
-                    UnityEngine.Graphics.DrawTexture(region.markerRegion, EditorTextures.GetCheckedTexture());
+                    Graphics.DrawTexture(region.markerRegion, EditorTextures.GetCheckedTexture());
                 }
                 
                 if (playableFrame.IsLocked()) {
                     Rect lockRegion = region.markerRegion;
                     lockRegion.x -= 5;
                     lockRegion.y -= 8;
-                    UnityEngine.Graphics.DrawTexture(lockRegion, EditorTextures.GetLockTexture());                    
+                    Graphics.DrawTexture(lockRegion, EditorTextures.GetLockTexture());                    
                 }
                 break;
             }
-            case PlayableFramePropertyName.LOCKED: {
+            case PlayableFramePropertyID.LOCKED: {
                 if (playableFrame.IsLocked()) {
-                    UnityEngine.Graphics.DrawTexture(region.markerRegion, EditorTextures.GetLockTexture());                    
+                    Graphics.DrawTexture(region.markerRegion, EditorTextures.GetLockTexture());                    
                 }
                 break;
             }
