@@ -73,6 +73,17 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     internal void SetOwner(TimelineClip clip) { m_clipOwner = clip;}
     
     internal TimelineClip GetOwner() { return m_clipOwner; }
+
+#if UNITY_EDITOR
+    internal void SetInspectedPropertyName(string propertyName) {
+        m_inspectedPropertyName = propertyName;
+    }
+
+    internal string GetInspectedPropertyName() {
+        return m_inspectedPropertyName;
+    }
+    
+#endif    
     
 //----------------------------------------------------------------------------------------------------------------------    
     private static SISPlayableFrame CreatePlayableFrame(TimelineClipSISData owner, int index, double timePerFrame) 
@@ -203,6 +214,8 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
             
             
     }
+    
+    
    
     
 //----------------------------------------------------------------------------------------------------------------------    
@@ -212,6 +225,10 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     [FormerlySerializedAs("m_useImageMarkerVisibility")] [SerializeField] [HideInInspector] private bool m_frameMarkersVisibility = false;
 
     [NonSerialized] private TimelineClip  m_clipOwner = null;
+
+#if UNITY_EDITOR    
+    private string m_inspectedPropertyName = PlayableFramePropertyName.USED;
+#endif    
 
 }
 

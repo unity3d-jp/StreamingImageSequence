@@ -32,12 +32,12 @@ internal class RenderCachePlayableAssetInspector : Editor {
         foreach (var selectedObj in Selection.objects) {
             FrameMarker marker = selectedObj as FrameMarker;
             if (null == marker) {
-                m_lockMode = false;
+                UnlockSISData();
                 return;                
             }
 
-            if (m_lockedClip != marker.GetOwner().GetClipOwner()) {
-                m_lockMode = false;
+            if (m_inspectedSISDataForLocking != marker.GetOwner().GetOwner()) {
+                UnlockSISData();
                 return;
             }
 
@@ -257,10 +257,11 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 GUILayout.Height(20f), GUILayout.Width(30f));            
             if (lockMode != m_lockMode) { //lock state changed
                 if (lockMode) {
-                    m_lockedClip = timelineClip;
+                    LockSISData(timelineClipSISData);
+                } else {
+                    UnlockSISData();
                 }
             }
-            m_lockMode = lockMode;
             
             GUILayout.FlexibleSpace();
             EditorGUI.BeginDisabledGroup(!m_lockMode);        
@@ -269,13 +270,23 @@ internal class RenderCachePlayableAssetInspector : Editor {
             if (GUILayout.Button("None", GUILayout.Width(40))) {
             }
             EditorGUI.EndDisabledGroup();
-
-
         }
-        
-        
-        
     }
+//----------------------------------------------------------------------------------------------------------------------
+
+    static void LockSISData(TimelineClipSISData timelineClipSISData) {
+        m_inspectedSISDataForLocking = timelineClipSISData;
+        m_inspectedSISDataForLocking.SetInspectedPropertyName(PlayableFramePropertyName.LOCKED);
+        m_lockMode = true;
+    }
+    
+    static void UnlockSISData() {
+        Assert.IsNotNull(m_inspectedSISDataForLocking);
+        m_inspectedSISDataForLocking.SetInspectedPropertyName(PlayableFramePropertyName.USED);
+        m_inspectedSISDataForLocking = null;
+        m_lockMode = false;
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
     private static void SetDirectorTime(PlayableDirector director, double time) {
         director.time = time;
@@ -319,7 +330,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
     
     private RenderCachePlayableAsset m_asset = null;
     private static bool m_lockMode = false;
-    private static TimelineClip m_lockedClip = null;
+    private static TimelineClipSISData m_inspectedSISDataForLocking = null;
 
 }
 

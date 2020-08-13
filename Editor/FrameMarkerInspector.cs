@@ -26,11 +26,45 @@ internal class FrameMarkerInspector: Editor {
 
         //Set all selected objects
         foreach (FrameMarker m in m_assets) {
-            m.SetFrameUsed(useImage);
+            SetMarkerValueByContext(m,useImage);
         }
-
     }
 
+//----------------------------------------------------------------------------------------------------------------------
+    private static void SetMarkerValueByContext(FrameMarker frameMarker, bool value) {
+        SISPlayableFrame    playableFrame       = frameMarker.GetOwner();
+        TimelineClipSISData timelineClipSISData = playableFrame.GetOwner();
+        string inspectedPropertyName = timelineClipSISData.GetInspectedPropertyName();
+        switch (inspectedPropertyName) {
+            case PlayableFramePropertyName.USED: {
+                playableFrame.SetUsed(value);
+                break;
+            }
+            case PlayableFramePropertyName.LOCKED: {
+                playableFrame.SetLocked(value);
+                break;
+            }
+            
+        }
+               
+    }
+
+    internal static void ToggleMarkerValueByContext(FrameMarker frameMarker) {
+        SISPlayableFrame    playableFrame         = frameMarker.GetOwner();
+        TimelineClipSISData timelineClipSISData   = playableFrame.GetOwner();
+        string              inspectedPropertyName = timelineClipSISData.GetInspectedPropertyName();
+        switch (inspectedPropertyName) {
+            case PlayableFramePropertyName.USED: {
+                playableFrame.SetUsed(!playableFrame.IsUsed());
+                break;
+            }
+            case PlayableFramePropertyName.LOCKED: {
+                playableFrame.SetLocked(!playableFrame.IsLocked());
+                break;
+            }
+
+        }
+    }
 //----------------------------------------------------------------------------------------------------------------------
 
     private FrameMarker[] m_assets = null;
