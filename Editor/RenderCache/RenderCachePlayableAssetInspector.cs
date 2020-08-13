@@ -71,15 +71,16 @@ internal class RenderCachePlayableAssetInspector : Editor {
             timelineClipSISData.ShowFrameMarkers(markerVisibility);
         }
         GUILayout.FlexibleSpace();
+        EditorGUI.BeginDisabledGroup(!markerVisibility);        
         if (GUILayout.Button("All", GUILayout.Width(40))) {
             Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
             timelineClipSISData.SetAllPlayableFrames(true);
         }
         if (GUILayout.Button("None", GUILayout.Width(40))) {
             Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frames");
-            timelineClipSISData.SetAllPlayableFrames(false);
-            
+            timelineClipSISData.SetAllPlayableFrames(false);            
         }
+        EditorGUI.EndDisabledGroup();
         GUILayout.EndHorizontal();
        
         //[TODO-sin: 2020-5-27] Check the MD5 hash of the folder before overwriting
