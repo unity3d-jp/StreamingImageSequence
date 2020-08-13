@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.3.2-preview] - 2020-08-13
+* fix: fix memory allocation blocking on Mac
+
 ## [0.3.1-preview] - 2020-07-14
 
 * feat: add support for SkinnedMeshRenderer and copy StreamingImageSequencePlayableAsset output to a target RenderTexture, if set 
