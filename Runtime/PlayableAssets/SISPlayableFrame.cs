@@ -138,9 +138,14 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     void DeleteMarker() {
         Assert.IsNotNull(m_marker);
         
+        //Marker should have parent, but in rare cases, it may return null
         TrackAsset track = m_marker.parent;
-        track.DeleteMarker(m_marker);
-        
+        if (null != track) {
+            track.DeleteMarker(m_marker);            
+        }
+
+        m_marker = null;
+
     }
     
     
