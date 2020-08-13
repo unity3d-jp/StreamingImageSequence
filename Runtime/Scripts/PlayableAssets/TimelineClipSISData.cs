@@ -90,8 +90,14 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         //Recalculate the number of frames and create the marker's ground truth data
         int numFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
         m_playableFrames = new List<SISPlayableFrame>(numFrames);
-        UpdatePlayableFramesSize(numFrames);
-                
+        UpdatePlayableFramesSize(numFrames);                
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+    internal void SetAllPlayableFrames(bool used) {
+        foreach (SISPlayableFrame playableFrame in m_playableFrames) {
+            playableFrame.SetUsed(used);
+        }
     }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -54,11 +54,38 @@ internal class RenderCachePlayableAssetInspector : Editor {
             return;
         }
         
+        TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
+        if (null == timelineClipSISData)
+            return;
+                
+        GUILayout.Space(15);
+        bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
+        TimelineClip timelineClip = TimelineEditor.selectedClip;
+        TrackAsset   track        = timelineClip.parentTrack;
+
+        
+        //Capture Selected Frames
+        GUILayout.BeginHorizontal();
+        bool markerVisibility = EditorGUILayout.Toggle("Capture Selected Frames", prevMarkerVisibility);
+        if (markerVisibility != prevMarkerVisibility) {
+            timelineClipSISData.ShowFrameMarkers(markerVisibility);
+        }
+        GUILayout.FlexibleSpace();
+        EditorGUI.BeginDisabledGroup(!markerVisibility);        
+        if (GUILayout.Button("All", GUILayout.Width(40))) {
+            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
+            timelineClipSISData.SetAllPlayableFrames(true);
+        }
+        if (GUILayout.Button("None", GUILayout.Width(40))) {
+            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frames");
+            timelineClipSISData.SetAllPlayableFrames(false);            
+        }
+        EditorGUI.EndDisabledGroup();
+        GUILayout.EndHorizontal();
+       
         //[TODO-sin: 2020-5-27] Check the MD5 hash of the folder before overwriting
         if (GUILayout.Button("Update Render Cache")) {
             
-            TimelineClip timelineClip = TimelineEditor.selectedClip;
-            TrackAsset track = timelineClip.parentTrack;
             PlayableDirector director = TimelineEditor.inspectedDirector;
             if (null == director) {
                 EditorUtility.DisplayDialog("Streaming Image Sequence",
@@ -71,7 +98,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
             EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(director, m_asset), this);
                         
         }
-        InspectorUtility.ShowFrameMarkersGUI(m_asset);
     }
 
     
@@ -142,12 +168,12 @@ internal class RenderCachePlayableAssetInspector : Editor {
         HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
         
         bool cancelled = false;
-        string prevOutputFilePath = "";
         while (nextDirectorTime <= timelineClip.end && !cancelled) {
             
-            //frame 0 is always used
             SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);                
-            bool useFrame = (null!=playableFrame && (playableFrame.IsUsed()) || fileCounter == 0);             
+            bool useFrame = (!timelineClipSISData.AreFrameMarkersVisible() //if not visible, use it
+                || (null!=playableFrame && (playableFrame.IsUsed()))
+            );             
             
             string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
             string outputFilePath = Path.Combine(outputFolder, fileName);
@@ -162,9 +188,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 //[TODO-sin: 2020-5-27] Call StreamingImageSequencePlugin API to unload texture because it may be overwritten           
                 renderCapturer.CaptureToFile(outputFilePath);
                 
-            } else {
-                File.Copy(prevOutputFilePath,outputFilePath, true);
-            }
+            } 
 
 
             nextDirectorTime += timePerFrame;
@@ -172,7 +196,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
         
             cancelled = EditorUtility.DisplayCancelableProgressBar(
                 "StreamingImageSequence", "Caching render results", ((float)fileCounter / numFiles));
-            prevOutputFilePath = outputFilePath;
         }
         
         //Delete old files
