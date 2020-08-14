@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.StreamingImageSequence;
 using UnityEngine.Timeline;
+using Object = UnityEngine.Object;
 
 namespace UnityEditor.StreamingImageSequence {
 
@@ -63,6 +64,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         --EditorGUI.indentLevel;
         EditorGUILayout.Space(15f);
 
+        ValidateAssetFolder();
         string prevFolder = m_asset.GetFolder();
         string newFolder = DrawFolderSelector ("Cache Output Folder", "Select Folder", 
             prevFolder,
@@ -218,6 +220,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
         yield return null;
 
     }
+    
+    
 //----------------------------------------------------------------------------------------------------------------------
 
 
@@ -277,6 +281,26 @@ internal class RenderCachePlayableAssetInspector : Editor {
             EditorGUI.EndDisabledGroup();
         }
     }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    private void ValidateAssetFolder() {
+
+        string folder = m_asset.GetFolder();
+        if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
+            return;
+
+        //Generate unique folder
+        string baseFolder = Path.Combine(Application.streamingAssetsPath, m_asset.name);
+        folder = baseFolder;
+        int index = 1;
+        while (Directory.Exists(folder)) {
+            folder = baseFolder + index.ToString();
+        }
+                
+        Directory.CreateDirectory(folder);
+        m_asset.SetFolder(folder);
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
 
     static void LockSISData(TimelineClipSISData timelineClipSISData) {
