@@ -30,6 +30,7 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     /// <summary>
     /// Sets StreamingImageSequence to copy its internal texture into a target RenderTexture.     
     /// </summary>
+    /// <param name="tex">the target RenderTexture for copying</param>
     public void SetTargetTexture(RenderTexture tex) { m_targetTexture = tex;}
     
 //----------------------------------------------------------------------------------------------------------------------    
