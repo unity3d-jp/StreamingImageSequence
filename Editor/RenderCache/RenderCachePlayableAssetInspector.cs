@@ -19,6 +19,32 @@ namespace UnityEditor.StreamingImageSequence {
 [CustomEditor(typeof(RenderCachePlayableAsset))]
 internal class RenderCachePlayableAssetInspector : Editor {
 
+    [InitializeOnLoadMethod]
+    static void RenderCachePlayableAssetInspector_OnEditorLoad() {
+        Selection.selectionChanged += RenderCachePlayableAssetInspector_OnSelectionChanged;
+    }
+
+    static void RenderCachePlayableAssetInspector_OnSelectionChanged() {
+        if (!m_lockMode)
+            return;
+        
+        //Abort lock mode if we are not selecting marker
+        foreach (var selectedObj in Selection.objects) {
+            FrameMarker marker = selectedObj as FrameMarker;
+            if (null == marker) {
+                UnlockSISData();
+                return;                
+            }
+
+            if (m_inspectedSISDataForLocking != marker.GetOwner().GetOwner()) {
+                UnlockSISData();
+                return;
+            }
+
+        }         
+    }
+
+    
 //----------------------------------------------------------------------------------------------------------------------
     void OnEnable() {
         m_asset = target as RenderCachePlayableAsset;
@@ -59,29 +85,10 @@ internal class RenderCachePlayableAssetInspector : Editor {
             return;
                 
         GUILayout.Space(15);
-        bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
-        TimelineClip timelineClip = TimelineEditor.selectedClip;
-        TrackAsset   track        = timelineClip.parentTrack;
-
         
         //Capture Selected Frames
-        GUILayout.BeginHorizontal();
-        bool markerVisibility = EditorGUILayout.Toggle("Capture Selected Frames", prevMarkerVisibility);
-        if (markerVisibility != prevMarkerVisibility) {
-            timelineClipSISData.ShowFrameMarkers(markerVisibility);
-        }
-        GUILayout.FlexibleSpace();
-        EditorGUI.BeginDisabledGroup(!markerVisibility);        
-        if (GUILayout.Button("All", GUILayout.Width(40))) {
-            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
-            timelineClipSISData.SetAllPlayableFrames(true);
-        }
-        if (GUILayout.Button("None", GUILayout.Width(40))) {
-            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frames");
-            timelineClipSISData.SetAllPlayableFrames(false);            
-        }
-        EditorGUI.EndDisabledGroup();
-        GUILayout.EndHorizontal();
+        ShowCaptureSelectedFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
+        ShowLockFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
        
         //[TODO-sin: 2020-5-27] Check the MD5 hash of the folder before overwriting
         if (GUILayout.Button("Update Render Cache")) {
@@ -99,8 +106,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
                         
         }
     }
-
-    
     
 //----------------------------------------------------------------------------------------------------------------------
     internal static IEnumerator UpdateRenderCacheCoroutine(PlayableDirector director, RenderCachePlayableAsset renderCachePlayableAsset) {
@@ -171,8 +176,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
         while (nextDirectorTime <= timelineClip.end && !cancelled) {
             
             SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);                
-            bool useFrame = (!timelineClipSISData.AreFrameMarkersVisible() //if not visible, use it
-                || (null!=playableFrame && (playableFrame.IsUsed()))
+            bool captureFrame = (!timelineClipSISData.AreFrameMarkersVisible() //if not visible, use it
+                || (null!=playableFrame && playableFrame.IsUsed() && !playableFrame.IsLocked())
             );             
             
             string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
@@ -181,7 +186,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 filesToDelete.Remove(outputFilePath);
             }
             
-            if (useFrame) {
+            if (captureFrame) {
                 SetDirectorTime(director, nextDirectorTime);
                 yield return null;
                 
@@ -213,9 +218,80 @@ internal class RenderCachePlayableAssetInspector : Editor {
         yield return null;
 
     }
- 
-    
+//----------------------------------------------------------------------------------------------------------------------
 
+
+    private void ShowCaptureSelectedFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
+        bool         prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
+        TrackAsset   track                = timelineClip.parentTrack;
+        
+        GUILayout.BeginHorizontal();
+        bool markerVisibility = EditorGUILayout.Toggle("Capture Selected Frames", prevMarkerVisibility);
+        if (markerVisibility != prevMarkerVisibility) {
+            timelineClipSISData.ShowFrameMarkers(markerVisibility);
+        }
+        GUILayout.FlexibleSpace();
+        EditorGUI.BeginDisabledGroup(!markerVisibility);        
+        if (GUILayout.Button("All", GUILayout.Width(40))) {
+            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
+            timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.USED, true);
+        }
+        if (GUILayout.Button("None", GUILayout.Width(40))) {
+            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frame");
+            timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.USED, false);            
+        }
+        EditorGUI.EndDisabledGroup();
+        GUILayout.EndHorizontal();
+        
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+
+    private void ShowLockFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
+        TrackAsset track = timelineClip.parentTrack;
+        
+        using(new EditorGUILayout.HorizontalScope()) {
+            EditorGUILayout.PrefixLabel("Lock Frames");
+            
+            bool lockMode = GUILayout.Toggle(m_lockMode, EditorTextures.GetLockTexture(), "Button", 
+                GUILayout.Height(20f), GUILayout.Width(30f));            
+            if (lockMode != m_lockMode) { //lock state changed
+                if (lockMode) {
+                    LockSISData(timelineClipSISData);
+                } else {
+                    UnlockSISData();
+                }
+            }
+            
+            GUILayout.FlexibleSpace();
+            EditorGUI.BeginDisabledGroup(!m_lockMode);        
+            if (GUILayout.Button("All", GUILayout.Width(40))) {
+                Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Locking all frames");
+                timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.LOCKED, true);
+            }
+            if (GUILayout.Button("None", GUILayout.Width(40))) {
+                Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Locking no frame");
+                timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.LOCKED, false);
+            }
+            EditorGUI.EndDisabledGroup();
+        }
+    }
+//----------------------------------------------------------------------------------------------------------------------
+
+    static void LockSISData(TimelineClipSISData timelineClipSISData) {
+        m_inspectedSISDataForLocking = timelineClipSISData;
+        m_inspectedSISDataForLocking.SetInspectedProperty(PlayableFramePropertyID.LOCKED);
+        m_lockMode = true;
+    }
+    
+    static void UnlockSISData() {
+        Assert.IsNotNull(m_inspectedSISDataForLocking);
+        m_inspectedSISDataForLocking.SetInspectedProperty(PlayableFramePropertyID.USED);
+        m_inspectedSISDataForLocking = null;
+        m_lockMode = false;
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
     private static void SetDirectorTime(PlayableDirector director, double time) {
         director.time = time;
@@ -258,7 +334,9 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
     
     private RenderCachePlayableAsset m_asset = null;
- 
+    private static bool m_lockMode = false;
+    private static TimelineClipSISData m_inspectedSISDataForLocking = null;
+
 }
 
 }

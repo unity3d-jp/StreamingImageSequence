@@ -73,6 +73,17 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     internal void SetOwner(TimelineClip clip) { m_clipOwner = clip;}
     
     internal TimelineClip GetOwner() { return m_clipOwner; }
+
+#if UNITY_EDITOR
+    internal void SetInspectedProperty(PlayableFramePropertyID id) {
+        m_inspectedPropertyID = id;
+    }
+
+    internal PlayableFramePropertyID GetInspectedProperty() {
+        return m_inspectedPropertyID;
+    }
+    
+#endif    
     
 //----------------------------------------------------------------------------------------------------------------------    
     private static SISPlayableFrame CreatePlayableFrame(TimelineClipSISData owner, int index, double timePerFrame) 
@@ -94,9 +105,9 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void SetAllPlayableFrames(bool used) {
+    internal void SetAllPlayableFramesProperty(PlayableFramePropertyID id, bool val) {
         foreach (SISPlayableFrame playableFrame in m_playableFrames) {
-            playableFrame.SetUsed(used);
+            playableFrame.SetBoolProperty(id, val);
         }
     }
 
@@ -203,6 +214,8 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
             
             
     }
+    
+    
    
     
 //----------------------------------------------------------------------------------------------------------------------    
@@ -212,6 +225,10 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     [FormerlySerializedAs("m_useImageMarkerVisibility")] [SerializeField] [HideInInspector] private bool m_frameMarkersVisibility = false;
 
     [NonSerialized] private TimelineClip  m_clipOwner = null;
+
+#if UNITY_EDITOR    
+    private PlayableFramePropertyID m_inspectedPropertyID = PlayableFramePropertyID.USED;
+#endif    
 
 }
 

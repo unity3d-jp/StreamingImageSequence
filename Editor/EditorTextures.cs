@@ -1,8 +1,16 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
 
 namespace UnityEditor.StreamingImageSequence {
 
 internal static class EditorTextures {
+
+    [InitializeOnLoadMethod]
+    static void EditorTextures_OnLoad() {
+        LoadTextures();
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
 
     internal static Texture GetCheckedTexture() {
         if (null == m_checkedTexture) {
@@ -10,25 +18,50 @@ internal static class EditorTextures {
         }
         return m_checkedTexture;
     }
-    
-//----------------------------------------------------------------------------------------------------------------------
 
-    [InitializeOnLoadMethod]
-    static void OnLoad() {
-        LoadTextures();
+    internal static Texture GetInactiveCheckedTexture() {
+        if (null == m_inactiveCheckedTexture) {
+            LoadTextures();
+        }
+        return m_inactiveCheckedTexture;
     }
+
+    internal static Texture GetLockTexture() {
+        if (null == m_lockTexture) {
+            LoadTextures();
+        }
+        return m_lockTexture;
+    }
+    
 
     
 //----------------------------------------------------------------------------------------------------------------------
 
     static void LoadTextures() {
-        const string FULL_PATH = "Packages/com.unity.streaming-image-sequence/Editor/Textures/Checked.png";
-        m_checkedTexture = AssetDatabase.LoadAssetAtPath<Texture>(FULL_PATH);
+        if (null == m_checkedTexture) {
+            const string CHECKED_TEX_FULL_PATH = "Packages/com.unity.streaming-image-sequence/Editor/Textures/Checked.png";
+            m_checkedTexture = AssetDatabase.LoadAssetAtPath<Texture>(CHECKED_TEX_FULL_PATH);            
+        }
+
+        if (null == m_inactiveCheckedTexture) {
+            const string TEX_FULL_PATH = "Packages/com.unity.streaming-image-sequence/Editor/Textures/InactiveChecked.png";
+            m_inactiveCheckedTexture = AssetDatabase.LoadAssetAtPath<Texture>(TEX_FULL_PATH);            
+        }
+        
+        if (null == m_lockTexture) {
+            const string STYLESHEET_IMAGE_PATH = "Packages/com.unity.streaming-image-sequence/Editor/StyleSheets/Images";
+            string skin = EditorGUIUtility.isProSkin ? "DarkSkin" : "LightSkin";
+            string lockTexFullPath = Path.Combine(STYLESHEET_IMAGE_PATH, skin, "FrameMarkerLock.png");
+            m_lockTexture = AssetDatabase.LoadAssetAtPath<Texture>(lockTexFullPath);            
+        }
+
     }
     
 //----------------------------------------------------------------------------------------------------------------------
 
     private static Texture m_checkedTexture;
+    private static Texture m_inactiveCheckedTexture;
+    private static Texture m_lockTexture;
 
 }
 

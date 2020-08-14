@@ -16,8 +16,7 @@ internal static class Shortcuts  {
             if (null == marker) {
                 continue;
             }
-            
-            marker.SetFrameUsed(!marker.IsFrameUsed());
+            FrameMarkerInspector.ToggleMarkerValueByContext(marker);
 
         }
         

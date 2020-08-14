@@ -122,7 +122,7 @@ namespace UnityEngine.StreamingImageSequence {
                 //Try to check if this frame is "dropped", so that we should use the image in the prev frame
                 int              playableFrameIndex = Mathf.RoundToInt((float) localTime / (float)scaledTimePerFrame);
                 SISPlayableFrame playableFrame      = timelineSISData.GetPlayableFrame(playableFrameIndex);
-                while (playableFrameIndex > 0 && null != playableFrame && !playableFrame.IsUsed()) {
+                while (playableFrameIndex > 0 && !playableFrame.IsUsed()) {
                     --playableFrameIndex;
                     playableFrame = timelineSISData.GetPlayableFrame(playableFrameIndex);
                     localTime     = playableFrameIndex * scaledTimePerFrame;
