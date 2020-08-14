@@ -176,8 +176,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
         while (nextDirectorTime <= timelineClip.end && !cancelled) {
             
             SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);                
-            bool useFrame = (!timelineClipSISData.AreFrameMarkersVisible() //if not visible, use it
-                || (null!=playableFrame && (playableFrame.IsUsed()))
+            bool captureFrame = (!timelineClipSISData.AreFrameMarkersVisible() //if not visible, use it
+                || (null!=playableFrame && playableFrame.IsUsed() && !playableFrame.IsLocked())
             );             
             
             string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
@@ -186,7 +186,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 filesToDelete.Remove(outputFilePath);
             }
             
-            if (useFrame) {
+            if (captureFrame) {
                 SetDirectorTime(director, nextDirectorTime);
                 yield return null;
                 
