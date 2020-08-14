@@ -64,22 +64,29 @@ internal class RenderCachePlayableAssetInspector : Editor {
         --EditorGUI.indentLevel;
         EditorGUILayout.Space(15f);
 
+        //Check if the asset is actually inspected
+        if (TimelineEditor.selectedClip.asset != m_asset) {
+            return;
+        }
+
         ValidateAssetFolder();
+
         string prevFolder = m_asset.GetFolder();
         string newFolder = DrawFolderSelector ("Cache Output Folder", "Select Folder", 
             prevFolder,
             prevFolder,
             AssetEditorUtility.NormalizeAssetPath
         );
-
         if (newFolder != prevFolder) {
             m_asset.SetFolder(newFolder);
             GUIUtility.ExitGUI();
         }
 
-
-        if (TimelineEditor.selectedClip.asset != m_asset) {
-            return;
+        using (new EditorGUILayout.HorizontalScope()) {
+            GUILayout.FlexibleSpace();
+            if(GUILayout.Button("Highlight in Project Window", GUILayout.Width(180f))) {
+                AssetEditorUtility.PingAssetByPath(newFolder);
+            }
         }
         
         TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
