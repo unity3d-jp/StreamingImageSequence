@@ -43,8 +43,19 @@ internal static class AssetEditorUtility {
                 File.Delete(filePath);
             }
         }
-
     }
+//---------------------------------------------------------------------------------------------------------------------
+
+    internal static bool PingAssetByPath(string path) {
+        Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(NormalizeAssetPath(path));
+        if (asset == null) return 
+            false;
+        
+        EditorGUIUtility.PingObject(asset);
+        return true;        
+    }
+    
+    
     
 }
 
