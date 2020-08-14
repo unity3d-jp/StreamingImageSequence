@@ -3,6 +3,7 @@ using UnityEngine.Timeline;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Timeline;
 #endif
 
 namespace UnityEngine.StreamingImageSequence  {
@@ -22,7 +23,9 @@ internal class RenderCacheTrack : BaseTimelineClipSISDataTrack<RenderCachePlayab
     }
     
     static void RenderCacheTrack_OnUndoRedoPerformed() {
-        m_undoRedo = true;
+        if (null == TimelineEditor.inspectedDirector)
+            return;
+        TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved);
     } 
     
 #endif

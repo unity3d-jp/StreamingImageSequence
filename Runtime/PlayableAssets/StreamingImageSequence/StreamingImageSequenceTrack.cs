@@ -4,6 +4,8 @@ using UnityEngine.Assertions;
 
 #if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.Timeline;
+
 #endif
 
 
@@ -26,7 +28,10 @@ internal class StreamingImageSequenceTrack : BaseTimelineClipSISDataTrack<Stream
     }
     
     static void StreamingImageSequenceTrack_OnUndoRedoPerformed() {
-        m_undoRedo = true;
+        if (null == TimelineEditor.inspectedDirector)
+            return;
+        
+        TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved);
     } 
     
 #endif
