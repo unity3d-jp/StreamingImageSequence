@@ -21,15 +21,21 @@ class FrameMarkerEditor : MarkerEditor {
         PlayableFramePropertyID inspectedPropertyID = timelineClipSISData.GetInspectedProperty();
         switch (inspectedPropertyID) {
             case PlayableFramePropertyID.USED: {
-                if (playableFrame.IsUsed()) {
-                    Graphics.DrawTexture(region.markerRegion, EditorTextures.GetCheckedTexture());
-                }
                 
                 if (playableFrame.IsLocked()) {
+                    //At the moment, all locked frames are regarded as inactive 
+                    if (playableFrame.IsUsed()) {
+                        Graphics.DrawTexture(region.markerRegion, EditorTextures.GetInactiveCheckedTexture());
+                    }
                     Rect lockRegion = region.markerRegion;
                     lockRegion.x -= 5;
                     lockRegion.y -= 8;
                     Graphics.DrawTexture(lockRegion, EditorTextures.GetLockTexture());                    
+                } else {
+                    if (playableFrame.IsUsed()) {
+                        Graphics.DrawTexture(region.markerRegion, EditorTextures.GetCheckedTexture());
+                    }
+                    
                 }
                 break;
             }

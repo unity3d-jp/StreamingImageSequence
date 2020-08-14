@@ -5,11 +5,25 @@ namespace UnityEditor.StreamingImageSequence {
 
 internal static class EditorTextures {
 
+    [InitializeOnLoadMethod]
+    static void EditorTextures_OnLoad() {
+        LoadTextures();
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+
     internal static Texture GetCheckedTexture() {
         if (null == m_checkedTexture) {
             LoadTextures();
         }
         return m_checkedTexture;
+    }
+
+    internal static Texture GetInactiveCheckedTexture() {
+        if (null == m_inactiveCheckedTexture) {
+            LoadTextures();
+        }
+        return m_inactiveCheckedTexture;
     }
 
     internal static Texture GetLockTexture() {
@@ -19,12 +33,6 @@ internal static class EditorTextures {
         return m_lockTexture;
     }
     
-//----------------------------------------------------------------------------------------------------------------------
-
-    [InitializeOnLoadMethod]
-    static void EditorTextures_OnLoad() {
-        LoadTextures();
-    }
 
     
 //----------------------------------------------------------------------------------------------------------------------
@@ -35,6 +43,11 @@ internal static class EditorTextures {
             m_checkedTexture = AssetDatabase.LoadAssetAtPath<Texture>(CHECKED_TEX_FULL_PATH);            
         }
 
+        if (null == m_inactiveCheckedTexture) {
+            const string TEX_FULL_PATH = "Packages/com.unity.streaming-image-sequence/Editor/Textures/InactiveChecked.png";
+            m_inactiveCheckedTexture = AssetDatabase.LoadAssetAtPath<Texture>(TEX_FULL_PATH);            
+        }
+        
         if (null == m_lockTexture) {
             const string STYLESHEET_IMAGE_PATH = "Packages/com.unity.streaming-image-sequence/Editor/StyleSheets/Images";
             string skin = EditorGUIUtility.isProSkin ? "DarkSkin" : "LightSkin";
@@ -47,6 +60,7 @@ internal static class EditorTextures {
 //----------------------------------------------------------------------------------------------------------------------
 
     private static Texture m_checkedTexture;
+    private static Texture m_inactiveCheckedTexture;
     private static Texture m_lockTexture;
 
 }
