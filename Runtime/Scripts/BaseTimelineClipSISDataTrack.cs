@@ -3,27 +3,12 @@ using UnityEngine.Timeline;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 
-#if UNITY_EDITOR
-using UnityEditor.Timeline;
-#endif
-
 namespace UnityEngine.StreamingImageSequence { 
 /// <summary>
 /// A track which requires its TimelineClip to store TimelineClipSISData as an extension
 /// </summary>
 internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: BaseTimelineClipSISDataPlayableAsset {
    
-#if UNITY_EDITOR        
-    
-    void RefreshTimelineEditorAfterUndoRedo() {        
-        if (m_undoRedo && null!= TimelineEditor.inspectedDirector) {
-            //After undo, the FrameMarkers are not refreshed
-            TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved);
-            m_undoRedo = false;
-        }        
-    }
-    
-#endif
     
     
 //----------------------------------------------------------------------------------------------------------------------
@@ -86,10 +71,6 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
         DeleteInvalidMarkers();                
 
         Playable mixer = CreateTrackMixerInternal(graph, go, inputCount);
-
-#if UNITY_EDITOR        
-        RefreshTimelineEditorAfterUndoRedo();
-#endif        
         
         return mixer;
     }
@@ -164,10 +145,6 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : TrackAsset where T: Ba
     private Dictionary<TimelineClip, TimelineClipSISData> m_sisDataCollection = null;
         
     private readonly List<FrameMarker> m_markersToDelete = new List<FrameMarker>();
-
-#if UNITY_EDITOR    
-    protected static bool m_undoRedo = false;
-#endif    
     
 }
 
