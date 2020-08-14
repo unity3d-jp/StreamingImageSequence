@@ -147,9 +147,10 @@ internal class RenderCachePlayableAssetInspector : Editor {
         //Check output folder
         string outputFolder = renderCachePlayableAsset.GetFolder();
         if (string.IsNullOrEmpty(outputFolder) || !Directory.Exists(outputFolder)) {
-            outputFolder = FileUtil.GetUniqueTempPathInProject();
-            Directory.CreateDirectory(outputFolder);
-            renderCachePlayableAsset.SetFolder(outputFolder);
+            EditorUtility.DisplayDialog("Streaming Image Sequence",
+                "Invalid output folder",
+                "Ok");
+            yield break;                                
         }
 
         Texture capturerTex = renderCapturer.GetInternalTexture();
