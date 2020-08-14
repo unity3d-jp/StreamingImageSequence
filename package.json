@@ -4,7 +4,7 @@
     "unity": "2019.3",
     "version": "0.3.2-preview",
     "dependencies": {
-        "com.unity.anime-toolbox": "0.1.4-preview",
+        "com.unity.anime-toolbox": "0.1.5-preview",
         "com.unity.editorcoroutines": "1.0.0",
         "com.unity.ext.nunit": "1.0.0",        
         "com.unity.ugui": "1.0.0",
