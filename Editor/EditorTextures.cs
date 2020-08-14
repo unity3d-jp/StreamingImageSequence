@@ -6,14 +6,14 @@ namespace UnityEditor.StreamingImageSequence {
 internal static class EditorTextures {
 
     internal static Texture GetCheckedTexture() {
-        if (!m_initialized) {
+        if (null == m_checkedTexture) {
             LoadTextures();
         }
         return m_checkedTexture;
     }
 
     internal static Texture GetLockTexture() {
-        if (!m_initialized) {
+        if (null == m_lockTexture) {
             LoadTextures();
         }
         return m_lockTexture;
@@ -30,20 +30,22 @@ internal static class EditorTextures {
 //----------------------------------------------------------------------------------------------------------------------
 
     static void LoadTextures() {
-        const string CHECKED_TEX_FULL_PATH = "Packages/com.unity.streaming-image-sequence/Editor/Textures/Checked.png";
-        m_checkedTexture = AssetDatabase.LoadAssetAtPath<Texture>(CHECKED_TEX_FULL_PATH);
-        
-        const string STYLESHEET_IMAGE_PATH = "Packages/com.unity.streaming-image-sequence/Editor/StyleSheets/Images";
-        string skin = EditorGUIUtility.isProSkin ? "DarkSkin" : "LightSkin";
-        string lockTexFullPath = Path.Combine(STYLESHEET_IMAGE_PATH, skin, "FrameMarkerLock.png");
-        m_lockTexture = AssetDatabase.LoadAssetAtPath<Texture>(lockTexFullPath);
+        if (null == m_checkedTexture) {
+            const string CHECKED_TEX_FULL_PATH = "Packages/com.unity.streaming-image-sequence/Editor/Textures/Checked.png";
+            m_checkedTexture = AssetDatabase.LoadAssetAtPath<Texture>(CHECKED_TEX_FULL_PATH);            
+        }
 
-        m_initialized = true;
+        if (null == m_lockTexture) {
+            const string STYLESHEET_IMAGE_PATH = "Packages/com.unity.streaming-image-sequence/Editor/StyleSheets/Images";
+            string skin = EditorGUIUtility.isProSkin ? "DarkSkin" : "LightSkin";
+            string lockTexFullPath = Path.Combine(STYLESHEET_IMAGE_PATH, skin, "FrameMarkerLock.png");
+            m_lockTexture = AssetDatabase.LoadAssetAtPath<Texture>(lockTexFullPath);            
+        }
+
     }
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static bool m_initialized = false;
     private static Texture m_checkedTexture;
     private static Texture m_lockTexture;
 
