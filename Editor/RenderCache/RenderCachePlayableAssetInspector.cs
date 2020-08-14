@@ -289,8 +289,10 @@ internal class RenderCachePlayableAssetInspector : Editor {
         if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
             return;
 
+        string assetName = string.IsNullOrEmpty(m_asset.name) ? "RenderCachePlayableAsset" : m_asset.name;
+        
         //Generate unique folder
-        string baseFolder = Path.Combine(Application.streamingAssetsPath, m_asset.name);
+        string baseFolder = Path.Combine(Application.streamingAssetsPath, assetName);
         folder = baseFolder;
         int index = 1;
         while (Directory.Exists(folder)) {
