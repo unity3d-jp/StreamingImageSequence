@@ -178,13 +178,15 @@ internal class RenderCachePlayableAssetInspector : Editor {
         bool cancelled = false;
         while (nextDirectorTime <= timelineClip.end && !cancelled) {
             
+            string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
+            string outputFilePath = Path.Combine(outputFolder, fileName);
+
             SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);                
-            bool captureFrame = (!timelineClipSISData.AreFrameMarkersVisible() //if not visible, use it
+            bool captureFrame = (!timelineClipSISData.AreFrameMarkersVisible() //if markers are not visible, capture
+                || !File.Exists(outputFilePath) //if file doesn't exist, capture
                 || (null!=playableFrame && playableFrame.IsUsed() && !playableFrame.IsLocked())
             );             
             
-            string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
-            string outputFilePath = Path.Combine(outputFolder, fileName);
             if (filesToDelete.Contains(outputFilePath)) {
                 filesToDelete.Remove(outputFilePath);
             }
