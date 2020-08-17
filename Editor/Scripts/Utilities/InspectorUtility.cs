@@ -70,7 +70,7 @@ internal static class InspectorUtility {
             
             newDirPath = InspectorUtility.ShowSelectFolderButton(dialogTitle, fieldValue, onValidFolderSelected);
 
-            if (GUILayout.Button("Show", GUILayout.Width(50f))) {
+            if (GUILayout.Button("Show", GUILayout.Width(50f),GUILayout.Height(EditorGUIUtility.singleLineHeight))) {
                 EditorUtility.RevealInFinder(newDirPath);
             }
             
@@ -92,7 +92,17 @@ internal static class InspectorUtility {
 //----------------------------------------------------------------------------------------------------------------------
     
     private static string ShowSelectFolderButton(string title, string folderPath, Func<string, string> onValidFolderSelected) {
-        if(GUILayout.Button("Select", GUILayout.Width(50f))) {
+
+        Texture folderTex = EditorTextures.GetOrLoadFolderTexture();
+        bool buttonPressed = false;
+        float lineHeight = EditorGUIUtility.singleLineHeight;
+
+        if (null == folderTex) {
+            buttonPressed = GUILayout.Button("Select", GUILayout.Width(32), GUILayout.Height(lineHeight));            
+        } else {
+            buttonPressed = GUILayout.Button(folderTex, GUILayout.Width(32), GUILayout.Height(lineHeight));
+        }
+        if(buttonPressed) {
             string folderSelected = EditorUtility.OpenFolderPanel(title, folderPath, "");
             if(!string.IsNullOrEmpty(folderSelected)) {
                 string newDirPath = null;                    
