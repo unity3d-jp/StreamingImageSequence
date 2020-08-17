@@ -234,17 +234,17 @@ internal class RenderCachePlayableAssetInspector : Editor {
         TrackAsset   track                = timelineClip.parentTrack;
         
         GUILayout.BeginHorizontal();
-        bool markerVisibility = EditorGUILayout.Toggle("Capture Selected Frames", prevMarkerVisibility);
+        bool markerVisibility = EditorGUILayout.Toggle("Show Frame Markers", prevMarkerVisibility);
         if (markerVisibility != prevMarkerVisibility) {
             timelineClipSISData.ShowFrameMarkers(markerVisibility);
         }
         GUILayout.FlexibleSpace();
         EditorGUI.BeginDisabledGroup(!markerVisibility);        
-        if (GUILayout.Button("All", GUILayout.Width(40))) {
+        if (GUILayout.Button("Capture All", GUILayout.Width(80))) {
             Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
             timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.USED, true);
         }
-        if (GUILayout.Button("None", GUILayout.Width(40))) {
+        if (GUILayout.Button("Reset", GUILayout.Width(50))) {
             Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frame");
             timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.USED, false);            
         }
@@ -274,11 +274,11 @@ internal class RenderCachePlayableAssetInspector : Editor {
             
             GUILayout.FlexibleSpace();
             EditorGUI.BeginDisabledGroup(!m_lockMode);        
-            if (GUILayout.Button("All", GUILayout.Width(40))) {
+            if (GUILayout.Button("Lock All", GUILayout.Width(80))) {
                 Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Locking all frames");
                 timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.LOCKED, true);
             }
-            if (GUILayout.Button("None", GUILayout.Width(40))) {
+            if (GUILayout.Button("Reset", GUILayout.Width(50))) {
                 Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Locking no frame");
                 timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.LOCKED, false);
             }
