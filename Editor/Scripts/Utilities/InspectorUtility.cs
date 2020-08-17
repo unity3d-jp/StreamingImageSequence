@@ -78,7 +78,7 @@ internal static class InspectorUtility {
         
         using (new EditorGUILayout.HorizontalScope()) {
             GUILayout.FlexibleSpace();
-            EditorGUI.BeginDisabledGroup(!newDirPath.StartsWith("Assets/"));        
+            EditorGUI.BeginDisabledGroup(!AssetDatabase.IsValidFolder(newDirPath));        
             if(GUILayout.Button("Highlight in Project Window", GUILayout.Width(180f))) {
                 AssetEditorUtility.PingAssetByPath(newDirPath);
             }                
