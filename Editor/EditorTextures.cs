@@ -32,8 +32,15 @@ internal static class EditorTextures {
         }
         return m_lockTexture;
     }
-    
 
+
+    internal static Texture GetOrLoadFolderTexture() {
+        if (null != m_folderTexture)
+            return m_folderTexture;
+
+        m_folderTexture = EditorGUIUtility.Load("d_Project@2x") as Texture2D;
+        return m_folderTexture;
+    }
     
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -62,6 +69,7 @@ internal static class EditorTextures {
     private static Texture m_checkedTexture;
     private static Texture m_inactiveCheckedTexture;
     private static Texture m_lockTexture;
+    private static Texture m_folderTexture;
 
 }
 

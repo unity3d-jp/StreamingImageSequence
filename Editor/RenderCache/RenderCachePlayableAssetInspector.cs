@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.StreamingImageSequence;
 using UnityEngine.Timeline;
+using Object = UnityEngine.Object;
 
 namespace UnityEditor.StreamingImageSequence {
 
@@ -63,21 +64,22 @@ internal class RenderCachePlayableAssetInspector : Editor {
         --EditorGUI.indentLevel;
         EditorGUILayout.Space(15f);
 
+        //Check if the asset is actually inspected
+        if (TimelineEditor.selectedClip.asset != m_asset) {
+            return;
+        }
+
+        ValidateAssetFolder();
+
         string prevFolder = m_asset.GetFolder();
-        string newFolder = DrawFolderSelector ("Cache Output Folder", "Select Folder", 
-            prevFolder,
+        
+        string newFolder = InspectorUtility.ShowFolderSelectorGUI("Cache Output Folder", "Select Folder", 
             prevFolder,
             AssetEditorUtility.NormalizeAssetPath
         );
-
         if (newFolder != prevFolder) {
             m_asset.SetFolder(newFolder);
             GUIUtility.ExitGUI();
-        }
-
-
-        if (TimelineEditor.selectedClip.asset != m_asset) {
-            return;
         }
         
         TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
@@ -145,9 +147,10 @@ internal class RenderCachePlayableAssetInspector : Editor {
         //Check output folder
         string outputFolder = renderCachePlayableAsset.GetFolder();
         if (string.IsNullOrEmpty(outputFolder) || !Directory.Exists(outputFolder)) {
-            outputFolder = FileUtil.GetUniqueTempPathInProject();
-            Directory.CreateDirectory(outputFolder);
-            renderCachePlayableAsset.SetFolder(outputFolder);
+            EditorUtility.DisplayDialog("Streaming Image Sequence",
+                "Invalid output folder",
+                "Ok");
+            yield break;                                
         }
 
         Texture capturerTex = renderCapturer.GetInternalTexture();
@@ -218,6 +221,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
         yield return null;
 
     }
+    
+    
 //----------------------------------------------------------------------------------------------------------------------
 
 
@@ -277,6 +282,28 @@ internal class RenderCachePlayableAssetInspector : Editor {
             EditorGUI.EndDisabledGroup();
         }
     }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    private void ValidateAssetFolder() {
+
+        string folder = m_asset.GetFolder();
+        if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
+            return;
+
+        string assetName = string.IsNullOrEmpty(m_asset.name) ? "RenderCachePlayableAsset" : m_asset.name;
+        
+        //Generate unique folder
+        string baseFolder = Path.Combine(Application.streamingAssetsPath, assetName);
+        folder = baseFolder;
+        int index = 1;
+        while (Directory.Exists(folder)) {
+            folder = baseFolder + index.ToString();
+        }
+                
+        Directory.CreateDirectory(folder);
+        m_asset.SetFolder(folder);
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
 
     static void LockSISData(TimelineClipSISData timelineClipSISData) {
@@ -296,38 +323,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
     private static void SetDirectorTime(PlayableDirector director, double time) {
         director.time = time;
         TimelineEditor.Refresh(RefreshReason.ContentsModified); 
-    }    
-
-    
-
-//----------------------------------------------------------------------------------------------------------------------
-    
-    private string DrawFolderSelector(string label, 
-        string dialogTitle, 
-        string fieldValue, 
-        string directoryOpenPath, 
-        Func<string, string> onValidFolderSelected = null) 
-    {
-
-        string newDirPath = fieldValue;
-        using(new EditorGUILayout.HorizontalScope()) {
-            if (!string.IsNullOrEmpty (label)) {
-                EditorGUILayout.PrefixLabel(label);
-            } 
-
-            EditorGUILayout.SelectableLabel(fieldValue,
-                EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight)
-            );
-
-            newDirPath = InspectorUtility.ShowSelectFolderButton(dialogTitle, directoryOpenPath, onValidFolderSelected);
-
-            if (GUILayout.Button("Show", GUILayout.Width(50f))) {
-                EditorUtility.RevealInFinder(newDirPath);
-            }
-
-        }
-        return newDirPath;
-    }
+    }        
     
 
 //----------------------------------------------------------------------------------------------------------------------
