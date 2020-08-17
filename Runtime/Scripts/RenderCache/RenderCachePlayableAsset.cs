@@ -38,6 +38,12 @@ internal class RenderCachePlayableAsset : BaseTimelineClipSISDataPlayableAsset, 
     internal void SetImageFileNames(List<string> imageFileNames) { m_imageFileNames = imageFileNames;}
 
     internal IList<string> GetImageFileNames() { return m_imageFileNames; }
+    internal string GetImageFilePath(int index) {
+        Assert.IsNotNull(m_imageFileNames);
+        Assert.IsTrue(index >= 0 && index < m_imageFileNames.Count);
+        return PathUtility.GetPath(m_folder, m_imageFileNames[index]);            
+    }
+
     
 //----------------------------------------------------------------------------------------------------------------------
     

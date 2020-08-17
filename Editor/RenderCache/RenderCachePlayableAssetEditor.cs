@@ -94,27 +94,26 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
         
                         
         //Load
-        string folder = renderCachePlayableAsset.GetFolder();
-        string fullPath = Path.GetFullPath(Path.Combine(folder, imageFileNames[index]));
-
-        if (!File.Exists(fullPath))
+        string imagePath = renderCachePlayableAsset.GetImageFilePath(index);
+        
+        if (!File.Exists(imagePath))
             return;
         
-        ImageLoader.GetImageDataInto(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
+        ImageLoader.GetImageDataInto(imagePath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
             , out ImageData imageData);
             
         switch (imageData.ReadStatus) {
             case StreamingImageSequenceConstants.READ_STATUS_LOADING:
                 break;
             case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
-                Texture2D tex = PreviewTextureFactory.GetOrCreate(fullPath, ref imageData);
+                Texture2D tex = PreviewTextureFactory.GetOrCreate(imagePath, ref imageData);
                 if (null != tex) {
                     Graphics.DrawTexture(drawInfo.DrawRect, tex);
                 }
                 break;
             }
             default: {
-                ImageLoader.RequestLoadPreviewImage(fullPath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height);                    
+                ImageLoader.RequestLoadPreviewImage(imagePath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height);                    
                 break;
             }
         

@@ -194,7 +194,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 SetDirectorTime(director, nextDirectorTime);
                 yield return null;
                 
-                //[TODO-sin: 2020-5-27] Call StreamingImageSequencePlugin API to unload texture because it may be overwritten           
+                //Unload texture because it may be overwritten
+                StreamingImageSequencePlugin.UnloadImage(PathUtility.GetPath(outputFolder, outputFilePath));
                 renderCapturer.CaptureToFile(outputFilePath);
                 
             } 
