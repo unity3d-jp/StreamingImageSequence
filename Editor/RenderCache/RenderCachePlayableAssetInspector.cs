@@ -74,7 +74,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
         string prevFolder = m_asset.GetFolder();
         string newFolder = DrawFolderSelector ("Cache Output Folder", "Select Folder", 
             prevFolder,
-            prevFolder,
             AssetEditorUtility.NormalizeAssetPath
         );
         if (newFolder != prevFolder) {
@@ -339,11 +338,10 @@ internal class RenderCachePlayableAssetInspector : Editor {
     private string DrawFolderSelector(string label, 
         string dialogTitle, 
         string fieldValue, 
-        string directoryOpenPath, 
         Func<string, string> onValidFolderSelected = null) 
     {
 
-        string newDirPath = fieldValue;
+        string newDirPath = null;
         using(new EditorGUILayout.HorizontalScope()) {
             if (!string.IsNullOrEmpty (label)) {
                 EditorGUILayout.PrefixLabel(label);
@@ -353,13 +351,14 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight)
             );
 
-            newDirPath = InspectorUtility.ShowSelectFolderButton(dialogTitle, directoryOpenPath, onValidFolderSelected);
+            newDirPath = InspectorUtility.ShowSelectFolderButton(dialogTitle, fieldValue, onValidFolderSelected);
 
             if (GUILayout.Button("Show", GUILayout.Width(50f))) {
                 EditorUtility.RevealInFinder(newDirPath);
             }
 
         }
+        
         return newDirPath;
     }
     
