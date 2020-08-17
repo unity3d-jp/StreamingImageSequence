@@ -167,8 +167,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
         int  fileCounter = 0;
         int numFiles = (int) Math.Ceiling(timelineClip.duration / timePerFrame) + 1;
         int numDigits = MathUtility.GetNumDigits(numFiles);
-
-        string prefix = $"{renderCachePlayableAsset.name}_";
+        
+        string prefix = $"{timelineClip.displayName}_";
         List<string> imageFileNames = new List<string>(numFiles);
  
         //Store old files that has the same pattern
