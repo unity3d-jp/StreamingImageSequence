@@ -10,7 +10,7 @@ namespace UnityEditor.StreamingImageSequence {
 internal static class PreviewTextureFactory {
 
     [InitializeOnLoadMethod]
-    static void OnLoad() {
+    static void PreviewTextureFactory_OnEditorLoad() {
         m_previewTextures = new Dictionary<string, PreviewTexture>();
         m_obsoleteTextures = new List<string>();
         m_removeObsoleteTextures = false;
