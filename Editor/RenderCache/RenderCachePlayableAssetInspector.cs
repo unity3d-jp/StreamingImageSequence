@@ -121,8 +121,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 "Ok");
             yield break;
             
-        }
-            
+        }           
 
         TrackAsset track = renderCachePlayableAsset.GetBoundTimelineClipSISData().GetOwner().parentTrack;        
         BaseRenderCapturer renderCapturer = director.GetGenericBinding(track) as BaseRenderCapturer;
@@ -170,6 +169,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         int numDigits = MathUtility.GetNumDigits(numFiles);
 
         string prefix = $"{renderCachePlayableAsset.name}_";
+        List<string> imageFileNames = new List<string>(numFiles);
  
         //Store old files that has the same pattern
         string[] existingFiles = Directory.GetFiles (outputFolder, $"{prefix}*.png");
@@ -188,6 +188,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
             if (filesToDelete.Contains(outputFilePath)) {
                 filesToDelete.Remove(outputFilePath);
             }
+            imageFileNames.Add(fileName);
             
             if (captureFrame) {
                 SetDirectorTime(director, nextDirectorTime);
@@ -205,6 +206,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
             cancelled = EditorUtility.DisplayCancelableProgressBar(
                 "StreamingImageSequence", "Caching render results", ((float)fileCounter / numFiles));
         }
+        
+        renderCachePlayableAsset.SetImageFileNames(imageFileNames);        
         
         //Delete old files
         foreach (string oldFile in filesToDelete) {
@@ -231,17 +234,17 @@ internal class RenderCachePlayableAssetInspector : Editor {
         TrackAsset   track                = timelineClip.parentTrack;
         
         GUILayout.BeginHorizontal();
-        bool markerVisibility = EditorGUILayout.Toggle("Capture Selected Frames", prevMarkerVisibility);
+        bool markerVisibility = EditorGUILayout.Toggle("Show Frame Markers", prevMarkerVisibility);
         if (markerVisibility != prevMarkerVisibility) {
             timelineClipSISData.ShowFrameMarkers(markerVisibility);
         }
         GUILayout.FlexibleSpace();
         EditorGUI.BeginDisabledGroup(!markerVisibility);        
-        if (GUILayout.Button("All", GUILayout.Width(40))) {
+        if (GUILayout.Button("Capture All", GUILayout.Width(80))) {
             Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
             timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.USED, true);
         }
-        if (GUILayout.Button("None", GUILayout.Width(40))) {
+        if (GUILayout.Button("Reset", GUILayout.Width(50))) {
             Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frame");
             timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.USED, false);            
         }
@@ -271,11 +274,11 @@ internal class RenderCachePlayableAssetInspector : Editor {
             
             GUILayout.FlexibleSpace();
             EditorGUI.BeginDisabledGroup(!m_lockMode);        
-            if (GUILayout.Button("All", GUILayout.Width(40))) {
+            if (GUILayout.Button("Lock All", GUILayout.Width(80))) {
                 Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Locking all frames");
                 timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.LOCKED, true);
             }
-            if (GUILayout.Button("None", GUILayout.Width(40))) {
+            if (GUILayout.Button("Reset", GUILayout.Width(50))) {
                 Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Locking no frame");
                 timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.LOCKED, false);
             }
@@ -298,6 +301,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         int index = 1;
         while (Directory.Exists(folder)) {
             folder = baseFolder + index.ToString();
+            ++index;
         }
                 
         Directory.CreateDirectory(folder);
