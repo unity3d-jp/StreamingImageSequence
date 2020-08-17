@@ -301,6 +301,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         int index = 1;
         while (Directory.Exists(folder)) {
             folder = baseFolder + index.ToString();
+            ++index;
         }
                 
         Directory.CreateDirectory(folder);
