@@ -213,13 +213,23 @@ internal class RenderCachePlayableAssetInspector : Editor {
             cancelled = EditorUtility.DisplayCancelableProgressBar(
                 "StreamingImageSequence", "Caching render results", ((float)fileCounter / numFiles));
         }
-        
-        renderCachePlayableAsset.SetImageFileNames(imageFileNames);        
-        
-        //Delete old files
-        foreach (string oldFile in filesToDelete) {
-            File.Delete(oldFile);
+
+        if (!cancelled) {
+            renderCachePlayableAsset.SetImageFileNames(imageFileNames);        
+
+            //Delete old files
+            if (AssetDatabase.IsValidFolder(outputFolder)) {
+                foreach (string oldFile in filesToDelete) {                
+                    AssetDatabase.DeleteAsset(oldFile);
+                }                
+            } else {
+                foreach (string oldFile in filesToDelete) {                
+                    File.Delete(oldFile);
+                }
+                
+            }            
         }
+        
         
                
         //Cleanup
