@@ -35,7 +35,9 @@ internal class RenderCachePlayableAsset : BaseTimelineClipSISDataPlayableAsset, 
 //----------------------------------------------------------------------------------------------------------------------
     internal string GetFolder() { return m_folder;}
     internal void SetFolder(string folder) { m_folder = folder;}
-    internal void SetImageFileNames(List<string> imageFileNames) { m_imageFileNames = imageFileNames;} 
+    internal void SetImageFileNames(List<string> imageFileNames) { m_imageFileNames = imageFileNames;}
+
+    internal IList<string> GetImageFileNames() { return m_imageFileNames; }
     
 //----------------------------------------------------------------------------------------------------------------------
     
