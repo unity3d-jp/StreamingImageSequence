@@ -72,7 +72,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
         ValidateAssetFolder();
 
         string prevFolder = m_asset.GetFolder();
-        string newFolder = DrawFolderSelector ("Cache Output Folder", "Select Folder", 
+        
+        string newFolder = InspectorUtility.ShowFolderSelectorGUI("Cache Output Folder", "Select Folder", 
             prevFolder,
             AssetEditorUtility.NormalizeAssetPath
         );
@@ -322,72 +323,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
     private static void SetDirectorTime(PlayableDirector director, double time) {
         director.time = time;
         TimelineEditor.Refresh(RefreshReason.ContentsModified); 
-    }    
-
-    
-
-//----------------------------------------------------------------------------------------------------------------------
-    
-    private string DrawFolderSelector(string label, 
-        string dialogTitle, 
-        string fieldValue, 
-        Func<string, string> onValidFolderSelected = null,
-        Action<string> onDragAndDrop = null) 
-    {
-
-        string newDirPath = null;
-        using(new EditorGUILayout.HorizontalScope()) {
-            if (!string.IsNullOrEmpty (label)) {
-                EditorGUILayout.PrefixLabel(label);
-            } 
-
-            EditorGUILayout.SelectableLabel(fieldValue,
-                EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight)
-            );
-
-            //Drag drop
-            if (null != onDragAndDrop) {
-                Rect folderRect = GUILayoutUtility.GetLastRect();
-            
-                Event evt = Event.current;
-                switch (evt.type) {
-                    case EventType.DragUpdated:
-                    case EventType.DragPerform:
-                        if (!folderRect.Contains (evt.mousePosition))
-                            return fieldValue;
-         
-                        DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-                        if (evt.type == EventType.DragPerform) {
-                            DragAndDrop.AcceptDrag ();
-        
-                            if (DragAndDrop.paths.Length <= 0)
-                                break;
-                            onDragAndDrop(DragAndDrop.paths[0]);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-                
-            }
-            
-            newDirPath = InspectorUtility.ShowSelectFolderButton(dialogTitle, fieldValue, onValidFolderSelected);
-
-            if (GUILayout.Button("Show", GUILayout.Width(50f))) {
-                EditorUtility.RevealInFinder(newDirPath);
-            }
-            
-        }
-        
-        using (new EditorGUILayout.HorizontalScope()) {
-            GUILayout.FlexibleSpace();
-            if(GUILayout.Button("Highlight in Project Window", GUILayout.Width(180f))) {
-                AssetEditorUtility.PingAssetByPath(newDirPath);
-            }
-        }
-        
-        return newDirPath;
-    }
+    }        
     
 
 //----------------------------------------------------------------------------------------------------------------------

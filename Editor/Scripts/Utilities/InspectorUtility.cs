@@ -26,7 +26,72 @@ internal static class InspectorUtility {
 
 //----------------------------------------------------------------------------------------------------------------------
     
-    internal static string ShowSelectFolderButton(string title, string folderPath, Func<string, string> onValidFolderSelected) {
+    internal static string ShowFolderSelectorGUI(string label, 
+        string dialogTitle, 
+        string fieldValue, 
+        Func<string, string> onValidFolderSelected)
+    {
+
+        string newDirPath = null;
+        using(new EditorGUILayout.HorizontalScope()) {
+            if (!string.IsNullOrEmpty (label)) {
+                EditorGUILayout.PrefixLabel(label);
+            } 
+
+            EditorGUILayout.SelectableLabel(fieldValue,
+                EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight)
+            );
+
+            //Drag drop
+            Rect folderRect = GUILayoutUtility.GetLastRect();
+        
+            Event evt = Event.current;
+            switch (evt.type) {
+                case EventType.DragUpdated:
+                case EventType.DragPerform:
+                    if (!folderRect.Contains (evt.mousePosition))
+                        return fieldValue;
+     
+                    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                    if (evt.type == EventType.DragPerform) {
+                        DragAndDrop.AcceptDrag ();
+    
+                        if (DragAndDrop.paths.Length <= 0)
+                            break;
+                        fieldValue = DragAndDrop.paths[0];
+//                            onDragAndDrop(DragAndDrop.paths[0]);
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+                
+            
+            newDirPath = InspectorUtility.ShowSelectFolderButton(dialogTitle, fieldValue, onValidFolderSelected);
+
+            if (GUILayout.Button("Show", GUILayout.Width(50f))) {
+                EditorUtility.RevealInFinder(newDirPath);
+            }
+            
+        }
+        
+        using (new EditorGUILayout.HorizontalScope()) {
+            GUILayout.FlexibleSpace();
+            EditorGUI.BeginDisabledGroup(!newDirPath.StartsWith("Assets/"));        
+            if(GUILayout.Button("Highlight in Project Window", GUILayout.Width(180f))) {
+                AssetEditorUtility.PingAssetByPath(newDirPath);
+            }                
+            EditorGUI.EndDisabledGroup();
+        }
+        
+        return newDirPath;
+    }
+    
+    
+//----------------------------------------------------------------------------------------------------------------------
+    
+    private static string ShowSelectFolderButton(string title, string folderPath, Func<string, string> onValidFolderSelected) {
         if(GUILayout.Button("Select", GUILayout.Width(50f))) {
             string folderSelected = EditorUtility.OpenFolderPanel(title, folderPath, "");
             if(!string.IsNullOrEmpty(folderSelected)) {

@@ -99,74 +99,18 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
 
     private void DoFolderGUI() {
         string prevFolder = m_asset.GetFolder();
-        string newLoadPath = DrawFolderSelector ("Image Sequence", "Select Folder", 
-            prevFolder,
+        string newLoadPath = InspectorUtility.ShowFolderSelectorGUI("Image Sequence", "Select Folder", 
             prevFolder,
             AssetEditorUtility.NormalizeAssetPath
-        );
-
+        );        
+        
         if (newLoadPath != prevFolder) {
             ImportImages(newLoadPath);
             GUIUtility.ExitGUI();
         }
 
-        GUILayout.Space(10f);
-
-        using (new EditorGUILayout.HorizontalScope()) {
-            UnityEditor.DefaultAsset timelineDefaultAsset = m_asset.GetTimelineDefaultAsset();
-            using(new EditorGUI.DisabledScope(timelineDefaultAsset == null)) 
-            {
-                GUILayout.FlexibleSpace();
-                if(GUILayout.Button("Highlight in Project Window", GUILayout.Width(180f))) {
-                    EditorGUIUtility.PingObject(timelineDefaultAsset);
-                }
-            }
-        }
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-    private string DrawFolderSelector(string label, 
-        string dialogTitle, 
-        string fieldValue, 
-        string directoryOpenPath, 
-        Func<string, string> onValidFolderSelected = null) 
-    {
-
-        string newDirPath = fieldValue;
-        using(new EditorGUILayout.HorizontalScope()) {
-            if (!string.IsNullOrEmpty (label)) {
-                EditorGUILayout.PrefixLabel(label);
-            } 
-
-            EditorGUILayout.SelectableLabel(fieldValue,
-                EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight)
-            );
-            Rect folderRect = GUILayoutUtility.GetLastRect();
-            
-            //Check drag and drop
-            Event evt = Event.current;
-            switch (evt.type) {
-                case EventType.DragUpdated:
-                case EventType.DragPerform:
-                    if (!folderRect.Contains (evt.mousePosition))
-                        return fieldValue;
-         
-                    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-                    if (evt.type == EventType.DragPerform) {
-                        DragAndDrop.AcceptDrag ();
-        
-                        if (DragAndDrop.paths.Length <= 0)
-                            break;
-                        ImportImages(DragAndDrop.paths[0]);
-                    }
-                    break;
-                default:
-                    break;
-            }
-            newDirPath = InspectorUtility.ShowSelectFolderButton(dialogTitle, directoryOpenPath, onValidFolderSelected);
-        }
-        return newDirPath;
-    }        
 
 //----------------------------------------------------------------------------------------------------------------------
     private void DoImageGUI()
