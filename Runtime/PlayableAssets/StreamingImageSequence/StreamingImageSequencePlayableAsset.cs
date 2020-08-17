@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 using UnityEngine.Serialization;
+
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
 using UnityEditor;
@@ -148,6 +148,12 @@ namespace UnityEngine.StreamingImageSequence {
 
         internal int GetVersion() { return m_version; }
         internal IList<string> GetImageFileNames() { return m_imageFileNames; }
+
+        internal string GetImageFilePath(int index) {
+            Assert.IsNotNull(m_imageFileNames);
+            Assert.IsTrue(index >= 0 && index < m_imageFileNames.Count);
+            return PathUtility.GetPath(m_folder, m_imageFileNames[index]);            
+        }
         
         //May return uninitialized value during initialization because the resolution hasn't been updated
         internal ImageDimensionInt GetResolution() { return m_resolution; }
@@ -270,7 +276,7 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
         private bool QueueImageLoadTask(int index, out ImageData imageData) {
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
-            string fullPath = GetFullPath(m_imageFileNames[index]);
+            string fullPath = GetImageFilePath(index);
 
             ImageLoader.GetImageDataInto(fullPath,TEX_TYPE,out imageData);
             //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);
@@ -325,27 +331,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             return null!=m_texture;
-        }
-//----------------------------------------------------------------------------------------------------------------------        
-
-        internal string GetFullPath(string fileName) {
-            string fullPath = null;
-            
-            if (!string.IsNullOrEmpty(m_folder)) {
-                fullPath = Path.Combine(m_folder, fileName);
-            } else {
-                fullPath = fileName;
-            }
-
-            if (Path.IsPathRooted(fullPath)) {
-                fullPath = Path.Combine(PathUtility.GetProjectFolder(), fullPath);
-            }
-
-           
-            return fullPath;
-        }
-//----------------------------------------------------------------------------------------------------------------------
-
+        }        
 
 //---------------------------------------------------------------------------------------------------------------------
         void ResetTexture() {
