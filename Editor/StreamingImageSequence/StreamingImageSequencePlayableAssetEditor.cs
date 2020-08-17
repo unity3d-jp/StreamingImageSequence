@@ -118,17 +118,13 @@ namespace UnityEditor.StreamingImageSequence {
             base.DrawBackground(clip, region);
             
             Rect rect = region.position;
-            const int VISIBLE_WIDTH_THRESHOLD = 10; //width that is too small will affect the placement of preview imgs
-            if (rect.width <= VISIBLE_WIDTH_THRESHOLD)
+            if (rect.width <= SISEditorConstants.MIN_PREVIEW_REGION_WIDTH)
                 return;
 
             StreamingImageSequencePlayableAsset curAsset = clip.asset as StreamingImageSequencePlayableAsset;
             if (null == curAsset || !curAsset.HasImages())
                 return;
 
-
-            m_colorSpace = QualitySettings.activeColorSpace;
-           
             
             if (Event.current.type == EventType.Repaint) {
                 PreviewClipInfo clipInfo = new PreviewClipInfo() {
@@ -181,8 +177,6 @@ namespace UnityEditor.StreamingImageSequence {
         
 
 //----------------------------------------------------------------------------------------------------------------------
-
-        ColorSpace m_colorSpace = ColorSpace.Uninitialized;
 
     }
 }

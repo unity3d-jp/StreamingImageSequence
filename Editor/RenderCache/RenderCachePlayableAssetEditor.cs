@@ -43,11 +43,9 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
     /// <inheritdoc/>
     public override void DrawBackground(TimelineClip clip, ClipBackgroundRegion region) {
         base.DrawBackground(clip, region);
-        
 
-        Rect      rect                    = region.position;
-        const int VISIBLE_WIDTH_THRESHOLD = 10; //width that is too small will affect the placement of preview imgs
-        if (rect.width <= VISIBLE_WIDTH_THRESHOLD)
+        Rect rect = region.position;
+        if (rect.width <= SISEditorConstants.MIN_PREVIEW_REGION_WIDTH)
             return;
 
         RenderCachePlayableAsset curAsset = clip.asset as RenderCachePlayableAsset;
