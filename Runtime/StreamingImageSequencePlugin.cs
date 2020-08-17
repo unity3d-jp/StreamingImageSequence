@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 
 namespace UnityEngine.StreamingImageSequence {
@@ -6,9 +7,17 @@ namespace UnityEngine.StreamingImageSequence {
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     internal delegate void DelegateStringFunc([MarshalAs(UnmanagedType.LPStr)] string str);
 
+
 //----------------------------------------------------------------------------------------------------------------------
     internal static class StreamingImageSequencePlugin {
-      
+
+        internal static event Action<string> OnImageUnloaded = null;
+        
+        internal static void UnloadImageAndNotify(string imagePath) {
+            UnloadImage(imagePath);
+            OnImageUnloaded?.Invoke(imagePath);
+        }
+        
 
 //only support Windows and OSX
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
@@ -27,7 +36,7 @@ namespace UnityEngine.StreamingImageSequence {
         internal static extern void GetImageDataInto([MarshalAs(UnmanagedType.LPStr)]string fileName, int imageType, int frame, out ImageData tResult);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
-        public static extern int UnloadImage([MarshalAs(UnmanagedType.LPStr)]string fileName);
+        private static extern int UnloadImage([MarshalAs(UnmanagedType.LPStr)]string fileName);
 
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         public static extern void UnloadAllImages();

@@ -18,7 +18,8 @@ internal static class PreviewTextureFactory {
         
         EditorSceneManager.sceneClosed     += PreviewTextureFactory_OnSceneClosed;
         EditorSceneManager.newSceneCreated += PreviewTextureFactory_OnSceneCreated;
-        
+
+        StreamingImageSequencePlugin.OnImageUnloaded += PreviewTextureFactory_OnImageUnloaded;
     }
     
     static void PreviewTextureFactory_OnSceneClosed(Scene scene) {
@@ -27,6 +28,15 @@ internal static class PreviewTextureFactory {
 
     static void PreviewTextureFactory_OnSceneCreated( Scene scene, NewSceneSetup setup, NewSceneMode mode) {
         PreviewTextureFactory.Reset();
+    }
+
+    static void PreviewTextureFactory_OnImageUnloaded(string imagePath) {
+        if (!m_previewTextures.ContainsKey(imagePath))
+            return;
+                
+        PreviewTexture texToRemove = m_previewTextures[imagePath];
+        texToRemove.Dispose();
+        m_previewTextures.Remove(imagePath);
     }
     
 //----------------------------------------------------------------------------------------------------------------------    
@@ -83,6 +93,10 @@ internal static class PreviewTextureFactory {
         m_removeObsoleteTextures = false;
     }
 
+//----------------------------------------------------------------------------------------------------------------------    
+    internal static IDictionary<string, PreviewTexture> GetPreviewTextures() {
+        return m_previewTextures;
+    }
     
 //----------------------------------------------------------------------------------------------------------------------    
     

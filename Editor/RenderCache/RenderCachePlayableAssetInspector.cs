@@ -197,7 +197,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 yield return null;
                 
                 //Unload texture because it may be overwritten
-                StreamingImageSequencePlugin.UnloadImage(PathUtility.GetPath(outputFolder, outputFilePath));
+                StreamingImageSequencePlugin.UnloadImageAndNotify(outputFilePath);
                 renderCapturer.CaptureToFile(outputFilePath);
                 
             } 
