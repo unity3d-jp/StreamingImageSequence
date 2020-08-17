@@ -194,6 +194,10 @@ internal class RenderCachePlayableAssetInspector : Editor {
             
             if (captureFrame) {
                 SetDirectorTime(director, nextDirectorTime);
+                
+                //Need at least two frames in order to wait for the TimelineWindow to be updated ?
+                yield return null;
+                yield return null;
                 yield return null;
                 
                 //Unload texture because it may be overwritten
