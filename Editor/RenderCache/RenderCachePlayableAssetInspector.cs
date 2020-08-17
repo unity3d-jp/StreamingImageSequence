@@ -80,13 +80,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
             m_asset.SetFolder(newFolder);
             GUIUtility.ExitGUI();
         }
-
-        using (new EditorGUILayout.HorizontalScope()) {
-            GUILayout.FlexibleSpace();
-            if(GUILayout.Button("Highlight in Project Window", GUILayout.Width(180f))) {
-                AssetEditorUtility.PingAssetByPath(newFolder);
-            }
-        }
         
         TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
         if (null == timelineClipSISData)
@@ -338,7 +331,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
     private string DrawFolderSelector(string label, 
         string dialogTitle, 
         string fieldValue, 
-        Func<string, string> onValidFolderSelected = null) 
+        Func<string, string> onValidFolderSelected = null,
+        Action<string> onDragAndDrop = null) 
     {
 
         string newDirPath = null;
@@ -351,12 +345,45 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 EditorStyles.textField, GUILayout.Height(EditorGUIUtility.singleLineHeight)
             );
 
+            //Drag drop
+            if (null != onDragAndDrop) {
+                Rect folderRect = GUILayoutUtility.GetLastRect();
+            
+                Event evt = Event.current;
+                switch (evt.type) {
+                    case EventType.DragUpdated:
+                    case EventType.DragPerform:
+                        if (!folderRect.Contains (evt.mousePosition))
+                            return fieldValue;
+         
+                        DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                        if (evt.type == EventType.DragPerform) {
+                            DragAndDrop.AcceptDrag ();
+        
+                            if (DragAndDrop.paths.Length <= 0)
+                                break;
+                            onDragAndDrop(DragAndDrop.paths[0]);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                
+            }
+            
             newDirPath = InspectorUtility.ShowSelectFolderButton(dialogTitle, fieldValue, onValidFolderSelected);
 
             if (GUILayout.Button("Show", GUILayout.Width(50f))) {
                 EditorUtility.RevealInFinder(newDirPath);
             }
-
+            
+        }
+        
+        using (new EditorGUILayout.HorizontalScope()) {
+            GUILayout.FlexibleSpace();
+            if(GUILayout.Button("Highlight in Project Window", GUILayout.Width(180f))) {
+                AssetEditorUtility.PingAssetByPath(newDirPath);
+            }
         }
         
         return newDirPath;
