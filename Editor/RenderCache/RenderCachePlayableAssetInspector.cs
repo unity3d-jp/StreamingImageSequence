@@ -121,8 +121,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 "Ok");
             yield break;
             
-        }
-            
+        }           
 
         TrackAsset track = renderCachePlayableAsset.GetBoundTimelineClipSISData().GetOwner().parentTrack;        
         BaseRenderCapturer renderCapturer = director.GetGenericBinding(track) as BaseRenderCapturer;
@@ -170,6 +169,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         int numDigits = MathUtility.GetNumDigits(numFiles);
 
         string prefix = $"{renderCachePlayableAsset.name}_";
+        List<string> imageFileNames = new List<string>(numFiles);
  
         //Store old files that has the same pattern
         string[] existingFiles = Directory.GetFiles (outputFolder, $"{prefix}*.png");
@@ -188,6 +188,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
             if (filesToDelete.Contains(outputFilePath)) {
                 filesToDelete.Remove(outputFilePath);
             }
+            imageFileNames.Add(fileName);
             
             if (captureFrame) {
                 SetDirectorTime(director, nextDirectorTime);
@@ -205,6 +206,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
             cancelled = EditorUtility.DisplayCancelableProgressBar(
                 "StreamingImageSequence", "Caching render results", ((float)fileCounter / numFiles));
         }
+        
+        renderCachePlayableAsset.SetImageFileNames(imageFileNames);        
         
         //Delete old files
         foreach (string oldFile in filesToDelete) {
