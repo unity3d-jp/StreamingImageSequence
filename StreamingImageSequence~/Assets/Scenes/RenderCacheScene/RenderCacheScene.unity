@@ -504,15 +504,9 @@ MonoBehaviour:
   m_ShowToolkit: 0
   m_ShowCustomSorter: 0
   breakBeforeColorGrading: 0
-  m_BeforeTransparentBundles:
-  - assemblyQualifiedName: Pencil_4.PencilLinePostProcess, PSoft.Pencil-Line.Runtime,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_BeforeStackBundles:
-  - assemblyQualifiedName: Pencil_4.PencilLinePostProcessBeforeStack, PSoft.Pencil-Line.Runtime,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_AfterStackBundles:
-  - assemblyQualifiedName: Pencil_4.PencilLinePostProcessAfterStack, PSoft.Pencil-Line.Runtime,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_BeforeTransparentBundles: []
+  m_BeforeStackBundles: []
+  m_AfterStackBundles: []
 --- !u!1 &1284940779
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,14 +772,14 @@ PlayableDirector:
   m_SceneBindings:
   - key: {fileID: 329456072186374067, guid: 5526695cd2b564d29bf46722a3e4f710, type: 2}
     value: {fileID: 1429942720}
-  - key: {fileID: -5376475608849519397, guid: 5526695cd2b564d29bf46722a3e4f710, type: 2}
-    value: {fileID: 2107947098}
   - key: {fileID: 141786733033222047, guid: 5526695cd2b564d29bf46722a3e4f710, type: 2}
     value: {fileID: 0}
   - key: {fileID: -5565980308931942498, guid: 5526695cd2b564d29bf46722a3e4f710, type: 2}
     value: {fileID: 1067168013}
   - key: {fileID: -543303976048869336, guid: 5526695cd2b564d29bf46722a3e4f710, type: 2}
     value: {fileID: 1208773842}
+  - key: {fileID: 7405612970720356641, guid: 5526695cd2b564d29bf46722a3e4f710, type: 2}
+    value: {fileID: 2107947098}
   m_ExposedReferences:
     m_References: []
 --- !u!4 &1779528598
