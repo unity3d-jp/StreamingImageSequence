@@ -172,7 +172,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         List<string> imageFileNames = new List<string>(numFiles);
  
         //Store old files that has the same pattern
-        string[] existingFiles = Directory.GetFiles (outputFolder, $"{prefix}*.png");
+        string[] existingFiles = Directory.GetFiles (outputFolder, $"*.png");
         HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
         
         bool cancelled = false;
