@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.StreamingImageSequence;
@@ -17,8 +18,21 @@ namespace UnityEditor.StreamingImageSequence {
             if (string.IsNullOrEmpty(path)) {
                 return;
             }
+            
+            ImageSequenceImporter.FindFolderAndImages(path, out string folder, out List<string> imagePaths);
+            if (imagePaths.Count <= 0) {
+                EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER, 
+                    @"No files in folder: " + folder,"OK"
+                );
+                return;
+            }
 
-            ImageSequenceImporter.ImportPictureFiles(path, null);
+            string assetName =  ImageSequenceImporter.EstimateAssetName(imagePaths[0]);
+            StreamingImageSequencePlayableAsset playableAsset = ImageSequenceImporter.CreateUniqueSISAsset(
+                Path.Combine("Assets", assetName + "_StreamingImageSequence.playable").Replace("\\", "/")
+            );
+
+            ImageSequenceImporter.ImportPictureFiles(path, playableAsset);
         }
 
 //----------------------------------------------------------------------------------------------------------------------

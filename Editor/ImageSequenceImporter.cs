@@ -9,6 +9,21 @@ namespace UnityEditor.StreamingImageSequence {
 
     internal static class ImageSequenceImporter {
 
+        //Path can point to a file or a folder.
+        //If it points to a file, then the folder will be automatically detected
+        internal static void FindFolderAndImages(string path, out string folder, out List<string> imagePaths) {
+            Assert.IsFalse(string.IsNullOrEmpty(path));                
+            //Convert path to folder here
+            folder = path;
+            FileAttributes attr   = File.GetAttributes(path);
+            if (!attr.HasFlag(FileAttributes.Directory)) {
+                folder = Path.GetDirectoryName(folder);
+            }
+            
+            imagePaths = StreamingImageSequencePlayableAsset.FindImages(folder);            
+        }
+        
+//----------------------------------------------------------------------------------------------------------------------        
 
         /// Import images in the path to create StreamingImageSequence assets with those images
         /// <param name="path"> Can be a directory path or a file path</param>
@@ -17,20 +32,9 @@ namespace UnityEditor.StreamingImageSequence {
         internal static void ImportPictureFiles(string path,
             StreamingImageSequencePlayableAsset targetAsset, bool askToCopy = true) 
         {
-            Assert.IsFalse(string.IsNullOrEmpty(path));                
-            //Convert path to folder here
-            string folder = path;
-            FileAttributes attr = File.GetAttributes(path);
-            if (!attr.HasFlag(FileAttributes.Directory)) {
-                folder = Path.GetDirectoryName(folder);
-            }
-            
-            if (string.IsNullOrEmpty(folder)) {
-                Debug.LogError(@"Folder is empty. Path: " + path);
-                return;
-            }
+            Assert.IsFalse(string.IsNullOrEmpty(path));
 
-            List<string> relFilePaths = StreamingImageSequencePlayableAsset.FindImages(folder);
+            FindFolderAndImages(path, out string folder, out List<string> relFilePaths);
             if (relFilePaths.Count <= 0) {
                 EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER, @"No files in folder:: " + folder,"OK");
                 return;
@@ -44,7 +48,6 @@ namespace UnityEditor.StreamingImageSequence {
 
             //Set importer param
             ImageFileImporterParam importerParam = new ImageFileImporterParam {
-                strAssetName = assetName,
                 strSrcFolder = folder,
                 RelativeFilePaths = relFilePaths,
                 CopyToStreamingAssets = true,
@@ -110,23 +113,27 @@ namespace UnityEditor.StreamingImageSequence {
             trackMovieContainer.Folder = param.strDstFolder;
 
             //StreamingAsset
-            StreamingImageSequencePlayableAsset proxyAsset = param.TargetAsset;
-            if (null == proxyAsset) {
-                proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>(); 
-                string strProxyPath = AssetDatabase.GenerateUniqueAssetPath(
-                    Path.Combine("Assets", param.strAssetName + "_StreamingImageSequence.playable").Replace("\\", "/")
-                );
-                AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
-            }
+            StreamingImageSequencePlayableAsset playableAsset = param.TargetAsset;
+            Assert.IsNotNull(playableAsset);
 
-            proxyAsset.SetParam(trackMovieContainer);
+            playableAsset.SetParam(trackMovieContainer);
             if (param.CopyToStreamingAssets) {
                 AssetDatabase.Refresh();
             }
-
         }
 
 //---------------------------------------------------------------------------------------------------------------------
+        
+        internal static StreamingImageSequencePlayableAsset CreateUniqueSISAsset(string playableAssetPath) {            
+            StreamingImageSequencePlayableAsset playableAsset 
+                = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
+            string uniquePath = AssetDatabase.GenerateUniqueAssetPath(playableAssetPath);            
+            AssetDatabase.CreateAsset(playableAsset, uniquePath);
+            return playableAsset;
+        }        
+
+//---------------------------------------------------------------------------------------------------------------------
+        //Estimate the asset name. Use the filename without numbers at the end
         internal static string EstimateAssetName(string fullFilePath) {
             string ret = Path.GetFileNameWithoutExtension(fullFilePath.Replace("\\","/"));
             //From the filename, find the last number sequence that is not followed by a number sequence
@@ -152,7 +159,6 @@ namespace UnityEditor.StreamingImageSequence {
 
     internal class ImageFileImporterParam {
 
-        public string strAssetName;
         public List<string> RelativeFilePaths;
         public string strDstFolder;
         public string strSrcFolder;
