@@ -109,8 +109,6 @@ namespace UnityEditor.StreamingImageSequence {
                 );
             }
             
-            Assert.IsNotNull(playableAsset);
-
             playableAsset.InitFolder(playableAssetParam);
             if (param.CopyToStreamingAssets) {
                 AssetDatabase.Refresh();
