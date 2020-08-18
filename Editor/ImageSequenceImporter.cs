@@ -9,19 +9,7 @@ namespace UnityEditor.StreamingImageSequence {
 
     internal static class ImageSequenceImporter {
 
-        //Path can point to a file or a folder.
-        //If it points to a file, then the folder will be automatically detected
-        internal static void FindFolderAndImages(string path, out string folder, out List<string> imagePaths) {
-            Assert.IsFalse(string.IsNullOrEmpty(path));                
-            //Convert path to folder here
-            folder = path;
-            FileAttributes attr   = File.GetAttributes(path);
-            if (!attr.HasFlag(FileAttributes.Directory)) {
-                folder = Path.GetDirectoryName(folder);
-            }
-            
-            imagePaths = StreamingImageSequencePlayableAsset.FindImages(folder);            
-        }
+
         
 //----------------------------------------------------------------------------------------------------------------------        
 
@@ -112,7 +100,15 @@ namespace UnityEditor.StreamingImageSequence {
             playableAssetParam.Folder = destFolder;
 
             //StreamingAsset
-            StreamingImageSequencePlayableAsset playableAsset = param.TargetAsset;
+            StreamingImageSequencePlayableAsset playableAsset = param.TargetAsset;            
+            if (null == playableAsset) {
+                string assetName =  ImageSequenceImporter.EstimateAssetName(playableAssetParam.Pictures[0]);
+                playableAsset = CreateUniqueSISAsset(
+                    Path.Combine("Assets", assetName + "_StreamingImageSequence.playable").Replace("\\", "/")
+
+                );
+            }
+            
             Assert.IsNotNull(playableAsset);
 
             playableAsset.SetParam(playableAssetParam);
@@ -120,10 +116,24 @@ namespace UnityEditor.StreamingImageSequence {
                 AssetDatabase.Refresh();
             }
         }
-
+        
+//---------------------------------------------------------------------------------------------------------------------
+        //Path can point to a file or a folder.
+        //If it points to a file, then the folder will be automatically detected
+        private static void FindFolderAndImages(string path, out string folder, out List<string> imagePaths) {
+            Assert.IsFalse(string.IsNullOrEmpty(path));                
+            //Convert path to folder here
+            folder = path;
+            FileAttributes attr = File.GetAttributes(path);
+            if (!attr.HasFlag(FileAttributes.Directory)) {
+                folder = Path.GetDirectoryName(folder);
+            }
+            
+            imagePaths = StreamingImageSequencePlayableAsset.FindImages(folder);            
+        }
 //---------------------------------------------------------------------------------------------------------------------
         
-        internal static StreamingImageSequencePlayableAsset CreateUniqueSISAsset(string playableAssetPath) {            
+        private static StreamingImageSequencePlayableAsset CreateUniqueSISAsset(string playableAssetPath) {            
             StreamingImageSequencePlayableAsset playableAsset 
                 = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
             string uniquePath = AssetDatabase.GenerateUniqueAssetPath(playableAssetPath);            
