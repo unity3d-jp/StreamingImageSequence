@@ -83,23 +83,6 @@ namespace UnityEngine.StreamingImageSequence {
 
             Reset();
         }
-
-//----------------------------------------------------------------------------------------------------------------------
-
-        /// <summary>
-        /// Get the source folder
-        /// </summary>
-        /// <returns>The folder where the images are located</returns>
-        public string GetFolder() { return m_folder; }
-
-//----------------------------------------------------------------------------------------------------------------------
-        /// <summary>
-        /// Returns the texture that contains the active image according to the PlayableDirector's time.
-        /// </summary>
-        /// <returns></returns>
-        public Texture2D GetTexture() { return m_texture; }
-        
-
         
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -146,7 +129,21 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------
 
+
+        /// <summary>
+        /// Returns the texture that contains the active image according to the PlayableDirector's time.
+        /// </summary>
+        /// <returns></returns>
+        public Texture2D GetTexture() { return m_texture; }        
+
         internal int GetVersion() { return m_version; }
+
+        /// <summary>
+        /// Get the source folder
+        /// </summary>
+        /// <returns>The folder where the images are located</returns>
+        public string GetFolder() { return m_folder; }
+
         internal IList<string> GetImageFileNames() { return m_imageFileNames; }
 
         internal string GetImageFilePath(int index) {
@@ -196,8 +193,6 @@ namespace UnityEngine.StreamingImageSequence {
             m_resolution = new ImageDimensionInt();
         }
 
-        
-        
 //----------------------------------------------------------------------------------------------------------------------        
         
         /// <inheritdoc/>
@@ -208,26 +203,7 @@ namespace UnityEngine.StreamingImageSequence {
             get { return ClipCaps.ClipIn | ClipCaps.SpeedMultiplier; }
 #endif            
         }
-        
-//----------------------------------------------------------------------------------------------------------------------        
-
-        internal bool Verified
-        {
-            get
-            {
-                if (!m_verified)
-                {
-                    m_verified = !string.IsNullOrEmpty(m_folder) && 
-                                 m_folder.StartsWith("Assets/StreamingAssets") &&
-                                 Directory.Exists(m_folder) && 
-                                 m_imageFileNames != null && 
-                                 m_imageFileNames.Count > 0;
-                }
                 
-                return m_verified;
-            }
-        }
-        
 //---------------------------------------------------------------------------------------------------------------------
 
 #region PlayableAsset functions override
@@ -297,8 +273,7 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
         
 
-        internal bool RequestLoadImage(int index)
-        {
+        internal bool RequestLoadImage(int index) {
             if (null == m_imageFileNames || index < 0 || index >= m_imageFileNames.Count || string.IsNullOrEmpty(m_imageFileNames[index])) {
                 return false;
             }
