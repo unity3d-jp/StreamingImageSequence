@@ -405,13 +405,16 @@ namespace UnityEngine.StreamingImageSequence {
 #region Unity Editor code
 
 #if UNITY_EDITOR         
-        internal void SetParam(StreamingImageSequencePlayableAssetParam param) {
-            if (param.Resolution.Width > 0 && param.Resolution.Height > 0) {
-                m_resolution = param.Resolution;
+        internal void InitFolder(StreamingImageSequencePlayableAssetParam param) {
+            m_folder = param.Folder;
+            m_imageFileNames = param.Pictures;
+            m_resolution = param.Resolution;
+
+            m_dimensionRatio = 0;
+            if (m_resolution.Width > 0 && m_resolution.Height > 0) {
                 m_dimensionRatio = m_resolution.CalculateRatio();
             }
-            m_imageFileNames = param.Pictures;
-            m_folder = param.Folder;
+            
             if (null!=m_folder && m_folder.StartsWith("Assets")) {
                 m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(m_folder);
             } else {
@@ -419,6 +422,16 @@ namespace UnityEngine.StreamingImageSequence {
             }
             m_texture = null;
             EditorUtility.SetDirty(this);
+        }
+
+        internal void ReloadFolder() {
+            Assert.IsFalse(string.IsNullOrEmpty(m_folder));
+            
+            m_imageFileNames = FindImages(m_folder);
+            m_resolution = new ImageDimensionInt();
+            m_dimensionRatio = 0;
+            EditorUtility.SetDirty(this);
+
         }
         
         internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
