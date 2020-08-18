@@ -238,6 +238,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         renderCapturer.EndCapture();
         ObjectUtility.Destroy(progressGo);
         
+        AssetDatabase.Refresh();
         
         yield return null;
 
