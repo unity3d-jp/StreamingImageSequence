@@ -192,6 +192,7 @@ namespace UnityEngine.StreamingImageSequence {
             ResetTexture();
 
             m_resolution = new ImageDimensionInt();
+            m_dimensionRatio = 0;
         }
 
 //----------------------------------------------------------------------------------------------------------------------        
@@ -428,8 +429,7 @@ namespace UnityEngine.StreamingImageSequence {
             Assert.IsFalse(string.IsNullOrEmpty(m_folder));
             
             m_imageFileNames = FindImages(m_folder);
-            m_resolution = new ImageDimensionInt();
-            m_dimensionRatio = 0;
+            Reset();
             EditorUtility.SetDirty(this);
 
         }
