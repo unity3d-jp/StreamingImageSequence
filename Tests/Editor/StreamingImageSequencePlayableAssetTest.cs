@@ -109,7 +109,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             foreach (string imageFileName in testImages) {
                 string src = Path.Combine(folder, imageFileName);
                 string dest = Path.Combine(folder, "Copied_" + imageFileName);
-                AssetDatabase.CopyAsset(src, dest);
+                File.Copy(src,dest);
                 copiedImagePaths.Add(dest);
             }
 
@@ -121,7 +121,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
             //Cleanup
             foreach (string imagePath in copiedImagePaths) {
-                AssetDatabase.DeleteAsset(imagePath);
+                File.Delete(imagePath);
             }
                        
 
