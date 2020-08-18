@@ -119,7 +119,7 @@ internal class JstimelineImporter : ScriptedImporter
 
 
             StreamingImageSequencePlayableAsset sisAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
-            sisAsset.SetParam(trackMovieContainer);
+            sisAsset.InitFolder(trackMovieContainer);
 
             string playableAssetPath = Path.Combine(timelineFolder, strFootageName + "_StreamingImageSequence.playable");
             AssetEditorUtility.OverwriteAsset(sisAsset, playableAssetPath);

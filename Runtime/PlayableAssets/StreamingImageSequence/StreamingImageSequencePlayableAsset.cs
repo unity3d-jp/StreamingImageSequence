@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
@@ -83,23 +84,6 @@ namespace UnityEngine.StreamingImageSequence {
 
             Reset();
         }
-
-//----------------------------------------------------------------------------------------------------------------------
-
-        /// <summary>
-        /// Get the source folder
-        /// </summary>
-        /// <returns>The folder where the images are located</returns>
-        public string GetFolder() { return m_folder; }
-
-//----------------------------------------------------------------------------------------------------------------------
-        /// <summary>
-        /// Returns the texture that contains the active image according to the PlayableDirector's time.
-        /// </summary>
-        /// <returns></returns>
-        public Texture2D GetTexture() { return m_texture; }
-        
-
         
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -146,7 +130,21 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------
 
+
+        /// <summary>
+        /// Returns the texture that contains the active image according to the PlayableDirector's time.
+        /// </summary>
+        /// <returns></returns>
+        public Texture2D GetTexture() { return m_texture; }        
+
         internal int GetVersion() { return m_version; }
+
+        /// <summary>
+        /// Get the source folder
+        /// </summary>
+        /// <returns>The folder where the images are located</returns>
+        public string GetFolder() { return m_folder; }
+
         internal IList<string> GetImageFileNames() { return m_imageFileNames; }
 
         internal string GetImageFilePath(int index) {
@@ -194,10 +192,9 @@ namespace UnityEngine.StreamingImageSequence {
             ResetTexture();
 
             m_resolution = new ImageDimensionInt();
+            m_dimensionRatio = 0;
         }
 
-        
-        
 //----------------------------------------------------------------------------------------------------------------------        
         
         /// <inheritdoc/>
@@ -208,26 +205,7 @@ namespace UnityEngine.StreamingImageSequence {
             get { return ClipCaps.ClipIn | ClipCaps.SpeedMultiplier; }
 #endif            
         }
-        
-//----------------------------------------------------------------------------------------------------------------------        
-
-        internal bool Verified
-        {
-            get
-            {
-                if (!m_verified)
-                {
-                    m_verified = !string.IsNullOrEmpty(m_folder) && 
-                                 m_folder.StartsWith("Assets/StreamingAssets") &&
-                                 Directory.Exists(m_folder) && 
-                                 m_imageFileNames != null && 
-                                 m_imageFileNames.Count > 0;
-                }
                 
-                return m_verified;
-            }
-        }
-        
 //---------------------------------------------------------------------------------------------------------------------
 
 #region PlayableAsset functions override
@@ -297,8 +275,7 @@ namespace UnityEngine.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------        
         
 
-        internal bool RequestLoadImage(int index)
-        {
+        internal bool RequestLoadImage(int index) {
             if (null == m_imageFileNames || index < 0 || index >= m_imageFileNames.Count || string.IsNullOrEmpty(m_imageFileNames[index])) {
                 return false;
             }
@@ -429,13 +406,16 @@ namespace UnityEngine.StreamingImageSequence {
 #region Unity Editor code
 
 #if UNITY_EDITOR         
-        internal void SetParam(StreamingImageSequencePlayableAssetParam param) {
-            if (param.Resolution.Width > 0 && param.Resolution.Height > 0) {
-                m_resolution = param.Resolution;
+        internal void InitFolder(StreamingImageSequencePlayableAssetParam param) {
+            m_folder = param.Folder;
+            m_imageFileNames = param.Pictures;
+            m_resolution = param.Resolution;
+
+            m_dimensionRatio = 0;
+            if (m_resolution.Width > 0 && m_resolution.Height > 0) {
                 m_dimensionRatio = m_resolution.CalculateRatio();
             }
-            m_imageFileNames = param.Pictures;
-            m_folder = param.Folder;
+            
             if (null!=m_folder && m_folder.StartsWith("Assets")) {
                 m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(m_folder);
             } else {
@@ -444,8 +424,43 @@ namespace UnityEngine.StreamingImageSequence {
             m_texture = null;
             EditorUtility.SetDirty(this);
         }
+
+        internal void Reload() {
+            Assert.IsFalse(string.IsNullOrEmpty(m_folder));
+            
+            m_imageFileNames = FindImages(m_folder);
+            Reset();
+            EditorUtility.SetDirty(this);
+
+        }
         
         internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
+
+        //Return FileNames
+        internal static List<string> FindImages(string path) {
+            Assert.IsFalse(string.IsNullOrEmpty(path));
+            Assert.IsTrue(Directory.Exists(path));
+
+            //Convert path to folder here
+            string fullSrcPath    = Path.GetFullPath(path).Replace("\\", "/");
+
+            //Enumerate all files with the supported extensions and sort
+            List<string> fileNames = new List<string>();
+            foreach (string pattern in m_supportedImagePatterns) {
+                IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.AllDirectories);
+                foreach (string filePath in files) {                    
+                    fileNames.Add(Path.GetFileName(filePath));
+                }
+            }
+            fileNames.Sort(FileNameComparer);
+            return fileNames;
+        }
+        
+        private static int FileNameComparer(string x, string y) {
+            return string.Compare(x, y, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        
         
 #endif        
         
@@ -489,7 +504,14 @@ namespace UnityEngine.StreamingImageSequence {
 
         Texture2D m_texture = null;
 
+//----------------------------------------------------------------------------------------------------------------------
+        
         private const int STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION = 1;
+                
+        static readonly string[] m_supportedImagePatterns = {
+            "*.png",
+            "*.tga"             
+        };        
 
     }
 }

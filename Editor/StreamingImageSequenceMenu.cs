@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.StreamingImageSequence;
@@ -17,8 +18,8 @@ namespace UnityEditor.StreamingImageSequence {
             if (string.IsNullOrEmpty(path)) {
                 return;
             }
-
-            ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, path, null);
+            
+            ImageSequenceImporter.ImportPictureFiles(path, null);
         }
 
 //----------------------------------------------------------------------------------------------------------------------

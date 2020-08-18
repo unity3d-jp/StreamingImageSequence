@@ -135,7 +135,7 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
 
 //----------------------------------------------------------------------------------------------------------------------
     private void ImportImages(string path) {
-        ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, path, m_asset);
+        ImageSequenceImporter.ImportPictureFiles(path, m_asset);
         m_isImageListDirty = true;
     }
 
@@ -144,9 +144,10 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
 
     private ReorderableList m_imageList;
     private bool m_isImageListDirty;
-    private bool m_imageListFoldout;
-    private bool m_resolutionFoldout = true;
 
+    
+    private static bool m_resolutionFoldout = true;
+    private static bool m_imageListFoldout;
 }
 
 } //end namespace

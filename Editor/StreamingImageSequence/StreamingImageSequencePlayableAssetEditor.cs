@@ -98,7 +98,7 @@ namespace UnityEditor.StreamingImageSequence {
         {
             string path = AssetDatabase.GetAssetPath(timelineDefaultAsset).Replace("\\","/");
             const bool ASK_TO_COPY = false;
-            ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, path, playableAsset, ASK_TO_COPY);
+            ImageSequenceImporter.ImportPictureFiles(path, playableAsset, ASK_TO_COPY);
         }
 
 //----------------------------------------------------------------------------------------------------------------------

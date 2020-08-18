@@ -70,10 +70,8 @@ internal class ImageSequenceImportWindow : EditorWindow {
         //Copy Toggle
         EditorGUILayout.BeginHorizontal();
         // C#var options = new GUILayoutOption[] { GUILayout.MaxWidth(Screen.width- space), GUILayout.MinWidth(120.0F) };
-        EditorGUI.BeginDisabledGroup(m_importerParam.mode == ImageFileImporterParam.Mode.SpriteAnimation);
         string copyText = @"Copy to StreamingAssets (Recommended)";
         m_importerParam.CopyToStreamingAssets = GUILayout.Toggle(m_importerParam.CopyToStreamingAssets, copyText);
-        EditorGUI.EndDisabledGroup();
         EditorGUILayout.EndHorizontal();
 
         GUILayout.Space(8);
@@ -96,9 +94,10 @@ internal class ImageSequenceImportWindow : EditorWindow {
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(320 / 2);
-        if (GUILayout.Button("OK"))
-        {
+        if (GUILayout.Button("OK")) {
+            
             ImageSequenceImporter.Import(m_importerParam);
+            
             this.Close();
         }
 
