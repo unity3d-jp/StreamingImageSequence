@@ -69,20 +69,21 @@ namespace UnityEditor.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------
         
         internal static void Import(ImageFileImporterParam param) {
+            string destFolder = null;
             if (!param.CopyToStreamingAssets) {
-                param.strDstFolder = param.strSrcFolder.Replace("\\", "/");
+                destFolder = param.strSrcFolder.Replace("\\", "/");
 
             } else {
 
-                string dstFolder = param.strDstFolder.Replace("\\", "/");
-                if (dstFolder.StartsWith(Application.dataPath) && !dstFolder.StartsWith(Path.Combine(Application.dataPath, "StreamingAssets").Replace("\\", "/")))
+                destFolder = param.strDstFolder.Replace("\\", "/");
+                if (destFolder.StartsWith(Application.dataPath) && !destFolder.StartsWith(Path.Combine(Application.dataPath, "StreamingAssets").Replace("\\", "/")))
                 {
                     Debug.LogError("Files must be located under StreamingAssets folder.");
                     return;
                 }
 
                 foreach (string relPath in param.RelativeFilePaths) {
-                    string strAbsFilePathDst = Path.Combine(param.strDstFolder, relPath).Replace("\\", "/");
+                    string strAbsFilePathDst = Path.Combine(destFolder, relPath).Replace("\\", "/");
                     if (File.Exists(strAbsFilePathDst))
                     {
                         File.Delete(strAbsFilePathDst);
@@ -94,8 +95,8 @@ namespace UnityEditor.StreamingImageSequence {
             }
 
             // create assets
-            StreamingImageSequencePlayableAssetParam trackMovieContainer = new StreamingImageSequencePlayableAssetParam();
-            trackMovieContainer.Pictures = new List<string>(param.RelativeFilePaths);
+            StreamingImageSequencePlayableAssetParam playableAssetParam = new StreamingImageSequencePlayableAssetParam();
+            playableAssetParam.Pictures = new List<string>(param.RelativeFilePaths);
 
             //if possible, convert folder names to relative path.
             string strUnityProjectFolder = null;
@@ -103,20 +104,18 @@ namespace UnityEditor.StreamingImageSequence {
             strUnityProjectFolder = Application.dataPath;
             strUnityProjectFolder = regAssetFolder.Replace(strUnityProjectFolder, "");
 
-
-            if (param.strDstFolder.StartsWith(strUnityProjectFolder))
-            {
+            if (destFolder.StartsWith(strUnityProjectFolder)) {
                 int start = strUnityProjectFolder.Length + 1;
-                int end = param.strDstFolder.Length - start;
-                param.strDstFolder = param.strDstFolder.Substring(start, end);
+                int end = destFolder.Length - start;
+                destFolder = destFolder.Substring(start, end);
             }
-            trackMovieContainer.Folder = param.strDstFolder;
+            playableAssetParam.Folder = destFolder;
 
             //StreamingAsset
             StreamingImageSequencePlayableAsset playableAsset = param.TargetAsset;
             Assert.IsNotNull(playableAsset);
 
-            playableAsset.SetParam(trackMovieContainer);
+            playableAsset.SetParam(playableAssetParam);
             if (param.CopyToStreamingAssets) {
                 AssetDatabase.Refresh();
             }
@@ -156,6 +155,7 @@ namespace UnityEditor.StreamingImageSequence {
 
     }
 
+//----------------------------------------------------------------------------------------------------------------------
 
     internal class ImageFileImporterParam {
 
