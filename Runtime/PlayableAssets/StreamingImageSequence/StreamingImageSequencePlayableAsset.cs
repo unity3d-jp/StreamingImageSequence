@@ -19,6 +19,7 @@ namespace UnityEngine.StreamingImageSequence {
     /// - ITimelineClipAsset: for defining clip capabilities (ClipCaps) 
     /// - IPlayableBehaviour: for displaying the curves in the timeline window
     /// - ISerializationCallbackReceiver: for serialization
+    /// - IObserver(string): to receive updates when the contents of a folder are changed
     /// </summary>
     [System.Serializable]
     internal class StreamingImageSequencePlayableAsset : BaseTimelineClipSISDataPlayableAsset, ITimelineClipAsset
@@ -40,12 +41,18 @@ namespace UnityEngine.StreamingImageSequence {
         
         /// <inheritdoc/>
         public void OnGraphStart(Playable playable) {
+#if UNITY_EDITOR
+            FolderContentsChangedNotifier.GetInstance().Subscribe(this);
+#endif            
         }
         
         /// <inheritdoc/>
         public void OnGraphStop(Playable playable){
-
+#if UNITY_EDITOR
+            FolderContentsChangedNotifier.GetInstance().Unsubscribe(this);
+#endif            
         }
+        
         /// <inheritdoc/>
         public void OnPlayableCreate(Playable playable){
 
@@ -76,18 +83,6 @@ namespace UnityEngine.StreamingImageSequence {
             m_lastCopiedImageIndex = -1;            
         }
         
-//----------------------------------------------------------------------------------------------------------------------
-
-        private void OnEnable() {            
-#if UNITY_EDITOR
-            FolderContentsChangedNotifier.GetInstance().Subscribe(this);
-#endif            
-        }
-        private void OnDisable() {
-#if UNITY_EDITOR
-            FolderContentsChangedNotifier.GetInstance().Unsubscribe(this);
-#endif            
-        }
 //----------------------------------------------------------------------------------------------------------------------
 
         //[Note-sin: 2020-7-17] This is also called when the TimelineClip in TimelineWindow is deleted, instead of just
