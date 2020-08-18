@@ -481,7 +481,7 @@ namespace UnityEngine.StreamingImageSequence {
             //Enumerate all files with the supported extensions and sort
             List<string> fileNames = new List<string>();
             foreach (string pattern in m_supportedImagePatterns) {
-                IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.AllDirectories);
+                IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.TopDirectoryOnly);
                 foreach (string filePath in files) {                    
                     fileNames.Add(Path.GetFileName(filePath));
                 }
