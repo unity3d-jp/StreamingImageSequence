@@ -4,14 +4,14 @@ using System.Collections.Generic;
 namespace UnityEngine.StreamingImageSequence
 {
     
-internal class PlayableAssetFolderBroadcaster : IObservable<string> {
+internal sealed class FolderContentsChangedNotifier : IObservable<string> {
 
-    internal static PlayableAssetFolderBroadcaster GetInstance() {
+    internal static FolderContentsChangedNotifier GetInstance() {
         return m_instance;
     }    
 //----------------------------------------------------------------------------------------------------------------------    
         
-    private PlayableAssetFolderBroadcaster() {
+    private FolderContentsChangedNotifier() {
         m_observers = new List<IObserver<string>>();
     }
     
@@ -21,11 +21,12 @@ internal class PlayableAssetFolderBroadcaster : IObservable<string> {
         }
         return new ObservableUnsubscriber<string>(m_observers, observer);
     }
+
     
 //----------------------------------------------------------------------------------------------------------------------    
     private readonly List<IObserver<string>> m_observers;
     
-    private static readonly PlayableAssetFolderBroadcaster m_instance = new PlayableAssetFolderBroadcaster();
+    private static readonly FolderContentsChangedNotifier m_instance = new FolderContentsChangedNotifier();
 
 }
 
