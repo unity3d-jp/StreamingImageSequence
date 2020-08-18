@@ -34,16 +34,16 @@ internal static class PathUtility {
         MD5 md5 = MD5.Create();
         
         int numFiles = fileNames.Count;
+        byte[] lengthBytes = new byte[sizeof(long)];
         for (int i = 0; i < numFiles - 1; ++i) {
             //filename
             byte[] fileNameBytes = Encoding.UTF8.GetBytes(fileNames[i].ToLower());
             md5.TransformBlock(fileNameBytes, 0, fileNameBytes.Length, fileNameBytes, 0);
 
             //hash the size of the file
-            string path         = Path.Combine(folder, fileNames[i]);
-            long   length       = new System.IO.FileInfo(path).Length;
-            byte[] contentBytes = BitConverter.GetBytes(length);
-            md5.TransformBlock(contentBytes, 0, contentBytes.Length, contentBytes, 0);            
+            long length = new System.IO.FileInfo(Path.Combine(folder, fileNames[i])).Length;
+            BitUtility.ConvertToByte(length, ref lengthBytes);
+            md5.TransformBlock(lengthBytes, 0, lengthBytes.Length, lengthBytes, 0);            
         }
         
         //Final
@@ -53,16 +53,15 @@ internal static class PathUtility {
             md5.TransformBlock(fileNameBytes, 0, fileNameBytes.Length, fileNameBytes, 0);
 
             //hash the size of the file
-            string path         = Path.Combine(folder, fileNames[lastIndex]);
-            long   length       = new System.IO.FileInfo(path).Length;
-            byte[] contentBytes = BitConverter.GetBytes(length);
-            md5.TransformFinalBlock(contentBytes, 0, contentBytes.Length);
+            long  length = new System.IO.FileInfo(Path.Combine(folder, fileNames[lastIndex])).Length;
+            BitUtility.ConvertToByte(length, ref lengthBytes);
+            md5.TransformFinalBlock(lengthBytes, 0, lengthBytes.Length);
         }
 
         return md5.Hash;
 
     }
-    
+       
     
 }
 
