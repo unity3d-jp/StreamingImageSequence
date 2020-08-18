@@ -230,13 +230,15 @@ internal class RenderCachePlayableAssetInspector : Editor {
             }            
         }
         
-        
+        //Notify
+        FolderContentsChangedNotifier.GetInstance().Notify(outputFolder);        
                
         //Cleanup
         EditorUtility.ClearProgressBar();
         renderCapturer.EndCapture();
         ObjectUtility.Destroy(progressGo);
         
+        AssetDatabase.Refresh();
         
         yield return null;
 
