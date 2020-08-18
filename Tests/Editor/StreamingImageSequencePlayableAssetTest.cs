@@ -129,10 +129,6 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             yield return null;
             
         }
-
-//----------------------------------------------------------------------------------------------------------------------        
-        
-        const string TEST_DATA_FILE_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
         
     }
 }
