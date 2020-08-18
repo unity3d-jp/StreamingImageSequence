@@ -252,9 +252,15 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
 //----------------------------------------------------------------------------------------------------------------------        
+        //return true if we should continue preloading the next image. False otherwise
         private bool QueueImageLoadTask(int index, out ImageData imageData) {
             const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
             string fullPath = GetImageFilePath(index);
+
+            if (!File.Exists(fullPath)) {
+                imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_FAIL);                
+                return true;
+            }
 
             ImageLoader.GetImageDataInto(fullPath,TEX_TYPE,out imageData);
             //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);

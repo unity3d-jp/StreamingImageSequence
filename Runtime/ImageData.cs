@@ -13,6 +13,13 @@ internal struct ImageData {
     public readonly int Height;
     [MarshalAs(UnmanagedType.I4)]
     public readonly int ReadStatus;
+
+    internal ImageData(int readStatus) {
+        RawData = IntPtr.Zero;
+        Width = 0;
+        Height = 0;        
+        ReadStatus = readStatus;
+    }
 };
 
 
