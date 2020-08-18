@@ -22,8 +22,9 @@ namespace UnityEngine.StreamingImageSequence {
     /// </summary>
     [System.Serializable]
     internal class StreamingImageSequencePlayableAsset : BaseTimelineClipSISDataPlayableAsset, ITimelineClipAsset
-                                                     , IPlayableBehaviour
+                                                     , IPlayableBehaviour, IObserver<string>
     {      
+        
 //----------------------------------------------------------------------------------------------------------------------
 #region IPlayableBehaviour interfaces
         /// <inheritdoc/>
@@ -75,6 +76,18 @@ namespace UnityEngine.StreamingImageSequence {
             m_lastCopiedImageIndex = -1;            
         }
         
+//----------------------------------------------------------------------------------------------------------------------
+
+        private void OnEnable() {            
+#if UNITY_EDITOR
+            FolderContentsChangedNotifier.GetInstance().Subscribe(this);
+#endif            
+        }
+        private void OnDisable() {
+#if UNITY_EDITOR
+            FolderContentsChangedNotifier.GetInstance().Unsubscribe(this);
+#endif            
+        }
 //----------------------------------------------------------------------------------------------------------------------
 
         //[Note-sin: 2020-7-17] This is also called when the TimelineClip in TimelineWindow is deleted, instead of just
@@ -400,6 +413,26 @@ namespace UnityEngine.StreamingImageSequence {
 #endif            
         }
 
+//----------------------------------------------------------------------------------------------------------------------        
+#region Observer
+        
+        public void OnCompleted() {
+        }
+
+        public void OnError(Exception e) {
+            Debug.LogError($"StreamingImageSequencePlayableAsset::OnError(): {e.ToString()}");
+        }
+
+        public void OnNext(string folder) {
+#if UNITY_EDITOR
+            if (folder != m_folder)
+                return;
+            
+            Reload();
+#endif
+        }
+
+        #endregion Observer
         
 //----------------------------------------------------------------------------------------------------------------------        
 
@@ -468,12 +501,8 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------
 
-        [HideInInspector][SerializeField] private string m_folder = null; //Always have "/" as the directory separator
-        
+        [HideInInspector][SerializeField] private string m_folder = null; //Always have "/" as the directory separator        
         [FormerlySerializedAs("m_imagePaths")] [HideInInspector][SerializeField] List<string> m_imageFileNames = null; //These are actually file names, not paths
-        
-        
-
         
         [HideInInspector][SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;
