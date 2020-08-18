@@ -94,9 +94,10 @@ internal class ImageSequenceImportWindow : EditorWindow {
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Space(320 / 2);
-        if (GUILayout.Button("OK"))
-        {
+        if (GUILayout.Button("OK")) {
+            
             ImageSequenceImporter.Import(m_importerParam);
+            
             this.Close();
         }
 
