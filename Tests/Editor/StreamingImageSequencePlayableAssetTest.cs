@@ -119,7 +119,47 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             DestroyTestTimelineAssets(clip);
             yield return null;
         }
+//----------------------------------------------------------------------------------------------------------------------                
 
+        [UnityTest]
+        public IEnumerator ReloadPlayableAsset() {
+            PlayableDirector                    director = NewSceneWithDirector();
+            TimelineClip                        clip     = CreateTestTimelineClip(director);
+            StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(sisAsset);
+            
+            string folder = sisAsset.GetFolder();
+            Assert.IsNotNull(folder);
+            int numOriginalImages = sisAsset.GetImageFileNames().Count;
+            Assert.Greater(numOriginalImages,0);
+
+            
+            List<string> testImages = StreamingImageSequencePlayableAsset.FindImages(folder);
+            List<string> copiedImagePaths = new List<string>(testImages.Count);
+            foreach (string imageFileName in testImages) {
+                string src = Path.Combine(folder, imageFileName);
+                string dest = Path.Combine(folder, "Copied_" + imageFileName);
+                AssetDatabase.CopyAsset(src, dest);
+                copiedImagePaths.Add(dest);
+            }
+
+            yield return null;
+            sisAsset.Reload();
+            
+            yield return null;
+            Assert.AreEqual(numOriginalImages * 2 , sisAsset.GetImageFileNames().Count);
+
+            //Cleanup
+            foreach (string imagePath in copiedImagePaths) {
+                AssetDatabase.DeleteAsset(imagePath);
+            }
+                       
+
+            DestroyTestTimelineAssets(clip);
+            yield return null;
+            
+        }
+        
 //----------------------------------------------------------------------------------------------------------------------                
         [UnityTest]
         public IEnumerator UncheckFrameMarkers() {
@@ -270,8 +310,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             Selection.activeObject = director;
 
 
-            const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
-            string fullPath = Path.GetFullPath(PKG_PATH);
+            string fullPath = Path.GetFullPath(TEST_DATA_FILE_PATH);
             ImageSequenceImporter.ImportPictureFiles(fullPath, sisAsset,false);
             
             
@@ -291,5 +330,8 @@ namespace UnityEditor.StreamingImageSequence.Tests {
             AssetDatabase.DeleteAsset(tempTimelineAssetPath);
             
         }
+        
+        const string TEST_DATA_FILE_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
+        
     }
 }

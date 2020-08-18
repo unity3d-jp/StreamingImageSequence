@@ -424,7 +424,7 @@ namespace UnityEngine.StreamingImageSequence {
             EditorUtility.SetDirty(this);
         }
 
-        internal void ReloadFolder() {
+        internal void Reload() {
             Assert.IsFalse(string.IsNullOrEmpty(m_folder));
             
             m_imageFileNames = FindImages(m_folder);
@@ -436,6 +436,7 @@ namespace UnityEngine.StreamingImageSequence {
         
         internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
 
+        //Return FileNames
         internal static List<string> FindImages(string path) {
             Assert.IsFalse(string.IsNullOrEmpty(path));
             Assert.IsTrue(Directory.Exists(path));
