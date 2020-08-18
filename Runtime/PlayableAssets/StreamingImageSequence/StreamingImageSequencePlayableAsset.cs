@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
@@ -421,6 +422,33 @@ namespace UnityEngine.StreamingImageSequence {
         }
         
         internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
+
+        internal static List<string> FindImages(string path) {
+            Assert.IsFalse(string.IsNullOrEmpty(path));
+            Assert.IsTrue(Directory.Exists(path));
+
+            //Convert path to folder here
+            string fullSrcPath    = Path.GetFullPath(path).Replace("\\", "/");
+            Uri    fullSrcPathUri = new Uri(fullSrcPath + "/");
+
+            //Enumerate all files with the supported extensions and sort
+            List<string> relFilePaths = new List<string>();
+            foreach (string pattern in m_supportedImagePatterns) {
+                IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.AllDirectories);
+                foreach (string filePath in files) {
+                    Uri curPathUri = new Uri(filePath.Replace("\\", "/"));
+                    Uri diff       = fullSrcPathUri.MakeRelativeUri(curPathUri);
+                    relFilePaths.Add(diff.OriginalString);
+                }
+            }
+            relFilePaths.Sort(FileNameComparer);
+            return relFilePaths;
+        }
+        
+        private static int FileNameComparer(string x, string y) {
+            return string.Compare(x, y, StringComparison.InvariantCultureIgnoreCase);
+        }
+        
         
 #endif        
         
@@ -464,7 +492,14 @@ namespace UnityEngine.StreamingImageSequence {
 
         Texture2D m_texture = null;
 
+//----------------------------------------------------------------------------------------------------------------------
+        
         private const int STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION = 1;
+                
+        static readonly string[] m_supportedImagePatterns = {
+            "*.png",
+            "*.tga"             
+        };        
 
     }
 }

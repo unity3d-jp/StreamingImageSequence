@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
-using UnityEngine.UI;
 
 namespace UnityEditor.StreamingImageSequence {
 
     internal static class ImageSequenceImporter {
-        private const string PNG_EXTENSION = "png";
-        private const string TGA_EXTENSION = "tga";
 
 
         /// Import images in the path to create StreamingImageSequence assets with those images
@@ -21,42 +17,24 @@ namespace UnityEditor.StreamingImageSequence {
         internal static void ImportPictureFiles(string path,
             StreamingImageSequencePlayableAsset targetAsset, bool askToCopy = true) 
         {
-            Assert.IsFalse(string.IsNullOrEmpty(path));
-
+            Assert.IsFalse(string.IsNullOrEmpty(path));                
             //Convert path to folder here
             string folder = path;
             FileAttributes attr = File.GetAttributes(path);
             if (!attr.HasFlag(FileAttributes.Directory)) {
                 folder = Path.GetDirectoryName(folder);
             }
-            string fullSrcPath = Path.GetFullPath(folder).Replace("\\", "/");
-            Uri fullSrcPathUri = new Uri(fullSrcPath + "/");
-
-
+            
             if (string.IsNullOrEmpty(folder)) {
                 Debug.LogError(@"Folder is empty. Path: " + path);
                 return;
             }
 
-            //Enumerate all files with the supported extensions and sort
-            List<string> relFilePaths = new List<string>();
-            string[] extensions = {
-                "*." + ImageSequenceImporter.PNG_EXTENSION, 
-                "*." + ImageSequenceImporter.TGA_EXTENSION,
-            };
-            foreach (string ext in extensions) {
-                IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, ext, SearchOption.AllDirectories);
-                foreach (string filePath in files) {
-                    Uri curPathUri = new Uri(filePath.Replace("\\", "/"));
-                    Uri diff = fullSrcPathUri.MakeRelativeUri(curPathUri);
-                    relFilePaths.Add(diff.OriginalString);
-                }
-            }
+            List<string> relFilePaths = StreamingImageSequencePlayableAsset.FindImages(folder);
             if (relFilePaths.Count <= 0) {
                 EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER, @"No files in folder:: " + folder,"OK");
                 return;
             }
-            relFilePaths.Sort(FileNameComparer);
 
             //Estimate the asset name. Use the filename without numbers at the end
             string assetName =  EstimateAssetName(relFilePaths[0]);
@@ -74,8 +52,8 @@ namespace UnityEditor.StreamingImageSequence {
             };
 
 
-            //Import immediately if the assets are already under StreamingAssets
-            if (fullSrcPath.StartsWith(streamingAssetsPath) || !askToCopy) {
+            //Import immediately if the assets are already under StreamingAssets            
+            if (folder.StartsWith(streamingAssetsPath) || !askToCopy) {
                 importerParam.strDstFolder = importerParam.strSrcFolder;
                 importerParam.CopyToStreamingAssets = false;
                 ImageSequenceImporter.Import(importerParam);
@@ -87,8 +65,7 @@ namespace UnityEditor.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
         
-        internal static void Import(ImageFileImporterParam param)
-        {
+        internal static void Import(ImageFileImporterParam param) {
             if (!param.CopyToStreamingAssets) {
                 param.strDstFolder = param.strSrcFolder.Replace("\\", "/");
 
@@ -146,18 +123,10 @@ namespace UnityEditor.StreamingImageSequence {
             }
 
             proxyAsset.SetParam(trackMovieContainer);
-            if (param.CopyToStreamingAssets)
-            {
+            if (param.CopyToStreamingAssets) {
                 AssetDatabase.Refresh();
             }
 
-
-        }
-
-//---------------------------------------------------------------------------------------------------------------------
-
-        private static int FileNameComparer(string x, string y) {
-            return string.Compare(x, y, StringComparison.InvariantCultureIgnoreCase);
         }
 
 //---------------------------------------------------------------------------------------------------------------------
