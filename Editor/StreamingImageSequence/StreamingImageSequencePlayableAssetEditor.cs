@@ -152,22 +152,22 @@ namespace UnityEditor.StreamingImageSequence {
             IList<string> imageFileNames = sisAsset.GetImageFileNames();
 
             //Load
-            string fullPath = sisAsset.GetFullPath(imageFileNames[imageIndex]);
-            ImageLoader.GetImageDataInto(fullPath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
+            string imagePath = sisAsset.GetImageFilePath(imageIndex);
+            ImageLoader.GetImageDataInto(imagePath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
                 , out ImageData readResult);
             
             switch (readResult.ReadStatus) {
                 case StreamingImageSequenceConstants.READ_STATUS_LOADING:
                     break;
                 case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
-                    Texture2D tex = PreviewTextureFactory.GetOrCreate(fullPath, ref readResult);
+                    Texture2D tex = PreviewTextureFactory.GetOrCreate(imagePath, ref readResult);
                     if (null != tex) {
                         Graphics.DrawTexture(drawInfo.DrawRect, tex);
                     }
                     break;
                 }
                 default: {
-                    ImageLoader.RequestLoadPreviewImage(fullPath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height);                    
+                    ImageLoader.RequestLoadPreviewImage(imagePath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height);                    
                     break;
                 }
 

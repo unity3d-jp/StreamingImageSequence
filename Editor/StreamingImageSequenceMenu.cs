@@ -67,6 +67,14 @@ namespace UnityEditor.StreamingImageSequence {
                 sb.AppendLine();
                 sb.AppendLine();
             }
+
+            sb.AppendLine("Preview Textures: ");
+            IDictionary<string, PreviewTexture> previewTextures = PreviewTextureFactory.GetPreviewTextures();
+            foreach (var kvp in previewTextures) {
+                sb.Append("    ");
+                sb.AppendLine(kvp.Key);
+            }
+            
             Debug.Log(sb.ToString());
         }
 

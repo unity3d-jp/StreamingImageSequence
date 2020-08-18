@@ -167,24 +167,26 @@ internal class RenderCachePlayableAssetInspector : Editor {
         int  fileCounter = 0;
         int numFiles = (int) Math.Ceiling(timelineClip.duration / timePerFrame) + 1;
         int numDigits = MathUtility.GetNumDigits(numFiles);
-
-        string prefix = $"{renderCachePlayableAsset.name}_";
+        
+        string prefix = $"{timelineClip.displayName}_";
         List<string> imageFileNames = new List<string>(numFiles);
  
         //Store old files that has the same pattern
-        string[] existingFiles = Directory.GetFiles (outputFolder, $"{prefix}*.png");
+        string[] existingFiles = Directory.GetFiles (outputFolder, $"*.png");
         HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
         
         bool cancelled = false;
         while (nextDirectorTime <= timelineClip.end && !cancelled) {
             
+            string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
+            string outputFilePath = Path.Combine(outputFolder, fileName);
+
             SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);                
-            bool captureFrame = (!timelineClipSISData.AreFrameMarkersVisible() //if not visible, use it
+            bool captureFrame = (!timelineClipSISData.AreFrameMarkersVisible() //if markers are not visible, capture
+                || !File.Exists(outputFilePath) //if file doesn't exist, capture
                 || (null!=playableFrame && playableFrame.IsUsed() && !playableFrame.IsLocked())
             );             
             
-            string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
-            string outputFilePath = Path.Combine(outputFolder, fileName);
             if (filesToDelete.Contains(outputFilePath)) {
                 filesToDelete.Remove(outputFilePath);
             }
@@ -192,9 +194,14 @@ internal class RenderCachePlayableAssetInspector : Editor {
             
             if (captureFrame) {
                 SetDirectorTime(director, nextDirectorTime);
+                
+                //Need at least two frames in order to wait for the TimelineWindow to be updated ?
+                yield return null;
+                yield return null;
                 yield return null;
                 
-                //[TODO-sin: 2020-5-27] Call StreamingImageSequencePlugin API to unload texture because it may be overwritten           
+                //Unload texture because it may be overwritten
+                StreamingImageSequencePlugin.UnloadImageAndNotify(outputFilePath);
                 renderCapturer.CaptureToFile(outputFilePath);
                 
             } 
@@ -206,13 +213,23 @@ internal class RenderCachePlayableAssetInspector : Editor {
             cancelled = EditorUtility.DisplayCancelableProgressBar(
                 "StreamingImageSequence", "Caching render results", ((float)fileCounter / numFiles));
         }
-        
-        renderCachePlayableAsset.SetImageFileNames(imageFileNames);        
-        
-        //Delete old files
-        foreach (string oldFile in filesToDelete) {
-            File.Delete(oldFile);
+
+        if (!cancelled) {
+            renderCachePlayableAsset.SetImageFileNames(imageFileNames);        
+
+            //Delete old files
+            if (AssetDatabase.IsValidFolder(outputFolder)) {
+                foreach (string oldFile in filesToDelete) {                
+                    AssetDatabase.DeleteAsset(oldFile);
+                }                
+            } else {
+                foreach (string oldFile in filesToDelete) {                
+                    File.Delete(oldFile);
+                }
+                
+            }            
         }
+        
         
                
         //Cleanup
