@@ -345,7 +345,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
 //----------------------------------------------------------------------------------------------------------------------
     private static void SetDirectorTime(PlayableDirector director, double time) {
         director.time = time;
-        TimelineEditor.Refresh(RefreshReason.ContentsModified); 
+        TimelineEditor.Refresh(RefreshReason.SceneNeedsUpdate); 
     }        
     
 
