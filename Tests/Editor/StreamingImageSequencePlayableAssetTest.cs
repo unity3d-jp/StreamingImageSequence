@@ -272,7 +272,7 @@ namespace UnityEditor.StreamingImageSequence.Tests {
 
             const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
             string fullPath = Path.GetFullPath(PKG_PATH);
-            ImageSequenceImporter.ImportPictureFiles(ImageFileImporterParam.Mode.StreamingAssets, fullPath, sisAsset,false);
+            ImageSequenceImporter.ImportPictureFiles(fullPath, sisAsset,false);
             
             
             return clip;

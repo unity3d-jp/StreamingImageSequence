@@ -15,11 +15,10 @@ namespace UnityEditor.StreamingImageSequence {
 
 
         /// Import images in the path to create StreamingImageSequence assets with those images
-        /// <param name="importerMode"> Importer mode: StreamingAssets or SpriteAnimation</param>
         /// <param name="path"> Can be a directory path or a file path</param>
         /// <param name="targetAsset"> The target asset where the images are assigned to</param>
         /// <param name="askToCopy"> Ask to copy if path is not under StreamingAssets. Default to true</param>
-        internal static void ImportPictureFiles(ImageFileImporterParam.Mode importerMode, string path,
+        internal static void ImportPictureFiles(string path,
             StreamingImageSequencePlayableAsset targetAsset, bool askToCopy = true) 
         {
             Assert.IsFalse(string.IsNullOrEmpty(path));
@@ -64,16 +63,12 @@ namespace UnityEditor.StreamingImageSequence {
 
             // set dest folder
             string streamingAssetsPath = Application.streamingAssetsPath;
-            if (importerMode == ImageFileImporterParam.Mode.SpriteAnimation) {
-                streamingAssetsPath = Application.dataPath;
-            }
 
             //Set importer param
             ImageFileImporterParam importerParam = new ImageFileImporterParam {
                 strAssetName = assetName,
                 strSrcFolder = folder,
                 RelativeFilePaths = relFilePaths,
-                mode = importerMode,
                 CopyToStreamingAssets = true,
                 TargetAsset = targetAsset
             };
@@ -94,34 +89,19 @@ namespace UnityEditor.StreamingImageSequence {
         
         internal static void Import(ImageFileImporterParam param)
         {
-            if (!param.CopyToStreamingAssets)
-            {
+            if (!param.CopyToStreamingAssets) {
                 param.strDstFolder = param.strSrcFolder.Replace("\\", "/");
 
-            }
-            else
-            {
+            } else {
 
                 string dstFolder = param.strDstFolder.Replace("\\", "/");
-                if (param.mode == ImageFileImporterParam.Mode.StreamingAssets)
+                if (dstFolder.StartsWith(Application.dataPath) && !dstFolder.StartsWith(Path.Combine(Application.dataPath, "StreamingAssets").Replace("\\", "/")))
                 {
-                    if (dstFolder.StartsWith(Application.dataPath) && !dstFolder.StartsWith(Path.Combine(Application.dataPath, "StreamingAssets").Replace("\\", "/")))
-                    {
-                        Debug.LogError("Files must be located under StreamingAssets folder.");
-                        return;
-                    }
-                }
-                else
-                {
-                    if (dstFolder.StartsWith(Application.dataPath) && dstFolder.StartsWith(Path.Combine(Application.dataPath, "StreamingAssets").Replace("\\", "/")))
-                    {
-                        Debug.LogError("Files must not be located under StreamingAssets folder.");
-                        return;
-                    }
+                    Debug.LogError("Files must be located under StreamingAssets folder.");
+                    return;
                 }
 
-                foreach (string relPath in param.RelativeFilePaths)
-                {
+                foreach (string relPath in param.RelativeFilePaths) {
                     string strAbsFilePathDst = Path.Combine(param.strDstFolder, relPath).Replace("\\", "/");
                     if (File.Exists(strAbsFilePathDst))
                     {
@@ -136,8 +116,7 @@ namespace UnityEditor.StreamingImageSequence {
             // create assets
             StreamingImageSequencePlayableAssetParam trackMovieContainer = new StreamingImageSequencePlayableAssetParam();
             trackMovieContainer.Pictures = new List<string>();
-            foreach (string relPath in param.RelativeFilePaths)
-            {
+            foreach (string relPath in param.RelativeFilePaths) {
                 trackMovieContainer.Pictures.Add(relPath);
             }
 
@@ -156,80 +135,20 @@ namespace UnityEditor.StreamingImageSequence {
             }
             trackMovieContainer.Folder = param.strDstFolder;
 
-            if (param.mode == ImageFileImporterParam.Mode.SpriteAnimation)
-            {
-                Sprite[] sprites = new Sprite[param.RelativeFilePaths.Count];
-                for (int ii = 0; ii < param.RelativeFilePaths.Count; ii++)
-                {
-                    string strAssetPath = Path.Combine(param.strDstFolder, param.RelativeFilePaths[ii]).Replace("\\", "/");
-
-                    AssetDatabase.ImportAsset(strAssetPath);
-                    TextureImporter importer = AssetImporter.GetAtPath(strAssetPath) as TextureImporter;
-                    importer.textureType = TextureImporterType.Sprite;
-                    AssetDatabase.WriteImportSettingsIfDirty(strAssetPath);
-
-                    Texture2D tex = (Texture2D)AssetDatabase.LoadAssetAtPath(strAssetPath, typeof(Texture2D));
-
-                    sprites[ii] = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f));
-                }
-
-                AnimationClip newClip = new AnimationClip();
-                newClip.wrapMode = WrapMode.Once;
-                SerializedObject serializedClip = new SerializedObject(newClip);
-                SerializedProperty settings = serializedClip.FindProperty("m_AnimationClipSettings");
-                while (settings.Next(true))
-                {
-                    if (settings.name == "m_LoopTime")
-                    {
-                        break;
-                    }
-                }
-
-                settings.boolValue = true;
-                serializedClip.ApplyModifiedProperties();
-                ObjectReferenceKeyframe[] Keyframes = new ObjectReferenceKeyframe[param.RelativeFilePaths.Count];
-                EditorCurveBinding curveBinding = new EditorCurveBinding();
-
-
-                for (int ii = 0; ii < param.RelativeFilePaths.Count; ii++)
-                {
-                    Keyframes[ii] = new ObjectReferenceKeyframe();
-                    Keyframes[ii].time = 0.25F * ii;
-                    Keyframes[ii].value = sprites[ii];
-                }
-#if false
-            curveBinding.type = typeof(SpriteRenderer);
-            curveBinding.path = string.Empty;
-            curveBinding.propertyName = "m_Sprite";
-#else
-                curveBinding.type = typeof(Image);
-                curveBinding.path = string.Empty;
-                curveBinding.propertyName = "m_Sprite";
-#endif
-                AnimationUtility.SetObjectReferenceCurve(newClip, curveBinding, Keyframes);
-                AssetDatabase.CreateAsset(newClip, Path.Combine(param.strDstFolder, "Animation.anim").Replace("\\", "/"));
-
-                //            var proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>(); //new StreamingImageSequencePlayableAsset(trackMovieContainer);
-                //            proxyAsset.SetParam(trackMovieContainer);
-                //            var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_StreamingImageSequence.playable").Replace("\\", "/"));*/
-                AssetDatabase.Refresh();
+            //StreamingAsset
+            StreamingImageSequencePlayableAsset proxyAsset = param.TargetAsset;
+            if (null == proxyAsset) {
+                proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>(); 
+                string strProxyPath = AssetDatabase.GenerateUniqueAssetPath(
+                    Path.Combine("Assets", param.strAssetName + "_StreamingImageSequence.playable").Replace("\\", "/")
+                );
+                AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
             }
-            else
+
+            proxyAsset.SetParam(trackMovieContainer);
+            if (param.CopyToStreamingAssets)
             {
-                //StreamingAsset
-                StreamingImageSequencePlayableAsset proxyAsset = param.TargetAsset;
-                if (null == proxyAsset) {
-                    proxyAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>(); 
-                    var strProxyPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine("Assets", param.strAssetName + "_StreamingImageSequence.playable").Replace("\\", "/"));
-                    AssetDatabase.CreateAsset(proxyAsset, strProxyPath);
-                }
-
-                proxyAsset.SetParam(trackMovieContainer);
-                if (param.CopyToStreamingAssets)
-                {
-                    AssetDatabase.Refresh();
-                }
-
+                AssetDatabase.Refresh();
             }
 
 
@@ -266,18 +185,12 @@ namespace UnityEditor.StreamingImageSequence {
 
 
     internal class ImageFileImporterParam {
-        public enum Mode
-        {
-            StreamingAssets,
-            SpriteAnimation,
-        }
 
         public string strAssetName;
         public List<string> RelativeFilePaths;
         public string strDstFolder;
         public string strSrcFolder;
         public bool CopyToStreamingAssets;
-        public Mode mode;
         public StreamingImageSequencePlayableAsset TargetAsset = null;
     }
 }
