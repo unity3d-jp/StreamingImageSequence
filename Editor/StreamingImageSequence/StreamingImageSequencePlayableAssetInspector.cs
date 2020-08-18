@@ -144,9 +144,10 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
 
     private ReorderableList m_imageList;
     private bool m_isImageListDirty;
-    private bool m_imageListFoldout;
-    private bool m_resolutionFoldout = true;
 
+    
+    private static bool m_resolutionFoldout = true;
+    private static bool m_imageListFoldout;
 }
 
 } //end namespace
