@@ -429,25 +429,23 @@ namespace UnityEngine.StreamingImageSequence {
 
             //Convert path to folder here
             string fullSrcPath    = Path.GetFullPath(path).Replace("\\", "/");
-            Uri    fullSrcPathUri = new Uri(fullSrcPath + "/");
 
             //Enumerate all files with the supported extensions and sort
-            List<string> relFilePaths = new List<string>();
+            List<string> fileNames = new List<string>();
             foreach (string pattern in m_supportedImagePatterns) {
                 IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.AllDirectories);
-                foreach (string filePath in files) {
-                    Uri curPathUri = new Uri(filePath.Replace("\\", "/"));
-                    Uri diff       = fullSrcPathUri.MakeRelativeUri(curPathUri);
-                    relFilePaths.Add(diff.OriginalString);
+                foreach (string filePath in files) {                    
+                    fileNames.Add(Path.GetFileName(filePath));
                 }
             }
-            relFilePaths.Sort(FileNameComparer);
-            return relFilePaths;
+            fileNames.Sort(FileNameComparer);
+            return fileNames;
         }
         
         private static int FileNameComparer(string x, string y) {
             return string.Compare(x, y, StringComparison.InvariantCultureIgnoreCase);
         }
+
         
         
 #endif        
