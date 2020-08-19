@@ -454,7 +454,10 @@ namespace UnityEngine.StreamingImageSequence {
 
         public void OnAfterDeserialize() {
             if (m_version < (int) SISPlayableAssetVersion.FOLDER_MD5) {
-                Reload();
+                
+                if (!string.IsNullOrEmpty(m_folder)) {
+                    m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);                
+                }                
             }
             m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;
         }
