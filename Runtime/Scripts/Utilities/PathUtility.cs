@@ -16,9 +16,9 @@ internal static class PathUtility {
 
 //----------------------------------------------------------------------------------------------------------------------
     
-    internal static byte[] CalculateFolderMD5ByFileSize(string folder, 
+    internal static string CalculateFolderMD5ByFileSize(string folder, 
         ICollection<string> fileSearchPatterns, 
-        IComparer<string> fileNameComparer) 
+        Comparison<string> fileNameComparer) 
     {
         Assert.IsTrue(Directory.Exists(folder));
 
@@ -58,10 +58,8 @@ internal static class PathUtility {
             md5.TransformFinalBlock(lengthBytes, 0, lengthBytes.Length);
         }
 
-        return md5.Hash;
-
+        return BitConverter.ToString(md5.Hash).Replace("-", "").ToLowerInvariant();
     }
-       
     
 }
 
