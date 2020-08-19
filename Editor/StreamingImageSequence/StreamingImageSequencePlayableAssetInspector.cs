@@ -40,7 +40,6 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
         Undo.RecordObject(m_asset, "StreamingImageSequencePlayableAssetInspector::OnInspectorGUI");
 
         using (new EditorGUILayout.VerticalScope (GUI.skin.box))  {
-            EditorGUILayout.LabelField("Version",  $"{m_asset.GetVersion() }", "BoldLabel");
 
             m_resolutionFoldout = EditorGUILayout.Foldout(m_resolutionFoldout, "Resolution");
             if (m_resolutionFoldout) {

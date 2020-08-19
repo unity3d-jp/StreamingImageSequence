@@ -20,10 +20,11 @@ namespace UnityEngine.StreamingImageSequence {
     /// - IPlayableBehaviour: for displaying the curves in the timeline window
     /// - ISerializationCallbackReceiver: for serialization
     /// - IObserver(string): to receive updates when the contents of a folder are changed
+    /// - ISerializationCallbackReceiver: to perform version upgrade, if necessary
     /// </summary>
     [System.Serializable]
     internal class StreamingImageSequencePlayableAsset : BaseTimelineClipSISDataPlayableAsset, ITimelineClipAsset
-                                                     , IPlayableBehaviour, IObserver<string>
+                                                     , IPlayableBehaviour, IObserver<string>, ISerializationCallbackReceiver
     {      
         
 //----------------------------------------------------------------------------------------------------------------------
@@ -41,10 +42,21 @@ namespace UnityEngine.StreamingImageSequence {
         
         /// <inheritdoc/>
         public void OnGraphStart(Playable playable) {
+            
 #if UNITY_EDITOR
+
+            //Check folder MD5
+            if (!string.IsNullOrEmpty(m_folder) && Directory.Exists(m_folder)) {
+                string curFolderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
+                if (curFolderMD5 != m_folderMD5) {
+                    Reload(curFolderMD5);                    
+                }
+            }
+            
             FolderContentsChangedNotifier.GetInstance().Subscribe(this);
 #endif            
         }
+        
         
         /// <inheritdoc/>
         public void OnGraphStop(Playable playable){
@@ -145,8 +157,6 @@ namespace UnityEngine.StreamingImageSequence {
         /// <returns></returns>
         public Texture2D GetTexture() { return m_texture; }        
 
-        internal int GetVersion() { return m_version; }
-
         /// <summary>
         /// Get the source folder
         /// </summary>
@@ -226,7 +236,6 @@ namespace UnityEngine.StreamingImageSequence {
         
        
 //---------------------------------------------------------------------------------------------------------------------
-
 
         internal void ContinuePreloadingImages() {
             
@@ -433,7 +442,27 @@ namespace UnityEngine.StreamingImageSequence {
 #endif
         }
 
-        #endregion Observer
+#endregion Observer
+        
+//----------------------------------------------------------------------------------------------------------------------        
+
+#region ISerializationCallbackReceiver
+
+        public void OnBeforeSerialize() {
+            
+        }
+
+        public void OnAfterDeserialize() {
+            if (m_version < (int) SISPlayableAssetVersion.FOLDER_MD5) {
+                
+                if (!string.IsNullOrEmpty(m_folder)) {
+                    m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);                
+                }                
+            }
+            m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;
+        }
+        
+#endregion ISerializationCallbackReceiver
         
 //----------------------------------------------------------------------------------------------------------------------        
 
@@ -457,14 +486,22 @@ namespace UnityEngine.StreamingImageSequence {
             }
             m_texture = null;
             EditorUtility.SetDirty(this);
+            m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
         }
 
-        internal void Reload() {
+        internal void Reload(string folderMD5 = null) {
             Assert.IsFalse(string.IsNullOrEmpty(m_folder));
             
             m_imageFileNames = FindImages(m_folder);
             Reset();
             EditorUtility.SetDirty(this);
+            if (!string.IsNullOrEmpty(folderMD5)) {
+                m_folderMD5 = folderMD5;
+            }
+            else {
+                m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);                
+            }
+            
 
         }
         
@@ -480,8 +517,8 @@ namespace UnityEngine.StreamingImageSequence {
 
             //Enumerate all files with the supported extensions and sort
             List<string> fileNames = new List<string>();
-            foreach (string pattern in m_supportedImagePatterns) {
-                IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.AllDirectories);
+            foreach (string pattern in m_imageFilePatterns) {
+                IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.TopDirectoryOnly);
                 foreach (string filePath in files) {                    
                     fileNames.Add(Path.GetFileName(filePath));
                 }
@@ -504,8 +541,10 @@ namespace UnityEngine.StreamingImageSequence {
 
         [HideInInspector][SerializeField] private string m_folder = null; //Always have "/" as the directory separator        
         [FormerlySerializedAs("m_imagePaths")] [HideInInspector][SerializeField] List<string> m_imageFileNames = null; //These are actually file names, not paths
+        [HideInInspector][SerializeField] private string m_folderMD5 = null;
         
-        [HideInInspector][SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
+        
+        [HideInInspector][SerializeField] private int m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;
 
         private ImageDimensionInt  m_resolution;        
@@ -536,19 +575,28 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
         
-        private const int STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION = 1;
+        private const int CUR_SIS_PLAYABLE_ASSET_VERSION = (int) SISPlayableAssetVersion.FOLDER_MD5;
                 
-        static readonly string[] m_supportedImagePatterns = {
+        static readonly string[] m_imageFilePatterns = {
             "*.png",
             "*.tga"             
         };        
 
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+enum SISPlayableAssetVersion {
+    INITIAL = 1, //initial
+    FOLDER_MD5 = 2, //added folder MD5 hash
+    
 }
 
-//---------------------------------------------------------------------------------------------------------------------
+
+} //end namespace
+
+//----------------------------------------------------------------------------------------------------------------------
 //[Note-Sin: 2019-12-23] We need two things, in order to enable folder drag/drop to the timeline Window
 //1. Derive this class from PlayableAsset
 //2. Declare UnityEditor.DefaultAsset variable 
-
 
