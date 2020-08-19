@@ -65,7 +65,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         EditorGUILayout.Space(15f);
 
         //Check if the asset is actually inspected
-        if (TimelineEditor.selectedClip.asset != m_asset) {
+        if (null!=TimelineEditor.selectedClip && TimelineEditor.selectedClip.asset != m_asset) {
             return;
         }
 
