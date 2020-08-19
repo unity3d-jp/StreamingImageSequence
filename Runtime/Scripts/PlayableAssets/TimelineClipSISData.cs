@@ -89,7 +89,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     private static SISPlayableFrame CreatePlayableFrame(TimelineClipSISData owner, int index, double timePerFrame) 
     {
         SISPlayableFrame playableFrame = new SISPlayableFrame(owner);
-        playableFrame.SetLocalTime(timePerFrame * index);
+        playableFrame.SetIndexAndLocalTime(index, timePerFrame * index);
         return playableFrame;
     }
 
@@ -159,7 +159,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_clipOwner);                
         int numPlayableFrames = m_playableFrames.Count;
         for (int i = 0; i < numPlayableFrames; ++i) {                
-            m_playableFrames[i].SetLocalTime(i * timePerFrame);
+            m_playableFrames[i].SetIndexAndLocalTime(i, i * timePerFrame);
             m_playableFrames[i].Refresh(m_frameMarkersVisibility);
         }
         
@@ -206,17 +206,12 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
            
         for (int i = 0; i < reqPlayableFramesSize; ++i) {
             SISPlayableFrame curPlayableFrame = m_playableFrames[i];
-            Assert.IsNotNull(curPlayableFrame);
-                
-            m_playableFrames[i].SetLocalTime( timePerFrame * i);
+            Assert.IsNotNull(curPlayableFrame);                
+            m_playableFrames[i].SetIndexAndLocalTime(i, timePerFrame * i);
             
         }
-            
-            
+                        
     }
-    
-    
-   
     
 //----------------------------------------------------------------------------------------------------------------------    
     
