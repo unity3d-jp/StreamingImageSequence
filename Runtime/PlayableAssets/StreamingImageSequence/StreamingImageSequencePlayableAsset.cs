@@ -41,10 +41,21 @@ namespace UnityEngine.StreamingImageSequence {
         
         /// <inheritdoc/>
         public void OnGraphStart(Playable playable) {
+            
 #if UNITY_EDITOR
+
+            //Check folder MD5
+            if (!string.IsNullOrEmpty(m_folder) && Directory.Exists(m_folder)) {
+                string curFolderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
+                if (curFolderMD5 != m_folderMD5) {
+                    Reload(curFolderMD5);                    
+                }
+            }
+            
             FolderContentsChangedNotifier.GetInstance().Subscribe(this);
 #endif            
         }
+        
         
         /// <inheritdoc/>
         public void OnGraphStop(Playable playable){
@@ -226,7 +237,6 @@ namespace UnityEngine.StreamingImageSequence {
         
        
 //---------------------------------------------------------------------------------------------------------------------
-
 
         internal void ContinuePreloadingImages() {
             
@@ -457,14 +467,22 @@ namespace UnityEngine.StreamingImageSequence {
             }
             m_texture = null;
             EditorUtility.SetDirty(this);
+            m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
         }
 
-        internal void Reload() {
+        internal void Reload(string folderMD5 = null) {
             Assert.IsFalse(string.IsNullOrEmpty(m_folder));
             
             m_imageFileNames = FindImages(m_folder);
             Reset();
             EditorUtility.SetDirty(this);
+            if (!string.IsNullOrEmpty(folderMD5)) {
+                m_folderMD5 = folderMD5;
+            }
+            else {
+                m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);                
+            }
+            
 
         }
         
@@ -480,7 +498,7 @@ namespace UnityEngine.StreamingImageSequence {
 
             //Enumerate all files with the supported extensions and sort
             List<string> fileNames = new List<string>();
-            foreach (string pattern in m_supportedImagePatterns) {
+            foreach (string pattern in m_imageFilePatterns) {
                 IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.TopDirectoryOnly);
                 foreach (string filePath in files) {                    
                     fileNames.Add(Path.GetFileName(filePath));
@@ -504,6 +522,8 @@ namespace UnityEngine.StreamingImageSequence {
 
         [HideInInspector][SerializeField] private string m_folder = null; //Always have "/" as the directory separator        
         [FormerlySerializedAs("m_imagePaths")] [HideInInspector][SerializeField] List<string> m_imageFileNames = null; //These are actually file names, not paths
+        [HideInInspector][SerializeField] private string m_folderMD5 = null;
+        
         
         [HideInInspector][SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;
@@ -538,7 +558,7 @@ namespace UnityEngine.StreamingImageSequence {
         
         private const int STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION = 1;
                 
-        static readonly string[] m_supportedImagePatterns = {
+        static readonly string[] m_imageFilePatterns = {
             "*.png",
             "*.tga"             
         };        
