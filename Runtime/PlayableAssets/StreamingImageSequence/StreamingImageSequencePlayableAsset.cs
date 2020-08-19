@@ -20,10 +20,11 @@ namespace UnityEngine.StreamingImageSequence {
     /// - IPlayableBehaviour: for displaying the curves in the timeline window
     /// - ISerializationCallbackReceiver: for serialization
     /// - IObserver(string): to receive updates when the contents of a folder are changed
+    /// - ISerializationCallbackReceiver: to perform version upgrade, if necessary
     /// </summary>
     [System.Serializable]
     internal class StreamingImageSequencePlayableAsset : BaseTimelineClipSISDataPlayableAsset, ITimelineClipAsset
-                                                     , IPlayableBehaviour, IObserver<string>
+                                                     , IPlayableBehaviour, IObserver<string>, ISerializationCallbackReceiver
     {      
         
 //----------------------------------------------------------------------------------------------------------------------
@@ -441,7 +442,24 @@ namespace UnityEngine.StreamingImageSequence {
 #endif
         }
 
-        #endregion Observer
+#endregion Observer
+        
+//----------------------------------------------------------------------------------------------------------------------        
+
+#region ISerializationCallbackReceiver
+
+        public void OnBeforeSerialize() {
+            
+        }
+
+        public void OnAfterDeserialize() {
+            if (m_version < (int) SISPlayableAssetVersion.FOLDER_MD5) {
+                Reload();
+            }
+            m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;
+        }
+        
+#endregion ISerializationCallbackReceiver
         
 //----------------------------------------------------------------------------------------------------------------------        
 
@@ -523,7 +541,7 @@ namespace UnityEngine.StreamingImageSequence {
         [HideInInspector][SerializeField] private string m_folderMD5 = null;
         
         
-        [HideInInspector][SerializeField] private int m_version = STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION;        
+        [HideInInspector][SerializeField] private int m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;
 
         private ImageDimensionInt  m_resolution;        
@@ -554,7 +572,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
         
-        private const int STREAMING_IMAGE_SEQUENCE_PLAYABLE_ASSET_VERSION = 1;
+        private const int CUR_SIS_PLAYABLE_ASSET_VERSION = (int) SISPlayableAssetVersion.FOLDER_MD5;
                 
         static readonly string[] m_imageFilePatterns = {
             "*.png",
@@ -562,11 +580,20 @@ namespace UnityEngine.StreamingImageSequence {
         };        
 
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+enum SISPlayableAssetVersion {
+    INITIAL = 1, //initial
+    FOLDER_MD5 = 2, //added folder MD5 hash
+    
 }
 
-//---------------------------------------------------------------------------------------------------------------------
+
+} //end namespace
+
+//----------------------------------------------------------------------------------------------------------------------
 //[Note-Sin: 2019-12-23] We need two things, in order to enable folder drag/drop to the timeline Window
 //1. Derive this class from PlayableAsset
 //2. Declare UnityEditor.DefaultAsset variable 
-
 
