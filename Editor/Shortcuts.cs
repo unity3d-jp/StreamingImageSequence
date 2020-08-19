@@ -30,6 +30,9 @@ internal static class Shortcuts  {
                 
         SISPlayableFrame playableFrame       = frameMarker.GetOwner();
         TimelineClip     timelineClip = playableFrame.GetOwner().GetOwner();
+        if (null == timelineClip)
+            return;
+        
         RenderCachePlayableAsset renderCachePlayableAsset = timelineClip.asset as RenderCachePlayableAsset;
         if (null == renderCachePlayableAsset)
             return;
