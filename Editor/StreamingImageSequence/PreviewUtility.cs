@@ -68,7 +68,9 @@ internal static class PreviewUtility {
         double secondFrameRectX = (float) FindFrameXPos(drawInfo.LocalTime + localTimeCounter, visibleLocalStartTime, visibleDuration, visibleRect.x, visibleRect.width);
         float xCounter = (float)(secondFrameRectX - firstFrameRectX);
 
-        Assert.Greater(xCounter, 0);
+        //Shouldn't happen, but xCounter can be minus when moving the horizontal slider ?
+        if (xCounter <= 0)
+            return;
         
         float endVisibleRectX = (visibleRect.x + visibleRect.width) - (xCounter * 0.5f);
         while (drawInfo.DrawRect.x < (endVisibleRectX)) {
