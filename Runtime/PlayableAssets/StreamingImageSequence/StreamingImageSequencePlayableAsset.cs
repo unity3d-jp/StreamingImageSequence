@@ -156,8 +156,6 @@ namespace UnityEngine.StreamingImageSequence {
         /// <returns></returns>
         public Texture2D GetTexture() { return m_texture; }        
 
-        internal int GetVersion() { return m_version; }
-
         /// <summary>
         /// Get the source folder
         /// </summary>
