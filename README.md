@@ -31,8 +31,8 @@ differ based on the version of Unity.
   ![PackageManager2020](Documentation~/images/PackageManager2020.1.png)
   1. Open [Package Manager](https://docs.unity3d.com/Manual/upm-ui.html) 
   2. Click the **+** button, and choose **Add package from git URL** 
-  3. Type in *com.unity.streaming-image-sequence@* followed by the version.  
-     For example: *com.unity.streaming-image-sequence@0.3.2-preview*
+  3. Type in `com.unity.streaming-image-sequence@` followed by the version.  
+     For example: `com.unity.streaming-image-sequence@0.3.2-preview`
   
 ## Supported Platforms
 
