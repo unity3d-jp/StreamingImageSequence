@@ -16,6 +16,21 @@ It is designed with the following principles in mind:
 
 **Using Timeline 1.4.x or above is recommended.**
 
+StreamingImageSequence is currently a preview package and the steps to install it differ based on the version of Unity.
+
+* Unity 2019.x  
+  ![PackageManager2019](Documentation~/images/PackageManager2019.png)
+  1. Open [Package Manager](https://docs.unity3d.com/Manual/upm-ui.html) 
+  2. Ensure that **Show preview packages** is checked. 
+  3. Search for Streaming Image Sequence.
+  
+* Unity 2020.1  
+  ![PackageManager2020](Documentation~/images/PackageManager2020.1.png)
+  1. Open [Package Manager](https://docs.unity3d.com/Manual/upm-ui.html) 
+  2. Click the **+** button, and choose "Add package from git URL" 
+  3. Type in **com.unity.streaming-image-sequence@** followed by the version. 
+     For example: **com.unity.streaming-image-sequence@0.3.2-preview**
+  
 ## Supported Platforms
 
 1. Windows
