@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using NUnit.Framework;
 using Unity.EditorCoroutines.Editor;
+using UnityEditor.ShortcutManagement;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -91,9 +92,11 @@ internal class RenderCachePlayableAssetInspector : Editor {
         //Capture Selected Frames
         ShowCaptureSelectedFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
         ShowLockFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
-       
-        //[TODO-sin: 2020-5-27] Check the MD5 hash of the folder before overwriting
-        if (GUILayout.Button("Update Render Cache")) {
+
+        ShortcutBinding updateRenderCacheShortcut 
+            = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_UPDATE_RENDER_CACHE);            
+        
+        if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {
             
             PlayableDirector director = TimelineEditor.inspectedDirector;
             if (null == director) {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.ShortcutManagement;
+using UnityEngine;
 using UnityEngine.StreamingImageSequence;
 using UnityEngine.Timeline;
 using UnityObject = UnityEngine.Object;
@@ -20,9 +21,10 @@ internal class FrameMarkerInspector: Editor {
 
 //----------------------------------------------------------------------------------------------------------------------
     public override void OnInspectorGUI() {
-        //base.OnInspectorGUI();
+        ShortcutBinding useFrameShortcut 
+            = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_TOGGLE_FRAME_MARKER);            
         bool prevUseFrame= m_assets[0].IsFrameUsed();
-        bool useFrame = EditorGUILayout.Toggle("Use Frame", prevUseFrame);
+        bool useFrame = EditorGUILayout.Toggle($"Use Frame ({useFrameShortcut})", prevUseFrame);
         if (useFrame != prevUseFrame) {
             //Set all selected objects
             foreach (FrameMarker m in m_assets) {
@@ -30,8 +32,7 @@ internal class FrameMarkerInspector: Editor {
             }            
         }
 
-        
-        
+               
         //Only show lock and edit for RenderCachePlayableAsset
         if (1 != m_assets.Length)
             return;
@@ -43,7 +44,10 @@ internal class FrameMarkerInspector: Editor {
         
         RenderCachePlayableAsset renderCachePlayableAsset = clip.asset as RenderCachePlayableAsset;
         if (null != renderCachePlayableAsset) {
-            if (GUILayout.Button("Lock and Edit")) {
+
+            ShortcutBinding lockAndEditShortcut 
+                = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_LOCK_AND_EDIT_FRAME);            
+            if (GUILayout.Button($"Lock and Edit ({lockAndEditShortcut})")) {
                 SISPlayableFrame playableFrame = frameMarker.GetOwner();
                 LockAndEditPlayableFrame(playableFrame, renderCachePlayableAsset);
             }
