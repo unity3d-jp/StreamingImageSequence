@@ -803,9 +803,15 @@ MonoBehaviour:
   m_ShowToolkit: 0
   m_ShowCustomSorter: 0
   breakBeforeColorGrading: 0
-  m_BeforeTransparentBundles: []
-  m_BeforeStackBundles: []
-  m_AfterStackBundles: []
+  m_BeforeTransparentBundles:
+  - assemblyQualifiedName: Pencil_4.PencilLinePostProcess, PSoft.Pencil-Line.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_BeforeStackBundles:
+  - assemblyQualifiedName: Pencil_4.PencilLinePostProcessBeforeStack, PSoft.Pencil-Line.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_AfterStackBundles:
+  - assemblyQualifiedName: Pencil_4.PencilLinePostProcessAfterStack, PSoft.Pencil-Line.Runtime,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
 --- !u!1 &1284940779
 GameObject:
   m_ObjectHideFlags: 0
