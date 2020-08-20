@@ -19,14 +19,14 @@ internal class FrameMarkerInspector: Editor {
 //----------------------------------------------------------------------------------------------------------------------
     public override void OnInspectorGUI() {
         //base.OnInspectorGUI();
-        bool prevUseImage= m_assets[0].IsFrameUsed();
-        bool useImage = EditorGUILayout.Toggle("Use Image", prevUseImage);
-        if (useImage == prevUseImage)
+        bool prevUseFrame= m_assets[0].IsFrameUsed();
+        bool useFrame = EditorGUILayout.Toggle("Use Frame", prevUseFrame);
+        if (useFrame == prevUseFrame)
             return;
 
         //Set all selected objects
         foreach (FrameMarker m in m_assets) {
-            SetMarkerValueByContext(m,useImage);
+            SetMarkerValueByContext(m,useFrame);
         }
     }
 
