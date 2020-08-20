@@ -186,15 +186,6 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------        
 
-        internal string GetImagePath(int index) {
-            if (null == m_imageFileNames || index >= m_imageFileNames.Count)
-                return null;
-
-            return m_imageFileNames[index];
-        }
-
-//----------------------------------------------------------------------------------------------------------------------        
-
         internal bool HasImages() {
             return (!string.IsNullOrEmpty(m_folder) && null != m_imageFileNames && m_imageFileNames.Count > 0);
         }
@@ -267,6 +258,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
             
         }
+
 
 //----------------------------------------------------------------------------------------------------------------------        
         //return true if we should continue preloading the next image. False otherwise
@@ -490,7 +482,18 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
         internal void Reload(string folderMD5 = null) {
-            Assert.IsFalse(string.IsNullOrEmpty(m_folder));
+            
+            if (string.IsNullOrEmpty(m_folder))
+                return;
+            
+            //Unload existing images
+            if (HasImages()) {
+                foreach (string fileName in m_imageFileNames) {
+                    string imagePath = PathUtility.GetPath(m_folder, fileName);
+                    StreamingImageSequencePlugin.UnloadImageAndNotify(imagePath);
+                    Debug.Log("Unloading: " + imagePath);
+                }
+            }            
             
             m_imageFileNames = FindImages(m_folder);
             Reset();
