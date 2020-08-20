@@ -67,7 +67,14 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
             if (m_asset.HasImages()) {
                 numImages = m_asset.GetImageFileNames().Count;
             }
-            GUILayout.Label("Images: " + numImages, "BoldLabel");
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Images: " + numImages, "BoldLabel");            
+            if (GUILayout.Button("Reload")) {
+                m_asset.Reload();
+            }
+            EditorGUILayout.EndHorizontal();
+            
             GUILayout.Space(4f);
             m_imageListFoldout = EditorGUILayout.Foldout(m_imageListFoldout, "Images");
             if (m_imageListFoldout) {
