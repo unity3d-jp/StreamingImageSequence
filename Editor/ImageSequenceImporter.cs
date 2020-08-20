@@ -17,7 +17,7 @@ namespace UnityEditor.StreamingImageSequence {
         /// <param name="path"> Can be a directory path or a file path</param>
         /// <param name="targetAsset"> The target asset where the images are assigned to</param>
         /// <param name="askToCopy"> Ask to copy if path is not under StreamingAssets. Default to true</param>
-        internal static void ImportPictureFiles(string path,
+        internal static void ImportImages(string path,
             StreamingImageSequencePlayableAsset targetAsset, bool askToCopy = true) 
         {
             Assert.IsFalse(string.IsNullOrEmpty(path));
