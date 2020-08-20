@@ -10,7 +10,7 @@ Unity Timeline easily without making Unity 2D Sprites.
 
 **Using Timeline 1.4.x or above is recommended.**
 
-StreamingImageSequence is designed with the following principles in mind:
+Streaming Image Sequence is designed with the following principles in mind:
 
 1. Can avoid texture importing time entirely by using 
    [StreamingAssets](https://docs.unity3d.com/Manual/StreamingAssets.html).
@@ -18,7 +18,7 @@ StreamingImageSequence is designed with the following principles in mind:
 1. Supports multiple OS.
 
 
-StreamingImageSequence is currently a preview package and the steps to install it 
+Streaming Image Sequence is currently a preview package and the steps to install it 
 differ based on the version of Unity.
 
 * Unity 2019.x  
