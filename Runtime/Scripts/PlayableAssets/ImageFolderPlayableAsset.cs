@@ -14,6 +14,11 @@ namespace UnityEngine.StreamingImageSequence {
 internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayableAsset {
    
 //----------------------------------------------------------------------------------------------------------------------
+    
+#region Resolution    
+    
+    //May return uninitialized value during initialization because the resolution hasn't been updated
+    internal ImageDimensionInt GetResolution() { return m_resolution; }
    
     internal float GetOrUpdateDimensionRatio() {
         if (Mathf.Approximately(0.0f, m_dimensionRatio)) {
@@ -21,30 +26,8 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         }
             
         return m_dimensionRatio;
-    }
+    }    
     
-    
-//----------------------------------------------------------------------------------------------------------------------
-    internal string GetFolder() { return m_folder;}
-    internal void SetFolder(string folder) { m_folder = folder;}
-    internal void SetImageFileNames(List<string> imageFileNames) { m_imageFileNames = imageFileNames;}
-    internal IList<string> GetImageFileNames() { return m_imageFileNames; }
-    
-//----------------------------------------------------------------------------------------------------------------------
-
-    [CanBeNull]
-    internal string GetImageFilePath(int index) {
-        if (null == m_imageFileNames)
-            return null;
-
-        if (index < 0 || index >= m_imageFileNames.Count)
-            return null;
-        
-        return PathUtility.GetPath(m_folder, m_imageFileNames[index]);            
-    }
-       
-
-//----------------------------------------------------------------------------------------------------------------------    
     void ForceUpdateResolution() {
         if (string.IsNullOrEmpty(m_folder) || !Directory.Exists(m_folder) 
             || null == m_imageFileNames || m_imageFileNames.Count <= 0)
@@ -66,13 +49,58 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
             }
         }
     }
-    
-    void UpdateResolution(ref ImageData imageData) {
-        ImageDimensionInt resolution;
-        resolution.Width  = imageData.Width;
-        resolution.Height = imageData.Height;
-        m_dimensionRatio    = resolution.CalculateRatio();
+
+    protected void ResetResolution() {
+        m_resolution     = new ImageDimensionInt();
+        m_dimensionRatio = 0;
     }
+    
+    protected void UpdateResolution(ref ImageData imageData) {
+        m_resolution.Width  = imageData.Width;
+        m_resolution.Height = imageData.Height;
+        if (m_resolution.Width > 0 && m_resolution.Height > 0) {
+            m_dimensionRatio = m_resolution.CalculateRatio();
+        }
+    }
+
+    protected void UpdateResolution(ImageDimensionInt res) {
+        m_resolution = res;
+        m_dimensionRatio = 0;
+        if (m_resolution.Width > 0 && m_resolution.Height > 0) {
+            m_dimensionRatio = m_resolution.CalculateRatio();
+        }        
+    }
+    
+#endregion Resolution
+    
+//----------------------------------------------------------------------------------------------------------------------
+    /// <summary>
+    /// Get the source folder
+    /// </summary>
+    /// <returns>The folder where the images are located</returns>
+    internal string GetFolder() { return m_folder;}
+    internal void SetFolder(string folder) { m_folder = folder;}
+    internal void SetImageFileNames(List<string> imageFileNames) { m_imageFileNames = imageFileNames;}
+    internal IList<string> GetImageFileNames() { return m_imageFileNames; }
+    internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFileNames; }
+    
+//----------------------------------------------------------------------------------------------------------------------
+
+    [CanBeNull]
+    internal string GetImageFilePath(int index) {
+        if (null == m_imageFileNames)
+            return null;
+
+        if (index < 0 || index >= m_imageFileNames.Count)
+            return null;
+        
+        return PathUtility.GetPath(m_folder, m_imageFileNames[index]);            
+    }
+       
+    internal bool HasImages() {            
+        return (!string.IsNullOrEmpty(m_folder) && null != m_imageFileNames && m_imageFileNames.Count > 0);
+    }
+
 
 //----------------------------------------------------------------------------------------------------------------------    
     
@@ -90,11 +118,12 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     
     
 //----------------------------------------------------------------------------------------------------------------------    
-    [SerializeField] private string m_folder = null;
-    [HideInInspector][SerializeField] List<string> m_imageFileNames = null; //file names, not paths
+    [SerializeField] protected string m_folder = null;
+    [HideInInspector][SerializeField] protected List<string> m_imageFileNames = null; //file names, not paths
     
 //----------------------------------------------------------------------------------------------------------------------    
     private float m_dimensionRatio = 0;
+    private ImageDimensionInt m_resolution;        
 
 }
 
