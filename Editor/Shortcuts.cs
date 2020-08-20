@@ -36,18 +36,8 @@ internal static class Shortcuts  {
         RenderCachePlayableAsset renderCachePlayableAsset = timelineClip.asset as RenderCachePlayableAsset;
         if (null == renderCachePlayableAsset)
             return;
-
-        int index = playableFrame.GetIndex();
-        string filePath = renderCachePlayableAsset.GetImageFilePath(index);
-        if (string.IsNullOrEmpty(filePath)) {
-            EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER,
-                "Please update RenderCachePlayableAsset.",
-                "Ok");
-            return;
-        }
-                    
-        playableFrame.SetLocked(true);
-        System.Diagnostics.Process.Start(filePath);    
+        
+        FrameMarkerInspector.LockAndEditPlayableFrame(playableFrame, renderCachePlayableAsset);
     }    
 
 //----------------------------------------------------------------------------------------------------------------------    
