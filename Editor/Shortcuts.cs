@@ -18,10 +18,40 @@ internal static class Shortcuts  {
             }
             FrameMarkerInspector.ToggleMarkerValueByContext(marker);
 
-        }
+        }        
+    }    
+    
+//----------------------------------------------------------------------------------------------------------------------    
+    [Shortcut("StreamingImageSequence/Lock and Edit Frame", null,  KeyCode.E, ShortcutModifiers.Alt)]
+    static void LockAndEditFrame(ShortcutArguments args) {
+        FrameMarker frameMarker = Selection.activeObject as FrameMarker;
+        if (null == frameMarker)
+            return;
+                
+        SISPlayableFrame playableFrame       = frameMarker.GetOwner();
+        TimelineClip     timelineClip = playableFrame.GetOwner().GetOwner();
+        if (null == timelineClip)
+            return;
         
+        RenderCachePlayableAsset renderCachePlayableAsset = timelineClip.asset as RenderCachePlayableAsset;
+        if (null == renderCachePlayableAsset)
+            return;
+
+        int index = playableFrame.GetIndex();
+        string filePath = renderCachePlayableAsset.GetImageFilePath(index);
+        if (string.IsNullOrEmpty(filePath)) {
+            EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER,
+                "Please update RenderCachePlayableAsset.",
+                "Ok");
+            return;
+        }
+                    
+        playableFrame.SetLocked(true);
+        System.Diagnostics.Process.Start(filePath);    
     }    
 
+//----------------------------------------------------------------------------------------------------------------------    
+    
     [Shortcut("StreamingImageSequence/Update Render Cache", null,  KeyCode.C, ShortcutModifiers.Alt)]
     static void UpdateRenderCache(ShortcutArguments args) {
 

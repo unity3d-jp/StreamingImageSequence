@@ -67,9 +67,14 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
 //----------------------------------------------------------------------------------------------------------------------
     internal void SetOwner(TimelineClipSISData owner) {  m_timelineClipSISDataOwner = owner;}
-    internal TimelineClipSISData GetOwner() {  return m_timelineClipSISDataOwner; }
+    internal TimelineClipSISData GetOwner() {  return m_timelineClipSISDataOwner; }    
     internal double GetLocalTime()                 { return m_localTime; }
-    internal void   SetLocalTime(double localTime) {  m_localTime = localTime;}
+
+    internal int GetIndex() { return m_index; }
+    internal void   SetIndexAndLocalTime(int index, double localTime) {
+        m_index = index; 
+        m_localTime = localTime;        
+    }
 
     internal TimelineClip GetClipOwner() {
         TimelineClip clip = m_timelineClipSISDataOwner?.GetOwner();
@@ -153,10 +158,10 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
     [SerializeField] private List<PlayableFrameBoolProperty> m_serializedBoolProperties;
     [SerializeField] private double m_localTime;    
-    [SerializeField] private FrameMarker m_marker = null; 
-    
+    [SerializeField] private FrameMarker m_marker = null;     
     [NonSerialized] private TimelineClipSISData m_timelineClipSISDataOwner = null;
 
+    private int m_index;
     
     private Dictionary<PlayableFramePropertyID, PlayableFrameBoolProperty> m_boolProperties;
 
