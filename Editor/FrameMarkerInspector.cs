@@ -69,14 +69,15 @@ internal class FrameMarkerInspector: Editor {
             return;
         }        
                     
+        string fullPath = Path.GetFullPath(filePath);
         playableFrame.SetLocked(true);
         string imageAppPath = EditorPrefs.GetString("kImagesDefaultApp");
         if (string.IsNullOrEmpty(imageAppPath) || !File.Exists(imageAppPath)) {
-            System.Diagnostics.Process.Start(filePath);
+            System.Diagnostics.Process.Start(fullPath);
             return;
         }
         
-        System.Diagnostics.Process.Start(imageAppPath, filePath);
+        System.Diagnostics.Process.Start(imageAppPath, fullPath);
       
     } 
     
