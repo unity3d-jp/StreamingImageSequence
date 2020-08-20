@@ -4,11 +4,11 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
-using UnityEngine.Serialization;
 
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
 using UnityEditor;
+
 #endif
 
 namespace UnityEngine.StreamingImageSequence {
@@ -23,7 +23,7 @@ namespace UnityEngine.StreamingImageSequence {
     /// - ISerializationCallbackReceiver: to perform version upgrade, if necessary
     /// </summary>
     [System.Serializable]
-    internal class StreamingImageSequencePlayableAsset : BaseTimelineClipSISDataPlayableAsset, ITimelineClipAsset
+    internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, ITimelineClipAsset
                                                      , IPlayableBehaviour, IObserver<string>, ISerializationCallbackReceiver
     {      
         
@@ -44,10 +44,11 @@ namespace UnityEngine.StreamingImageSequence {
         public void OnGraphStart(Playable playable) {
             
 #if UNITY_EDITOR
+            string folder = GetFolder();
 
             //Check folder MD5
-            if (!string.IsNullOrEmpty(m_folder) && Directory.Exists(m_folder)) {
-                string curFolderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
+            if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder)) {
+                string curFolderMD5 = PathUtility.CalculateFolderMD5ByFileSize(folder, m_imageFilePatterns, FileNameComparer);
                 if (curFolderMD5 != m_folderMD5) {
                     Reload(curFolderMD5);                    
                 }
@@ -135,7 +136,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 
             double imageSequenceTime = LocalTimeToCurveTime(clip, localTime);
-            int count = m_imageFileNames.Count;
+            int count = GetImageFileNames().Count;
             
             int index = Mathf.RoundToInt(count * (float) imageSequenceTime);
             index = Mathf.Clamp(index, 0, count - 1);
@@ -156,40 +157,7 @@ namespace UnityEngine.StreamingImageSequence {
         /// </summary>
         /// <returns></returns>
         public Texture2D GetTexture() { return m_texture; }        
-
-        /// <summary>
-        /// Get the source folder
-        /// </summary>
-        /// <returns>The folder where the images are located</returns>
-        public string GetFolder() { return m_folder; }
-
-        internal IList<string> GetImageFileNames() { return m_imageFileNames; }
-
-        internal string GetImageFilePath(int index) {
-            Assert.IsNotNull(m_imageFileNames);
-            Assert.IsTrue(index >= 0 && index < m_imageFileNames.Count);
-            return PathUtility.GetPath(m_folder, m_imageFileNames[index]);            
-        }
-        
-        //May return uninitialized value during initialization because the resolution hasn't been updated
-        internal ImageDimensionInt GetResolution() { return m_resolution; }
-        internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFileNames; }
-        
-//----------------------------------------------------------------------------------------------------------------------        
-        internal float GetOrUpdateDimensionRatio() {
-            if (Mathf.Approximately(0.0f, m_dimensionRatio)) {
-                ForceUpdateResolution();
-            }
-            
-            return m_dimensionRatio;
-        }
-        
-//----------------------------------------------------------------------------------------------------------------------        
-
-        internal bool HasImages() {
-            return (!string.IsNullOrEmpty(m_folder) && null != m_imageFileNames && m_imageFileNames.Count > 0);
-        }
-        
+                        
         
 //----------------------------------------------------------------------------------------------------------------------        
         private void Reset() {
@@ -199,9 +167,7 @@ namespace UnityEngine.StreamingImageSequence {
             
             m_lastCopiedImageIndex = -1;
             ResetTexture();
-
-            m_resolution = new ImageDimensionInt();
-            m_dimensionRatio = 0;
+            ResetResolution();
         }
 
 //----------------------------------------------------------------------------------------------------------------------        
@@ -229,14 +195,15 @@ namespace UnityEngine.StreamingImageSequence {
 //---------------------------------------------------------------------------------------------------------------------
 
         internal void ContinuePreloadingImages() {
-            
-            if (null == m_imageFileNames || 0== m_imageFileNames.Count)
+
+            IList<string> imageFileNames = GetImageFileNames();
+            if (null == imageFileNames || 0== imageFileNames.Count)
                 return;
 
             const int NUM_IMAGES = 2;
 
             //forward
-            int maxForwardPreloadIndex = Mathf.Min(m_forwardPreloadImageIndex + NUM_IMAGES, m_imageFileNames.Count) -1;
+            int maxForwardPreloadIndex = Mathf.Min(m_forwardPreloadImageIndex + NUM_IMAGES, imageFileNames.Count) -1;
             int startForwardPreloadIndex = m_forwardPreloadImageIndex;
             for (int i = startForwardPreloadIndex; i <= maxForwardPreloadIndex; ++i) {
                 if (QueueImageLoadTask(i, out _)) {
@@ -291,14 +258,15 @@ namespace UnityEngine.StreamingImageSequence {
         
 
         internal bool RequestLoadImage(int index) {
-            if (null == m_imageFileNames || index < 0 || index >= m_imageFileNames.Count || string.IsNullOrEmpty(m_imageFileNames[index])) {
+            IList<string> imageFileNames = GetImageFileNames();
+            if (null == imageFileNames || index < 0 || index >= imageFileNames.Count || string.IsNullOrEmpty(imageFileNames[index])) {
                 return false;
             }
 
             m_primaryImageIndex         = index;
 
             if (QueueImageLoadTask(index, out ImageData readResult)) {
-                m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, m_imageFileNames.Count - 1);
+                m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, imageFileNames.Count - 1);
                 m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);                
             } else {
                 //If we can't queue, try from the primary index again
@@ -309,7 +277,7 @@ namespace UnityEngine.StreamingImageSequence {
 
                 ResetTexture();
                 m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
-                m_texture.name = "Full: " + m_imageFileNames[index];
+                m_texture.name = "Full: " + imageFileNames[index];
                 readResult.CopyBufferToTexture(m_texture);
                 
                 UpdateResolution(ref readResult);
@@ -332,27 +300,6 @@ namespace UnityEngine.StreamingImageSequence {
                 m_texture = null;
             }
 
-        }
-
-//---------------------------------------------------------------------------------------------------------------------
-        void UpdateResolution(ref ImageData imageData) {
-            m_resolution.Width  = imageData.Width;
-            m_resolution.Height = imageData.Height;
-            m_dimensionRatio = m_resolution.CalculateRatio();
-        }
-//---------------------------------------------------------------------------------------------------------------------
-        
-
-        void ForceUpdateResolution() {
-            if (null!=m_imageFileNames && m_imageFileNames.Count <= 0)
-                return;
-
-            //Load the primary image to update the resolution.
-            QueueImageLoadTask(m_primaryImageIndex,  out ImageData readResult);
-            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {               
-                UpdateResolution(ref readResult);
-            }
-            
         }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -425,9 +372,9 @@ namespace UnityEngine.StreamingImageSequence {
             Debug.LogError($"StreamingImageSequencePlayableAsset::OnError(): {e.ToString()}");
         }
 
-        public void OnNext(string folder) {
+        public void OnNext(string updatedFolder) {
 #if UNITY_EDITOR
-            if (folder != m_folder)
+            if (updatedFolder != GetFolder())
                 return;
             
             Reload();
@@ -446,9 +393,10 @@ namespace UnityEngine.StreamingImageSequence {
 
         public void OnAfterDeserialize() {
             if (m_version < (int) SISPlayableAssetVersion.FOLDER_MD5) {
+                string folder = GetFolder();
                 
-                if (!string.IsNullOrEmpty(m_folder)) {
-                    m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);                
+                if (!string.IsNullOrEmpty(folder)) {
+                    m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(folder, m_imageFilePatterns, FileNameComparer);                
                 }                
             }
             m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;
@@ -462,46 +410,44 @@ namespace UnityEngine.StreamingImageSequence {
 
 #if UNITY_EDITOR         
         internal void InitFolder(StreamingImageSequencePlayableAssetParam param) {
-            m_folder = param.Folder;
-            m_imageFileNames = param.Pictures;
-            m_resolution = param.Resolution;
-
-            m_dimensionRatio = 0;
-            if (m_resolution.Width > 0 && m_resolution.Height > 0) {
-                m_dimensionRatio = m_resolution.CalculateRatio();
-            }
+            string folder = param.Folder;
+            SetFolder(folder );
+            SetImageFileNames(param.Pictures);
+            UpdateResolution(param.Resolution);
             
-            if (null!=m_folder && m_folder.StartsWith("Assets")) {
-                m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(m_folder);
+            if (null!=folder && folder.StartsWith("Assets")) {
+                m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(folder);
             } else {
                 m_timelineDefaultAsset = null;
             }
             m_texture = null;
             EditorUtility.SetDirty(this);
-            m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
+            m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(folder, m_imageFilePatterns, FileNameComparer);
         }
 
         internal void Reload(string folderMD5 = null) {
+            string folder = GetFolder();
             
-            if (string.IsNullOrEmpty(m_folder))
+            if (string.IsNullOrEmpty(folder))
                 return;
             
             //Unload existing images
             if (HasImages()) {
-                foreach (string fileName in m_imageFileNames) {
-                    string imagePath = PathUtility.GetPath(m_folder, fileName);
+                IList<string> prevImageFileNames = GetImageFileNames();
+                foreach (string fileName in prevImageFileNames) {
+                    string imagePath = PathUtility.GetPath(folder, fileName);
                     StreamingImageSequencePlugin.UnloadImageAndNotify(imagePath);
                 }
             }            
             
-            m_imageFileNames = FindImages(m_folder);
+            SetImageFileNames(FindImages(folder));
             Reset();
             EditorUtility.SetDirty(this);
             if (!string.IsNullOrEmpty(folderMD5)) {
                 m_folderMD5 = folderMD5;
             }
             else {
-                m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);                
+                m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(folder, m_imageFilePatterns, FileNameComparer);                
             }
             
 
@@ -529,28 +475,21 @@ namespace UnityEngine.StreamingImageSequence {
             return fileNames;
         }
         
+        
         private static int FileNameComparer(string x, string y) {
             return string.Compare(x, y, StringComparison.InvariantCultureIgnoreCase);
         }
-
-        
-        
 #endif        
         
 #endregion
         
 //----------------------------------------------------------------------------------------------------------------------
 
-        [HideInInspector][SerializeField] private string m_folder = null; //Always have "/" as the directory separator        
-        [FormerlySerializedAs("m_imagePaths")] [HideInInspector][SerializeField] List<string> m_imageFileNames = null; //These are actually file names, not paths
         [HideInInspector][SerializeField] private string m_folderMD5 = null;
         
         
         [HideInInspector][SerializeField] private int m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;
-
-        private ImageDimensionInt  m_resolution;        
-        private float m_dimensionRatio;
         
 
 #if UNITY_EDITOR
