@@ -79,7 +79,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
             AssetEditorUtility.NormalizeAssetPath
         );
         if (newFolder != prevFolder) {
-            m_asset.SetFolder(newFolder);
+            m_asset.SetFolder(AssetEditorUtility.NormalizeAssetPath(newFolder));
             GUIUtility.ExitGUI();
         }
         
