@@ -30,8 +30,8 @@ Streaming Image Sequence は現在プレビューパッケージとして存在�
   ![PackageManager2020](Documentation~/images/PackageManager2020.1.png)
   1. [パッケージマネージャー](https://docs.unity3d.com/ja/current/Manual/upm-ui.html)を開く
   2. **+** ボタンをクリックし、**Add package from git URL** を選択する
-  3. *com.unity.streaming-image-sequence@* とそれに続くバージョンを記入する。  
-     例：*com.unity.streaming-image-sequence@0.3.2-preview*
+  3. `com.unity.streaming-image-sequence@` とそれに続くバージョンを記入する。  
+     例：`com.unity.streaming-image-sequence@0.3.2-preview`
   
 
 ## 対応プラットフォーム
