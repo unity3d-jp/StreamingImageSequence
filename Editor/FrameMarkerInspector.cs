@@ -1,4 +1,5 @@
-﻿using UnityEditor.ShortcutManagement;
+﻿using System.IO;
+using UnityEditor.ShortcutManagement;
 using UnityEngine;
 using UnityEngine.StreamingImageSequence;
 using UnityEngine.Timeline;
@@ -61,16 +62,22 @@ internal class FrameMarkerInspector: Editor {
     {
         int    index    = playableFrame.GetIndex();
         string filePath = renderCachePlayableAsset.GetImageFilePath(index);
-        if (string.IsNullOrEmpty(filePath)) {
+        if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath)) {
             EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER,
                 "Please update RenderCachePlayableAsset.",
                 "Ok");
             return;
-        }
+        }        
                     
         playableFrame.SetLocked(true);
-        System.Diagnostics.Process.Start(filePath);    
-       
+        string imageAppPath = EditorPrefs.GetString("kImagesDefaultApp");
+        if (string.IsNullOrEmpty(imageAppPath) || !File.Exists(imageAppPath)) {
+            System.Diagnostics.Process.Start(filePath);
+            return;
+        }
+        
+        System.Diagnostics.Process.Start(imageAppPath, filePath);
+      
     } 
     
 
