@@ -70,7 +70,7 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Images: " + numImages, "BoldLabel");            
-            if (GUILayout.Button("Reload")) {
+            if (GUILayout.Button("Reload", GUILayout.Width(50))) {
                 m_asset.Reload();
             }
             EditorGUILayout.EndHorizontal();
@@ -84,14 +84,16 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
         
         if (null!= TimelineEditor.selectedClip) {
             
-            if (GUILayout.Button("Reset Curve (Not Undoable)")) {
-                //AnimationClip.SetCurve() doesn't seem to be undoable
-                StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(TimelineEditor.selectedClip);
-            }
 
+            GUILayout.Space(15);
             //Frame markers
             if (TimelineEditor.selectedClip.asset == m_asset) {
                 InspectorUtility.ShowFrameMarkersGUI(m_asset);
+            }
+            GUILayout.Space(15);
+            if (GUILayout.Button("Reset Curve (Not Undoable)")) {
+                //AnimationClip.SetCurve() doesn't seem to be undoable
+                StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(TimelineEditor.selectedClip);
             }
             
         }

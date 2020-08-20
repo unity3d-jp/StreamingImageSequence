@@ -10,18 +10,21 @@ internal static class InspectorUtility {
         TimelineClipSISData timelineClipSISData = timelineClipSISDataPlayableAsset.GetBoundTimelineClipSISData();
         if (null == timelineClipSISData)
             return;
-                
-        GUILayout.Space(15);
-        bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
-        bool markerVisibility     = GUILayout.Toggle(prevMarkerVisibility, "Show FrameMarkers");
-        if (markerVisibility != prevMarkerVisibility) {
-            timelineClipSISData.ShowFrameMarkers(markerVisibility);
+
+        using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
+            bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
+
+            EditorGUILayout.BeginHorizontal();
+            bool markerVisibility = EditorGUILayout.Toggle("Show Frame Markers", prevMarkerVisibility);
+            if (markerVisibility != prevMarkerVisibility) {
+                timelineClipSISData.ShowFrameMarkers(markerVisibility);
+            }
+            if (GUILayout.Button("Reset", GUILayout.Width(50f))) {
+                timelineClipSISDataPlayableAsset.ResetPlayableFrames();
+            }                    
+            EditorGUILayout.EndHorizontal();        
         }
             
-            
-        if (GUILayout.Button("Reset FrameMarkers")) {
-            timelineClipSISDataPlayableAsset.ResetPlayableFrames();
-        }            
     }
 
 //----------------------------------------------------------------------------------------------------------------------
