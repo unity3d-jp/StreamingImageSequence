@@ -90,12 +90,15 @@ internal class RenderCachePlayableAssetInspector : Editor {
         GUILayout.Space(15);
         
         //Capture Selected Frames
-        ShowCaptureSelectedFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
-        ShowLockFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
+        using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
+            ShowCaptureSelectedFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
+            ShowLockFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
+        }
 
         ShortcutBinding updateRenderCacheShortcut 
             = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_UPDATE_RENDER_CACHE);            
         
+        GUILayout.Space(15);
         if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {
             
             PlayableDirector director = TimelineEditor.inspectedDirector;
