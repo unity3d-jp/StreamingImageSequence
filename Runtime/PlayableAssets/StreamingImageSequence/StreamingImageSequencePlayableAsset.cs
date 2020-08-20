@@ -491,7 +491,6 @@ namespace UnityEngine.StreamingImageSequence {
                 foreach (string fileName in m_imageFileNames) {
                     string imagePath = PathUtility.GetPath(m_folder, fileName);
                     StreamingImageSequencePlugin.UnloadImageAndNotify(imagePath);
-                    Debug.Log("Unloading: " + imagePath);
                 }
             }            
             
