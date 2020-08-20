@@ -32,7 +32,7 @@ namespace UnityEditor.StreamingImageSequence {
             string assetName =  EstimateAssetName(relFilePaths[0]);
 
             // set dest folder
-            string streamingAssetsPath = Application.streamingAssetsPath;
+            string streamingAssetsPath = AssetEditorUtility.NormalizeAssetPath( Application.streamingAssetsPath);
 
             //Set importer param
             ImageFileImporterParam importerParam = new ImageFileImporterParam {
@@ -43,7 +43,7 @@ namespace UnityEditor.StreamingImageSequence {
             };
 
 
-            //Import immediately if the assets are already under StreamingAssets            
+            //Import immediately if the assets are already under StreamingAssets
             if (folder.StartsWith(streamingAssetsPath) || !askToCopy) {
                 importerParam.strDstFolder = importerParam.strSrcFolder;
                 importerParam.CopyToStreamingAssets = false;
