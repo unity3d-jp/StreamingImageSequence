@@ -34,6 +34,9 @@ internal static class PathUtility {
         MD5 md5 = MD5.Create();
         
         int numFiles = fileNames.Count;
+        if (numFiles <= 0)
+            return "";
+            
         byte[] lengthBytes = new byte[sizeof(long)];
         for (int i = 0; i < numFiles - 1; ++i) {
             //filename

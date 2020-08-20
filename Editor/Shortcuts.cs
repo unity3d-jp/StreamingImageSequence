@@ -9,7 +9,7 @@ namespace UnityEditor.StreamingImageSequence {
 
 internal static class Shortcuts  {
 
-    [Shortcut("StreamingImageSequence/Toggle Frame Marker", null,  KeyCode.U)]
+    [Shortcut(SISEditorConstants.SHORTCUT_TOGGLE_FRAME_MARKER, null,  KeyCode.U)]
     static void ToggleFrameMarker(ShortcutArguments args) {
         foreach (Object obj in Selection.objects) {
             FrameMarker marker = obj as FrameMarker;
@@ -22,7 +22,7 @@ internal static class Shortcuts  {
     }    
     
 //----------------------------------------------------------------------------------------------------------------------    
-    [Shortcut("StreamingImageSequence/Lock and Edit Frame", null,  KeyCode.E, ShortcutModifiers.Alt)]
+    [Shortcut(SISEditorConstants.SHORTCUT_LOCK_AND_EDIT_FRAME, null,  KeyCode.E, ShortcutModifiers.Alt)]
     static void LockAndEditFrame(ShortcutArguments args) {
         FrameMarker frameMarker = Selection.activeObject as FrameMarker;
         if (null == frameMarker)
@@ -36,23 +36,13 @@ internal static class Shortcuts  {
         RenderCachePlayableAsset renderCachePlayableAsset = timelineClip.asset as RenderCachePlayableAsset;
         if (null == renderCachePlayableAsset)
             return;
-
-        int index = playableFrame.GetIndex();
-        string filePath = renderCachePlayableAsset.GetImageFilePath(index);
-        if (string.IsNullOrEmpty(filePath)) {
-            EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER,
-                "Please update RenderCachePlayableAsset.",
-                "Ok");
-            return;
-        }
-                    
-        playableFrame.SetLocked(true);
-        System.Diagnostics.Process.Start(filePath);    
+        
+        FrameMarkerInspector.LockAndEditPlayableFrame(playableFrame, renderCachePlayableAsset);
     }    
 
 //----------------------------------------------------------------------------------------------------------------------    
     
-    [Shortcut("StreamingImageSequence/Update Render Cache", null,  KeyCode.C, ShortcutModifiers.Alt)]
+    [Shortcut(SISEditorConstants.SHORTCUT_UPDATE_RENDER_CACHE, null,  KeyCode.C, ShortcutModifiers.Alt)]
     static void UpdateRenderCache(ShortcutArguments args) {
 
         TimelineClip clip = TimelineEditor.selectedClip;

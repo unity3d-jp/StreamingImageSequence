@@ -1,4 +1,8 @@
-﻿using UnityEngine.StreamingImageSequence;
+﻿using System.IO;
+using UnityEditor.ShortcutManagement;
+using UnityEngine;
+using UnityEngine.StreamingImageSequence;
+using UnityEngine.Timeline;
 using UnityObject = UnityEngine.Object;
 
 
@@ -18,17 +22,65 @@ internal class FrameMarkerInspector: Editor {
 
 //----------------------------------------------------------------------------------------------------------------------
     public override void OnInspectorGUI() {
-        //base.OnInspectorGUI();
-        bool prevUseImage= m_assets[0].IsFrameUsed();
-        bool useImage = EditorGUILayout.Toggle("Use Image", prevUseImage);
-        if (useImage == prevUseImage)
+        ShortcutBinding useFrameShortcut 
+            = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_TOGGLE_FRAME_MARKER);            
+        bool prevUseFrame= m_assets[0].IsFrameUsed();
+        bool useFrame = EditorGUILayout.Toggle($"Use Frame ({useFrameShortcut})", prevUseFrame);
+        if (useFrame != prevUseFrame) {
+            //Set all selected objects
+            foreach (FrameMarker m in m_assets) {
+                SetMarkerValueByContext(m,useFrame);
+            }            
+        }
+
+               
+        //Only show lock and edit for RenderCachePlayableAsset
+        if (1 != m_assets.Length)
             return;
 
-        //Set all selected objects
-        foreach (FrameMarker m in m_assets) {
-            SetMarkerValueByContext(m,useImage);
+        FrameMarker frameMarker = m_assets[0];
+        TimelineClip clip = frameMarker.GetOwner().GetClipOwner();
+        if (null == clip)
+            return;
+        
+        RenderCachePlayableAsset renderCachePlayableAsset = clip.asset as RenderCachePlayableAsset;
+        if (null != renderCachePlayableAsset) {
+
+            ShortcutBinding lockAndEditShortcut 
+                = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_LOCK_AND_EDIT_FRAME);            
+            if (GUILayout.Button($"Lock and Edit ({lockAndEditShortcut})")) {
+                SISPlayableFrame playableFrame = frameMarker.GetOwner();
+                LockAndEditPlayableFrame(playableFrame, renderCachePlayableAsset);
+            }
         }
     }
+    
+//----------------------------------------------------------------------------------------------------------------------
+
+    internal static void LockAndEditPlayableFrame(SISPlayableFrame playableFrame, 
+        RenderCachePlayableAsset renderCachePlayableAsset) 
+    {
+        int    index    = playableFrame.GetIndex();
+        string filePath = renderCachePlayableAsset.GetImageFilePath(index);
+        if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath)) {
+            EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER,
+                "Please update RenderCachePlayableAsset.",
+                "Ok");
+            return;
+        }        
+                    
+        string fullPath = Path.GetFullPath(filePath);
+        playableFrame.SetLocked(true);
+        string imageAppPath = EditorPrefs.GetString("kImagesDefaultApp");
+        if (string.IsNullOrEmpty(imageAppPath) || !File.Exists(imageAppPath)) {
+            System.Diagnostics.Process.Start(fullPath);
+            return;
+        }
+        
+        System.Diagnostics.Process.Start(imageAppPath, fullPath);
+      
+    } 
+    
 
 //----------------------------------------------------------------------------------------------------------------------
     private static void SetMarkerValueByContext(FrameMarker frameMarker, bool value) {
