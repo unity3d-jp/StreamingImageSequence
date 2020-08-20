@@ -6,15 +6,33 @@
 ## 概要
 
 Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Timeline で一連の画像シーケンスを
-簡単に再生するためのパッケージで、下記の要件を満たすように設計されています。
+簡単に再生するためのパッケージです。
+
+**Timeline 1.4.x 以降のご利用を推奨いたします。**
+
+Streaming Image Sequence は下記の要件を満たすように設計されています。
 
 1. [StreamingAssets](https://docs.unity3d.com/ja/current/Manual/StreamingAssets.html) 
    を使用することで、完全にテクスチャのインポート時間を回避できます。
 1. 再生モードとタイムライン編集モードの両方で、スムーズに画像を再生できます。   
 1. 複数のOSをサポートします。
 
-**Timeline 1.4.x 以降のご利用を推奨いたします。**
+Streaming Image Sequence は現在プレビューパッケージとして存在し、
+インストールの手順は Unity のバージョンによって少々違います。
 
+* Unity 2019.x  
+  ![PackageManager2019](Documentation~/images/PackageManager2019.png)
+  1. [パッケージマネージャー](https://docs.unity3d.com/ja/current/Manual/upm-ui.html)を開く
+  2. **Show preview packages** にチェックが付いているかを確認する
+  3. *Streaming Image Sequence*　を検索する
+  
+* Unity 2020.1  
+  ![PackageManager2020](Documentation~/images/PackageManager2020.1.png)
+  1. [パッケージマネージャー](https://docs.unity3d.com/ja/current/Manual/upm-ui.html)を開く
+  2. **+** ボタンをクリックし、**Add package from git URL** を選択する
+  3. `com.unity.streaming-image-sequence@` とそれに続くバージョンを記入する。  
+     例：`com.unity.streaming-image-sequence@0.3.2-preview`
+  
 
 ## 対応プラットフォーム
 
