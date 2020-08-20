@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.StreamingImageSequence;
@@ -125,6 +124,43 @@ internal class StreamingImageSequencePlayableAssetTest {
         }
                    
 
+        EditorUtilityTest.DestroyTestTimelineAssets(clip);
+        yield return null;
+        
+    }
+
+//----------------------------------------------------------------------------------------------------------------------    
+    
+    [UnityTest]
+    public IEnumerator ImportFromStreamingAssets() {
+        PlayableDirector                    director = EditorUtilityTest.NewSceneWithDirector();
+        TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
+        StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+        Assert.IsNotNull(sisAsset);
+        
+        //Copy test data to streamingAssetsPath
+        const string  DEST_FOLDER_NAME      = "ImportFromStreamingAssetsTest";
+        string        streamingAssetsFolder = AssetEditorUtility.NormalizeAssetPath(Application.streamingAssetsPath);
+        string        destFolderGUID        = AssetDatabase.CreateFolder(streamingAssetsFolder, DEST_FOLDER_NAME);
+        string        destFolder            = AssetDatabase.GUIDToAssetPath(destFolderGUID);
+        string        srcFolder             = sisAsset.GetFolder();
+        IList<string> imageFileNames        = sisAsset.GetImageFileNames();
+        foreach (string imageFileName in imageFileNames) {
+            string src  = Path.Combine(srcFolder, imageFileName);
+            string dest = Path.Combine(destFolder, imageFileName);
+            File.Copy(src, dest,true);
+        }
+
+        AssetDatabase.Refresh();        
+        yield return null;
+        
+        ImageSequenceImporter.ImportImages(destFolder, sisAsset);
+        yield return null;
+               
+        Assert.AreEqual(destFolder, sisAsset.GetFolder());
+
+        //Cleanup
+        AssetDatabase.DeleteAsset(destFolder);       
         EditorUtilityTest.DestroyTestTimelineAssets(clip);
         yield return null;
         
