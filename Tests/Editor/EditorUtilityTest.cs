@@ -129,7 +129,7 @@ internal class EditorUtilityTest {
 
 
         string fullPath = Path.GetFullPath(SRC_IMAGE_PATH);
-        ImageSequenceImporter.ImportPictureFiles(fullPath, sisAsset,false);
+        ImageSequenceImporter.ImportImages(fullPath, sisAsset,false);
             
             
         return clip;

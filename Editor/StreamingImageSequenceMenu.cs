@@ -19,7 +19,7 @@ namespace UnityEditor.StreamingImageSequence {
                 return;
             }
             
-            ImageSequenceImporter.ImportPictureFiles(path, null);
+            ImageSequenceImporter.ImportImages(path, null);
         }
 
 //----------------------------------------------------------------------------------------------------------------------

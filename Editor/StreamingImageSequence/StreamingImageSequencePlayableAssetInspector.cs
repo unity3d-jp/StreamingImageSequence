@@ -143,7 +143,7 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
 
 //----------------------------------------------------------------------------------------------------------------------
     private void ImportImages(string path) {
-        ImageSequenceImporter.ImportPictureFiles(path, m_asset);
+        ImageSequenceImporter.ImportImages(path, m_asset);
         m_isImageListDirty = true;
     }
 
