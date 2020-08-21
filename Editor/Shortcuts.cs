@@ -24,16 +24,21 @@ internal static class Shortcuts  {
 //----------------------------------------------------------------------------------------------------------------------    
     [Shortcut(SISEditorConstants.SHORTCUT_LOCK_AND_EDIT_FRAME, null,  KeyCode.E, ShortcutModifiers.Alt)]
     static void LockAndEditFrame(ShortcutArguments args) {
-        FrameMarker frameMarker = Selection.activeObject as FrameMarker;
-        if (null == frameMarker)
-            return;
-                
-        SISPlayableFrame playableFrame       = frameMarker.GetOwner();
-        RenderCachePlayableAsset playableAsset = playableFrame.GetTimelineClipAsset<RenderCachePlayableAsset>();            
-        if (null == playableAsset)
-            return;
         
-        FrameMarkerInspector.LockAndEditPlayableFrame(playableFrame, playableAsset);
+        foreach (Object obj in Selection.objects) {
+            FrameMarker frameMarker = obj as FrameMarker;
+            if (null == frameMarker) {
+                continue;
+            }
+            SISPlayableFrame playableFrame       = frameMarker.GetOwner();
+            RenderCachePlayableAsset playableAsset = playableFrame.GetTimelineClipAsset<RenderCachePlayableAsset>();            
+            if (null == playableAsset)
+                return;
+        
+            FrameMarkerInspector.LockAndEditPlayableFrame(playableFrame, playableAsset);
+
+        }        
+                        
     }    
 
 //----------------------------------------------------------------------------------------------------------------------    
