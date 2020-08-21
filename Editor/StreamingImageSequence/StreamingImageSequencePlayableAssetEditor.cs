@@ -143,16 +143,11 @@ namespace UnityEditor.StreamingImageSequence {
                 });
                 
                 //For hiding frame marker automatically
-                int numFrames = Mathf.RoundToInt((float)
-                    ((region.endTime - region.startTime) * clipInfo.FramePerSecond / clipInfo.TimeScale) 
-                );
-                
-                double widthPerFrame = rect.width / numFrames;
                 TimelineClipSISData timelineClipSISData = curAsset.GetBoundTimelineClipSISData();
-                if (null != timelineClipSISData) {
-                    timelineClipSISData.SetTimelineWidthPerFrame(widthPerFrame);
-                }
-                
+                if (null != timelineClipSISData) {                
+                    timelineClipSISData.UpdateTimelineWidthPerFrame(rect.width, region.endTime-region.startTime, 
+                        clipInfo.FramePerSecond, clipInfo.TimeScale);
+                }                                
             }
         }
         
