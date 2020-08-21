@@ -136,7 +136,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 
             double imageSequenceTime = LocalTimeToCurveTime(clip, localTime);
-            int count = GetImageFileNames().Count;
+            int count = m_imageFileNames.Count;
             
             int index = Mathf.RoundToInt(count * (float) imageSequenceTime);
             index = Mathf.Clamp(index, 0, count - 1);
@@ -196,14 +196,13 @@ namespace UnityEngine.StreamingImageSequence {
 
         internal void ContinuePreloadingImages() {
 
-            IList<string> imageFileNames = GetImageFileNames();
-            if (null == imageFileNames || 0== imageFileNames.Count)
+            if (null == m_imageFileNames || 0== m_imageFileNames.Count)
                 return;
 
             const int NUM_IMAGES = 2;
 
             //forward
-            int maxForwardPreloadIndex = Mathf.Min(m_forwardPreloadImageIndex + NUM_IMAGES, imageFileNames.Count) -1;
+            int maxForwardPreloadIndex = Mathf.Min(m_forwardPreloadImageIndex + NUM_IMAGES, m_imageFileNames.Count) -1;
             int startForwardPreloadIndex = m_forwardPreloadImageIndex;
             for (int i = startForwardPreloadIndex; i <= maxForwardPreloadIndex; ++i) {
                 if (QueueImageLoadTask(i, out _)) {
@@ -258,15 +257,15 @@ namespace UnityEngine.StreamingImageSequence {
         
 
         internal bool RequestLoadImage(int index) {
-            IList<string> imageFileNames = GetImageFileNames();
-            if (null == imageFileNames || index < 0 || index >= imageFileNames.Count || string.IsNullOrEmpty(imageFileNames[index])) {
+            if (null == m_imageFileNames || index < 0 || index >= m_imageFileNames.Count 
+                || string.IsNullOrEmpty(m_imageFileNames[index])) {
                 return false;
             }
 
             m_primaryImageIndex         = index;
 
             if (QueueImageLoadTask(index, out ImageData readResult)) {
-                m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, imageFileNames.Count - 1);
+                m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, m_imageFileNames.Count - 1);
                 m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);                
             } else {
                 //If we can't queue, try from the primary index again
@@ -277,7 +276,7 @@ namespace UnityEngine.StreamingImageSequence {
 
                 ResetTexture();
                 m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
-                m_texture.name = "Full: " + imageFileNames[index];
+                m_texture.name = "Full: " + m_imageFileNames[index];
                 readResult.CopyBufferToTexture(m_texture);
                 
                 UpdateResolution(ref readResult);
@@ -412,7 +411,7 @@ namespace UnityEngine.StreamingImageSequence {
         internal void InitFolder(StreamingImageSequencePlayableAssetParam param) {
             string folder = param.Folder;
             SetFolder(folder );
-            SetImageFileNames(param.Pictures);
+            m_imageFileNames = param.Pictures;
             UpdateResolution(param.Resolution);
             
             if (null!=folder && folder.StartsWith("Assets")) {
@@ -433,14 +432,13 @@ namespace UnityEngine.StreamingImageSequence {
             
             //Unload existing images
             if (HasImages()) {
-                IList<string> prevImageFileNames = GetImageFileNames();
-                foreach (string fileName in prevImageFileNames) {
+                foreach (string fileName in m_imageFileNames) {
                     string imagePath = PathUtility.GetPath(folder, fileName);
                     StreamingImageSequencePlugin.UnloadImageAndNotify(imagePath);
                 }
-            }            
-            
-            SetImageFileNames(FindImageFileNames(folder));
+            }
+
+            m_imageFileNames = FindImageFileNames(folder); 
             Reset();
             EditorUtility.SetDirty(this);
             if (!string.IsNullOrEmpty(folderMD5)) {

@@ -29,6 +29,11 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
     public sealed override Playable CreatePlayable(PlayableGraph graph, GameObject go) {
         return Playable.Null;
     }
+
+    internal void SetImageFileNames(List<string> imageFileNames) {
+        m_imageFileNames = imageFileNames;
+    }
+    
 }
 
 } //end namespace
