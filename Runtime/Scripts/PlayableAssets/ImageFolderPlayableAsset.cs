@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using JetBrains.Annotations;
 using UnityEngine.Assertions;
-using UnityEngine.Playables;
-using UnityEngine.Timeline;
 
 namespace UnityEngine.StreamingImageSequence {
 
@@ -82,7 +81,15 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     internal void SetFolder(string folder) { m_folder = folder;}
     internal IList<string> GetImageFileNames() { return m_imageFileNames; }
     internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFileNames; }
-    
+
+
+    //Returns true if the MD5 has changed
+    protected bool UpdateFolderMD5() {
+
+        string prevFolderMD5 = m_folderMD5; 
+        m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
+        return (prevFolderMD5 != m_folderMD5);         
+    }    
 //----------------------------------------------------------------------------------------------------------------------
 
     [CanBeNull]
@@ -115,15 +122,50 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         return fullPath;               
     }
     
+
+#if UNITY_EDITOR    
+    //Return FileNames
+    internal static List<string> FindImageFileNames(string path) {
+        Assert.IsFalse(string.IsNullOrEmpty(path));
+        Assert.IsTrue(Directory.Exists(path));
+
+        //Convert path to folder here
+        string fullSrcPath = Path.GetFullPath(path).Replace("\\", "/");
+
+        //Enumerate all files with the supported extensions and sort
+        List<string> fileNames = new List<string>();
+        foreach (string pattern in m_imageFilePatterns) {
+            IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.TopDirectoryOnly);
+            foreach (string filePath in files) {                    
+                fileNames.Add(Path.GetFileName(filePath));
+            }
+        }
+        fileNames.Sort(FileNameComparer);
+        return fileNames;
+    }
+        
+        
+    private static int FileNameComparer(string x, string y) {
+        return string.Compare(x, y, StringComparison.InvariantCultureIgnoreCase);
+    }
+#endif    
     
 //----------------------------------------------------------------------------------------------------------------------    
-    [SerializeField] protected string m_folder = null;
+    [HideInInspector][SerializeField] protected string       m_folder         = null;
     [HideInInspector][SerializeField] protected List<string> m_imageFileNames = null; //file names, not paths
-    
+    [HideInInspector][SerializeField] protected string       m_folderMD5      = null;
+
 //----------------------------------------------------------------------------------------------------------------------    
     private float m_dimensionRatio = 0;
     private ImageDimensionInt m_resolution;        
 
+#if UNITY_EDITOR    
+    static readonly string[] m_imageFilePatterns = {
+        "*.png",
+        "*.tga"             
+    };        
+#endif    
+    
 }
 
 } //end namespace

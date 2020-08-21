@@ -2,7 +2,6 @@
 using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
-using System.Collections.Generic;
 using UnityEngine.Assertions;
 
 #if UNITY_EDITOR
@@ -46,9 +45,8 @@ namespace UnityEngine.StreamingImageSequence {
 #if UNITY_EDITOR
             //Check folder MD5
             if (!string.IsNullOrEmpty(m_folder) && Directory.Exists(m_folder)) {
-                string curFolderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
-                if (curFolderMD5 != m_folderMD5) {
-                    Reload(curFolderMD5);                    
+                if (UpdateFolderMD5()) {
+                    Reload(m_folderMD5);                    
                 }
             }
             
@@ -391,7 +389,7 @@ namespace UnityEngine.StreamingImageSequence {
         public void OnAfterDeserialize() {
             if (m_version < (int) SISPlayableAssetVersion.FOLDER_MD5_1_0) {                
                 if (!string.IsNullOrEmpty(m_folder)) {
-                    m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);                
+                    UpdateFolderMD5();
                 }                
             }
             m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;
@@ -416,7 +414,7 @@ namespace UnityEngine.StreamingImageSequence {
             }
             m_texture = null;
             EditorUtility.SetDirty(this);
-            m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
+            UpdateFolderMD5();
         }
 
         internal void Reload(string folderMD5 = null) {
@@ -439,7 +437,7 @@ namespace UnityEngine.StreamingImageSequence {
                 m_folderMD5 = folderMD5;
             }
             else {
-                m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);                
+                UpdateFolderMD5();
             }
             
 
@@ -447,39 +445,12 @@ namespace UnityEngine.StreamingImageSequence {
         
         internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
 
-        //Return FileNames
-        internal static List<string> FindImageFileNames(string path) {
-            Assert.IsFalse(string.IsNullOrEmpty(path));
-            Assert.IsTrue(Directory.Exists(path));
-
-            //Convert path to folder here
-            string fullSrcPath    = Path.GetFullPath(path).Replace("\\", "/");
-
-            //Enumerate all files with the supported extensions and sort
-            List<string> fileNames = new List<string>();
-            foreach (string pattern in m_imageFilePatterns) {
-                IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.TopDirectoryOnly);
-                foreach (string filePath in files) {                    
-                    fileNames.Add(Path.GetFileName(filePath));
-                }
-            }
-            fileNames.Sort(FileNameComparer);
-            return fileNames;
-        }
-        
-        
-        private static int FileNameComparer(string x, string y) {
-            return string.Compare(x, y, StringComparison.InvariantCultureIgnoreCase);
-        }
 #endif        
         
 #endregion
         
 //----------------------------------------------------------------------------------------------------------------------
 
-        [HideInInspector][SerializeField] private string m_folderMD5 = null;
-        
-        
         [HideInInspector][SerializeField] private int m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;        
         [SerializeField] double m_time;
         
@@ -509,10 +480,6 @@ namespace UnityEngine.StreamingImageSequence {
         
         private const int CUR_SIS_PLAYABLE_ASSET_VERSION = (int) SISPlayableAssetVersion.FOLDER_MD5_1_0;
                 
-        static readonly string[] m_imageFilePatterns = {
-            "*.png",
-            "*.tga"             
-        };        
 
     }
 
