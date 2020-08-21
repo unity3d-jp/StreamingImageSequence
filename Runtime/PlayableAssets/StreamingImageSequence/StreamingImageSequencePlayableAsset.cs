@@ -462,16 +462,12 @@ namespace UnityEngine.StreamingImageSequence {
         private const int CUR_SIS_PLAYABLE_ASSET_VERSION = (int) SISPlayableAssetVersion.FOLDER_MD5_1_0;
                 
 
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-
-enum SISPlayableAssetVersion {
-    INITIAL = 1, //initial
-    FOLDER_MD5_1_0 = 2, //For version 1.0
+        enum SISPlayableAssetVersion {
+            INITIAL        = 1, //initial
+            FOLDER_MD5_1_0 = 2, //For version 1.0
     
-}
-
+        }
+    }
 
 } //end namespace
 
