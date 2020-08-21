@@ -101,7 +101,7 @@ internal class StreamingImageSequencePlayableAssetTest {
         Assert.Greater(numOriginalImages,0);
 
         
-        List<string> testImages = ImageFolderPlayableAsset.FindImageFileNames(folder);
+        List<string> testImages = sisAsset.FindImages(folder);
         List<string> copiedImagePaths = new List<string>(testImages.Count);
         foreach (string imageFileName in testImages) {
             string src = Path.Combine(folder, imageFileName);

@@ -67,12 +67,27 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
         m_imageFileNames = imageFileNames;
     }
 
+    
+//----------------------------------------------------------------------------------------------------------------------
+    
+#if UNITY_EDITOR
+    protected override string[] GetSupportedImageFilePatternsV() { return m_imageFilePatterns; }
+    
+#endif
+    
 //----------------------------------------------------------------------------------------------------------------------
     
 #pragma warning disable 414
     [HideInInspector][SerializeField] private int m_version = CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION;
 #pragma warning restore 414
     private const int CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION = (int) RenderCachePlayableAssetVersion.INITIAL_1_0;
+    
+#if UNITY_EDITOR
+    private static readonly string[] m_imageFilePatterns = {
+        "*.png",
+    };        
+#endif
+    
     
     enum RenderCachePlayableAssetVersion {
         INITIAL_1_0 = 1, //initial for version 1.0

@@ -141,7 +141,7 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
             }
         }
 
-        m_imageFileNames = FindImageFileNames(m_folder); 
+        m_imageFileNames = FindImages(m_folder); 
         ResetInternalV();
         EditorUtility.SetDirty(this);
         if (!string.IsNullOrEmpty(folderMD5)) {
@@ -156,12 +156,20 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     protected bool UpdateFolderMD5() {
 
         string prevFolderMD5 = m_folderMD5; 
-        m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
+        m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, GetSupportedImageFilePatternsV(), FileNameComparer);
         return (prevFolderMD5 != m_folderMD5);         
     }
-    
+
+    internal static List<string> FindFiles(string path, string[] filePatterns) {
+        return FindFilesInternal(path, filePatterns);
+    }
+
+    internal List<string> FindImages(string path) {
+        return FindFilesInternal(path, GetSupportedImageFilePatternsV());
+    }
+
     //Return FileNames
-    internal static List<string> FindImageFileNames(string path) {
+    private static List<string> FindFilesInternal(string path, string[] filePatterns) {
         Assert.IsFalse(string.IsNullOrEmpty(path));
         Assert.IsTrue(Directory.Exists(path));
 
@@ -169,8 +177,8 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         string fullSrcPath = Path.GetFullPath(path).Replace("\\", "/");
 
         //Enumerate all files with the supported extensions and sort
-        List<string> fileNames = new List<string>();
-        foreach (string pattern in m_imageFilePatterns) {
+        List<string> fileNames         = new List<string>();
+        foreach (string pattern in filePatterns) {
             IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.TopDirectoryOnly);
             foreach (string filePath in files) {                    
                 fileNames.Add(Path.GetFileName(filePath));
@@ -178,16 +186,17 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         }
         fileNames.Sort(FileNameComparer);
         return fileNames;
-    }
-        
+    }        
         
     private static int FileNameComparer(string x, string y) {
         return string.Compare(x, y, StringComparison.InvariantCultureIgnoreCase);
     }
+
+    protected abstract string[] GetSupportedImageFilePatternsV();
     
 #endregion Reload/Find images
     
-#endif    
+#endif  //End #if UNITY_EDITOR Editor
     
 //----------------------------------------------------------------------------------------------------------------------    
     [HideInInspector][SerializeField] protected string       m_folder         = null;
@@ -197,13 +206,6 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
 //----------------------------------------------------------------------------------------------------------------------    
     private float m_dimensionRatio = 0;
     private ImageDimensionInt m_resolution;        
-
-#if UNITY_EDITOR    
-    static readonly string[] m_imageFilePatterns = {
-        "*.png",
-        "*.tga"             
-    };        
-#endif    
     
 }
 

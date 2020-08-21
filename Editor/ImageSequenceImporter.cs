@@ -122,7 +122,9 @@ namespace UnityEditor.StreamingImageSequence {
                 folder = Path.GetDirectoryName(folder);
             }
             
-            imagePaths = ImageFolderPlayableAsset.FindImageFileNames(folder);            
+            imagePaths = ImageFolderPlayableAsset.FindFiles(folder, 
+                StreamingImageSequencePlayableAsset.GetSupportedImageFilePatterns()
+            );            
         }
 //---------------------------------------------------------------------------------------------------------------------
         

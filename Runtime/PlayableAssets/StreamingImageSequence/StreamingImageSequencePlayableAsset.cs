@@ -427,8 +427,13 @@ namespace UnityEngine.StreamingImageSequence {
         }
         
         internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
+        
+        protected override string[] GetSupportedImageFilePatternsV() { return m_imageFilePatterns; }
 
-#endif        
+        internal static string[] GetSupportedImageFilePatterns() { return m_imageFilePatterns;}
+        
+        
+#endif //end #if UNITY_EDITOR        
         
 #endregion
         
@@ -446,6 +451,12 @@ namespace UnityEngine.StreamingImageSequence {
                 type         = typeof(StreamingImageSequencePlayableAsset),
                 propertyName = "m_time"
             };
+
+        private static readonly string[] m_imageFilePatterns = {
+            "*.png",
+            "*.tga"             
+        };
+
         
 #endif
        
