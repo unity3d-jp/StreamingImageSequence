@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
-using UnityEditor.Timeline.Actions;
+﻿#if AT_USE_TIMELINE_GE_1_4_0            
+
+using System.Collections.Generic;
 using UnityEngine.StreamingImageSequence;
 using UnityEngine.Timeline;
 
+using UnityEditor.Timeline.Actions;
+
 namespace UnityEditor.StreamingImageSequence {
 
-#if AT_USE_TIMELINE_GE_1_4_0            
 [MenuEntry("Lock and Edit")]
-#endif
 
 class LockAndEditFrameMarkerAction : MarkerAction
 {
@@ -54,3 +55,5 @@ class LockAndEditFrameMarkerAction : MarkerAction
 
 } //end namespace
 
+
+#endif //AT_USE_TIMELINE_GE_1_4_0
