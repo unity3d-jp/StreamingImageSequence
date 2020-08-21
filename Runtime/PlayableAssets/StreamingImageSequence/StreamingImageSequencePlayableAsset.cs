@@ -502,7 +502,6 @@ namespace UnityEngine.StreamingImageSequence {
         private int m_forwardPreloadImageIndex  = 0;
         private int m_backwardPreloadImageIndex = 0;
         
-        private bool m_verified;
 
         Texture2D m_texture = null;
 
