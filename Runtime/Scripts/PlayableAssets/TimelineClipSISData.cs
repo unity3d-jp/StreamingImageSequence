@@ -245,7 +245,9 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 
     [NonSerialized] private TimelineClip  m_clipOwner = null;
 
+#pragma warning disable 414    
     [HideInInspector][SerializeField] private int m_version = CUR_TIMELINE_CLIP_SIS_DATA_VERSION;        
+#pragma warning restore 414    
     
 #if UNITY_EDITOR    
     private PlayableFramePropertyID m_inspectedPropertyID   = PlayableFramePropertyID.USED;
