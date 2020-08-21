@@ -420,32 +420,6 @@ namespace UnityEngine.StreamingImageSequence {
             EditorUtility.SetDirty(this);
             UpdateFolderMD5();
         }
-
-        internal void Reload(string folderMD5 = null) {
-           
-            if (string.IsNullOrEmpty(m_folder))
-                return;
-            
-            //Unload existing images
-            if (HasImages()) {
-                foreach (string fileName in m_imageFileNames) {
-                    string imagePath = PathUtility.GetPath(m_folder, fileName);
-                    StreamingImageSequencePlugin.UnloadImageAndNotify(imagePath);
-                }
-            }
-
-            m_imageFileNames = FindImageFileNames(m_folder); 
-            Reset();
-            EditorUtility.SetDirty(this);
-            if (!string.IsNullOrEmpty(folderMD5)) {
-                m_folderMD5 = folderMD5;
-            }
-            else {
-                UpdateFolderMD5();
-            }
-            
-
-        }
         
         internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
 
