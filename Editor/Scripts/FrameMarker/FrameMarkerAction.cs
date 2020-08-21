@@ -5,7 +5,10 @@ using UnityEngine.Timeline;
 
 namespace UnityEditor.StreamingImageSequence {
 
+#if AT_USE_TIMELINE_GE_1_4_0            
 [MenuEntry("Lock and Edit")]
+#endif
+
 class LockAndEditFrameMarkerAction : MarkerAction
 {
     ///<inheritdoc />
