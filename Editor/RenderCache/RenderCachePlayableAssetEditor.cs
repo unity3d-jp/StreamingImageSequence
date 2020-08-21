@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Timeline;
@@ -86,34 +84,12 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
         Assert.IsTrue(numImages > 0);
         
         int index = Mathf.RoundToInt(numImages * (float) normalizedLocalTime);
-        index = Mathf.Clamp(index, 0, numImages - 1);
-        
+        index = Mathf.Clamp(index, 0, numImages - 1);        
                         
-        //Load
+        //Draw
         string imagePath = renderCachePlayableAsset.GetImageFilePath(index);
+        PreviewUtility.DrawPreviewImage(ref drawInfo, imagePath);
         
-        if (!File.Exists(imagePath))
-            return;
-        
-        ImageLoader.GetImageDataInto(imagePath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
-            , out ImageData imageData);
-            
-        switch (imageData.ReadStatus) {
-            case StreamingImageSequenceConstants.READ_STATUS_LOADING:
-                break;
-            case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
-                Texture2D tex = PreviewTextureFactory.GetOrCreate(imagePath, ref imageData);
-                if (null != tex) {
-                    Graphics.DrawTexture(drawInfo.DrawRect, tex);
-                }
-                break;
-            }
-            default: {
-                ImageLoader.RequestLoadPreviewImage(imagePath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height);                    
-                break;
-            }
-        
-        }
         
     }
     

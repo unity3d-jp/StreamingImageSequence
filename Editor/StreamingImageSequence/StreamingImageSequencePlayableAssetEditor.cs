@@ -2,7 +2,6 @@
 using System.IO;
 using UnityEditor.Timeline;
 using UnityEngine.Timeline;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
@@ -156,29 +155,9 @@ namespace UnityEditor.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------
         void DrawPreviewImage(ref PreviewDrawInfo drawInfo, TimelineClip clip, StreamingImageSequencePlayableAsset sisAsset) {
-            int imageIndex = sisAsset.LocalTimeToImageIndex(clip, drawInfo.LocalTime);
-        
-            //Load
+            int imageIndex = sisAsset.LocalTimeToImageIndex(clip, drawInfo.LocalTime);       
             string imagePath = sisAsset.GetImageFilePath(imageIndex);
-            ImageLoader.GetImageDataInto(imagePath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
-                , out ImageData readResult);
-            
-            switch (readResult.ReadStatus) {
-                case StreamingImageSequenceConstants.READ_STATUS_LOADING:
-                    break;
-                case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
-                    Texture2D tex = PreviewTextureFactory.GetOrCreate(imagePath, ref readResult);
-                    if (null != tex) {
-                        Graphics.DrawTexture(drawInfo.DrawRect, tex);
-                    }
-                    break;
-                }
-                default: {
-                    ImageLoader.RequestLoadPreviewImage(imagePath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height);                    
-                    break;
-                }
-
-            }
+            PreviewUtility.DrawPreviewImage(ref drawInfo, imagePath);
         
         }
         
