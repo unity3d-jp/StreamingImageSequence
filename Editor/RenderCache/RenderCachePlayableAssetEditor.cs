@@ -70,6 +70,18 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
             PreviewUtility.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
                 DrawPreviewImage(ref drawInfo, clip, curAsset);
             });
+            
+            //For hiding frame marker automatically
+            int numFrames = Mathf.RoundToInt((float)
+                ((region.endTime - region.startTime) * clipInfo.FramePerSecond / clipInfo.TimeScale) 
+            );
+                
+            double              widthPerFrame       = rect.width / numFrames;
+            TimelineClipSISData timelineClipSISData = curAsset.GetBoundTimelineClipSISData();
+            if (null != timelineClipSISData) {
+                timelineClipSISData.SetTimelineWidthPerFrame(widthPerFrame);
+            }
+            
                 
         }        
     }
