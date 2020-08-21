@@ -440,7 +440,7 @@ namespace UnityEngine.StreamingImageSequence {
                 }
             }            
             
-            SetImageFileNames(FindImages(folder));
+            SetImageFileNames(FindImageFileNames(folder));
             Reset();
             EditorUtility.SetDirty(this);
             if (!string.IsNullOrEmpty(folderMD5)) {
@@ -456,7 +456,7 @@ namespace UnityEngine.StreamingImageSequence {
         internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
 
         //Return FileNames
-        internal static List<string> FindImages(string path) {
+        internal static List<string> FindImageFileNames(string path) {
             Assert.IsFalse(string.IsNullOrEmpty(path));
             Assert.IsTrue(Directory.Exists(path));
 
