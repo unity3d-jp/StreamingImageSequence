@@ -23,7 +23,7 @@ internal class FrameMarkerTest {
         TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
         
         TrackAsset trackAsset = clip.parentTrack;
-        timelineClipSISData.RequestFrameMarkers(true);
+        timelineClipSISData.RequestFrameMarkers(true, true);
         TimelineEditor.Refresh(RefreshReason.ContentsModified);
         yield return null;
         

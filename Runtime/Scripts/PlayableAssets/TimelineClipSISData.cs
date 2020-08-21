@@ -60,13 +60,14 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         return m_frameMarkersRequested;
     }
 
-    internal void RequestFrameMarkers(bool req) {
+    internal void RequestFrameMarkers(bool req, bool forceShow = false) {
 
         if (req == m_frameMarkersRequested)
             return;
         
 #if UNITY_EDITOR        
-        Undo.RegisterFullObjectHierarchyUndo( m_clipOwner.parentTrack, "StreamingImageSequence Show/Hide FrameMarker");
+        Undo.RegisterFullObjectHierarchyUndo( m_clipOwner.parentTrack, "StreamingImageSequence Show/Hide FrameMarker");        
+        m_forceShowFrameMarkers = forceShow && req;
 #endif        
         m_frameMarkersRequested = req;
         if (UpdateFrameMarkersVisibility()) {
@@ -228,7 +229,8 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         bool prevVisibility = m_frameMarkersVisibility;
 #if UNITY_EDITOR        
         const int FRAME_MARKER_WIDTH_THRESHOLD = 20;
-        m_frameMarkersVisibility = m_frameMarkersRequested && m_timelineWidthPerFrame > FRAME_MARKER_WIDTH_THRESHOLD;
+        m_frameMarkersVisibility = m_frameMarkersRequested && 
+            (m_forceShowFrameMarkers || m_timelineWidthPerFrame > FRAME_MARKER_WIDTH_THRESHOLD);
 #else
         m_frameMarkersVisibility = m_frameMarkersRequested;
 #endif
@@ -248,6 +250,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 #if UNITY_EDITOR    
     private PlayableFramePropertyID m_inspectedPropertyID   = PlayableFramePropertyID.USED;
     private double                  m_timelineWidthPerFrame = Int16.MaxValue;
+    private bool                    m_forceShowFrameMarkers = false;
 #endif
 
     private       bool   m_frameMarkersVisibility           = false;
