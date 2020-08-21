@@ -29,15 +29,11 @@ internal static class Shortcuts  {
             return;
                 
         SISPlayableFrame playableFrame       = frameMarker.GetOwner();
-        TimelineClip     timelineClip = playableFrame.GetOwner().GetOwner();
-        if (null == timelineClip)
+        RenderCachePlayableAsset playableAsset = playableFrame.GetTimelineClipAsset<RenderCachePlayableAsset>();            
+        if (null == playableAsset)
             return;
         
-        RenderCachePlayableAsset renderCachePlayableAsset = timelineClip.asset as RenderCachePlayableAsset;
-        if (null == renderCachePlayableAsset)
-            return;
-        
-        FrameMarkerInspector.LockAndEditPlayableFrame(playableFrame, renderCachePlayableAsset);
+        FrameMarkerInspector.LockAndEditPlayableFrame(playableFrame, playableAsset);
     }    
 
 //----------------------------------------------------------------------------------------------------------------------    
