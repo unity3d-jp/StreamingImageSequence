@@ -82,31 +82,31 @@ internal class JstimelineImporter : ScriptedImporter
             {
                 strFootagePath = Path.Combine(assetFolder, strFootagePath);
             }
-            string strFootageName = Path.GetFileNameWithoutExtension(strFootagePath);
-            string strJsonFootage = File.ReadAllText(strFootagePath);
-            StreamingImageSequencePlayableAssetParam trackMovieContainer = JsonUtility.FromJson<StreamingImageSequencePlayableAssetParam>(strJsonFootage);
+            string        strFootageName      = Path.GetFileNameWithoutExtension(strFootagePath);
+            string        strJsonFootage      = File.ReadAllText(strFootagePath);
+            AEFootageInfo footageInfo = JsonUtility.FromJson<AEFootageInfo>(strJsonFootage);
 
-            int numImages = trackMovieContainer.Pictures.Count;
+            int numImages = footageInfo.Pictures.Count;
             if (numImages > 0) {
 
-                List<string> originalImagePaths = new List<string>(trackMovieContainer.Pictures);
+                List<string> originalImagePaths = new List<string>(footageInfo.Pictures);
 
                 for (int xx = 0; xx < numImages; ++xx) {
-                    string fileName = trackMovieContainer.Pictures[xx];
+                    string fileName = footageInfo.Pictures[xx];
                     // replace '~' with the path to home (for Linux environment
                     if (fileName.StartsWith("~")) {
                         fileName = strHome + fileName.Substring(1);
                     }
-                    trackMovieContainer.Pictures[xx] = Path.GetFileName(fileName);
+                    footageInfo.Pictures[xx] = Path.GetFileName(fileName);
                 }
                 
                 string destFootageFolder = Application.streamingAssetsPath;
                 destFootageFolder = Path.Combine(destFootageFolder, strFootageName).Replace("\\", "/");
                 Directory.CreateDirectory(destFootageFolder); //make sure the directory exists
-                trackMovieContainer.Folder = AssetEditorUtility.NormalizeAssetPath(destFootageFolder);
+                footageInfo.Folder = AssetEditorUtility.NormalizeAssetPath(destFootageFolder);
 
                 for (int i=0;i<numImages;++i) {
-                    string destFilePath = Path.Combine(destFootageFolder, trackMovieContainer.Pictures[i]);
+                    string destFilePath = Path.Combine(destFootageFolder, footageInfo.Pictures[i]);
                     if (File.Exists(destFilePath)) {
                         File.Delete(destFilePath);
                     }
@@ -119,7 +119,7 @@ internal class JstimelineImporter : ScriptedImporter
 
 
             StreamingImageSequencePlayableAsset sisAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
-            sisAsset.InitFolder(trackMovieContainer);
+            sisAsset.InitFolder(footageInfo.Folder, footageInfo.Pictures, footageInfo.Resolution);
 
             string playableAssetPath = Path.Combine(timelineFolder, strFootageName + "_StreamingImageSequence.playable");
             AssetEditorUtility.OverwriteAsset(sisAsset, playableAssetPath);
@@ -170,8 +170,8 @@ internal class JstimelineImporter : ScriptedImporter
             RectTransform rectTransform = imageGo.GetComponent<RectTransform>();
             rectTransform.SetParent(directorT);
             rectTransform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
-            rectTransform.sizeDelta = new Vector2(trackMovieContainer.Resolution.Width,
-                                                  trackMovieContainer.Resolution.Height);
+            rectTransform.sizeDelta = new Vector2(footageInfo.Resolution.Width,
+                                                  footageInfo.Resolution.Height);
 
             director.SetGenericBinding(movieTrack, renderer);
             EditorUtility.SetDirty(director);

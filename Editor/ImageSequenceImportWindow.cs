@@ -43,8 +43,8 @@ internal class ImageSequenceImportWindow : EditorWindow {
         GUILayout.Space(8);
 
         GUILayout.Label(StreamingImageSequenceConstants.DIALOG_HEADER + " Importer", m_headerStyle);
-        if (m_importerParam.RelativeFilePaths != null) {
-            int numFiles = m_importerParam.RelativeFilePaths.Count;
+        if (m_importerParam.ImageFiles != null) {
+            int numFiles = m_importerParam.ImageFiles.Count;
             GUILayout.Label(numFiles.ToString() + " external files found in: ");
             GUILayout.Label(m_importerParam.strSrcFolder);
             
@@ -63,7 +63,7 @@ internal class ImageSequenceImportWindow : EditorWindow {
                 string str = indexStr + ":";
 
                 EditorGUILayout.LabelField(str, GUILayout.Width(40));
-                EditorGUILayout.LabelField(m_importerParam.RelativeFilePaths[index]);
+                EditorGUILayout.LabelField(m_importerParam.ImageFiles[index]);
             });
             
         }

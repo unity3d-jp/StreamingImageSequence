@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
+using System.Collections.Generic;
 
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
@@ -409,10 +410,11 @@ namespace UnityEngine.StreamingImageSequence {
 #region Unity Editor code
 
 #if UNITY_EDITOR         
-        internal void InitFolder(StreamingImageSequencePlayableAssetParam param) {
-            m_folder = param.Folder;
-            m_imageFileNames = param.Pictures;
-            UpdateResolution(param.Resolution);
+        internal void InitFolder(string folder, List<string> imageFileNames, ImageDimensionInt res = new ImageDimensionInt()) 
+        {
+            m_folder = folder;
+            m_imageFileNames = imageFileNames;
+            UpdateResolution(res);
             
             if (null!=m_folder && m_folder.StartsWith("Assets")) {
                 m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(m_folder);
