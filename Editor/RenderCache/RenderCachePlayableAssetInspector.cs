@@ -188,7 +188,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
             string outputFilePath = Path.Combine(outputFolder, fileName);
 
             SISPlayableFrame playableFrame = timelineClipSISData.GetPlayableFrame(fileCounter);                
-            bool captureFrame = (!timelineClipSISData.AreFrameMarkersVisible() //if markers are not visible, capture
+            bool captureFrame = (!timelineClipSISData.AreFrameMarkersRequested() //if markers are not requested, capture
                 || !File.Exists(outputFilePath) //if file doesn't exist, capture
                 || (null!=playableFrame && playableFrame.IsUsed() && !playableFrame.IsLocked())
             );             
@@ -255,13 +255,13 @@ internal class RenderCachePlayableAssetInspector : Editor {
 
 
     private void ShowCaptureSelectedFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
-        bool         prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
-        TrackAsset   track                = timelineClip.parentTrack;
+        bool         prevMarkersRequest = timelineClipSISData.AreFrameMarkersRequested();
+        TrackAsset   track              = timelineClip.parentTrack;
         
         GUILayout.BeginHorizontal();
-        bool markerVisibility = EditorGUILayout.Toggle("Show Frame Markers", prevMarkerVisibility);
-        if (markerVisibility != prevMarkerVisibility) {
-            timelineClipSISData.ShowFrameMarkers(markerVisibility);
+        bool markerVisibility = EditorGUILayout.Toggle("Show Frame Markers", prevMarkersRequest);
+        if (markerVisibility != prevMarkersRequest) {
+            timelineClipSISData.RequestFrameMarkers(markerVisibility);
         }
         GUILayout.FlexibleSpace();
         EditorGUI.BeginDisabledGroup(!markerVisibility);        

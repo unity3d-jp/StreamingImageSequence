@@ -29,7 +29,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
             m_playableFrames.Add(newFrame);
         }
         
-        m_frameMarkersVisibility = other.m_frameMarkersVisibility;
+        m_frameMarkersRequested = other.m_frameMarkersRequested;
         
     }
     
@@ -55,19 +55,23 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     
 
 //----------------------------------------------------------------------------------------------------------------------
-    
-    internal bool AreFrameMarkersVisible() {  return m_frameMarkersVisibility; }
 
-    internal void ShowFrameMarkers(bool show) {
+    internal bool AreFrameMarkersRequested() {
+        return m_frameMarkersRequested;
+    }
 
-        if (show == m_frameMarkersVisibility)
+    internal void RequestFrameMarkers(bool req) {
+
+        if (req == m_frameMarkersRequested)
             return;
         
 #if UNITY_EDITOR        
         Undo.RegisterFullObjectHierarchyUndo( m_clipOwner.parentTrack, "StreamingImageSequence Show/Hide FrameMarker");
 #endif        
-        m_frameMarkersVisibility = show;        
-        RefreshPlayableFrames();        
+        m_frameMarkersRequested = req;
+        if (UpdateFrameMarkersVisibility()) {
+            RefreshPlayableFrames();                    
+        }
     }
 
     internal void SetOwner(TimelineClip clip) { m_clipOwner = clip;}
@@ -75,12 +79,16 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     internal TimelineClip GetOwner() { return m_clipOwner; }
 
 #if UNITY_EDITOR
-    internal void SetInspectedProperty(PlayableFramePropertyID id) {
-        m_inspectedPropertyID = id;
-    }
+    internal void SetInspectedProperty(PlayableFramePropertyID id) { m_inspectedPropertyID = id; }
 
-    internal PlayableFramePropertyID GetInspectedProperty() {
-        return m_inspectedPropertyID;
+    internal PlayableFramePropertyID GetInspectedProperty() { return m_inspectedPropertyID; }
+
+    internal void SetTimelineWidthPerFrame(double width) {
+        m_timelineWidthPerFrame = width;
+        if (UpdateFrameMarkersVisibility()) {
+            RefreshPlayableFrames();
+            
+        }        
     }
     
 #endif    
@@ -156,8 +164,8 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         }
         
         //Refresh all markers
-        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_clipOwner);                
-        int numPlayableFrames = m_playableFrames.Count;
+        double timePerFrame           = TimelineUtility.CalculateTimePerFrame(m_clipOwner);                
+        int    numPlayableFrames      = m_playableFrames.Count;
         for (int i = 0; i < numPlayableFrames; ++i) {                
             m_playableFrames[i].SetIndexAndLocalTime(i, i * timePerFrame);
             m_playableFrames[i].Refresh(m_frameMarkersVisibility);
@@ -209,15 +217,25 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
             Assert.IsNotNull(curPlayableFrame);                
             m_playableFrames[i].SetIndexAndLocalTime(i, timePerFrame * i);
             
-        }
-                        
+        }                        
+    }
+
+//----------------------------------------------------------------------------------------------------------------------
+
+    //return true if the visibility has changed
+    private bool  UpdateFrameMarkersVisibility() {
+        const int FRAME_MARKER_WIDTH_THRESHOLD = 20;
+        
+        bool      prevVisibility = m_frameMarkersVisibility;
+        m_frameMarkersVisibility = m_frameMarkersRequested && m_timelineWidthPerFrame > FRAME_MARKER_WIDTH_THRESHOLD;
+        return prevVisibility != m_frameMarkersVisibility;
     }
     
 //----------------------------------------------------------------------------------------------------------------------    
     
     //The ground truth for using/dropping an image in a particular frame. See the notes below
     [SerializeField] private List<SISPlayableFrame> m_playableFrames;
-    [FormerlySerializedAs("m_useImageMarkerVisibility")] [SerializeField] [HideInInspector] private bool m_frameMarkersVisibility = false;
+    [FormerlySerializedAs("m_frameMarkersVisibility")] [SerializeField] [HideInInspector] private bool m_frameMarkersRequested = false;
 
     [NonSerialized] private TimelineClip  m_clipOwner = null;
 
@@ -225,10 +243,12 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     
 #if UNITY_EDITOR    
     private PlayableFramePropertyID m_inspectedPropertyID   = PlayableFramePropertyID.USED;
-    private double                  m_timelineWidthPerFrame = 0;
 #endif
 
-    private const int CUR_TIMELINE_CLIP_SIS_DATA_VERSION = 1;
+    private       bool   m_frameMarkersVisibility           = false;
+    private       double m_timelineWidthPerFrame            = Int16.MaxValue;
+    
+    private const int    CUR_TIMELINE_CLIP_SIS_DATA_VERSION = 1;
     
 }
 

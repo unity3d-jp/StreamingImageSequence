@@ -12,12 +12,12 @@ internal static class InspectorUtility {
             return;
 
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
-            bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersVisible();
+            bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersRequested();
 
             EditorGUILayout.BeginHorizontal();
             bool markerVisibility = EditorGUILayout.Toggle("Show Frame Markers", prevMarkerVisibility);
             if (markerVisibility != prevMarkerVisibility) {
-                timelineClipSISData.ShowFrameMarkers(markerVisibility);
+                timelineClipSISData.RequestFrameMarkers(markerVisibility);
             }
             if (GUILayout.Button("Reset", GUILayout.Width(50f))) {
                 timelineClipSISDataPlayableAsset.ResetPlayableFrames();

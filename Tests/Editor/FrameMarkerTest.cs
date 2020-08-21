@@ -23,7 +23,7 @@ internal class FrameMarkerTest {
         TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
         
         TrackAsset trackAsset = clip.parentTrack;
-        timelineClipSISData.ShowFrameMarkers(true);
+        timelineClipSISData.RequestFrameMarkers(true);
         TimelineEditor.Refresh(RefreshReason.ContentsModified);
         yield return null;
         
@@ -33,7 +33,7 @@ internal class FrameMarkerTest {
 
         //Undo showing FrameMarkers
         EditorUtilityTest.UndoAndRefreshTimelineEditor(); yield return null;
-        Assert.False(timelineClipSISData.AreFrameMarkersVisible());
+        Assert.False(timelineClipSISData.AreFrameMarkersRequested());
         Assert.AreEqual(0, trackAsset.GetMarkerCount());
         
         
@@ -50,7 +50,7 @@ internal class FrameMarkerTest {
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
         TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
-        timelineClipSISData.ShowFrameMarkers(true);
+        timelineClipSISData.RequestFrameMarkers(true);
         yield return null;
 
         double timePerFrame = TimelineUtility.CalculateTimePerFrame(clip);
@@ -107,7 +107,7 @@ internal class FrameMarkerTest {
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
         TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
-        timelineClipSISData.ShowFrameMarkers(true);
+        timelineClipSISData.RequestFrameMarkers(true);
         yield return null;
         
         //Change image to false
