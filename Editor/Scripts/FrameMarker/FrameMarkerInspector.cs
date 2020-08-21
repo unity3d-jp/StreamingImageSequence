@@ -32,7 +32,6 @@ internal class FrameMarkerInspector: Editor {
                 SetMarkerValueByContext(m,useFrame);
             }            
         }
-
                
         //Only show lock and edit for RenderCachePlayableAsset
         foreach (FrameMarker frameMarker in m_assets) {
