@@ -1,8 +1,8 @@
 ﻿using System.IO;
+using NUnit.Framework;
 using UnityEditor.ShortcutManagement;
 using UnityEngine;
 using UnityEngine.StreamingImageSequence;
-using UnityEngine.Timeline;
 using UnityObject = UnityEngine.Object;
 
 
@@ -32,26 +32,26 @@ internal class FrameMarkerInspector: Editor {
                 SetMarkerValueByContext(m,useFrame);
             }            
         }
-
                
         //Only show lock and edit for RenderCachePlayableAsset
-        if (1 != m_assets.Length)
-            return;
-
-        FrameMarker frameMarker = m_assets[0];
-        TimelineClip clip = frameMarker.GetOwner().GetClipOwner();
-        if (null == clip)
-            return;
+        foreach (FrameMarker frameMarker in m_assets) {
+            SISPlayableFrame playableFrame       = frameMarker.GetOwner();
+            RenderCachePlayableAsset playableAsset = playableFrame.GetTimelineClipAsset<RenderCachePlayableAsset>();            
+            if (null == playableAsset)
+                return;        
+        }        
         
-        RenderCachePlayableAsset renderCachePlayableAsset = clip.asset as RenderCachePlayableAsset;
-        if (null != renderCachePlayableAsset) {
-
-            ShortcutBinding lockAndEditShortcut 
-                = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_LOCK_AND_EDIT_FRAME);            
-            if (GUILayout.Button($"Lock and Edit ({lockAndEditShortcut})")) {
-                SISPlayableFrame playableFrame = frameMarker.GetOwner();
-                LockAndEditPlayableFrame(playableFrame, renderCachePlayableAsset);
-            }
+        //m_assets only contain RenderCachePlayableAsset at this point
+        ShortcutBinding lockAndEditShortcut 
+            = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_LOCK_AND_EDIT_FRAME);            
+        if (GUILayout.Button($"Lock and Edit ({lockAndEditShortcut})")) {
+            foreach (FrameMarker frameMarker in m_assets) {
+                SISPlayableFrame playableFrame       = frameMarker.GetOwner();
+                RenderCachePlayableAsset playableAsset = playableFrame.GetTimelineClipAsset<RenderCachePlayableAsset>();
+                Assert.IsNotNull(playableAsset);
+                LockAndEditPlayableFrame(playableFrame, playableAsset);
+            }        
+            
         }
     }
     
