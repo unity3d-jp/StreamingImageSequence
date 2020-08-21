@@ -82,13 +82,13 @@ namespace UnityEngine.StreamingImageSequence
                 TimelineClip clip = kv.Key;
                 StreamingImageSequencePlayableAsset sisAsset = kv.Value;
 
-                IList<string> imagePaths = sisAsset.GetImageFileNames();
-                if (null == imagePaths || null == clip.parentTrack)
+                int numImages  = sisAsset.GetNumImages();
+                if (numImages <= 0|| null == clip.parentTrack)
                     continue;
 
                 double startTime = clip.start;
                 double endTime = clip.end;
-                double loadStartOffsetTime = 1.0f + imagePaths.Count * 0.1f;
+                double loadStartOffsetTime = 1.0f + numImages * 0.1f;
 
                 //Start to preload images before the clip is active
                 if ( directorTime>= startTime - loadStartOffsetTime && directorTime < endTime) {
@@ -106,8 +106,8 @@ namespace UnityEngine.StreamingImageSequence
         protected override void ProcessActiveClipV(StreamingImageSequencePlayableAsset asset,
             double directorTime, TimelineClip activeClip) 
         {
-            IList<string> imagePaths = asset.GetImageFileNames();
-            if (null == imagePaths || null == activeClip.parentTrack)
+            int numImages  = asset.GetNumImages();
+            if (numImages <=0 || null == activeClip.parentTrack)
                 return;
             
             int index = asset.GlobalTimeToImageIndex(activeClip, directorTime);

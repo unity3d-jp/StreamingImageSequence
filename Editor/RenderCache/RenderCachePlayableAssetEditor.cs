@@ -52,11 +52,10 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
         if (null == curAsset)
             return;
 
-        IList<string> imageFileNames = curAsset.GetImageFileNames();
-        if (null==imageFileNames || imageFileNames.Count <= 0) {
+        int numImages =curAsset.GetNumImages();        
+        if (numImages <= 0) {
             return;
-        }
-        
+        }        
             
         if (Event.current.type == EventType.Repaint) {
             PreviewClipInfo clipInfo = new PreviewClipInfo() {
@@ -82,15 +81,12 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
     void DrawPreviewImage(ref PreviewDrawInfo drawInfo, TimelineClip clip, 
         RenderCachePlayableAsset renderCachePlayableAsset) 
     {        
-        double normalizedLocalTime = drawInfo.LocalTime / clip.duration;
-        IList<string> imageFileNames = renderCachePlayableAsset.GetImageFileNames();
-        Assert.IsNotNull(imageFileNames);
-
-        int count = imageFileNames.Count;            
-        Assert.IsTrue(imageFileNames.Count > 0);
+        double        normalizedLocalTime = drawInfo.LocalTime / clip.duration;
+        int           numImages           = renderCachePlayableAsset.GetNumImages();
+        Assert.IsTrue(numImages > 0);
         
-        int index = Mathf.RoundToInt(count * (float) normalizedLocalTime);
-        index = Mathf.Clamp(index, 0, count - 1);
+        int index = Mathf.RoundToInt(numImages * (float) normalizedLocalTime);
+        index = Mathf.Clamp(index, 0, numImages - 1);
         
                         
         //Load

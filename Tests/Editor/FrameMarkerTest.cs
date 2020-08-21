@@ -54,7 +54,7 @@ internal class FrameMarkerTest {
         yield return null;
 
         double timePerFrame = TimelineUtility.CalculateTimePerFrame(clip);
-        int numImages = sisAsset.GetImageFileNames().Count;
+        int numImages = sisAsset.GetNumImages();
         clip.timeScale = 3.75f; //use scaling
         EditorUtilityTest.ResizeSISTimelineClip(clip, (timePerFrame * numImages));
         yield return null;

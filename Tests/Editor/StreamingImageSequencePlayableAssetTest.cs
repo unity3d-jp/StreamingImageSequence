@@ -27,10 +27,8 @@ internal class StreamingImageSequencePlayableAssetTest {
         
         yield return null;
 
-        IList<string> imageFileNames = sisAsset.GetImageFileNames();
-        Assert.IsNotNull(imageFileNames);
-        Assert.IsTrue(imageFileNames.Count > 0);
-        Assert.IsTrue(sisAsset.HasImages());
+        int numImages = sisAsset.GetNumImages();
+        Assert.IsTrue(numImages > 0);
         
         
 
@@ -99,7 +97,7 @@ internal class StreamingImageSequencePlayableAssetTest {
         
         string folder = sisAsset.GetFolder();
         Assert.IsNotNull(folder);
-        int numOriginalImages = sisAsset.GetImageFileNames().Count;
+        int numOriginalImages = sisAsset.GetNumImages();
         Assert.Greater(numOriginalImages,0);
 
         
@@ -116,7 +114,7 @@ internal class StreamingImageSequencePlayableAssetTest {
         sisAsset.Reload();
         
         yield return null;
-        Assert.AreEqual(numOriginalImages * 2 , sisAsset.GetImageFileNames().Count);
+        Assert.AreEqual(numOriginalImages * 2 , sisAsset.GetNumImages());
 
         //Cleanup
         foreach (string imagePath in copiedImagePaths) {
@@ -143,11 +141,11 @@ internal class StreamingImageSequencePlayableAssetTest {
         string        streamingAssetsFolder = AssetEditorUtility.NormalizeAssetPath(Application.streamingAssetsPath);
         string        destFolderGUID        = AssetDatabase.CreateFolder(streamingAssetsFolder, DEST_FOLDER_NAME);
         string        destFolder            = AssetDatabase.GUIDToAssetPath(destFolderGUID);
-        string        srcFolder             = sisAsset.GetFolder();
-        IList<string> imageFileNames        = sisAsset.GetImageFileNames();
-        foreach (string imageFileName in imageFileNames) {
-            string src  = Path.Combine(srcFolder, imageFileName);
-            string dest = Path.Combine(destFolder, imageFileName);
+        int numImages = sisAsset.GetNumImages();
+        for (int i = 0; i < numImages; ++i) {
+            string src = sisAsset.GetImageFilePath(i);
+            Assert.IsNotNull(src);
+            string dest = Path.Combine(destFolder, Path.GetFileName(src));
             File.Copy(src, dest,true);
         }
 

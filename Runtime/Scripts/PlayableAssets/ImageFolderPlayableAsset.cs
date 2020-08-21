@@ -84,7 +84,13 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     /// <returns>The folder where the images are located</returns>
     internal string GetFolder() { return m_folder;}
     internal void SetFolder(string folder) { m_folder = folder;}
-    internal IList<string> GetImageFileNames() { return m_imageFileNames; }
+
+    internal int GetNumImages() {
+        if (string.IsNullOrEmpty(m_folder))
+            return 0;
+
+        return (null == m_imageFileNames) ? 0 : m_imageFileNames.Count;
+    }
     internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFileNames; }
 
 
@@ -99,10 +105,6 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
             return null;
         
         return PathUtility.GetPath(m_folder, m_imageFileNames[index]);            
-    }
-       
-    internal bool HasImages() {            
-        return (!string.IsNullOrEmpty(m_folder) && null != m_imageFileNames && m_imageFileNames.Count > 0);
     }
 
 
@@ -131,7 +133,8 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
             return;
             
         //Unload existing images
-        if (HasImages()) {
+        int numImages = GetNumImages();
+        if (numImages > 0) {
             foreach (string fileName in m_imageFileNames) {
                 string imagePath = PathUtility.GetPath(m_folder, fileName);
                 StreamingImageSequencePlugin.UnloadImageAndNotify(imagePath);
