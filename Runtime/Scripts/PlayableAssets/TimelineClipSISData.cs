@@ -221,10 +221,15 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 
     [NonSerialized] private TimelineClip  m_clipOwner = null;
 
+    [HideInInspector][SerializeField] private int m_version = CUR_TIMELINE_CLIP_SIS_DATA_VERSION;        
+    
 #if UNITY_EDITOR    
-    private PlayableFramePropertyID m_inspectedPropertyID = PlayableFramePropertyID.USED;
-#endif    
+    private PlayableFramePropertyID m_inspectedPropertyID   = PlayableFramePropertyID.USED;
+    private double                  m_timelineWidthPerFrame = 0;
+#endif
 
+    private const int CUR_TIMELINE_CLIP_SIS_DATA_VERSION = 1;
+    
 }
 
 
