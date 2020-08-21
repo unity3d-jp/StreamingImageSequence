@@ -224,10 +224,14 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 
     //return true if the visibility has changed
     private bool  UpdateFrameMarkersVisibility() {
-        const int FRAME_MARKER_WIDTH_THRESHOLD = 20;
         
-        bool      prevVisibility = m_frameMarkersVisibility;
+        bool prevVisibility = m_frameMarkersVisibility;
+#if UNITY_EDITOR        
+        const int FRAME_MARKER_WIDTH_THRESHOLD = 20;
         m_frameMarkersVisibility = m_frameMarkersRequested && m_timelineWidthPerFrame > FRAME_MARKER_WIDTH_THRESHOLD;
+#else
+        m_frameMarkersVisibility = m_frameMarkersRequested;
+#endif
         return prevVisibility != m_frameMarkersVisibility;
     }
     
@@ -243,10 +247,10 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     
 #if UNITY_EDITOR    
     private PlayableFramePropertyID m_inspectedPropertyID   = PlayableFramePropertyID.USED;
+    private double                  m_timelineWidthPerFrame = Int16.MaxValue;
 #endif
 
     private       bool   m_frameMarkersVisibility           = false;
-    private       double m_timelineWidthPerFrame            = Int16.MaxValue;
     
     private const int    CUR_TIMELINE_CLIP_SIS_DATA_VERSION = 1;
     
