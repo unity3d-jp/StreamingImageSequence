@@ -44,11 +44,9 @@ namespace UnityEngine.StreamingImageSequence {
         public void OnGraphStart(Playable playable) {
             
 #if UNITY_EDITOR
-            string folder = GetFolder();
-
             //Check folder MD5
-            if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder)) {
-                string curFolderMD5 = PathUtility.CalculateFolderMD5ByFileSize(folder, m_imageFilePatterns, FileNameComparer);
+            if (!string.IsNullOrEmpty(m_folder) && Directory.Exists(m_folder)) {
+                string curFolderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
                 if (curFolderMD5 != m_folderMD5) {
                     Reload(curFolderMD5);                    
                 }
@@ -373,7 +371,7 @@ namespace UnityEngine.StreamingImageSequence {
 
         public void OnNext(string updatedFolder) {
 #if UNITY_EDITOR
-            if (updatedFolder != GetFolder())
+            if (updatedFolder != m_folder)
                 return;
             
             Reload();
@@ -391,11 +389,9 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
         public void OnAfterDeserialize() {
-            if (m_version < (int) SISPlayableAssetVersion.FOLDER_MD5) {
-                string folder = GetFolder();
-                
-                if (!string.IsNullOrEmpty(folder)) {
-                    m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(folder, m_imageFilePatterns, FileNameComparer);                
+            if (m_version < (int) SISPlayableAssetVersion.FOLDER_MD5) {                
+                if (!string.IsNullOrEmpty(m_folder)) {
+                    m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);                
                 }                
             }
             m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;
@@ -425,27 +421,26 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
         internal void Reload(string folderMD5 = null) {
-            string folder = GetFolder();
-            
-            if (string.IsNullOrEmpty(folder))
+           
+            if (string.IsNullOrEmpty(m_folder))
                 return;
             
             //Unload existing images
             if (HasImages()) {
                 foreach (string fileName in m_imageFileNames) {
-                    string imagePath = PathUtility.GetPath(folder, fileName);
+                    string imagePath = PathUtility.GetPath(m_folder, fileName);
                     StreamingImageSequencePlugin.UnloadImageAndNotify(imagePath);
                 }
             }
 
-            m_imageFileNames = FindImageFileNames(folder); 
+            m_imageFileNames = FindImageFileNames(m_folder); 
             Reset();
             EditorUtility.SetDirty(this);
             if (!string.IsNullOrEmpty(folderMD5)) {
                 m_folderMD5 = folderMD5;
             }
             else {
-                m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(folder, m_imageFilePatterns, FileNameComparer);                
+                m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);                
             }
             
 
