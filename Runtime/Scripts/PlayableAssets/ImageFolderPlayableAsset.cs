@@ -13,6 +13,10 @@ namespace UnityEngine.StreamingImageSequence {
 internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayableAsset {
    
 //----------------------------------------------------------------------------------------------------------------------
+
+    protected abstract void ResetInternalV();
+    
+//----------------------------------------------------------------------------------------------------------------------
     
 #region Resolution    
     

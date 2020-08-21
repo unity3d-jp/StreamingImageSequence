@@ -15,6 +15,10 @@ namespace UnityEngine.StreamingImageSequence {
 [System.Serializable]
 internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineClipAsset {
    
+    protected override void ResetInternalV() {
+        ResetResolution();            
+    }        
+    
 //----------------------------------------------------------------------------------------------------------------------
     
     public ClipCaps clipCaps {

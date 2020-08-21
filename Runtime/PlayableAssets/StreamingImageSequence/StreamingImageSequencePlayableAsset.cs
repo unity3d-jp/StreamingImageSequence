@@ -157,6 +157,10 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------        
         private void Reset() {
+            ResetInternalV();
+        }
+
+        protected override void ResetInternalV() {
             m_primaryImageIndex         = 0;
             m_forwardPreloadImageIndex  = 0;
             m_backwardPreloadImageIndex = 0;
@@ -164,8 +168,8 @@ namespace UnityEngine.StreamingImageSequence {
             m_lastCopiedImageIndex = -1;
             ResetTexture();
             ResetResolution();
-        }
-
+            
+        }        
 //----------------------------------------------------------------------------------------------------------------------        
         
         /// <inheritdoc/>
