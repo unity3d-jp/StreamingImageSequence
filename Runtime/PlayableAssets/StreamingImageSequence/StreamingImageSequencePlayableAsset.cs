@@ -405,19 +405,18 @@ namespace UnityEngine.StreamingImageSequence {
 
 #if UNITY_EDITOR         
         internal void InitFolder(StreamingImageSequencePlayableAssetParam param) {
-            string folder = param.Folder;
-            SetFolder(folder );
+            m_folder = param.Folder;
             m_imageFileNames = param.Pictures;
             UpdateResolution(param.Resolution);
             
-            if (null!=folder && folder.StartsWith("Assets")) {
-                m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(folder);
+            if (null!=m_folder && m_folder.StartsWith("Assets")) {
+                m_timelineDefaultAsset = AssetDatabase.LoadAssetAtPath<UnityEditor.DefaultAsset>(m_folder);
             } else {
                 m_timelineDefaultAsset = null;
             }
             m_texture = null;
             EditorUtility.SetDirty(this);
-            m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(folder, m_imageFilePatterns, FileNameComparer);
+            m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
         }
 
         internal void Reload(string folderMD5 = null) {
