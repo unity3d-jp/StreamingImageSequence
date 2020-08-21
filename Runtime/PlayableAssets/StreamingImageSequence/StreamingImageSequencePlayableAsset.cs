@@ -389,7 +389,7 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
         public void OnAfterDeserialize() {
-            if (m_version < (int) SISPlayableAssetVersion.FOLDER_MD5) {                
+            if (m_version < (int) SISPlayableAssetVersion.FOLDER_MD5_1_0) {                
                 if (!string.IsNullOrEmpty(m_folder)) {
                     m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);                
                 }                
@@ -507,7 +507,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
         
-        private const int CUR_SIS_PLAYABLE_ASSET_VERSION = (int) SISPlayableAssetVersion.FOLDER_MD5;
+        private const int CUR_SIS_PLAYABLE_ASSET_VERSION = (int) SISPlayableAssetVersion.FOLDER_MD5_1_0;
                 
         static readonly string[] m_imageFilePatterns = {
             "*.png",
@@ -520,7 +520,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 enum SISPlayableAssetVersion {
     INITIAL = 1, //initial
-    FOLDER_MD5 = 2, //added folder MD5 hash
+    FOLDER_MD5_1_0 = 2, //For version 1.0
     
 }
 
