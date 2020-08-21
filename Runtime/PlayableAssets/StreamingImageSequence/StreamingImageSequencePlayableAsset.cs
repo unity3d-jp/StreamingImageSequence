@@ -391,11 +391,14 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
         public void OnAfterDeserialize() {
+#if UNITY_EDITOR            
             if (m_version < (int) SISPlayableAssetVersion.FOLDER_MD5_1_0) {                
                 if (!string.IsNullOrEmpty(m_folder)) {
                     UpdateFolderMD5();
                 }                
             }
+#endif
+            
             m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;
         }
         

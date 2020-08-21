@@ -88,13 +88,6 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFileNames; }
 
 
-    //Returns true if the MD5 has changed
-    protected bool UpdateFolderMD5() {
-
-        string prevFolderMD5 = m_folderMD5; 
-        m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
-        return (prevFolderMD5 != m_folderMD5);         
-    }    
 //----------------------------------------------------------------------------------------------------------------------
 
     [CanBeNull]
@@ -154,6 +147,14 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         else {
             UpdateFolderMD5();
         }
+    }
+    
+    //Returns true if the MD5 has changed
+    protected bool UpdateFolderMD5() {
+
+        string prevFolderMD5 = m_folderMD5; 
+        m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, m_imageFilePatterns, FileNameComparer);
+        return (prevFolderMD5 != m_folderMD5);         
     }
     
     //Return FileNames
