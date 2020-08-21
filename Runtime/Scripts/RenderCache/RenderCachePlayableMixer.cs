@@ -17,6 +17,12 @@ internal class RenderCachePlayableMixer : BasePlayableMixer<RenderCachePlayableA
 
 
     public override void OnGraphStart(Playable playable) {
+        var clipAssets = GetClipAssets();
+        foreach (KeyValuePair<TimelineClip, RenderCachePlayableAsset> kv in clipAssets) {
+            RenderCachePlayableAsset playableAsset = kv.Value;                
+            playableAsset.OnGraphStart(playable);                
+        }
+        
     }
 
 
