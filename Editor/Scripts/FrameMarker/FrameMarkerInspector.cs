@@ -35,18 +35,8 @@ internal class FrameMarkerInspector: Editor {
 
         if (1 == m_assets.Length) {
             SISPlayableFrame playableFrame = m_assets[0].GetOwner();
-            string           prevNote      = playableFrame.GetUserNote();
-            
-            GUILayout.Space(15);
-            GUILayout.Label("Note");
-            m_noteScroll = EditorGUILayout.BeginScrollView(m_noteScroll, GUILayout.Height(100));
-            string userNote = EditorGUILayout.TextArea(prevNote, GUILayout.ExpandHeight(true));
-            EditorGUILayout.EndScrollView();
-            
-            if (userNote != prevNote) {
-                playableFrame.SetUserNote(userNote);
-            } 
-            
+            string           prevNote      = playableFrame.GetUserNote();            
+            DrawNoteGUI(prevNote);            
         } else {
 
             int numSelectedAssets = m_assets.Length;
@@ -59,18 +49,9 @@ internal class FrameMarkerInspector: Editor {
                     prevNote = "<different notes>";
                 }                                
             }
-            
-            GUILayout.Space(15);
-            GUILayout.Label("Note");
-            m_noteScroll = EditorGUILayout.BeginScrollView(m_noteScroll, GUILayout.Height(100));
-            string userNote = EditorGUILayout.TextArea(prevNote, GUILayout.ExpandHeight(true));
-            EditorGUILayout.EndScrollView();
-            if (userNote != prevNote) {
-                foreach (FrameMarker frameMarker in m_assets) {
-                    frameMarker.GetOwner().SetUserNote(userNote);
-                }
-            } 
-            
+
+            DrawNoteGUI(prevNote);
+
         }
         
         
@@ -143,6 +124,7 @@ internal class FrameMarkerInspector: Editor {
         }
                
     }
+    
 
     internal static void ToggleMarkerValueByContext(FrameMarker frameMarker) {
         SISPlayableFrame    playableFrame         = frameMarker.GetOwner();
@@ -162,6 +144,21 @@ internal class FrameMarkerInspector: Editor {
     }
 //----------------------------------------------------------------------------------------------------------------------
 
+    private void DrawNoteGUI(string prevNote) {
+        GUILayout.Space(15);
+        GUILayout.Label("Note");
+        m_noteScroll = EditorGUILayout.BeginScrollView(m_noteScroll, GUILayout.Height(100));
+        string userNote = EditorGUILayout.TextArea(prevNote, GUILayout.ExpandHeight(true));
+        EditorGUILayout.EndScrollView();
+        if (userNote != prevNote) {
+            foreach (FrameMarker frameMarker in m_assets) {
+                frameMarker.GetOwner().SetUserNote(userNote);
+            }
+        } 
+        
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
     private FrameMarker[] m_assets = null;
     Vector2               m_noteScroll;
 }
