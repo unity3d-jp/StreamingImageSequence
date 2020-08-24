@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Reflection;
 using NUnit.Framework;
 using UnityEditor.ShortcutManagement;
 using UnityEngine;
@@ -17,7 +18,7 @@ internal class FrameMarkerInspector: Editor {
         m_assets = new FrameMarker[numTargets];
         for (int i = 0; i < numTargets; i++) {
             m_assets[i] = targets[i] as FrameMarker;
-        }
+        }        
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -145,22 +146,38 @@ internal class FrameMarkerInspector: Editor {
 //----------------------------------------------------------------------------------------------------------------------
 
     private void DrawNoteGUI(string prevNote) {
+        Assert.IsNotNull(m_scrollableTextAreaMethod);
         GUILayout.Space(15);
         GUILayout.Label("Note");
-        m_noteScroll = EditorGUILayout.BeginScrollView(m_noteScroll, GUILayout.Height(100));
-        string userNote = EditorGUILayout.TextArea(prevNote, GUILayout.ExpandHeight(true));
-        EditorGUILayout.EndScrollView();
+        
+        //Use reflection to access EditorGUI.ScrollableTextAreaInternal()
+        Rect rect = EditorGUILayout.GetControlRect(GUILayout.Height(120));
+        object[] methodParams = new object[] {
+            rect, 
+            prevNote, 
+            m_noteScroll, 
+            EditorStyles.textArea            
+        }; 
+        object userNoteObj = m_scrollableTextAreaMethod.Invoke(null,methodParams);
+        m_noteScroll = (Vector2) (methodParams[2]);
+        string userNote = userNoteObj.ToString();
+        
         if (userNote != prevNote) {
             foreach (FrameMarker frameMarker in m_assets) {
                 frameMarker.GetOwner().SetUserNote(userNote);
             }
-        } 
+        }
         
     }
     
 //----------------------------------------------------------------------------------------------------------------------
     private FrameMarker[] m_assets = null;
     Vector2               m_noteScroll  = Vector2.zero;
+    
+    //Recorder Reflection
+    private static readonly MethodInfo m_scrollableTextAreaMethod 
+        = typeof(EditorGUI).GetMethod("ScrollableTextAreaInternal", BindingFlags.Static | BindingFlags.NonPublic);
+
 }
 
 } //end namespace
