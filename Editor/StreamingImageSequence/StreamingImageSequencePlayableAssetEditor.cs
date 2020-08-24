@@ -2,7 +2,6 @@
 using System.IO;
 using UnityEditor.Timeline;
 using UnityEngine.Timeline;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.StreamingImageSequence;
@@ -29,7 +28,7 @@ namespace UnityEditor.StreamingImageSequence {
                 clipOptions.errorText = NO_FOLDER_ASSIGNED_ERROR;
             }  else if (!Directory.Exists(folder)) {
                 clipOptions.errorText = FOLDER_MISSING_ERROR;
-            } else if (asset.GetImageFileNames() == null) {
+            } else if (asset.GetNumImages() <=0) {
                 clipOptions.errorText = NO_PICTURES_ASSIGNED_ERROR;
             }
             clipOptions.tooltip = folder;
@@ -63,8 +62,9 @@ namespace UnityEditor.StreamingImageSequence {
 
             //If the clip already has curves (because of cloning, etc), then we don't set anything
             if (null == clip.curves) {
-                if (asset.HasImages()) {
-                    clip.duration = asset.GetImageFileNames().Count * 0.125; // 8fps (standard limited animation)
+                int numImages = asset.GetNumImages();
+                if (numImages > 0) {
+                    clip.duration = numImages * 0.125; // 8fps (standard limited animation)
                     clip.displayName = Path.GetFileName(asset.GetFolder());
                 }
                 clip.CreateCurves("Curves: " + clip.displayName);
@@ -122,7 +122,7 @@ namespace UnityEditor.StreamingImageSequence {
                 return;
 
             StreamingImageSequencePlayableAsset curAsset = clip.asset as StreamingImageSequencePlayableAsset;
-            if (null == curAsset || !curAsset.HasImages())
+            if (null == curAsset || curAsset.GetNumImages() <=0)
                 return;
 
             
@@ -143,43 +143,19 @@ namespace UnityEditor.StreamingImageSequence {
                 });
                 
                 //For hiding frame marker automatically
-                int numFrames = Mathf.RoundToInt((float)((region.endTime - region.startTime) * clipInfo.FramePerSecond));
-                double widthPerFrame = rect.width / numFrames;
                 TimelineClipSISData timelineClipSISData = curAsset.GetBoundTimelineClipSISData();
-                if (null != timelineClipSISData) {
-                    timelineClipSISData.SetTimelineWidthPerFrame(widthPerFrame);
-                }
-                
+                if (null != timelineClipSISData) {                
+                    timelineClipSISData.UpdateTimelineWidthPerFrame(rect.width, region.endTime-region.startTime, 
+                        clipInfo.FramePerSecond, clipInfo.TimeScale);
+                }                                
             }
         }
         
 //----------------------------------------------------------------------------------------------------------------------
         void DrawPreviewImage(ref PreviewDrawInfo drawInfo, TimelineClip clip, StreamingImageSequencePlayableAsset sisAsset) {
-            int imageIndex = sisAsset.LocalTimeToImageIndex(clip, drawInfo.LocalTime);
-        
-            IList<string> imageFileNames = sisAsset.GetImageFileNames();
-
-            //Load
+            int imageIndex = sisAsset.LocalTimeToImageIndex(clip, drawInfo.LocalTime);       
             string imagePath = sisAsset.GetImageFilePath(imageIndex);
-            ImageLoader.GetImageDataInto(imagePath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
-                , out ImageData readResult);
-            
-            switch (readResult.ReadStatus) {
-                case StreamingImageSequenceConstants.READ_STATUS_LOADING:
-                    break;
-                case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
-                    Texture2D tex = PreviewTextureFactory.GetOrCreate(imagePath, ref readResult);
-                    if (null != tex) {
-                        Graphics.DrawTexture(drawInfo.DrawRect, tex);
-                    }
-                    break;
-                }
-                default: {
-                    ImageLoader.RequestLoadPreviewImage(imagePath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height);                    
-                    break;
-                }
-
-            }
+            PreviewUtility.DrawPreviewImage(ref drawInfo, imagePath);
         
         }
         

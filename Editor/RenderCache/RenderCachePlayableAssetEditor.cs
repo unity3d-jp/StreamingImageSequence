@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Timeline;
@@ -52,11 +50,10 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
         if (null == curAsset)
             return;
 
-        IList<string> imageFileNames = curAsset.GetImageFileNames();
-        if (null==imageFileNames || imageFileNames.Count <= 0) {
+        int numImages =curAsset.GetNumImages();        
+        if (numImages <= 0) {
             return;
-        }
-        
+        }        
             
         if (Event.current.type == EventType.Repaint) {
             PreviewClipInfo clipInfo = new PreviewClipInfo() {
@@ -73,6 +70,14 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
             PreviewUtility.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
                 DrawPreviewImage(ref drawInfo, clip, curAsset);
             });
+            
+            //For hiding frame marker automatically
+            TimelineClipSISData timelineClipSISData = curAsset.GetBoundTimelineClipSISData();
+            if (null != timelineClipSISData) {                
+                timelineClipSISData.UpdateTimelineWidthPerFrame(rect.width, region.endTime-region.startTime, 
+                    clipInfo.FramePerSecond, clipInfo.TimeScale);
+            }
+            
                 
         }        
     }
@@ -82,42 +87,17 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
     void DrawPreviewImage(ref PreviewDrawInfo drawInfo, TimelineClip clip, 
         RenderCachePlayableAsset renderCachePlayableAsset) 
     {        
-        double normalizedLocalTime = drawInfo.LocalTime / clip.duration;
-        IList<string> imageFileNames = renderCachePlayableAsset.GetImageFileNames();
-        Assert.IsNotNull(imageFileNames);
-
-        int count = imageFileNames.Count;            
-        Assert.IsTrue(imageFileNames.Count > 0);
+        double        normalizedLocalTime = drawInfo.LocalTime / clip.duration;
+        int           numImages           = renderCachePlayableAsset.GetNumImages();
+        Assert.IsTrue(numImages > 0);
         
-        int index = Mathf.RoundToInt(count * (float) normalizedLocalTime);
-        index = Mathf.Clamp(index, 0, count - 1);
-        
+        int index = Mathf.RoundToInt(numImages * (float) normalizedLocalTime);
+        index = Mathf.Clamp(index, 0, numImages - 1);        
                         
-        //Load
+        //Draw
         string imagePath = renderCachePlayableAsset.GetImageFilePath(index);
+        PreviewUtility.DrawPreviewImage(ref drawInfo, imagePath);
         
-        if (!File.Exists(imagePath))
-            return;
-        
-        ImageLoader.GetImageDataInto(imagePath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
-            , out ImageData imageData);
-            
-        switch (imageData.ReadStatus) {
-            case StreamingImageSequenceConstants.READ_STATUS_LOADING:
-                break;
-            case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
-                Texture2D tex = PreviewTextureFactory.GetOrCreate(imagePath, ref imageData);
-                if (null != tex) {
-                    Graphics.DrawTexture(drawInfo.DrawRect, tex);
-                }
-                break;
-            }
-            default: {
-                ImageLoader.RequestLoadPreviewImage(imagePath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height);                    
-                break;
-            }
-        
-        }
         
     }
     

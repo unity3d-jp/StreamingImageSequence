@@ -45,7 +45,6 @@ internal class FrameMarker : Marker, INotification {
 
     private SISPlayableFrame m_playableFrameOwner;
        
-    //[TODO-sin: 2020-2-7] Refresh the texture immediately when m_playableFrameOwner.useImage is modified
 }
 
 } //end namespace

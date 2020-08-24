@@ -37,7 +37,7 @@ namespace UnityEditor.StreamingImageSequence {
             //Set importer param
             ImageFileImporterParam importerParam = new ImageFileImporterParam {
                 strSrcFolder = folder,
-                RelativeFilePaths = relFilePaths,
+                ImageFiles = relFilePaths,
                 CopyToStreamingAssets = true,
                 TargetAsset = targetAsset
             };
@@ -70,7 +70,7 @@ namespace UnityEditor.StreamingImageSequence {
                     return;
                 }
 
-                foreach (string relPath in param.RelativeFilePaths) {
+                foreach (string relPath in param.ImageFiles) {
                     string strAbsFilePathDst = Path.Combine(destFolder, relPath).Replace("\\", "/");
                     if (File.Exists(strAbsFilePathDst))
                     {
@@ -81,10 +81,6 @@ namespace UnityEditor.StreamingImageSequence {
                     FileUtil.CopyFileOrDirectory(strAbsFilePathSrc, strAbsFilePathDst);
                 }
             }
-
-            // create assets
-            StreamingImageSequencePlayableAssetParam playableAssetParam = new StreamingImageSequencePlayableAssetParam();
-            playableAssetParam.Pictures = new List<string>(param.RelativeFilePaths);
 
             //if possible, convert folder names to relative path.
             string strUnityProjectFolder = null;
@@ -97,19 +93,18 @@ namespace UnityEditor.StreamingImageSequence {
                 int end = destFolder.Length - start;
                 destFolder = destFolder.Substring(start, end);
             }
-            playableAssetParam.Folder = destFolder;
 
             //StreamingAsset
             StreamingImageSequencePlayableAsset playableAsset = param.TargetAsset;            
             if (null == playableAsset) {
-                string assetName =  ImageSequenceImporter.EstimateAssetName(playableAssetParam.Pictures[0]);
+                string assetName =  EstimateAssetName(param.ImageFiles[0]);
                 playableAsset = CreateUniqueSISAsset(
                     Path.Combine("Assets", assetName + "_StreamingImageSequence.playable").Replace("\\", "/")
 
                 );
             }
             
-            playableAsset.InitFolder(playableAssetParam);
+            playableAsset.InitFolder(destFolder, param.ImageFiles);
             if (param.CopyToStreamingAssets) {
                 AssetDatabase.Refresh();
             }
@@ -127,7 +122,9 @@ namespace UnityEditor.StreamingImageSequence {
                 folder = Path.GetDirectoryName(folder);
             }
             
-            imagePaths = ImageFolderPlayableAsset.FindImageFileNames(folder);            
+            imagePaths = ImageFolderPlayableAsset.FindFiles(folder, 
+                StreamingImageSequencePlayableAsset.GetSupportedImageFilePatterns()
+            );            
         }
 //---------------------------------------------------------------------------------------------------------------------
         
@@ -167,7 +164,7 @@ namespace UnityEditor.StreamingImageSequence {
 
     internal class ImageFileImporterParam {
 
-        public List<string> RelativeFilePaths;
+        public List<string> ImageFiles;
         public string strDstFolder;
         public string strSrcFolder;
         public bool CopyToStreamingAssets;

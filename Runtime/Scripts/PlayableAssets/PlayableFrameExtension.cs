@@ -1,13 +1,28 @@
 ﻿using System;
 using UnityEngine.Timeline;
 
+#if UNITY_EDITOR        
+using UnityEditor.Timeline;
+#endif
+
 namespace UnityEngine.StreamingImageSequence {
     
 [Serializable]
 internal static class PlayableFrameExtension {
 
     internal static void SetUsed(this SISPlayableFrame playableFrame, bool used) {
+#if UNITY_EDITOR        
+        bool prevUsed = playableFrame.IsUsed();        
+#endif
+        
         playableFrame.SetBoolProperty(PlayableFramePropertyID.USED, used);
+
+#if UNITY_EDITOR        
+        //Refresh 
+        if (used != prevUsed) {
+            TimelineEditor.Refresh(RefreshReason.ContentsModified);
+        }
+#endif        
     }
 
     internal static bool IsUsed(this SISPlayableFrame playableFrame) {

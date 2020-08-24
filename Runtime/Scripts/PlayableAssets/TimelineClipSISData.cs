@@ -84,12 +84,17 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 
     internal PlayableFramePropertyID GetInspectedProperty() { return m_inspectedPropertyID; }
 
-    internal void SetTimelineWidthPerFrame(double width) {
-        m_timelineWidthPerFrame = width;
+    internal void UpdateTimelineWidthPerFrame(float visibleRectWidth, double visibleTime, float fps, double timeScale) {
+        int numFrames = Mathf.RoundToInt((float)
+            ((visibleTime) * fps / timeScale) 
+        );
+                
+        double widthPerFrame       = visibleRectWidth / numFrames;
+        m_timelineWidthPerFrame = widthPerFrame;
         if (UpdateFrameMarkersVisibility()) {
             RefreshPlayableFrames();
             
-        }        
+        }                
     }
     
 #endif    

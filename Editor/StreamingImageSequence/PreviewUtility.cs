@@ -1,8 +1,9 @@
 ﻿//#define DEBUG_PREVIEW_IMAGES         
 
 using System;
-using NUnit.Framework;
+using System.IO;
 using UnityEngine;
+using UnityEngine.StreamingImageSequence;
 
 
 namespace UnityEditor.StreamingImageSequence {
@@ -105,6 +106,36 @@ internal static class PreviewUtility {
         double ret = (frameTime - visibleLocalStartTime) / visibleDuration * visibleRectWidth + visibleRectX;
         return ret;
     }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    
+    internal static void DrawPreviewImage(ref PreviewDrawInfo drawInfo, string imagePath) 
+    {
+        if (!File.Exists(imagePath))
+            return;
+        
+        ImageLoader.GetImageDataInto(imagePath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
+            , out ImageData readResult);
+            
+        switch (readResult.ReadStatus) {
+            case StreamingImageSequenceConstants.READ_STATUS_LOADING:
+                break;
+            case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
+                Texture2D tex = PreviewTextureFactory.GetOrCreate(imagePath, ref readResult);
+                if (null != tex) {
+                    Graphics.DrawTexture(drawInfo.DrawRect, tex);
+                }
+                break;
+            }
+            default: {
+                ImageLoader.RequestLoadPreviewImage(imagePath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height);                    
+                break;
+            }
+
+        }
+        
+    }
+
 }
 
 } //end namespace
