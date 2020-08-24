@@ -91,8 +91,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
         
         //Capture Selected Frames
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
-            ShowCaptureSelectedFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
-            ShowLockFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
+            DrawCaptureSelectedFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
+            DrawLockFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
         }
 
         ShortcutBinding updateRenderCacheShortcut 
@@ -254,7 +254,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
 //----------------------------------------------------------------------------------------------------------------------
 
 
-    private void ShowCaptureSelectedFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
+    private void DrawCaptureSelectedFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
         bool         prevMarkersRequest = timelineClipSISData.AreFrameMarkersRequested();
         TrackAsset   track              = timelineClip.parentTrack;
         
@@ -281,7 +281,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
 //----------------------------------------------------------------------------------------------------------------------
 
 
-    private void ShowLockFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
+    private void DrawLockFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
         TrackAsset track = timelineClip.parentTrack;
         
         using(new EditorGUILayout.HorizontalScope()) {
