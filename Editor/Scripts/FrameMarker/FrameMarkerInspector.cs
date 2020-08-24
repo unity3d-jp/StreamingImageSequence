@@ -146,7 +146,6 @@ internal class FrameMarkerInspector: Editor {
 //----------------------------------------------------------------------------------------------------------------------
 
     private void DrawNoteGUI(string prevNote) {
-        Assert.IsNotNull(m_scrollableTextAreaMethod);
         GUILayout.Space(15);
         GUILayout.Label("Note");
         
@@ -158,7 +157,7 @@ internal class FrameMarkerInspector: Editor {
             m_noteScroll, 
             EditorStyles.textArea            
         }; 
-        object userNoteObj = m_scrollableTextAreaMethod.Invoke(null,methodParams);
+        object userNoteObj = UnityEditorReflection.SCROLLABLE_TEXT_AREA_METHOD.Invoke(null,methodParams);
         m_noteScroll = (Vector2) (methodParams[2]);
         string userNote = userNoteObj.ToString();
         
@@ -174,9 +173,6 @@ internal class FrameMarkerInspector: Editor {
     private FrameMarker[] m_assets = null;
     Vector2               m_noteScroll  = Vector2.zero;
     
-    //Recorder Reflection
-    private static readonly MethodInfo m_scrollableTextAreaMethod 
-        = typeof(EditorGUI).GetMethod("ScrollableTextAreaInternal", BindingFlags.Static | BindingFlags.NonPublic);
 
 }
 
