@@ -81,6 +81,9 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         return clip;
     }
 
+    internal string GetUserNote() {  return m_userNote;}
+    internal void SetUserNote(string userNote)   {  m_userNote = userNote; }    
+    
 //----------------------------------------------------------------------------------------------------------------------
     //Property
     internal bool GetBoolProperty(PlayableFramePropertyID propertyID) {
@@ -156,10 +159,11 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    [SerializeField] private List<PlayableFrameBoolProperty> m_serializedBoolProperties;
-    [SerializeField] private double m_localTime;    
-    [SerializeField] private FrameMarker m_marker = null;     
-    [NonSerialized] private TimelineClipSISData m_timelineClipSISDataOwner = null;
+    [HideInInspector][SerializeField] private List<PlayableFrameBoolProperty> m_serializedBoolProperties;
+    [HideInInspector][SerializeField] private double                          m_localTime;    
+    [HideInInspector][SerializeField] private FrameMarker                     m_marker = null;
+    [HideInInspector][SerializeField] private string                          m_userNote;
+    [NonSerialized]                   private TimelineClipSISData             m_timelineClipSISDataOwner = null;
 
     private int m_index;
     
