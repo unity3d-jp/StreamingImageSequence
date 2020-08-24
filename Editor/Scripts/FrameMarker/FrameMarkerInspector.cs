@@ -160,7 +160,7 @@ internal class FrameMarkerInspector: Editor {
     
 //----------------------------------------------------------------------------------------------------------------------
     private FrameMarker[] m_assets = null;
-    Vector2               m_noteScroll;
+    Vector2               m_noteScroll  = Vector2.zero;
 }
 
 } //end namespace
