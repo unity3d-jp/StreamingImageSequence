@@ -39,7 +39,6 @@ internal class FrameMarkerInspector: Editor {
             
             GUILayout.Space(15);
             GUILayout.Label("Note");
-
             m_noteScroll = EditorGUILayout.BeginScrollView(m_noteScroll, GUILayout.Height(100));
             string userNote = EditorGUILayout.TextArea(prevNote, GUILayout.ExpandHeight(true));
             EditorGUILayout.EndScrollView();
@@ -49,6 +48,28 @@ internal class FrameMarkerInspector: Editor {
             } 
             
         } else {
+
+            int numSelectedAssets = m_assets.Length;
+            Assert.IsTrue(numSelectedAssets > 1);
+            SISPlayableFrame firstPlayableFrame = m_assets[0].GetOwner();
+            string           prevNote      = firstPlayableFrame.GetUserNote();
+            for (int i = 1; i < numSelectedAssets; ++i) {
+                SISPlayableFrame playableFrame = m_assets[i].GetOwner();
+                if (playableFrame.GetUserNote() != prevNote) {
+                    prevNote = "<different notes>";
+                }                                
+            }
+            
+            GUILayout.Space(15);
+            GUILayout.Label("Note");
+            m_noteScroll = EditorGUILayout.BeginScrollView(m_noteScroll, GUILayout.Height(100));
+            string userNote = EditorGUILayout.TextArea(prevNote, GUILayout.ExpandHeight(true));
+            EditorGUILayout.EndScrollView();
+            if (userNote != prevNote) {
+                foreach (FrameMarker frameMarker in m_assets) {
+                    frameMarker.GetOwner().SetUserNote(userNote);
+                }
+            } 
             
         }
         
