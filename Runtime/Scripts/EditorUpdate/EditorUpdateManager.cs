@@ -20,6 +20,9 @@ internal class EditorUpdateManager {
         EditorSceneManager.sceneClosed     += EditorUpdateManager_OnSceneClosed;
         EditorSceneManager.newSceneCreated += EditorUpdateManager_OnSceneCreated;
         EditorSceneManager.sceneOpened     += EditorUpdateManager_OnSceneOpened;
+
+        OnUnityEditorFocus += UpdateImageFolderPlayableAsset;
+
     }
 
     ~EditorUpdateManager() {
@@ -47,49 +50,7 @@ internal class EditorUpdateManager {
 //----------------------------------------------------------------------------------------------------------------------        
 
     static void EditorUpdateManager_Update() {
-        if (!m_appFocused && UnityEditorInternal.InternalEditorUtility.isApplicationActive) {
-            m_appFocused = UnityEditorInternal.InternalEditorUtility.isApplicationActive;
-            OnUnityEditorFocus(true);
-
-            RenderCachePlayableAsset[] playableAssets = GameObject.FindObjectsOfType<RenderCachePlayableAsset>();
-            Debug.Log("On focus window! " + TimelineEditor.inspectedAsset);
-
-            IEnumerable<TrackAsset> trackAssets = TimelineEditor.inspectedAsset.GetOutputTracks();
-            
-            Type[] sisTracks = new Type[] {
-                typeof(StreamingImageSequenceTrack),
-                typeof(RenderCacheTrack)
-            };
-            foreach (TrackAsset trackAsset in trackAssets) {
-                bool isSISTrack = false;
-                foreach (Type sisTrackType in sisTracks) {
-                    if (trackAsset.GetType() == sisTrackType) {
-                        isSISTrack = true;
-                        break;
-                    }
-                }
-
-                if (!isSISTrack)
-                    continue;
-                
-                IEnumerable<TimelineClip> clips = trackAsset.GetClips();
-                foreach (TimelineClip clip in clips) {
-                    ImageFolderPlayableAsset imageFolderPlayableAsset = clip.asset as ImageFolderPlayableAsset;
-                    Debug.Log(imageFolderPlayableAsset);
-
-                }
-            }
-
-
-
-
-
-        } else if (m_appFocused && !UnityEditorInternal.InternalEditorUtility.isApplicationActive) {
-            m_appFocused = UnityEditorInternal.InternalEditorUtility.isApplicationActive;
-            OnUnityEditorFocus(false);
-            //Debug.Log("On lost focus");
-        }        
-        
+        UpdateEditorFocus();       
        
         double time = EditorApplication.timeSinceStartup;
         double timeDifference = time - m_lastUpdateInEditorTime;
@@ -147,6 +108,56 @@ internal class EditorUpdateManager {
     
 
 //----------------------------------------------------------------------------------------------------------------------
+
+
+    static void UpdateEditorFocus() {
+
+        bool isAppActive = UnityEditorInternal.InternalEditorUtility.isApplicationActive;
+        if (!m_editorFocused && isAppActive) {
+            m_editorFocused = true;
+            OnUnityEditorFocus?.Invoke(true);
+
+        } else if (m_editorFocused && !isAppActive) {
+            m_editorFocused = false;
+            OnUnityEditorFocus?.Invoke(false);
+        }        
+        
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+
+    static void UpdateImageFolderPlayableAsset(bool isEditorFocused) {
+        if (!isEditorFocused)
+            return;
+
+        if (null == TimelineEditor.inspectedAsset) {
+            return;            
+        }
+        
+
+        IEnumerable<TrackAsset> trackAssets = TimelineEditor.inspectedAsset.GetOutputTracks();            
+        foreach (TrackAsset trackAsset in trackAssets) {
+            BaseSISTrack baseSISTrack = trackAsset as BaseSISTrack;
+            if (null == baseSISTrack)
+                continue;
+
+            if (!BitUtility.IsSet((int)baseSISTrack.GetCapsV(), (int) SISTrackCaps.IMAGE_FOLDER))
+                continue;
+                       
+            IEnumerable<TimelineClip> clips = trackAsset.GetClips();
+            foreach (TimelineClip clip in clips) {
+                ImageFolderPlayableAsset imageFolderPlayableAsset = clip.asset as ImageFolderPlayableAsset;
+                Assert.IsNotNull(imageFolderPlayableAsset);
+                //imageFolderPlayableAsset.Reload();
+                
+
+            }
+        }
+        
+
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
     
     private static double m_lastUpdateInEditorTime;
        
@@ -155,8 +166,8 @@ internal class EditorUpdateManager {
     private static readonly List<IUpdateTask>    m_requestedTasks        = new List<IUpdateTask>();
     private static readonly HashSet<IUpdateTask> m_toRemoveTasks         = new HashSet<IUpdateTask>();
     
-    public static event Action<bool> OnUnityEditorFocus = (focus) => { };
-    private static bool m_appFocused;    
+    public static event Action<bool> OnUnityEditorFocus;
+    private static bool m_editorFocused;    
 }
 
 
