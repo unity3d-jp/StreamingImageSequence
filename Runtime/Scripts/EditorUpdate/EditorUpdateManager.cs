@@ -164,7 +164,7 @@ internal class EditorUpdateManager {
     private static readonly List<IUpdateTask>    m_requestedTasks        = new List<IUpdateTask>();
     private static readonly HashSet<IUpdateTask> m_toRemoveTasks         = new HashSet<IUpdateTask>();
     
-    public static event Action<bool> OnUnityEditorFocus;
+    private static event Action<bool> OnUnityEditorFocus;
     private static bool m_editorFocused;    
 }
 
