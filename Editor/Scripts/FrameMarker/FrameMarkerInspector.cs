@@ -158,7 +158,7 @@ internal class FrameMarkerInspector: Editor {
         }; 
         object userNoteObj = UnityEditorReflection.SCROLLABLE_TEXT_AREA_METHOD.Invoke(null,methodParams);
         m_noteScroll = (Vector2) (methodParams[2]);
-        string userNote = userNoteObj.ToString();
+        string userNote = userNoteObj?.ToString();
         
         if (userNote != prevNote) {
             foreach (FrameMarker frameMarker in m_assets) {
