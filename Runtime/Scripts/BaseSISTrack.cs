@@ -4,7 +4,7 @@ namespace UnityEngine.StreamingImageSequence
 {
     
 internal abstract class BaseSISTrack : TrackAsset {
-    protected virtual SISTrackCaps GetCapsV() { return SISTrackCaps.NONE; }    
+    internal virtual SISTrackCaps GetCapsV() { return SISTrackCaps.NONE; }    
 }
 
 } //end namespace
