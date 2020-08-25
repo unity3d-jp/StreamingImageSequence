@@ -50,6 +50,10 @@ internal class RenderCacheTrack : BaseTimelineClipSISDataTrack<RenderCachePlayab
         return mixer;
     }     
     
+ 
+//----------------------------------------------------------------------------------------------------------------------
+    
+    protected override SISTrackCaps GetCapsV() { return SISTrackCaps.IMAGE_FOLDER; }
     
 //----------------------------------------------------------------------------------------------------------------------    
    
