@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine.Assertions;
-
+using UnityEngine.Timeline;
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEditor.Timeline;
+using UnityEngine.UI;
 
 namespace UnityEngine.StreamingImageSequence
 {
@@ -44,6 +47,48 @@ internal class EditorUpdateManager {
 //----------------------------------------------------------------------------------------------------------------------        
 
     static void EditorUpdateManager_Update() {
+        if (!m_appFocused && UnityEditorInternal.InternalEditorUtility.isApplicationActive) {
+            m_appFocused = UnityEditorInternal.InternalEditorUtility.isApplicationActive;
+            OnUnityEditorFocus(true);
+
+            RenderCachePlayableAsset[] playableAssets = GameObject.FindObjectsOfType<RenderCachePlayableAsset>();
+            Debug.Log("On focus window! " + TimelineEditor.inspectedAsset);
+
+            IEnumerable<TrackAsset> trackAssets = TimelineEditor.inspectedAsset.GetOutputTracks();
+            
+            Type[] sisTracks = new Type[] {
+                typeof(StreamingImageSequenceTrack),
+                typeof(RenderCacheTrack)
+            };
+            foreach (TrackAsset trackAsset in trackAssets) {
+                bool isSISTrack = false;
+                foreach (Type sisTrackType in sisTracks) {
+                    if (trackAsset.GetType() == sisTrackType) {
+                        isSISTrack = true;
+                        break;
+                    }
+                }
+
+                if (!isSISTrack)
+                    continue;
+                
+                IEnumerable<TimelineClip> clips = trackAsset.GetClips();
+                foreach (TimelineClip clip in clips) {
+                    ImageFolderPlayableAsset imageFolderPlayableAsset = clip.asset as ImageFolderPlayableAsset;
+                    Debug.Log(imageFolderPlayableAsset);
+
+                }
+            }
+
+
+
+
+
+        } else if (m_appFocused && !UnityEditorInternal.InternalEditorUtility.isApplicationActive) {
+            m_appFocused = UnityEditorInternal.InternalEditorUtility.isApplicationActive;
+            OnUnityEditorFocus(false);
+            //Debug.Log("On lost focus");
+        }        
         
        
         double time = EditorApplication.timeSinceStartup;
@@ -70,6 +115,7 @@ internal class EditorUpdateManager {
         foreach (IUpdateTask job in m_mainThreadPeriodJobs) {
             job.Execute();
         }
+        
 
     }
 
@@ -108,6 +154,9 @@ internal class EditorUpdateManager {
     private static readonly HashSet<IUpdateTask> m_mainThreadPeriodJobs = new HashSet<IUpdateTask>();
     private static readonly List<IUpdateTask>    m_requestedTasks        = new List<IUpdateTask>();
     private static readonly HashSet<IUpdateTask> m_toRemoveTasks         = new HashSet<IUpdateTask>();
+    
+    public static event Action<bool> OnUnityEditorFocus = (focus) => { };
+    private static bool m_appFocused;    
 }
 
 
