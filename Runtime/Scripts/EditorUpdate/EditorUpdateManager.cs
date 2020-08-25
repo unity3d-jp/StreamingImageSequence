@@ -148,9 +148,7 @@ internal class EditorUpdateManager {
             foreach (TimelineClip clip in clips) {
                 ImageFolderPlayableAsset imageFolderPlayableAsset = clip.asset as ImageFolderPlayableAsset;
                 Assert.IsNotNull(imageFolderPlayableAsset);
-                //imageFolderPlayableAsset.Reload();
-                
-
+                imageFolderPlayableAsset.Reload();                
             }
         }
         
