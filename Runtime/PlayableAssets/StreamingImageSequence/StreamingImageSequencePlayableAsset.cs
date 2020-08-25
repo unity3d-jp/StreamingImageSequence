@@ -423,9 +423,10 @@ namespace UnityEngine.StreamingImageSequence {
             } else {
                 m_timelineDefaultAsset = null;
             }
-            m_texture = null;
-            EditorUtility.SetDirty(this);
+
+            ResetTexture();
             UpdateFolderMD5();
+            EditorUtility.SetDirty(this);
         }
         
         internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
