@@ -64,6 +64,8 @@ internal class FrameMarkerInspector: Editor {
             if (null == playableAsset)
                 return;        
         }        
+
+        GUILayout.Space(15);
         
         //m_assets only contain RenderCachePlayableAsset at this point
         ShortcutBinding lockAndEditShortcut 
