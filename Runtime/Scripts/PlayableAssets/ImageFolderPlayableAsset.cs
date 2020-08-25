@@ -15,7 +15,7 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
    
 //----------------------------------------------------------------------------------------------------------------------
 
-    protected abstract void ResetInternalV();
+    protected abstract void ReloadInternalV();
     
 //----------------------------------------------------------------------------------------------------------------------
     
@@ -158,14 +158,16 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         }
 
         m_imageFileNames = FindImages(m_folder); 
-        ResetInternalV();
-        EditorUtility.SetDirty(this);
         if (!string.IsNullOrEmpty(folderMD5)) {
             m_folderMD5 = folderMD5;
         }
         else {
             UpdateFolderMD5();
         }
+        
+        ReloadInternalV();
+        EditorUtility.SetDirty(this);
+        
     }
     
     //Returns true if the MD5 has changed
