@@ -17,7 +17,7 @@ internal class FrameMarkerInspector: Editor {
         m_assets = new FrameMarker[numTargets];
         for (int i = 0; i < numTargets; i++) {
             m_assets[i] = targets[i] as FrameMarker;
-        }
+        }        
     }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -32,8 +32,32 @@ internal class FrameMarkerInspector: Editor {
                 SetMarkerValueByContext(m,useFrame);
             }            
         }
+
+        if (1 == m_assets.Length) {
+            SISPlayableFrame playableFrame = m_assets[0].GetOwner();
+            string           prevNote      = playableFrame.GetUserNote();            
+            DrawNoteGUI(prevNote);            
+        } else {
+
+            int numSelectedAssets = m_assets.Length;
+            Assert.IsTrue(numSelectedAssets > 1);
+            SISPlayableFrame firstPlayableFrame = m_assets[0].GetOwner();
+            string           prevNote      = firstPlayableFrame.GetUserNote();
+            for (int i = 1; i < numSelectedAssets; ++i) {
+                SISPlayableFrame playableFrame = m_assets[i].GetOwner();
+                if (playableFrame.GetUserNote() != prevNote) {
+                    prevNote = "<different notes>";
+                }                                
+            }
+
+            DrawNoteGUI(prevNote);
+
+        }
+        
+        
                
         //Only show lock and edit for RenderCachePlayableAsset
+        //[TODO-Sin: 2020-8-24]: Define capabilities in RenderCachePlayableAsset that defines what is visible
         foreach (FrameMarker frameMarker in m_assets) {
             SISPlayableFrame playableFrame       = frameMarker.GetOwner();
             RenderCachePlayableAsset playableAsset = playableFrame.GetTimelineClipAsset<RenderCachePlayableAsset>();            
@@ -100,6 +124,7 @@ internal class FrameMarkerInspector: Editor {
         }
                
     }
+    
 
     internal static void ToggleMarkerValueByContext(FrameMarker frameMarker) {
         SISPlayableFrame    playableFrame         = frameMarker.GetOwner();
@@ -119,7 +144,35 @@ internal class FrameMarkerInspector: Editor {
     }
 //----------------------------------------------------------------------------------------------------------------------
 
+    private void DrawNoteGUI(string prevNote) {
+        GUILayout.Space(15);
+        GUILayout.Label("Note");
+        
+        //Use reflection to access EditorGUI.ScrollableTextAreaInternal()
+        Rect rect = EditorGUILayout.GetControlRect(GUILayout.Height(120));
+        object[] methodParams = new object[] {
+            rect, 
+            prevNote, 
+            m_noteScroll, 
+            EditorStyles.textArea            
+        }; 
+        object userNoteObj = UnityEditorReflection.SCROLLABLE_TEXT_AREA_METHOD.Invoke(null,methodParams);
+        m_noteScroll = (Vector2) (methodParams[2]);
+        string userNote = userNoteObj.ToString();
+        
+        if (userNote != prevNote) {
+            foreach (FrameMarker frameMarker in m_assets) {
+                frameMarker.GetOwner().SetUserNote(userNote);
+            }
+        }
+        
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
     private FrameMarker[] m_assets = null;
+    Vector2               m_noteScroll  = Vector2.zero;
+    
+
 }
 
 } //end namespace
