@@ -6,8 +6,8 @@ languages:
 ---
 
 {% for lang in languages %}
-test_docs_build_win10_{{lang}}:
-  name: Test unity package documentation builds (win10) for {{ yamato_name }}
+build_{{lang}}_docs_win10:
+  name: Build {{lang}} docs for {{ yamato_name }}
   agent:
     type: Unity::VM
     image: documentation/packagedocs-cli-win10:latest
@@ -21,7 +21,27 @@ test_docs_build_win10_{{lang}}:
     logs:
       paths:
         - packagedocs-cli.log
-        - UnityEditor.log
-        
+        - UnityEditor.log        
 {% endfor %}
-        
+
+build_all_languages_docs_win10:
+  name: Build all languages docs for {{ yamato_name }}
+  agent:
+    type: Unity::VM
+    image: documentation/packagedocs-cli-win10:latest
+    flavor: b1.large
+  commands:
+    - ls
+  artifacts:
+    documentation:
+      paths:
+        - packagedocs-cli/documentation/**
+    logs:
+      paths:
+        - packagedocs-cli.log
+        - UnityEditor.log        
+  dependencies:
+{% for lang in languages %}
+    - .yamato/docs-{{ yamato_name }}.yml#build_{{lang}}_docs_win10
+{% endfor %}
+
