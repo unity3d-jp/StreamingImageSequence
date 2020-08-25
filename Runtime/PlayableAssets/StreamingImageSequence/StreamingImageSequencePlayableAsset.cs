@@ -275,23 +275,20 @@ namespace UnityEngine.StreamingImageSequence {
                 m_forwardPreloadImageIndex = m_backwardPreloadImageIndex = index;
             }
 
-            if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
+            if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus) {
+                if (null == m_texture) {
+                    m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
+                }
 
-                ResetTexture();
-                m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
-                m_texture.name = "Full: " + m_imageFileNames[index];
-                readResult.CopyBufferToTexture(m_texture);
-                
-                UpdateResolution(ref readResult);
+                if (m_lastCopiedImageIndex != index) {
+                    m_texture.name = "Full: " + m_imageFileNames[index];
+                    readResult.CopyBufferToTexture(m_texture);
+                    UpdateResolution(ref readResult);
+                    
+                    m_lastCopiedImageIndex = index;
+                }
             }
-
-            //Update the texture
-            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS && m_lastCopiedImageIndex != index) {
-
-                readResult.CopyBufferToTexture(m_texture);
-                m_lastCopiedImageIndex = index;
-            }
-
+            
             return null!=m_texture;
         }        
 
