@@ -127,7 +127,14 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
 #if UNITY_EDITOR    
 
 #region Reload/Find images
-    internal void Reload(string folderMD5 = null) {
+
+    internal void Reload() {
+        if (UpdateFolderMD5()) {
+            ForceReload(m_folderMD5);                    
+        }
+    }
+    
+    internal void ForceReload(string folderMD5 = null) {
            
         if (string.IsNullOrEmpty(m_folder))
             return;

@@ -27,10 +27,9 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
         //Check folder MD5
         if (string.IsNullOrEmpty(m_folder) || !Directory.Exists(m_folder)) 
             return;
-        
-        if (UpdateFolderMD5()) {
-            Reload(m_folderMD5);                    
-        }
+
+
+        Reload();
 #endif
     }
     

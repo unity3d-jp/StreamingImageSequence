@@ -46,9 +46,7 @@ namespace UnityEngine.StreamingImageSequence {
 #if UNITY_EDITOR
             //Check folder MD5
             if (!string.IsNullOrEmpty(m_folder) && Directory.Exists(m_folder)) {
-                if (UpdateFolderMD5()) {
-                    Reload(m_folderMD5);                    
-                }
+                Reload();
             }
             
             FolderContentsChangedNotifier.GetInstance().Subscribe(this);

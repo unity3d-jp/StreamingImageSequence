@@ -68,7 +68,7 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Images: " + numImages, "BoldLabel");            
             if (GUILayout.Button("Reload", GUILayout.Width(50))) {
-                m_asset.Reload();
+                m_asset.ForceReload();
             }
             EditorGUILayout.EndHorizontal();
             
