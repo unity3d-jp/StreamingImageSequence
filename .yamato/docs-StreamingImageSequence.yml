@@ -1,0 +1,26 @@
+yamato_name: StreamingImageSequence
+languages:
+  - code: en
+  - code: ja
+
+
+{% for lang in languages %}
+test_docs_build_win10:
+  name: Test unity package documentation builds (win10) for {{ yamato_name }}
+  agent:
+    type: Unity::VM
+    image: documentation/packagedocs-cli-win10:latest
+    flavor: b1.large
+  commands:
+    - packagedocs-cli build --package-language {{lang.code}}
+  artifacts:
+    documentation:
+      paths:
+        - packagedocs-cli/documentation/**
+    logs:
+      paths:
+        - packagedocs-cli.log
+        - UnityEditor.log
+        
+{% endfor %}
+        
