@@ -617,6 +617,8 @@ namespace UnityEngine.StreamingImageSequence {
         private static bool GetAndValidateAnimationCurve(TimelineClip clip, out AnimationCurve animationCurve) {
 #if UNITY_EDITOR
             animationCurve = AnimationUtility.GetEditorCurve(clip.curves, m_timelineEditorCurveBinding);
+#else 
+            animationCurve = null;
 #endif
             bool newlyCreated = false;
             if (null == animationCurve) {
