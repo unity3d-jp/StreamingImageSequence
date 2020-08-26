@@ -12,6 +12,12 @@ internal static class BitUtility {
             bytes[i] = (byte)(number >> (8*i) & 0xFF);
         }
     }
+
+//----------------------------------------------------------------------------------------------------------------------    
+    internal static bool IsSet(int a, int b) {
+        return (a & b) == b;
+        
+    }
 }
 
 } //end namespace

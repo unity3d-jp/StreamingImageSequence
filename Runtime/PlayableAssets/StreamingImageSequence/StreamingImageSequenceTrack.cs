@@ -65,8 +65,10 @@ internal class StreamingImageSequenceTrack : BaseTimelineClipSISDataTrack<Stream
 
     /// <inheritdoc/>
     public override string ToString() { return name; }
-    
-        
+
+    internal override SISTrackCaps GetCapsV() { return SISTrackCaps.IMAGE_FOLDER; }
+
+
 //----------------------------------------------------------------------------------------------------------------------
     private void InitTrackCurves() {
         //Initialize the curves of TimelineClips       

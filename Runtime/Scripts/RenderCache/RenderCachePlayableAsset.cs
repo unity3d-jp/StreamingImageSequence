@@ -15,23 +15,12 @@ namespace UnityEngine.StreamingImageSequence {
 /// </summary>
 [System.Serializable]
 internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineClipAsset, ISerializationCallbackReceiver {
-   
-    protected override void ResetInternalV() {
+    protected override void ReloadInternalV() {
         ResetResolution();            
     }        
     
 //----------------------------------------------------------------------------------------------------------------------
     public void OnGraphStart(Playable playable) {
-
-#if UNITY_EDITOR
-        //Check folder MD5
-        if (string.IsNullOrEmpty(m_folder) || !Directory.Exists(m_folder)) 
-            return;
-        
-        if (UpdateFolderMD5()) {
-            Reload(m_folderMD5);                    
-        }
-#endif
     }
     
 //----------------------------------------------------------------------------------------------------------------------

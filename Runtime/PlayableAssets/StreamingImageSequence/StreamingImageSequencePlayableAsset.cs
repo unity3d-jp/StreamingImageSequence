@@ -43,14 +43,7 @@ namespace UnityEngine.StreamingImageSequence {
         /// <inheritdoc/>
         public void OnGraphStart(Playable playable) {
             
-#if UNITY_EDITOR
-            //Check folder MD5
-            if (!string.IsNullOrEmpty(m_folder) && Directory.Exists(m_folder)) {
-                if (UpdateFolderMD5()) {
-                    Reload(m_folderMD5);                    
-                }
-            }
-            
+#if UNITY_EDITOR            
             FolderContentsChangedNotifier.GetInstance().Subscribe(this);
 #endif            
         }
@@ -158,10 +151,7 @@ namespace UnityEngine.StreamingImageSequence {
         
 //----------------------------------------------------------------------------------------------------------------------        
         private void Reset() {
-            ResetInternalV();
-        }
-
-        protected override void ResetInternalV() {
+            
             m_primaryImageIndex         = 0;
             m_forwardPreloadImageIndex  = 0;
             m_backwardPreloadImageIndex = 0;
@@ -169,6 +159,13 @@ namespace UnityEngine.StreamingImageSequence {
             m_lastCopiedImageIndex = -1;
             ResetTexture();
             ResetResolution();
+        }
+
+//----------------------------------------------------------------------------------------------------------------------        
+        protected override void ReloadInternalV() {
+            m_lastCopiedImageIndex = -1;
+            ResetResolution();
+            RequestLoadImage(m_primaryImageIndex);
             
         }        
 //----------------------------------------------------------------------------------------------------------------------        
@@ -273,23 +270,20 @@ namespace UnityEngine.StreamingImageSequence {
                 m_forwardPreloadImageIndex = m_backwardPreloadImageIndex = index;
             }
 
-            if (null == m_texture &&  readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS) {
+            if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus) {
+                if (null == m_texture) {
+                    m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
+                }
 
-                ResetTexture();
-                m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
-                m_texture.name = "Full: " + m_imageFileNames[index];
-                readResult.CopyBufferToTexture(m_texture);
-                
-                UpdateResolution(ref readResult);
+                if (m_lastCopiedImageIndex != index) {
+                    m_texture.name = "Full: " + m_imageFileNames[index];
+                    readResult.CopyBufferToTexture(m_texture);
+                    UpdateResolution(ref readResult);
+                    
+                    m_lastCopiedImageIndex = index;
+                }
             }
-
-            //Update the texture
-            if (readResult.ReadStatus == StreamingImageSequenceConstants.READ_STATUS_SUCCESS && m_lastCopiedImageIndex != index) {
-
-                readResult.CopyBufferToTexture(m_texture);
-                m_lastCopiedImageIndex = index;
-            }
-
+            
             return null!=m_texture;
         }        
 
@@ -421,9 +415,10 @@ namespace UnityEngine.StreamingImageSequence {
             } else {
                 m_timelineDefaultAsset = null;
             }
-            m_texture = null;
-            EditorUtility.SetDirty(this);
+
+            ResetTexture();
             UpdateFolderMD5();
+            EditorUtility.SetDirty(this);
         }
         
         internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
