@@ -130,10 +130,9 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     /*
      * [Note-sin: 2020-8-25]
      * There are a couple ways in which a folder will be reloaded:
-     * 1. When the PlayableGraph in TimelineEditor is created (refreshed)
-     * 2. When the inspector explicitly asks to reload the image
-     * 3. When the inspector notifies that a particular folder has been updated (observer)
-     * 4. When Unity Editor Application becomes active
+     * 1. When the inspector explicitly asks to reload the image
+     * 2. When the inspector notifies that a particular folder has been updated (observer)
+     * 3. When Unity Editor Application becomes active
      */       
 
     internal void Reload() {

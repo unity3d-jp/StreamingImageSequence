@@ -43,12 +43,7 @@ namespace UnityEngine.StreamingImageSequence {
         /// <inheritdoc/>
         public void OnGraphStart(Playable playable) {
             
-#if UNITY_EDITOR
-            //Check folder MD5
-            if (!string.IsNullOrEmpty(m_folder) && Directory.Exists(m_folder)) {
-                Reload();
-            }
-            
+#if UNITY_EDITOR            
             FolderContentsChangedNotifier.GetInstance().Subscribe(this);
 #endif            
         }

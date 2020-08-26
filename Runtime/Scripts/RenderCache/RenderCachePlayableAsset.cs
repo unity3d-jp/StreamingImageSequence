@@ -21,15 +21,6 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
     
 //----------------------------------------------------------------------------------------------------------------------
     public void OnGraphStart(Playable playable) {
-
-#if UNITY_EDITOR
-        //Check folder MD5
-        if (string.IsNullOrEmpty(m_folder) || !Directory.Exists(m_folder)) 
-            return;
-
-
-        Reload();
-#endif
     }
     
 //----------------------------------------------------------------------------------------------------------------------
