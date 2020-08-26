@@ -226,7 +226,7 @@ namespace UnityEngine.StreamingImageSequence {
 
 //----------------------------------------------------------------------------------------------------------------------
         private static double LocalTimeToCurveTime(TimelineClip clip, double localTime) {
-            AnimationCurve curve = GetAndValidateAnimationCurve(clip);
+            GetAndValidateAnimationCurve(clip, out AnimationCurve curve);
             return curve.Evaluate((float)(localTime));
         }
         
@@ -250,8 +250,10 @@ namespace UnityEngine.StreamingImageSequence {
             m_boundTimelineClip = clip;
             if (null == clip)
                 return;
-            AnimationCurve curve = GetAndValidateAnimationCurve(clip);
-            RefreshTimelineClipCurve(clip, curve);
+            bool curveChanged = GetAndValidateAnimationCurve(clip, out AnimationCurve curve);
+            if (curveChanged) {
+                RefreshTimelineClipCurve(clip, curve);                
+            }
             
         }
         internal TimelineClip GetBoundTimelineClip()              { return m_boundTimelineClip; }
@@ -609,22 +611,29 @@ namespace UnityEngine.StreamingImageSequence {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-        //Get the animation curve from the TimelineClip.  
-        private static AnimationCurve GetAndValidateAnimationCurve(TimelineClip clip) {
-            AnimationCurve animationCurve = null;
+        //Returns:
+        //- true : if the animationCurve of the clip was changed or validated
+        //- false: if the animationCurve was already valid
+        private static bool GetAndValidateAnimationCurve(TimelineClip clip, out AnimationCurve animationCurve) {
 #if UNITY_EDITOR
             animationCurve = AnimationUtility.GetEditorCurve(clip.curves, m_timelineEditorCurveBinding);
 #endif
-            if (null == animationCurve)
+            bool newlyCreated = false;
+            if (null == animationCurve) {
                 animationCurve = new AnimationCurve();
+                newlyCreated            = true;
+            } 
             
-            ValidateAnimationCurve(ref animationCurve, (float) clip.duration);
-            return animationCurve;
+            bool validated = ValidateAnimationCurve(ref animationCurve, (float) clip.duration);
+            return newlyCreated || validated;
         }
 
 //----------------------------------------------------------------------------------------------------------------------
         //Validate: make sure we have at least two keys
-        internal  static void ValidateAnimationCurve(ref AnimationCurve animationCurve, float clipDuration) {
+        //Returns:
+        //- true : if the animationCurve was invalid, and has been validated
+        //- false: if the animationCurve was already valid
+        internal static bool ValidateAnimationCurve(ref AnimationCurve animationCurve, float clipDuration) {
             int numKeys = animationCurve.keys.Length;
             switch (numKeys) {
                 case 0: {
@@ -636,8 +645,12 @@ namespace UnityEngine.StreamingImageSequence {
                     animationCurve.AddKey(clipDuration, 1.0f);
                     break;
                 }
-                default: break;
+                default: 
+                    return false;
+                    
             }
+
+            return true;
         }
         
 //----------------------------------------------------------------------------------------------------------------------
