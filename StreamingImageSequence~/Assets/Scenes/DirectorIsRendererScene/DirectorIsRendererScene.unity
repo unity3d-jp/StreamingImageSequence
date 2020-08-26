@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_materialIndexToUpdate: 0
-  m_targetTexture: {fileID: 0}
+  m_targetTexture: {fileID: 8400000, guid: 5da150ab51a4b294cbb08fdc764315ca, type: 2}
 --- !u!1 &1637334355
 GameObject:
   m_ObjectHideFlags: 0
