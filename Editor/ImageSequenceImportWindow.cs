@@ -120,7 +120,7 @@ internal class ImageSequenceImportWindow : EditorWindow {
         //Calculate where we should start drawing the visible items
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos, false, showVertical);
         int firstIndex = (int)( scrollPos.y / itemHeight);
-        firstIndex = Mathf.Clamp(firstIndex, 0, numItems - viewCount);
+        firstIndex = Mathf.Clamp(firstIndex, 0, Mathf.Max(0, numItems - viewCount));
         GUILayout.Space(firstIndex * itemHeight + topMargin);
         
         int lastIndex = Mathf.Min(numItems, firstIndex + viewCount);
