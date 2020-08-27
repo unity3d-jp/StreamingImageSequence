@@ -11,8 +11,8 @@
     }, 
     "description": "Streaming Image Sequence is a package for playing sequential image sequences in Unity Timeline easily without making Unity 2D Sprites.",
     "contributors": [
-        "Toshiyuki Mori <toshiyuki@unity3d.com> (https://github.com/higeometry)",
+        "Hiroki Omae <hiroki@unity3d.com> (https://github.com/hiroki-o)",
         "Sindharta Tanuwijaya <sindharta.tanuwijaya@unity3d.com> (https://github.com/sindharta)",
-        "Hiroki Omae <hiroki@unity3d.com> (https://github.com/hiroki-o)"
+        "Toshiyuki Mori <toshiyuki@unity3d.com> (https://github.com/higeometry)"
     ]
 }
