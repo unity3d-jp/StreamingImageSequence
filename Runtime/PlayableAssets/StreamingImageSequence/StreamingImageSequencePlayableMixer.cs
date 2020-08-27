@@ -150,6 +150,18 @@ namespace UnityEngine.StreamingImageSequence
             return (null!= m_sisRenderer);
         }
 
+
+//---------------------------------------------------------------------------------------------------------------------
+        protected override void ShowObjectV(bool show) {
+            if (null!=m_spriteRenderer) {
+                m_spriteRenderer.enabled = show;
+            } else if (null != m_meshRenderer) {
+                m_meshRenderer.enabled = show;
+            } else if (null!=m_image) {
+                m_image.enabled = show;
+            } 
+        }
+        
 //---------------------------------------------------------------------------------------------------------------------
 
         //[TODO-sin: 2020-7-22] This should be moved to StreamingImageSequenceRenderer
@@ -162,8 +174,7 @@ namespace UnityEngine.StreamingImageSequence
             if (null != rt) {
                 Graphics.Blit(tex, rt);                
             }
-            
-            
+                        
             if (null!=m_spriteRenderer ) {
                 Sprite sprite = m_spriteRenderer.sprite;
                 if (sprite.texture != tex) {
