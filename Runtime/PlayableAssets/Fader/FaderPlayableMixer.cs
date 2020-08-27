@@ -59,6 +59,13 @@ internal class FaderPlayableMixer : BasePlayableMixer<FaderPlayableAsset> {
         m_image.color = color;
     }
 
+//----------------------------------------------------------------------------------------------------------------------    
+    protected override void ShowObjectV(bool show) {
+        if (null!=m_image) {
+            m_image.enabled = show;
+        } 
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
 
     private Image m_image = null;
