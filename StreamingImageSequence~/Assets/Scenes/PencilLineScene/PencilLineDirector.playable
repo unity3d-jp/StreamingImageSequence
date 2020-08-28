@@ -290,7 +290,8 @@ MonoBehaviour:
     m_Objects: []
   m_serializedSISDataCollection:
   - m_playableFrames: []
-    m_frameMarkersVisibility: 0
+    m_frameMarkersRequested: 0
+    m_version: 0
 --- !u!114 &-221817260743349573
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -352,6 +353,7 @@ MonoBehaviour:
   m_FixedDuration: 0
   m_EditorSettings:
     m_Framerate: 60
+    m_ScenePreview: 1
   m_DurationMode: 0
   m_MarkerTrack: {fileID: -8952973201028109014}
 --- !u!74 &4252796963514442846
@@ -752,3 +754,6 @@ MonoBehaviour:
   m_Name: RenderCachePlayableAsset
   m_EditorClassIdentifier: 
   m_folder: 
+  m_imageFileNames: []
+  m_folderMD5: 
+  m_version: 1
