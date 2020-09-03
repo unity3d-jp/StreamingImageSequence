@@ -172,8 +172,12 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     //Returns true if the MD5 has changed
     protected bool UpdateFolderMD5() {
 
-        string prevFolderMD5 = m_folderMD5; 
-        m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, GetSupportedImageFilePatternsV(), FileNameComparer);
+        string prevFolderMD5 = m_folderMD5;
+        if (Directory.Exists(m_folder)) {
+            m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, GetSupportedImageFilePatternsV(), FileNameComparer);            
+        } else {
+            m_folderMD5 = "";
+        }
         return (prevFolderMD5 != m_folderMD5);         
     }
 

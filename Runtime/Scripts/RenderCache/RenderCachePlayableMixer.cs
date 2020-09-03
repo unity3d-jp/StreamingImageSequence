@@ -9,8 +9,6 @@ namespace UnityEngine.StreamingImageSequence {
 internal class RenderCachePlayableMixer : BasePlayableMixer<RenderCachePlayableAsset> {
 
 
-
-
 //----------------------------------------------------------------------------------------------------------------------
 
     #region IPlayableBehaviour interfaces
@@ -41,6 +39,12 @@ internal class RenderCachePlayableMixer : BasePlayableMixer<RenderCachePlayableA
     {
 
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+    
+    protected override void ShowObjectV(bool show) {
+        
+    }    
     
 }
 
