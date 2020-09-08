@@ -62,9 +62,10 @@ namespace UnityEngine.StreamingImageSequence {
         }
         /// <inheritdoc/>
         public void OnPlayableDestroy(Playable playable){
-            //Destroy hidden resources
-            ResetTexture();
+            //[Note-sin: 2020-9-8] OnPlayableDestroy() will be called when TimelineEditor is refreshed
+            //(ContentsAddedOrRemoved or ContentsModified) 
         }
+        
 
         /// <inheritdoc/>
         public void PrepareFrame(Playable playable, FrameData info){
