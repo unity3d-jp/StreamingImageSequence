@@ -167,7 +167,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
         blitter.SetCameraDepth(int.MaxValue);
 
         TimelineClip timelineClip = timelineClipSISData.GetOwner();
-        double nextDirectorTime = timelineClip.start;
         double timePerFrame = 1.0f / track.timelineAsset.editorSettings.fps;
         
         int  fileCounter = 0;
@@ -182,7 +181,12 @@ internal class RenderCachePlayableAssetInspector : Editor {
         HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
         
         bool cancelled = false;
-        while (nextDirectorTime <= timelineClip.end && !cancelled) {
+        while (!cancelled) {
+            
+            //Always recalculate from start to avoid floating point errors
+            double directorTime = timelineClip.start + (fileCounter * timePerFrame);
+            if (directorTime > timelineClip.end)
+                break;
             
             string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
             string outputFilePath = Path.Combine(outputFolder, fileName);
@@ -199,7 +203,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
             imageFileNames.Add(fileName);
             
             if (captureFrame) {
-                SetDirectorTime(director, nextDirectorTime);
+                SetDirectorTime(director, directorTime);
                 
                 //Need at least two frames in order to wait for the TimelineWindow to be updated ?
                 yield return null;
@@ -212,8 +216,6 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 
             } 
 
-
-            nextDirectorTime += timePerFrame;
             ++fileCounter;
         
             cancelled = EditorUtility.DisplayCancelableProgressBar(
