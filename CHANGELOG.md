@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.3.3-preview] - 2020-09-08
+* fix: disable renderer component when showing/hiding gameObject instead of enabling/disabling
+* fix: fix errors when displaying small number of images in the import window
+
 ## [0.3.2-preview] - 2020-08-13
 * fix: fix memory allocation blocking on Mac
 
