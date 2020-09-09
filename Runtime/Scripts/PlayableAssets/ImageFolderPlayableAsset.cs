@@ -135,8 +135,8 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
      * 3. When Unity Editor Application becomes active
      */       
 
-    internal void Reload() {
-        if (null == m_folder)
+    internal void Reload() {        
+        if (string.IsNullOrEmpty(m_folder))
             return;
 
         List<WatchedFileInfo> newImageFiles  = FindImages(m_folder);
