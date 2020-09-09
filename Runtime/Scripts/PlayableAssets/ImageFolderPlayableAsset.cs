@@ -180,8 +180,8 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
 
     //Return WatchedFileInfos (with file names)
     private static List<WatchedFileInfo> FindFilesInternal(string path, string[] filePatterns) {
-        Assert.IsFalse(string.IsNullOrEmpty(path));
-        Assert.IsTrue(Directory.Exists(path));
+        Assert.IsFalse(string.IsNullOrEmpty(path), "Path is null or empty");
+        Assert.IsTrue(Directory.Exists(path),$"Path {path} does not exist");
 
         //Convert path to folder here
         string fullSrcPath = Path.GetFullPath(path).Replace("\\", "/");
