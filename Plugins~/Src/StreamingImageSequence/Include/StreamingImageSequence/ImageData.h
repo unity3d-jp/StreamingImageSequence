@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ReadStatus.h"
+#include "StreamingImageSequence/ReadStatus.h"
 
 namespace StreamingImageSequencePlugin {
 
