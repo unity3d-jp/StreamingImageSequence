@@ -23,7 +23,7 @@ namespace UnityEngine.StreamingImageSequence {
 #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
 
 
-        private const string LOADER_DLL = "Loader";
+        private const string LOADER_DLL = "StreamingImageSequence";
 
         // Implemented in Loader dll
         [DllImport(LOADER_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
