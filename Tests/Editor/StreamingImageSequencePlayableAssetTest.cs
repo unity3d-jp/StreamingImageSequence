@@ -54,7 +54,7 @@ internal class StreamingImageSequencePlayableAssetTest {
         TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
         yield return null;
         
-        timelineClipSISData.RequestFrameMarkers(true); 
+        timelineClipSISData.RequestFrameMarkers(true, true); 
         Undo.IncrementCurrentGroup(); //the base of undo is here. FrameMarkerVisibility is still true after undo
         TimelineEditor.Refresh(RefreshReason.ContentsModified);
         yield return null;
