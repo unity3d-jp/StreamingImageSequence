@@ -1,8 +1,8 @@
 
 #include "stdafx.h"
-#include "CriticalSectionObject.h"
+#include "CommonLib/CriticalSectionObject.h"
 
-#include "CriticalSection.h"
+#include "CommonLib/CriticalSection.h"
 
 namespace StreamingImageSequencePlugin {
 

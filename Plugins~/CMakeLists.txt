@@ -7,6 +7,8 @@ endif()
 
 PROJECT(StreamingImageSequencePlugin)
 
+# allow CMake to organize files by folders
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 #cmake variables
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Build/cmake_modules)
@@ -62,14 +64,14 @@ add_definitions(-DUNICODE -D_UNICODE)
 #Specify available modules
 add_subdirectory(${src_root}/External/stb)
 add_subdirectory(${src_root}/CommonLib)
-add_subdirectory(${src_root}/Loader)
+add_subdirectory(${src_root}/StreamingImageSequence)
 
 # Tests
 if(BUILD_UNIT_TESTS)
     find_package(GTest REQUIRED)
     enable_testing()
     add_subdirectory(${tests_root}/CommonLib)
-    add_subdirectory(${tests_root}/Loader)
+    add_subdirectory(${tests_root}/StreamingImageSequence)
 endif()
 
 
