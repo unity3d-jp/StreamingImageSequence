@@ -16,9 +16,14 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
             return false;
         }
 
+        if (!m_pencilLineEffect.isActiveAndEnabled) {
+            SetErrorMessage($"Please enable PencilLineEffect component in {m_pencilLineEffect.gameObject.name}");
+            return false;
+        }
+        
         PencilLineRenderer lineRenderer = m_pencilLineEffect.PencilRenderer;
         if (null == lineRenderer) {
-            SetErrorMessage("PencilLineEffect doesn't have PencilRenderer on " + gameObject.name);
+            SetErrorMessage($"PencilLineEffect component in {m_pencilLineEffect.gameObject.name} doesn't have PencilRenderer");
             return false;
         }
 
