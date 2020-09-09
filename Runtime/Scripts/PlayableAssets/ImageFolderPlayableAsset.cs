@@ -160,7 +160,7 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         }
 
         //Do nothing if no change is detected
-        if (!changed) {
+        if (!changed && numNewImages == numPrevImages) {
             return;
         }
 
