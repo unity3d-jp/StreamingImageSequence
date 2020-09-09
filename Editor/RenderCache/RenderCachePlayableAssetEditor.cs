@@ -91,7 +91,8 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
         int           numImages           = renderCachePlayableAsset.GetNumImages();
         Assert.IsTrue(numImages > 0);
         
-        int index = Mathf.RoundToInt(numImages * (float) normalizedLocalTime);
+        //Can't round up, because if the time for the next frame hasn't been reached, then we should stick 
+        int index = Mathf.FloorToInt(numImages * (float) normalizedLocalTime);
         index = Mathf.Clamp(index, 0, numImages - 1);        
                         
         //Draw
