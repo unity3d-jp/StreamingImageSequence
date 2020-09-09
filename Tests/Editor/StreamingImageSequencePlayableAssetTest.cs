@@ -107,7 +107,7 @@ internal class StreamingImageSequencePlayableAssetTest {
             string fileName = imageFile.GetName();
             string src      = Path.Combine(folder, fileName);
             string dest     = Path.Combine(folder, "Copied_" + fileName);
-            File.Copy(src,dest);
+            File.Copy(src,dest,true);
             copiedImagePaths.Add(dest);
         }
 
