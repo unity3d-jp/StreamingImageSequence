@@ -13,9 +13,10 @@ internal class WatchedFileInfo {
 
     }
 //----------------------------------------------------------------------------------------------------------------------    
-    
-    internal string GetName() { return m_name; }
-    internal long GetSize() { return m_size; }
+
+    public override string ToString() { return m_name;}      
+    internal        string GetName()  { return m_name; }
+    internal        long   GetSize()  { return m_size; }
     
 //----------------------------------------------------------------------------------------------------------------------
 
