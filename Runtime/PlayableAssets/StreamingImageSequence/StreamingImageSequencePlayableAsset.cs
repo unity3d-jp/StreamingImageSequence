@@ -406,13 +406,6 @@ namespace UnityEngine.StreamingImageSequence {
         }
 
         public void OnAfterDeserialize() {
-#if UNITY_EDITOR            
-            if (m_version < (int) SISPlayableAssetVersion.FOLDER_MD5_1_0) {                
-                if (!string.IsNullOrEmpty(m_folder)) {
-                    UpdateFolderMD5();
-                }                
-            }
-#endif
             if (m_version < (int) SISPlayableAssetVersion.WATCHED_FILE_1_0) {
                 if (null != m_imageFileNames && m_imageFileNames.Count > 0) {
                     m_imageFiles = WatchedFileInfo.CreateList(m_folder, m_imageFileNames);
@@ -443,7 +436,6 @@ namespace UnityEngine.StreamingImageSequence {
             }
 
             ResetTexture();
-            UpdateFolderMD5();
             EditorUtility.SetDirty(this);
         }
         

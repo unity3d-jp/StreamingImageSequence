@@ -7,10 +7,34 @@ namespace UnityEngine.StreamingImageSequence {
 
 [Serializable]
 internal class WatchedFileInfo {
+
     internal WatchedFileInfo(string name, long size) {
         m_name = name;
         m_size = size;
-
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------    
+    
+    public static bool operator== (WatchedFileInfo obj1, WatchedFileInfo obj2) {
+               
+        return (obj1.m_name == obj2.m_name && obj1.m_size == obj2.m_size); 
+    }
+    
+    public static bool operator!= (WatchedFileInfo obj1, WatchedFileInfo obj2) {
+        return (obj1.m_name != obj2.m_name || obj1.m_size != obj2.m_size); 
+    }    
+    
+    public override bool Equals(object obj) {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return Equals((WatchedFileInfo) obj);
+    }
+    
+    public override int GetHashCode() {
+        unchecked {
+            return ((m_name != null ? m_name.GetHashCode() : 0) * 397) ^ m_size.GetHashCode();
+        }
     }
 //----------------------------------------------------------------------------------------------------------------------    
 

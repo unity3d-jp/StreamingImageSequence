@@ -136,51 +136,40 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
      */       
 
     internal void Reload() {
-        
-        if (UpdateFolderMD5()) {
-            ForceReload(m_folderMD5);                    
-        }
-    }
-    
-    internal void ForceReload(string folderMD5 = null) {
-           
-        if (string.IsNullOrEmpty(m_folder))
+        if (null == m_folder)
             return;
-            
-        //Unload existing images
-        int numImages = GetNumImages();
-        if (numImages > 0) {
-            foreach (WatchedFileInfo fileInfo  in m_imageFiles) {
-                string imagePath = PathUtility.GetPath(m_folder, fileInfo.GetName());
-                StreamingImageSequencePlugin.UnloadImageAndNotify(imagePath);
+
+        List<WatchedFileInfo> newImageFiles  = FindImages(m_folder);
+        int                   numNewImages   = newImageFiles.Count;
+        int                   numPrevImages  = m_imageFiles.Count;
+        bool                  changed        = false;
+
+        //Check if we need to unload prev images, and detect change
+        for (int i = 0; i < numPrevImages; ++i) {
+            if (i >= numNewImages) {
+                UnloadImage(i);
+                changed = true;
+                continue;
             }
+
+            if (newImageFiles[i] == m_imageFiles[i])
+                continue;
+
+            UnloadImage(i);
+            changed = true;
         }
 
-        m_imageFiles = FindImages(m_folder); 
-        if (!string.IsNullOrEmpty(folderMD5)) {
-            m_folderMD5 = folderMD5;
+        //Do nothing if no change is detected
+        if (!changed) {
+            return;
         }
-        else {
-            UpdateFolderMD5();
-        }
-        
+
+        m_imageFiles = newImageFiles;
         ReloadInternalV();
         EditorUtility.SetDirty(this);
         
     }
     
-    //Returns true if the MD5 has changed
-    protected bool UpdateFolderMD5() {
-
-        string prevFolderMD5 = m_folderMD5;
-        if (Directory.Exists(m_folder)) {
-            m_folderMD5 = PathUtility.CalculateFolderMD5ByFileSize(m_folder, GetSupportedImageFilePatternsV(), FileNameComparer);            
-        } else {
-            m_folderMD5 = "";
-        }
-        return (prevFolderMD5 != m_folderMD5);         
-    }
-
     internal static List<WatchedFileInfo> FindFiles(string path, string[] filePatterns) {
         return FindFilesInternal(path, filePatterns);
     }
@@ -219,6 +208,15 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     protected abstract string[] GetSupportedImageFilePatternsV();
     
 #endregion Reload/Find images
+
+//----------------------------------------------------------------------------------------------------------------------    
+    private void UnloadImage(int index) {
+        Assert.IsTrue(index < m_imageFiles.Count);
+        string imagePath = PathUtility.GetPath(m_folder, m_imageFiles[index].GetName());
+        StreamingImageSequencePlugin.UnloadImageAndNotify(imagePath);
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------    
     
 #endif  //End #if UNITY_EDITOR Editor
     
@@ -229,7 +227,6 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     [HideInInspector][SerializeField] protected List<string> m_imageFileNames = null; //file names, not paths
     
     [HideInInspector][SerializeField] protected List<WatchedFileInfo> m_imageFiles = null; //store file names, not paths
-    [HideInInspector][SerializeField] protected string       m_folderMD5      = null;
 
 //----------------------------------------------------------------------------------------------------------------------    
     private float m_dimensionRatio = 0;
