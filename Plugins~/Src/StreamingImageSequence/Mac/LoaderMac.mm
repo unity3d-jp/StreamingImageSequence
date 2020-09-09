@@ -9,8 +9,8 @@
 
 //Loader
 #include "Loader.h"
-#include "Loader/ImageCatalog.h"
-#include "Loader/LoaderConstants.h"
+#include "ImageCatalog.h"
+#include "LoaderConstants.h"
 
 #define DEBUG_MAC_DRAWING (0)
 
