@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.13)
 
 project(CommonLib)
 
-file(GLOB sources *.cpp *.h)
+file(GLOB_RECURSE sources *.cpp *.h)
 set(CommonLib_dir "${CMAKE_CURRENT_SOURCE_DIR}")
 if(WIN32)
     file(GLOB win_sources Win/*.h Win/*.cpp)
@@ -17,7 +17,7 @@ add_library(CommonLib STATIC ${sources})
 #Include, pch
 target_precompile_headers(CommonLib PRIVATE "${CommonLib_dir}/stdafx.h")
 target_include_directories(CommonLib PRIVATE
-    ${CommonLib_dir}    
-    ${src_root}
+    "${CommonLib_dir}/Include"
+    "${CommonLib_dir}"
 )
 

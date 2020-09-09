@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "ImageData.h"
+#include "StreamingImageSequence/ImageData.h"
 
 namespace StreamingImageSequencePlugin {
 

@@ -1,10 +1,10 @@
 ﻿
 #include "stdafx.h"
-#include "../CommonLib/CommonLib.h"
+#include "CommonLib/CommonLib.h"
 
 //SIS
 #include "TGALoader.h"
-#include "ImageCatalog.h"
+#include "StreamingImageSequence/ImageCatalog.h"
 #include "LoaderConstants.h"
 
 

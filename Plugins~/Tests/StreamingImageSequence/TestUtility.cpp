@@ -4,8 +4,8 @@
 #include <cmath> //std::floor
 
 //Loader
-#include "Loader/Loader.h"
-#include "Loader/ImageCatalog.h"
+#include "StreamingImageSequence/Loader.h"
+#include "StreamingImageSequence/ImageCatalog.h"
 
 
 namespace StreamingImageSequencePluginTest {

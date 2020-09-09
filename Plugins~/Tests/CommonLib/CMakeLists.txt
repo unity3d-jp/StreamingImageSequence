@@ -5,11 +5,11 @@ set(SRC_ROOT   "${CMAKE_CURRENT_SOURCE_DIR}/../../Src")
 
 add_executable(CommonLibTest  ${sources})
 target_include_directories(CommonLibTest PRIVATE 
-    ${SRC_ROOT}
+    "${SRC_ROOT}/CommonLib/Include"
     ${GTEST_INCLUDE_DIRS}    
 )
                
-target_link_libraries(CommonLibTest Loader 
+target_link_libraries(CommonLibTest 
     ${GTEST_BOTH_LIBRARIES}
     ${COCOA_LIBRARY}
 )  

@@ -2,9 +2,9 @@
 //
 
 #include "stdafx.h"
-#include "CommonLib.h"
+#include "CommonLib/CommonLib.h"
 
-#include "CriticalSectionObject.h"
+#include "CommonLib/CriticalSectionObject.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 

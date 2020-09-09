@@ -5,11 +5,14 @@ set(SRC_ROOT   "${CMAKE_CURRENT_SOURCE_DIR}/../../Src")
 
 add_executable(StreamingImageSequenceTest  ${sources})
 target_include_directories(StreamingImageSequenceTest PRIVATE 
-    ${SRC_ROOT}
-    ${GTEST_INCLUDE_DIRS}    
+    "${SRC_ROOT}/CommonLib/Include"
+    "${SRC_ROOT}/StreamingImageSequence/Include"
+    "${SRC_ROOT}"
+    "${GTEST_INCLUDE_DIRS}"    
 )
                
-target_link_libraries(StreamingImageSequenceTest Loader 
+target_link_libraries(StreamingImageSequenceTest 
+    StreamingImageSequence
     ${GTEST_BOTH_LIBRARIES}
     ${COCOA_LIBRARY}
 )  

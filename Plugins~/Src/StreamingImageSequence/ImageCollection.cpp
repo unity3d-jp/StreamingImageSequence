@@ -1,13 +1,13 @@
-#include "ImageCollection.h"
+#include "StreamingImageSequence/ImageCollection.h"
 
 //Loader
-#include "ImageMemoryAllocator.h"
+#include "StreamingImageSequence/ImageMemoryAllocator.h"
 #include "LoaderConstants.h"
 
 //External
 #include "CommonLib/CommonLib.h" //IMAGE_CS
 #include "CommonLib/CriticalSectionController.h"
-#include "External/stb/stb_image_resize.h"
+#include "stb/stb_image_resize.h"
 
 
 namespace StreamingImageSequencePlugin {

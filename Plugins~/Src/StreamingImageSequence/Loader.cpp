@@ -1,13 +1,13 @@
 #include "stdafx.h"
-#include "Loader.h"
+#include "StreamingImageSequence/Loader.h"
 
 //CommonLib
 #include "CommonLib/CriticalSectionController.h"
 
 
 //Loader
-#include "LoaderUtility.h"
-#include "ImageCatalog.h"
+#include "StreamingImageSequence/LoaderUtility.h"
+#include "StreamingImageSequence/ImageCatalog.h"
 
 const uint64_t TO_MB = 1024 * 1024;
 

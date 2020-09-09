@@ -9,7 +9,7 @@
 
 #include "Types.h"
 
-#include "CriticalSection.h"
+#include "CommonLib/CriticalSection.h"
 
 //----------------------------------------------------------------------------------------------------------------------
 

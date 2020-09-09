@@ -1,13 +1,11 @@
 #pragma once
 
-#include "stdafx.h"
-
 //CommonLib
 #include "CommonLib/Types.h" //strType
 #include "CommonLib/CriticalSectionType.h" //MAX_CRITICAL_SECTION_TYPE_IMAGES
 
-//Loader
-#include "ImageData.h"
+//SIS
+#include "StreamingImageSequence/ImageData.h"
 #include "ImageCollection.h"
 #include "ImageMemoryAllocator.h"
 

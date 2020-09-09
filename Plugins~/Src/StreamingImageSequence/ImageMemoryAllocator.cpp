@@ -1,4 +1,4 @@
-#include "ImageMemoryAllocator.h"
+#include "StreamingImageSequence/ImageMemoryAllocator.h"
 
 #include "CommonLib/MemoryUtility.h"
 

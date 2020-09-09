@@ -1,7 +1,7 @@
 #include "CommonLib/Types.h" //charType
 
 //Loader
-#include "Loader/ImageData.h"
+#include "StreamingImageSequence/ImageData.h"
 
 namespace StreamingImageSequencePluginTest {
 

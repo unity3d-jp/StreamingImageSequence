@@ -1,6 +1,6 @@
 
 #include "stdafx.h"
-#include "MemoryUtility.h"
+#include "CommonLib/MemoryUtility.h"
 
 namespace StreamingImageSequencePlugin {
 

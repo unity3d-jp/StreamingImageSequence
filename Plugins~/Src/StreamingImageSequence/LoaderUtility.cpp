@@ -2,13 +2,14 @@
 
 //CommonLib
 #include "CommonLib/CommonLib.h" //IMAGE_CS
+#include "CommonLib/CriticalSectionController.h"
 
 //Loader
-#include "LoaderUtility.h"
-#include "FileType.h"
+#include "StreamingImageSequence/LoaderUtility.h"
+#include "StreamingImageSequence/ImageCatalog.h"
+#include "StreamingImageSequence/FileType.h"
 #include "TGALoader.h"
-#include "ImageCatalog.h"
-#include "CommonLib/CriticalSectionController.h"
+
 
 
 //----------------------------------------------------------------------------------------------------------------------

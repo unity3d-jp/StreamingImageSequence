@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "ImageCatalog.h"
+#include "StreamingImageSequence/ImageCatalog.h"
 
 namespace StreamingImageSequencePlugin {
 

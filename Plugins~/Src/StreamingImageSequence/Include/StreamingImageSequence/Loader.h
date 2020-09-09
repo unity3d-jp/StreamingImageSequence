@@ -15,7 +15,7 @@
 #endif
 
                                                                                                                         
-#include "../CommonLib/CommonLib.h"
+#include "CommonLib/CommonLib.h"
 
 namespace StreamingImageSequencePlugin {
 struct ImageData;

@@ -3,13 +3,13 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.13)
 project(StreamingImageSequence)
 
 file(GLOB sources *.cpp *.h ../)
-set(Loader_dir "${CMAKE_CURRENT_SOURCE_DIR}")
+set(sis_dir "${CMAKE_CURRENT_SOURCE_DIR}")
 if(APPLE)
-    file(GLOB mac_sources Mac/*.h Mac/*.cpp Mac/*.mm)
+    file(GLOB_RECURSE mac_sources Mac/*.h Mac/*.cpp Mac/*.mm)
     list(APPEND sources ${mac_sources})    
 
 elseif(WIN32)
-    file(GLOB win_sources Win/*.h Win/*.cpp)
+    file(GLOB_RECURSE win_sources Win/*.h Win/*.cpp)
     list(APPEND sources ${win_sources})    
 endif()
 set(src_root   "${CMAKE_CURRENT_SOURCE_DIR}/..")
@@ -19,10 +19,12 @@ set(plugins_dir "${src_root}/../../Runtime/Plugins/${PLATFORM}")
 add_plugin(StreamingImageSequence SOURCES ${sources} PLUGINS_DIR ${plugins_dir} BUILD_OSX_BUNDLE )
 
 #Include, pch
-target_precompile_headers(StreamingImageSequence PRIVATE "${Loader_dir}/stdafx.h")
+target_precompile_headers(StreamingImageSequence PRIVATE "${sis_dir}/stdafx.h")
 target_include_directories(StreamingImageSequence PRIVATE
-    ${Loader_dir}    
-    ${src_root}
+    "${sis_dir}/Include"    
+    "${sis_dir}"
+    "${src_root}/CommonLib/Include"
+    "${src_root}/External"
 )
 
 # Library dependencies

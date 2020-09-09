@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
-#include "CriticalSectionController.h"
-#include "CriticalSectionObject.h"
+#include "CommonLib/CriticalSectionController.h"
+#include "CommonLib/CriticalSectionObject.h"
 
 namespace StreamingImageSequencePlugin {
 

@@ -5,8 +5,8 @@
 
 //SIS
 #include "TGALoader.h"
-#include "ImageCatalog.h"
-#include "ImageData.h"
+#include "StreamingImageSequence/ImageCatalog.h"
+#include "StreamingImageSequence/ImageData.h"
 #include "LoaderWin.h"
 
 #pragma comment( lib, "winmm.lib" )

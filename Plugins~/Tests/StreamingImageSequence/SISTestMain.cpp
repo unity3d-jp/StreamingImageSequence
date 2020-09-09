@@ -5,9 +5,9 @@
 #include "CommonLib/CriticalSectionType.h" //CRITICAL_SECTION_TYPE_FULL_IMAGE
 
 //Loader
-#include "Loader/Loader.h"
-#include "Loader/LoaderUtility.h"
-#include "Loader/ImageCatalog.h"
+#include "StreamingImageSequence/Loader.h"
+#include "StreamingImageSequence/LoaderUtility.h"
+#include "StreamingImageSequence/ImageCatalog.h"
 
 //LoaderTest
 #include "TestUtility.h"
