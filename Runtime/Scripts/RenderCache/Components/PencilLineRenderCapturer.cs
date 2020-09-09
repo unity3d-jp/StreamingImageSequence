@@ -1,6 +1,6 @@
 ﻿#if AT_USE_PENCILLINE
-
 using Pencil_4;
+#endif
 
 namespace UnityEngine.StreamingImageSequence {
 
@@ -11,6 +11,7 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
 
     /// <inheritdoc/>
     public override bool BeginCapture() {
+#if AT_USE_PENCILLINE
         if (null == m_pencilLineEffect) {
             SetErrorMessage("PencilLineEffect is not set on " + gameObject.name);
             return false;
@@ -32,13 +33,21 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
 
         m_rt = new RenderTexture(m_pencilTex.width, m_pencilTex.height, 0);
         m_rt.Create();
-        
         return true;
+        
+#else
+
+        SetErrorMessage("Updating PencilLineRenderCapturer component requires pencil-line package");
+        return false;
+
+#endif
     }
 
     /// <inheritdoc/>
     public override void EndCapture() {        
+#if AT_USE_PENCILLINE
         ReleaseRenderTexture();
+#endif
     }
     
     
@@ -46,18 +55,21 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
 
     /// <inheritdoc/>
     protected override RenderTexture UpdateRenderTexture() {
+#if AT_USE_PENCILLINE
         Graphics.Blit(m_pencilTex, m_rt);
+#endif
         return m_rt;
     }
     
     
 //----------------------------------------------------------------------------------------------------------------------
+#if AT_USE_PENCILLINE
     [SerializeField] private PencilLineEffect m_pencilLineEffect = null;
-
     private Texture2D m_pencilTex = null;
+#endif
+
 
 }
 
 } //end namespace
 
-#endif //AT_USE_PENCILLINE

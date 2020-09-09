@@ -1,4 +1,6 @@
-﻿namespace UnityEngine.StreamingImageSequence {
+﻿using JetBrains.Annotations;
+
+namespace UnityEngine.StreamingImageSequence {
 
 
 [ExecuteAlways]
@@ -38,6 +40,7 @@ internal class CameraRenderCapturer : BaseRenderCapturer {
     }
     
     /// <inheritdoc/>
+    [CanBeNull]
     protected override RenderTexture UpdateRenderTexture() {
         return m_rt;
     }
