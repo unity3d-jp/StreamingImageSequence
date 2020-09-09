@@ -10,6 +10,7 @@ target_include_directories(CommonLibTest PRIVATE
 )
                
 target_link_libraries(CommonLibTest 
+    CommonLib
     ${GTEST_BOTH_LIBRARIES}
     ${COCOA_LIBRARY}
 )  
