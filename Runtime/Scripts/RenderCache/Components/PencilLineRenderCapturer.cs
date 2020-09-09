@@ -37,7 +37,7 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
         
 #else
 
-        SetErrorMessage("Updating PencilLineRenderCapturer component requires com.unity.pencil-line package");
+        SetErrorMessage("Updating PencilLineRenderCapturer component requires pencil-line package");
         return false;
 
 #endif
