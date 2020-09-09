@@ -129,7 +129,8 @@ namespace UnityEngine.StreamingImageSequence {
             double imageSequenceTime = LocalTimeToCurveTime(clip, localTime);
             int count = m_imageFileNames.Count;
             
-            int index = Mathf.RoundToInt(count * (float) imageSequenceTime);
+            //Can't round up, because if the time for the next frame hasn't been reached, then we should stick 
+            int index = Mathf.FloorToInt(count * (float) imageSequenceTime);
             index = Mathf.Clamp(index, 0, count - 1);
             return index;
         }
