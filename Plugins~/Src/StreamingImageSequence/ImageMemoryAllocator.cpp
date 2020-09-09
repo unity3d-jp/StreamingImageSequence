@@ -13,7 +13,7 @@ const uint64_t DEFAULT_MAX_MEMORY = UNLIMITED_MEMORY;
 
 ImageMemoryAllocator::ImageMemoryAllocator() : m_usedMemory(0)
     , m_maxMemory(DEFAULT_MAX_MEMORY)
-    , m_totalRAM(MemoryUtility::GetTotalRAM())
+    , m_totalRAM(static_cast<float>(MemoryUtility::GetTotalRAM()))
     , m_inverseTotalRAM(1.0f / MemoryUtility::GetTotalRAM())
 {
 #ifdef MAX_IMAGE_MEMORY //overwrite for testing
