@@ -3,7 +3,7 @@
 //CommonLib
 #include "CommonLib/Types.h"
 
-//Loader
+//SIS
 #include "TGALoader.h"
 #include "ImageCatalog.h"
 #include "ImageData.h"

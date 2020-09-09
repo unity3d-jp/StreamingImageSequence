@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "../CommonLib/CommonLib.h"
 
-//Loader
+//SIS
 #include "TGALoader.h"
 #include "ImageCatalog.h"
 #include "LoaderConstants.h"
