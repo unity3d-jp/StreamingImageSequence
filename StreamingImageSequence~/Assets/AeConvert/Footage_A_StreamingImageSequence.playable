@@ -397,37 +397,66 @@ MonoBehaviour:
   m_Name: Footage_A_StreamingImageSequence
   m_EditorClassIdentifier: 
   m_folder: Assets/StreamingAssets/Footage_A
-  m_imageFileNames:
-  - A_00000.png
-  - A_00001.png
-  - A_00002.png
-  - A_00003.png
-  - A_00004.png
-  - A_00005.png
-  - A_00006.png
-  - A_00007.png
-  - A_00008.png
-  - A_00009.png
-  - A_00010.png
-  - A_00011.png
-  - A_00012.png
-  - A_00013.png
-  - A_00014.png
-  - A_00015.png
-  - A_00016.png
-  - A_00017.png
-  - A_00018.png
-  - A_00019.png
-  - A_00020.png
-  - A_00021.png
-  - A_00022.png
-  - A_00023.png
-  - A_00024.png
-  - A_00025.png
-  - A_00026.png
-  - A_00027.png
-  m_version: 1
-  m_time: 0.1428571492433548
+  m_imageFileNames: []
+  m_imageFiles:
+  - m_name: A_00000.png
+    m_size: 36618
+  - m_name: A_00001.png
+    m_size: 39889
+  - m_name: A_00002.png
+    m_size: 46682
+  - m_name: A_00003.png
+    m_size: 58838
+  - m_name: A_00004.png
+    m_size: 64134
+  - m_name: A_00005.png
+    m_size: 66513
+  - m_name: A_00006.png
+    m_size: 66568
+  - m_name: A_00007.png
+    m_size: 66213
+  - m_name: A_00008.png
+    m_size: 65491
+  - m_name: A_00009.png
+    m_size: 64442
+  - m_name: A_00010.png
+    m_size: 64490
+  - m_name: A_00011.png
+    m_size: 68960
+  - m_name: A_00012.png
+    m_size: 72255
+  - m_name: A_00013.png
+    m_size: 68644
+  - m_name: A_00014.png
+    m_size: 66604
+  - m_name: A_00015.png
+    m_size: 70184
+  - m_name: A_00016.png
+    m_size: 73736
+  - m_name: A_00017.png
+    m_size: 75904
+  - m_name: A_00018.png
+    m_size: 74792
+  - m_name: A_00019.png
+    m_size: 75078
+  - m_name: A_00020.png
+    m_size: 74078
+  - m_name: A_00021.png
+    m_size: 74895
+  - m_name: A_00022.png
+    m_size: 73110
+  - m_name: A_00023.png
+    m_size: 54317
+  - m_name: A_00024.png
+    m_size: 29942
+  - m_name: A_00025.png
+    m_size: 22988
+  - m_name: A_00026.png
+    m_size: 20048
+  - m_name: A_00027.png
+    m_size: 18214
+  m_version: 3
+  m_time: 0
   m_timelineDefaultAsset: {fileID: 102900000, guid: 03c7029848f532949bbbc4d26c7915b1,
     type: 3}
 --- !u!114 &594146513453686572
