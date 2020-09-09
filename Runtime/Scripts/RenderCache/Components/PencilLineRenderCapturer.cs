@@ -2,10 +2,6 @@
 using Pencil_4;
 #endif
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif    
-
 namespace UnityEngine.StreamingImageSequence {
 
 
@@ -37,15 +33,14 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
 
         m_rt = new RenderTexture(m_pencilTex.width, m_pencilTex.height, 0);
         m_rt.Create();
-        
-#elif UNITY_EDITOR
-       
-        EditorUtility.DisplayDialog("Streaming Image Sequence",
-            "Capturing PencilLine requires com.unity.pencil-line package",
-            "Ok");
-        
-#endif
         return true;
+        
+#else
+
+        SetErrorMessage("Updating PencilLineRenderCapturer component requires com.unity.pencil-line package");
+        return false;
+
+#endif
     }
 
     /// <inheritdoc/>
