@@ -4,9 +4,9 @@
 #include "CommonLib/Types.h"
 
 //Loader
-#include "Loader/TGALoader.h"
-#include "Loader/ImageCatalog.h"
-#include "Loader/ImageData.h"
+#include "TGALoader.h"
+#include "ImageCatalog.h"
+#include "ImageData.h"
 #include "LoaderWin.h"
 
 #pragma comment( lib, "winmm.lib" )

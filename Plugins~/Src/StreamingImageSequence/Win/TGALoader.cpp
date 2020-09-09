@@ -4,8 +4,8 @@
 
 //Loader
 #include "TGALoader.h"
-#include "Loader/ImageCatalog.h"
-#include "Loader/LoaderConstants.h"
+#include "ImageCatalog.h"
+#include "LoaderConstants.h"
 
 
 namespace StreamingImageSequencePlugin {
