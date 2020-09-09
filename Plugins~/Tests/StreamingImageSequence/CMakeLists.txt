@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 3.15)
 
-file(GLOB sources *.cpp *.h )
+file(GLOB_RECURSE sources *.cpp *.h )
 set(SRC_ROOT   "${CMAKE_CURRENT_SOURCE_DIR}/../../Src")
 
 add_executable(StreamingImageSequenceTest  ${sources})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${sources})
+
 target_include_directories(StreamingImageSequenceTest PRIVATE 
     "${SRC_ROOT}/CommonLib/Include"
     "${SRC_ROOT}/StreamingImageSequence/Include"

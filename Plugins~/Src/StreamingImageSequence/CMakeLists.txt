@@ -17,6 +17,7 @@ set(plugins_dir "${src_root}/../../Runtime/Plugins/${PLATFORM}")
 
 # setup as a library
 add_plugin(StreamingImageSequence SOURCES ${sources} PLUGINS_DIR ${plugins_dir} BUILD_OSX_BUNDLE )
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${sources})
 
 #Include, pch
 target_precompile_headers(StreamingImageSequence PRIVATE "${sis_dir}/stdafx.h")

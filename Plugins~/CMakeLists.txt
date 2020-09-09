@@ -7,6 +7,8 @@ endif()
 
 PROJECT(StreamingImageSequencePlugin)
 
+# allow CMake to organize files by folders
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 #cmake variables
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/Build/cmake_modules)

@@ -13,6 +13,7 @@ set(plugins_dir "${src_root}/../../Runtime/Plugins/${PLATFORM}")
 
 # setup as a library
 add_library(CommonLib STATIC ${sources})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${sources})
 
 #Include, pch
 target_precompile_headers(CommonLib PRIVATE "${CommonLib_dir}/stdafx.h")
