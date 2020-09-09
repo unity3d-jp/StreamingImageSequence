@@ -50,7 +50,7 @@ internal class FrameMarkerTest {
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
         TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
-        timelineClipSISData.RequestFrameMarkers(true);
+        timelineClipSISData.RequestFrameMarkers(true, true);
         yield return null;
 
         double timePerFrame = TimelineUtility.CalculateTimePerFrame(clip);
@@ -82,6 +82,7 @@ internal class FrameMarkerTest {
             Assert.AreEqual(i, imageIndex);
             ++i;
         }
+        Assert.AreEqual(numImages,i);
         
         //Uncheck and see if the unchecked images became ignored
         frameMarkers[4].SetFrameUsed(false);
