@@ -1,7 +1,7 @@
 #pragma once
 
-#include "CriticalSectionObject.h"
-#include "CriticalSectionType.h"
+#include "CommonLib/CriticalSectionObject.h"
+#include "CommonLib/CriticalSectionType.h"
 
 namespace StreamingImageSequencePlugin {
 

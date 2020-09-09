@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Types.h"
+#include "CommonLib/Types.h"
 
 namespace StreamingImageSequencePlugin {
 
