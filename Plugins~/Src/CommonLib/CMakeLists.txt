@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.13)
 
 project(CommonLib)
 
-file(GLOB_RECURSE sources *.cpp *.h)
+file(GLOB sources *.cpp *.h)
 set(CommonLib_dir "${CMAKE_CURRENT_SOURCE_DIR}")
 if(WIN32)
     file(GLOB win_sources Win/*.h Win/*.cpp)
