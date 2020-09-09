@@ -8,8 +8,8 @@
 #include "CommonLib/CommonLib.h"
 
 //Loader
-#include "Loader.h"
-#include "ImageCatalog.h"
+#include "StreamingImageSequence/Loader.h"
+#include "StreamingImageSequence/ImageCatalog.h"
 #include "LoaderConstants.h"
 
 #define DEBUG_MAC_DRAWING (0)
