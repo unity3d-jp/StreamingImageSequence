@@ -44,7 +44,16 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
             
     }
 
-    public void OnAfterDeserialize() {            
+    public void OnAfterDeserialize() {
+
+        if (m_version < (int) RenderCachePlayableAssetVersion.WATCHED_FILE_1_0) {
+
+            if (null != m_imageFileNames && m_imageFileNames.Count > 0) {
+                m_imageFiles = WatchedFileInfo.CreateList(m_folder, m_imageFileNames);
+                m_imageFileNames.Clear();
+            }             
+        }
+        
         m_version = CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION;
     }
         
@@ -52,8 +61,8 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal void SetImageFileNames(List<string> imageFileNames) {
-        m_imageFileNames = imageFileNames;
+    internal void SetImageFiles(List<WatchedFileInfo> imageFiles) {
+        m_imageFiles = imageFiles;
     }
 
     
@@ -69,7 +78,7 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
 #pragma warning disable 414
     [HideInInspector][SerializeField] private int m_version = CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION;
 #pragma warning restore 414
-    private const int CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION = (int) RenderCachePlayableAssetVersion.INITIAL_1_0;
+    private const int CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION = (int) RenderCachePlayableAssetVersion.WATCHED_FILE_1_0;
     
 #if UNITY_EDITOR
     private static readonly string[] m_imageFilePatterns = {
@@ -79,7 +88,8 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
     
     
     enum RenderCachePlayableAssetVersion {
-        INITIAL_1_0 = 1, //initial for version 1.0
+        INITIAL_1_0 = 1, //initial for version 1.0.0-preview (obsolete)
+        WATCHED_FILE_1_0, //watched_file for version 1.0.0-preview
     
     }
 }

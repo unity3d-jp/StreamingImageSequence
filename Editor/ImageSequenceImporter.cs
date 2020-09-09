@@ -22,14 +22,14 @@ namespace UnityEditor.StreamingImageSequence {
         {
             Assert.IsFalse(string.IsNullOrEmpty(path));
 
-            FindFolderAndImages(path, out string folder, out List<string> relFilePaths);
+            FindFolderAndImages(path, out string folder, out List<WatchedFileInfo> relFilePaths);
             if (relFilePaths.Count <= 0) {
                 EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER, @"No files in folder:: " + folder,"OK");
                 return;
             }
 
             //Estimate the asset name. Use the filename without numbers at the end
-            string assetName =  EstimateAssetName(relFilePaths[0]);
+            string assetName =  EstimateAssetName(relFilePaths[0].GetName());
 
             // set dest folder
             string streamingAssetsPath = AssetEditorUtility.NormalizeAssetPath( Application.streamingAssetsPath);
@@ -70,13 +70,14 @@ namespace UnityEditor.StreamingImageSequence {
                     return;
                 }
 
-                foreach (string relPath in param.ImageFiles) {
-                    string strAbsFilePathDst = Path.Combine(destFolder, relPath).Replace("\\", "/");
+                foreach (WatchedFileInfo fileInfo in param.ImageFiles) {
+                    string fileName          = fileInfo.GetName();
+                    string strAbsFilePathDst = Path.Combine(destFolder,fileName).Replace("\\", "/");
                     if (File.Exists(strAbsFilePathDst))
                     {
                         File.Delete(strAbsFilePathDst);
                     }
-                    string strAbsFilePathSrc = Path.Combine(param.strSrcFolder, relPath).Replace("\\", "/");
+                    string strAbsFilePathSrc = Path.Combine(param.strSrcFolder, fileName).Replace("\\", "/");
                     Directory.CreateDirectory(Path.GetDirectoryName(strAbsFilePathDst));//make sure dir exists
                     FileUtil.CopyFileOrDirectory(strAbsFilePathSrc, strAbsFilePathDst);
                 }
@@ -97,7 +98,7 @@ namespace UnityEditor.StreamingImageSequence {
             //StreamingAsset
             StreamingImageSequencePlayableAsset playableAsset = param.TargetAsset;            
             if (null == playableAsset) {
-                string assetName =  EstimateAssetName(param.ImageFiles[0]);
+                string assetName =  EstimateAssetName(param.ImageFiles[0].GetName());
                 playableAsset = CreateUniqueSISAsset(
                     Path.Combine("Assets", assetName + "_StreamingImageSequence.playable").Replace("\\", "/")
 
@@ -113,7 +114,7 @@ namespace UnityEditor.StreamingImageSequence {
 //---------------------------------------------------------------------------------------------------------------------
         //Path can point to a file or a folder.
         //If it points to a file, then the folder will be automatically detected
-        private static void FindFolderAndImages(string path, out string folder, out List<string> imagePaths) {
+        private static void FindFolderAndImages(string path, out string folder, out List<WatchedFileInfo> imageFiles) {
             Assert.IsFalse(string.IsNullOrEmpty(path));                
             //Convert path to folder here
             folder = path;
@@ -122,9 +123,9 @@ namespace UnityEditor.StreamingImageSequence {
                 folder = Path.GetDirectoryName(folder);
             }
             
-            imagePaths = ImageFolderPlayableAsset.FindFiles(folder, 
+            imageFiles = ImageFolderPlayableAsset.FindFiles(folder, 
                 StreamingImageSequencePlayableAsset.GetSupportedImageFilePatterns()
-            );            
+            );  
         }
 //---------------------------------------------------------------------------------------------------------------------
         
@@ -164,7 +165,7 @@ namespace UnityEditor.StreamingImageSequence {
 
     internal class ImageFileImporterParam {
 
-        public List<string> ImageFiles;
+        public List<WatchedFileInfo> ImageFiles;
         public string strDstFolder;
         public string strSrcFolder;
         public bool CopyToStreamingAssets;

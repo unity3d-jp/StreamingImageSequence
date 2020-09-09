@@ -34,7 +34,7 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     
     void ForceUpdateResolution() {
         if (string.IsNullOrEmpty(m_folder) || !Directory.Exists(m_folder) 
-            || null == m_imageFileNames || m_imageFileNames.Count <= 0)
+            || null == m_imageFiles || m_imageFiles.Count <= 0)
             return;
 
         //Get the first image to update the resolution.    
@@ -89,22 +89,22 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         if (string.IsNullOrEmpty(m_folder))
             return 0;
 
-        return (null == m_imageFileNames) ? 0 : m_imageFileNames.Count;
+        return (null == m_imageFiles) ? 0 : m_imageFiles.Count;
     }
-    internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFileNames; }
+    internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFiles; }
 
 
 //----------------------------------------------------------------------------------------------------------------------
 
     [CanBeNull]
     internal string GetImageFilePath(int index) {
-        if (null == m_imageFileNames)
+        if (null == m_imageFiles)
             return null;
 
-        if (index < 0 || index >= m_imageFileNames.Count)
+        if (index < 0 || index >= m_imageFiles.Count)
             return null;
         
-        return PathUtility.GetPath(m_folder, m_imageFileNames[index]);            
+        return PathUtility.GetPath(m_folder, m_imageFiles[index].GetName());            
     }
 
 
@@ -113,11 +113,11 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     string GetFirstImageData(out ImageData imageData) {
         Assert.IsFalse(string.IsNullOrEmpty(m_folder));
         Assert.IsTrue(Directory.Exists(m_folder));
-        Assert.IsTrue(m_imageFileNames.Count > 0);
+        Assert.IsTrue(m_imageFiles.Count > 0);
 
         const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;        
 
-        string fullPath = Path.GetFullPath(Path.Combine(m_folder, m_imageFileNames[0]));
+        string fullPath = Path.GetFullPath(Path.Combine(m_folder, m_imageFiles[0].GetName()));
         ImageLoader.GetImageDataInto(fullPath,TEX_TYPE, out imageData);
         return fullPath;               
     }
@@ -150,13 +150,13 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         //Unload existing images
         int numImages = GetNumImages();
         if (numImages > 0) {
-            foreach (string fileName in m_imageFileNames) {
-                string imagePath = PathUtility.GetPath(m_folder, fileName);
+            foreach (WatchedFileInfo fileInfo  in m_imageFiles) {
+                string imagePath = PathUtility.GetPath(m_folder, fileInfo.GetName());
                 StreamingImageSequencePlugin.UnloadImageAndNotify(imagePath);
             }
         }
 
-        m_imageFileNames = FindImages(m_folder); 
+        m_imageFiles = FindImages(m_folder); 
         if (!string.IsNullOrEmpty(folderMD5)) {
             m_folderMD5 = folderMD5;
         }
@@ -181,16 +181,16 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         return (prevFolderMD5 != m_folderMD5);         
     }
 
-    internal static List<string> FindFiles(string path, string[] filePatterns) {
+    internal static List<WatchedFileInfo> FindFiles(string path, string[] filePatterns) {
         return FindFilesInternal(path, filePatterns);
     }
 
-    internal List<string> FindImages(string path) {
+    internal List<WatchedFileInfo> FindImages(string path) {
         return FindFilesInternal(path, GetSupportedImageFilePatternsV());
     }
 
-    //Return FileNames
-    private static List<string> FindFilesInternal(string path, string[] filePatterns) {
+    //Return WatchedFileInfos (with file names)
+    private static List<WatchedFileInfo> FindFilesInternal(string path, string[] filePatterns) {
         Assert.IsFalse(string.IsNullOrEmpty(path));
         Assert.IsTrue(Directory.Exists(path));
 
@@ -206,7 +206,10 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
             }
         }
         fileNames.Sort(FileNameComparer);
-        return fileNames;
+
+        List<WatchedFileInfo> watchedFileInfos = WatchedFileInfo.CreateList(fullSrcPath, fileNames);
+        
+        return watchedFileInfos;
     }        
         
     private static int FileNameComparer(string x, string y) {
@@ -221,7 +224,11 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     
 //----------------------------------------------------------------------------------------------------------------------    
     [HideInInspector][SerializeField] protected string       m_folder         = null;
+    
+    //[TODO-sin: 2020-9-9] Obsolete, and should be removed completely before releasing
     [HideInInspector][SerializeField] protected List<string> m_imageFileNames = null; //file names, not paths
+    
+    [HideInInspector][SerializeField] protected List<WatchedFileInfo> m_imageFiles = null; //store file names, not paths
     [HideInInspector][SerializeField] protected string       m_folderMD5      = null;
 
 //----------------------------------------------------------------------------------------------------------------------    
