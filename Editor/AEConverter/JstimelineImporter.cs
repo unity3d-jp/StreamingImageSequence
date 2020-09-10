@@ -114,12 +114,13 @@ internal class JstimelineImporter : ScriptedImporter
                     string srcFilePath = Path.GetFullPath(Path.Combine(assetFolder, originalImagePaths[i])).Replace("\\", "/");
                     FileUtil.CopyFileOrDirectory(srcFilePath, destFilePath);
                 }
-
             }
 
+            //Convert to WatchedFileInfo
+            List<WatchedFileInfo> imageFiles = WatchedFileInfo.CreateList(footageInfo.Folder, footageInfo.Pictures);
 
             StreamingImageSequencePlayableAsset sisAsset = ScriptableObject.CreateInstance<StreamingImageSequencePlayableAsset>();
-            sisAsset.InitFolder(footageInfo.Folder, footageInfo.Pictures, footageInfo.Resolution);
+            sisAsset.InitFolder(footageInfo.Folder, imageFiles, footageInfo.Resolution);
 
             string playableAssetPath = Path.Combine(timelineFolder, strFootageName + "_StreamingImageSequence.playable");
             AssetEditorUtility.OverwriteAsset(sisAsset, playableAssetPath);

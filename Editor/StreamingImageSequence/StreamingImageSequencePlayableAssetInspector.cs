@@ -68,7 +68,7 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Images: " + numImages, "BoldLabel");            
             if (GUILayout.Button("Reload", GUILayout.Width(50))) {
-                m_asset.ForceReload();
+                m_asset.Reload();
             }
             EditorGUILayout.EndHorizontal();
             
@@ -132,7 +132,7 @@ internal class StreamingImageSequencePlayableAssetInspector : Editor {
 //----------------------------------------------------------------------------------------------------------------------
     private void RefreshImageList()
     {
-        m_imageList = new ReorderableList(m_asset.GetImageFileNamesNonGeneric(), typeof(string), true, false, false, false) {
+        m_imageList = new ReorderableList(m_asset.GetImageFileNamesNonGeneric(), typeof(WatchedFileInfo), true, false, false, false) {
             elementHeight = EditorGUIUtility.singleLineHeight + 8f,
             headerHeight = 3
         };

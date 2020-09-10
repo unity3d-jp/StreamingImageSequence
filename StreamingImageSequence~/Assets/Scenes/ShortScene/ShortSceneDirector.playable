@@ -995,8 +995,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_folder: 
   m_imageFileNames: []
-  m_folderMD5: 
-  m_version: 2
+  m_imageFiles: []
+  m_version: 3
   m_time: 0
   m_timelineDefaultAsset: {fileID: 0}
 --- !u!114 &-5451482385808524462
@@ -4311,16 +4311,22 @@ MonoBehaviour:
   m_Name: StreamingImageSequencePlayableAsset
   m_EditorClassIdentifier: 
   m_folder: Assets/StreamingAssets/ShortSceneFootage
-  m_imageFileNames:
-  - ShortSceneFootage_00000.png
-  - ShortSceneFootage_00001.png
-  - ShortSceneFootage_00002.png
-  - ShortSceneFootage_00003.png
-  - ShortSceneFootage_00004.png
-  - ShortSceneFootage_00005.png
-  m_folderMD5: f8624546eba6e844e1c4b9a4159a51e1
-  m_version: 2
-  m_time: 0.0833333358168602
+  m_imageFileNames: []
+  m_imageFiles:
+  - m_name: ShortSceneFootage_00000.png
+    m_size: 58442
+  - m_name: ShortSceneFootage_00001.png
+    m_size: 56352
+  - m_name: ShortSceneFootage_00002.png
+    m_size: 83190
+  - m_name: ShortSceneFootage_00003.png
+    m_size: 73777
+  - m_name: ShortSceneFootage_00004.png
+    m_size: 71104
+  - m_name: ShortSceneFootage_00005.png
+    m_size: 78746
+  m_version: 3
+  m_time: 1
   m_timelineDefaultAsset: {fileID: 102900000, guid: 28ebc38bfdd481147934ea04bfc829bb,
     type: 3}
 --- !u!114 &2896927653460402434
@@ -4444,16 +4450,22 @@ MonoBehaviour:
   m_Name: StreamingImageSequencePlayableAsset(Clone)
   m_EditorClassIdentifier: 
   m_folder: Assets/StreamingAssets/ShortSceneFootage
-  m_imageFileNames:
-  - ShortSceneFootage_00000.png
-  - ShortSceneFootage_00001.png
-  - ShortSceneFootage_00002.png
-  - ShortSceneFootage_00003.png
-  - ShortSceneFootage_00004.png
-  - ShortSceneFootage_00005.png
-  m_folderMD5: f8624546eba6e844e1c4b9a4159a51e1
-  m_version: 2
-  m_time: 0
+  m_imageFileNames: []
+  m_imageFiles:
+  - m_name: ShortSceneFootage_00000.png
+    m_size: 58442
+  - m_name: ShortSceneFootage_00001.png
+    m_size: 56352
+  - m_name: ShortSceneFootage_00002.png
+    m_size: 83190
+  - m_name: ShortSceneFootage_00003.png
+    m_size: 73777
+  - m_name: ShortSceneFootage_00004.png
+    m_size: 71104
+  - m_name: ShortSceneFootage_00005.png
+    m_size: 78746
+  m_version: 3
+  m_time: 1
   m_timelineDefaultAsset: {fileID: 102900000, guid: 28ebc38bfdd481147934ea04bfc829bb,
     type: 3}
 --- !u!114 &3475972923081664493

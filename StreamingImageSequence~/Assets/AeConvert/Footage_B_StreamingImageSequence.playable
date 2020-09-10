@@ -601,66 +601,125 @@ MonoBehaviour:
   m_Name: Footage_B_StreamingImageSequence
   m_EditorClassIdentifier: 
   m_folder: Assets/StreamingAssets/Footage_B
-  m_imageFileNames:
-  - B_00000.png
-  - B_00001.png
-  - B_00002.png
-  - B_00003.png
-  - B_00004.png
-  - B_00005.png
-  - B_00006.png
-  - B_00007.png
-  - B_00008.png
-  - B_00009.png
-  - B_00010.png
-  - B_00011.png
-  - B_00012.png
-  - B_00013.png
-  - B_00014.png
-  - B_00015.png
-  - B_00016.png
-  - B_00017.png
-  - B_00018.png
-  - B_00019.png
-  - B_00020.png
-  - B_00021.png
-  - B_00022.png
-  - B_00023.png
-  - B_00024.png
-  - B_00025.png
-  - B_00026.png
-  - B_00027.png
-  - B_00028.png
-  - B_00029.png
-  - B_00030.png
-  - B_00031.png
-  - B_00032.png
-  - B_00033.png
-  - B_00034.png
-  - B_00035.png
-  - B_00036.png
-  - B_00037.png
-  - B_00038.png
-  - B_00039.png
-  - B_00040.png
-  - B_00041.png
-  - B_00042.png
-  - B_00043.png
-  - B_00044.png
-  - B_00045.png
-  - B_00046.png
-  - B_00047.png
-  - B_00048.png
-  - B_00049.png
-  - B_00050.png
-  - B_00051.png
-  - B_00052.png
-  - B_00053.png
-  - B_00054.png
-  - B_00055.png
-  - B_00056.png
-  - B_00057.png
-  m_version: 1
+  m_imageFileNames: []
+  m_imageFiles:
+  - m_name: B_00000.png
+    m_size: 58442
+  - m_name: B_00001.png
+    m_size: 56466
+  - m_name: B_00002.png
+    m_size: 55574
+  - m_name: B_00003.png
+    m_size: 56924
+  - m_name: B_00004.png
+    m_size: 58364
+  - m_name: B_00005.png
+    m_size: 57212
+  - m_name: B_00006.png
+    m_size: 54996
+  - m_name: B_00007.png
+    m_size: 56910
+  - m_name: B_00008.png
+    m_size: 56407
+  - m_name: B_00009.png
+    m_size: 54931
+  - m_name: B_00010.png
+    m_size: 56352
+  - m_name: B_00011.png
+    m_size: 57830
+  - m_name: B_00012.png
+    m_size: 56592
+  - m_name: B_00013.png
+    m_size: 54450
+  - m_name: B_00014.png
+    m_size: 57019
+  - m_name: B_00015.png
+    m_size: 56507
+  - m_name: B_00016.png
+    m_size: 60347
+  - m_name: B_00017.png
+    m_size: 65961
+  - m_name: B_00018.png
+    m_size: 70881
+  - m_name: B_00019.png
+    m_size: 74642
+  - m_name: B_00020.png
+    m_size: 83190
+  - m_name: B_00021.png
+    m_size: 75831
+  - m_name: B_00022.png
+    m_size: 73826
+  - m_name: B_00023.png
+    m_size: 79040
+  - m_name: B_00024.png
+    m_size: 75509
+  - m_name: B_00025.png
+    m_size: 77476
+  - m_name: B_00026.png
+    m_size: 76529
+  - m_name: B_00027.png
+    m_size: 76068
+  - m_name: B_00028.png
+    m_size: 75746
+  - m_name: B_00029.png
+    m_size: 74828
+  - m_name: B_00030.png
+    m_size: 73777
+  - m_name: B_00031.png
+    m_size: 73472
+  - m_name: B_00032.png
+    m_size: 74448
+  - m_name: B_00033.png
+    m_size: 74792
+  - m_name: B_00034.png
+    m_size: 74424
+  - m_name: B_00035.png
+    m_size: 76218
+  - m_name: B_00036.png
+    m_size: 75599
+  - m_name: B_00037.png
+    m_size: 76654
+  - m_name: B_00038.png
+    m_size: 75112
+  - m_name: B_00039.png
+    m_size: 72619
+  - m_name: B_00040.png
+    m_size: 71104
+  - m_name: B_00041.png
+    m_size: 69833
+  - m_name: B_00042.png
+    m_size: 76128
+  - m_name: B_00043.png
+    m_size: 78493
+  - m_name: B_00044.png
+    m_size: 80140
+  - m_name: B_00045.png
+    m_size: 78995
+  - m_name: B_00046.png
+    m_size: 78285
+  - m_name: B_00047.png
+    m_size: 76229
+  - m_name: B_00048.png
+    m_size: 73739
+  - m_name: B_00049.png
+    m_size: 75811
+  - m_name: B_00050.png
+    m_size: 78746
+  - m_name: B_00051.png
+    m_size: 77600
+  - m_name: B_00052.png
+    m_size: 77110
+  - m_name: B_00053.png
+    m_size: 76521
+  - m_name: B_00054.png
+    m_size: 77267
+  - m_name: B_00055.png
+    m_size: 77673
+  - m_name: B_00056.png
+    m_size: 77798
+  - m_name: B_00057.png
+    m_size: 78094
+  m_version: 3
   m_time: 0
   m_timelineDefaultAsset: {fileID: 102900000, guid: 8bcebc0ffe2c86e4f82055b17b71d654,
     type: 3}

@@ -174,7 +174,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         int numDigits = MathUtility.GetNumDigits(numFiles);
         
         string prefix = $"{timelineClip.displayName}_";
-        List<string> imageFileNames = new List<string>(numFiles);
+        List<WatchedFileInfo> imageFiles = new List<WatchedFileInfo>(numFiles);
  
         //Store old files that has the same pattern
         string[] existingFiles = Directory.GetFiles (outputFolder, $"*.png");
@@ -200,8 +200,8 @@ internal class RenderCachePlayableAssetInspector : Editor {
             if (filesToDelete.Contains(outputFilePath)) {
                 filesToDelete.Remove(outputFilePath);
             }
-            imageFileNames.Add(fileName);
             
+           
             if (captureFrame) {
                 SetDirectorTime(director, directorTime);
                 
@@ -215,6 +215,10 @@ internal class RenderCachePlayableAssetInspector : Editor {
                 renderCapturer.CaptureToFile(outputFilePath);
                 
             } 
+            Assert.IsTrue(File.Exists(outputFilePath));
+            FileInfo fileInfo = new FileInfo(outputFilePath);
+            
+            imageFiles.Add(new WatchedFileInfo(fileName, fileInfo.Length));
 
             ++fileCounter;
         
@@ -223,7 +227,7 @@ internal class RenderCachePlayableAssetInspector : Editor {
         }
 
         if (!cancelled) {
-            renderCachePlayableAsset.SetImageFileNames(imageFileNames);        
+            renderCachePlayableAsset.SetImageFiles(imageFiles);        
 
             //Delete old files
             if (AssetDatabase.IsValidFolder(outputFolder)) {

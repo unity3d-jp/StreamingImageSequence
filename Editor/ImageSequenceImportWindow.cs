@@ -63,7 +63,7 @@ internal class ImageSequenceImportWindow : EditorWindow {
                 string str = indexStr + ":";
 
                 EditorGUILayout.LabelField(str, GUILayout.Width(40));
-                EditorGUILayout.LabelField(m_importerParam.ImageFiles[index]);
+                EditorGUILayout.LabelField(m_importerParam.ImageFiles[index].GetName());
             });
             
         }
