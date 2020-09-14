@@ -56,7 +56,7 @@ test_{{ platform.name }}_{{ editor.version }}:
     flavor: {{ platform.flavor}}
   commands:
     - npm install upm-ci-utils@stable -g --registry https://artifactory.prd.cds.internal.unity3d.com/artifactory/api/npm/upm-npm
-    - upm-ci package test --unity-version {{ editor.version }}    
+    - upm-ci package test --unity-version {{ editor.version }} --enable-code-coverage --code-coverage-options 'generateAdditionalMetrics;generateHtmlReport;assemblyFilters:+UnityEngine.StreamingImageSequence,+UnityEditor.StreamingImageSequence,-UnityEngine.StreamingImageSequence.Tests,-UnityEngine.StreamingImageSequence.Tests'   
   triggers:
     branches:
       only:
