@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 [System.Serializable]
 internal class AEFootageInfo {

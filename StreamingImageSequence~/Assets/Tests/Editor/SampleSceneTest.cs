@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
 using UnityEngine.Timeline;
 
 namespace Tests {

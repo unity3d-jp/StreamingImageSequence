@@ -1,8 +1,10 @@
-﻿#if AT_USE_PENCILLINE
+﻿
+using UnityEngine;
+#if AT_USE_PENCILLINE
 using Pencil_4;
 #endif
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 
 [ExecuteAlways]

@@ -1,6 +1,7 @@
-﻿using UnityEngine.Timeline;
+﻿using UnityEngine;
+using UnityEngine.Timeline;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 
 internal static class TimelineUtility {

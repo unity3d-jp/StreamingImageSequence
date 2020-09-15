@@ -1,8 +1,9 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 [Serializable]
 [CustomStyle("FrameMarker")]

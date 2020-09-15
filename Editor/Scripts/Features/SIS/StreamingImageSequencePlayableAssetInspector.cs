@@ -2,15 +2,16 @@
 using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using UnityEditor;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 /// <summary>
 /// The inspector of StreamingImageSequencePlayableAsset
 /// </summary>
 [CustomEditor(typeof(StreamingImageSequencePlayableAsset))]
-internal class StreamingImageSequencePlayableAssetInspector : Editor {
+internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor {
 
 //----------------------------------------------------------------------------------------------------------------------
     void OnEnable() {

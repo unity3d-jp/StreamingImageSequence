@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine.Timeline;
-
+using Object = UnityEngine.Object;
 #if UNITY_EDITOR        
 using UnityEditor.Timeline;
 #endif
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
     
 [Serializable]
 internal static class PlayableFrameExtension {

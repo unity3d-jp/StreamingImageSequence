@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine.Playables;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
 using UnityEngine.TestTools;
 using UnityEngine.Timeline;
 using UnityEditor.Timeline;
 
-namespace UnityEditor.StreamingImageSequence.Tests {
+namespace Unity.StreamingImageSequence.EditorTests {
 
 internal class FrameMarkerTest {
     

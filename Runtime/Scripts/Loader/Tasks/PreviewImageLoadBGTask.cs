@@ -2,7 +2,7 @@
 
 using UnityEngine.Assertions;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 internal class PreviewImageLoadBGTask : BaseImageLoadBGTask {
     

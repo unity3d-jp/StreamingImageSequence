@@ -2,12 +2,13 @@
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEditor;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 
 [ScriptedImporter(1, "jstimeline")]

@@ -1,12 +1,12 @@
 ﻿#if AT_USE_TIMELINE_GE_1_4_0            
 
 using System.Collections.Generic;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
 using UnityEngine.Timeline;
 
 using UnityEditor.Timeline.Actions;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 [MenuEntry("Lock and Edit")]
 

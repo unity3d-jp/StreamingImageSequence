@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.Assertions;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -6,7 +7,7 @@ using UnityEditor;
 
 using UnityEngine.Timeline;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 //[TODO-sin: 2020-7-16] Replaced by SISPlayableFrame.
 //This is a dummy structure so that opening assets/scenes created using 

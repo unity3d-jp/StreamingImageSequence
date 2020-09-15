@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using JetBrains.Annotations;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 /// <summary>
 /// A PlayableAsset that points to a folder that contains images

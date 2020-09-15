@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace UnityEngine.StreamingImageSequence.Tests {
+namespace Unity.StreamingImageSequence.Tests {
 
 internal class BitUtilityTest {
     

@@ -1,7 +1,8 @@
 ﻿using System;
+using UnityEditor;
 using UnityEngine;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
     
 internal class PreviewTexture : IDisposable {
 

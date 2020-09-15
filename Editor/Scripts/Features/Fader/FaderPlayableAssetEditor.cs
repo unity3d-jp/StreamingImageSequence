@@ -1,9 +1,9 @@
 ﻿using JetBrains.Annotations;
 using UnityEditor.Timeline;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
 using UnityEngine.Timeline;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
     [CustomTimelineEditor(typeof(FaderPlayableAsset)), UsedImplicitly]
     internal class FaderPlayableAssetEditor : ClipEditor {

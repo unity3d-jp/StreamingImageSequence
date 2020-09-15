@@ -1,6 +1,7 @@
 ﻿using System.IO;
+using UnityEngine;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 /// <summary>
 /// An abstract MonoBehaviour class for capturing the render result of another component

@@ -3,10 +3,12 @@ using System.IO;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using Unity.StreamingImageSequence.Editor;
+using UnityEditor;
 using UnityEngine.Timeline;
 
-namespace UnityEditor.StreamingImageSequence.Tests {
+namespace Unity.StreamingImageSequence.EditorTests {
     public class JstimelineImporterTest {
     [Test]
     public void Import() {

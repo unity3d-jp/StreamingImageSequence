@@ -1,5 +1,7 @@
 ﻿
-namespace UnityEngine.StreamingImageSequence {
+using UnityEngine;
+
+namespace Unity.StreamingImageSequence {
 
 [ExecuteAlways]
 [RequireComponent(typeof(Camera))]

@@ -1,9 +1,10 @@
 ﻿using NUnit.Framework;
 using System.Collections;
 using System.IO;
+using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace UnityEngine.StreamingImageSequence.Tests {
+namespace Unity.StreamingImageSequence.Tests {
     public class ImageLoadTest {
 
 

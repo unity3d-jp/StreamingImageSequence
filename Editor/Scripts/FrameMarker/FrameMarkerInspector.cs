@@ -2,15 +2,16 @@
 using NUnit.Framework;
 using UnityEditor.ShortcutManagement;
 using UnityEngine;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using UnityEditor;
 using UnityObject = UnityEngine.Object;
 
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 [CustomEditor(typeof(FrameMarker), true)]
 [CanEditMultipleObjects]
-internal class FrameMarkerInspector: Editor {
+internal class FrameMarkerInspector: UnityEditor.Editor {
 
     void OnEnable() {
         int numTargets = targets.Length;

@@ -4,14 +4,14 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
 using System.Collections.Generic;
-
+using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
 using UnityEditor;
 
 #endif
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
     /// <summary>
     /// The PlayableAsset of the TimelineClip to be used inside the Timeline Window.

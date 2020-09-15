@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEditor.Timeline;
 #endif
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 internal abstract class BaseTimelineClipSISDataPlayableAsset : PlayableAsset{
 

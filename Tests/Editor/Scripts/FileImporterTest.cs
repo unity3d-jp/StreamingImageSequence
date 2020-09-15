@@ -1,8 +1,9 @@
 ﻿using NUnit.Framework;
 using System.IO;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using Unity.StreamingImageSequence.Editor;
 
-namespace UnityEditor.StreamingImageSequence.Tests {
+namespace Unity.StreamingImageSequence.EditorTests {
     public class FileImporterTest {
         [Test]
         public void EstimateAssetNameTest() {

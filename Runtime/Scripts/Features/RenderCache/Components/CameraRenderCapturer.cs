@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
+using UnityEngine;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 
 [ExecuteAlways]

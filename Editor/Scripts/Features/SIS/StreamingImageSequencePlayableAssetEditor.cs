@@ -4,9 +4,10 @@ using UnityEditor.Timeline;
 using UnityEngine.Timeline;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using UnityEditor;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
     [CustomTimelineEditor(typeof(StreamingImageSequencePlayableAsset)), UsedImplicitly]
     internal class StreamingImageSequencePlayableAssetEditor : ClipEditor {
         private const string NO_FOLDER_ASSIGNED_ERROR = "No Folder assigned";

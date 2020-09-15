@@ -4,12 +4,14 @@ using System.IO;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using Unity.StreamingImageSequence.Editor;
+using UnityEditor;
 using UnityEngine.TestTools;
 using UnityEngine.Timeline;
 using UnityEditor.Timeline;
 
-namespace UnityEditor.StreamingImageSequence.Tests {
+namespace Unity.StreamingImageSequence.EditorTests {
 
 internal class StreamingImageSequencePlayableAssetTest {
 
