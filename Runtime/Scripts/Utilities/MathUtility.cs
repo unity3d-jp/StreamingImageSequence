@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace UnityEngine.StreamingImageSequence
+namespace Unity.StreamingImageSequence
 {
 
 internal static class MathUtility {

@@ -2,7 +2,7 @@
 
 #if UNITY_EDITOR        
 
-namespace UnityEngine.StreamingImageSequence
+namespace Unity.StreamingImageSequence
 {
 internal class ImageLoadEditorUpdateTask : IUpdateTask {
 

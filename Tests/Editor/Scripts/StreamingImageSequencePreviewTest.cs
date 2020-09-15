@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
+using Unity.StreamingImageSequence.Editor;
 using UnityEngine;
 using Assert = NUnit.Framework.Assert;
 
-namespace UnityEditor.StreamingImageSequence.Tests {
+namespace Unity.StreamingImageSequence.EditorTests {
 
 internal class StreamingImagePreviewTest {
 

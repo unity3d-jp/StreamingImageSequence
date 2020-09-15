@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
 
-namespace UnityEngine.StreamingImageSequence
+namespace Unity.StreamingImageSequence
 {
     
 internal sealed class FolderContentsChangedNotifier : IObservable<string> {

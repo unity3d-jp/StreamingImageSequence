@@ -1,9 +1,10 @@
 using System;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 internal static class ImageDataExtensions {
 

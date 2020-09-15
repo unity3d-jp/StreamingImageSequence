@@ -2,9 +2,10 @@
 using System.IO;
 using System.Text;
 using UnityEngine;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using UnityEditor;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
     internal static class StreamingImageSequenceMenu
     {

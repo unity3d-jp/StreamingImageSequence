@@ -1,7 +1,8 @@
 ﻿using System.IO;
+using UnityEditor;
 using UnityEngine;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 internal static class EditorTextures {
 

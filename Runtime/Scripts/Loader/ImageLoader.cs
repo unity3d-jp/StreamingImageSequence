@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
+using UnityEngine;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 
 internal static class ImageLoader  {

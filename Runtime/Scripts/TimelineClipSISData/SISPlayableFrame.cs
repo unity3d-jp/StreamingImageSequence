@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Timeline;
 
@@ -7,7 +8,7 @@ using UnityEngine.Timeline;
 using UnityEditor.SceneManagement;
 #endif
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
     
 [Serializable]
 internal class SISPlayableFrame : ISerializationCallbackReceiver {

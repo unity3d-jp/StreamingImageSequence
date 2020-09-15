@@ -1,4 +1,4 @@
-﻿namespace UnityEngine.StreamingImageSequence
+﻿namespace Unity.StreamingImageSequence
 {
     
 internal interface ITask {

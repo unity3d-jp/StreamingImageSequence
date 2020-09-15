@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using JetBrains.Annotations;
+using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 /// <summary>
 /// A PlayableAsset that is used to capture the render results of BaseRenderCapturer in Timeline.

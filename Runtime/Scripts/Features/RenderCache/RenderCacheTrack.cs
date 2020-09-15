@@ -1,4 +1,5 @@
-﻿using UnityEngine.Playables;
+﻿using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
 #if UNITY_EDITOR
@@ -6,7 +7,7 @@ using UnityEditor;
 using UnityEditor.Timeline;
 #endif
 
-namespace UnityEngine.StreamingImageSequence  {
+namespace Unity.StreamingImageSequence  {
 
 /// <summary>
 /// A track which clip type is RenderCachePlayableAsset.

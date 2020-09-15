@@ -1,4 +1,5 @@
-﻿using UnityEngine.Playables;
+﻿using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
 
@@ -9,7 +10,7 @@ using UnityEditor.Timeline;
 #endif
 
 
-namespace UnityEngine.StreamingImageSequence { 
+namespace Unity.StreamingImageSequence { 
 /// <summary>
 /// A track which clip type is StreamingImageSequencePlayableAsset.
 /// It shows the active image from the images assigned to StreamingImageSequencePlayableAsset,

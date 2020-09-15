@@ -1,4 +1,6 @@
-﻿namespace UnityEngine.StreamingImageSequence {
+﻿using UnityEngine;
+
+namespace Unity.StreamingImageSequence {
 
 internal static class GameObjectExtensions {
 

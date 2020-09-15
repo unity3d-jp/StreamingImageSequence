@@ -3,9 +3,9 @@ using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 [CustomTimelineEditor(typeof(RenderCachePlayableAsset)), UsedImplicitly]
 internal class RenderCachePlayableAssetEditor : ClipEditor {

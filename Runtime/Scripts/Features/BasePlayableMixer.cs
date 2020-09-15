@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 // A PlayableBehaviour that is attached to a Track via CreateTrackMixer() 
 internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: PlayableAsset {
 
     #region IPlayableBehaviour interfaces
     
-    public override void OnPlayableDestroy(Playables.Playable playable) {
+    public override void OnPlayableDestroy(Playable playable) {
         base.OnPlayableDestroy(playable);
         Destroy();
     }

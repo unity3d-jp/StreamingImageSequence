@@ -1,5 +1,7 @@
 ﻿
-namespace UnityEngine.StreamingImageSequence  {
+using UnityEngine;
+
+namespace Unity.StreamingImageSequence  {
 
 /// <summary>
 /// A component that stores the output of StreamingImageSequence 

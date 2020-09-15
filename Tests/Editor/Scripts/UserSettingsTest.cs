@@ -1,8 +1,10 @@
 ﻿using NUnit.Framework;
 using Unity.AnimeToolbox.Editor;
+using Unity.StreamingImageSequence.Editor;
+using UnityEditor;
 using UnityEngine.UIElements;
 
-namespace UnityEditor.StreamingImageSequence.Tests {
+namespace Unity.StreamingImageSequence.EditorTests {
 
 internal class UserSettingsTest {
 

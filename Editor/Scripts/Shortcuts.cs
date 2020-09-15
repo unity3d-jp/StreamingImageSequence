@@ -2,10 +2,11 @@
 using UnityEditor.ShortcutManagement;
 using UnityEditor.Timeline;
 using UnityEngine;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using UnityEditor;
 using UnityEngine.Timeline;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 internal static class Shortcuts  {
 

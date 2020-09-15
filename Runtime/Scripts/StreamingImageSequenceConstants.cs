@@ -1,4 +1,4 @@
-﻿namespace UnityEngine.StreamingImageSequence {
+﻿namespace Unity.StreamingImageSequence {
 
     internal static class StreamingImageSequenceConstants {
         public const string DIALOG_HEADER = "StreamingImageSequence";

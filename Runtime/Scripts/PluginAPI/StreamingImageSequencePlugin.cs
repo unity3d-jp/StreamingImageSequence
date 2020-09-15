@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
     //Delegates
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]

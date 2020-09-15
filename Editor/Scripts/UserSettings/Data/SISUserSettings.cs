@@ -1,10 +1,11 @@
 ﻿using System;
 using Unity.AnimeToolbox;
 using UnityEngine;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using UnityEditor;
 
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 [Serializable]
 internal class SISUserSettings {

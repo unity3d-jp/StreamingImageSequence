@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -8,7 +9,7 @@ using UnityEditor.SceneManagement;
 using UnityEditor.Timeline;
 using UnityEngine.UI;
 
-namespace UnityEngine.StreamingImageSequence
+namespace Unity.StreamingImageSequence
 {
     
 
@@ -29,17 +30,17 @@ internal class EditorUpdateManager {
         StreamingImageSequencePlugin.ResetPlugin();        
     }
 
-    private static void EditorUpdateManager_OnSceneClosed(SceneManagement.Scene scene) {
+    private static void EditorUpdateManager_OnSceneClosed(Scene scene) {
         //Reset all imageLoading process when closing the scene
         ResetImageLoading();
     }
 
-    private static void EditorUpdateManager_OnSceneCreated( SceneManagement.Scene scene, NewSceneSetup setup, NewSceneMode mode) {
+    private static void EditorUpdateManager_OnSceneCreated( Scene scene, NewSceneSetup setup, NewSceneMode mode) {
         //Reset all imageLoading process when creating a new scene
         ResetImageLoading();        
     }
 
-    private static void EditorUpdateManager_OnSceneOpened( SceneManagement.Scene scene, OpenSceneMode mode) {
+    private static void EditorUpdateManager_OnSceneOpened( Scene scene, OpenSceneMode mode) {
         if (OpenSceneMode.Single != mode)
             return;
         

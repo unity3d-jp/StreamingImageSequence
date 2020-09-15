@@ -1,8 +1,9 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using UnityEditor;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 internal static class InspectorUtility {    
     internal static void ShowFrameMarkersGUI(BaseTimelineClipSISDataPlayableAsset timelineClipSISDataPlayableAsset) {        

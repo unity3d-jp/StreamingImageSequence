@@ -1,7 +1,8 @@
-﻿using UnityEngine.Playables;
+﻿using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 [System.Serializable] 
 internal class FaderPlayableAsset : PlayableAsset, ITimelineClipAsset {

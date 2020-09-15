@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Timeline;
 
 #if UNITY_EDITOR        
 
-namespace UnityEngine.StreamingImageSequence
+namespace Unity.StreamingImageSequence
 {
 internal class SISPlayableMixerEditorUpdateTask : IUpdateTask { 
 

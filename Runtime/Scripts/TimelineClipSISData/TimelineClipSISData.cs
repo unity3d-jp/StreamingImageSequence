@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Serialization;
 using UnityEngine.Timeline;
@@ -10,7 +11,7 @@ using UnityEditor;
 
 
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 [Serializable]
 internal class TimelineClipSISData : ISerializationCallbackReceiver {

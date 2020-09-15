@@ -3,9 +3,10 @@ using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using UnityEditor;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
     internal static class ImageSequenceImporter {
 

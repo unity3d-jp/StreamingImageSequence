@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 //----------------------------------------------------------------------------------------------------------------------
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode, Pack = 8)]

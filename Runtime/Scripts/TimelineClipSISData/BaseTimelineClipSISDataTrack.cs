@@ -1,9 +1,10 @@
 ﻿using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace UnityEngine.StreamingImageSequence { 
+namespace Unity.StreamingImageSequence { 
 /// <summary>
 /// A track which requires its TimelineClip to store TimelineClipSISData as an extension
 /// </summary>

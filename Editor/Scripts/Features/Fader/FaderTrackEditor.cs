@@ -1,9 +1,9 @@
 ﻿using UnityEditor.Timeline;
 using UnityEngine;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
 using UnityEngine.Timeline;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 [CustomTimelineEditor(typeof(FaderTrack))]
 internal class FaderTrackEditor : TrackEditor {

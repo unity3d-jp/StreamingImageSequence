@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
     
 [Serializable]
 internal enum PlayableFramePropertyID {

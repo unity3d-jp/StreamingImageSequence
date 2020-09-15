@@ -1,9 +1,10 @@
-﻿using UnityEngine.Assertions;
+﻿using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 [TrackClipType(typeof(FaderPlayableAsset))]
 [TrackBindingType(typeof(Image))]

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.IO;
 using UnityEngine;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using UnityEditor;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 internal class ImageSequenceImportWindow : EditorWindow {
 

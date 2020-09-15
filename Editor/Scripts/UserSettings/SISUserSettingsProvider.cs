@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using Unity.AnimeToolbox;
 using Unity.AnimeToolbox.Editor;
+using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 internal class SISUserSettingsProvider : SettingsProvider {
 	
 	// ReSharper disable once ClassNeverInstantiated.Local

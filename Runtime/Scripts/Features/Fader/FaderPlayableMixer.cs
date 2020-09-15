@@ -1,8 +1,9 @@
-﻿using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Timeline;
 using UnityEngine.Playables;
 
-namespace UnityEngine.StreamingImageSequence {
+namespace Unity.StreamingImageSequence {
 
 // A behaviour that is attached to a playable
 internal class FaderPlayableMixer : BasePlayableMixer<FaderPlayableAsset> {

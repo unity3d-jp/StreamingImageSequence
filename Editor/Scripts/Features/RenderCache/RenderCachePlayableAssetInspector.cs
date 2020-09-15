@@ -9,17 +9,18 @@ using UnityEditor.ShortcutManagement;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.StreamingImageSequence;
+using Unity.StreamingImageSequence;
+using UnityEditor;
 using UnityEngine.Timeline;
 using Object = UnityEngine.Object;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 /// <summary>
 /// The inspector of RenderCachePlayableAsset
 /// </summary>
 [CustomEditor(typeof(RenderCachePlayableAsset))]
-internal class RenderCachePlayableAssetInspector : Editor {
+internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 
     [InitializeOnLoadMethod]
     static void RenderCachePlayableAssetInspector_OnEditorLoad() {

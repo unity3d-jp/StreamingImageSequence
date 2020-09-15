@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace UnityEditor.StreamingImageSequence {
+namespace Unity.StreamingImageSequence.Editor {
 
 internal struct PreviewDrawInfo {
     public Rect DrawRect;

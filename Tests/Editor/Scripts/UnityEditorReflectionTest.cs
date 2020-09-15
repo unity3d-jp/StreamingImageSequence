@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
+using Unity.StreamingImageSequence.Editor;
 
-namespace UnityEditor.StreamingImageSequence.Tests {
+namespace Unity.StreamingImageSequence.EditorTests {
 
 internal class UnityEditorReflectionTest {
 
