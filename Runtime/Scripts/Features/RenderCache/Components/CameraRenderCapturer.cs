@@ -1,5 +1,7 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections;
+using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Unity.StreamingImageSequence {
 
@@ -9,8 +11,7 @@ internal class CameraRenderCapturer : BaseRenderCapturer {
 
 
     /// <inheritdoc/>
-    public override bool BeginCapture() {
-
+    public override bool CanCapture() {
         if (null == m_camera) {
             SetErrorMessage("Camera has not been assigned to " + this.name);
             return false;
@@ -21,8 +22,14 @@ internal class CameraRenderCapturer : BaseRenderCapturer {
                 "Please activate it in the scene before capturing.");
             return false;           
         }
-        
-        
+
+        return true;
+    }
+
+    /// <inheritdoc/>
+    public override IEnumerator BeginCapture() {
+
+        Assert.IsNotNull(m_camera);
         m_origCameraTargetTexture = m_camera.targetTexture;
 
         //Assign local render texture to camera
@@ -30,8 +37,7 @@ internal class CameraRenderCapturer : BaseRenderCapturer {
         m_rt = new RenderTexture(m_camera.pixelWidth, m_camera.pixelHeight, 24);
         m_rt.Create();
         m_camera.targetTexture = m_rt;
-        return true;
-
+        yield return null;
     }
 
     /// <inheritdoc/>

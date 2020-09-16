@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections;
+using System.IO;
 using UnityEngine;
 
 namespace Unity.StreamingImageSequence {
@@ -9,12 +10,18 @@ namespace Unity.StreamingImageSequence {
 /// </summary>
 public abstract class BaseRenderCapturer : MonoBehaviour {
 
-
     /// <summary>
-    /// Prepare the component for capturing
+    /// Can the capturer perform the capturing process
     /// </summary>
     /// <returns>True if capturing can be executed, false otherwise</returns>
-    public abstract bool BeginCapture();
+    public abstract bool CanCapture();
+
+    
+    /// <summary>
+    /// Prepare the component for capturing. May require several frames
+    /// </summary>
+    /// <returns>The current position of the begin process</returns>
+    public abstract IEnumerator BeginCapture();
 
 
     /// <summary>

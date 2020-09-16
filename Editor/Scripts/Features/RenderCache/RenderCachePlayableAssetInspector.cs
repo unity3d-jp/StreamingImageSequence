@@ -139,17 +139,6 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             yield break;                
         }
 
-
-        //begin capture
-        bool canCapture = renderCapturer.BeginCapture();
-        if (!canCapture) {
-            EditorUtility.DisplayDialog("Streaming Image Sequence",
-                renderCapturer.GetLastErrorMessage(),
-                "Ok");
-            yield break;                                
-        }
-        
-        
         //Check output folder
         string outputFolder = renderCachePlayableAsset.GetFolder();
         if (string.IsNullOrEmpty(outputFolder) || !Directory.Exists(outputFolder)) {
@@ -157,6 +146,21 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                 "Invalid output folder",
                 "Ok");
             yield break;                                
+        }
+
+        //Check if we can capture
+        bool canCapture = renderCapturer.CanCapture();
+        if (!canCapture) {
+            EditorUtility.DisplayDialog("Streaming Image Sequence",
+                renderCapturer.GetLastErrorMessage(),
+                "Ok");
+            yield break;                                            
+        }
+
+        //begin capture
+        IEnumerator beginCapture = renderCapturer.BeginCapture();
+        while (beginCapture.MoveNext()) {
+            yield return beginCapture.Current;
         }
 
         Texture capturerTex = renderCapturer.GetInternalTexture();
