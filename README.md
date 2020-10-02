@@ -1,9 +1,15 @@
-# Streaming Image Sequence
-
 ## Other Languages
 * [日本語](README_JP.md)
 
-## Introduction
+# Streaming Image Sequence
+
+[![](https://badge-proxy.cds.internal.unity3d.com/44fe9b4e-feeb-409f-8fcd-d86e42d09b98)](https://badges.cds.internal.unity3d.com/packages/com.unity.streaming-image-sequence/build-info?branch=dev&testWorkflow=package-isolation)
+[![](https://badge-proxy.cds.internal.unity3d.com/f9703ad6-4a57-4861-8125-4cec53ece26f)](https://badges.cds.internal.unity3d.com/packages/com.unity.streaming-image-sequence/dependencies-info?branch=dev&testWorkflow=updated-dependencies)
+[![](https://badge-proxy.cds.internal.unity3d.com/221d27f5-9807-40c1-8fde-50a1757801b4)](https://badges.cds.internal.unity3d.com/packages/com.unity.streaming-image-sequence/dependants-info)
+[![](https://badge-proxy.cds.internal.unity3d.com/1f8f02a0-6e03-417e-9c92-22f978f96c69)](https://badges.cds.internal.unity3d.com/packages/com.unity.streaming-image-sequence/warnings-info?branch=dev)
+
+![ReleaseBadge](https://badge-proxy.cds.internal.unity3d.com/2fe2fc7a-99f7-4bde-b23d-c3358e846fac)
+![ReleaseBadge](https://badge-proxy.cds.internal.unity3d.com/84b887b2-1e62-4962-848e-9d6c07023710)
 
 Streaming Image Sequence is a package for playing sequential image sequences in 
 Unity Timeline easily without making Unity 2D Sprites.  
