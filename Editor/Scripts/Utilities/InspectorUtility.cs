@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using Unity.StreamingImageSequence;
+﻿using UnityEngine;
 using UnityEditor;
 
 namespace Unity.StreamingImageSequence.Editor {
