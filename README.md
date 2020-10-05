@@ -51,11 +51,11 @@ differ based on the version of Unity.
 
 ![StreamingImageSequenceDemo](Documentation~/images/StreamingImageSequenceDemo.gif)
 
-1.[Caching Render Results](./Documentation~/en/RenderCachePlayableAsset.md)
+2. [Caching Render Results](./Documentation~/en/RenderCachePlayableAsset.md)
 
 ![RenderCacheDemo](Documentation~/images/RenderCacheDemo.gif)
 
-1.[Fading Image objects](./Documentation~/en/FaderPlayableAsset.md)
+3. [Fading Image objects](./Documentation~/en/FaderPlayableAsset.md)
 
 ![FaderDemo](Documentation~/images/FaderDemo.gif)
 
