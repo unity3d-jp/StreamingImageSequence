@@ -1,23 +1,25 @@
-# FrameMarkers
+# フレームマーカー
 
 ![FrameMarkers](../images/FrameMarkers.png)
 
-FrameMarkers are markers that appear on top of the playable assets of StreamingImageSequence.
-They are used to activate/deactivate per frame processing based on the type of PlayableAsset they belong to.
+フレームマーカーは StreamingImageSequence のプレイアブルアセットの上に表示されるマーカーです。
+マーカーが属する プレイアブルアセットのタイプによって、
+フレーム毎の処理をオン・オフすることができます。
 
-FrameMarkers are only visible if the Timeline window is zoomed in, and can be activated/deactivated
-by selecting and pressing *U* by default. This keyboard shortcut can be changed via the 
-[ShortCuts Manager](https://docs.unity3d.com/Manual/UnityHotkeys.html).
+フレームマーカーは、タイムラインウィンドウが拡大されている場合にのみ表示されます。
+マーカーを選択し、デフォルトとして、*U* でオン・オフできます。
+このキーボードショートカットは、
+[ShortCuts Manager](https://docs.unity3d.com/ja/current/Manual/UnityHotkeys.html)
+で変更できます。
 
-
-# Inspector
+# インスペクター
 
 ![FrameMarkersInspector](../images/FrameMarkersInspector.png)
 
 * **Use Frame**   
-  To activate/deactivate the frame.
+  フレームをオン・オフする。
 * **Note**  
-  User notes for the frame.
+  フレームのユーザーのメモ。
 
 
 
