@@ -1,25 +1,32 @@
-# �t���[���}�[�J�[
+# フレームマーカー
 
 ![FrameMarkers](../images/FrameMarkers.png)
 
-�t���[���}�[�J�[�� StreamingImageSequence �̃v���C�A�u���A�Z�b�g�̏�ɕ\�������}�[�J�[�ł��B
-�}�[�J�[�������� �v���C�A�u���A�Z�b�g�̃^�C�v�ɂ���āA
-�t���[�����̏������I���E�I�t���邱�Ƃ��ł��܂��B
+フレームマーカーは StreamingImageSequence のプレイアブルアセットの上に表示されるマーカーです。
+マーカーが属する プレイアブルアセットのタイプによって、
+フレーム毎の処理をオン・オフすることができます。
 
-�t���[���}�[�J�[�́A�^�C�����C���E�B���h�E���g�傳��Ă���ꍇ�ɂ̂ݕ\������܂��B
-�}�[�J�[��I�����A�f�t�H���g�Ƃ��āA*U* �ŃI���E�I�t�ł��܂��B
-���̃L�[�{�[�h�V���[�g�J�b�g�́A
+フレームマーカーは、タイムラインウィンドウが拡大されている場合にのみ表示されます。
+
+キーボードショートカット：  
+1. u: オン・オフ。このショートカットは、
 [ShortCuts Manager](https://docs.unity3d.com/ja/current/Manual/UnityHotkeys.html)
-�ŕύX�ł��܂��B
+で変更できます。
 
-# �C���X�y�N�^�[
+1. 左/右の矢印キー：直前（左の矢印キー）または直後（右の矢印キー）のフレームマーカーに移動します。
+
+> フレームマーカーが正しく表示されていない場合は、ヒエラルキーウィンドウの PlayableDirector ゲームオブジェクトをクリックし、
+> タイムラインウィンドウをリフレッシュしてください。
+
+
+# インスペクター
 
 ![FrameMarkersInspector](../images/FrameMarkersInspector.png)
 
 * **Use Frame**   
-  �t���[�����I���E�I�t����B
+  フレームをオン・オフする。
 * **Note**  
-  �t���[���̃��[�U�[�̃����B
+  フレームのユーザーのメモ。
 
 
 

@@ -2,13 +2,16 @@
 
 ![FrameMarkers](../images/FrameMarkers.png)
 
-FrameMarkers are markers that appear on top of the playable assets of StreamingImageSequence.
+FrameMarkers are markers that appear on top of the playable assets of StreamingImageSequence, 
+and are only visible if the Timeline window is zoomed in.
 They are used to activate/deactivate per frame processing based on the type of PlayableAsset they belong to.
 
-FrameMarkers are only visible if the Timeline window is zoomed in, and can be activated/deactivated
-by selecting and pressing *U* by default. This keyboard shortcut can be changed via the 
-[ShortCuts Manager](https://docs.unity3d.com/Manual/UnityHotkeys.html).
+Keyboard shortcuts:  
+1. u: toggle on/off. This shortcut can be changed via the [ShortCuts Manager](https://docs.unity3d.com/Manual/UnityHotkeys.html).  
+1. left/right arrow: move to the prev/next FrameMarker.
 
+> If the FrameMarkers are not shown correctly, click on the PlayableDirector 
+> GameObject in the hierarchy window to refresh the timeline window.
 
 # Inspector
 
