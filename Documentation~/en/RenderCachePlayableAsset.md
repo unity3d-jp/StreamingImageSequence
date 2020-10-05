@@ -36,7 +36,6 @@ From an empty scene, do the following:
 
 1. Select the **RenderCachePlayableAsset** and click *Update Render Cache* in the inspector.
 
-
 # Inspector
 
 ![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)
