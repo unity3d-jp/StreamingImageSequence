@@ -45,9 +45,9 @@ From an empty scene, do the following:
 * **Cache Output folder**  
   Where the cached render results are stored.
 * **Show Frame Markers**  
-  [FramerMarkes](FrameMarkers.md) are used to customize which frames to capture. 
+  [FramerMarkers](FrameMarkers.md) are used to customize which frames to capture. 
 * **Lock Frames**  
-  Turn the [FramerMarkes](FrameMarkers.md) to lock mode in order to prevent certain frames 
+  Turn the [FramerMarkers](FrameMarkers.md) to lock mode in order to prevent certain frames 
   from being rewritten, which is useful to maintain custom manipulation 
   to previous cached images.  
   ![RenderCache_LockFrames](../images/RenderCache_LockFrames.png)
