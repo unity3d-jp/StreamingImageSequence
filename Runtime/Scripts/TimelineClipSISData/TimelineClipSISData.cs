@@ -66,8 +66,8 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         if (req == m_frameMarkersRequested)
             return;
         
-#if UNITY_EDITOR        
-        Undo.RegisterFullObjectHierarchyUndo( m_clipOwner.parentTrack, "StreamingImageSequence Show/Hide FrameMarker");        
+#if UNITY_EDITOR
+        Undo.RegisterCompleteObjectUndo(m_clipOwner.parentTrack,"StreamingImageSequence Show/Hide FrameMarker");
         m_forceShowFrameMarkers = forceShow && req;
 #endif        
         m_frameMarkersRequested = req;

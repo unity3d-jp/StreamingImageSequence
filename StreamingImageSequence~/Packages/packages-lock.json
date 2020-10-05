@@ -1,12 +1,10 @@
 {
   "dependencies": {
     "com.unity.anime-toolbox": {
-      "version": "0.1.6-preview",
+      "version": "0.2.0-preview",
       "depth": 1,
       "source": "registry",
-      "dependencies": {
-        "com.unity.recorder": "2.1.0-preview.1"
-      },
+      "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.editorcoroutines": {
@@ -71,21 +69,12 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
-    "com.unity.recorder": {
-      "version": "2.1.0-preview.1",
-      "depth": 2,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.timeline": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
     "com.unity.streaming-image-sequence": {
       "version": "file:com.unity.streaming-image-sequence",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.unity.anime-toolbox": "0.1.6-preview",
+        "com.unity.anime-toolbox": "0.2.0-preview",
         "com.unity.editorcoroutines": "1.0.0",
         "com.unity.ext.nunit": "1.0.0",
         "com.unity.ugui": "1.0.0",
