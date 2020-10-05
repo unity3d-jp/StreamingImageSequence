@@ -58,7 +58,6 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 
 ![FrameMarker](../images/StreamingImageSequence_FrameMarker.png)
 
-
 # インスペクター
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)
 
