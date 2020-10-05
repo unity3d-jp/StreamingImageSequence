@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
+using Unity.AnimeToolbox;
 using UnityEngine;
 using UnityEngine.Playables;
-using Unity.StreamingImageSequence;
 using Unity.StreamingImageSequence.Editor;
 using UnityEditor;
 using UnityEngine.TestTools;
@@ -141,7 +141,7 @@ internal class StreamingImageSequencePlayableAssetTest {
         
         //Copy test data to streamingAssetsPath
         const string  DEST_FOLDER_NAME      = "ImportFromStreamingAssetsTest";
-        string        streamingAssetsFolder = AssetEditorUtility.NormalizeAssetPath(Application.streamingAssetsPath);
+        string        streamingAssetsFolder = AssetUtility.NormalizeAssetPath(Application.streamingAssetsPath);
         string        destFolderGUID        = AssetDatabase.CreateFolder(streamingAssetsFolder, DEST_FOLDER_NAME);
         string        destFolder            = AssetDatabase.GUIDToAssetPath(destFolderGUID);
         int numImages = sisAsset.GetNumImages();

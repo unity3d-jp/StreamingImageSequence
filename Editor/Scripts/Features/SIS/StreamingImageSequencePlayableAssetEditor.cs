@@ -4,7 +4,6 @@ using UnityEditor.Timeline;
 using UnityEngine.Timeline;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Unity.StreamingImageSequence;
 using UnityEditor;
 
 namespace Unity.StreamingImageSequence.Editor {

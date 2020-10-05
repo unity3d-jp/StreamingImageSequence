@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using NUnit.Framework;
 using System.IO;
+using Unity.AnimeToolbox.Editor;
 using UnityEditor.SceneManagement;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Playables;
-using Unity.StreamingImageSequence;
 using Unity.StreamingImageSequence.Editor;
 using UnityEditor;
 using UnityEngine.TestTools;
@@ -65,7 +65,7 @@ internal class EditorUtilityTest {
             
         }
         yield return null;
-        AssetEditorUtility.DeleteAssets(destFolder, "*.png");
+        AssetEditorUtility.DeleteAssetsOrFiles(destFolder, "*.png");
         
         yield return null;
         string[] files = Directory.GetFiles(destFolder);

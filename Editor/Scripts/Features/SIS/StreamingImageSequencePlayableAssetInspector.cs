@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Unity.AnimeToolbox;
+using Unity.AnimeToolbox.Editor;
 using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
-using Unity.StreamingImageSequence;
 using UnityEditor;
 
 namespace Unity.StreamingImageSequence.Editor {
@@ -59,7 +59,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         {
             GUILayout.Label("Folder", "BoldLabel");
             GUILayout.Space(4f);
-            DoFolderGUI();
+            DrawFolderGUI();
         }
         GUILayout.Space(4f);
 
@@ -95,7 +95,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
             }
             
         }
-
+        
         serializedObject.ApplyModifiedProperties();
         EditorGUI.EndChangeCheck();
 
@@ -103,11 +103,12 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    private void DoFolderGUI() {
+    private void DrawFolderGUI() {
         string prevFolder = m_asset.GetFolder();
-        string newLoadPath = InspectorUtility.ShowFolderSelectorGUI("Image Sequence", "Select Folder", 
+        string newLoadPath = EditorGUIDrawerUtility.DrawFolderSelectorGUI("Image Sequence", "Select Folder", 
             prevFolder,
-            AssetEditorUtility.NormalizeAssetPath
+            ReloadFolder,
+            AssetUtility.NormalizeAssetPath
         );        
         
         if (newLoadPath != prevFolder) {
@@ -117,6 +118,9 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
 
     }
 
+    private void ReloadFolder() {
+        m_asset.Reload();
+    }
 
 //----------------------------------------------------------------------------------------------------------------------
     private void DoImageGUI()
