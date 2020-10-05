@@ -1,10 +1,10 @@
 # RenderCachePlayableAsset
 
-A playable asset for caching or saving the render results to image files for playback by 
+A playable asset for caching render results to image files for playback by 
 [StreamingImageSequencePlayableAsset](StreamingImageSequencePlayableAsset.md).
 
 RenderCachePlayableAsset works together with RenderCapturer components, which execute the actual capturing process and
-decide what gets written into the image files. Currently, StreamingImageSequence provides: 
+decide what gets rendered into image files. Currently, StreamingImageSequence provides: 
 1. **CameraRenderCapturer** component.   
    Caches the render result of a Camera component.
 1. **BaseRenderCapturer** class.  
@@ -18,7 +18,6 @@ decide what gets written into the image files. Currently, StreamingImageSequence
 From an empty scene, do the following:
 
 1. Create an animation in Timeline, for example: by referring to  
-
    [Creating Keyframed Animation in Timeline](https://learn.unity.com/tutorial/creating-keyframed-animation-in-timeline) tutorial.
 
 1. Open the Timeline window and add a **RenderCacheTrack**.
@@ -43,14 +42,17 @@ From an empty scene, do the following:
 ![RenderCachePlayableAsset](../images/RenderCachePlayableAsset.png)
 
 * **Resolution**   
-  The resolution of the output images. Modify the gameview size to change this property.
+  The resolution of the output images. Modify the size of the Game window to change this property.
 * **Cache Output folder**  
-  Where the output images are stored.
+  Where the cached render results are stored.
 * **Show Frame Markers**  
-  To customize which frames to capture. These markers are only visible if the Timeline window 
-  is zoomed in. 
+  FrameMarkers are used to customize which frames to capture. 
 * **Lock Frames**  
-  To prevent certain frames from being rewritten. Useful to maintain custom manipulation to the images.
+  Turn the FramerMarkes to lock mode in order to prevent certain frames 
+  from being rewritten, which is useful to maintain custom manipulation 
+  to previous cached images.  
+  ![RenderCache_LockFrames](../images/RenderCache_LockFrames.png)
+
 * **Update Render Cache**
   To update the images by rendering and caching the results as images.
 
