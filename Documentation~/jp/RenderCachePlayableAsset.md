@@ -1,59 +1,58 @@
 # RenderCachePlayableAsset
 
-A playable asset for caching render results to image files for playback by 
-[StreamingImageSequencePlayableAsset](StreamingImageSequencePlayableAsset.md).
+描画の結果を画像ファイルに書き込む為のプレイアブルアセットです。
+この描画のキャッシュを [StreamingImageSequencePlayableAsset](StreamingImageSequencePlayableAsset.md)
+で再生することができます。
 
-RenderCachePlayableAsset works together with RenderCapturer components, which execute the actual capturing process and
-decide what gets rendered into image files. Currently, StreamingImageSequence provides: 
-1. **CameraRenderCapturer** component.   
-   Caches the render result of a Camera component.
-1. **BaseRenderCapturer** class.  
-   An extensible abstract class, which can be extended to customize the capturing process.
+RenderCachePlayableAsset は 実際のキャプチャと画像ファイルに描画する 
+RenderCapturer コンポネントと連携しています。
+この用途で、現在 StreamingImageSequence は下記のスクリプトを提供します。
+1. **CameraRenderCapturer** コンポネント   
+   Camera コンポネントの描画の結果のキャッシュを生成する。
+1. **BaseRenderCapturer** クラス。  
+   拡張可能のアブストラクトクラス。
+   キャプチャなどのプロセスをカストマイズするために、拡張できます。
 
+# チュートリアル
 
+空のシーンから以下を行ってください。
 
+1. Timeline 上で、アニメーションを作成する。例：
+   [Creating Keyframed Animation in Timeline](https://learn.unity.com/tutorial/creating-keyframed-animation-in-timeline)
+   を参照。
 
-# Tutorial 
+1. Timeline ウィンドウを開き **RenderCacheTrack** を追加する。
 
-From an empty scene, do the following:
-
-1. Create an animation in Timeline, for example: by referring to  
-   [Creating Keyframed Animation in Timeline](https://learn.unity.com/tutorial/creating-keyframed-animation-in-timeline) tutorial.
-
-1. Open the Timeline window and add a **RenderCacheTrack**.
- 
    ![AddRenderCacheTrack](../images/AddRenderCacheTrack.png)
    
-1. Right click on the **RenderCacheTrack** and click *Add Render Cache Playable Asset*
+1. **RenderCacheTrack** 上に右クリックし、*Add Render Cache Playable Asset* をクリックす。
  
    ![AddRenderCachePlayableAsset](../images/AddRenderCachePlayableAsset.png)
    
-1. Create a GameObject and add **CameraRenderCapturer** component.
+1. GameObject を作成し、**CameraRenderCapturer** コンポネントを追加する。
 
-1. Drag and drop the GameObject to the object property of the **RenderCacheTrack**.
+1. 追加した **RenderCacheTrack** のオブジェクトプロパティに GameObject をドラッグアンドドロップする。
 
    ![AssignRenderCapturer](../images/AssignRenderCapturer.png)
 
-1. Select the **RenderCachePlayableAsset** and click *Update Render Cache* in the inspector.
+1. **RenderCachePlayableAsset** を選択し、Inspector 上に *Update Render Cache* をクリックする。
 
-# Inspector
+# インスペクター
 
 ![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)
 
 * **Resolution**   
-  The resolution of the output images. Modify the size of the Game window to change this property.
+  出力される画像の解像度。このプロパティを変更するために、Game ウィンドウのサイズを変更します。
 * **Cache Output folder**  
-  Where the cached render results are stored.
+  描画の結果のキャッシュを保存するための場所。
 * **Show Frame Markers**  
-  [FramerMarkers](FrameMarkers.md) are used to customize which frames to capture. 
+  キャプチャされるフレームを指定するための [フレームマーカ](FrameMarkers.md)。 
 * **Lock Frames**  
-  Turn the [FramerMarkers](FrameMarkers.md) to lock mode in order to prevent certain frames 
-  from being rewritten, which is useful to maintain custom manipulation 
-  to previous cached images.  
-  ![RenderCache_LockFrames](../images/RenderCache_LockFrames.png)
+  フレームが上書きされないよう、[フレームマーカ](FrameMarkers.md) をロックモードに切り替えます。
+  ユーザー編集などを保持するために使用できます。
 
 * **Update Render Cache**  
-  To update the images by rendering and caching the results as images.
+  描画を実行し、キャッシュとしてその結果を画像ファイルに書き込みます。
 
 
 
