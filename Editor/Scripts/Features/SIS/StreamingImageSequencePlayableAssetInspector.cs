@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Unity.AnimeToolbox;
 using Unity.AnimeToolbox.Editor;
 using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
-using Unity.StreamingImageSequence;
 using UnityEditor;
 
 namespace Unity.StreamingImageSequence.Editor {
@@ -109,7 +108,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         string newLoadPath = EditorGUIDrawerUtility.DrawFolderSelectorGUI("Image Sequence", "Select Folder", 
             prevFolder,
             null,
-            AssetEditorUtility.NormalizeAssetPath
+            AssetUtility.NormalizeAssetPath
         );        
         
         if (newLoadPath != prevFolder) {

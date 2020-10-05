@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Unity.AnimeToolbox;
 using UnityEngine;
 using UnityEngine.Assertions;
-using Unity.StreamingImageSequence;
 using UnityEditor;
 
 namespace Unity.StreamingImageSequence.Editor {
@@ -33,7 +33,7 @@ namespace Unity.StreamingImageSequence.Editor {
             string assetName =  EstimateAssetName(relFilePaths[0].GetName());
 
             // set dest folder
-            string streamingAssetsPath = AssetEditorUtility.NormalizeAssetPath( Application.streamingAssetsPath);
+            string streamingAssetsPath = AssetUtility.NormalizeAssetPath( Application.streamingAssetsPath);
 
             //Set importer param
             ImageFileImporterParam importerParam = new ImageFileImporterParam {

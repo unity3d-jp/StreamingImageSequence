@@ -12,6 +12,8 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Unity.AnimeToolbox;
+using Unity.AnimeToolbox.Editor;
 using UnityEditor;
 
 
@@ -110,7 +112,7 @@ internal class JstimelineImporter : ScriptedImporter
                 string destFootageFolder = Application.streamingAssetsPath;
                 destFootageFolder = Path.Combine(destFootageFolder, strFootageName).Replace("\\", "/");
                 Directory.CreateDirectory(destFootageFolder); //make sure the directory exists
-                footageInfo.Folder = AssetEditorUtility.NormalizeAssetPath(destFootageFolder);
+                footageInfo.Folder = AssetUtility.NormalizeAssetPath(destFootageFolder);
 
                 for (int i=0;i<numImages;++i) {
                     string destFilePath = Path.Combine(destFootageFolder, footageInfo.Pictures[i]);

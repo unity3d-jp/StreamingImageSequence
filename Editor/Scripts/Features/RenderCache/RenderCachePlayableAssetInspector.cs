@@ -4,16 +4,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using NUnit.Framework;
+using Unity.AnimeToolbox;
 using Unity.AnimeToolbox.Editor;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor.ShortcutManagement;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Playables;
-using Unity.StreamingImageSequence;
 using UnityEditor;
 using UnityEngine.Timeline;
-using Object = UnityEngine.Object;
 
 namespace Unity.StreamingImageSequence.Editor {
 
@@ -79,10 +78,10 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         string newFolder = EditorGUIDrawerUtility.DrawFolderSelectorGUI("Cache Output Folder", "Select Folder", 
             prevFolder,
             null,
-            AssetEditorUtility.NormalizeAssetPath
+            AssetUtility.NormalizeAssetPath
         );
         if (newFolder != prevFolder) {
-            m_asset.SetFolder(AssetEditorUtility.NormalizeAssetPath(newFolder));
+            m_asset.SetFolder(AssetUtility.NormalizeAssetPath(newFolder));
             GUIUtility.ExitGUI();
         }
         
