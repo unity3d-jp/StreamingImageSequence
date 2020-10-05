@@ -28,7 +28,7 @@ From an empty scene, do the following:
  
    ![AddRenderCachePlayableAsset](../images/AddRenderCachePlayableAsset.png)
    
-1. Create a GameObject and add **CameraRenderCapturer** component.
+1. Create a *GameObject* and add *CameraRenderCapturer* component.
 
 1. Drag and drop the GameObject to the object property of the **RenderCacheTrack**.
 
