@@ -39,7 +39,7 @@ From an empty scene, do the following:
 
 # Inspector
 
-![RenderCachePlayableAsset](../images/RenderCachePlayableAsset.png)
+![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)
 
 * **Resolution**   
   The resolution of the output images. Modify the size of the Game window to change this property.
