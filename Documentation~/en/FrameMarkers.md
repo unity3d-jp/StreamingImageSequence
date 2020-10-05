@@ -18,7 +18,7 @@ Keyboard shortcuts:
 ![FrameMarkersInspector](../images/FrameMarkersInspector.png)
 
 * **Use Frame**   
-  To activate/deactivate the frame.
+  To activate/deactivate the processing in the frame.
 * **Note**  
   User notes for the frame.
 

@@ -24,7 +24,7 @@
 ![FrameMarkersInspector](../images/FrameMarkersInspector.png)
 
 * **Use Frame**   
-  フレームをオン・オフする。
+  フレームの処理をオン・オフする。
 * **Note**  
   フレームのユーザーのメモ。
 
