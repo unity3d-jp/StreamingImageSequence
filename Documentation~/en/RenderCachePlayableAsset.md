@@ -59,6 +59,3 @@ From an empty scene, do the following:
   Render and cache the results as images.
 
 
-
-
-
