@@ -27,7 +27,9 @@ From an empty scene, do the following:
 1. Right click on the **RenderCacheTrack** and click *Add Render Cache Playable Asset*
  
    ![AddRenderCachePlayableAsset](../images/AddRenderCachePlayableAsset.png)
-   
+
+1. Adjust the length of the **RenderCachePlayableAsset** according to the length of the animation.
+
 1. Create a *GameObject* and add *CameraRenderCapturer* component.
 
 1. Drag and drop the GameObject to the object property of the **RenderCacheTrack**.
