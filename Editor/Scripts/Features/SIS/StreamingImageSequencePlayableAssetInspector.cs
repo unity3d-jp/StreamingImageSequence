@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.AnimeToolbox.Editor;
 using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
@@ -105,8 +106,9 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
 
     private void DoFolderGUI() {
         string prevFolder = m_asset.GetFolder();
-        string newLoadPath = InspectorUtility.ShowFolderSelectorGUI("Image Sequence", "Select Folder", 
+        string newLoadPath = EditorGUIDrawerUtility.DrawFolderSelectorGUI("Image Sequence", "Select Folder", 
             prevFolder,
+            null,
             AssetEditorUtility.NormalizeAssetPath
         );        
         

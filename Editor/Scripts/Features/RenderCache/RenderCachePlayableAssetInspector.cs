@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using NUnit.Framework;
+using Unity.AnimeToolbox.Editor;
 using Unity.EditorCoroutines.Editor;
 using UnityEditor.ShortcutManagement;
 using UnityEditor.Timeline;
@@ -75,8 +76,9 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 
         string prevFolder = m_asset.GetFolder();
         
-        string newFolder = InspectorUtility.ShowFolderSelectorGUI("Cache Output Folder", "Select Folder", 
+        string newFolder = EditorGUIDrawerUtility.DrawFolderSelectorGUI("Cache Output Folder", "Select Folder", 
             prevFolder,
+            null,
             AssetEditorUtility.NormalizeAssetPath
         );
         if (newFolder != prevFolder) {
