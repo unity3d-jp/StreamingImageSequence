@@ -19,12 +19,17 @@ It is designed with the following principles in mind:
 
 ## Features
 
-### [Playing Sequential Images](en/StreamingImageSequencePlayableAsset.md)
-![StreamingImageSequenceDemo](images/StreamingImageSequenceDemo.gif)
+1. #### [Playing Sequential Images](en/StreamingImageSequencePlayableAsset.md)
 
+   ![StreamingImageSequenceDemo](images/StreamingImageSequenceDemo.gif)
 
-### [Fading Image objects](en/FaderPlayableAsset.md)
-![FaderDemo](images/FaderDemo.gif)
+2. #### [Caching Render Results](en/RenderCachePlayableAsset.md)
+
+   ![RenderCacheDemo](images/RenderCacheDemo.gif)
+
+3. #### [Fading Image objects](en/FaderPlayableAsset.md)
+
+   ![FaderDemo](images/FaderDemo.gif)
 
 ## Memory
 

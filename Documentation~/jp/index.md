@@ -18,12 +18,17 @@ Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Time
 
 ## 機能
 
-### [一連の画像を再生する](StreamingImageSequencePlayableAsset.md)
-![StreamingImageSequenceDemo](../images/StreamingImageSequenceDemo.gif)
+1. #### [一連の画像を生成する](StreamingImageSequencePlayableAsset.md)
 
+   ![StreamingImageSequenceDemo](../images/StreamingImageSequenceDemo.gif)
 
-### [Image オブジェクトをフェードさせる](FaderPlayableAsset.md)
-![FaderDemo](../images/FaderDemo.gif)
+2. #### [描画の結果のキャッシュを生成する](RenderCachePlayableAsset.md)
+
+   ![RenderCacheDemo](../images/RenderCacheDemo.gif)
+
+3. #### [Image オブジェクトをフェードさせる](FaderPlayableAsset.md)
+
+   ![FaderDemo](../images/FaderDemo.gif)
 
 ## メモリ
 

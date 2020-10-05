@@ -47,11 +47,17 @@ differ based on the version of Unity.
 
 ## Features
 
-### [Playing Sequential Images](./Documentation~/en/StreamingImageSequencePlayableAsset.md)
-![StreamingImageSequenceDemo](Documentation~/images/StreamingImageSequenceDemo.gif)
+1. #### [Playing Sequential Images](./Documentation~/en/StreamingImageSequencePlayableAsset.md)
 
-### [Fading Image objects](./Documentation~/en/FaderPlayableAsset.md)
-![FaderDemo](Documentation~/images/FaderDemo.gif)
+   ![StreamingImageSequenceDemo](Documentation~/images/StreamingImageSequenceDemo.gif)
+
+2. #### [Caching Render Results](./Documentation~/en/RenderCachePlayableAsset.md)
+
+   ![RenderCacheDemo](Documentation~/images/RenderCacheDemo.gif)
+
+3. #### [Fading Image objects](./Documentation~/en/FaderPlayableAsset.md)
+
+   ![FaderDemo](Documentation~/images/FaderDemo.gif)
 
 ## Memory
 
