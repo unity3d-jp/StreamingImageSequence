@@ -53,7 +53,7 @@ From an empty scene, do the following:
   ![RenderCache_LockFrames](../images/RenderCache_LockFrames.png)
 
 * **Update Render Cache**  
-  To update the images by rendering and caching the results as images.
+  Rendering and cache the results as images.
 
 
 
