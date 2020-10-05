@@ -81,7 +81,7 @@ internal class EditorUtilityTest {
     internal static void ResizeSISTimelineClip(TimelineClip clip, double duration) {
             
 #if UNITY_EDITOR            
-        Undo.RegisterFullObjectHierarchyUndo(clip.parentTrack,"StreamingImageSequence: Set Duration");
+        Undo.RegisterCompleteObjectUndo(clip.parentTrack,"StreamingImageSequence: Set Duration");
 #endif            
         clip.duration = duration;
             
