@@ -8,7 +8,7 @@ decide what gets rendered into image files. Currently, StreamingImageSequence pr
 1. **CameraRenderCapturer** component.   
    Caches the render result of a Camera component.
 1. **BaseRenderCapturer** class.  
-   An extensible abstract class, which can be extended to customize the capturing process.
+   An extensible abstract class, which is used to customize the capturing process.
 
 
 
@@ -17,7 +17,7 @@ decide what gets rendered into image files. Currently, StreamingImageSequence pr
 
 From an empty scene, do the following:
 
-1. Create an animation in Timeline, for example: by referring to  
+1. Create an animation in Timeline, for example: by referring to
    [Creating Keyframed Animation in Timeline](https://learn.unity.com/tutorial/creating-keyframed-animation-in-timeline) tutorial.
 
 1. Open the Timeline window and add a **RenderCacheTrack**.
@@ -53,7 +53,7 @@ From an empty scene, do the following:
   ![RenderCache_LockFrames](../images/RenderCache_LockFrames.png)
 
 * **Update Render Cache**  
-  Rendering and cache the results as images.
+  Render and cache the results as images.
 
 
 
