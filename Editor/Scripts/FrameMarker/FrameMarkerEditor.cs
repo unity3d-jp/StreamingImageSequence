@@ -15,8 +15,10 @@ class FrameMarkerEditor : MarkerEditor {
         if (null == marker)
             return;
 
-
         SISPlayableFrame playableFrame = marker.GetOwner();
+        if (null == playableFrame)
+            return;
+        
         TimelineClipSISData timelineClipSISData = playableFrame.GetOwner();
         PlayableFramePropertyID inspectedPropertyID = timelineClipSISData.GetInspectedProperty();
         switch (inspectedPropertyID) {
