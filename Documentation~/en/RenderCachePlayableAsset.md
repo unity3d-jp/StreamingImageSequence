@@ -52,8 +52,8 @@ Right clicking on a FrameMarker will bring up a popup menu.
 * **Duplicate**: unused
 * **Delete**: unused
 * **Lock and Edit**  
-  Lock the frame and open the image using the assigned [image application](https://docs.unity3d.com/Manual/Preferences.html#External-Tools).
-  The default shortcut is Alt + E and can be configured via the [ShortCuts Manager](https://docs.unity3d.com/Manual/UnityHotkeys.html).  
+  Lock the frame and open the image using the assigned [image application](https://docs.unity3d.com/Manual/Preferences.html#External-Tools).  
+  The default shortcut is *Alt + E* and can be configured via the [ShortCuts Manager](https://docs.unity3d.com/Manual/UnityHotkeys.html).  
 
 Refer to [FrameMarkers](FrameMarkers.md) for more details. 
 
