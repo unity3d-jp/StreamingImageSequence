@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.4.0-preview] - 2020-10-06
+
+* feat: add RenderCache and RenderCapturer, which work together to cache render results to image files. Currently provides:
+  ** CameraRenderCapturer: to cache the render results of a Camera component.
+  ** BaseRenderCapturer: an extensible class that a user can use to customize the capturing process.
+* feat: lock frames via FrameMarkers when capturing RenderCache to prevent them from being overwritten
+* feat: skipping frames when caching render results if specified by the FrameMarkers
+* feat: add a shortcut for locking and edit a frame of RenderCachePlayableAsset using the assigned image application.
+* feat: auto hide/show FrameMarkers when the TimelineWindow is zoomed out/in
+* feat: add user notes in FrameMarkers
+* feat: check if we should reload the folder of StreamingImageSequencePlayableAsset or RenderCachePlayableAsset when the Editor Application is back in focus
+* fix: check if an image file exists before queuing to load it 
+* fix: import images directly for StramingImageSequencePlayableAsset when the source folder is already under StreamingAssets 
+* fix: prevent the internal texture from being destroyed when TimelineEditor is refreshed
+* fix: time rounding errors when calculating the image index of StreamingImageSequencePlayableAsset
+* fix: compile error in Unity 2020.2 
+* fix: open internals to com.unity.visual-compositor package
+* refactor: rename UseImageMarkers to FrameMarkers 
+* chore: change the plugin library name from Loader to StreamingImageSequence
+* chore: use com.unity.anime-toolbox@0.2.0-preview 
+* chore: change namespace to be exactly the same with the assembly name
+* doc: update about package installation in the Readme files on Github.
+* doc: add package badge
+* doc: add RenderCache and FrameMarker documentations
+* doc: update StreamingImageSequencePlayableAsset's doc
+
+## [0.3.3-preview] - 2020-09-08
+* fix: disable renderer component when showing/hiding gameObject instead of enabling/disabling
+* fix: fix errors when displaying small number of images in the import window
+
 ## [0.3.2-preview] - 2020-08-13
 * fix: fix memory allocation blocking on Mac
 
