@@ -71,10 +71,12 @@ Refer to [FrameMarkers](FrameMarkers.md) for more details.
 * **Images**  
   The images inside the folder. 
   Can be reordered by dragging the image file name up/down.
-* **Reset Curve**.  
-  Reset the curve timing in the PlayableAsset to be linear.
 * **Show FrameMarkers**.  
   Show/hide the [FrameMarker](FrameMarkers.md) of each frame.
+  * **Reset**  
+    Reset edits to FrameMarkers.
+* **Reset Curve**.  
+  Reset the curve timing in the PlayableAsset to be linear.
 
 
 
