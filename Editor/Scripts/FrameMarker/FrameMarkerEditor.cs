@@ -15,8 +15,11 @@ class FrameMarkerEditor : MarkerEditor {
         if (null == marker)
             return;
 
-
         SISPlayableFrame playableFrame = marker.GetOwner();
+        //Check invalid PlayableFrame. Perhaps because of unsupported Duplicate operation ?
+        if (null == playableFrame)
+            return;
+        
         TimelineClipSISData timelineClipSISData = playableFrame.GetOwner();
         PlayableFramePropertyID inspectedPropertyID = timelineClipSISData.GetInspectedProperty();
         switch (inspectedPropertyID) {
