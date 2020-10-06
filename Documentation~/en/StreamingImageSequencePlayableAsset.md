@@ -40,7 +40,7 @@ and the renderer component of the *Image* object will be played/enabled/disabled
 as we play the Timeline or drag the time slider of the Timeline window.
 
 
-For other ways for importing images, see [ImportingImages](ImportingImages.md)
+For other ways for importing images, see [ImportingImages](ImportingImages.md).
 
 
 # Curve

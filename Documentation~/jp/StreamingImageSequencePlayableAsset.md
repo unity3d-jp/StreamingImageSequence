@@ -40,7 +40,8 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 *Image* オブジェクトの *Renderer* コンポネントが再生、有効化、または無効化されます。
 
 
-画像をインポートするこの他の方法は、[ImportingImages](ImportingImages.md) をご覧ください。
+画像をインポートする他の方法については、
+[画像をインポート](ImportingImages.md) を参照してください。
 
 
 # 曲線
