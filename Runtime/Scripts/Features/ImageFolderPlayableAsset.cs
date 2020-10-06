@@ -142,7 +142,7 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
 
         List<WatchedFileInfo> newImageFiles  = FindImages(m_folder);
         int                   numNewImages   = newImageFiles.Count;
-        int                   numPrevImages  = m_imageFiles.Count;
+        int                   numPrevImages  = GetNumImages();
         bool                  changed        = false;
 
         //Check if we need to unload prev images, and detect change
