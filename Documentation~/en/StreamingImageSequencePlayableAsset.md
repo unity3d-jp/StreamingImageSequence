@@ -27,11 +27,12 @@ From an empty scene, do the following:
  
    ![DragAndDropFolder](../images/DragAndDropFolder.png)
    
-1. Create an *Image* object by clicking the menu: GameObject -> UI -> Image
+1. Create an *Image* object by clicking the menu: GameObject > UI > Image
 
-1. Drag and drop the *Image* object to the object property of the **StreamingImageSequenceTrack**, and click *Create StreamingImageSequenceNativeRenderer on Image* 
+1. Drag and drop the *Image* object to the object property of the **StreamingImageSequenceTrack**, 
+   and click *Create StreamingImageSequenceRenderer on Image* 
 
-   ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceNativeRenderer.png)
+   ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceRenderer.png)
 
 
 The image sequences in the folder will then be shown inside the *Image* object, 
@@ -51,10 +52,14 @@ opening the curve section, right clicking on the curve to add keys, and moving t
 
 # FrameMarker
 
-Each frame has a [FrameMarkers](FrameMarkers.md), 
-which can be used to skip the image assigned to that particular frame, and show the last used image instead.
+Each frame has a [FrameMarker](FrameMarkers.md), 
+which can be used to skip the image assigned to that particular frame, 
+and show the last used image instead.
 
 ![FrameMarker](../images/StreamingImageSequence_FrameMarker.png)
+
+Refer to [FrameMarkers](FrameMarkers.md) for more details. 
+
 
 # Inspector
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)

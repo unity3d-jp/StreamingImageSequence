@@ -27,16 +27,17 @@
  
    ![DragAndDropFolder](../images/DragAndDropFolder.png)
    
-1. メニューを GameObject -> UI -> Image の順にクリックして *Image* オブジェクトを作成してください。
+1. メニューを GameObject > UI > Image の順にクリックして *Image* オブジェクトを作成してください。
 
-1. 作成した *Image* オブジェクトを、**StreamingImageSequenceTrack** のオブジェクトプロパティーにドラッグアンドドロップし「*Create StreamingImageSequenceNativeRenderer on Image*」をクリックしてください。
+1. 作成した *Image* オブジェクトを、**StreamingImageSequenceTrack** のオブジェクトプロパティーにドラッグアンドドロップし
+   *Create StreamingImageSequenceRenderer on Image* をクリックしてください。
 
-   ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceNativeRenderer.png)
+   ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceRenderer.png)
 
 
 フォルダー内の画像シーケンスが *Image* オブジェクトの中に表示されます。
 Timeline を再生したり、Timeline ウィンドウのタイムスライダーをドラッグすると、
-*Image* オブジェクトの *Renderer* コンポネントが再生／有効化／無効化されます。
+*Image* オブジェクトの *Renderer* コンポネントが再生、有効化、または無効化されます。
 
 
 画像をインポートするこの他の方法は、[ImportingImages](ImportingImages.md) をご覧ください。
@@ -50,13 +51,15 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 
 ![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
 
-# UseImageMarker
+# フレームマーカー
 
 すべてのフレームが [フレームマーカー](FrameMarkers.md) を持っています。
 これは特定のフレームに割り当てられた画像をスキップし、
 そのフレームの直前に使われた画像を代わりに表示するために使います。
 
 ![FrameMarker](../images/StreamingImageSequence_FrameMarker.png)
+
+詳細に関しては[フレームマーカー](FrameMarkers.md)を参照してください。
 
 # インスペクター
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)
