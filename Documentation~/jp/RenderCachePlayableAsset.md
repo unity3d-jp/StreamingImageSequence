@@ -49,10 +49,10 @@ RenderCapturer は実際のキャプチャと画像ファイルへの描画を�
 ![FrameMarker](../images/RenderCache_FrameMarker.png)
 
 フレームマーカーを右クリックしたら、ポップアップメニューが開かれます。
-* **Copy**：未使用
-* **Paste**：未使用
-* **Duplicate**：未使用
-* **Delete**：未使用
+* **Copy**：無効
+* **Paste**：無効
+* **Duplicate**：無効
+* **Delete**：無効
 * **Lock and Edit**  
   フレームをロックし、アサインされた [image application](https://docs.unity3d.com/ja/current/Manual/Preferences.html#External-Tools) でフレームを開きます。  
   デフォルトのショートカットは *Alt + E* で、[ShortCuts Manager](https://docs.unity3d.com/ja/current/Manual/UnityHotkeys.html)
