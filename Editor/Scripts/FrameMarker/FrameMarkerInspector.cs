@@ -43,6 +43,7 @@ internal class FrameMarkerInspector: UnityEditor.Editor {
             int numSelectedAssets = m_assets.Length;
             Assert.IsTrue(numSelectedAssets > 1);
             SISPlayableFrame firstPlayableFrame = m_assets[0].GetOwner();
+            //Check invalid PlayableFrame. Perhaps because of unsupported Duplicate operation ?
             if (null == firstPlayableFrame) {
                 return;
             }
