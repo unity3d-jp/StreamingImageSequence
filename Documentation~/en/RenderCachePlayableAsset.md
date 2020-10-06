@@ -38,6 +38,26 @@ From an empty scene, do the following:
 
 1. Select the **RenderCachePlayableAsset** and click *Update Render Cache* in the inspector.
 
+# FrameMarker
+
+Each frame has a [FrameMarker](FrameMarkers.md), 
+which can be used to skip capturing the image for that particular frame, 
+and to lock the frame in order to prevent it from being overwritten.
+
+![FrameMarker](../images/RenderCache_FrameMarker.png)
+
+Right clicking on a FrameMarker will bring up a popup menu.
+* **Copy**: unused
+* **Paste**: unused
+* **Duplicate**: unused
+* **Delete**: unused
+* **Lock and Edit**  
+  Lock the frame and open the image using the assigned [image application](https://docs.unity3d.com/Manual/Preferences.html#External-Tools).  
+  The default shortcut is *Alt + E* and can be configured via the [ShortCuts Manager](https://docs.unity3d.com/Manual/UnityHotkeys.html).  
+
+Refer to [FrameMarkers](FrameMarkers.md) for more details. 
+
+
 # Inspector
 
 ![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)

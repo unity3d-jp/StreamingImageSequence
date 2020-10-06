@@ -39,6 +39,27 @@ RenderCapturer は実際のキャプチャと画像ファイルへの描画を�
 
 1. **RenderCachePlayableAsset** を選択し、Inspector 上に *Update Render Cache* をクリックする。
 
+
+# フレームマーカー
+
+すべてのフレームが [フレームマーカー](FrameMarkers.md) を持っています。
+これは特定のフレームのキャプチャをスキップする、
+あるいは画像ファイルが上書きされないようにフレームをロックするために使います。
+
+![FrameMarker](../images/RenderCache_FrameMarker.png)
+
+フレームマーカーを右クリックしたら、ポップアップメニューが開かれます。
+* **Copy**：無効
+* **Paste**：無効
+* **Duplicate**：無効
+* **Delete**：無効
+* **Lock and Edit**  
+  フレームをロックし、アサインされた [image application](https://docs.unity3d.com/ja/current/Manual/Preferences.html#External-Tools) でフレームを開きます。  
+  デフォルトのショートカットは *Alt + E* で、[ShortCuts Manager](https://docs.unity3d.com/ja/current/Manual/UnityHotkeys.html)
+  で変更できます。
+
+詳細に関しては[フレームマーカー](FrameMarkers.md)を参照してください。
+
 # インスペクター
 
 ![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)
