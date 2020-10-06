@@ -28,8 +28,10 @@ RenderCapturer は実際のキャプチャと画像ファイルへの描画を�
 1. **RenderCacheTrack** 上に右クリックし、*Add Render Cache Playable Asset* をクリックす。
  
    ![AddRenderCachePlayableAsset](../images/AddRenderCachePlayableAsset.png)
-   
-1. GameObject を作成し、**CameraRenderCapturer** コンポネントを追加する。
+
+1. **RenderCachePlayableAsset** の長さをアニメーションと同じように調整する。
+
+1. *GameObject* を作成し、*CameraRenderCapturer* コンポネントを追加する。
 
 1. 追加した **RenderCacheTrack** のオブジェクトプロパティに GameObject をドラッグアンドドロップする。
 
@@ -41,7 +43,7 @@ RenderCapturer は実際のキャプチャと画像ファイルへの描画を�
 
 ![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)
 
-* **Resolution**   
+* **Resolution**（読み取り専用）  
   出力される画像の解像度。このプロパティを変更するために、Game ウィンドウのサイズを変更します。
 * **Cache Output folder**  
   描画の結果のキャッシュを保存するための場所。

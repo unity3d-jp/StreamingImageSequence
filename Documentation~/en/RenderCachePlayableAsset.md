@@ -27,8 +27,10 @@ From an empty scene, do the following:
 1. Right click on the **RenderCacheTrack** and click *Add Render Cache Playable Asset*
  
    ![AddRenderCachePlayableAsset](../images/AddRenderCachePlayableAsset.png)
-   
-1. Create a GameObject and add **CameraRenderCapturer** component.
+
+1. Adjust the length of the **RenderCachePlayableAsset** according to the length of the animation.
+
+1. Create a *GameObject* and add *CameraRenderCapturer* component.
 
 1. Drag and drop the GameObject to the object property of the **RenderCacheTrack**.
 
@@ -40,7 +42,7 @@ From an empty scene, do the following:
 
 ![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)
 
-* **Resolution**   
+* **Resolution** (Read Only)  
   The resolution of the output images. Modify the size of the Game window to change this property.
 * **Cache Output folder**  
   Where the cached render results are stored.
@@ -55,8 +57,5 @@ From an empty scene, do the following:
 
 * **Update Render Cache**  
   Render and cache the results as images.
-
-
-
 
 
