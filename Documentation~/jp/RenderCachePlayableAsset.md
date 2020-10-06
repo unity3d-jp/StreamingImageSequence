@@ -43,7 +43,7 @@ RenderCapturer は実際のキャプチャと画像ファイルへの描画を�
 
 ![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)
 
-* **Resolution**   
+* **Resolution**（読み取り専用）  
   出力される画像の解像度。このプロパティを変更するために、Game ウィンドウのサイズを変更します。
 * **Cache Output folder**  
   描画の結果のキャッシュを保存するための場所。
