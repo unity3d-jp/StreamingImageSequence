@@ -1,7 +1,7 @@
 ﻿Shader "StreamingImageSequence/TransparentBGColor" {
     Properties {
         _MainTex ("Texture", 2D) = "white" {}
-		_BGColor ( "Color", Color) = (0, 0, 0, 1)
+        _BGColor ( "Color", Color) = (0, 0, 0, 1)
     }
     
     SubShader {
