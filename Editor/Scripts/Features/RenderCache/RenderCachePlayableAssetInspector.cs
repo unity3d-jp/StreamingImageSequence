@@ -276,6 +276,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         Shader blitShader = AssetDatabase.LoadAssetAtPath<Shader>(SISEditorConstants.TRANSPARENT_BG_COLOR_SHADER_PATH);            
         Material blitMaterial = new Material(blitShader);
         blitMaterial.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
+        blitMaterial.SetColor(m_bgColorProperty, Color.blue);
         blitter.SetBlitMaterial(blitMaterial);
         
         return blitterGO;
@@ -384,15 +385,14 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         director.time = time;
         TimelineEditor.Refresh(RefreshReason.SceneNeedsUpdate); 
     }        
-    
 
 //----------------------------------------------------------------------------------------------------------------------
 
     
-    private RenderCachePlayableAsset m_asset = null;
-    private static bool m_lockMode = false;
-    private static TimelineClipSISData m_inspectedSISDataForLocking = null;
-
+    private                 RenderCachePlayableAsset m_asset                      = null;
+    private static          bool                     m_lockMode                   = false;
+    private static          TimelineClipSISData      m_inspectedSISDataForLocking = null;
+    private static readonly int                      m_bgColorProperty            = Shader.PropertyToID("_BGColor");
 }
 
 }
