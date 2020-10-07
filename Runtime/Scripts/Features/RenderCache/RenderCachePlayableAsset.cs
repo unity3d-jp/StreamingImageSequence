@@ -66,6 +66,10 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
 
     internal void SetTimelineBGColor(Color color) { m_timelineBGColor = color; }
     internal Color GetTimelineBGColor() { return m_timelineBGColor; }
+
+
+    internal void  SetGameViewBGColor(Color color) { m_gameViewBGColor = color; }
+    internal Color GetGameViewBGColor()            { return m_gameViewBGColor; }
     
 //----------------------------------------------------------------------------------------------------------------------
     
@@ -76,6 +80,7 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
     
 //----------------------------------------------------------------------------------------------------------------------
     
+    [HideInInspector][SerializeField] private Color m_gameViewBGColor = Color.black;
     [HideInInspector][SerializeField] private Color m_timelineBGColor = Color.gray;
     
     [HideInInspector][SerializeField] private int m_version = CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION;
