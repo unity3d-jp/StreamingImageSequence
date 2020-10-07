@@ -3,7 +3,6 @@ using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
-using Unity.StreamingImageSequence;
 
 namespace Unity.StreamingImageSequence.Editor {
 
@@ -49,6 +48,8 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
         RenderCachePlayableAsset curAsset = clip.asset as RenderCachePlayableAsset;
         if (null == curAsset)
             return;
+        
+        DrawBackground(rect, curAsset.GetTimelineBGColor());
 
         int numImages =curAsset.GetNumImages();        
         if (numImages <= 0) {
@@ -81,6 +82,12 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
                 
         }        
     }
+//----------------------------------------------------------------------------------------------------------------------
+    void DrawBackground(Rect rect, Color color) {
+        Texture2D bgTexture      = GetOrCreateBGTexture();
+        bgTexture.SetPixelsWithColor(color);
+        Graphics.DrawTexture(rect, bgTexture);
+    }
 
 //----------------------------------------------------------------------------------------------------------------------    
     
@@ -103,6 +110,18 @@ internal class RenderCachePlayableAssetEditor : ClipEditor {
     }
     
 //----------------------------------------------------------------------------------------------------------------------
+
+    Texture2D GetOrCreateBGTexture() {
+        if (null != m_bgTexture)
+            return m_bgTexture;
+        
+        m_bgTexture           = new Texture2D(1,1, TextureFormat.ARGB32,false);
+        m_bgTexture.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
+        return m_bgTexture;
+    }
+//----------------------------------------------------------------------------------------------------------------------
+    
+    private static Texture2D m_bgTexture         = null;
 
 }
 
