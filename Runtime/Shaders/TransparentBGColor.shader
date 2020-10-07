@@ -1,6 +1,7 @@
 ﻿Shader "StreamingImageSequence/TransparentBGColor" {
     Properties {
         _MainTex ("Texture", 2D) = "white" {}
+		_BGColor ( "Color", Color) = (0, 0, 0, 1)
     }
     
     SubShader {
@@ -24,8 +25,12 @@
                 float4 vertex : SV_POSITION;
             };
 
+//----------------------------------------------------------------------------------------------------------------------            
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            float4 _BGColor;
+            
+//----------------------------------------------------------------------------------------------------------------------            
 
             v2f vert (appdata v) {
                 v2f o;
@@ -36,8 +41,8 @@
 
             fixed4 frag (v2f i) : SV_Target {
                 fixed4 col = tex2D(_MainTex, i.uv);
-                fixed alpha = col.a;
-                return fixed4(alpha,alpha,alpha,1);
+                fixed3 result = lerp(_BGColor.rgb, col.rgb, col.a);                
+                return fixed4(result.rgb,1);
             }
             ENDCG
         }
