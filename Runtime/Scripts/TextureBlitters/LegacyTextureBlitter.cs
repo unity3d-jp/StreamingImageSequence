@@ -1,18 +1,26 @@
 ﻿
+using UnityEditor;
 using UnityEngine;
 
 namespace Unity.StreamingImageSequence {
 
 [ExecuteAlways]
 [RequireComponent(typeof(Camera))]
-internal class LegacyTextureBlitter : MonoBehaviour {  
+internal class LegacyTextureBlitter : MonoBehaviour {
+    private Material m_renderCacheGameViewMat;
+    
     
     void Awake() {
         m_camera = GetComponent<Camera>();
         
         //Render nothing
         m_camera.clearFlags  = CameraClearFlags.Depth;
-        m_camera.cullingMask = 0;   
+        m_camera.cullingMask = 0;
+
+        m_renderCacheGameViewMat =
+            AssetDatabase.LoadAssetAtPath<Material>(
+                "Packages/com.unity.streaming-image-sequence/Editor/Materials/RenderCacheGameViewBGMat.mat");
+        
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
@@ -21,7 +29,7 @@ internal class LegacyTextureBlitter : MonoBehaviour {
         if (null == m_texture) 
             return;
 
-        Graphics.Blit(m_texture, destination);
+        Graphics.Blit(m_texture, destination, m_renderCacheGameViewMat);
     }    
 
 //----------------------------------------------------------------------------------------------------------------------    
