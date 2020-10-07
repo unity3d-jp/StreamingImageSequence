@@ -62,10 +62,10 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal void SetImageFiles(List<WatchedFileInfo> imageFiles) {
-        m_imageFiles = imageFiles;
-    }
+    internal void SetImageFiles(List<WatchedFileInfo> imageFiles) { m_imageFiles = imageFiles; }
 
+    internal void SetTimelineBGColor(Color color) { m_timelineBGColor = color; }
+    internal Color GetTimelineBGColor() { return m_timelineBGColor; }
     
 //----------------------------------------------------------------------------------------------------------------------
     
@@ -76,9 +76,9 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
     
 //----------------------------------------------------------------------------------------------------------------------
     
-#pragma warning disable 414
+    [HideInInspector][SerializeField] private Color m_timelineBGColor = Color.gray;
+    
     [HideInInspector][SerializeField] private int m_version = CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION;
-#pragma warning restore 414
     private const int CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION = (int) RenderCachePlayableAssetVersion.WATCHED_FILE_1_0;
     
 #if UNITY_EDITOR
