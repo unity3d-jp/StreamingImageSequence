@@ -170,13 +170,8 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             yield return beginCapture.Current;
         }
 
-        Texture capturerTex = renderCapturer.GetInternalTexture();
-               
-        //Show progress in game view
-        GameObject progressGo = new GameObject("Blitter");
-        LegacyTextureBlitter blitter = progressGo.AddComponent<LegacyTextureBlitter>();
-        blitter.SetTexture(capturerTex);
-        blitter.SetCameraDepth(int.MaxValue);
+        Texture capturerTex = renderCapturer.GetInternalTexture();                      
+        GameObject blitterGO  = CreateBlitter(capturerTex); //Show progress in game view
 
         TimelineClip timelineClip = timelineClipSISData.GetOwner();
         double timePerFrame = 1.0f / track.timelineAsset.editorSettings.fps;
@@ -260,13 +255,24 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         //Cleanup
         EditorUtility.ClearProgressBar();
         renderCapturer.EndCapture();
-        ObjectUtility.Destroy(progressGo);
+        ObjectUtility.Destroy(blitterGO);
         
         AssetDatabase.Refresh();
         
         yield return null;
 
     }
+
+    
+//----------------------------------------------------------------------------------------------------------------------
+
+    private static GameObject CreateBlitter(Texture texToBlit) {
+        GameObject           blitterGO = new GameObject("Blitter");
+        LegacyTextureBlitter blitter   = blitterGO.AddComponent<LegacyTextureBlitter>();
+        blitter.SetTexture(texToBlit);
+        blitter.SetCameraDepth(int.MaxValue);
+        return blitterGO;
+    } 
     
     
 //----------------------------------------------------------------------------------------------------------------------
