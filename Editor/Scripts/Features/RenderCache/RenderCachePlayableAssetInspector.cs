@@ -271,6 +271,13 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         LegacyTextureBlitter blitter   = blitterGO.AddComponent<LegacyTextureBlitter>();
         blitter.SetTexture(texToBlit);
         blitter.SetCameraDepth(int.MaxValue);
+
+        //Setup blitMaterial
+        Shader blitShader = AssetDatabase.LoadAssetAtPath<Shader>(SISEditorConstants.TRANSPARENT_BG_COLOR_SHADER_PATH);            
+        Material blitMaterial = new Material(blitShader);
+        blitMaterial.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
+        blitter.SetBlitMaterial(blitMaterial);
+        
         return blitterGO;
     } 
     
