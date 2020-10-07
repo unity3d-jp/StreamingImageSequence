@@ -101,12 +101,16 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_UPDATE_RENDER_CACHE);            
         
         GUILayout.Space(15);
-        using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
-            Color timelineBgColor = m_asset.GetTimelineBGColor(); 
+        using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {            
+            Color updateBGColor = m_asset.GetUpdateBGColor();
+            Color timelineBgColor = m_asset.GetTimelineBGColor();
+            m_asset.SetUpdateBGColor(EditorGUILayout.ColorField("Update Background Color", updateBGColor));
             m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("Timeline Background Color", timelineBgColor));
         }
 
         GUILayout.Space(15);
+        
+        
         if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {
             
             PlayableDirector director = TimelineEditor.inspectedDirector;
@@ -170,13 +174,9 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             yield return beginCapture.Current;
         }
 
-        Texture capturerTex = renderCapturer.GetInternalTexture();
-               
         //Show progress in game view
-        GameObject progressGo = new GameObject("Blitter");
-        LegacyTextureBlitter blitter = progressGo.AddComponent<LegacyTextureBlitter>();
-        blitter.SetTexture(capturerTex);
-        blitter.SetCameraDepth(int.MaxValue);
+        Texture capturerTex = renderCapturer.GetInternalTexture();        
+        GameObject blitterGO  = CreateBlitter(capturerTex, renderCachePlayableAsset.GetUpdateBGColor()); 
 
         TimelineClip timelineClip = timelineClipSISData.GetOwner();
         double timePerFrame = 1.0f / track.timelineAsset.editorSettings.fps;
@@ -260,13 +260,32 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         //Cleanup
         EditorUtility.ClearProgressBar();
         renderCapturer.EndCapture();
-        ObjectUtility.Destroy(progressGo);
+        ObjectUtility.Destroy(blitterGO);
         
         AssetDatabase.Refresh();
         
         yield return null;
 
     }
+
+    
+//----------------------------------------------------------------------------------------------------------------------
+
+    private static GameObject CreateBlitter(Texture texToBlit, Color bgColor) {
+        GameObject           blitterGO = new GameObject("Blitter");
+        LegacyTextureBlitter blitter   = blitterGO.AddComponent<LegacyTextureBlitter>();
+        blitter.SetTexture(texToBlit);
+        blitter.SetCameraDepth(int.MaxValue);
+
+        //Setup blitMaterial
+        Shader blitShader = AssetDatabase.LoadAssetAtPath<Shader>(SISEditorConstants.TRANSPARENT_BG_COLOR_SHADER_PATH);            
+        Material blitMaterial = new Material(blitShader);
+        blitMaterial.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
+        blitMaterial.SetColor(m_bgColorProperty, bgColor);
+        blitter.SetBlitMaterial(blitMaterial);
+        
+        return blitterGO;
+    } 
     
     
 //----------------------------------------------------------------------------------------------------------------------
@@ -371,15 +390,14 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         director.time = time;
         TimelineEditor.Refresh(RefreshReason.SceneNeedsUpdate); 
     }        
-    
 
 //----------------------------------------------------------------------------------------------------------------------
 
     
-    private RenderCachePlayableAsset m_asset = null;
-    private static bool m_lockMode = false;
-    private static TimelineClipSISData m_inspectedSISDataForLocking = null;
-
+    private                 RenderCachePlayableAsset m_asset                      = null;
+    private static          bool                     m_lockMode                   = false;
+    private static          TimelineClipSISData      m_inspectedSISDataForLocking = null;
+    private static readonly int                      m_bgColorProperty            = Shader.PropertyToID("_BGColor");
 }
 
 }
