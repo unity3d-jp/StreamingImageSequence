@@ -101,6 +101,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_UPDATE_RENDER_CACHE);            
         
         GUILayout.Space(15);
+        m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("Timeline Background Color", m_asset.GetTimelineBGColor()));
         if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {
             
             PlayableDirector director = TimelineEditor.inspectedDirector;
