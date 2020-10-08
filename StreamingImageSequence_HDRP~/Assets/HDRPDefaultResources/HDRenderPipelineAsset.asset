@@ -151,9 +151,10 @@ MonoBehaviour:
   m_RenderPipelineResources: {fileID: 11400000, guid: 3ce144cff5783da45aa5d4fdc2da14b7,
     type: 2}
   m_RenderPipelineRayTracingResources: {fileID: 0}
-  m_DefaultVolumeProfile: {fileID: 11400000, guid: f940a8037e6cda542891dc1aac1fa4e8,
+  m_DefaultVolumeProfile: {fileID: 11400000, guid: 604e70aaab18eeb49a19a2b826303c87,
     type: 2}
-  m_DefaultLookDevProfile: {fileID: 0}
+  m_DefaultLookDevProfile: {fileID: 11400000, guid: 254c4fe87beb7be4fa72e1681edbed02,
+    type: 2}
   m_RenderingPathDefaultCameraFrameSettings:
     bitDatas:
       data1: 70297877217101
@@ -346,6 +347,12 @@ MonoBehaviour:
   diffusionProfileSettingsList:
   - {fileID: 11400000, guid: 156a6ae11261a1944b4e5d22880253f2, type: 2}
   - {fileID: 11400000, guid: 6cfd57c5e329c264fab33dc3e013fc64, type: 2}
-  beforeTransparentCustomPostProcesses: []
-  beforePostProcessCustomPostProcesses: []
-  afterPostProcessCustomPostProcesses: []
+  beforeTransparentCustomPostProcesses:
+  - Pencil_4.HDRP.PencilLine, PSoft.Pencil-Line.Runtime, Version=0.0.0.0, Culture=neutral,
+    PublicKeyToken=null
+  beforePostProcessCustomPostProcesses:
+  - Pencil_4.HDRP.PencilLine_BeforePostProcess, PSoft.Pencil-Line.Runtime, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
+  afterPostProcessCustomPostProcesses:
+  - Pencil_4.HDRP.PencilLine_AfterPostProcess, PSoft.Pencil-Line.Runtime, Version=0.0.0.0,
+    Culture=neutral, PublicKeyToken=null
