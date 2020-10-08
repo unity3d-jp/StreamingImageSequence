@@ -4326,7 +4326,7 @@ MonoBehaviour:
   - m_name: ShortSceneFootage_00005.png
     m_size: 78746
   m_version: 3
-  m_time: 0.75
+  m_time: 1
   m_timelineDefaultAsset: {fileID: 102900000, guid: 28ebc38bfdd481147934ea04bfc829bb,
     type: 3}
 --- !u!114 &2896927653460402434
@@ -4465,7 +4465,7 @@ MonoBehaviour:
   - m_name: ShortSceneFootage_00005.png
     m_size: 78746
   m_version: 3
-  m_time: 0
+  m_time: 0.0833333358168602
   m_timelineDefaultAsset: {fileID: 102900000, guid: 28ebc38bfdd481147934ea04bfc829bb,
     type: 3}
 --- !u!114 &3475972923081664493
