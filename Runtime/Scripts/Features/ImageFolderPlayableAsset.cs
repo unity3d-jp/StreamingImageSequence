@@ -13,7 +13,16 @@ namespace Unity.StreamingImageSequence {
 /// </summary>
 [System.Serializable]
 internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayableAsset {
-   
+    private void Awake() {
+        //Find the used folder in runtime. Unused in the editor        
+        const string EDITOR_STREAMING_ASSETS_PATH = "Assets/StreamingAssets/";  
+        if (!Application.isEditor && m_folder.StartsWith(EDITOR_STREAMING_ASSETS_PATH)) {
+            string relPath = m_folder.Substring(EDITOR_STREAMING_ASSETS_PATH.Length);
+            m_runtimeFolderUnderStreamingAssets =Path.Combine(Application.streamingAssetsPath, relPath); 
+        }
+        
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
 
     protected abstract void ReloadInternalV();
@@ -104,7 +113,12 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
 
         if (index < 0 || index >= m_imageFiles.Count)
             return null;
-        
+
+        //For runtime only
+        if (!string.IsNullOrEmpty(m_runtimeFolderUnderStreamingAssets)) {
+            return PathUtility.GetPath(m_runtimeFolderUnderStreamingAssets, m_imageFiles[index].GetName());
+        }
+                               
         return PathUtility.GetPath(m_folder, m_imageFiles[index].GetName());            
     }
 
@@ -230,9 +244,10 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     [HideInInspector][SerializeField] protected List<WatchedFileInfo> m_imageFiles = null; //store file names, not paths
 
 //----------------------------------------------------------------------------------------------------------------------    
-    private float m_dimensionRatio = 0;
-    private ImageDimensionInt m_resolution;        
-    
+    private float             m_dimensionRatio = 0;
+    private ImageDimensionInt m_resolution;
+    private string            m_runtimeFolderUnderStreamingAssets = null;
+
 }
 
 } //end namespace
