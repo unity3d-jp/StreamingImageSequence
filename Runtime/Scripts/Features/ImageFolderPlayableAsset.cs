@@ -114,19 +114,11 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         if (index < 0 || index >= m_imageFiles.Count)
             return null;
 
-#if !UNITY_EDITOR
-        const string EDITOR_STREAMING_ASSETS_PATH = "Assets/StreamingAssets/";  
-        if (m_folder.StartsWith(EDITOR_STREAMING_ASSETS_PATH)) {
-            string relPath = m_folder.Substring(EDITOR_STREAMING_ASSETS_PATH.Length);
-            string ret =Path.Combine(Application.streamingAssetsPath, relPath, m_imageFiles[index].GetName());
-            Debug.Log("Folder : " +m_folder);
-            Debug.Log("StrAsse: " +EDITOR_STREAMING_ASSETS_PATH);
-            Debug.Log("RelPath: " +relPath);
-            Debug.Log("Image Path: " + ret);
-            return ret;            
+        //For runtime only
+        if (!string.IsNullOrEmpty(m_runtimeStreamingAssetsFolder)) {
+            return PathUtility.GetPath(m_runtimeStreamingAssetsFolder, m_imageFiles[index].GetName());
         }
-#endif
-                       
+                               
         return PathUtility.GetPath(m_folder, m_imageFiles[index].GetName());            
     }
 
