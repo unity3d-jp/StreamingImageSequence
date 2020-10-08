@@ -64,8 +64,8 @@ Plugins~/Build/Src/**
 Plugins~/Build/Tests/**
 Plugins~/Build/*.build/*
 
-# Custom packages
-StreamingImageSequence~/Packages/com.unity.*/**
-!StreamingImageSequence~/Packages/com.unity.streaming-image-sequence/**
+# Custom embedded packages
+StreamingImageSequence*~/Packages/com.unity.*/**
+!StreamingImageSequence*~/Packages/com.unity.streaming-image-sequence/**
 
 
