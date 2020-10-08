@@ -15,6 +15,8 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 2
 --- !u!114 &-9150772167116543736
 MonoBehaviour:
@@ -772,211 +774,213 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37a40b7a45cc745d08253d44b20ff862, type: 3}
   m_Name: RenderCachePlayableAsset
   m_EditorClassIdentifier: 
-  m_folder: Assets/StreamingAssets/RenderCacheScene
+  m_folder: C:/Users/sin/G/unity3d-jp/StreamingImageSequence/StreamingImageSequence_HDRP~/Assets/StreamingAssets\RenderCachePlayableAsset
   m_imageFileNames: []
   m_imageFiles:
   - m_name: RenderCacheScene_000.png
-    m_size: 0
+    m_size: 418080
   - m_name: RenderCacheScene_001.png
-    m_size: 0
+    m_size: 427599
   - m_name: RenderCacheScene_002.png
-    m_size: 0
+    m_size: 427871
   - m_name: RenderCacheScene_003.png
-    m_size: 0
+    m_size: 431095
   - m_name: RenderCacheScene_004.png
-    m_size: 0
+    m_size: 429652
   - m_name: RenderCacheScene_005.png
-    m_size: 0
+    m_size: 426878
   - m_name: RenderCacheScene_006.png
-    m_size: 0
+    m_size: 428426
   - m_name: RenderCacheScene_007.png
-    m_size: 0
+    m_size: 427986
   - m_name: RenderCacheScene_008.png
-    m_size: 0
+    m_size: 428129
   - m_name: RenderCacheScene_009.png
-    m_size: 0
+    m_size: 428392
   - m_name: RenderCacheScene_010.png
-    m_size: 0
+    m_size: 427891
   - m_name: RenderCacheScene_011.png
-    m_size: 0
+    m_size: 429413
   - m_name: RenderCacheScene_012.png
-    m_size: 0
+    m_size: 427106
   - m_name: RenderCacheScene_013.png
-    m_size: 0
+    m_size: 425657
   - m_name: RenderCacheScene_014.png
-    m_size: 0
+    m_size: 427161
   - m_name: RenderCacheScene_015.png
-    m_size: 0
+    m_size: 425071
   - m_name: RenderCacheScene_016.png
-    m_size: 0
+    m_size: 421904
   - m_name: RenderCacheScene_017.png
-    m_size: 0
+    m_size: 428373
   - m_name: RenderCacheScene_018.png
-    m_size: 0
+    m_size: 432789
   - m_name: RenderCacheScene_019.png
-    m_size: 0
+    m_size: 433006
   - m_name: RenderCacheScene_020.png
-    m_size: 0
+    m_size: 434933
   - m_name: RenderCacheScene_021.png
-    m_size: 0
+    m_size: 439602
   - m_name: RenderCacheScene_022.png
-    m_size: 0
+    m_size: 435739
   - m_name: RenderCacheScene_023.png
-    m_size: 0
+    m_size: 436200
   - m_name: RenderCacheScene_024.png
-    m_size: 0
+    m_size: 442438
   - m_name: RenderCacheScene_025.png
-    m_size: 0
+    m_size: 444464
   - m_name: RenderCacheScene_026.png
-    m_size: 0
+    m_size: 447288
   - m_name: RenderCacheScene_027.png
-    m_size: 0
+    m_size: 446992
   - m_name: RenderCacheScene_028.png
-    m_size: 0
+    m_size: 438684
   - m_name: RenderCacheScene_029.png
-    m_size: 0
+    m_size: 436636
   - m_name: RenderCacheScene_030.png
-    m_size: 0
+    m_size: 429316
   - m_name: RenderCacheScene_031.png
-    m_size: 0
+    m_size: 418645
   - m_name: RenderCacheScene_032.png
-    m_size: 0
+    m_size: 417151
   - m_name: RenderCacheScene_033.png
-    m_size: 0
+    m_size: 406204
   - m_name: RenderCacheScene_034.png
-    m_size: 0
+    m_size: 400410
   - m_name: RenderCacheScene_035.png
-    m_size: 0
+    m_size: 401699
   - m_name: RenderCacheScene_036.png
-    m_size: 0
+    m_size: 407441
   - m_name: RenderCacheScene_037.png
-    m_size: 0
+    m_size: 401140
   - m_name: RenderCacheScene_038.png
-    m_size: 0
+    m_size: 398776
   - m_name: RenderCacheScene_039.png
-    m_size: 0
+    m_size: 394427
   - m_name: RenderCacheScene_040.png
-    m_size: 0
+    m_size: 395444
   - m_name: RenderCacheScene_041.png
-    m_size: 0
+    m_size: 389097
   - m_name: RenderCacheScene_042.png
-    m_size: 0
+    m_size: 386761
   - m_name: RenderCacheScene_043.png
-    m_size: 0
+    m_size: 379365
   - m_name: RenderCacheScene_044.png
-    m_size: 0
+    m_size: 371182
   - m_name: RenderCacheScene_045.png
-    m_size: 0
+    m_size: 369809
   - m_name: RenderCacheScene_046.png
-    m_size: 0
+    m_size: 355957
   - m_name: RenderCacheScene_047.png
-    m_size: 0
+    m_size: 350689
   - m_name: RenderCacheScene_048.png
-    m_size: 0
+    m_size: 338908
   - m_name: RenderCacheScene_049.png
-    m_size: 0
+    m_size: 322568
   - m_name: RenderCacheScene_050.png
-    m_size: 0
+    m_size: 310890
   - m_name: RenderCacheScene_051.png
-    m_size: 0
+    m_size: 328913
   - m_name: RenderCacheScene_052.png
-    m_size: 0
+    m_size: 338034
   - m_name: RenderCacheScene_053.png
-    m_size: 0
+    m_size: 348732
   - m_name: RenderCacheScene_054.png
-    m_size: 0
+    m_size: 357410
   - m_name: RenderCacheScene_055.png
-    m_size: 0
+    m_size: 362852
   - m_name: RenderCacheScene_056.png
-    m_size: 0
+    m_size: 371138
   - m_name: RenderCacheScene_057.png
-    m_size: 0
+    m_size: 371974
   - m_name: RenderCacheScene_058.png
-    m_size: 0
+    m_size: 371235
   - m_name: RenderCacheScene_059.png
-    m_size: 0
+    m_size: 375500
   - m_name: RenderCacheScene_060.png
-    m_size: 0
+    m_size: 378821
   - m_name: RenderCacheScene_061.png
-    m_size: 0
+    m_size: 376915
   - m_name: RenderCacheScene_062.png
-    m_size: 0
+    m_size: 374335
   - m_name: RenderCacheScene_063.png
-    m_size: 0
+    m_size: 370531
   - m_name: RenderCacheScene_064.png
-    m_size: 0
+    m_size: 376066
   - m_name: RenderCacheScene_065.png
-    m_size: 0
+    m_size: 379020
   - m_name: RenderCacheScene_066.png
-    m_size: 0
+    m_size: 376058
   - m_name: RenderCacheScene_067.png
-    m_size: 0
+    m_size: 383981
   - m_name: RenderCacheScene_068.png
-    m_size: 0
+    m_size: 390143
   - m_name: RenderCacheScene_069.png
-    m_size: 0
+    m_size: 393921
   - m_name: RenderCacheScene_070.png
-    m_size: 0
+    m_size: 395074
   - m_name: RenderCacheScene_071.png
-    m_size: 0
+    m_size: 401558
   - m_name: RenderCacheScene_072.png
-    m_size: 0
+    m_size: 403616
   - m_name: RenderCacheScene_073.png
-    m_size: 0
+    m_size: 405729
   - m_name: RenderCacheScene_074.png
-    m_size: 0
+    m_size: 407800
   - m_name: RenderCacheScene_075.png
-    m_size: 0
+    m_size: 409411
   - m_name: RenderCacheScene_076.png
-    m_size: 0
+    m_size: 409820
   - m_name: RenderCacheScene_077.png
-    m_size: 0
+    m_size: 411412
   - m_name: RenderCacheScene_078.png
-    m_size: 0
+    m_size: 407287
   - m_name: RenderCacheScene_079.png
-    m_size: 0
+    m_size: 407741
   - m_name: RenderCacheScene_080.png
-    m_size: 0
+    m_size: 403815
   - m_name: RenderCacheScene_081.png
-    m_size: 0
+    m_size: 400776
   - m_name: RenderCacheScene_082.png
-    m_size: 0
+    m_size: 402944
   - m_name: RenderCacheScene_083.png
-    m_size: 0
+    m_size: 406545
   - m_name: RenderCacheScene_084.png
-    m_size: 0
+    m_size: 407848
   - m_name: RenderCacheScene_085.png
-    m_size: 0
+    m_size: 407130
   - m_name: RenderCacheScene_086.png
-    m_size: 0
+    m_size: 408600
   - m_name: RenderCacheScene_087.png
-    m_size: 0
+    m_size: 411648
   - m_name: RenderCacheScene_088.png
-    m_size: 0
+    m_size: 411883
   - m_name: RenderCacheScene_089.png
-    m_size: 0
+    m_size: 411954
   - m_name: RenderCacheScene_090.png
-    m_size: 0
+    m_size: 411187
   - m_name: RenderCacheScene_091.png
-    m_size: 0
+    m_size: 413332
   - m_name: RenderCacheScene_092.png
-    m_size: 0
+    m_size: 413703
   - m_name: RenderCacheScene_093.png
-    m_size: 0
+    m_size: 416140
   - m_name: RenderCacheScene_094.png
-    m_size: 0
+    m_size: 414636
   - m_name: RenderCacheScene_095.png
-    m_size: 0
+    m_size: 415164
   - m_name: RenderCacheScene_096.png
-    m_size: 0
+    m_size: 413584
   - m_name: RenderCacheScene_097.png
-    m_size: 0
+    m_size: 412501
   - m_name: RenderCacheScene_098.png
-    m_size: 0
+    m_size: 413270
   - m_name: RenderCacheScene_099.png
-    m_size: 0
+    m_size: 413215
   - m_name: RenderCacheScene_100.png
-    m_size: 0
+    m_size: 413237
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 2
 --- !u!114 &-3813218842542960322
 MonoBehaviour:
@@ -1990,6 +1994,8 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 2
 --- !u!114 &11400000
 MonoBehaviour:
@@ -2687,6 +2693,8 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 2
 --- !u!114 &814924354514096433
 MonoBehaviour:
@@ -2794,6 +2802,8 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 2
 --- !u!114 &2490837385828578220
 MonoBehaviour:
@@ -2940,6 +2950,8 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 2
 --- !u!114 &3929863448871390683
 MonoBehaviour:
@@ -3579,6 +3591,8 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 2
 --- !u!114 &7261814684699689166
 MonoBehaviour:
