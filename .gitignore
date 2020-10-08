@@ -22,12 +22,12 @@
 */Builds/**
 */obj/**
 
-StreamingImageSequence~/*.csproj
-StreamingImageSequence~/*.csproj.meta
-StreamingImageSequence~/*.sln
-StreamingImageSequence~/.idea/**
-StreamingImageSequence~.meta
-StreamingImageSequence~/Assets.meta
+StreamingImageSequence*~/*.csproj
+StreamingImageSequence*~/*.csproj.meta
+StreamingImageSequence*~/*.sln
+StreamingImageSequence*~/.idea/**
+StreamingImageSequence*~.meta
+StreamingImageSequence*~/Assets.meta
 */Logs/**
 */UIElementsSchema/**
 .vs/
