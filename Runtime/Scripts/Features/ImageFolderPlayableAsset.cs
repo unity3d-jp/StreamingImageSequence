@@ -18,7 +18,7 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         const string EDITOR_STREAMING_ASSETS_PATH = "Assets/StreamingAssets/";  
         if (!Application.isEditor && m_folder.StartsWith(EDITOR_STREAMING_ASSETS_PATH)) {
             string relPath = m_folder.Substring(EDITOR_STREAMING_ASSETS_PATH.Length);
-            m_runtimeStreamingAssetsFolder =Path.Combine(Application.streamingAssetsPath, relPath); 
+            m_runtimeFolderUnderStreamingAssets =Path.Combine(Application.streamingAssetsPath, relPath); 
         }
         
     }
@@ -115,8 +115,8 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
             return null;
 
         //For runtime only
-        if (!string.IsNullOrEmpty(m_runtimeStreamingAssetsFolder)) {
-            return PathUtility.GetPath(m_runtimeStreamingAssetsFolder, m_imageFiles[index].GetName());
+        if (!string.IsNullOrEmpty(m_runtimeFolderUnderStreamingAssets)) {
+            return PathUtility.GetPath(m_runtimeFolderUnderStreamingAssets, m_imageFiles[index].GetName());
         }
                                
         return PathUtility.GetPath(m_folder, m_imageFiles[index].GetName());            
@@ -246,7 +246,7 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
 //----------------------------------------------------------------------------------------------------------------------    
     private float             m_dimensionRatio = 0;
     private ImageDimensionInt m_resolution;
-    private string            m_runtimeStreamingAssetsFolder = null;
+    private string            m_runtimeFolderUnderStreamingAssets = null;
 
 }
 
