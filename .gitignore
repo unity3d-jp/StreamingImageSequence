@@ -22,12 +22,12 @@
 */Builds/**
 */obj/**
 
-StreamingImageSequence~/*.csproj
-StreamingImageSequence~/*.csproj.meta
-StreamingImageSequence~/*.sln
-StreamingImageSequence~/.idea/**
-StreamingImageSequence~.meta
-StreamingImageSequence~/Assets.meta
+StreamingImageSequence*~/*.csproj
+StreamingImageSequence*~/*.csproj.meta
+StreamingImageSequence*~/*.sln
+StreamingImageSequence*~/.idea/**
+StreamingImageSequence*~.meta
+StreamingImageSequence*~/Assets.meta
 */Logs/**
 */UIElementsSchema/**
 .vs/
@@ -64,8 +64,8 @@ Plugins~/Build/Src/**
 Plugins~/Build/Tests/**
 Plugins~/Build/*.build/*
 
-# Custom packages
-StreamingImageSequence~/Packages/com.unity.*/**
-!StreamingImageSequence~/Packages/com.unity.streaming-image-sequence/**
+# Custom embedded packages
+StreamingImageSequence*~/Packages/com.unity.*/**
+!StreamingImageSequence*~/Packages/com.unity.streaming-image-sequence/**
 
 
