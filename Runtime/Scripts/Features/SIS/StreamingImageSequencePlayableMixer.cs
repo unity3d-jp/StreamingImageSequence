@@ -196,7 +196,11 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
             } else  {                    
                mat = m_meshRenderer.sharedMaterial;
             }
+#if AT_USE_HDRP
+            mat.SetTexture(m_hdrpBaseColorMap,tex);
+#else
             mat.mainTexture = tex;
+#endif            
             
         }else if (null!= m_image) {
             Sprite sprite = m_image.sprite;
@@ -214,8 +218,10 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
     private Image           m_image = null;
     private StreamingImageSequenceRenderer m_sisRenderer = null;
 
+    private static readonly int m_hdrpBaseColorMap = Shader.PropertyToID("_BaseColorMap");
+    
 #if UNITY_EDITOR
-    SISPlayableMixerEditorUpdateTask m_editorUpdateTask;        
+    SISPlayableMixerEditorUpdateTask m_editorUpdateTask;
 #endif
 
 }
