@@ -3,7 +3,7 @@
 using System;
 using System.IO;
 using UnityEngine;
-using Unity.StreamingImageSequence;
+using UnityEditor;
 
 
 namespace Unity.StreamingImageSequence.Editor {
@@ -122,9 +122,16 @@ internal static class PreviewUtility {
                 break;
             case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
                 Texture2D tex = PreviewTextureFactory.GetOrCreate(imagePath, ref readResult);
-                if (null != tex) {
+                if (null == tex)
+                    return;
+
+                if (PlayerSettings.colorSpace == ColorSpace.Linear) {
+                    Material mat = GetOrCreateLinearToGammaMaterial();
+                    Graphics.DrawTexture(drawInfo.DrawRect, tex, mat);
+                } else {                    
                     Graphics.DrawTexture(drawInfo.DrawRect, tex);
                 }
+                
                 break;
             }
             default: {
@@ -135,7 +142,21 @@ internal static class PreviewUtility {
         }
         
     }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    static Material GetOrCreateLinearToGammaMaterial() {
+        if (null != m_linearToGammaMaterial)
+            return m_linearToGammaMaterial;
+        
+        Shader shader = AssetDatabase.LoadAssetAtPath<Shader>(SISEditorConstants.LINEAR_TO_GAMMA_SHADER_PATH);
+        m_linearToGammaMaterial = new Material(shader); 
+        m_linearToGammaMaterial.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
+        return m_linearToGammaMaterial;
+    }
 
+//----------------------------------------------------------------------------------------------------------------------
+    
+    private static Material m_linearToGammaMaterial = null;
 }
 
 } //end namespace
