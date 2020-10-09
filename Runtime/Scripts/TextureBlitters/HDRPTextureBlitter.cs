@@ -24,17 +24,17 @@ internal class HDRPTextureBlitter : MonoBehaviour {
 //----------------------------------------------------------------------------------------------------------------------
 
     private void OnEnable() {
-        UnityEngine.Rendering.RenderPipelineManager.endFrameRendering += BlitTexture;                
+        UnityEngine.Rendering.RenderPipelineManager.endFrameRendering += BlitEndFrame;                
     }
 
     private void OnDisable() {
-        UnityEngine.Rendering.RenderPipelineManager.endFrameRendering -= BlitTexture; 
+        UnityEngine.Rendering.RenderPipelineManager.endFrameRendering -= BlitEndFrame; 
         
     }
 
     
 //----------------------------------------------------------------------------------------------------------------------
-    void BlitTexture(UnityEngine.Rendering.ScriptableRenderContext context, Camera[] cams) {
+    void BlitEndFrame(UnityEngine.Rendering.ScriptableRenderContext context, Camera[] cams) {
         
         if (null == m_texture)
             return;
