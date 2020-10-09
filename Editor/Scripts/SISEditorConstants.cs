@@ -19,6 +19,7 @@ internal static class SISEditorConstants {
     internal const string SHORTCUT_UPDATE_RENDER_CACHE = "StreamingImageSequence/Update Render Cache";
     
     internal static readonly string TRANSPARENT_BG_COLOR_SHADER_PATH = Path.Combine(SHADERS_PATH, "TransparentBGColor.shader");
+    internal static readonly string LINEAR_TO_GAMMA_SHADER_PATH = Path.Combine(SHADERS_PATH, "LinearToGamma.shader");
     
         
 
