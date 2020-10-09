@@ -21,29 +21,36 @@ internal class HDRPTextureBlitter : MonoBehaviour {
         m_camera.cullingMask           = 0;
         m_hdData.fullscreenPassthrough = true;
     }
+//----------------------------------------------------------------------------------------------------------------------
 
     private void OnEnable() {
-        m_hdData.customRender                                          += BlitTexture;
+        UnityEngine.Rendering.RenderPipelineManager.endFrameRendering += BlitTexture;                
     }
-
-//----------------------------------------------------------------------------------------------------------------------
 
     private void OnDisable() {
-        m_hdData.customRender -= BlitTexture;
+        UnityEngine.Rendering.RenderPipelineManager.endFrameRendering -= BlitTexture; 
+        
     }
 
+    
 //----------------------------------------------------------------------------------------------------------------------
-    void BlitTexture(UnityEngine.Rendering.ScriptableRenderContext context, HDCamera cam) {
+    void BlitTexture(UnityEngine.Rendering.ScriptableRenderContext context, Camera[] cams) {
+        
         if (null == m_texture)
             return;
-
+        
+        foreach (Camera cam in cams) {
+            if (CameraType.Game != cam.cameraType)
+                return;            
+        }
+        
         if (null == m_blitMaterial) {
             Graphics.Blit(m_texture, (RenderTexture) null);
             return;
         }
         Graphics.Blit(m_texture, (RenderTexture) null, m_blitMaterial);
-    }
-
+        
+    }         
 
 //----------------------------------------------------------------------------------------------------------------------
 
