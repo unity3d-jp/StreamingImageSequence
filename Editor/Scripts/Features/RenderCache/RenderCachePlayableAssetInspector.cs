@@ -352,22 +352,15 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
     private void ValidateAssetFolder() {
 
         string folder = m_asset.GetFolder();
-        if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder))
+        if (!string.IsNullOrEmpty(folder) && Directory.Exists(folder)) {            
             return;
-
-        string assetName = string.IsNullOrEmpty(m_asset.name) ? "RenderCachePlayableAsset" : m_asset.name;
+        }
         
+        string assetName = string.IsNullOrEmpty(m_asset.name) ? "RenderCachePlayableAsset" : m_asset.name;               
         //Generate unique folder
         string baseFolder = Path.Combine(Application.streamingAssetsPath, assetName);
-        folder = baseFolder;
-        int index = 1;
-        while (Directory.Exists(folder)) {
-            folder = baseFolder + index.ToString();
-            ++index;
-        }
-                
-        Directory.CreateDirectory(folder);
-        m_asset.SetFolder(folder);
+        folder = PathUtility.GenerateUniqueFolder(baseFolder); 
+        m_asset.SetFolder(AssetUtility.NormalizeAssetPath(folder));
     }
     
 //----------------------------------------------------------------------------------------------------------------------
