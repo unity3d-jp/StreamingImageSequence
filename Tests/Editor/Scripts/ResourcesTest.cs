@@ -10,15 +10,19 @@ internal class ResourcesTest {
     
     [Test]
     public void VerifyShaders() {
-
-        string path = SISEditorConstants.TRANSPARENT_BG_COLOR_SHADER_PATH;
-        Assert.IsTrue(File.Exists(path));
-        Shader shader = AssetDatabase.LoadAssetAtPath<Shader>(path);
-        Assert.IsNotNull(shader);        
-
+        Assert.IsTrue(IsShaderValid(SISEditorConstants.TRANSPARENT_BG_COLOR_SHADER_PATH));
+        Assert.IsTrue(IsShaderValid(SISEditorConstants.LINEAR_TO_GAMMA_SHADER_PATH));
     }
-
-
+    
+//----------------------------------------------------------------------------------------------------------------------
+    private bool IsShaderValid(string path) {
+        if (!File.Exists(path)) {
+            return false;
+        }
+        
+        Shader shader = AssetDatabase.LoadAssetAtPath<Shader>(path);
+        return (null != shader);        
+    }
 }
 
 } //end namespace
