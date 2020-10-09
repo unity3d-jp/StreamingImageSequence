@@ -151,7 +151,7 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
      */       
 
     internal void Reload() {        
-        if (string.IsNullOrEmpty(m_folder))
+        if (string.IsNullOrEmpty(m_folder) || !Directory.Exists(m_folder))
             return;
 
         List<WatchedFileInfo> newImageFiles  = FindImages(m_folder);
