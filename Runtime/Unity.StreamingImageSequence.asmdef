@@ -26,6 +26,11 @@
             "name": "com.unity.pencil-line",
             "expression": "",
             "define": "AT_USE_PENCILLINE"
+        },
+        {
+            "name": "com.unity.render-pipelines.high-definition",
+            "expression": "",
+            "define": "AT_USE_HDRP"
         }
     ],
     "noEngineReferences": false
