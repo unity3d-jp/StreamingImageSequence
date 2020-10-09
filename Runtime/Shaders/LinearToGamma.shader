@@ -1,4 +1,4 @@
-﻿Shader "StreamingImageSequence/TransparentBGColor" {
+﻿Shader "StreamingImageSequence/LinearToGamma" {
     Properties {
         _MainTex ("Texture", 2D) = "white" {}
     }
@@ -6,7 +6,8 @@
     SubShader {
         Tags { "RenderType"="Opaque" }
         LOD 100
-
+        Blend SrcAlpha OneMinusSrcAlpha
+        
         Pass {
             CGPROGRAM
             #pragma vertex vert
@@ -38,7 +39,7 @@
             }
 
             fixed4 frag (v2f i) : SV_Target {
-                fixed4 col = tex2D(_MainTex, i.uv);
+                fixed4 col = tex2D(_MainTex, i.uv);                
                 col.rgb = LinearToGammaSpace(col.rgb);
                 return fixed4(col.rgba);
             }
