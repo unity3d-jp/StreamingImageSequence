@@ -276,6 +276,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 
 #if AT_USE_HDRP        
         HDRPTextureBlitter blitter = blitterGO.AddComponent<HDRPTextureBlitter>();
+        blitter.SetTargetCameraType(CameraType.Game);
 #else        
         LegacyTextureBlitter blitter = blitterGO.AddComponent<LegacyTextureBlitter>();
 #endif        

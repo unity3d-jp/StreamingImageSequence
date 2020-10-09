@@ -39,8 +39,9 @@ internal class HDRPTextureBlitter : MonoBehaviour {
         if (null == m_texture)
             return;
         
+        //only blit for specified camera type
         foreach (Camera cam in cams) {
-            if (CameraType.Game != cam.cameraType)
+            if (cam.cameraType != m_targetCameraType)
                 return;            
         }
         
@@ -54,22 +55,19 @@ internal class HDRPTextureBlitter : MonoBehaviour {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal void SetTexture(Texture tex) {
-        m_texture = tex;
-    }
+    internal void SetTexture(Texture tex) { m_texture = tex; }
 
-    internal void SetBlitMaterial(Material blitMat) {
-        m_blitMaterial = blitMat;
-    }
+    internal void SetBlitMaterial(Material blitMat) { m_blitMaterial = blitMat; }
 
-    internal void SetCameraDepth(int depth) {
-        m_camera.depth = depth;
-    }
+    internal void SetCameraDepth(int depth) { m_camera.depth = depth; }
+
+    internal void SetTargetCameraType(CameraType cameraType) { m_targetCameraType = cameraType; }
 
 //----------------------------------------------------------------------------------------------------------------------    
 
-    [SerializeField] private Texture  m_texture;
-    [SerializeField]         Material m_blitMaterial = null;
+    [SerializeField] private Texture    m_texture;
+    [SerializeField] private Material   m_blitMaterial     = null;
+    [SerializeField] private CameraType m_targetCameraType = CameraType.Game;
 
     private Camera                 m_camera;
     private HDAdditionalCameraData m_hdData;
