@@ -273,7 +273,12 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 
     private static GameObject CreateBlitter(Texture texToBlit, Color bgColor) {
         GameObject           blitterGO = new GameObject("Blitter");
-        LegacyTextureBlitter blitter   = blitterGO.AddComponent<LegacyTextureBlitter>();
+
+#if AT_USE_HDRP        
+        HDRPTextureBlitter blitter = blitterGO.AddComponent<HDRPTextureBlitter>();
+#else        
+        LegacyTextureBlitter blitter = blitterGO.AddComponent<LegacyTextureBlitter>();
+#endif        
         blitter.SetTexture(texToBlit);
         blitter.SetCameraDepth(int.MaxValue);
 
