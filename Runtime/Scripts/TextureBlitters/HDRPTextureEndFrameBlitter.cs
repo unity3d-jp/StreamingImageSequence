@@ -9,7 +9,7 @@ namespace Unity.StreamingImageSequence {
 [RequireComponent(typeof(Camera))]
 [RequireComponent(typeof(HDAdditionalCameraData))]
 
-internal class HDRPTextureBlitter : MonoBehaviour {
+internal class HDRPTextureEndFrameBlitter : MonoBehaviour {
 
 
     private void Awake() {
