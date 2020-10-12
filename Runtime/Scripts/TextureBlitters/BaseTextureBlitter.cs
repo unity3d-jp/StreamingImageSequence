@@ -20,7 +20,7 @@ internal abstract class BaseTextureBlitter : MonoBehaviour {
     
 //----------------------------------------------------------------------------------------------------------------------    
 
-    protected void BlitTexture(Texture source, RenderTexture destination) {
+    protected void BlitToDest(RenderTexture destination) {
         if (null == m_srcTexture) 
             return;
 

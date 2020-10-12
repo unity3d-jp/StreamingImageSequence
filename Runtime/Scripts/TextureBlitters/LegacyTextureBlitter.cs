@@ -11,7 +11,7 @@ internal class LegacyTextureBlitter : BaseTextureBlitter {
 //----------------------------------------------------------------------------------------------------------------------    
     
     void OnRenderImage(RenderTexture source, RenderTexture destination) {
-        BlitTexture(source, destination);
+        BlitToDest(destination);
     }    
     
 }
