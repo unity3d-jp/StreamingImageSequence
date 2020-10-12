@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Unity.StreamingImageSequence {
 
@@ -20,22 +21,22 @@ internal abstract class BaseTextureBlitter : MonoBehaviour {
 //----------------------------------------------------------------------------------------------------------------------    
 
     protected void BlitTexture(Texture source, RenderTexture destination) {
-        if (null == m_texture) 
+        if (null == m_srcTexture) 
             return;
 
         if (null == m_blitMaterial) {
-            Graphics.Blit(m_texture, destination);
+            Graphics.Blit(m_srcTexture, destination);
             return;
         }
         
-        Graphics.Blit(m_texture, destination, m_blitMaterial);
+        Graphics.Blit(m_srcTexture, destination, m_blitMaterial);
         
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
 
-    internal void SetTexture(Texture tex) { m_texture = tex; }
-    protected Texture GetTexture() { return m_texture; }
+    internal void SetSrcTexture(Texture tex) { m_srcTexture = tex; }
+    protected Texture GetSrcTexture() { return m_srcTexture; }
     
     internal void SetBlitMaterial(Material blitMat) { m_blitMaterial = blitMat; }
     internal void SetCameraDepth(int depth) { m_camera.depth = depth; }
@@ -44,7 +45,7 @@ internal abstract class BaseTextureBlitter : MonoBehaviour {
     
 //----------------------------------------------------------------------------------------------------------------------    
 
-    [SerializeField] private Texture  m_texture;    
+    [FormerlySerializedAs("m_texture")] [SerializeField] private Texture  m_srcTexture;    
     [SerializeField] Material m_blitMaterial = null;
     
     private Camera m_camera;

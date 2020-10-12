@@ -22,7 +22,7 @@ internal class URPTextureBlitter : BaseTextureBlitter {
 //----------------------------------------------------------------------------------------------------------------------    
     
     void OnEndCameraRendering(UnityEngine.Rendering.ScriptableRenderContext context, Camera cam) {
-        Texture tex = GetTexture();
+        Texture tex = GetSrcTexture();
         if (cam == GetCamera() && null != tex ) {
             BlitTexture(tex,(RenderTexture) null);
         }
