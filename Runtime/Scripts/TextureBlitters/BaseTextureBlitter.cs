@@ -19,7 +19,7 @@ internal abstract class BaseTextureBlitter : MonoBehaviour {
     
 //----------------------------------------------------------------------------------------------------------------------    
 
-    protected void BlitTexture(RenderTexture source, RenderTexture destination) {
+    protected void BlitTexture(Texture source, RenderTexture destination) {
         if (null == m_texture) 
             return;
 
@@ -35,8 +35,12 @@ internal abstract class BaseTextureBlitter : MonoBehaviour {
 //----------------------------------------------------------------------------------------------------------------------    
 
     internal void SetTexture(Texture tex) { m_texture = tex; }
+    protected Texture GetTexture() { return m_texture; }
+    
     internal void SetBlitMaterial(Material blitMat) { m_blitMaterial = blitMat; }
     internal void SetCameraDepth(int depth) { m_camera.depth = depth; }
+
+    protected Camera GetCamera() { return m_camera; }
     
 //----------------------------------------------------------------------------------------------------------------------    
 
