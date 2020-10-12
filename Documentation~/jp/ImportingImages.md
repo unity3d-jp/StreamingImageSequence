@@ -3,8 +3,8 @@
 画像を StreamingImageSequencePlayableAsset 内にインポートする方法はいくつかあります。
 
 1. [フォルダーをトラックにドラッグアンドドロップする](#フォルダーをトラックにドラッグアンドドロップする)
-1. [インスペクターでフォルダーを設定する](#setting-the-folder-via-inspector)
-1. [Adobe After Effects で StreamingImageSequence スクリプトを使用する](#using-streamingImageSequence-script-for-adobe-after-effects)
+1. [インスペクターでフォルダーを設定する](#インスペクターでフォルダーを設定する)
+1. [Adobe After Effects で StreamingImageSequence スクリプトを使用する](#adobe-after-effects-用の-streamingimagesequence-スクリプトを使用する)
 
 ## フォルダーをトラックにドラッグアンドドロップする
 
