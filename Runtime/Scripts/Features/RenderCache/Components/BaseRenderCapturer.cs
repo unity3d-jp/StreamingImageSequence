@@ -87,12 +87,20 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
     /// <returns>The last error message</returns>
     public string GetLastErrorMessage() { return m_errorMessage;}
 
+    /// <summary>
+    /// Set error message, which will be displayed if there is any error detected during the capturing process.
+    /// </summary>
+    /// <param name="err">The error message</param>
     protected void SetErrorMessage(string err) { m_errorMessage = err;}
 
 //----------------------------------------------------------------------------------------------------------------------    
 
     private string m_errorMessage;
-    protected  RenderTexture m_rt = null;
+    
+    /// <summary>
+    /// The internal RenderTexture which is used as a target in the capturing process.
+    /// </summary>
+    protected RenderTexture m_rt = null;
     
 }
 
