@@ -9,34 +9,30 @@ namespace Unity.StreamingImageSequence {
 [RequireComponent(typeof(Camera))]
 [RequireComponent(typeof(HDAdditionalCameraData))]
 
-internal class HDRPTextureEndFrameBlitter : MonoBehaviour {
+internal class HDRPTextureEndFrameBlitter : BaseTextureBlitter {
 
 
-    private void Awake() {
-        m_camera = GetComponent<Camera>();
-        m_hdData = GetComponent<HDAdditionalCameraData>();
-
-        //Render nothing
-        m_camera.clearFlags            = CameraClearFlags.Nothing;
-        m_camera.cullingMask           = 0;
+    protected override void AwakeInternalV() {
+        m_hdData                       = GetComponent<HDAdditionalCameraData>();
         m_hdData.fullscreenPassthrough = true;
+        
     }
 //----------------------------------------------------------------------------------------------------------------------
 
     private void OnEnable() {
-        UnityEngine.Rendering.RenderPipelineManager.endFrameRendering += BlitEndFrame;                
+        UnityEngine.Rendering.RenderPipelineManager.endFrameRendering += OnEndFrameRendering;                
     }
 
     private void OnDisable() {
-        UnityEngine.Rendering.RenderPipelineManager.endFrameRendering -= BlitEndFrame; 
+        UnityEngine.Rendering.RenderPipelineManager.endFrameRendering -= OnEndFrameRendering; 
         
     }
 
     
 //----------------------------------------------------------------------------------------------------------------------
-    void BlitEndFrame(UnityEngine.Rendering.ScriptableRenderContext context, Camera[] cams) {
+    void OnEndFrameRendering(UnityEngine.Rendering.ScriptableRenderContext context, Camera[] cams) {
         
-        if (null == m_texture)
+        if (null == GetSrcTexture())
             return;
         
         //only blit for specified camera type
@@ -45,31 +41,18 @@ internal class HDRPTextureEndFrameBlitter : MonoBehaviour {
                 return;            
         }
         
-        if (null == m_blitMaterial) {
-            Graphics.Blit(m_texture, (RenderTexture) null);
-            return;
-        }
-        Graphics.Blit(m_texture, (RenderTexture) null, m_blitMaterial);
+        BlitToDest(null);
         
     }         
 
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal void SetTexture(Texture tex) { m_texture = tex; }
-
-    internal void SetBlitMaterial(Material blitMat) { m_blitMaterial = blitMat; }
-
-    internal void SetCameraDepth(int depth) { m_camera.depth = depth; }
-
     internal void SetTargetCameraType(CameraType cameraType) { m_targetCameraType = cameraType; }
 
 //----------------------------------------------------------------------------------------------------------------------    
 
-    [SerializeField] private Texture    m_texture;
-    [SerializeField] private Material   m_blitMaterial     = null;
     [SerializeField] private CameraType m_targetCameraType = CameraType.Game;
 
-    private Camera                 m_camera;
     private HDAdditionalCameraData m_hdData;
 }
 
