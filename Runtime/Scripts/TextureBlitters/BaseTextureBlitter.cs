@@ -20,16 +20,16 @@ internal abstract class BaseTextureBlitter : MonoBehaviour {
     
 //----------------------------------------------------------------------------------------------------------------------    
 
-    protected void BlitTexture(Texture source, RenderTexture destination) {
-        if (null == m_srcTexture) 
+    protected static void BlitTexture(Texture source, RenderTexture destination, Material blitMat) {
+        if (null == source) 
             return;
 
-        if (null == m_blitMaterial) {
-            Graphics.Blit(m_srcTexture, destination);
+        if (null == blitMat) {
+            Graphics.Blit(source, destination);
             return;
         }
         
-        Graphics.Blit(m_srcTexture, destination, m_blitMaterial);
+        Graphics.Blit(source, destination, blitMat);
         
     }
 
