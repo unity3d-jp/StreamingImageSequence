@@ -68,4 +68,8 @@ Plugins~/Build/*.build/*
 StreamingImageSequence*~/Packages/com.unity.*/**
 !StreamingImageSequence*~/Packages/com.unity.streaming-image-sequence/**
 
+# Test RenderCache Images
+StreamingImageSequence*~/Assets/StreamingAssets/RenderCachePlayableAsset*
+StreamingImageSequence*~/Assets/StreamingAssets/RenderCacheScene*
+
 
