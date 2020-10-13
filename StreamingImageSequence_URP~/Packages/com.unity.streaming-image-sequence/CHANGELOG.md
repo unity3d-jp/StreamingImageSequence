@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.0-preview] - 2020-10-12
+* feat: set background color in the Game View when updating RenderCache 
+* feat: set the background color of RenderCachePlayableAsset clips in Timeline 
+* feat: add a texture blitter for URP and use it when updating RenderCache in URP projects
+* feat: show the updating of RenderCache in Game View for HDRP projects 
+* fix: add blending in LinearToGamma shader
+* fix: apply linear to gamma conversion for drawing preview textures if the project is using linear color space 
+* fix: RenderCachePlayable path errors when reloading, and show the path as a normalized path if possible 
+* fix: try to create the saved path of RenderCachePlayableAsset if it is invalid 
+* fix: set StreamingImageSequencePlayableAsset's texture properly for MeshRenderer in HDRP
+* fix: play sequential images in runtime builds 
+* doc: fix broken anchor links in the doc to import images, and add missing BaseRenderCapturer API docs
+
 ## [0.4.0-preview] - 2020-10-06
 
 * feat: add RenderCache and RenderCapturer, which work together to cache render results to image files. Currently provides:
