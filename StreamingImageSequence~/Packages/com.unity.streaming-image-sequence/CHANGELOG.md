@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.5.1-preview] - 2020-10-13
+
+* chore: update dependency to com.unity.anime-toolbox@0.2.1-preview
+
 ## [0.5.0-preview] - 2020-10-12
 * feat: set background color in the Game View when updating RenderCache 
 * feat: set the background color of RenderCachePlayableAsset clips in Timeline 
