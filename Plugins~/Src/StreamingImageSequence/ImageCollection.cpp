@@ -7,6 +7,10 @@
 //External
 #include "CommonLib/CommonLib.h" //IMAGE_CS
 #include "CommonLib/CriticalSectionController.h"
+
+//External/stb
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
+#define STBIR_DEFAULT_FILTER_DOWNSAMPLE  STBIR_FILTER_CATMULLROM
 #include "stb/stb_image_resize.h"
 
 
