@@ -8,10 +8,6 @@
 #include "CommonLib/CommonLib.h" //IMAGE_CS
 #include "CommonLib/CriticalSectionController.h"
 
-//External/stb
-#define STB_IMAGE_RESIZE_IMPLEMENTATION
-#define STBIR_DEFAULT_FILTER_DOWNSAMPLE  STBIR_FILTER_CATMULLROM
-#include "stb/stb_image_resize.h"
 
 
 namespace StreamingImageSequencePlugin {
@@ -115,6 +111,14 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 //----------------------------------------------------------------------------------------------------------------------
 
 
+//External/stb
+#define STB_IMAGE_RESIZE_IMPLEMENTATION
+#define STBIR_DEFAULT_FILTER_DOWNSAMPLE  STBIR_FILTER_CATMULLROM
+#define STBIR_MALLOC(size,c) ((void)(c), malloc(size))
+#define STBIR_FREE(ptr,c)    ((void)(c), free(ptr))
+
+#include "stb/stb_image_resize.h"
+
 bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame, const ImageData* src, 
                                            const uint32_t w, const uint32_t h)
 {
@@ -142,16 +146,24 @@ bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame,
     ASSERT(nullptr != src->RawData);
     ASSERT(READ_STATUS_SUCCESS == src->CurrentReadStatus);
 
-    stbir_resize_uint8(src->RawData, src->Width, src->Height, 0,
-        resizedImageData.RawData, w, h, 0, LoaderConstants::NUM_BYTES_PER_TEXEL);
+    //stbir_resize_uint8(src->RawData, src->Width, src->Height, 0,
+    //    resizedImageData.RawData, w, h, 0, LoaderConstants::NUM_BYTES_PER_TEXEL);
+
+    stbir__resize_arbitrary(&m_csType, src->RawData, src->Width, src->Height, 0,
+                            resizedImageData.RawData, w, h, 0,
+                            0,0,1,1,nullptr, LoaderConstants::NUM_BYTES_PER_TEXEL,-1,0, 
+                            STBIR_TYPE_UINT8, STBIR_FILTER_DEFAULT, STBIR_FILTER_DEFAULT,
+                            STBIR_EDGE_CLAMP, STBIR_EDGE_CLAMP, STBIR_COLORSPACE_LINEAR);
 
     //Register to map
     resizedImageData.CurrentReadStatus = READ_STATUS_SUCCESS;
     pathIt->second = resizedImageData;
 
     return true;
-
 }
+
+#undef STBIR_MALLOC
+#undef STBIR_FREE
 
 //----------------------------------------------------------------------------------------------------------------------
 
