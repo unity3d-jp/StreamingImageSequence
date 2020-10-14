@@ -38,3 +38,4 @@ target_link_libraries( StreamingImageSequence
 if(BUILD_UNIT_TESTS)
     target_compile_definitions(StreamingImageSequence PUBLIC MAX_IMAGE_MEMORY=104857600) # 100 MB limit
 endif()
+
