@@ -149,7 +149,7 @@ bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame,
     //stbir_resize_uint8(src->RawData, src->Width, src->Height, 0,
     //    resizedImageData.RawData, w, h, 0, LoaderConstants::NUM_BYTES_PER_TEXEL);
 
-    stbir__resize_arbitrary(&m_csType, src->RawData, src->Width, src->Height, 0,
+    stbir__resize_arbitrary(/*STBIR_MALLOC context = */ &m_csType, src->RawData, src->Width, src->Height, 0,
                             resizedImageData.RawData, w, h, 0,
                             0,0,1,1,nullptr, LoaderConstants::NUM_BYTES_PER_TEXEL,-1,0, 
                             STBIR_TYPE_UINT8, STBIR_FILTER_DEFAULT, STBIR_FILTER_DEFAULT,
