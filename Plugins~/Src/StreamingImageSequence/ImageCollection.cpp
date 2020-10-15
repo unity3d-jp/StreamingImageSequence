@@ -34,6 +34,21 @@ void* GetOrAllocateResizeBufferUnsafe(size_t memSize, void* context) {
     return g_resizeBuffer[imageType];   
 }
 
+//not thread safe
+inline void* AllocateImageRawData(size_t newSize) {
+    return g_memAllocator->Allocate(newSize);
+}
+
+//not thread safe
+inline void* ReallocateImageRawData(void* buffer, size_t newSize) {
+    return g_memAllocator->Reallocate(buffer, newSize, /*forceAllocate = */ true);
+}
+
+//not thread safe
+inline void FreeImageRawData(void* buffer) {
+    g_memAllocator->Deallocate(buffer);
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
 
@@ -428,6 +443,9 @@ bool ImageCollection::AllocateRawDataUnsafe(uint8_t** rawData,const uint32_t w,c
 }
 
 #define STB_IMAGE_IMPLEMENTATION
+#define STBI_MALLOC(sz)           AllocateImageRawData(sz)
+#define STBI_REALLOC(p,newsz)     ReallocateImageRawData(p,newsz)
+#define STBI_FREE(p)              FreeImageRawData(p)
 #include "stb/stb_image.h"
 
 bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* targetImageData) {
@@ -443,6 +461,11 @@ bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* t
     *targetImageData = ImageData(data, width, height, READ_STATUS_SUCCESS);
     return true;
 }
+
+#undef STBI_MALLOC
+#undef STBI_REALLOC
+#undef STBI_FREE
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
