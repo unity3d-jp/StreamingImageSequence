@@ -167,22 +167,18 @@ const ImageData* ImageCollection::LoadImage(const strType& imagePath) {
         pathIt = AddImageUnsafe(imagePath);
     }
 
+    //-----
     ImageData* imageData = &pathIt->second;
-    const bool isLoaded = LoadImageIntoUnsafe(imagePath, imageData);
-    if (!isLoaded)
-        return nullptr;
 
-    //Make sure we still satisfy the memory condition
+    bool isLoaded= false;
     bool unloadSuccessful = true;
-    while (m_memAllocator->IsMemoryOverflow() && unloadSuccessful) {
-        unloadSuccessful = UnloadUnusedImageUnsafe(imagePath);
+    while (!isLoaded&& unloadSuccessful) {
+        isLoaded = LoadImageIntoUnsafe(imagePath, imageData);
+        if (!isLoaded) {
+            unloadSuccessful = UnloadUnusedImageUnsafe(imagePath);
+        }
     }
 
-    //Still overflow ??
-    if (m_memAllocator->IsMemoryOverflow()) {
-        m_memAllocator->Deallocate(imageData);
-        return nullptr;
-    }
 
     return imageData;
 
