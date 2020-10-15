@@ -69,7 +69,16 @@ void* ImageMemoryAllocator::Reallocate(void* buffer, const size_t memSize, bool 
     if (nullptr == newBuffer)
         return nullptr;
 
+    //[TODO-sin: 2020-10-15] min macro conflicts with std::min in Windows.
+    //This can be avoided by defining NOMINMAX, but unfortunately the loader module in Windows is using GDI which requires
+    //the windows Macro.
+    //We are going to replace GDI with stb soon anyway, so for now, just use ifdef
+
+#ifdef _WIN32
+    std::memcpy(newBuffer, buffer, min(prevSize, memSize));
+#else
     std::memcpy(newBuffer, buffer, std::min(prevSize, memSize));
+#endif
     Deallocate(buffer);
     return newBuffer;
 }
