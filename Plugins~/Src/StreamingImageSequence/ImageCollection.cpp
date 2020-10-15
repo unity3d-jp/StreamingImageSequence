@@ -393,6 +393,23 @@ bool ImageCollection::AllocateRawDataUnsafe(uint8_t** rawData,const uint32_t w,c
     return isAllocated;
 }
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb/stb_image.h"
+
+bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* targetImageData) {
+
+
+    const uint32_t FORCED_NUM_COMPONENTS = 4;
+    int width, height, numComponents;
+    unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &numComponents, FORCED_NUM_COMPONENTS);
+    if (nullptr ==data) {
+        targetImageData->CurrentReadStatus = READ_STATUS_FAIL;
+        return false;
+    }
+
+    *targetImageData = ImageData(data, width, height, READ_STATUS_SUCCESS);
+    return true;
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 //returns true if one or more images are successfully unloaded
