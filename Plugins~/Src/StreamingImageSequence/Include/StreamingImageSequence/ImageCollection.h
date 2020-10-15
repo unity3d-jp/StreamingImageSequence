@@ -31,12 +31,13 @@ public:
 
     void SetImageStatus(const strType& imagePath, const ReadStatus status);
     bool UnloadImage(const strType& imagePath);
-    void UnloadAllImages();
+
 
     inline const std::unordered_map<strType, ImageData>& GetImageMap() const;
     inline size_t GetNumImages() const;
     inline int GetLatestRequestFrame() const;
 
+    void ResetAll();
     void ResetOrder();
 
 private:
@@ -47,6 +48,7 @@ private:
     void DeleteImageOrderUnsafe(std::unordered_map<strType, ImageData>::iterator);
     void MoveOrderStartPosToEndUnsafe();
     void UnloadAllImagesUnsafe();
+    void ResetOrderUnsafe();
 
     void UpdateRequestFrameUnsafe(const int frame);
 

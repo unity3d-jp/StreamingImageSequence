@@ -65,13 +65,7 @@ ImageCollection::ImageCollection()
 
 ImageCollection::~ImageCollection() {
 
-    m_memAllocator->Deallocate(g_resizeBuffer[m_csType]);
-    g_resizeBuffer[m_csType] = nullptr;
-    g_resizeBufferSize[m_csType] = 0;
-    g_memAllocator = nullptr;
-
-
-    UnloadAllImagesUnsafe();
+    ResetAll();
 }
 
 
@@ -287,20 +281,24 @@ bool ImageCollection::UnloadImage(const strType& imagePath) {
 //----------------------------------------------------------------------------------------------------------------------
 
 //Thread-safe
-void ImageCollection::UnloadAllImages() {
+void ImageCollection::ResetAll() {
     CriticalSectionController cs(IMAGE_CS(m_csType));
     UnloadAllImagesUnsafe();
+    ResetOrderUnsafe();
+
+    m_memAllocator->Deallocate(g_resizeBuffer[m_csType]);
+    g_resizeBuffer[m_csType] = nullptr;
+    g_resizeBufferSize[m_csType] = 0;
+    g_memAllocator = nullptr;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
+
 //Thread-safe
 void ImageCollection::ResetOrder() {
     CriticalSectionController cs(IMAGE_CS(m_csType));
-
-    m_curOrderStartPos = m_orderedImageList.begin();
-    m_updateOrderStartPos = false;
-    m_latestRequestFrame = 0;
+    ResetOrderUnsafe();
 }
 
 
@@ -400,6 +398,12 @@ void ImageCollection::UnloadAllImagesUnsafe() {
         m_memAllocator->Deallocate(imageData);
     }
     m_pathToImageMap.clear();
+}
+
+void ImageCollection::ResetOrderUnsafe() {
+    m_curOrderStartPos = m_orderedImageList.begin();
+    m_updateOrderStartPos = false;
+    m_latestRequestFrame = 0;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -17,8 +17,7 @@ ImageCatalog::ImageCatalog() {
 //Thread-safe
 void ImageCatalog::Reset() {
     for (uint32_t imageType = 0; imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES; ++imageType) {
-        m_imageCollection[imageType].UnloadAllImages();
-        m_imageCollection[imageType].ResetOrder();
+        m_imageCollection[imageType].ResetAll();
     }
 }
 
