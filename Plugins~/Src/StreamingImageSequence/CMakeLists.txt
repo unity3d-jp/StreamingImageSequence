@@ -31,7 +31,6 @@ target_include_directories(StreamingImageSequence PRIVATE
 # Library dependencies
 target_link_libraries( StreamingImageSequence 
     CommonLib
-    stb
     ${CORE_GRAPHICS_LIBRARY}
 )
 
