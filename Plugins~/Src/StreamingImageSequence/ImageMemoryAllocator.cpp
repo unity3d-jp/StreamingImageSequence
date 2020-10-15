@@ -68,7 +68,7 @@ void ImageMemoryAllocator::Deallocate(ImageData* imageData) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-bool ImageMemoryAllocator::IsMemoryAllocable(const uint32_t memSize) {
+bool ImageMemoryAllocator::IsMemoryAllocable(const uint32_t memSize) const {
     if (m_maxMemory != UNLIMITED_MEMORY && (m_usedMemory + memSize) > m_maxMemory)
         return false;
 
@@ -81,8 +81,9 @@ bool ImageMemoryAllocator::IsMemoryAllocable(const uint32_t memSize) {
 
 #else
     const float MIN_AVAILABLE_RAM_RATIO = 0.1f;
-    const float availableRAMRatio = MemoryUtility::GetAvailableRAM() * m_inverseTotalRAM;
-    if (availableRAMRatio <= MIN_AVAILABLE_RAM_RATIO)
+    const float availableRAMAfterAllocateRatio  = (MemoryUtility::GetAvailableRAM() - memSize) * m_inverseTotalRAM;
+                                      
+    if ((availableRAMAfterAllocateRatio) <= MIN_AVAILABLE_RAM_RATIO)
         return false;
 #endif
 
