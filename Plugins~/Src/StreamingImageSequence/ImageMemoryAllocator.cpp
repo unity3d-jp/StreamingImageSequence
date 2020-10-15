@@ -45,8 +45,9 @@ bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, con
 }
 
 //return nullptr if not successful
-void* ImageMemoryAllocator::Allocate(const size_t memSize) {
-    if (!IsMemoryAllocable(memSize))
+void* ImageMemoryAllocator::Allocate(const size_t memSize, bool forceAllocate) {
+    //only check with the internal memory condition if forceAllocate is false
+    if (!forceAllocate && !IsMemoryAllocable(memSize))
         return nullptr;
 
     return AllocateInternal(memSize);
