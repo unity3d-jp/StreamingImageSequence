@@ -46,6 +46,7 @@ bool TestUtility::LoadAndUnloadTestFullImage() {
         return false;
 
     UnloadImage(filePath);
+    return true;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
