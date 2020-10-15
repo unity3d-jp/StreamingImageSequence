@@ -76,10 +76,6 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
     if (nullptr == imageData)
         return nullptr;
 
-    const FileType fileType = LoaderUtility::CheckFileType(imagePath);
-    if (FILE_TYPE_INVALID == fileType)
-        return nullptr;
-
     imageData = imageCatalog->LoadImage(imagePath, imageType);
     return imageData;
 }
