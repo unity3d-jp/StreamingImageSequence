@@ -14,7 +14,7 @@ void* g_resizeBuffer[MAX_CRITICAL_SECTION_TYPE_IMAGES] = { nullptr };
 size_t g_resizeBufferSize[MAX_CRITICAL_SECTION_TYPE_IMAGES];
 
 //[TODO-sin: 2020-10-15] This is a hack. Change to a singleton
-ImageMemoryAllocator* g_memAllocator[MAX_CRITICAL_SECTION_TYPE_IMAGES] = { nullptr };
+ImageMemoryAllocator* g_memAllocator = nullptr;
 
 //Not thread safe
 void* GetOrAllocateResizeBufferUnsafe(size_t memSize, void* context) {
@@ -25,7 +25,7 @@ void* GetOrAllocateResizeBufferUnsafe(size_t memSize, void* context) {
         return g_resizeBuffer[imageType];
     }
 
-    void* newResizeBuffer = g_memAllocator[imageType]->Reallocate(g_resizeBuffer[imageType], memSize, /*forceAllocate=*/ true);
+    void* newResizeBuffer = g_memAllocator->Reallocate(g_resizeBuffer[imageType], memSize, /*forceAllocate=*/ true);
     if (nullptr != newResizeBuffer) {
         g_resizeBuffer[imageType] = newResizeBuffer;
         g_resizeBufferSize[imageType] = memSize;
@@ -53,7 +53,7 @@ ImageCollection::~ImageCollection() {
     m_memAllocator->Deallocate(g_resizeBuffer[m_csType]);
     g_resizeBuffer[m_csType] = nullptr;
     g_resizeBufferSize[m_csType] = 0;
-    g_memAllocator[m_csType] = nullptr;
+    g_memAllocator = nullptr;
 
 
     UnloadAllImagesUnsafe();
@@ -69,7 +69,7 @@ void ImageCollection::Init(CriticalSectionType csType, ImageMemoryAllocator* mem
     if (nullptr==g_resizeBuffer[m_csType]) {
         g_resizeBufferSize[m_csType] = 1;
         g_resizeBuffer[m_csType] = m_memAllocator->Allocate(g_resizeBufferSize[m_csType]);
-        g_memAllocator[m_csType] = memAllocator;
+        g_memAllocator = memAllocator;
     }
 }
 
