@@ -146,6 +146,40 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
     return imageData;
 }
 
+const ImageData* ImageCollection::LoadImage(const strType& imagePath) {
+    CriticalSectionController cs(IMAGE_CS(m_csType));
+
+    std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
+
+    //Unload existing memory if it exists
+    if (m_pathToImageMap.end() != pathIt) {
+        m_memAllocator->Deallocate(&(pathIt->second));
+    }  else {
+        pathIt = AddImageUnsafe(imagePath);
+    }
+
+    ImageData* imageData = &pathIt->second;
+    const bool isLoaded = LoadImageIntoUnsafe(imagePath, imageData);
+    if (!isLoaded)
+        return nullptr;
+
+    //Make sure we still satisfy the memory condition
+    bool unloadSuccessful = true;
+    while (m_memAllocator->IsMemoryOverflow() && unloadSuccessful) {
+        unloadSuccessful = UnloadUnusedImageUnsafe(imagePath);
+    }
+
+    //Still overflow ??
+    if (m_memAllocator->IsMemoryOverflow()) {
+        m_memAllocator->Deallocate(imageData);
+        return nullptr;
+    }
+
+    return imageData;
+
+}
+
+
 //----------------------------------------------------------------------------------------------------------------------
 
 
@@ -397,7 +431,6 @@ bool ImageCollection::AllocateRawDataUnsafe(uint8_t** rawData,const uint32_t w,c
 #include "stb/stb_image.h"
 
 bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* targetImageData) {
-
 
     const uint32_t FORCED_NUM_COMPONENTS = 4;
     int width, height, numComponents;

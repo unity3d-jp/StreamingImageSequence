@@ -24,6 +24,7 @@ public:
     const ImageData* GetImage(const strType& imagePath, const int frame);
 
     const ImageData* AllocateImage(const strType& imagePath, const uint32_t w, const uint32_t h);
+    const ImageData* LoadImage(const strType& imagePath);
 
     const ImageData* AddImage(const strType& imagePath, const int frame);
     bool AddImageFromSrc(const strType& imagePath, const int frame, const ImageData* src, const uint32_t w, const uint32_t h);
