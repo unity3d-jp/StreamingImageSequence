@@ -66,7 +66,7 @@ void ImageCollection::Init(CriticalSectionType csType, ImageMemoryAllocator* mem
     m_memAllocator = memAllocator;
 
     //Allocate global resize buffer for this csType (imageType)
-    if (nullptr!=g_resizeBuffer[m_csType]) {
+    if (nullptr==g_resizeBuffer[m_csType]) {
         g_resizeBufferSize[m_csType] = 1;
         g_resizeBuffer[m_csType] = m_memAllocator->Allocate(g_resizeBufferSize[m_csType]);
         g_memAllocator[m_csType] = memAllocator;
