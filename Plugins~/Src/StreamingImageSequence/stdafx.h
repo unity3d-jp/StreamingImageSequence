@@ -10,8 +10,7 @@
 
 // Windows Header Files:
 #include <windows.h>
-
-
+#undef LoadImage //Avoid using LoadImage macro in Windows header file
 
 #endif // _WIN32
 
