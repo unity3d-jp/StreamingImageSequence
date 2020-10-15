@@ -20,6 +20,9 @@ public:
     //return nullptr if not successful
     void* Allocate(const size_t memSize, bool forceAllocate = false);
 
+    //Reallocate a previously allocated memory with a new size
+    void* Reallocate(void* buffer, const size_t memSize, bool forceAllocate = false);
+
     bool Deallocate(ImageData* imageData);
     bool Deallocate(void* buffer);
 

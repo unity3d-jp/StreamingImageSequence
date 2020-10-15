@@ -53,6 +53,26 @@ void* ImageMemoryAllocator::Allocate(const size_t memSize, bool forceAllocate) {
     return AllocateInternal(memSize);
 }
 
+void* ImageMemoryAllocator::Reallocate(void* buffer, const size_t memSize, bool forceAllocate) {
+
+    if (nullptr == buffer) {
+        return nullptr;
+    }
+    const auto allocatedBuffer = m_allocatedBuffers.find(buffer);
+    if (m_allocatedBuffers.end() == allocatedBuffer ) {
+        return nullptr;
+    }
+
+    const size_t prevSize = allocatedBuffer->second;
+
+    void* newBuffer = Allocate(memSize, forceAllocate);
+    if (nullptr == newBuffer)
+        return nullptr;
+
+    std::memcpy(newBuffer, buffer, min(prevSize, memSize));
+    Deallocate(buffer);
+    return newBuffer;
+}
 //----------------------------------------------------------------------------------------------------------------------
 
 bool ImageMemoryAllocator::Deallocate(ImageData* imageData) {
