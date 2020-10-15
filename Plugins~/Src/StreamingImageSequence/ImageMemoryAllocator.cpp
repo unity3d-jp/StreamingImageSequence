@@ -56,7 +56,7 @@ void* ImageMemoryAllocator::Allocate(const size_t memSize, bool forceAllocate) {
 void* ImageMemoryAllocator::Reallocate(void* buffer, const size_t memSize, bool forceAllocate) {
 
     if (nullptr == buffer) {
-        return nullptr;
+        return Allocate(memSize, forceAllocate);
     }
     const auto allocatedBuffer = m_allocatedBuffers.find(buffer);
     if (m_allocatedBuffers.end() == allocatedBuffer ) {
