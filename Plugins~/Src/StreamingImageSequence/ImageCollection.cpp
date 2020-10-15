@@ -289,7 +289,6 @@ void ImageCollection::ResetAll() {
     m_memAllocator->Deallocate(g_resizeBuffer[m_csType]);
     g_resizeBuffer[m_csType] = nullptr;
     g_resizeBufferSize[m_csType] = 0;
-    g_memAllocator = nullptr;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
