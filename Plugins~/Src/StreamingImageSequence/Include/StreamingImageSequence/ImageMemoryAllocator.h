@@ -22,6 +22,9 @@ public:
     ImageMemoryAllocator();
     ~ImageMemoryAllocator();
 private:
+
+    bool IsMemoryAllocable(const uint32_t memSize);
+
     void IncUsedMem(const uint64_t mem);
     void DecUsedMem(const uint64_t mem);
     static uint32_t CalculateMemSize(const uint32_t w, const uint32_t h);

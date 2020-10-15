@@ -33,22 +33,8 @@ bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, con
     //Allocate
     const uint32_t dataSize = CalculateMemSize(w, h);
 
-    if (m_maxMemory != UNLIMITED_MEMORY && (m_usedMemory + dataSize) > m_maxMemory)
+    if (!IsMemoryAllocable(dataSize))
         return false;
-
-#if OSX
-    //Mac (10.9+) compresses inactive memory automatically to free memory to be used by other application, and therefore
-    //we can't directly use the amount of free RAM returned by the OS (the value is often near zero).
-    //For now, we simply check if the number of used memory has exceeded the total RAM.
-    if (m_usedMemory + dataSize > m_totalRAM)
-        return false;
-
-#else
-    const float MIN_AVAILABLE_RAM_RATIO = 0.1f;
-    const float availableRAMRatio = MemoryUtility::GetAvailableRAM() * m_inverseTotalRAM;
-    if (availableRAMRatio <= MIN_AVAILABLE_RAM_RATIO)
-        return false;
-#endif
 
     uint8_t*  buffer = static_cast<uint8_t*>(malloc(dataSize));
     if (nullptr == buffer) {
@@ -79,6 +65,28 @@ void ImageMemoryAllocator::Deallocate(ImageData* imageData) {
     free(imageData->RawData);
     *imageData = ImageData(nullptr, 0, 0, READ_STATUS_IDLE);
 
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+bool ImageMemoryAllocator::IsMemoryAllocable(const uint32_t memSize) {
+    if (m_maxMemory != UNLIMITED_MEMORY && (m_usedMemory + memSize) > m_maxMemory)
+        return false;
+
+#if OSX
+    //Mac (10.9+) compresses inactive memory automatically to free memory to be used by other application, and therefore
+    //we can't directly use the amount of free RAM returned by the OS (the value is often near zero).
+    //For now, we simply check if the number of used memory has exceeded the total RAM.
+    if (m_usedMemory + memSize > m_totalRAM)
+        return false;
+
+#else
+    const float MIN_AVAILABLE_RAM_RATIO = 0.1f;
+    const float availableRAMRatio = MemoryUtility::GetAvailableRAM() * m_inverseTotalRAM;
+    if (availableRAMRatio <= MIN_AVAILABLE_RAM_RATIO)
+        return false;
+#endif
+
+    return true;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
