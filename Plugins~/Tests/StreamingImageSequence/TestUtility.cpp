@@ -105,7 +105,12 @@ uint32_t TestUtility::CleanupAndLoadMaxImages(const uint32_t imageType) {
 
     const uint64_t reqMemForOneImage = imageCatalog.GetUsedMemory();
     ASSERT(reqMemForOneImage >  0);
-    const uint32_t maxImages = static_cast<uint32_t>(std::floor( static_cast<float>(MAX_IMAGE_MEMORY) / reqMemForOneImage));
+    uint32_t maxImages = static_cast<uint32_t>(std::floor( static_cast<float>(MAX_IMAGE_MEMORY) / reqMemForOneImage));
+    if ( maxImages > 0) {
+        //when loading, the size of one image is needed as a temporary buffer, in addition to the actual image itself
+        maxImages -= 1; 
+    }
+    ASSERT(maxImages > 0);
     ASSERT(maxImages < NUM_TEST_IMAGES);
 
     //Load the remaining images to fill memory to max
