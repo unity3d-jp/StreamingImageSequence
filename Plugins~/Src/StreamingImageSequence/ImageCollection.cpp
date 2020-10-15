@@ -64,8 +64,7 @@ ImageCollection::ImageCollection()
 //----------------------------------------------------------------------------------------------------------------------
 
 ImageCollection::~ImageCollection() {
-
-    ResetAll();
+    ResetAllUnsafe();
 }
 
 
@@ -279,12 +278,7 @@ bool ImageCollection::UnloadImage(const strType& imagePath) {
 //Thread-safe
 void ImageCollection::ResetAll() {
     CriticalSectionController cs(IMAGE_CS(m_csType));
-    UnloadAllImagesUnsafe();
-    ResetOrderUnsafe();
-
-    m_memAllocator->Deallocate(g_resizeBuffer[m_csType]);
-    g_resizeBuffer[m_csType] = nullptr;
-    g_resizeBufferSize[m_csType] = 0;
+    ResetAllUnsafe();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -394,6 +388,16 @@ void ImageCollection::UnloadAllImagesUnsafe() {
     }
     m_pathToImageMap.clear();
 }
+
+void ImageCollection::ResetAllUnsafe() {
+    UnloadAllImagesUnsafe();
+    ResetOrderUnsafe();
+
+    m_memAllocator->Deallocate(g_resizeBuffer[m_csType]);
+    g_resizeBuffer[m_csType] = nullptr;
+    g_resizeBufferSize[m_csType] = 0;
+}
+
 
 void ImageCollection::ResetOrderUnsafe() {
     m_curOrderStartPos = m_orderedImageList.begin();
