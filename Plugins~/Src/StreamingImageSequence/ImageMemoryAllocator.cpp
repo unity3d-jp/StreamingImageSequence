@@ -69,7 +69,7 @@ void* ImageMemoryAllocator::Reallocate(void* buffer, const size_t memSize, bool 
     if (nullptr == newBuffer)
         return nullptr;
 
-    std::memcpy(newBuffer, buffer, min(prevSize, memSize));
+    std::memcpy(newBuffer, buffer, std::min(prevSize, memSize));
     Deallocate(buffer);
     return newBuffer;
 }
