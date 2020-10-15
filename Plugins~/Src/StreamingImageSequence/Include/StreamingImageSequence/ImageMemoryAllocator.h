@@ -54,7 +54,7 @@ private:
 
 uint64_t ImageMemoryAllocator::GetUsedMemory() const { return m_usedMemory;  }
 void ImageMemoryAllocator::SetMaxMemory(const uint64_t maxMemory) { m_maxMemory = maxMemory; }
-bool ImageMemoryAllocator::IsMemoryOverflow() const { return IsMemoryAllocable(0); }
+bool ImageMemoryAllocator::IsMemoryOverflow() const { return !IsMemoryAllocable(0); }
 
 
 } //end namespace
