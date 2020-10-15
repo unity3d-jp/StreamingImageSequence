@@ -8,9 +8,33 @@
 #include "CommonLib/CommonLib.h" //IMAGE_CS
 #include "CommonLib/CriticalSectionController.h"
 
-
-
 namespace StreamingImageSequencePlugin {
+
+void* g_resizeBuffer[MAX_CRITICAL_SECTION_TYPE_IMAGES] = { nullptr };
+size_t g_resizeBufferSize[MAX_CRITICAL_SECTION_TYPE_IMAGES];
+
+//[TODO-sin: 2020-10-15] This is a hack. Change to a singleton
+ImageMemoryAllocator* g_memAllocator[MAX_CRITICAL_SECTION_TYPE_IMAGES] = { nullptr };
+
+//Not thread safe
+void* GetOrAllocateResizeBufferUnsafe(size_t memSize, void* context) {
+    const uint32_t imageType = * (static_cast<uint32_t*>(context));
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
+
+    if (memSize <=g_resizeBufferSize[imageType]) {
+        return g_resizeBuffer[imageType];
+    }
+
+    void* newResizeBuffer = g_memAllocator[imageType]->Reallocate(g_resizeBuffer[imageType], memSize, /*forceAllocate=*/ true);
+    if (nullptr != newResizeBuffer) {
+        g_resizeBuffer[imageType] = newResizeBuffer;
+        g_resizeBufferSize[imageType] = memSize;
+    }
+
+    return g_resizeBuffer[imageType];   
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 
 
 ImageCollection::ImageCollection()
@@ -25,6 +49,13 @@ ImageCollection::ImageCollection()
 //----------------------------------------------------------------------------------------------------------------------
 
 ImageCollection::~ImageCollection() {
+
+    m_memAllocator->Deallocate(g_resizeBuffer[m_csType]);
+    g_resizeBuffer[m_csType] = nullptr;
+    g_resizeBufferSize[m_csType] = 0;
+    g_memAllocator[m_csType] = nullptr;
+
+
     UnloadAllImagesUnsafe();
 }
 
@@ -33,6 +64,13 @@ ImageCollection::~ImageCollection() {
 void ImageCollection::Init(CriticalSectionType csType, ImageMemoryAllocator* memAllocator) {
     m_csType       = csType;
     m_memAllocator = memAllocator;
+
+    //Allocate global resize buffer for this csType (imageType)
+    if (nullptr==g_resizeBuffer[m_csType]) {
+        g_resizeBufferSize[m_csType] = 1;
+        g_resizeBuffer[m_csType] = m_memAllocator->Allocate(g_resizeBufferSize[m_csType]);
+        g_memAllocator[m_csType] = memAllocator;
+    }
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -114,8 +152,10 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 //External/stb
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #define STBIR_DEFAULT_FILTER_DOWNSAMPLE  STBIR_FILTER_CATMULLROM
-#define STBIR_MALLOC(size,c) ((void)(c), malloc(size))
-#define STBIR_FREE(ptr,c)    ((void)(c), free(ptr))
+
+//We free the resize buffer once when the program ends.
+#define STBIR_MALLOC(size,context) GetOrAllocateResizeBufferUnsafe(size, context)
+#define STBIR_FREE(ptr,context) 
 
 #include "stb/stb_image_resize.h"
 
@@ -149,7 +189,7 @@ bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame,
     //stbir_resize_uint8(src->RawData, src->Width, src->Height, 0,
     //    resizedImageData.RawData, w, h, 0, LoaderConstants::NUM_BYTES_PER_TEXEL);
 
-    stbir__resize_arbitrary(&m_csType, src->RawData, src->Width, src->Height, 0,
+    stbir__resize_arbitrary(/*STBIR_MALLOC context = */ &m_csType, src->RawData, src->Width, src->Height, 0,
                             resizedImageData.RawData, w, h, 0,
                             0,0,1,1,nullptr, LoaderConstants::NUM_BYTES_PER_TEXEL,-1,0, 
                             STBIR_TYPE_UINT8, STBIR_FILTER_DEFAULT, STBIR_FILTER_DEFAULT,
@@ -380,6 +420,8 @@ bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathToAllocate
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 
 } //end namespace
+
 
