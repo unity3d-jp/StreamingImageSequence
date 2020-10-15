@@ -287,6 +287,18 @@ TEST(Loader, OutOfMemoryTest) {
 
 }
 
+TEST(Loader, BenchmarkLoadSpeed) {
+    const clock_t t0 = clock(); 
+    const uint32_t loopCount = 1000;
+    for (uint32_t i=0; i< loopCount;++i) {
+        TestUtility::LoadAndUnloadTestFullImage();
+    }
+    const clock_t t1 = clock();
+    const double elapsedSec = (t1 - t0) / (double)CLOCKS_PER_SEC;
+    std::cerr << "[          ] Elapsed time for loading " << loopCount << " images : " << elapsedSec << " sec" << std::endl;
+}
+
+
 //----------------------------------------------------------------------------------------------------------------------
 
 int main(int argc, char** argv) {
