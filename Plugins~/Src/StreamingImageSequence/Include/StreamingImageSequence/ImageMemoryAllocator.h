@@ -26,6 +26,7 @@ public:
     bool Deallocate(ImageData* imageData);
     bool Deallocate(void* buffer);
 
+    inline bool IsMemoryOverflow() const;
     inline uint64_t GetUsedMemory() const;
     inline void SetMaxMemory(const uint64_t maxMemory);
 
@@ -52,8 +53,9 @@ private:
 //----------------------------------------------------------------------------------------------------------------------
 
 uint64_t ImageMemoryAllocator::GetUsedMemory() const { return m_usedMemory;  }
-
 void ImageMemoryAllocator::SetMaxMemory(const uint64_t maxMemory) { m_maxMemory = maxMemory; }
+bool ImageMemoryAllocator::IsMemoryOverflow() const { return IsMemoryAllocable(0); }
+
 
 } //end namespace
 
