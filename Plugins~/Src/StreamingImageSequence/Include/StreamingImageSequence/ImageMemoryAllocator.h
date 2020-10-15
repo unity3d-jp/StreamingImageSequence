@@ -14,6 +14,10 @@ class ImageMemoryAllocator {
 public:
     //return true if alloc is successful, false otherwise
     bool Allocate(uint8_t ** rawDataPtr, const uint32_t w, const uint32_t h);
+
+    //return nullptr if not successful
+    void* Allocate(uint32_t memSize);
+
     void Deallocate(ImageData* imageData);
 
     inline uint64_t GetUsedMemory() const;
