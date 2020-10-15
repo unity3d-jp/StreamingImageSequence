@@ -166,18 +166,15 @@ const ImageData* ImageCollection::LoadImage(const strType& imagePath) {
         pathIt = AddImageUnsafe(imagePath);
     }
 
-    //-----
     ImageData* imageData = &pathIt->second;
+    bool isLoaded= LoadImageIntoUnsafe(imagePath, imageData);
 
-    bool isLoaded= false;
+    //unload old memory if failed to load
     bool unloadSuccessful = true;
     while (!isLoaded&& unloadSuccessful) {
+        unloadSuccessful = UnloadUnusedImageUnsafe(imagePath);
         isLoaded = LoadImageIntoUnsafe(imagePath, imageData);
-        if (!isLoaded) {
-            unloadSuccessful = UnloadUnusedImageUnsafe(imagePath);
-        }
     }
-
 
     return imageData;
 
@@ -457,7 +454,12 @@ bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* t
     int width, height, numComponents;
     unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &numComponents, FORCED_NUM_COMPONENTS);
     if (nullptr ==data) {
-        targetImageData->CurrentReadStatus = READ_STATUS_FAIL;
+
+        if (0 == strcmp(stbi_failure_reason(),"outofmem")) {
+            targetImageData->CurrentReadStatus = READ_STATUS_OUT_OF_MEMORY;
+        } else {
+            targetImageData->CurrentReadStatus = READ_STATUS_FAIL;
+        }
         return false;
     }
 
