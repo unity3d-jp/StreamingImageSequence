@@ -446,6 +446,7 @@ bool ImageCollection::AllocateRawDataUnsafe(uint8_t** rawData,const uint32_t w,c
 #define STBI_MALLOC(sz)           AllocateImageRawData(sz)
 #define STBI_REALLOC(p,newsz)     ReallocateImageRawData(p,newsz)
 #define STBI_FREE(p)              FreeImageRawData(p)
+#define STBI_NO_JPEG
 #include "stb/stb_image.h"
 
 bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* targetImageData) {
@@ -470,6 +471,7 @@ bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* t
 #undef STBI_MALLOC
 #undef STBI_REALLOC
 #undef STBI_FREE
+#undef STBI_NO_JPEG
 
 
 //----------------------------------------------------------------------------------------------------------------------
