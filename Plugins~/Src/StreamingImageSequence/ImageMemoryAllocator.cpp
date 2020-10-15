@@ -34,16 +34,12 @@ bool ImageMemoryAllocator::Allocate(uint8_t ** rawDataPtr, const uint32_t w, con
     if (!IsMemoryAllocable(dataSize))
         return false;
 
-    uint8_t*  buffer = static_cast<uint8_t*>(malloc(dataSize));
+    uint8_t*  buffer = static_cast<uint8_t*>(AllocateInternal(dataSize));
     if (nullptr == buffer) {
         return false;
     }
 
-    std::memset(buffer,0,dataSize);
     *rawDataPtr = buffer;
-
-    IncUsedMem(dataSize);
-
     return true;
 
 }
@@ -53,14 +49,7 @@ void* ImageMemoryAllocator::Allocate(uint32_t memSize) {
     if (!IsMemoryAllocable(memSize))
         return nullptr;
 
-    uint8_t*  buffer = static_cast<uint8_t*>(malloc(memSize));
-    if (nullptr == buffer) {
-        return nullptr;
-    }
-
-    std::memset(buffer,0,memSize);
-    IncUsedMem(memSize);
-    return buffer;
+    return AllocateInternal(memSize);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -101,6 +90,18 @@ bool ImageMemoryAllocator::IsMemoryAllocable(const uint32_t memSize) const {
 #endif
 
     return true;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+void* ImageMemoryAllocator::AllocateInternal(const uint32_t memSize) {
+    uint8_t*  buffer = static_cast<uint8_t*>(malloc(memSize));
+    if (nullptr == buffer) {
+        return nullptr;
+    }
+
+    std::memset(buffer,0,memSize);
+    IncUsedMem(memSize);
+    return buffer;
 }
 
 //----------------------------------------------------------------------------------------------------------------------

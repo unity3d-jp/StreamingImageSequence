@@ -28,6 +28,7 @@ public:
 private:
 
     bool IsMemoryAllocable(const uint32_t memSize) const;
+    void* AllocateInternal(const uint32_t memSize);
 
     void IncUsedMem(const uint64_t mem);
     void DecUsedMem(const uint64_t mem);
