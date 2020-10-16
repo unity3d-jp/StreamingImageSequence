@@ -176,13 +176,13 @@ const ImageData* ImageCollection::LoadImage(const strType& imagePath) {
     }
 
     ImageData* imageData = &pathIt->second;
-    bool isLoaded= LoadImageIntoUnsafe(imagePath, imageData);
+    ReadStatus readStatus = LoadImageIntoUnsafe(imagePath, imageData);
 
     //unload old memory if failed to load
     bool unloadSuccessful = true;
-    while (!isLoaded&& unloadSuccessful) {
+    while (READ_STATUS_OUT_OF_MEMORY == readStatus && unloadSuccessful) {
         unloadSuccessful = UnloadUnusedImageUnsafe(imagePath);
-        isLoaded = LoadImageIntoUnsafe(imagePath, imageData);
+        readStatus = LoadImageIntoUnsafe(imagePath, imageData);
     }
 
     return imageData;
@@ -457,24 +457,21 @@ bool ImageCollection::AllocateRawDataUnsafe(uint8_t** rawData,const uint32_t w,c
     return isAllocated;
 }
 
-bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* targetImageData) {
+ReadStatus ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* targetImageData) {
 
-    const uint32_t FORCED_NUM_COMPONENTS = 4;
     int width, height, numComponents;
-    unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &numComponents, FORCED_NUM_COMPONENTS);
-    if (nullptr ==data) {
-
+    unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &numComponents, /*requiredComponents = */4);
+    if (nullptr!=data) {
+        *targetImageData = ImageData(data, width, height, READ_STATUS_SUCCESS);
+        targetImageData->Format = IMAGE_FORMAT_RGBA32;
+    } else {
         if (0 == strcmp(stbi_failure_reason(),"outofmem")) {
             targetImageData->CurrentReadStatus = READ_STATUS_OUT_OF_MEMORY;
         } else {
             targetImageData->CurrentReadStatus = READ_STATUS_FAIL;
         }
-        return false;
     }
-
-    *targetImageData = ImageData(data, width, height, READ_STATUS_SUCCESS);
-    targetImageData->Format = IMAGE_FORMAT_RGBA32;
-    return true;
+    return targetImageData->CurrentReadStatus;
 }
 
 //----------------------------------------------------------------------------------------------------------------------
