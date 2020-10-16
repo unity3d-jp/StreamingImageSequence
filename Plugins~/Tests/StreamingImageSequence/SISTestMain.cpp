@@ -12,6 +12,9 @@
 //LoaderTest
 #include "TestUtility.h"
 
+
+//#define ENABLE_BENCHMARK
+
 namespace StreamingImageSequencePluginTest {
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -63,6 +66,29 @@ TEST(Loader, LoadMultipleImagesTest) {
     const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
     const bool processed = TestUtility::LoadTestImages(imageType, curFrame, 0, numImages);
     ASSERT_EQ(true, processed);
+
+    const bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, numImages, READ_STATUS_SUCCESS);
+    ASSERT_EQ(true, readSuccessful) << "Loading image failed";
+
+    ASSERT_GT(imageCatalog.GetUsedMemory(), 0);
+
+    //Unload
+    UnloadAllImages();
+    TestUtility::CheckMemoryCleanup();
+}
+//----------------------------------------------------------------------------------------------------------------------
+TEST(Loader, LoadInvalidImageTest) {
+    using namespace StreamingImageSequencePlugin;
+    ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+
+    const int curFrame = 0;
+    const uint32_t numImages = 10;
+    const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
+    const bool processed = TestUtility::LoadTestImages(imageType, curFrame, 0, numImages);
+    ASSERT_EQ(true, processed);
+
+    const bool invalidReadSuccessful = TestUtility::LoadInvalidTestImage();
+    ASSERT_EQ(false, invalidReadSuccessful);
 
     const bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, numImages, READ_STATUS_SUCCESS);
     ASSERT_EQ(true, readSuccessful) << "Loading image failed";
@@ -300,11 +326,12 @@ void BenchmarkFunc(const uint32_t loopCount, bool (*func)(), const char* msg) {
 
 };
 
+#ifdef ENABLE_BENCHMARK
 TEST(Loader, BenchmarkLoadSpeed) {
     BenchmarkFunc(1000, TestUtility::LoadAndUnloadTestFullPNGImage, "Loading Full PNG.");
     BenchmarkFunc(1000, TestUtility::LoadAndUnloadTestFullTGAImage, "Loading Full TGA.");
 }
-
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------
 
