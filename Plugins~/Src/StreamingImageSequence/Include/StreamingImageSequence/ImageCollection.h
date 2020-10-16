@@ -56,7 +56,7 @@ private:
 
     //This will unload unused image if memory is not enough
     bool AllocateRawDataUnsafe(uint8_t** rawData, const uint32_t w, const uint32_t h, const strType& imagePath);
-    static bool LoadImageIntoUnsafe(const strType& imagePath, ImageData* targetImageData);
+    static ReadStatus LoadImageIntoUnsafe(const strType& imagePath, ImageData* targetImageData);
     bool UnloadUnusedImageUnsafe(const strType& imagePath); //returns true if one or more images are successfully unloaded
 
     ImageMemoryAllocator*           m_memAllocator;
