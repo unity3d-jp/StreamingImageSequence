@@ -125,7 +125,6 @@ uint32_t TestUtility::CleanupAndLoadMaxImages(const uint32_t imageType) {
 
     return maxImages;
 
-
 }
 
 //----------------------------------------------------------------------------------------------------------------------
