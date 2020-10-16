@@ -67,6 +67,7 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 	const ImageData* imageData = imageCatalog->AllocateImage(imagePath, imageType, width, height);
 	if (nullptr == imageData) {
 		imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_OUT_OF_MEMORY);
+		delete(bitmap);
 		return;
 	}
 
