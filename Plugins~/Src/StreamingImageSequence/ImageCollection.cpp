@@ -8,6 +8,7 @@
 #include "CommonLib/CommonLib.h" //IMAGE_CS
 #include "CommonLib/CriticalSectionController.h"
 
+
 namespace StreamingImageSequencePlugin {
 
 void* g_resizeBuffer[MAX_CRITICAL_SECTION_TYPE_IMAGES] = { nullptr };
@@ -34,6 +35,29 @@ void* GetOrAllocateResizeBufferUnsafe(size_t memSize, void* context) {
     return g_resizeBuffer[imageType];   
 }
 
+//not thread safe
+inline void* AllocateImageRawData(size_t newSize) {
+    return g_memAllocator->Allocate(newSize);
+}
+
+//not thread safe
+inline void* ReallocateImageRawData(void* buffer, size_t newSize) {
+    return g_memAllocator->Reallocate(buffer, newSize, /*forceAllocate = */ true);
+}
+
+//not thread safe
+inline void FreeImageRawData(void* buffer) {
+    g_memAllocator->Deallocate(buffer);
+}
+
+
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_MALLOC(sz)           AllocateImageRawData(sz)
+#define STBI_REALLOC(p,newsz)     ReallocateImageRawData(p,newsz)
+#define STBI_FREE(p)              FreeImageRawData(p)
+#define STBI_NO_JPEG
+#include "stb/stb_image.h"
+
 //----------------------------------------------------------------------------------------------------------------------
 
 
@@ -44,19 +68,12 @@ ImageCollection::ImageCollection()
     , m_csType(CRITICAL_SECTION_TYPE_FULL_IMAGE)
     , m_latestRequestFrame(0)
 {
-
+    stbi_set_flip_vertically_on_load(true);
 }
 //----------------------------------------------------------------------------------------------------------------------
 
 ImageCollection::~ImageCollection() {
-
-    m_memAllocator->Deallocate(g_resizeBuffer[m_csType]);
-    g_resizeBuffer[m_csType] = nullptr;
-    g_resizeBufferSize[m_csType] = 0;
-    g_memAllocator = nullptr;
-
-
-    UnloadAllImagesUnsafe();
+    ResetAllUnsafe();
 }
 
 
@@ -145,6 +162,33 @@ const ImageData* ImageCollection::AllocateImage(const strType& imagePath, const 
 
     return imageData;
 }
+
+const ImageData* ImageCollection::LoadImage(const strType& imagePath) {
+    CriticalSectionController cs(IMAGE_CS(m_csType));
+
+    std::unordered_map<strType, ImageData>::iterator pathIt = m_pathToImageMap.find(imagePath);
+
+    //Unload existing memory if it exists
+    if (m_pathToImageMap.end() != pathIt) {
+        m_memAllocator->Deallocate(&(pathIt->second));
+    }  else {
+        pathIt = AddImageUnsafe(imagePath);
+    }
+
+    ImageData* imageData = &pathIt->second;
+    bool isLoaded= LoadImageIntoUnsafe(imagePath, imageData);
+
+    //unload old memory if failed to load
+    bool unloadSuccessful = true;
+    while (!isLoaded&& unloadSuccessful) {
+        unloadSuccessful = UnloadUnusedImageUnsafe(imagePath);
+        isLoaded = LoadImageIntoUnsafe(imagePath, imageData);
+    }
+
+    return imageData;
+
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -238,20 +282,18 @@ bool ImageCollection::UnloadImage(const strType& imagePath) {
 //----------------------------------------------------------------------------------------------------------------------
 
 //Thread-safe
-void ImageCollection::UnloadAllImages() {
+void ImageCollection::ResetAll() {
     CriticalSectionController cs(IMAGE_CS(m_csType));
-    UnloadAllImagesUnsafe();
+    ResetAllUnsafe();
 }
 
 //----------------------------------------------------------------------------------------------------------------------
 
+
 //Thread-safe
 void ImageCollection::ResetOrder() {
     CriticalSectionController cs(IMAGE_CS(m_csType));
-
-    m_curOrderStartPos = m_orderedImageList.begin();
-    m_updateOrderStartPos = false;
-    m_latestRequestFrame = 0;
+    ResetOrderUnsafe();
 }
 
 
@@ -353,6 +395,22 @@ void ImageCollection::UnloadAllImagesUnsafe() {
     m_pathToImageMap.clear();
 }
 
+void ImageCollection::ResetAllUnsafe() {
+    UnloadAllImagesUnsafe();
+    ResetOrderUnsafe();
+
+    m_memAllocator->Deallocate(g_resizeBuffer[m_csType]);
+    g_resizeBuffer[m_csType] = nullptr;
+    g_resizeBufferSize[m_csType] = 0;
+}
+
+
+void ImageCollection::ResetOrderUnsafe() {
+    m_curOrderStartPos = m_orderedImageList.begin();
+    m_updateOrderStartPos = false;
+    m_latestRequestFrame = 0;
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 
 //Non-Thread-safe
@@ -393,19 +451,39 @@ bool ImageCollection::AllocateRawDataUnsafe(uint8_t** rawData,const uint32_t w,c
     return isAllocated;
 }
 
+bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* targetImageData) {
+
+    const uint32_t FORCED_NUM_COMPONENTS = 4;
+    int width, height, numComponents;
+    unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &numComponents, FORCED_NUM_COMPONENTS);
+    if (nullptr ==data) {
+
+        if (0 == strcmp(stbi_failure_reason(),"outofmem")) {
+            targetImageData->CurrentReadStatus = READ_STATUS_OUT_OF_MEMORY;
+        } else {
+            targetImageData->CurrentReadStatus = READ_STATUS_FAIL;
+        }
+        return false;
+    }
+
+    *targetImageData = ImageData(data, width, height, READ_STATUS_SUCCESS);
+    return true;
+}
 
 //----------------------------------------------------------------------------------------------------------------------
+
+//Frees up memory in order to allocate memory for imagePathContext.
 //returns true if one or more images are successfully unloaded
-bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathToAllocate) {
-    std::list<std::unordered_map<strType, ImageData>::iterator>::iterator orderIt = m_orderedImageList.begin();
+bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathContext) {
+    const std::list<std::unordered_map<strType, ImageData>::iterator>::iterator orderIt = m_orderedImageList.begin();
     if (m_curOrderStartPos == orderIt)
         return false;
 
     const strType& imagePath = (*orderIt)->first;
 
     //if this happens, then we can't even allocate memory for one single image
-    //ASSERT(imagePath != imagePathToAllocate);
-    if (imagePath == imagePathToAllocate)
+    //ASSERT(imagePath != imagePathContext);
+    if (imagePath == imagePathContext)
         return false;
 
     //Do processes inside UnloadImage((*orderIt)->first), without any checks
@@ -422,6 +500,12 @@ bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathToAllocate
 
 //----------------------------------------------------------------------------------------------------------------------
 
-} //end namespace
 
+//undef STBI definitions
+#undef STBI_MALLOC
+#undef STBI_REALLOC
+#undef STBI_FREE
+#undef STBI_NO_JPEG
+
+} //end namespace
 

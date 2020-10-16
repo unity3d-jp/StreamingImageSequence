@@ -63,40 +63,41 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
 {
     using namespace StreamingImageSequencePlugin;
 
+    //Check if the image is already processed. If it does, just return if the image load doesn't have any error
     const ImageData* imageData = LoaderUtility::GetImageData(imagePath, imageType, imageCatalog, frame);
-
-    const FileType fileType = LoaderUtility::CheckFileType(imagePath);
-    if (FILE_TYPE_INVALID == fileType)
-        return nullptr;
-
-    //Just return if the image load doesn't have any error
     if (nullptr!=imageData) {
         if (!LoaderUtility::IsImageLoadError(imageData->CurrentReadStatus))
             return imageData;
-
     } else {
+        //prepare a placeholder for the image, before the actual load. This can also prevent loading for the same image
         imageData = imageCatalog->AddImage(imagePath, imageType, frame);
     }
 
     if (nullptr == imageData)
         return nullptr;
 
-    switch (fileType) {
-        case FILE_TYPE_TGA: {
-            CriticalSectionController cs(IMAGE_CS(imageType));
-            LoadTGAFileAndAlloc(imagePath, imageType, imageCatalog);
-            break;
-        }
+    const FileType fileType = LoaderUtility::CheckFileType(imagePath);
+    switch (fileType) {	    
+        case FILE_TYPE_TGA: {	
+            CriticalSectionController cs(IMAGE_CS(imageType));	
+            LoadTGAFileAndAlloc(imagePath, imageType, imageCatalog);	
+            break;	
+        }	
         case FILE_TYPE_PNG: {
-            CriticalSectionController cs(IMAGE_CS(imageType));
+#ifdef _WIN32
+            //Faster to load using custom loader (GDI) on windows
+            CriticalSectionController cs(IMAGE_CS(imageType));	
             LoadPNGFileAndAlloc(imagePath, imageType, imageCatalog);
-            break;
-        }
-        default: { break; }
+#else
+            imageData = imageCatalog->LoadImage(imagePath, imageType); 
+#endif
+
+            break;	
+        }	
+        default: { return nullptr; }	
     }
-
+    
     return imageData;
-
 }
 
 //----------------------------------------------------------------------------------------------------------------------

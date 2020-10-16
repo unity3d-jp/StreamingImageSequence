@@ -24,18 +24,20 @@ public:
     const ImageData* GetImage(const strType& imagePath, const int frame);
 
     const ImageData* AllocateImage(const strType& imagePath, const uint32_t w, const uint32_t h);
+    const ImageData* LoadImage(const strType& imagePath); //This will unload unused image if memory is not enough
 
     const ImageData* AddImage(const strType& imagePath, const int frame);
     bool AddImageFromSrc(const strType& imagePath, const int frame, const ImageData* src, const uint32_t w, const uint32_t h);
 
     void SetImageStatus(const strType& imagePath, const ReadStatus status);
     bool UnloadImage(const strType& imagePath);
-    void UnloadAllImages();
+
 
     inline const std::unordered_map<strType, ImageData>& GetImageMap() const;
     inline size_t GetNumImages() const;
     inline int GetLatestRequestFrame() const;
 
+    void ResetAll();
     void ResetOrder();
 
 private:
@@ -46,11 +48,14 @@ private:
     void DeleteImageOrderUnsafe(std::unordered_map<strType, ImageData>::iterator);
     void MoveOrderStartPosToEndUnsafe();
     void UnloadAllImagesUnsafe();
+    void ResetAllUnsafe();
+    void ResetOrderUnsafe();
 
     void UpdateRequestFrameUnsafe(const int frame);
 
     //This will unload unused image if memory is not enough
     bool AllocateRawDataUnsafe(uint8_t** rawData, const uint32_t w, const uint32_t h, const strType& imagePath);
+    static bool LoadImageIntoUnsafe(const strType& imagePath, ImageData* targetImageData);
     bool UnloadUnusedImageUnsafe(const strType& imagePath); //returns true if one or more images are successfully unloaded
 
     ImageMemoryAllocator*           m_memAllocator;

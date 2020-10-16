@@ -22,6 +22,7 @@ public:
     inline bool AddImageFromSrc(const strType& imagePath,const uint32_t imageType, const int frame, const ImageData*, 
                                 const uint32_t w,const uint32_t h);
     inline const ImageData* AllocateImage(const strType& imagePath,const uint32_t imageType,const uint32_t w,const uint32_t h);
+    inline const ImageData* LoadImage(const strType& imagePath,const uint32_t imageType);
     inline void SetImageStatus(const strType& imagePath, const uint32_t imageType, const ReadStatus status);
     inline bool UnloadImage(const strType& imagePath, const uint32_t imageType);
     inline const std::unordered_map<strType, ImageData>& GetImageMap(const uint32_t imageType) const;
@@ -75,6 +76,11 @@ bool ImageCatalog::AddImageFromSrc(const strType& imagePath,const uint32_t image
 const ImageData* ImageCatalog::AllocateImage(const strType& imagePath, const uint32_t imageType, const uint32_t w, const uint32_t h) {
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
     return m_imageCollection[imageType].AllocateImage(imagePath, w, h);
+}
+
+const ImageData* ImageCatalog::LoadImage(const strType& imagePath,const uint32_t imageType) {    
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
+    return m_imageCollection[imageType].LoadImage(imagePath);
 }
 
 void ImageCatalog::SetImageStatus(const strType& imagePath, const uint32_t imageType, const ReadStatus status) {

@@ -52,8 +52,8 @@ private:
 //----------------------------------------------------------------------------------------------------------------------
 
 uint64_t ImageMemoryAllocator::GetUsedMemory() const { return m_usedMemory;  }
-
 void ImageMemoryAllocator::SetMaxMemory(const uint64_t maxMemory) { m_maxMemory = maxMemory; }
+
 
 } //end namespace
 
