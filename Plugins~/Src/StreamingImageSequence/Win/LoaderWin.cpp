@@ -62,7 +62,6 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 
 	const u32 width = bitmap->GetWidth();
 	const u32 height = bitmap->GetHeight();
-	const uint32_t dataSize = sizeof(u32) * width * height;
 
 	const ImageData* imageData = imageCatalog->AllocateImage(imagePath, imageType, width, height);
 	if (nullptr == imageData) {
