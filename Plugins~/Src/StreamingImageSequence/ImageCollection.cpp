@@ -241,6 +241,7 @@ bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame,
 
     //Register to map
     resizedImageData.CurrentReadStatus = READ_STATUS_SUCCESS;
+    resizedImageData.Format = src->Format;
     pathIt->second = resizedImageData;
 
     return true;
