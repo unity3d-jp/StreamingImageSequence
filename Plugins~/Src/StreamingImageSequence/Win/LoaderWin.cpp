@@ -76,7 +76,7 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 	u32* pImage = (u32*)pBuffer;
 
 	Gdiplus::BitmapData bitmapData;
-	bitmap->LockBits(&Gdiplus::Rect(0, 0, width, height), Gdiplus::ImageLockModeWrite, PixelFormat32bppARGB, &bitmapData);
+	bitmap->LockBits(&Gdiplus::Rect(0, 0, width, height), Gdiplus::ImageLockModeRead, PixelFormat32bppARGB, &bitmapData);
 	u32 *pRawBitmapOrig = (u32*)bitmapData.Scan0;   // for easy access and indexing
 	const u32 heightMinusOneMulWidth = (height - 1) * width;
 	const u32 memSizePerRow = width * sizeof(u32);
