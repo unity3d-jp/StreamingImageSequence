@@ -87,7 +87,9 @@ TEST(Loader, LoadInvalidImageTest) {
     ASSERT_EQ(true, processed);
 
     ++curFrame;
-    const bool invalidReadSuccessful = TestUtility::LoadInvalidTestImage(curFrame);
+    bool invalidReadSuccessful = TestUtility::LoadInvalidTestPNGImage(curFrame);
+    ASSERT_EQ(false, invalidReadSuccessful);
+    invalidReadSuccessful = TestUtility::LoadInvalidTestTGAImage(curFrame);
     ASSERT_EQ(false, invalidReadSuccessful);
 
     const bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, numImages, READ_STATUS_SUCCESS);
