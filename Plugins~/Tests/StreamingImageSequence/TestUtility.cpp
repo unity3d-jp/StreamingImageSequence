@@ -30,7 +30,7 @@ bool TestUtility::LoadTestImages(const uint32_t imageType, const int frame, cons
     ASSERT(endIndex < NUM_TEST_IMAGES);
     bool processed = true;
     for (uint32_t i = start; i <= endIndex && processed; ++i) {
-        const strType filePath = "TestImage_" + TO_STR_TYPE(i) + ".png";
+        const strType filePath = "PNGTestImage_" + TO_STR_TYPE(i) + ".png";
         processed = loadFunc(filePath.c_str(),frame);
     }
 
@@ -40,7 +40,7 @@ bool TestUtility::LoadTestImages(const uint32_t imageType, const int frame, cons
 //----------------------------------------------------------------------------------------------------------------------
 
 bool TestUtility::LoadAndUnloadTestFullImage() {
-    const char* filePath = "TestImage_0.png";
+    const char* filePath = "PNGTestImage_0.png";
     const bool loaded = LoadAndAllocFullImage(filePath,0);
     if (!loaded)
         return false;
@@ -58,7 +58,7 @@ bool TestUtility::CheckLoadedTestImageData(const uint32_t imageType, const int f
     ASSERT(endIndex < NUM_TEST_IMAGES);
     bool ret = true;
     for (uint32_t i = start; i <= endIndex && ret; ++i) {
-        const strType filePath = "TestImage_" + TO_STR_TYPE(i) + ".png";
+        const strType filePath = "PNGTestImage_" + TO_STR_TYPE(i) + ".png";
         ImageData imageData;
         GetImageDataInto(filePath.c_str(), imageType, frame, &imageData );
         ret = (imageData.CurrentReadStatus == reqReadStatus);
