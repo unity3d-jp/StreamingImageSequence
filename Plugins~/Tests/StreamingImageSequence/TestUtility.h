@@ -29,7 +29,9 @@ public:
 
     static uint32_t CleanupAndLoadMaxImages(const uint32_t imageType);
 
+private:
 
+    static bool LoadFullImage(const char* imagePath, const int frame);
 
 };
 
