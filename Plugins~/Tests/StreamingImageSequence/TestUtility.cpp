@@ -59,6 +59,11 @@ bool TestUtility::LoadAndUnloadTestFullTGAImage() {
     return true;
 }
 
+bool TestUtility::LoadInvalidTestImage() {
+    const bool loaded = LoadAndAllocFullImage("InvalidTestImage.png",0);
+    return loaded;
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 bool TestUtility::CheckLoadedTestImageData(const uint32_t imageType, const int frame, const uint32_t start, 
     const uint32_t numImages, const StreamingImageSequencePlugin::ReadStatus reqReadStatus) 
@@ -157,7 +162,7 @@ std::unordered_map<strType, StreamingImageSequencePlugin::ImageData> TestUtility
     ASSERT(processed);
     ASSERT(readSuccessful);
     const std::unordered_map<strType, ImageData>& curImageMap = imageCatalog.GetImageMap(imageType);
-    uint32_t numDuplicates = TestUtility::FindNumDuplicateMapElements(prevImageMap, curImageMap);
+    const uint32_t numDuplicates = TestUtility::FindNumDuplicateMapElements(prevImageMap, curImageMap);
     ASSERT(prevImageMap.size() - numImages == numDuplicates);
 
     //return a copy
