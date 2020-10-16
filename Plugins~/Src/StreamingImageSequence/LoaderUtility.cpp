@@ -83,11 +83,15 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
             LoadTGAFileAndAlloc(imagePath, imageType, imageCatalog);	
             break;	
         }	
-        case FILE_TYPE_PNG: {	
+        case FILE_TYPE_PNG: {
+#ifdef _WIN32
+            //Faster to load using custom loader (GDI) on windows
             CriticalSectionController cs(IMAGE_CS(imageType));	
             LoadPNGFileAndAlloc(imagePath, imageType, imageCatalog);
+#else
+            imageData = imageCatalog->LoadImage(imagePath, imageType); 
+#endif
 
-            //imageData = imageCatalog->LoadImage(imagePath, imageType); //load using stb
             break;	
         }	
         default: { return nullptr; }	
