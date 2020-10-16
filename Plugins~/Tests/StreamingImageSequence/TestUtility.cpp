@@ -39,8 +39,18 @@ bool TestUtility::LoadTestImages(const uint32_t imageType, const int frame, cons
 
 //----------------------------------------------------------------------------------------------------------------------
 
-bool TestUtility::LoadAndUnloadTestFullImage() {
+bool TestUtility::LoadAndUnloadTestFullPNGImage() {
     const char* filePath = "PNGTestImage_0.png";
+    const bool loaded = LoadAndAllocFullImage(filePath,0);
+    if (!loaded)
+        return false;
+
+    UnloadImage(filePath);
+    return true;
+}
+
+bool TestUtility::LoadAndUnloadTestFullTGAImage() {
+    const char* filePath = "TGATestImage_0.tga";
     const bool loaded = LoadAndAllocFullImage(filePath,0);
     if (!loaded)
         return false;
