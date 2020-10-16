@@ -8,6 +8,7 @@
 #include "CommonLib/CommonLib.h" //IMAGE_CS
 #include "CommonLib/CriticalSectionController.h"
 
+
 namespace StreamingImageSequencePlugin {
 
 void* g_resizeBuffer[MAX_CRITICAL_SECTION_TYPE_IMAGES] = { nullptr };
@@ -49,6 +50,14 @@ inline void FreeImageRawData(void* buffer) {
     g_memAllocator->Deallocate(buffer);
 }
 
+
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_MALLOC(sz)           AllocateImageRawData(sz)
+#define STBI_REALLOC(p,newsz)     ReallocateImageRawData(p,newsz)
+#define STBI_FREE(p)              FreeImageRawData(p)
+#define STBI_NO_JPEG
+#include "stb/stb_image.h"
+
 //----------------------------------------------------------------------------------------------------------------------
 
 
@@ -59,7 +68,7 @@ ImageCollection::ImageCollection()
     , m_csType(CRITICAL_SECTION_TYPE_FULL_IMAGE)
     , m_latestRequestFrame(0)
 {
-
+    stbi_set_flip_vertically_on_load(true);
 }
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -442,13 +451,6 @@ bool ImageCollection::AllocateRawDataUnsafe(uint8_t** rawData,const uint32_t w,c
     return isAllocated;
 }
 
-#define STB_IMAGE_IMPLEMENTATION
-#define STBI_MALLOC(sz)           AllocateImageRawData(sz)
-#define STBI_REALLOC(p,newsz)     ReallocateImageRawData(p,newsz)
-#define STBI_FREE(p)              FreeImageRawData(p)
-#define STBI_NO_JPEG
-#include "stb/stb_image.h"
-
 bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* targetImageData) {
 
     const uint32_t FORCED_NUM_COMPONENTS = 4;
@@ -467,12 +469,6 @@ bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* t
     *targetImageData = ImageData(data, width, height, READ_STATUS_SUCCESS);
     return true;
 }
-
-#undef STBI_MALLOC
-#undef STBI_REALLOC
-#undef STBI_FREE
-#undef STBI_NO_JPEG
-
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -504,6 +500,12 @@ bool ImageCollection::UnloadUnusedImageUnsafe(const strType& imagePathContext) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-} //end namespace
 
+//undef STBI definitions
+#undef STBI_MALLOC
+#undef STBI_REALLOC
+#undef STBI_FREE
+#undef STBI_NO_JPEG
+
+} //end namespace
 
