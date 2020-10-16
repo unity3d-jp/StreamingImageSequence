@@ -21,7 +21,7 @@ internal struct ImageData {
         Width      = 0;
         Height     = 0;        
         ReadStatus = readStatus;
-        Format     = StreamingImageSequenceConstants.IMAGE_FORMAT_RGBA;
+        Format     = StreamingImageSequenceConstants.IMAGE_FORMAT_RGBA32;
 
     }
 };
