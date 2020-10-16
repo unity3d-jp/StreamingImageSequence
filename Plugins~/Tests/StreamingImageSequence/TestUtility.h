@@ -9,7 +9,8 @@ class TestUtility {
 
 public:
     static bool LoadTestImages(const uint32_t imageType, const int frame, const uint32_t start, const uint32_t );
-    static bool LoadAndUnloadTestFullImage();
+    static bool LoadAndUnloadTestFullPNGImage();
+    static bool LoadAndUnloadTestFullTGAImage();
     static bool CheckLoadedTestImageData(const uint32_t imageType, const int frame, const uint32_t start, 
         const uint32_t numImages, const StreamingImageSequencePlugin::ReadStatus reqReadStatus);
     static void CheckMemoryCleanup();

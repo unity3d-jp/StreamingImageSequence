@@ -28,8 +28,13 @@ set(num_test_images 100)
 target_compile_definitions(StreamingImageSequenceTest PRIVATE NUM_TEST_IMAGES=${num_test_images})
 foreach(loop_var RANGE ${num_test_images})     
     configure_file(
-        ${CMAKE_CURRENT_SOURCE_DIR}/../Data/TestImage.png
-        ${CMAKE_CURRENT_BINARY_DIR}/TestImage_${loop_var}.png COPYONLY
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Data/PNGTestImage.png
+        ${CMAKE_CURRENT_BINARY_DIR}/PNGTestImage_${loop_var}.png COPYONLY
+    )    
+    
+    configure_file(
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Data/TGATestImage.tga
+        ${CMAKE_CURRENT_BINARY_DIR}/TGATestImage_${loop_var}.tga COPYONLY
     )    
 endforeach(loop_var) 
 
@@ -39,7 +44,8 @@ if(APPLE)
     # https://cmake.org/cmake/help/v3.17/prop_tgt/XCODE_SCHEME_WORKING_DIRECTORY.html#prop_tgt:XCODE_SCHEME_WORKING_DIRECTORY
     foreach(loop_var RANGE ${num_test_images})     
         add_custom_command(TARGET StreamingImageSequenceTest POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../Data/TestImage.png ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>/TestImage_${loop_var}.png
+            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../Data/PNGTestImage.png ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>/PNGTestImage_${loop_var}.png
+            COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../Data/TGATestImage.tga ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>/TGATestImage_${loop_var}.tga
         )
     endforeach(loop_var) 
     
