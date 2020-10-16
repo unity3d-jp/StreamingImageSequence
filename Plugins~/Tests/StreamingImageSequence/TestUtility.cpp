@@ -184,5 +184,4 @@ bool TestUtility::LoadFullImage(const char* imagePath, const int frame) {
     return (nullptr != imageData.RawData);
 }
 
-
 } //end namespace
