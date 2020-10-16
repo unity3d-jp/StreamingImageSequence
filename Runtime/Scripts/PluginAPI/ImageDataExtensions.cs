@@ -10,15 +10,13 @@ internal static class ImageDataExtensions {
 
     public static Texture2D CreateCompatibleTexture(this ImageData imageData, HideFlags hideFlags) {
         Assert.IsTrue(StreamingImageSequenceConstants.READ_STATUS_SUCCESS == imageData.ReadStatus);
-        
-#if UNITY_STANDALONE_OSX
-        const TextureFormat TEXTURE_FORMAT = TextureFormat.RGBA32;
-#elif UNITY_STANDALONE_WIN
-        const TextureFormat TEXTURE_FORMAT = TextureFormat.BGRA32;
-#endif
-        
-        int length = imageData.Width * imageData.Height * 4;
-        Texture2D tex = new Texture2D(imageData.Width, imageData.Height, TEXTURE_FORMAT, false, false) {
+                
+        TextureFormat textureFormat 
+            = (imageData.Format == StreamingImageSequenceConstants.IMAGE_FORMAT_BGRA32) 
+            ? TextureFormat.BGRA32
+            : TextureFormat.RGBA32;        
+       
+        Texture2D tex = new Texture2D(imageData.Width, imageData.Height, textureFormat, false, false) {
             filterMode = FilterMode.Bilinear, 
             hideFlags = hideFlags
         };
