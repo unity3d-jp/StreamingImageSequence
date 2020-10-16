@@ -4,7 +4,6 @@
 #include "CommonLib/Types.h"
 
 //SIS
-#include "TGALoader.h"
 #include "StreamingImageSequence/ImageCatalog.h"
 #include "StreamingImageSequence/ImageData.h"
 #include "LoaderWin.h"
@@ -84,17 +83,12 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 		delete pBitmap;
 
 		imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_SUCCESS);
+		imageCatalog->SetImageFormat(imagePath, imageType,IMAGE_FORMAT_BGRA32);
 
 	} else {
 		imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_FAIL);
 	}
 
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-void LoadTGAFileAndAlloc(const strType& imagePath, const uint32_t imageType, ImageCatalog* imageCatalog) {
-
-	loadTGAFileAndAlloc(imagePath, imageType, imageCatalog);
 }
 
 } // end namespace

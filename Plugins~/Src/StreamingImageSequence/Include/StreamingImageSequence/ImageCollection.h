@@ -30,6 +30,7 @@ public:
     bool AddImageFromSrc(const strType& imagePath, const int frame, const ImageData* src, const uint32_t w, const uint32_t h);
 
     void SetImageStatus(const strType& imagePath, const ReadStatus status);
+    void SetImageFormat(const strType& imagePath, const ImageFormat format);
     bool UnloadImage(const strType& imagePath);
 
 

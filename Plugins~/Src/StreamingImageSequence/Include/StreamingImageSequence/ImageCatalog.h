@@ -24,6 +24,7 @@ public:
     inline const ImageData* AllocateImage(const strType& imagePath,const uint32_t imageType,const uint32_t w,const uint32_t h);
     inline const ImageData* LoadImage(const strType& imagePath,const uint32_t imageType);
     inline void SetImageStatus(const strType& imagePath, const uint32_t imageType, const ReadStatus status);
+    inline void SetImageFormat(const strType& imagePath, const uint32_t imageType, const ImageFormat imageFormat);
     inline bool UnloadImage(const strType& imagePath, const uint32_t imageType);
     inline const std::unordered_map<strType, ImageData>& GetImageMap(const uint32_t imageType) const;
     inline int GetLatestFrame(const uint32_t imageType) const;
@@ -84,10 +85,15 @@ const ImageData* ImageCatalog::LoadImage(const strType& imagePath,const uint32_t
 }
 
 void ImageCatalog::SetImageStatus(const strType& imagePath, const uint32_t imageType, const ReadStatus status) {
-
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
     m_imageCollection[imageType].SetImageStatus(imagePath, status);
 }
+
+void ImageCatalog::SetImageFormat(const strType& imagePath, const uint32_t imageType, const ImageFormat format) {
+    ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
+    m_imageCollection[imageType].SetImageFormat(imagePath, format);
+}
+
 bool ImageCatalog::UnloadImage(const strType& imagePath, const uint32_t imageType) {
     ASSERT(imageType < MAX_CRITICAL_SECTION_TYPE_IMAGES);
 
