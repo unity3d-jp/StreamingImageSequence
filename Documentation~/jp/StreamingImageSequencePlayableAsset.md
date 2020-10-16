@@ -8,7 +8,7 @@
 |             | Windows            | Mac                |
 | ----------- | ------------------ | ------------------ |
 | png         | :white_check_mark: | :white_check_mark: |    
-| tga         | :white_check_mark: |                    |
+| tga         | :white_check_mark: | :white_check_mark: |
 
 
 # チュートリアル
