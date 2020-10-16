@@ -13,12 +13,16 @@ internal struct ImageData {
     public readonly int Height;
     [MarshalAs(UnmanagedType.I4)]
     public readonly int ReadStatus;
+    [MarshalAs(UnmanagedType.I4)]
+    public readonly int Format;
 
     internal ImageData(int readStatus) {
-        RawData = IntPtr.Zero;
-        Width = 0;
-        Height = 0;        
+        RawData    = IntPtr.Zero;
+        Width      = 0;
+        Height     = 0;        
         ReadStatus = readStatus;
+        Format     = StreamingImageSequenceConstants.IMAGE_FORMAT_RGBA;
+
     }
 };
 

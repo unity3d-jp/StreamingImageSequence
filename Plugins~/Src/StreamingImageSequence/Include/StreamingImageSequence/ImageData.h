@@ -1,6 +1,7 @@
 #pragma once
 
 #include "StreamingImageSequence/ReadStatus.h"
+#include "StreamingImageSequence/ImageFormat.h"
 
 namespace StreamingImageSequencePlugin {
 
@@ -10,6 +11,7 @@ struct ImageData {
     uint32_t  Width;
     uint32_t  Height;
     ReadStatus CurrentReadStatus;
+    ImageFormat Format;
 
     //Constructors
     explicit ImageData();
