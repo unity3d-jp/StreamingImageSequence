@@ -55,7 +55,7 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 	if (pBitmap ) {
 		status = pBitmap->GetLastStatus();
 	}
-	ASSERT(status == Gdiplus::Ok);
+
 	if (status == Gdiplus::Ok)	{
 		const u32 width = pBitmap->GetWidth();
 		const u32 height = pBitmap->GetHeight();

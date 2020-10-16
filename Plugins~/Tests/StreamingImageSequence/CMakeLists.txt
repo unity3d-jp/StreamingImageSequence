@@ -37,6 +37,10 @@ foreach(loop_var RANGE ${num_test_images})
         ${CMAKE_CURRENT_BINARY_DIR}/TGATestImage_${loop_var}.tga COPYONLY
     )    
 endforeach(loop_var) 
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/../Data/InvalidTestImage.png
+    ${CMAKE_CURRENT_BINARY_DIR}/InvalidTestImage.png COPYONLY
+)    
 
 if(APPLE)
     # When run in XCode, the working directory is not in the root, but instead under the configuration folder
@@ -48,6 +52,10 @@ if(APPLE)
             COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../Data/TGATestImage.tga ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>/TGATestImage_${loop_var}.tga
         )
     endforeach(loop_var) 
+    add_custom_command(TARGET StreamingImageSequenceTest POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/../Data/InvalidTestImage.png ${CMAKE_CURRENT_BINARY_DIR}/$<CONFIGURATION>/InvalidTestImage.png
+    )
+    
     
 endif()    
 
