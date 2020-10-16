@@ -80,13 +80,14 @@ TEST(Loader, LoadInvalidImageTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
-    const int curFrame = 0;
+    int curFrame = 0;
     const uint32_t numImages = 10;
     const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
     const bool processed = TestUtility::LoadTestImages(imageType, curFrame, 0, numImages);
     ASSERT_EQ(true, processed);
 
-    const bool invalidReadSuccessful = TestUtility::LoadInvalidTestImage();
+    ++curFrame;
+    const bool invalidReadSuccessful = TestUtility::LoadInvalidTestImage(curFrame);
     ASSERT_EQ(false, invalidReadSuccessful);
 
     const bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, numImages, READ_STATUS_SUCCESS);
