@@ -251,17 +251,22 @@ bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame,
 
 //----------------------------------------------------------------------------------------------------------------------
 
-//Non-Thread-safe
+//Non thread-safe. Not required, because one imagePath should be processed by only one job
 void ImageCollection::SetImageStatus(const strType& imagePath, const ReadStatus status) {
-
-    //No need to sync. One imagePath should be processed by only one job
-    //CriticalSectionController cs(IMAGE_CS(m_csType)); 
 
     ASSERT(m_pathToImageMap.find(imagePath) != m_pathToImageMap.end());
     ImageData& imageData = m_pathToImageMap.at(imagePath);
     imageData.CurrentReadStatus = status;
 
 }
+
+//Non thread-safe. Not required, because one imagePath should be processed by only one job
+void ImageCollection::SetImageFormat(const strType& imagePath, const ImageFormat format) {
+    ASSERT(m_pathToImageMap.find(imagePath) != m_pathToImageMap.end());
+    ImageData& imageData = m_pathToImageMap.at(imagePath);
+    imageData.Format = format;
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -467,6 +472,7 @@ bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* t
     }
 
     *targetImageData = ImageData(data, width, height, READ_STATUS_SUCCESS);
+    targetImageData->Format = IMAGE_FORMAT_RGBA;
     return true;
 }
 
