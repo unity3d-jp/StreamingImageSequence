@@ -107,7 +107,7 @@ uint32_t TestUtility::CleanupAndLoadMaxImages(const uint32_t imageType) {
     ASSERT(reqMemForOneImage >  0);
     uint32_t maxImages = static_cast<uint32_t>(std::floor( static_cast<float>(MAX_IMAGE_MEMORY) / reqMemForOneImage));
     if ( maxImages > 0) {
-        //when loading, the size of one image is needed as a temporary buffer, in addition to the actual image itself
+        //when loading, the size of one image may be needed as a temp buffer, in addition to the actual image itself
         maxImages -= 1; 
     }
     ASSERT(maxImages > 0);
