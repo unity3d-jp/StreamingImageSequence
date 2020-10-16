@@ -19,7 +19,6 @@ namespace StreamingImageSequencePluginTest {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-
 TEST(Loader, ResetPluginTest) {
     using namespace StreamingImageSequencePlugin;
     const int curFrame = 0;
