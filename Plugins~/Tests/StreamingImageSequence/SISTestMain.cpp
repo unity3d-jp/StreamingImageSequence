@@ -86,14 +86,18 @@ TEST(Loader, LoadInvalidImageTest) {
     const bool processed = TestUtility::LoadTestImages(imageType, curFrame, 0, numImages);
     ASSERT_EQ(true, processed);
 
+    bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, numImages, READ_STATUS_SUCCESS);
+    ASSERT_EQ(true, readSuccessful) << "Loading image failed";
+
     ++curFrame;
     bool invalidReadSuccessful = TestUtility::LoadInvalidTestPNGImage(curFrame);
     ASSERT_EQ(false, invalidReadSuccessful);
     invalidReadSuccessful = TestUtility::LoadInvalidTestTGAImage(curFrame);
     ASSERT_EQ(false, invalidReadSuccessful);
 
-    const bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, numImages, READ_STATUS_SUCCESS);
-    ASSERT_EQ(true, readSuccessful) << "Loading image failed";
+    //make sure the previously loaded images are still loaded
+    readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, numImages, READ_STATUS_SUCCESS);
+    ASSERT_EQ(true, readSuccessful) << "Loaded images were unloaded";
 
     ASSERT_GT(imageCatalog.GetUsedMemory(), 0);
 
