@@ -76,7 +76,23 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
     if (nullptr == imageData)
         return nullptr;
 
-    imageData = imageCatalog->LoadImage(imagePath, imageType);
+    const FileType fileType = LoaderUtility::CheckFileType(imagePath);
+    switch (fileType) {	    
+        case FILE_TYPE_TGA: {	
+            CriticalSectionController cs(IMAGE_CS(imageType));	
+            LoadTGAFileAndAlloc(imagePath, imageType, imageCatalog);	
+            break;	
+        }	
+        case FILE_TYPE_PNG: {	
+            CriticalSectionController cs(IMAGE_CS(imageType));	
+            LoadPNGFileAndAlloc(imagePath, imageType, imageCatalog);
+
+            //imageData = imageCatalog->LoadImage(imagePath, imageType); //load using stb
+            break;	
+        }	
+        default: { return nullptr; }	
+    }
+    
     return imageData;
 }
 
