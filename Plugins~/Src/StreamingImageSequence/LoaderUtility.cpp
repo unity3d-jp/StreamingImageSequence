@@ -8,8 +8,6 @@
 #include "StreamingImageSequence/LoaderUtility.h"
 #include "StreamingImageSequence/ImageCatalog.h"
 #include "StreamingImageSequence/FileType.h"
-#include "TGALoader.h"
-
 
 
 //----------------------------------------------------------------------------------------------------------------------

@@ -12,7 +12,6 @@ class ImageCatalog;
 struct ImageData;
 
 //Forward declarations
-void LoadTGAFileAndAlloc(const strType& imagePath, const uint32_t imageType, ImageCatalog*);
 void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType, ImageCatalog*);
 
 //[Note-sin: 2020-2-4] The functions in this class are not guaranteed to be thread-safe. 
