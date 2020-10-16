@@ -287,6 +287,8 @@ TEST(Loader, OutOfMemoryTest) {
 
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+
 void BenchmarkFunc(const uint32_t loopCount, bool (*func)(), const char* msg) {
     const clock_t t0 = clock(); 
     for (uint32_t i=0; i< loopCount;++i) {
@@ -300,6 +302,7 @@ void BenchmarkFunc(const uint32_t loopCount, bool (*func)(), const char* msg) {
 
 TEST(Loader, BenchmarkLoadSpeed) {
     BenchmarkFunc(1000, TestUtility::LoadAndUnloadTestFullPNGImage, "Loading Full PNG.");
+    BenchmarkFunc(1000, TestUtility::LoadAndUnloadTestFullTGAImage, "Loading Full TGA.");
 
 }
 
