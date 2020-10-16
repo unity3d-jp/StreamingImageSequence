@@ -38,6 +38,18 @@ bool TestUtility::LoadTestImages(const uint32_t imageType, const int frame, cons
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+
+bool TestUtility::LoadAndUnloadTestFullImage() {
+    const char* filePath = "TestImage_0.png";
+    const bool loaded = LoadAndAllocFullImage(filePath,0);
+    if (!loaded)
+        return false;
+
+    UnloadImage(filePath);
+    return true;
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 bool TestUtility::CheckLoadedTestImageData(const uint32_t imageType, const int frame, const uint32_t start, 
     const uint32_t numImages, const StreamingImageSequencePlugin::ReadStatus reqReadStatus) 
 {

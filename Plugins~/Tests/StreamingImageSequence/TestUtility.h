@@ -9,6 +9,7 @@ class TestUtility {
 
 public:
     static bool LoadTestImages(const uint32_t imageType, const int frame, const uint32_t start, const uint32_t );
+    static bool LoadAndUnloadTestFullImage();
     static bool CheckLoadedTestImageData(const uint32_t imageType, const int frame, const uint32_t start, 
         const uint32_t numImages, const StreamingImageSequencePlugin::ReadStatus reqReadStatus);
     static void CheckMemoryCleanup();
@@ -23,6 +24,7 @@ public:
         const std::unordered_map<strType, StreamingImageSequencePlugin::ImageData>& prevImageMap);
 
     static uint32_t CleanupAndLoadMaxImages(const uint32_t imageType);
+
 
 
 };
