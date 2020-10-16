@@ -71,16 +71,23 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 	}
 
 	Gdiplus::BitmapData bitmapData;
-	bitmap->LockBits(&Gdiplus::Rect(0, 0, width, height), Gdiplus::ImageLockModeRead, PixelFormat32bppARGB, &bitmapData);
-	u32 *pRawBitmapOrig = (u32*)bitmapData.Scan0;   // for easy access and indexing
+	bitmapData.Width = width;
+	bitmapData.Height = height;
+    bitmapData.Stride = 4 * bitmapData.Width;
+	bitmapData.PixelFormat = PixelFormat32bppARGB;
+	bitmapData.Scan0 = static_cast<VOID*>(imageData->RawData);
+	bitmapData.Reserved = NULL;
+	bitmap->LockBits(&Gdiplus::Rect(0, 0, width, height), 
+					 Gdiplus::ImageLockModeRead | Gdiplus::ImageLockModeUserInputBuf, 
+					 PixelFormat32bppARGB,&bitmapData);
+
 	const u32 heightMinusOneMulWidth = (height - 1) * width;
 	const u32 memSizePerRow = width * sizeof(u32);
-
 	u32* rawData = reinterpret_cast<u32*>(imageData->RawData);
-	memcpy(rawData, pRawBitmapOrig, memSizePerRow * height);
 
 	//invert by swapping
 	const u32 halfHeight = static_cast<u32>(height * 0.5f);
+	//[TODO-sin: 2020-10-16] Make this temporary buffer shared per CS_TYPE. Also use ImageAllocator
 	u8* tempBuffer = new u8[memSizePerRow];
 	for (u32 yy = 0; yy < halfHeight; ++yy) {
 		const u32 startIndex = yy * width;
