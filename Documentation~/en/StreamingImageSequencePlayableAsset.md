@@ -8,7 +8,7 @@ A playable asset for playing sequential image sequences in Unity Timeline.
 |             | Windows            | Mac                |
 | ----------- | ------------------ | ------------------ |
 | png         | :white_check_mark: | :white_check_mark: |    
-| tga         | :white_check_mark: |                    |
+| tga         | :white_check_mark: | :white_check_mark: |
 
 
 # Tutorial 
