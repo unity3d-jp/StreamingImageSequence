@@ -79,8 +79,7 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
     const FileType fileType = LoaderUtility::CheckFileType(imagePath);
     switch (fileType) {	    
         case FILE_TYPE_TGA: {	
-            CriticalSectionController cs(IMAGE_CS(imageType));	
-            LoadTGAFileAndAlloc(imagePath, imageType, imageCatalog);	
+            imageData = imageCatalog->LoadImage(imagePath, imageType); 
             break;	
         }	
         case FILE_TYPE_PNG: {
