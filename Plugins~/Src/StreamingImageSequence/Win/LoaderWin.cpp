@@ -71,21 +71,26 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 		return;
 	}
 
-	u8* pBuffer = imageData->RawData;
-	ASSERT(pBuffer !=nullptr);
-	u32* pImage = (u32*)pBuffer;
-
 	Gdiplus::BitmapData bitmapData;
 	bitmap->LockBits(&Gdiplus::Rect(0, 0, width, height), Gdiplus::ImageLockModeRead, PixelFormat32bppARGB, &bitmapData);
 	u32 *pRawBitmapOrig = (u32*)bitmapData.Scan0;   // for easy access and indexing
 	const u32 heightMinusOneMulWidth = (height - 1) * width;
 	const u32 memSizePerRow = width * sizeof(u32);
-	for (u32 yy = 0; yy < height; yy++) {
-		const u32 destIndex = yy * width;
-		const u32 srcIndex = heightMinusOneMulWidth - destIndex; //From: (height - 1 - yy) * width;
-		memcpy(&pImage[destIndex], &pRawBitmapOrig[srcIndex], memSizePerRow);
 
+	u32* rawData = reinterpret_cast<u32*>(imageData->RawData);
+	memcpy(rawData, pRawBitmapOrig, memSizePerRow * height);
+
+	//invert by swapping
+	const u32 halfHeight = static_cast<u32>(height * 0.5f);
+	u8* tempBuffer = new u8[memSizePerRow];
+	for (u32 yy = 0; yy < halfHeight; ++yy) {
+		const u32 startIndex = yy * width;
+		const u32 endIndex = heightMinusOneMulWidth - startIndex; //From: (height - 1 - yy) * width;
+		memcpy(tempBuffer, &rawData[startIndex], memSizePerRow);
+		memcpy(&rawData[startIndex], &rawData[endIndex], memSizePerRow);
+		memcpy(&rawData[endIndex], tempBuffer, memSizePerRow);
 	}
+	free(tempBuffer);
 
 	//memcpy(pImage, bitmapData.Scan0, width*height*sizeof(UINT32));
 	bitmap->UnlockBits(&bitmapData);
