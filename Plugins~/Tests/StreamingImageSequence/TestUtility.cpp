@@ -59,9 +59,13 @@ bool TestUtility::LoadAndUnloadTestFullTGAImage() {
     return true;
 }
 
-bool TestUtility::LoadInvalidTestImage() {
-    const bool loaded = LoadAndAllocFullImage("InvalidTestImage.png",0);
-    return loaded;
+bool TestUtility::LoadInvalidTestImage(const int frame) {
+    using namespace StreamingImageSequencePlugin;
+    const char* filePath = "InvalidTestImage.png";
+    const bool loaded = LoadAndAllocFullImage(filePath,frame);
+    ImageData imageData;
+    GetImageDataInto(filePath, CRITICAL_SECTION_TYPE_FULL_IMAGE, frame, &imageData);
+    return (nullptr != imageData.RawData);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
