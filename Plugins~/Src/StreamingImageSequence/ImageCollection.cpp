@@ -472,7 +472,7 @@ bool ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageData* t
     }
 
     *targetImageData = ImageData(data, width, height, READ_STATUS_SUCCESS);
-    targetImageData->Format = IMAGE_FORMAT_RGBA;
+    targetImageData->Format = IMAGE_FORMAT_RGBA32;
     return true;
 }
 

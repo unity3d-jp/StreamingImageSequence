@@ -83,6 +83,7 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
 		delete pBitmap;
 
 		imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_SUCCESS);
+		imageCatalog->SetImageFormat(imagePath, imageType,IMAGE_FORMAT_BGRA32);
 
 	} else {
 		imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_FAIL);
