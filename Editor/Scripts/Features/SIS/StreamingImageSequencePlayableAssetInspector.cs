@@ -4,6 +4,7 @@ using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Timeline;
 
 namespace Unity.StreamingImageSequence.Editor {
 
@@ -49,9 +50,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                 EditorGUILayout.LabelField("Height",  $"{res.Height } px");
             }
             GUILayout.Space(4f);
-
         }
-
         
         GUILayout.Space(4f);
 
@@ -72,6 +71,22 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                 m_asset.Reload();
             }
             EditorGUILayout.EndHorizontal();
+            
+            using (new EditorGUI.DisabledScope(0 == numImages)) {
+                if (0 == numImages)
+                    EditorGUILayout.IntField("FPS", 0);
+                else {
+                    TimelineClip clip = m_asset.GetBoundTimelineClipSISData().GetOwner();
+                    
+                    float prevFps = numImages / (float)(clip.duration); 
+                    float fps     = EditorGUILayout.FloatField("FPS", prevFps);
+                    if (!Mathf.Approximately(fps, prevFps) && !Mathf.Approximately(fps, 0.0f)) {
+                        double prevDuration = clip.duration;
+                        clip.duration  = numImages / fps;
+                        clip.timeScale = (prevDuration * clip.timeScale) / clip.duration;
+                    }
+                }
+            }
             
             GUILayout.Space(4f);
             m_imageListFoldout = EditorGUILayout.Foldout(m_imageListFoldout, "Images");
