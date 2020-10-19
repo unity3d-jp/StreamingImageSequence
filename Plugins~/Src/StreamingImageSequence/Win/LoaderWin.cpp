@@ -48,15 +48,15 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
         wlocal,
         size);
     Gdiplus::Bitmap* bitmap = Gdiplus::Bitmap::FromFile(wlocal);
-
 # endif
-    Gdiplus::Status status = Gdiplus::FileNotFound;
-    if (bitmap ) {
-        status = bitmap->GetLastStatus();
-    }
 
+    if (nullptr == bitmap)
+        return;
+
+    const Gdiplus::Status status = bitmap->GetLastStatus();
     if (Gdiplus::Ok!=status)	{
         imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_FAIL);
+        delete(bitmap);
         return;
     }
 
