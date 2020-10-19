@@ -41,7 +41,6 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         serializedObject.Update();
         Undo.RecordObject(m_asset, "StreamingImageSequencePlayableAssetInspector::OnInspectorGUI");
 
-        int numImages = m_asset.GetNumImages();
         using (new EditorGUILayout.VerticalScope (GUI.skin.box))  {
 
             m_resolutionFoldout = EditorGUILayout.Foldout(m_resolutionFoldout, "Resolution");
@@ -51,6 +50,27 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                 EditorGUILayout.LabelField("Height",  $"{res.Height } px");
             }
             GUILayout.Space(4f);
+        }
+        
+        GUILayout.Space(4f);
+
+        using (new EditorGUILayout.VerticalScope(GUI.skin.box))
+        {
+            GUILayout.Label("Folder", "BoldLabel");
+            GUILayout.Space(4f);
+            DrawFolderGUI();
+        }
+        GUILayout.Space(4f);
+
+        using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
+            int numImages = m_asset.GetNumImages();
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Images: " + numImages, "BoldLabel");            
+            if (GUILayout.Button("Reload", GUILayout.Width(50))) {
+                m_asset.Reload();
+            }
+            EditorGUILayout.EndHorizontal();
             
             using (new EditorGUI.DisabledScope(0 == numImages)) {
                 if (0 == numImages)
@@ -66,29 +86,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                         clip.timeScale = (prevDuration * clip.timeScale) / clip.duration;
                     }
                 }
-            }            
-            
-
-        }
-        
-        GUILayout.Space(4f);
-
-        using (new EditorGUILayout.VerticalScope(GUI.skin.box))
-        {
-            GUILayout.Label("Folder", "BoldLabel");
-            GUILayout.Space(4f);
-            DrawFolderGUI();
-        }
-        GUILayout.Space(4f);
-
-        using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("Images: " + numImages, "BoldLabel");            
-            if (GUILayout.Button("Reload", GUILayout.Width(50))) {
-                m_asset.Reload();
             }
-            EditorGUILayout.EndHorizontal();
             
             GUILayout.Space(4f);
             m_imageListFoldout = EditorGUILayout.Foldout(m_imageListFoldout, "Images");
