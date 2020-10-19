@@ -61,7 +61,9 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                     float prevFps = numImages / (float)(clip.duration); 
                     float fps     = EditorGUILayout.FloatField("FPS", prevFps);
                     if (!Mathf.Approximately(fps, prevFps) && !Mathf.Approximately(fps, 0.0f)) {
-                        clip.duration = numImages / fps;
+                        double prevDuration = clip.duration;
+                        clip.duration  = numImages / fps;
+                        clip.timeScale = (prevDuration * clip.timeScale) / clip.duration;
                     }
                 }
             }            
