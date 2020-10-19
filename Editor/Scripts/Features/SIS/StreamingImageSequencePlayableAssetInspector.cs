@@ -4,6 +4,7 @@ using UnityEditor.Timeline;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Timeline;
 
 namespace Unity.StreamingImageSequence.Editor {
 
@@ -40,6 +41,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         serializedObject.Update();
         Undo.RecordObject(m_asset, "StreamingImageSequencePlayableAssetInspector::OnInspectorGUI");
 
+        int numImages = m_asset.GetNumImages();
         using (new EditorGUILayout.VerticalScope (GUI.skin.box))  {
 
             m_resolutionFoldout = EditorGUILayout.Foldout(m_resolutionFoldout, "Resolution");
@@ -49,9 +51,23 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                 EditorGUILayout.LabelField("Height",  $"{res.Height } px");
             }
             GUILayout.Space(4f);
+            
+            using (new EditorGUI.DisabledScope(0 == numImages)) {
+                if (0 == numImages)
+                    EditorGUILayout.IntField("FPS", 0);
+                else {
+                    TimelineClip clip = m_asset.GetBoundTimelineClipSISData().GetOwner();
+                    
+                    float prevFps = numImages / (float)(clip.duration); 
+                    float fps     = EditorGUILayout.FloatField("FPS", prevFps);
+                    if (!Mathf.Approximately(fps, prevFps)) {
+                        clip.duration = numImages / fps;
+                    }
+                }
+            }            
+            
 
         }
-
         
         GUILayout.Space(4f);
 
@@ -64,7 +80,6 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         GUILayout.Space(4f);
 
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
-            int numImages = m_asset.GetNumImages();
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Images: " + numImages, "BoldLabel");            
