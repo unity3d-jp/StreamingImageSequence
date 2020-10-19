@@ -85,7 +85,7 @@ void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType,
     const u32 memSizePerRow = width * sizeof(u32);
     u32* rawData = reinterpret_cast<u32*>(imageData->RawData);
 
-    //invert by swapping
+    //invert by swapping. bitmap->RotateFlip(Gdiplus::RotateNoneFlipY) is slower than manually flipping below
     const u32 halfHeight = static_cast<u32>(height * 0.5f);
     //[TODO-sin: 2020-10-16] Make this temporary buffer shared per CS_TYPE. Also use ImageAllocator
     u8* tempBuffer = new u8[memSizePerRow];
