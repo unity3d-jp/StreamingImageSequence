@@ -14,13 +14,13 @@
 //----------------------------------------------------------------------------------------------------------------------
 
 namespace StreamingImageSequencePlugin {
-	LoaderWin::LoaderWin() {
-		int status = Gdiplus::GdiplusStartup(&token, &startInput, NULL);
-	}
+    LoaderWin::LoaderWin() {
+        int status = Gdiplus::GdiplusStartup(&token, &startInput, NULL);
+    }
 
-	LoaderWin::~LoaderWin() {
-		Gdiplus::GdiplusShutdown(token);
-	}
+    LoaderWin::~LoaderWin() {
+        Gdiplus::GdiplusShutdown(token);
+    }
 
 
 
@@ -30,64 +30,80 @@ StreamingImageSequencePlugin::LoaderWin		g_loaderWin;
 //----------------------------------------------------------------------------------------------------------------------
 
 void LoadPNGFileAndAlloc(const strType& imagePath, const uint32_t imageType, 
-	StreamingImageSequencePlugin::ImageCatalog* imageCatalog) 
+    StreamingImageSequencePlugin::ImageCatalog* imageCatalog) 
 {
 
 # if USE_WCHAR
-	Gdiplus::Bitmap*    pBitmap = Gdiplus::Bitmap::FromFile(fileName);
+    Gdiplus::Bitmap*    pBitmap = Gdiplus::Bitmap::FromFile(fileName);
 # else
-	const int size = 8192;
-	WCHAR wlocal[size] = { 0x00 };
+    const int size = 8192;
+    WCHAR wlocal[size] = { 0x00 };
 
 
-	int ret = MultiByteToWideChar(
-		CP_ACP,
-		MB_PRECOMPOSED,
-		imagePath.c_str(),
-		static_cast<int>(imagePath.length()),
-		wlocal,
-		size);
-	Gdiplus::Bitmap*    pBitmap = Gdiplus::Bitmap::FromFile(wlocal);
-
+    int ret = MultiByteToWideChar(
+        CP_ACP,
+        MB_PRECOMPOSED,
+        imagePath.c_str(),
+        static_cast<int>(imagePath.length()),
+        wlocal,
+        size);
+    Gdiplus::Bitmap* bitmap = Gdiplus::Bitmap::FromFile(wlocal);
 # endif
-	Gdiplus::Status status = Gdiplus::FileNotFound;
-	if (pBitmap ) {
-		status = pBitmap->GetLastStatus();
-	}
 
-	if (status == Gdiplus::Ok)	{
-		const u32 width = pBitmap->GetWidth();
-		const u32 height = pBitmap->GetHeight();
-		const uint32_t dataSize = sizeof(u32) * width * height;
+    if (nullptr == bitmap)
+        return;
 
-		const ImageData* imageData = imageCatalog->AllocateImage(imagePath, imageType, width, height);
-		if (nullptr == imageData) {
-			imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_OUT_OF_MEMORY);
-			return;
-		}
+    const Gdiplus::Status status = bitmap->GetLastStatus();
+    if (Gdiplus::Ok!=status)	{
+        imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_FAIL);
+        delete(bitmap);
+        return;
+    }
 
-		u8* pBuffer = imageData->RawData;
-		ASSERT(pBuffer !=nullptr);
-		u32* pImage = (u32*)pBuffer;
+    const u32 width = bitmap->GetWidth();
+    const u32 height = bitmap->GetHeight();
 
-		Gdiplus::BitmapData bitmapData;
-		pBitmap->LockBits(&Gdiplus::Rect(0, 0, width, height), Gdiplus::ImageLockModeWrite, PixelFormat32bppARGB, &bitmapData);
-		u32 *pRawBitmapOrig = (u32*)bitmapData.Scan0;   // for easy access and indexing
-		for (u32 yy = 0; yy < height; yy++) {
-			memcpy(&pImage[yy*width], &pRawBitmapOrig[(height - 1 - yy) * bitmapData.Stride / 4], width*sizeof(u32));
+    const ImageData* imageData = imageCatalog->AllocateImage(imagePath, imageType, width, height);
+    if (nullptr == imageData) {
+        imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_OUT_OF_MEMORY);
+        delete(bitmap);
+        return;
+    }
 
-		}
+    Gdiplus::BitmapData bitmapData;
+    bitmapData.Width = width;
+    bitmapData.Height = height;
+    bitmapData.Stride = 4 * bitmapData.Width;
+    bitmapData.PixelFormat = PixelFormat32bppARGB;
+    bitmapData.Scan0 = static_cast<VOID*>(imageData->RawData);
+    bitmapData.Reserved = NULL;
+    bitmap->LockBits(&Gdiplus::Rect(0, 0, width, height), 
+                     Gdiplus::ImageLockModeRead | Gdiplus::ImageLockModeUserInputBuf, 
+                     PixelFormat32bppARGB,&bitmapData);
 
-		//memcpy(pImage, bitmapData.Scan0, width*height*sizeof(UINT32));
-		pBitmap->UnlockBits(&bitmapData);
-		delete pBitmap;
+    const u32 heightMinusOneMulWidth = (height - 1) * width;
+    const u32 memSizePerRow = width * sizeof(u32);
+    u32* rawData = reinterpret_cast<u32*>(imageData->RawData);
 
-		imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_SUCCESS);
-		imageCatalog->SetImageFormat(imagePath, imageType,IMAGE_FORMAT_BGRA32);
+    //invert by swapping. bitmap->RotateFlip(Gdiplus::RotateNoneFlipY) is slower than manually flipping below
+    const u32 halfHeight = static_cast<u32>(height * 0.5f);
+    //[TODO-sin: 2020-10-16] Make this temporary buffer shared per CS_TYPE. Also use ImageAllocator
+    u8* tempBuffer = new u8[memSizePerRow];
+    for (u32 yy = 0; yy < halfHeight; ++yy) {
+        const u32 startIndex = yy * width;
+        const u32 endIndex = heightMinusOneMulWidth - startIndex; //From: (height - 1 - yy) * width;
+        memcpy(tempBuffer, &rawData[startIndex], memSizePerRow);
+        memcpy(&rawData[startIndex], &rawData[endIndex], memSizePerRow);
+        memcpy(&rawData[endIndex], tempBuffer, memSizePerRow);
+    }
+    free(tempBuffer);
 
-	} else {
-		imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_FAIL);
-	}
+    //memcpy(pImage, bitmapData.Scan0, width*height*sizeof(UINT32));
+    bitmap->UnlockBits(&bitmapData);
+    delete bitmap;
+
+    imageCatalog->SetImageStatus(imagePath, imageType,READ_STATUS_SUCCESS);
+    imageCatalog->SetImageFormat(imagePath, imageType,IMAGE_FORMAT_BGRA32);
 
 }
 
