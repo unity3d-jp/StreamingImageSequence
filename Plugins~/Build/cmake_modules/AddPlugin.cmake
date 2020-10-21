@@ -45,7 +45,7 @@ function(add_plugin name)
             # Linux or Mac
             add_custom_command(TARGET ${name} POST_BUILD
                 COMMAND rm -rf ${arg_PLUGINS_DIR}/${target_filename}
-                COMMAND cp -r ${target_filename} ${native_plugins_dir}               
+                COMMAND cp -r ${target_filename} "${native_plugins_dir}"               
             )
         endif()
 
