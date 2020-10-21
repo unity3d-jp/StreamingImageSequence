@@ -4,6 +4,7 @@ option(ENABLE_DEPLOY "Copy built binaries to plugins directory." ON)
 
 
 function(add_plugin name)
+
     cmake_parse_arguments(arg "BUILD_OSX_BUNDLE" "PLUGINS_DIR" "SOURCES" ${ARGN})
     file(TO_NATIVE_PATH ${arg_PLUGINS_DIR} native_plugins_dir)
     
@@ -14,12 +15,12 @@ function(add_plugin name)
         add_library(${name} MODULE ${arg_SOURCES})
         set_target_properties(${name} PROPERTIES BUNDLE ON)
     else()
-        add_library(${name} STATIC ${arg_SOURCES})
-        set_property(TARGET ${name} APPEND PROPERTY PREFIX "")
+        add_library(${name} SHARED ${arg_SOURCES})
+        set_property(TARGET ${name} PROPERTY PREFIX "")
 
         # fPIC required to build shared libraries on Linux
         if (LINUX)
-            set_property(TARGET ${name} APPEND PROPERTY POSITION_INDEPENDENT_CODE ON)
+            set_property(TARGET ${name} PROPERTY POSITION_INDEPENDENT_CODE ON)
         endif()
     endif()
 
@@ -35,7 +36,7 @@ function(add_plugin name)
             )
         else()
             
-            if(${arg_BUILD_OSX_BUNDLE})
+            if(APPLE AND ${arg_BUILD_OSX_BUNDLE})
                 SET(target_filename \${TARGET_BUILD_DIR}/${name}.bundle)
             else()
                 SET(target_filename $<TARGET_FILE:${name}>)
