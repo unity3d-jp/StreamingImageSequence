@@ -76,7 +76,7 @@ $ cmake .. -DCMAKE_BUILD_TYPE=Release && cmake --build .
 ### Unit Tests (Windows) 
 
 1. Download [GoogleTest](https://github.com/google/googletest/releases)
-1. Starting "Developer Command Prompt for VS 2019" **as administrator** 
+1. Start "Developer Command Prompt for VS 2019" **as administrator** 
 3. Execute the following inside the GoogleTest source directory.
     ``` 
     $ mkdir Build
@@ -98,7 +98,7 @@ $ cmake .. -DCMAKE_BUILD_TYPE=Release && cmake --build .
 ### Unit Tests (Mac) 
 
 1. Download [GoogleTest](https://github.com/google/googletest/releases)
-1. Starting "Developer Command Prompt for VS 2019" **as administrator** 
+1. Open a terminal 
 3. Execute the following inside the GoogleTest source directory.
     ``` 
     $ mkdir Build
@@ -117,7 +117,24 @@ $ cmake .. -DCMAKE_BUILD_TYPE=Release && cmake --build .
     $ ctest -C Release
     ```
 
+### Unit Tests (Linux) 
 
+1. Open terminal 
+3. Execute the following inside the GoogleTest source directory.
+    ``` 
+    $ mkdir Build
+    $ cd Build
+    $ cmake .. && cmake --build .
+    $ sudo cmake -DBUILD_TYPE=Debug -P cmake_install.cmake
+    $ sudo cmake -DBUILD_TYPE=Release -P cmake_install.cmake
+    ```
+1. Go inside the plugin folder of StreamingImageSequence and execute the following:
+    ``` 
+    $ cd StreamingImageSequence\Plugins~\Build 
+    $ cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_UNIT_TESTS=ON 
+    $ cmake --build . 
+    $ ctest -C Release
+    ```
 
 
 
