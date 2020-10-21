@@ -5,10 +5,10 @@
 # 対応の画像形式
 
 
-|             | Windows            | Mac                |
-| ----------- | ------------------ | ------------------ |
-| png         | :white_check_mark: | :white_check_mark: |    
-| tga         | :white_check_mark: | :white_check_mark: |
+|             | Windows            | Mac                | Linux              |
+| ----------- | ------------------ | ------------------ | ------------------ |
+| png         | :white_check_mark: | :white_check_mark: | :white_check_mark: |       
+| tga         | :white_check_mark: | :white_check_mark: | :white_check_mark: |    
 
 
 # チュートリアル

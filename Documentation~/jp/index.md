@@ -14,6 +14,7 @@ Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Time
 
 1. Windows
 2. Mac
+3. Linux
 
 
 ## 機能

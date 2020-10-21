@@ -44,6 +44,7 @@ differ based on the version of Unity.
 
 1. Windows
 2. Mac
+3. Linux
 
 ## Features
 

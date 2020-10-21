@@ -15,6 +15,7 @@ It is designed with the following principles in mind:
 
 1. Windows
 2. Mac
+3. Linux
 
 
 ## Features
