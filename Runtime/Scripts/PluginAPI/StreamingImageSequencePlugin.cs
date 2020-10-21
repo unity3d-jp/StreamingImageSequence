@@ -18,14 +18,10 @@ namespace Unity.StreamingImageSequence {
             OnImageUnloaded?.Invoke(imagePath);
         }
         
-
-//only support Windows and OSX
-#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-
+//----------------------------------------------------------------------------------------------------------------------
 
         private const string SIS_DLL = "StreamingImageSequence";
 
-        // Implemented in Loader dll
         [DllImport(SIS_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         internal static extern bool LoadAndAllocFullImage([MarshalAs(UnmanagedType.LPStr)]string fileName, int frame);
 
@@ -61,10 +57,6 @@ namespace Unity.StreamingImageSequence {
 
         [DllImport(SIS_DLL, CharSet = CharSet.Unicode, ExactSpelling = true)]
         internal static extern void ResetImageLoadOrder();
-
-        
-#endif //UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_EDITOR_OSX || UNITY_STANDALONE_OSX
-
 
 
        
