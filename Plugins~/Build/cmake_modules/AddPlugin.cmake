@@ -14,8 +14,13 @@ function(add_plugin name)
         add_library(${name} MODULE ${arg_SOURCES})
         set_target_properties(${name} PROPERTIES BUNDLE ON)
     else()
-        add_library(${name} SHARED ${arg_SOURCES})
-        set_target_properties(${name} PROPERTIES PREFIX "")
+        add_library(${name} STATIC ${arg_SOURCES})
+        set_property(TARGET ${name} APPEND PROPERTY PREFIX "")
+
+        # fPIC required to build shared libraries on Linux
+        if (LINUX)
+            set_property(TARGET ${name} APPEND PROPERTY POSITION_INDEPENDENT_CODE ON)
+        endif()
     endif()
 
     # Don't deploy if we are building unit tests
