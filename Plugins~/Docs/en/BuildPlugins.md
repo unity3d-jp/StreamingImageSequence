@@ -92,8 +92,7 @@ $ cmake .. -DCMAKE_BUILD_TYPE=Release && cmake --build .
     ``` 
     $ cd StreamingImageSequence\Plugins~\Build 
     $ cmake -G "Visual Studio 16 2019" -A x64 .. -DBUILD_UNIT_TESTS=ON
-    $ msbuild StreamingImageSequencePlugin.sln /t:Build /p:Configuration=Release /p:Platform=x64 /m /nologo
-    $ ctest -C Release
+    $ msbuild StreamingImageSequencePlugin.sln /t:Build /p:Configuration=Release /p:Platform=x64 /m /nologo && ctest -C Release --verbose
     ```
 ### Unit Tests (Mac) 
 
@@ -113,8 +112,7 @@ $ cmake .. -DCMAKE_BUILD_TYPE=Release && cmake --build .
     ``` 
     $ cd StreamingImageSequence\Plugins~\Build 
     $ cmake -GXcode .. -DBUILD_UNIT_TESTS=ON
-    $ xcodebuild -scheme ALL_BUILD -configuration Release build
-    $ ctest -C Release
+    $ xcodebuild -scheme ALL_BUILD -configuration Release build && ctest -C Release --verbose
     ```
 
 ### Unit Tests (Linux) 
@@ -132,8 +130,7 @@ $ cmake .. -DCMAKE_BUILD_TYPE=Release && cmake --build .
     ``` 
     $ cd StreamingImageSequence\Plugins~\Build 
     $ cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_UNIT_TESTS=ON 
-    $ cmake --build . 
-    $ ctest -C Release
+    $ cmake --build . && ctest -C Release --verbose
     ```
 
 
