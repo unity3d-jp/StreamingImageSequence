@@ -70,4 +70,8 @@ if(APPLE)
     
 endif()    
 
+if(DEFINED MAX_IMAGE_MEMORY)
+    target_compile_definitions(StreamingImageSequenceTest PRIVATE MAX_IMAGE_MEMORY=${MAX_IMAGE_MEMORY}) 
+endif()
+
 

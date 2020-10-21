@@ -71,6 +71,7 @@ if(BUILD_UNIT_TESTS)
     enable_testing()
     add_subdirectory(${tests_root}/CommonLib)
     add_subdirectory(${tests_root}/StreamingImageSequence)
+    SET(MAX_IMAGE_MEMORY  104857600 CACHE INTERNAL "Max Image Memory") # 100 MB limit
 endif()
 
 

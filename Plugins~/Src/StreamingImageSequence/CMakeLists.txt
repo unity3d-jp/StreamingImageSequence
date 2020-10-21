@@ -37,6 +37,6 @@ target_link_libraries( StreamingImageSequence
     ${CORE_GRAPHICS_LIBRARY}
 )
 
-if(BUILD_UNIT_TESTS)
-    target_compile_definitions(StreamingImageSequence PUBLIC MAX_IMAGE_MEMORY=104857600) # 100 MB limit
+if(DEFINED MAX_IMAGE_MEMORY)
+    target_compile_definitions(StreamingImageSequence PRIVATE MAX_IMAGE_MEMORY=${MAX_IMAGE_MEMORY}) 
 endif()
