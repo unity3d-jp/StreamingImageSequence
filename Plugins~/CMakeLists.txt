@@ -60,11 +60,6 @@ endif()
 add_definitions(-DUNICODE -D_UNICODE)
 
 
-
-#Specify available modules
-add_subdirectory(${src_root}/CommonLib)
-add_subdirectory(${src_root}/StreamingImageSequence)
-
 # Tests
 if(BUILD_UNIT_TESTS)
     SET(MAX_IMAGE_MEMORY "104857600" CACHE STRING "Max Image Memory") # 100 MB limit
@@ -76,4 +71,7 @@ if(BUILD_UNIT_TESTS)
 endif()
 
 
+#Specify available modules
+add_subdirectory(${src_root}/CommonLib)
+add_subdirectory(${src_root}/StreamingImageSequence)
 
