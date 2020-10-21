@@ -15,6 +15,7 @@ target_include_directories(StreamingImageSequenceTest PRIVATE
   
 list(APPEND libs 
     CommonLib
+    StreamingImageSequence
     ${GTEST_BOTH_LIBRARIES}
     ${COCOA_LIBRARY}
 )
