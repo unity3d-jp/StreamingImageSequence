@@ -2,6 +2,7 @@
 
 1. [Windows](#building-on-windows)
 1. [Mac OSX](#building-on-mac-osx)
+1. [Linux](#building-on-linux)
 1. [Running Unit Tests](#running-unit-tests)
 
 
@@ -56,6 +57,18 @@ $ git clone https://github.com/unity3d-jp/StreamingImageSequence.git
 $ cd StreamingImageSequence/Plugins~/Build 
 $ cmake -GXcode ..
 $ xcodebuild -scheme ALL_BUILD -configuration Release build
+```
+
+## Building on Linux 
+
+### Build Steps (Linux)
+
+Open a terminal and execute the following
+
+``` 
+$ git clone https://github.com/unity3d-jp/StreamingImageSequence.git
+$ cd StreamingImageSequence/Plugins~/Build 
+$ cmake .. -DCMAKE_BUILD_TYPE=Release && cmake --build . 
 ```
 
 ## Running Unit Tests
