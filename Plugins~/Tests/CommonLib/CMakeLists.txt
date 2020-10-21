@@ -11,11 +11,17 @@ target_include_directories(CommonLibTest PRIVATE
     ${GTEST_INCLUDE_DIRS}    
 )
                
-target_link_libraries(CommonLibTest 
+list(APPEND libs 
     CommonLib
     ${GTEST_BOTH_LIBRARIES}
     ${COCOA_LIBRARY}
-)  
+)
+
+if(LINUX)
+    list(APPEND libs pthread)
+endif()
+
+target_link_libraries(CommonLibTest ${libs})
   
 
 add_test(NAME CommonLibTest COMMAND CommonLibTest)

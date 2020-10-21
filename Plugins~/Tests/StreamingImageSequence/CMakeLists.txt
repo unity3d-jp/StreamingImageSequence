@@ -12,13 +12,19 @@ target_include_directories(StreamingImageSequenceTest PRIVATE
     "${SRC_ROOT}"
     "${GTEST_INCLUDE_DIRS}"    
 )
-               
-target_link_libraries(StreamingImageSequenceTest 
-    StreamingImageSequence
+  
+list(APPEND libs 
+    CommonLib
     ${GTEST_BOTH_LIBRARIES}
     ${COCOA_LIBRARY}
-)  
-  
+)
+
+if(LINUX)
+    list(APPEND libs pthread)
+endif()
+
+             
+target_link_libraries(StreamingImageSequenceTest ${libs})  
 
 add_test(NAME StreamingImageSequenceTest COMMAND StreamingImageSequenceTest)
 
