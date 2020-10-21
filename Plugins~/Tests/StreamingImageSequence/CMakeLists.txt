@@ -27,8 +27,9 @@ endif()
              
 target_link_libraries(StreamingImageSequenceTest ${libs})  
 
-add_test(NAME StreamingImageSequenceTest COMMAND StreamingImageSequenceTest)
-
+add_test(NAME StreamingImageSequenceTest 
+         COMMAND StreamingImageSequenceTest 
+         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 # Copy test data
 set(num_test_images 100)
