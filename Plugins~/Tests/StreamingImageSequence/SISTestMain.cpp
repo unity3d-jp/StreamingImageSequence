@@ -80,20 +80,21 @@ TEST(Loader, LoadInvalidImageTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
+    //load initial files for preparation
     int curFrame = 0;
     const uint32_t numImages = 10;
     const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
     const bool processed = TestUtility::LoadTestImages(imageType, curFrame, 0, numImages);
     ASSERT_EQ(true, processed);
-
     bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, numImages, READ_STATUS_SUCCESS);
     ASSERT_EQ(true, readSuccessful) << "Loading image failed";
 
+    //load invalid images
     ++curFrame;
-    bool invalidReadSuccessful = TestUtility::LoadInvalidTestPNGImage(curFrame);
-    ASSERT_EQ(false, invalidReadSuccessful);
-    invalidReadSuccessful = TestUtility::LoadInvalidTestTGAImage(curFrame);
-    ASSERT_EQ(false, invalidReadSuccessful);
+    readSuccessful = TestUtility::LoadInvalidTestPNGImage(curFrame);
+    ASSERT_EQ(false, readSuccessful);
+    readSuccessful= TestUtility::LoadInvalidTestTGAImage(curFrame);
+    ASSERT_EQ(false, readSuccessful);
 
     //make sure the previously loaded images are still loaded
     readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, numImages, READ_STATUS_SUCCESS);
@@ -110,16 +111,31 @@ TEST(Loader, LoadInvalidImageTest) {
 
 TEST(Loader, LoadUnvailableImageTest) {
     using namespace StreamingImageSequencePlugin;
+    ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
-    const int curFrame = 0;
+    //load initial files for preparation
+    int curFrame = 0;
+    const uint32_t numImages = 10;
+    const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
+    const bool processed = TestUtility::LoadTestImages(imageType, curFrame, 0, numImages);
+    ASSERT_EQ(true, processed);
+    bool readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, numImages, READ_STATUS_SUCCESS);
+    ASSERT_EQ(true, readSuccessful) << "Loading image failed";
+
+    //load unavailable images
+    ++curFrame;
     const char* imagePath = "ThisFileDoesNotExist.png";
-    bool readSuccessful = TestUtility::LoadImage(imagePath, CRITICAL_SECTION_TYPE_FULL_IMAGE, curFrame);
+    readSuccessful = TestUtility::LoadImage(imagePath, CRITICAL_SECTION_TYPE_FULL_IMAGE, curFrame);
     ASSERT_EQ(false, readSuccessful);
     readSuccessful = TestUtility::LoadImage(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, curFrame);
     ASSERT_EQ(false, readSuccessful);
 
-    ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
-    ASSERT_EQ(imageCatalog.GetUsedMemory(), 0);
+
+    //make sure the previously loaded images are still loaded
+    readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 0, numImages, READ_STATUS_SUCCESS);
+    ASSERT_EQ(true, readSuccessful) << "Loaded images were unloaded";
+
+    ASSERT_GT(imageCatalog.GetUsedMemory(), 0);
 
     //Unload
     UnloadAllImages();
