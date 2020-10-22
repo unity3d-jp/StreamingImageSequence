@@ -13,6 +13,7 @@ public:
     static bool LoadAndUnloadTestFullTGAImage();
     static bool LoadInvalidTestPNGImage(const int frame);
     static bool LoadInvalidTestTGAImage(const int frame);
+    static bool LoadImage(const char* imagePath, const uint32_t imageType, const int frame);
 
     static bool CheckLoadedTestImageData(const uint32_t imageType, const int frame, const uint32_t start, 
         const uint32_t numImages, const StreamingImageSequencePlugin::ReadStatus reqReadStatus);
@@ -31,7 +32,8 @@ public:
 
 private:
 
-    static bool LoadFullImage(const char* imagePath, const int frame);
+    typedef bool (*LoadImageFunctionPtr)(const char*, const int);
+    static LoadImageFunctionPtr GetLoadImageFunction(const uint32_t imageType);
 
 };
 
