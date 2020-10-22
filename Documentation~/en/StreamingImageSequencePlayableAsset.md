@@ -5,10 +5,10 @@ A playable asset for playing sequential image sequences in Unity Timeline.
 # Supported Image Formats
 
 
-|             | Windows            | Mac                |
-| ----------- | ------------------ | ------------------ |
-| png         | :white_check_mark: | :white_check_mark: |    
-| tga         | :white_check_mark: | :white_check_mark: |
+|             | Windows            | Mac                | Linux              |
+| ----------- | ------------------ | ------------------ | ------------------ |
+| png         | :white_check_mark: | :white_check_mark: | :white_check_mark: |       
+| tga         | :white_check_mark: | :white_check_mark: | :white_check_mark: |    
 
 
 # Tutorial 

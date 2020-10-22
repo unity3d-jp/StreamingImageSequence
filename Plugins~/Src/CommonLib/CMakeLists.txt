@@ -14,6 +14,10 @@ set(plugins_dir "${src_root}/../../Runtime/Plugins/${PLATFORM}")
 
 # setup as a library
 add_library(CommonLib STATIC ${sources})
+if (LINUX)
+    set_property(TARGET CommonLib PROPERTY POSITION_INDEPENDENT_CODE ON)
+endif()
+    
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${sources})
 
 #Include, pch

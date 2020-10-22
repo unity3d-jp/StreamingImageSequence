@@ -14,8 +14,11 @@
 
 #endif // _WIN32
 
-#include <cstdint> //uint64_t
-#include <unordered_map> //std::unordered_map
+#include <cstdint>          //uint64_t
+#include <cstring>          //std::memcpy
+#include <math.h>           //acos
+#include <unordered_map>    //std::unordered_map
+
 
 #endif // STDAFX_H
 

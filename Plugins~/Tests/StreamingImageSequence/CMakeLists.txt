@@ -12,16 +12,24 @@ target_include_directories(StreamingImageSequenceTest PRIVATE
     "${SRC_ROOT}"
     "${GTEST_INCLUDE_DIRS}"    
 )
-               
-target_link_libraries(StreamingImageSequenceTest 
+  
+list(APPEND libs 
+    CommonLib
     StreamingImageSequence
     ${GTEST_BOTH_LIBRARIES}
     ${COCOA_LIBRARY}
-)  
-  
+)
 
-add_test(NAME StreamingImageSequenceTest COMMAND StreamingImageSequenceTest)
+if(LINUX)
+    list(APPEND libs pthread)
+endif()
 
+             
+target_link_libraries(StreamingImageSequenceTest ${libs})  
+
+add_test(NAME StreamingImageSequenceTest 
+         COMMAND StreamingImageSequenceTest 
+         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 
 # Copy test data
 set(num_test_images 100)
@@ -63,5 +71,9 @@ if(APPLE)
     
     
 endif()    
+
+if(DEFINED MAX_IMAGE_MEMORY)
+    target_compile_definitions(StreamingImageSequenceTest PRIVATE MAX_IMAGE_MEMORY=${MAX_IMAGE_MEMORY}) 
+endif()
 
 

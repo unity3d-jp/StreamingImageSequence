@@ -2,6 +2,7 @@
 
 1. [Windows](#building-on-windows)
 1. [Mac OSX](#building-on-mac-osx)
+1. [Linux](#building-on-linux)
 1. [Running Unit Tests](#running-unit-tests)
 
 
@@ -58,12 +59,24 @@ $ cmake -GXcode ..
 $ xcodebuild -scheme ALL_BUILD -configuration Release build
 ```
 
+## Building on Linux 
+
+### Build Steps (Linux)
+
+Open a terminal and execute the following
+
+``` 
+$ git clone https://github.com/unity3d-jp/StreamingImageSequence.git
+$ cd StreamingImageSequence/Plugins~/Build 
+$ cmake .. -DCMAKE_BUILD_TYPE=Release && cmake --build . 
+```
+
 ## Running Unit Tests
 
 ### Unit Tests (Windows) 
 
 1. Download [GoogleTest](https://github.com/google/googletest/releases)
-1. Starting "Developer Command Prompt for VS 2019" **as administrator** 
+1. Start "Developer Command Prompt for VS 2019" **as administrator** 
 3. Execute the following inside the GoogleTest source directory.
     ``` 
     $ mkdir Build
@@ -79,13 +92,12 @@ $ xcodebuild -scheme ALL_BUILD -configuration Release build
     ``` 
     $ cd StreamingImageSequence\Plugins~\Build 
     $ cmake -G "Visual Studio 16 2019" -A x64 .. -DBUILD_UNIT_TESTS=ON
-    $ msbuild StreamingImageSequencePlugin.sln /t:Build /p:Configuration=Release /p:Platform=x64 /m /nologo
-    $ ctest -C Release
+    $ msbuild StreamingImageSequencePlugin.sln /t:Build /p:Configuration=Release /p:Platform=x64 /m /nologo && ctest -C Release --verbose
     ```
 ### Unit Tests (Mac) 
 
 1. Download [GoogleTest](https://github.com/google/googletest/releases)
-1. Starting "Developer Command Prompt for VS 2019" **as administrator** 
+1. Open a terminal 
 3. Execute the following inside the GoogleTest source directory.
     ``` 
     $ mkdir Build
@@ -100,11 +112,26 @@ $ xcodebuild -scheme ALL_BUILD -configuration Release build
     ``` 
     $ cd StreamingImageSequence\Plugins~\Build 
     $ cmake -GXcode .. -DBUILD_UNIT_TESTS=ON
-    $ xcodebuild -scheme ALL_BUILD -configuration Release build
-    $ ctest -C Release
+    $ xcodebuild -scheme ALL_BUILD -configuration Release build && ctest -C Release --verbose
     ```
 
+### Unit Tests (Linux) 
 
+1. Open terminal 
+3. Execute the following inside the GoogleTest source directory.
+    ``` 
+    $ mkdir Build
+    $ cd Build
+    $ cmake .. && cmake --build .
+    $ sudo cmake -DBUILD_TYPE=Debug -P cmake_install.cmake
+    $ sudo cmake -DBUILD_TYPE=Release -P cmake_install.cmake
+    ```
+1. Go inside the plugin folder of StreamingImageSequence and execute the following:
+    ``` 
+    $ cd StreamingImageSequence\Plugins~\Build 
+    $ cmake .. -DCMAKE_BUILD_TYPE=Release -DBUILD_UNIT_TESTS=ON 
+    $ cmake --build . && ctest -C Release --verbose
+    ```
 
 
 

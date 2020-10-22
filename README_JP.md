@@ -45,6 +45,7 @@ Streaming Image Sequence は現在プレビューパッケージとして存在�
 
 1. Windows
 2. Mac
+3. Linux
 
 ## 機能
 

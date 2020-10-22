@@ -16,7 +16,6 @@
 *.opendb
 
 *.exe
-*.so
 *.unitypackage
 
 */Builds/**

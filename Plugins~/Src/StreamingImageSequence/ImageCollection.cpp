@@ -465,7 +465,8 @@ ReadStatus ImageCollection::LoadImageIntoUnsafe(const strType& imagePath, ImageD
         *targetImageData = ImageData(data, width, height, READ_STATUS_SUCCESS);
         targetImageData->Format = IMAGE_FORMAT_RGBA32;
     } else {
-        if (0 == strcmp(stbi_failure_reason(),"outofmem")) {
+        const char* failureReason = stbi_failure_reason();
+        if (nullptr!=failureReason && 0 == strcmp(failureReason,"outofmem")) {
             targetImageData->CurrentReadStatus = READ_STATUS_OUT_OF_MEMORY;
         } else {
             targetImageData->CurrentReadStatus = READ_STATUS_FAIL;

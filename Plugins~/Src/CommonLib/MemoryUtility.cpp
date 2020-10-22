@@ -47,6 +47,7 @@ float MemoryUtility::GetAvailableRAMRatio() {
     return availableRAM;
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 #elif OSX
 
 uint64_t MemoryUtility::GetTotalRAM() {
@@ -117,6 +118,7 @@ float MemoryUtility::GetAvailableRAMRatio() {
     return availableRAMRatio;
 }
 
+//----------------------------------------------------------------------------------------------------------------------
 #else
 
 uint64_t MemoryUtility::GetTotalRAM() {
@@ -145,9 +147,9 @@ uint64_t MemoryUtility::GetAvailableRAM() {
 
     uint64_t availableRAM = memInfo.freeram;
     availableRAM *= memInfo.mem_unit;
-    return 0;
-
+    return availableRAM;
 }
+
 float MemoryUtility::GetUsedRAMRatio() {
     struct sysinfo memInfo;
     sysinfo (&memInfo);
