@@ -39,38 +39,54 @@ namespace Unity.StreamingImageSequence.Tests {
             Assert.IsTrue(File.Exists(fullPath));
 
             //Loading preview type would also load the full type
-            const int IMAGE_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW;
-
-            ImageLoader.GetImageDataInto(fullPath, IMAGE_TYPE, out ImageData readResult );
-            Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_UNAVAILABLE, readResult.ReadStatus, 
-                "Texture is already or currently being loaded"
-            );
+            const int IMAGE_TYPE = C.IMAGE_TYPE_PREVIEW;
+            AssertReadStatus(fullPath, IMAGE_TYPE,  C.READ_STATUS_UNAVAILABLE, "Texture is already available ?");
 
             const int WIDTH = 256;
             const int HEIGHT= 128;
             ImageLoader.RequestLoadPreviewImage(fullPath, WIDTH, HEIGHT);
             yield return new WaitForSeconds(LOAD_TIMEOUT);
 
-            ImageLoader.GetImageDataInto(fullPath,IMAGE_TYPE, out readResult );
-            Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_SUCCESS, readResult.ReadStatus, 
-                "Loading texture is not successful."
-            );
-            Assert.AreEqual(WIDTH, readResult.Width );
-            Assert.AreEqual(HEIGHT, readResult.Height);
+            ImageData r = AssertReadStatus(fullPath, IMAGE_TYPE,  C.READ_STATUS_SUCCESS, "Loading texture is not successful.");
+            
+            Assert.AreEqual(WIDTH, r.Width );
+            Assert.AreEqual(HEIGHT, r.Height);
 
             ResetAndAssert(fullPath, IMAGE_TYPE);
         }
 
 //----------------------------------------------------------------------------------------------------------------------
+        [UnityTest]
+        public IEnumerator LoadUnavailableImages() {
+            
+            EditorUpdateManager.ResetImageLoading();
+            const string PKG_PATH = "ThisImageDoesNotExist.png";
+            string       fullPath = Path.GetFullPath(PKG_PATH);
+            Assert.IsFalse(File.Exists(fullPath));
+
+            ImageLoader.RequestLoadFullImage(fullPath);                                
+            yield return new WaitForSeconds(LOAD_TIMEOUT);
+            ImageLoader.RequestLoadPreviewImage(fullPath, /*width= */256 , /* height= */ 128);
+            yield return new WaitForSeconds(LOAD_TIMEOUT);
+
+            AssertReadStatus(fullPath, C.IMAGE_TYPE_FULL,    C.READ_STATUS_FAIL, "Unavailable texture was loaded.");
+            AssertReadStatus(fullPath, C.IMAGE_TYPE_PREVIEW, C.READ_STATUS_UNAVAILABLE, 
+                "The preview was loaded even though the full version failed.");
+
+            ResetAndAssert(fullPath, C.IMAGE_TYPE_PREVIEW);
+            ResetAndAssert(fullPath, C.IMAGE_TYPE_FULL);
+        }
+        
+//----------------------------------------------------------------------------------------------------------------------
 
         //Check that this image is not loaded yet, except for a particular texture type
         void AssertUnloaded(string fullPath, int exceptionTexType) {
             //Check that we are not affecting the other image types
-            for (int texType = 0; texType < StreamingImageSequenceConstants.MAX_IMAGE_TYPES;++texType) {
+            for (int texType = 0; texType < C.MAX_IMAGE_TYPES;++texType) {
                 if (texType == exceptionTexType)
                     continue;
                 ImageLoader.GetImageDataInto(fullPath, texType, out ImageData otherReadResult);
-                Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_UNAVAILABLE, otherReadResult.ReadStatus, 
+                Assert.AreEqual(C.READ_STATUS_UNAVAILABLE, otherReadResult.ReadStatus, 
                     "AssertUnloaded()"
                 );
             }
