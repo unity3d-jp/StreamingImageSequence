@@ -9,7 +9,8 @@ using UnityEditor;
 namespace Unity.StreamingImageSequence.Editor {
 
 [CustomTimelineEditor(typeof(StreamingImageSequencePlayableAsset)), UsedImplicitly]
-internal class StreamingImageSequencePlayableAssetEditor : ClipEditor {
+internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAssetEditor<StreamingImageSequencePlayableAsset> 
+{
     private const string NO_FOLDER_ASSIGNED_ERROR = "No Folder assigned";
     private const string FOLDER_MISSING_ERROR = "Assigned folder does not exist.";
     private const string NO_PICTURES_ASSIGNED_ERROR = "No Pictures assigned";
@@ -102,58 +103,11 @@ internal class StreamingImageSequencePlayableAssetEditor : ClipEditor {
         ImageSequenceImporter.ImportImages(path, playableAsset, ASK_TO_COPY);
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-    /// <inheritdoc/>
-    public override void OnClipChanged(TimelineClip clip) {
-        base.OnClipChanged(clip);
-                    
-        StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
-        Assert.IsNotNull(sisAsset);
-        sisAsset.RefreshPlayableFrames();            
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-
-    /// <inheritdoc/>
-    public override void DrawBackground(TimelineClip clip, ClipBackgroundRegion region) {
-        base.DrawBackground(clip, region);
-        
-        Rect rect = region.position;
-        if (rect.width <= SISEditorConstants.MIN_PREVIEW_REGION_WIDTH)
-            return;
-
-        StreamingImageSequencePlayableAsset curAsset = clip.asset as StreamingImageSequencePlayableAsset;
-        if (null == curAsset || curAsset.GetNumImages() <=0)
-            return;
-
-        
-        if (Event.current.type == EventType.Repaint) {
-            PreviewClipInfo clipInfo = new PreviewClipInfo() {
-                Duration = clip.duration,
-                TimeScale = clip.timeScale,
-                ClipIn = clip.clipIn,
-                FramePerSecond = clip.parentTrack.timelineAsset.editorSettings.fps,
-                ImageDimensionRatio = curAsset.GetOrUpdateDimensionRatio(),
-                VisibleLocalStartTime =  region.startTime,
-                VisibleLocalEndTime   = region.endTime,
-                VisibleRect = rect,
-            };
-            
-            PreviewUtility.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
-                DrawPreviewImage(ref drawInfo, clip, curAsset);
-            });
-            
-            //For hiding frame marker automatically
-            TimelineClipSISData timelineClipSISData = curAsset.GetBoundTimelineClipSISData();
-            if (null != timelineClipSISData) {                
-                timelineClipSISData.UpdateTimelineWidthPerFrame(rect.width, region.endTime-region.startTime, 
-                    clipInfo.FramePerSecond, clipInfo.TimeScale);
-            }                                
-        }
-    }
     
 //----------------------------------------------------------------------------------------------------------------------
-    void DrawPreviewImage(ref PreviewDrawInfo drawInfo, TimelineClip clip, StreamingImageSequencePlayableAsset sisAsset) {
+    protected override void DrawPreviewImageV(ref PreviewDrawInfo drawInfo, TimelineClip clip, 
+        StreamingImageSequencePlayableAsset sisAsset) 
+    {
         int imageIndex = sisAsset.LocalTimeToImageIndex(clip, drawInfo.LocalTime);       
         string imagePath = sisAsset.GetImageFilePath(imageIndex);
         PreviewUtility.DrawPreviewImage(ref drawInfo, imagePath);

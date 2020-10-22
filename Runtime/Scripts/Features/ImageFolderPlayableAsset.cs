@@ -104,6 +104,10 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     internal System.Collections.IList GetImageFileNamesNonGeneric() { return m_imageFiles; }
 
 
+    internal void  SetTimelineBGColor(Color color) { m_timelineBGColor = color; }
+    internal Color GetTimelineBGColor()            { return m_timelineBGColor; }
+
+    
 //----------------------------------------------------------------------------------------------------------------------
 
     [CanBeNull]
@@ -243,6 +247,8 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
     
     [HideInInspector][SerializeField] protected List<WatchedFileInfo> m_imageFiles = null; //store file names, not paths
 
+    [HideInInspector][SerializeField] private Color m_timelineBGColor = Color.gray;
+    
 //----------------------------------------------------------------------------------------------------------------------    
     private float             m_dimensionRatio = 0;
     private ImageDimensionInt m_resolution;

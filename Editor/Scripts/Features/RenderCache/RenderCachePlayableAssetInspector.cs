@@ -101,15 +101,16 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_UPDATE_RENDER_CACHE);            
         
         GUILayout.Space(15);
-        using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {            
+        using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
+            EditorGUILayout.LabelField("Background Colors");
+            ++EditorGUI.indentLevel;
             Color updateBGColor = m_asset.GetUpdateBGColor();
             Color timelineBgColor = m_asset.GetTimelineBGColor();
-            m_asset.SetUpdateBGColor(EditorGUILayout.ColorField("Update Background Color", updateBGColor));
-            m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("Timeline Background Color", timelineBgColor));
+            m_asset.SetUpdateBGColor(EditorGUILayout.ColorField("When updating", updateBGColor));
+            m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("In Timeline Window", timelineBgColor));
+            --EditorGUI.indentLevel;
+            GUILayout.Space(15);
         }
-
-        GUILayout.Space(15);
-        
         
         if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {
             
