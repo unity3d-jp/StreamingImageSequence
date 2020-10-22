@@ -9,7 +9,8 @@ using UnityEditor;
 namespace Unity.StreamingImageSequence.Editor {
 
 [CustomTimelineEditor(typeof(StreamingImageSequencePlayableAsset)), UsedImplicitly]
-internal class StreamingImageSequencePlayableAssetEditor : ClipEditor {
+internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAssetEditor<StreamingImageSequencePlayableAsset> 
+{
     private const string NO_FOLDER_ASSIGNED_ERROR = "No Folder assigned";
     private const string FOLDER_MISSING_ERROR = "Assigned folder does not exist.";
     private const string NO_PICTURES_ASSIGNED_ERROR = "No Pictures assigned";

@@ -7,7 +7,8 @@ using UnityEngine.Assertions;
 namespace Unity.StreamingImageSequence.Editor {
 
 [CustomTimelineEditor(typeof(RenderCachePlayableAsset)), UsedImplicitly]
-internal class RenderCachePlayableAssetEditor : ClipEditor {
+internal class RenderCachePlayableAssetEditor : ImageFolderPlayableAssetEditor<RenderCachePlayableAsset> 
+{
 
 
 //----------------------------------------------------------------------------------------------------------------------
