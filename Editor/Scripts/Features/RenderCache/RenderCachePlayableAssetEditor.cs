@@ -38,7 +38,7 @@ internal class RenderCachePlayableAssetEditor : ImageFolderPlayableAssetEditor<R
         if (null == curAsset)
             return;
         
-        DrawBackground(rect, curAsset.GetTimelineBGColor());
+        DrawBackgroundTexture(rect, curAsset.GetTimelineBGColor());
 
         int numImages =curAsset.GetNumImages();        
         if (numImages <= 0) {
@@ -72,7 +72,7 @@ internal class RenderCachePlayableAssetEditor : ImageFolderPlayableAssetEditor<R
         }        
     }
 //----------------------------------------------------------------------------------------------------------------------
-    void DrawBackground(Rect rect, Color color) {
+    void DrawBackgroundTexture(Rect rect, Color color) {
         Texture2D bgTexture      = GetOrCreateBGTexture();
         bgTexture.SetPixelsWithColor(color);
         Graphics.DrawTexture(rect, bgTexture);
