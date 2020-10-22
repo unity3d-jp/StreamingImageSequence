@@ -103,45 +103,6 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
         ImageSequenceImporter.ImportImages(path, playableAsset, ASK_TO_COPY);
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-
-    /// <inheritdoc/>
-    public override void DrawBackground(TimelineClip clip, ClipBackgroundRegion region) {
-        base.DrawBackground(clip, region);
-        
-        Rect rect = region.position;
-        if (rect.width <= SISEditorConstants.MIN_PREVIEW_REGION_WIDTH)
-            return;
-
-        StreamingImageSequencePlayableAsset curAsset = clip.asset as StreamingImageSequencePlayableAsset;
-        if (null == curAsset || curAsset.GetNumImages() <=0)
-            return;
-
-        
-        if (Event.current.type == EventType.Repaint) {
-            PreviewClipInfo clipInfo = new PreviewClipInfo() {
-                Duration = clip.duration,
-                TimeScale = clip.timeScale,
-                ClipIn = clip.clipIn,
-                FramePerSecond = clip.parentTrack.timelineAsset.editorSettings.fps,
-                ImageDimensionRatio = curAsset.GetOrUpdateDimensionRatio(),
-                VisibleLocalStartTime =  region.startTime,
-                VisibleLocalEndTime   = region.endTime,
-                VisibleRect = rect,
-            };
-            
-            PreviewUtility.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
-                DrawPreviewImageV(ref drawInfo, clip, curAsset);
-            });
-            
-            //For hiding frame marker automatically
-            TimelineClipSISData timelineClipSISData = curAsset.GetBoundTimelineClipSISData();
-            if (null != timelineClipSISData) {                
-                timelineClipSISData.UpdateTimelineWidthPerFrame(rect.width, region.endTime-region.startTime, 
-                    clipInfo.FramePerSecond, clipInfo.TimeScale);
-            }                                
-        }
-    }
     
 //----------------------------------------------------------------------------------------------------------------------
     protected override void DrawPreviewImageV(ref PreviewDrawInfo drawInfo, TimelineClip clip, 
