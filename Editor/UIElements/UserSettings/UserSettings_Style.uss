@@ -20,21 +20,19 @@
 /*----------------------------------------------- Field Field--------------------------------------------------- */
 
 .field-container {
-    width: 400px;
-    -unity-font-style: normal;
-    font-size:  12px;
+    width: 500px;
     flex-direction: row;
     justify-content: space-between;
 }
-.field-container > Label {
-    -unity-font-style: normal;
-    font-size:  12px;
-    -unity-text-align: lower-left;
+
+.field-container > IntegerField  {
+    width: 393px;
+    -unity-text-align: middle-right;
 }
 
-.field-container > IntegerField {
-    width: 30px;
-    -unity-text-align: middle-right;
+.field-container > IntegerField > Label {
+    width: 333px;
+    -unity-text-align: lower-left;
 }
 
 /*----------------------------------------------- Slider Field--------------------------------------------------- */
