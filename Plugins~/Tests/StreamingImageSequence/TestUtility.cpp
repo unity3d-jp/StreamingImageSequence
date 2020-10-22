@@ -134,7 +134,7 @@ uint32_t TestUtility::CleanupAndLoadMaxImages(const uint32_t imageType) {
     bool readSuccessful = true;
 
     while (readSuccessful) {
-        bool processed = TestUtility::LoadTestImages(imageType, curFrame, startIdx, /*numImages= */1);
+        const bool processed = TestUtility::LoadTestImages(imageType, curFrame, startIdx, /*numImages= */1);
         ASSERT(true == processed);
 
         readSuccessful = TestUtility::CheckLoadedTestImageData(imageType, curFrame, 
