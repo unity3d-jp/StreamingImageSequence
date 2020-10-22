@@ -37,8 +37,6 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         if (null == m_asset)
             return;
         
-        EditorGUI.BeginChangeCheck();
-        serializedObject.Update();
         Undo.RecordObject(m_asset, "StreamingImageSequencePlayableAssetInspector::OnInspectorGUI");
 
         using (new EditorGUILayout.VerticalScope (GUI.skin.box))  {
@@ -94,26 +92,20 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                 DoImageGUI();
             }
         }
-        
-        if (null!= TimelineEditor.selectedClip) {
-            
 
-            GUILayout.Space(15);
-            //Frame markers
-            if (TimelineEditor.selectedClip.asset == m_asset) {
-                InspectorUtility.ShowFrameMarkersGUI(m_asset);
-            }
-            GUILayout.Space(15);
-            if (GUILayout.Button("Reset Curve (Not Undoable)")) {
-                //AnimationClip.SetCurve() doesn't seem to be undoable
-                StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(TimelineEditor.selectedClip);
-            }
-            
+        if (null == TimelineEditor.selectedClip) 
+            return;
+        
+        GUILayout.Space(15);
+        //Frame markers
+        if (TimelineEditor.selectedClip.asset == m_asset) {
+            InspectorUtility.ShowFrameMarkersGUI(m_asset);
         }
-        
-        serializedObject.ApplyModifiedProperties();
-        EditorGUI.EndChangeCheck();
-
+        GUILayout.Space(15);
+        if (GUILayout.Button("Reset Curve (Not Undoable)")) {
+            //AnimationClip.SetCurve() doesn't seem to be undoable
+            StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(TimelineEditor.selectedClip);
+        }
     }
 
 //----------------------------------------------------------------------------------------------------------------------
