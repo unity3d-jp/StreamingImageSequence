@@ -45,7 +45,7 @@ internal class SISUserSettingsProvider : SettingsProvider {
             SerializedObject maxMemoryForImagesSerializedObject = new SerializedObject(m_maxMemoryForImagesScriptableObject);
             
             //Max Memory Slider
-            VisualElement fieldContainer = UIElementsUtility.AddElement<VisualElement>(content, "field-container");
+            VisualElement fieldContainer = UIElementsUtility.AddElement<VisualElement>(content, /*className=*/"slider-field-container");            
             m_maxMemoryForImagesSliderInt = UIElementsUtility.AddField<SliderInt, int>(fieldContainer, Contents.MAX_MEMORY_FOR_IMAGES_MB,
                 maxImagesMemoryMB);
             

@@ -17,7 +17,7 @@
     margin-top: 15px;
 }
 
-.field-container {
+.slider-field-container {
     width: 480px;
     -unity-font-style: normal;
     font-size:  12px;
@@ -25,7 +25,7 @@
     
 }
 
-.field-container > SliderInt {
+.slider-field-container > SliderInt {
     width: 320px;
     
     -unity-font-style: normal;
@@ -34,13 +34,13 @@
 
 }
 
-.field-container > IntegerField {
+.slider-field-container > IntegerField {
     width: 60px;
     -unity-text-align: middle-right;
     
 }
 
-.field-container > Label {
+.slider-field-container > Label {
     -unity-font-style: normal;
     font-size:  12px;
     align-self: flex-end;
