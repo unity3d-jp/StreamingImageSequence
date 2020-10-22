@@ -104,16 +104,6 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    /// <inheritdoc/>
-    public override void OnClipChanged(TimelineClip clip) {
-        base.OnClipChanged(clip);
-                    
-        StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
-        Assert.IsNotNull(sisAsset);
-        sisAsset.RefreshPlayableFrames();            
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
 
     /// <inheritdoc/>
     public override void DrawBackground(TimelineClip clip, ClipBackgroundRegion region) {

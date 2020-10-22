@@ -23,18 +23,6 @@ internal class RenderCachePlayableAssetEditor : ImageFolderPlayableAssetEditor<R
         TimelineClipSISData sisData = new TimelineClipSISData(clip);        
         asset.BindTimelineClipSISData(sisData);
     }
-
-
-//----------------------------------------------------------------------------------------------------------------------
-    
-    /// <inheritdoc/>
-    public override void OnClipChanged(TimelineClip clip) {
-        base.OnClipChanged(clip);
-                        
-        RenderCachePlayableAsset renderCachePlayableAsset = clip.asset as RenderCachePlayableAsset;
-        Assert.IsNotNull(renderCachePlayableAsset);
-        renderCachePlayableAsset.RefreshPlayableFrames();            
-    }
     
 //----------------------------------------------------------------------------------------------------------------------
 
