@@ -16,20 +16,14 @@ namespace Unity.StreamingImageSequence.Tests {
             string fullPath = Path.GetFullPath(PKG_PATH);
             Assert.IsTrue(File.Exists(fullPath));
 
-            const int IMAGE_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
-
-            ImageLoader.GetImageDataInto(fullPath, IMAGE_TYPE, out ImageData readResult );
-            Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_UNAVAILABLE, readResult.ReadStatus, 
-                "Texture is already or currently being loaded"
-            );
+            const int IMAGE_TYPE = C.IMAGE_TYPE_FULL;
+            AssertReadStatus(fullPath, IMAGE_TYPE,  C.READ_STATUS_UNAVAILABLE, "Texture is already available ?");
 
             ImageLoader.RequestLoadFullImage(fullPath);                                
             yield return new WaitForSeconds(LOAD_TIMEOUT);
+
+            AssertReadStatus(fullPath, IMAGE_TYPE,  C.READ_STATUS_SUCCESS, "Loading texture is not successful.");
             
-            ImageLoader.GetImageDataInto(fullPath, IMAGE_TYPE, out readResult );
-            Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_SUCCESS, readResult.ReadStatus,
-                "Loading texture is not successful."
-            );
             
             AssertUnloaded(fullPath, IMAGE_TYPE);
             ResetAndAssert(fullPath, IMAGE_TYPE);
