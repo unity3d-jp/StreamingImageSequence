@@ -121,8 +121,11 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
             if (nullptr == fullImageData)
                 return nullptr;
 
-            if ((fullImageData->CurrentReadStatus == READ_STATUS_LOADING))
-                return fullImageData;
+            if (IsImageLoadError(fullImageData->CurrentReadStatus))
+                return nullptr;
+
+            if (fullImageData->CurrentReadStatus == READ_STATUS_LOADING)
+                return nullptr;
 
             {
                 CriticalSectionController cs(IMAGE_CS(CRITICAL_SECTION_TYPE_FULL_IMAGE));
@@ -135,10 +138,6 @@ const ImageData* LoaderUtility::LoadAndAllocImage(const strType& imagePath, cons
                     return previewImageData;
                 }
             }
-
-
-            //fail
-            return nullptr;
         }
         default: {
             return nullptr;
