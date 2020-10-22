@@ -131,7 +131,7 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
             };
             
             PreviewUtility.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
-                DrawPreviewImage(ref drawInfo, clip, curAsset);
+                DrawPreviewImageV(ref drawInfo, clip, curAsset);
             });
             
             //For hiding frame marker automatically
@@ -144,7 +144,9 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
     }
     
 //----------------------------------------------------------------------------------------------------------------------
-    void DrawPreviewImage(ref PreviewDrawInfo drawInfo, TimelineClip clip, StreamingImageSequencePlayableAsset sisAsset) {
+    protected override void DrawPreviewImageV(ref PreviewDrawInfo drawInfo, TimelineClip clip, 
+        StreamingImageSequencePlayableAsset sisAsset) 
+    {
         int imageIndex = sisAsset.LocalTimeToImageIndex(clip, drawInfo.LocalTime);       
         string imagePath = sisAsset.GetImageFilePath(imageIndex);
         PreviewUtility.DrawPreviewImage(ref drawInfo, imagePath);

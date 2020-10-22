@@ -58,7 +58,7 @@ internal class RenderCachePlayableAssetEditor : ImageFolderPlayableAssetEditor<R
             }; 
                 
             PreviewUtility.EnumeratePreviewImages(ref clipInfo, (PreviewDrawInfo drawInfo) => {
-                DrawPreviewImage(ref drawInfo, clip, curAsset);
+                DrawPreviewImageV(ref drawInfo, clip, curAsset);
             });
             
             //For hiding frame marker automatically
@@ -80,7 +80,7 @@ internal class RenderCachePlayableAssetEditor : ImageFolderPlayableAssetEditor<R
 
 //----------------------------------------------------------------------------------------------------------------------    
     
-    void DrawPreviewImage(ref PreviewDrawInfo drawInfo, TimelineClip clip, 
+    protected override void DrawPreviewImageV(ref PreviewDrawInfo drawInfo, TimelineClip clip, 
         RenderCachePlayableAsset renderCachePlayableAsset) 
     {        
         double        normalizedLocalTime = drawInfo.LocalTime / clip.duration;

@@ -15,6 +15,9 @@ internal abstract class ImageFolderPlayableAssetEditor<T> : ClipEditor where T: 
         imageFolderPlayableAsset.RefreshPlayableFrames();            
     }
 
+    protected abstract void DrawPreviewImageV(ref PreviewDrawInfo drawInfo, TimelineClip clip,
+        T playableAsset); 
+
 }
 
 }
