@@ -3,6 +3,7 @@ using System.Collections;
 using System.IO;
 using UnityEngine;
 using UnityEngine.TestTools;
+using C = Unity.StreamingImageSequence.StreamingImageSequenceConstants;
 
 namespace Unity.StreamingImageSequence.Tests {
     public class ImageLoadTest {
@@ -86,8 +87,15 @@ namespace Unity.StreamingImageSequence.Tests {
         void ResetAndAssert(string fullPath, int texType) {
             StreamingImageSequencePlugin.UnloadImageAndNotify(fullPath);
             ImageLoader.GetImageDataInto(fullPath, texType, out ImageData readResult);
-            Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_UNAVAILABLE, readResult.ReadStatus, "ResetAndAssert");
+            Assert.AreEqual(C.READ_STATUS_UNAVAILABLE, readResult.ReadStatus, "ResetAndAssert");
             Assert.AreEqual(0, StreamingImageSequencePlugin.GetUsedImagesMemory());
+        }
+
+        ImageData AssertReadStatus(string fullPath, int imageType, int requiredStatus, string assertMessage) {
+            ImageLoader.GetImageDataInto(fullPath,imageType, out ImageData readResult );
+            Assert.AreEqual(requiredStatus, readResult.ReadStatus, assertMessage);
+            return readResult;
+
         }
 
 //----------------------------------------------------------------------------------------------------------------------
