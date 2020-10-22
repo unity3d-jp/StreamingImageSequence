@@ -32,6 +32,8 @@ public:
 
 private:
 
+    typedef bool (*LoadImageFunctionPtr)(const char*, const int);
+    static LoadImageFunctionPtr GetLoadImageFunction(const uint32_t imageType);
 
 };
 

@@ -18,13 +18,7 @@ bool LoadTestPreviewImage(const charType* ptr, const int frame) {
 
 bool TestUtility::LoadTestImages(const uint32_t imageType, const int frame, const uint32_t start, const uint32_t numImages) 
 {
-    //setup func pointer to the actual API
-    bool (*loadFunc)(const char*, const int);
-    if (StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_FULL_IMAGE == imageType) {
-        loadFunc = &LoadAndAllocFullImage;
-    } else {
-        loadFunc = &LoadTestPreviewImage;
-    }
+    const LoadImageFunctionPtr loadFunc = GetLoadImageFunction(imageType);
 
     const uint32_t endIndex = start + numImages -1;
     ASSERT(endIndex < NUM_TEST_IMAGES);
@@ -71,9 +65,11 @@ bool TestUtility::LoadInvalidTestTGAImage(const int frame) {
 
 bool TestUtility::LoadImage(const char* imagePath, const uint32_t imageType, const int frame) {
 
+    const LoadImageFunctionPtr loadFunc = GetLoadImageFunction(imageType);
+
     using namespace StreamingImageSequencePlugin;
     const char* filePath = imagePath;
-    const bool loaded = LoadAndAllocFullImage(filePath,frame);
+    const bool loaded = loadFunc(filePath,frame);
     ImageData imageData;
     GetImageDataInto(filePath, imageType, frame, &imageData);
     return (nullptr != imageData.RawData);
@@ -176,4 +172,18 @@ std::unordered_map<strType, StreamingImageSequencePlugin::ImageData> TestUtility
     return curImageMap;
 }
 
+//----------------------------------------------------------------------------------------------------------------------
+TestUtility::LoadImageFunctionPtr TestUtility::GetLoadImageFunction(const uint32_t imageType) {
+    
+    TestUtility::LoadImageFunctionPtr loadFunc;
+    if (StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_FULL_IMAGE == imageType) {
+        loadFunc = &LoadAndAllocFullImage;
+    } else {
+        loadFunc = &LoadTestPreviewImage;
+    }
+
+    return loadFunc;
+}
+
 } //end namespace
+
