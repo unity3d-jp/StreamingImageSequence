@@ -35,11 +35,11 @@ internal class SISUserSettingsProvider : SettingsProvider {
             UIElementsEditorUtility.LoadAndAddStyle( root.styleSheets, SISEditorConstants.USER_SETTINGS_STYLE_PATH);			           
             VisualElement content = root.Query<VisualElement>("Content");
             Assert.IsNotNull(content);				
-            SISUserSettings userSettings = SISUserSettings.GetInstance();
 
-            //Prepare objects for binding
+            //Fields
             InitMaxMemoryForImagesField(content);
-
+            InitDefaultSISPlayableAssetFPSField(content);
+            
             m_activated = true;
 
         };
@@ -98,7 +98,25 @@ internal class SISUserSettingsProvider : SettingsProvider {
             userSettings.SetMaxImagesMemoryMB(evt.newValue);
             userSettings.SaveUserSettings();            
         });
+    }
+//----------------------------------------------------------------------------------------------------------------------
 
+    void InitDefaultSISPlayableAssetFPSField(VisualElement parent) {
+        //fps
+        VisualElement fieldContainer = UIElementsUtility.AddElement<VisualElement>(parent, /*className=*/"field-container");
+        SISUserSettings userSettings = SISUserSettings.GetInstance();
+        int defaultSISPlayableAssetFPS = userSettings.GetDefaultSISPlayableAssetFPS();
+
+        Label fpsLabel = new Label(Contents.DEFAULT_SIS_PLAYABLE_ASSET_FPS.text);
+        fpsLabel.tooltip = Contents.DEFAULT_SIS_PLAYABLE_ASSET_FPS.tooltip;
+        fieldContainer.Add(fpsLabel);
+        IntegerField defaultSISPlayableAssetFPSField = UIElementsUtility.AddField<IntegerField, int>(fieldContainer, 
+            null, defaultSISPlayableAssetFPS);
+        defaultSISPlayableAssetFPSField.RegisterValueChangedCallback((ChangeEvent<int> evt) => {
+            userSettings.SetDefaultSISPlayableAssetFPS(evt.newValue);
+            userSettings.SaveUserSettings();
+        });
+        
     }    
     
 
