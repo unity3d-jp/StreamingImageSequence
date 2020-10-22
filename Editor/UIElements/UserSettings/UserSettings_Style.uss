@@ -46,13 +46,4 @@
     align-self: flex-end;
 }
 
-/*---------------------------------------------- Footer ----------------------------------------------------- */
 
-.footer-container  {
-    height: 30px;
-    width: 480px;
-    justify-content: flex-end;
-    flex-direction: row;
-    margin-top: 30px;
-    flex-shrink: 0;
-}

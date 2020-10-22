@@ -39,13 +39,6 @@ internal class SISUserSettingsProvider : SettingsProvider {
             //Prepare objects for binding
             InitMaxMemoryForImagesField(content);
 
-            //Buttons setup
-            Button saveButton = root.Query<Button>("SaveButton");
-            saveButton.clicked += () => {
-                userSettings.SetMaxImagesMemoryMB(m_maxMemoryForImagesSliderInt.value);
-                userSettings.SaveUserSettings();
-            };
-
             m_activated = true;
 
         };
@@ -99,6 +92,11 @@ internal class SISUserSettingsProvider : SettingsProvider {
             
         Label sliderIntValuePostLabel = UIElementsUtility.AddElement<Label>(fieldContainer);            
         sliderIntValuePostLabel.text = "MB     ";
+
+        m_maxMemoryForImagesIntField.RegisterValueChangedCallback((ChangeEvent<int> evt) => {
+            userSettings.SetMaxImagesMemoryMB(evt.newValue);
+            userSettings.SaveUserSettings();            
+        });
 
     }    
     

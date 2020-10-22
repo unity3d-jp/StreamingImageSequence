@@ -6,9 +6,5 @@
 
         
     </VisualElement>
-
-    <VisualElement name="Buttons" class="footer-container">
-        <Button name="SaveButton" text="Save"/>
-    </VisualElement>
     
 </UXML>
