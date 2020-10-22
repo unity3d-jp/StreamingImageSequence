@@ -102,6 +102,17 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
             InspectorUtility.ShowFrameMarkersGUI(m_asset);
         }
         GUILayout.Space(15);
+        
+        using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
+            EditorGUILayout.LabelField("Background Colors");
+            ++EditorGUI.indentLevel;
+            Color timelineBgColor = m_asset.GetTimelineBGColor();
+            m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("In Timeline Window", timelineBgColor));
+            --EditorGUI.indentLevel;
+            GUILayout.Space(15);
+        }
+
+        
         if (GUILayout.Button("Reset Curve (Not Undoable)")) {
             //AnimationClip.SetCurve() doesn't seem to be undoable
             StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(TimelineEditor.selectedClip);
