@@ -107,16 +107,13 @@ internal class SISUserSettingsProvider : SettingsProvider {
         SISUserSettings userSettings = SISUserSettings.GetInstance();
         int defaultSISPlayableAssetFPS = userSettings.GetDefaultSISPlayableAssetFPS();
 
-        Label fpsLabel = new Label(Contents.DEFAULT_SIS_PLAYABLE_ASSET_FPS.text);
-        fpsLabel.tooltip = Contents.DEFAULT_SIS_PLAYABLE_ASSET_FPS.tooltip;
-        fieldContainer.Add(fpsLabel);
         IntegerField defaultSISPlayableAssetFPSField = UIElementsUtility.AddField<IntegerField, int>(fieldContainer, 
-            null, defaultSISPlayableAssetFPS);
+            Contents.DEFAULT_SIS_PLAYABLE_ASSET_FPS, defaultSISPlayableAssetFPS);
         defaultSISPlayableAssetFPSField.RegisterValueChangedCallback((ChangeEvent<int> evt) => {
             userSettings.SetDefaultSISPlayableAssetFPS(evt.newValue);
             userSettings.SaveUserSettings();
         });
-        
+
     }    
     
 
