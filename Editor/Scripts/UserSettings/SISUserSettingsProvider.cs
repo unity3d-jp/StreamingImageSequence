@@ -14,6 +14,7 @@ internal class SISUserSettingsProvider : SettingsProvider {
     // ReSharper disable once ClassNeverInstantiated.Local
     private class Contents {
         internal static readonly GUIContent MAX_MEMORY_FOR_IMAGES_MB = EditorGUIUtility.TrTextContent("Max Memory for Images ");
+        internal static readonly GUIContent DEFAULT_SIS_PLAYABLE_ASSET_FPS = EditorGUIUtility.TrTextContent("Default StreamingImageSequencePlayableAsset FPS");        
     }
         
 //----------------------------------------------------------------------------------------------------------------------	
