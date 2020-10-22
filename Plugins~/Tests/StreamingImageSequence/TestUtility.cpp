@@ -41,7 +41,7 @@ bool TestUtility::LoadTestImages(const uint32_t imageType, const int frame, cons
 
 bool TestUtility::LoadAndUnloadTestFullPNGImage() {
     const char* filePath = "PNGTestImage_0.png";
-    const bool loaded = LoadFullImage(filePath,0);
+    const bool loaded = LoadImage(filePath,StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_FULL_IMAGE, 0);
     if (!loaded)
         return false;
 
@@ -51,7 +51,7 @@ bool TestUtility::LoadAndUnloadTestFullPNGImage() {
 
 bool TestUtility::LoadAndUnloadTestFullTGAImage() {
     const char* filePath = "TGATestImage_0.tga";
-    const bool loaded = LoadFullImage(filePath,0);
+    const bool loaded = LoadImage(filePath,StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_FULL_IMAGE, 0);
     if (!loaded)
         return false;
 
@@ -60,11 +60,23 @@ bool TestUtility::LoadAndUnloadTestFullTGAImage() {
 }
 
 bool TestUtility::LoadInvalidTestPNGImage(const int frame) {
-    return LoadFullImage("InvalidTestImage.png", frame);
+    return LoadImage("InvalidTestImage.png", StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_FULL_IMAGE, frame);
 }
 
 bool TestUtility::LoadInvalidTestTGAImage(const int frame) {
-    return LoadFullImage("InvalidTestImage.tga", frame);
+    return LoadImage("InvalidTestImage.tga", StreamingImageSequencePlugin::CRITICAL_SECTION_TYPE_FULL_IMAGE, frame);
+}
+
+
+
+bool TestUtility::LoadImage(const char* imagePath, const uint32_t imageType, const int frame) {
+
+    using namespace StreamingImageSequencePlugin;
+    const char* filePath = imagePath;
+    const bool loaded = LoadAndAllocFullImage(filePath,frame);
+    ImageData imageData;
+    GetImageDataInto(filePath, imageType, frame, &imageData);
+    return (nullptr != imageData.RawData);
 }
 
 //----------------------------------------------------------------------------------------------------------------------
@@ -133,7 +145,6 @@ uint32_t TestUtility::CleanupAndLoadMaxImages(const uint32_t imageType) {
         ++startIdx;
     }    
 
-    ASSERT(processed);
     return startIdx;
 
 }
@@ -163,18 +174,6 @@ std::unordered_map<strType, StreamingImageSequencePlugin::ImageData> TestUtility
 
     //return a copy
     return curImageMap;
-}
-
-//----------------------------------------------------------------------------------------------------------------------
-
-bool TestUtility::LoadFullImage(const char* imagePath, const int frame) {
-
-    using namespace StreamingImageSequencePlugin;
-    const char* filePath = imagePath;
-    const bool loaded = LoadAndAllocFullImage(filePath,frame);
-    ImageData imageData;
-    GetImageDataInto(filePath, CRITICAL_SECTION_TYPE_FULL_IMAGE, frame, &imageData);
-    return (nullptr != imageData.RawData);
 }
 
 } //end namespace
