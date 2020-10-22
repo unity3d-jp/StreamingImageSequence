@@ -79,7 +79,7 @@ internal class SISUserSettings {
 
 
     [SerializeField] private int m_maxImagesMemoryMB = 65536;
-    [SerializeField] private int m_defaultSISPlayableAssetFPS = 8;
+    [SerializeField] private int m_defaultSISPlayableAssetFPS = 8; // 8fps (standard limited animation)
     // ReSharper disable once NotAccessedField.Local
     [SerializeField] private int m_classVersion = 2;
 
