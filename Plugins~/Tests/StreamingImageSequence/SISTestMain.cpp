@@ -108,6 +108,26 @@ TEST(Loader, LoadInvalidImageTest) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
+TEST(Loader, LoadUnvailableImageTest) {
+    using namespace StreamingImageSequencePlugin;
+
+    const int curFrame = 0;
+    const char* imagePath = "ThisFileDoesNotExist.png";
+    bool readSuccessful = TestUtility::LoadImage(imagePath, CRITICAL_SECTION_TYPE_FULL_IMAGE, curFrame);
+    ASSERT_EQ(false, readSuccessful);
+    readSuccessful = TestUtility::LoadImage(imagePath, CRITICAL_SECTION_TYPE_PREVIEW_IMAGE, curFrame);
+    ASSERT_EQ(false, readSuccessful);
+
+    ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
+    ASSERT_EQ(imageCatalog.GetUsedMemory(), 0);
+
+    //Unload
+    UnloadAllImages();
+    TestUtility::CheckMemoryCleanup();
+}
+
+//----------------------------------------------------------------------------------------------------------------------
+
 TEST(Loader, AutoUnloadUnusedImagesTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
