@@ -45,6 +45,17 @@ internal static class EditorTextures {
     
 //----------------------------------------------------------------------------------------------------------------------
 
+    internal static Texture2D GetOrCreatePreviewBGTexture() {
+        if (null != m_previewBGTexture)
+            return m_previewBGTexture;
+        
+        m_previewBGTexture           = new Texture2D(1,1, TextureFormat.ARGB32,false);
+        m_previewBGTexture.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
+        return m_previewBGTexture;
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+
     static void LoadTextures() {
         if (null == m_checkedTexture) {
             const string CHECKED_TEX_FULL_PATH = "Packages/com.unity.streaming-image-sequence/Editor/Textures/Checked.png";
@@ -67,10 +78,11 @@ internal static class EditorTextures {
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static Texture m_checkedTexture;
-    private static Texture m_inactiveCheckedTexture;
-    private static Texture m_lockTexture;
-    private static Texture m_folderTexture;
+    private static Texture   m_checkedTexture;
+    private static Texture   m_inactiveCheckedTexture;
+    private static Texture   m_lockTexture;
+    private static Texture   m_folderTexture;
+    private static Texture2D m_previewBGTexture = null;
 
 }
 

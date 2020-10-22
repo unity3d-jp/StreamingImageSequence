@@ -71,24 +71,13 @@ internal abstract class ImageFolderPlayableAssetEditor<T> : ClipEditor where T: 
 
 //----------------------------------------------------------------------------------------------------------------------
     void DrawBackgroundTexture(Rect rect, Color color) {
-        Texture2D bgTexture = GetOrCreateBGTexture();
+        Texture2D bgTexture = EditorTextures.GetOrCreatePreviewBGTexture();
         bgTexture.SetPixelsWithColor(color);
         Graphics.DrawTexture(rect, bgTexture);
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-
-    Texture2D GetOrCreateBGTexture() {
-        if (null != m_bgTexture)
-            return m_bgTexture;
-        
-        m_bgTexture           = new Texture2D(1,1, TextureFormat.ARGB32,false);
-        m_bgTexture.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
-        return m_bgTexture;
-    }
-//----------------------------------------------------------------------------------------------------------------------
     
-    private static Texture2D m_bgTexture = null;
     
 }
 
