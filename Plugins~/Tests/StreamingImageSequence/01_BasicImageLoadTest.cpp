@@ -15,7 +15,7 @@ namespace StreamingImageSequencePluginTest {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(BasicImageLoad, ResetPluginTest) {
+TEST(_01_BasicImageLoad, ResetPluginTest) {
     using namespace StreamingImageSequencePlugin;
     const int curFrame = 0;
     const uint32_t numImages = 10;
@@ -32,7 +32,7 @@ TEST(BasicImageLoad, ResetPluginTest) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(BasicImageLoad, LoadSingleImageTest) {
+TEST(_01_BasicImageLoad, LoadSingleImageTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -52,7 +52,7 @@ TEST(BasicImageLoad, LoadSingleImageTest) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-TEST(BasicImageLoad, LoadMultipleImagesTest) {
+TEST(_01_BasicImageLoad, LoadMultipleImagesTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -72,7 +72,7 @@ TEST(BasicImageLoad, LoadMultipleImagesTest) {
     TestUtility::CheckMemoryCleanup();
 }
 //----------------------------------------------------------------------------------------------------------------------
-TEST(BasicImageLoad, LoadInvalidImageTest) {
+TEST(_01_BasicImageLoad, LoadInvalidImageTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -105,7 +105,7 @@ TEST(BasicImageLoad, LoadInvalidImageTest) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(BasicImageLoad, LoadUnvailableImageTest) {
+TEST(_01_BasicImageLoad, LoadUnvailableImageTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 

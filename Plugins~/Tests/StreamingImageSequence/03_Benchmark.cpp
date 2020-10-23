@@ -23,7 +23,7 @@ void BenchmarkFunc(const uint32_t loopCount, bool (*func)(), const char* msg) {
 };
 
 #ifdef ENABLE_BENCHMARK
-TEST(3_Benchmark, BenchmarkLoadSpeed) {
+TEST(_03_Benchmark, BenchmarkLoadSpeed) {
     BenchmarkFunc(1000, TestUtility::LoadAndUnloadTestFullPNGImage, "Loading Full PNG.");
     BenchmarkFunc(1000, TestUtility::LoadAndUnloadTestFullTGAImage, "Loading Full TGA.");
 }

@@ -15,7 +15,7 @@ namespace StreamingImageSequencePluginTest {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(AutoImageUnload, AutoUnloadUnusedImagesTest) {
+TEST(_02_AutoImageUnload, AutoUnloadUnusedImagesTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -58,7 +58,7 @@ TEST(AutoImageUnload, AutoUnloadUnusedImagesTest) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(AutoImageUnload, StopLoadingRequiredImagesTest) {
+TEST(_02_AutoImageUnload, StopLoadingRequiredImagesTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
     const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
@@ -86,7 +86,7 @@ TEST(AutoImageUnload, StopLoadingRequiredImagesTest) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(AutoImageUnload, IgnoreLateRequests) {
+TEST(_02_AutoImageUnload, IgnoreLateRequests) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -119,7 +119,7 @@ TEST(AutoImageUnload, IgnoreLateRequests) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(AutoImageUnload, ResetImageLoadOrder) {
+TEST(_02_AutoImageUnload, ResetImageLoadOrder) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -166,7 +166,7 @@ TEST(AutoImageUnload, ResetImageLoadOrder) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(AutoImageUnload, OutOfMemoryTest) {
+TEST(_02_AutoImageUnload, OutOfMemoryTest) {
 
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
