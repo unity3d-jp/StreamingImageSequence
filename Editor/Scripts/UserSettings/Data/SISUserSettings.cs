@@ -59,6 +59,10 @@ internal class SISUserSettings {
     }
     internal int GetMaxImagesMemoryMB() {  return m_maxImagesMemoryMB;}
 
+    internal void SetDefaultSISPlayableAssetFPS(int fps) {  m_defaultSISPlayableAssetFPS = fps;}
+    internal int  GetDefaultSISPlayableAssetFPS()        {  return m_defaultSISPlayableAssetFPS;}
+    
+    
 //----------------------------------------------------------------------------------------------------------------------
     static SISUserSettings LoadUserSettings() {
         return FileUtility.DeserializeFromJson<SISUserSettings>(SIS_USER_SETTINGS_PATH);
@@ -75,9 +79,9 @@ internal class SISUserSettings {
 
 
     [SerializeField] private int m_maxImagesMemoryMB = 65536;
-    
+    [SerializeField] private int m_defaultSISPlayableAssetFPS = 8; // 8fps (standard limited animation)
     // ReSharper disable once NotAccessedField.Local
-    [SerializeField] private int m_classVersion = 1;
+    [SerializeField] private int m_classVersion = 2;
 
 
     private static SISUserSettings m_instance;

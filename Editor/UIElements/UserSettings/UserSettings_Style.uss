@@ -17,6 +17,26 @@
     margin-top: 15px;
 }
 
+/*----------------------------------------------- Field Field--------------------------------------------------- */
+
+.field-container {
+    width: 500px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.field-container > IntegerField  {
+    width: 393px;
+    -unity-text-align: middle-right;
+}
+
+.field-container > IntegerField > Label {
+    width: 333px;
+    -unity-text-align: lower-left;
+}
+
+/*----------------------------------------------- Slider Field--------------------------------------------------- */
+
 .slider-field-container {
     width: 480px;
     -unity-font-style: normal;
@@ -36,14 +56,13 @@
 
 .slider-field-container > IntegerField {
     width: 60px;
-    -unity-text-align: middle-right;
-    
+    -unity-text-align: middle-right;    
 }
 
 .slider-field-container > Label {
     -unity-font-style: normal;
+    -unity-text-align: lower-left;
     font-size:  12px;
-    align-self: flex-end;
 }
 
 

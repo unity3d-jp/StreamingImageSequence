@@ -66,7 +66,9 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
         if (null == clip.curves) {
             int numImages = asset.GetNumImages();
             if (numImages > 0) {
-                clip.duration = numImages * 0.125; // 8fps (standard limited animation)
+                SISUserSettings userSettings = SISUserSettings.GetInstance();
+                
+                clip.duration = (double) (numImages) / (userSettings.GetDefaultSISPlayableAssetFPS()); 
                 clip.displayName = Path.GetFileName(asset.GetFolder());
             }
             clip.CreateCurves("Curves: " + clip.displayName);

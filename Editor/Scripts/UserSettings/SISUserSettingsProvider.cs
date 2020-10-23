@@ -14,6 +14,7 @@ internal class SISUserSettingsProvider : SettingsProvider {
     // ReSharper disable once ClassNeverInstantiated.Local
     private class Contents {
         internal static readonly GUIContent MAX_MEMORY_FOR_IMAGES_MB = EditorGUIUtility.TrTextContent("Max Memory for Images ");
+        internal static readonly GUIContent DEFAULT_SIS_PLAYABLE_ASSET_FPS = EditorGUIUtility.TrTextContent("Default StreamingImageSequencePlayableAsset FPS");        
     }
         
 //----------------------------------------------------------------------------------------------------------------------	
@@ -34,11 +35,11 @@ internal class SISUserSettingsProvider : SettingsProvider {
             UIElementsEditorUtility.LoadAndAddStyle( root.styleSheets, SISEditorConstants.USER_SETTINGS_STYLE_PATH);			           
             VisualElement content = root.Query<VisualElement>("Content");
             Assert.IsNotNull(content);				
-            SISUserSettings userSettings = SISUserSettings.GetInstance();
 
-            //Prepare objects for binding
+            //Fields
             InitMaxMemoryForImagesField(content);
-
+            InitDefaultSISPlayableAssetFPSField(content);
+            
             m_activated = true;
 
         };
@@ -96,6 +97,21 @@ internal class SISUserSettingsProvider : SettingsProvider {
         m_maxMemoryForImagesIntField.RegisterValueChangedCallback((ChangeEvent<int> evt) => {
             userSettings.SetMaxImagesMemoryMB(evt.newValue);
             userSettings.SaveUserSettings();            
+        });
+    }
+//----------------------------------------------------------------------------------------------------------------------
+
+    void InitDefaultSISPlayableAssetFPSField(VisualElement parent) {
+        //fps
+        VisualElement fieldContainer = UIElementsUtility.AddElement<VisualElement>(parent, /*className=*/"field-container");
+        SISUserSettings userSettings = SISUserSettings.GetInstance();
+        int defaultSISPlayableAssetFPS = userSettings.GetDefaultSISPlayableAssetFPS();
+
+        IntegerField defaultSISPlayableAssetFPSField = UIElementsUtility.AddField<IntegerField, int>(fieldContainer, 
+            Contents.DEFAULT_SIS_PLAYABLE_ASSET_FPS, defaultSISPlayableAssetFPS);
+        defaultSISPlayableAssetFPSField.RegisterValueChangedCallback((ChangeEvent<int> evt) => {
+            userSettings.SetDefaultSISPlayableAssetFPS(evt.newValue);
+            userSettings.SaveUserSettings();
         });
 
     }    
