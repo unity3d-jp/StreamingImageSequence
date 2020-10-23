@@ -960,9 +960,9 @@ MonoBehaviour:
     m_size: 71104
   - m_name: ShortSceneFootage_00005.png
     m_size: 78746
-  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_timelineBGColor: {r: 1, g: 1, b: 1, a: 1}
   m_version: 3
-  m_time: 0
+  m_time: 0.9166666865348816
   m_timelineDefaultAsset: {fileID: 102900000, guid: dabdbde2f66edf2478c29f237e908df4,
     type: 3}
 --- !u!114 &-5691368852703808938
@@ -2495,15 +2495,15 @@ AnimationClip:
         time: 0
         value: 0
         inSlope: 0
-        outSlope: 0.6666667
+        outSlope: 10
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 1.5
+        time: 0.1
         value: 1
-        inSlope: 0.6666667
+        inSlope: 10
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
@@ -2530,7 +2530,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.5
+    m_StopTime: 0.1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -2553,15 +2553,15 @@ AnimationClip:
         time: 0
         value: 0
         inSlope: 0
-        outSlope: 0.6666667
+        outSlope: 10
         tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 1.5
+        time: 0.1
         value: 1
-        inSlope: 0.6666667
+        inSlope: 10
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
