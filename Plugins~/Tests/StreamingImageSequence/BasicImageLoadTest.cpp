@@ -11,14 +11,11 @@
 //LoaderTest
 #include "Utilities/TestUtility.h"
 
-
-//#define ENABLE_BENCHMARK
-
 namespace StreamingImageSequencePluginTest {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(BasicLoad, ResetPluginTest) {
+TEST(BasicImageLoad, ResetPluginTest) {
     using namespace StreamingImageSequencePlugin;
     const int curFrame = 0;
     const uint32_t numImages = 10;
@@ -35,7 +32,7 @@ TEST(BasicLoad, ResetPluginTest) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(BasicLoad, LoadSingleImageTest) {
+TEST(BasicImageLoad, LoadSingleImageTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -55,7 +52,7 @@ TEST(BasicLoad, LoadSingleImageTest) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
-TEST(BasicLoad, LoadMultipleImagesTest) {
+TEST(BasicImageLoad, LoadMultipleImagesTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -75,7 +72,7 @@ TEST(BasicLoad, LoadMultipleImagesTest) {
     TestUtility::CheckMemoryCleanup();
 }
 //----------------------------------------------------------------------------------------------------------------------
-TEST(BasicLoad, LoadInvalidImageTest) {
+TEST(BasicImageLoad, LoadInvalidImageTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -108,7 +105,7 @@ TEST(BasicLoad, LoadInvalidImageTest) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(BasicLoad, LoadUnvailableImageTest) {
+TEST(BasicImageLoad, LoadUnvailableImageTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
