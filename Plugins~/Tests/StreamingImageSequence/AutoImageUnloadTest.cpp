@@ -19,7 +19,7 @@ namespace StreamingImageSequencePluginTest {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(Loader, AutoUnloadUnusedImagesTest) {
+TEST(AutoImageUnload, AutoUnloadUnusedImagesTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -62,7 +62,7 @@ TEST(Loader, AutoUnloadUnusedImagesTest) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(Loader, StopLoadingRequiredImagesTest) {
+TEST(AutoImageUnload, StopLoadingRequiredImagesTest) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
     const uint32_t imageType = CRITICAL_SECTION_TYPE_FULL_IMAGE;
@@ -90,7 +90,7 @@ TEST(Loader, StopLoadingRequiredImagesTest) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(Loader, IgnoreLateRequests) {
+TEST(AutoImageUnload, IgnoreLateRequests) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -123,7 +123,7 @@ TEST(Loader, IgnoreLateRequests) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(Loader, ResetImageLoadOrder) {
+TEST(AutoImageUnload, ResetImageLoadOrder) {
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
 
@@ -170,7 +170,7 @@ TEST(Loader, ResetImageLoadOrder) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-TEST(Loader, OutOfMemoryTest) {
+TEST(AutoImageUnload, OutOfMemoryTest) {
 
     using namespace StreamingImageSequencePlugin;
     ImageCatalog& imageCatalog = ImageCatalog::GetInstance();
