@@ -10,7 +10,7 @@
 #include "StreamingImageSequence/ImageCatalog.h"
 
 //LoaderTest
-#include "TestUtility.h"
+#include "Utilities/TestUtility.h"
 
 
 //#define ENABLE_BENCHMARK
