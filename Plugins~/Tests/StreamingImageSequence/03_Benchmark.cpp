@@ -4,8 +4,7 @@
 //LoaderTest
 #include "Utilities/TestUtility.h"
 
-
-#define ENABLE_BENCHMARK
+//#define ENABLE_BENCHMARK
 
 namespace StreamingImageSequencePluginTest {
 
