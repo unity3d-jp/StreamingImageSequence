@@ -7,7 +7,7 @@
 * **Max Memory for Images**  
   エディタで画像をロードするために確保できるメモリの最大量。
 * **Default StreamingImageSequencePlayableAsset FPS**  
-  画像シーケンスで作成した新しい StreamingImageSequencePlayableAsset のデフォルトのFPS。
+  画像シーケンスで作成した新しい StreamingImageSequencePlayableAsset のデフォルト FPS。
 
 
 
