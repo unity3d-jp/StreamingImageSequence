@@ -73,11 +73,13 @@ RenderCapturer は実際のキャプチャと画像ファイルへの描画を�
 * **Lock Frames**  
   フレームが上書きされないよう、[フレームマーカ](FrameMarkers.md) の編集モードをロックモードに切り替えます。
   既存のユーザー編集などを維持するために使用できます。
+* **Background Colors**.  
+  画像の背景色。
+  * **In Game window (Update)**  
+    キャッシュを更新時のゲームウィンドウの背景色。
+  * **In Timeline Window**  
+    Timeline ウィンドウのプレビュー画像の背景色。
 
 * **Update Render Cache**  
   描画を実行し、キャッシュとしてその結果を画像ファイルに書き込みます。
-
-
-
-
 
