@@ -76,7 +76,6 @@ Refer to [FrameMarkers](FrameMarkers.md) for more details.
   * **Reset**  
     Reset edits to FrameMarkers.
 * **Background Colors**.  
-  The background colors of the images.
   * **In Timeline Window**  
     The background color of the preview images in the Timeline window.    
 * **Reset Curve**.  

@@ -75,7 +75,6 @@ Refer to [FrameMarkers](FrameMarkers.md) for more details.
   to previous cached images.  
   ![RenderCache_LockFrames](../images/RenderCache_LockFrames.png)
 * **Background Colors**.  
-  The background colors of the images.
   * **In Game window (Update)**  
     The background color of the Game window when updating RenderCache.    
   * **In Timeline Window**  
