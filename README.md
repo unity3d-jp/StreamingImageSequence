@@ -60,21 +60,12 @@ differ based on the version of Unity.
 
    ![FaderDemo](Documentation~/images/FaderDemo.gif)
 
-## Memory
+## Memory Usage in the Editor
 
-StreamingImageSequence allocates physical memory to ensure smooth image playback.  
+StreamingImageSequence allocates physical memory to ensure smooth image playback in the Editor.    
 This allocation is set to satisfy the following requirements:
 1. Does not exceed 90% of the total physical memory of the system.
-2. Does not exceed the maximum amount of memory, which can be configured on the
-**Edit > Preferences** window.
-
-![Preferences](Documentation~/images/Preferences.png)
-
-| Legend  | Use                                                                                       | 
-| ------- | ---------------------------------------------------------------------- | 
-| A       | Preferences to configure                                               |   
-| B       | Currently applied values                                               |   
-| C       | Apply and save                                                         |  
+2. Does not exceed the maximum amount of memory, which can be configured in [Preferences](en/Preferences.md).
 
 ## Plugins
 * [Building](Plugins~/Docs/en/BuildPlugins.md)
