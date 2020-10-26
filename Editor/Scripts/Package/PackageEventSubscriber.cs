@@ -8,7 +8,7 @@ using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 namespace Unity.StreamingImageSequence.Editor {
 
-internal static class PackageEvents {
+internal static class PackageEventSubscriber {
 
     [InitializeOnLoadMethod]
     private static void PackageEvents_OnEditorLoad() {
@@ -23,7 +23,6 @@ internal static class PackageEvents {
         if (null == curPackage) {
             curPackage = packageRegistrationEventArgs.changedTo.FindPackage(SISEditorConstants.PACKAGE_NAME);
         }
-
 
         if (null == curPackage) {
             return;
