@@ -75,7 +75,7 @@ RenderCapturer は実際のキャプチャと画像ファイルへの描画を�
   既存のユーザー編集などを維持するために使用できます。
 * **Background Colors**.  
   * **In Game window (Update)**  
-    キャッシュを更新時のゲームウィンドウの背景色。
+    キャッシュを更新している時のゲームウィンドウの背景色。
   * **In Timeline Window**  
     Timeline ウィンドウのプレビュー画像の背景色。
 
