@@ -3,6 +3,8 @@
 namespace Unity.StreamingImageSequence.Editor {
 
 internal static class SISEditorConstants {
+    internal const string PACKAGE_NAME = "com.unity.streaming-image-sequence";
+    
     private const string SHADERS_PATH = "Packages/com.unity.streaming-image-sequence/Runtime/Shaders";
     
     internal const string USER_SETTINGS_PATH = "Packages/com.unity.streaming-image-sequence/Editor/UIElements/UserSettings";
