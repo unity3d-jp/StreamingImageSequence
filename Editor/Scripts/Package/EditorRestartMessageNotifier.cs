@@ -23,8 +23,10 @@ internal static class EditorRestartMessageNotifier {
             return;
         }
 
-        if (m_onLoadPackageRequesters.Count <= 0)
-            return;
+        if (m_onLoadPackageRequesters.Count <= 0) {
+            EditorApplication.update -= WaitUntilNotify;            
+            return;            
+        }
         
         StringBuilder sb = new StringBuilder();
         sb.AppendLine("Please restart editor because the following packages have been updated: ");
