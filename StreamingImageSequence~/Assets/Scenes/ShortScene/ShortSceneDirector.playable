@@ -252,7 +252,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 588b3cca60f217d438ef96013ebfdb06, type: 3}
-  m_Name: Streaming Image Sequence Track
+  m_Name: Streaming Image Sequence Track Image PNG
   m_EditorClassIdentifier: 
   m_Version: 3
   m_AnimClip: {fileID: 0}
@@ -933,6 +933,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbc7f66ed2f16414d967962472e39fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-5740012556873188617
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_Name: StreamingImageSequencePlayableAsset
+  m_EditorClassIdentifier: 
+  m_folder: Assets/StreamingAssets/ShortSceneFootage/TGA
+  m_imageFileNames: []
+  m_imageFiles:
+  - m_name: ShortSceneFootageTGA_01.tga
+    m_size: 7072844
+  - m_name: ShortSceneFootageTGA_02.tga
+    m_size: 7072844
+  - m_name: ShortSceneFootageTGA_03.tga
+    m_size: 7072844
+  - m_name: ShortSceneFootageTGA_04.tga
+    m_size: 7072844
+  - m_name: ShortSceneFootageTGA_05.tga
+    m_size: 7072844
+  - m_name: ShortSceneFootageTGA_06.tga
+    m_size: 7072844
+  m_timelineBGColor: {r: 1, g: 1, b: 1, a: 1}
+  m_version: 3
+  m_time: 0
+  m_timelineDefaultAsset: {fileID: 102900000, guid: 67edb59e9580c004880641a59428f148,
+    type: 3}
 --- !u!114 &-5691368852703808938
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -996,6 +1028,7 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
   m_time: 0
   m_timelineDefaultAsset: {fileID: 0}
@@ -1706,6 +1739,246 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbc7f66ed2f16414d967962472e39fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-2694246629122872680
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588b3cca60f217d438ef96013ebfdb06, type: 3}
+  m_Name: Streaming Image Sequence Track Image TGA
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_AnimClip: {fileID: 0}
+  m_Locked: 0
+  m_Muted: 0
+  m_CustomPlayableFullTypename: 
+  m_Curves: {fileID: 0}
+  m_Parent: {fileID: 11400000}
+  m_Children: []
+  m_Clips:
+  - m_Version: 1
+    m_Start: 0
+    m_ClipIn: 0
+    m_Asset: {fileID: -5740012556873188617}
+    m_Duration: 0.4
+    m_TimeScale: 0.2499999999999999
+    m_ParentTrack: {fileID: -2694246629122872680}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: 0
+    m_BlendOutDuration: 0
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: -809751682908227667}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 0
+    m_PreExtrapolationTime: 0
+    m_DisplayName: PNG
+  m_Markers:
+    m_Objects: []
+  m_serializedSISDataCollection:
+  - m_playableFrames:
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.016666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.03333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.05
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.06666666666666667
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.08333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.1
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.11666666666666667
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.13333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.15
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.16666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.18333333333333332
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.2
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.21666666666666667
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.23333333333333334
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.26666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.2833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.3
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.31666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.3333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.35
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.36666666666666664
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.3833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    m_frameMarkersRequested: 0
+    m_version: 1
 --- !u!114 &-2670604802160313673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2270,6 +2543,113 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbc7f66ed2f16414d967962472e39fdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!74 &-809751682908227667
+AnimationClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Curves: PNG'
+  serializedVersion: 6
+  m_Legacy: 1
+  m_Compressed: 0
+  m_UseHighQualityCurve: 1
+  m_RotationCurves: []
+  m_CompressedRotationCurves: []
+  m_EulerCurves: []
+  m_PositionCurves: []
+  m_ScaleCurves: []
+  m_FloatCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 10
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.1
+        value: 1
+        inSlope: 10
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_time
+    path: 
+    classID: 114
+    script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_PPtrCurves: []
+  m_SampleRate: 60
+  m_WrapMode: 0
+  m_Bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_ClipBindingConstant:
+    genericBindings: []
+    pptrCurveMapping: []
+  m_AnimationClipSettings:
+    serializedVersion: 2
+    m_AdditiveReferencePoseClip: {fileID: 0}
+    m_AdditiveReferencePoseTime: 0
+    m_StartTime: 0
+    m_StopTime: 0.1
+    m_OrientationOffsetY: 0
+    m_Level: 0
+    m_CycleOffset: 0
+    m_HasAdditiveReferencePose: 0
+    m_LoopTime: 0
+    m_LoopBlend: 0
+    m_LoopBlendOrientation: 0
+    m_LoopBlendPositionY: 0
+    m_LoopBlendPositionXZ: 0
+    m_KeepOriginalOrientation: 0
+    m_KeepOriginalPositionY: 1
+    m_KeepOriginalPositionXZ: 0
+    m_HeightFromFeet: 0
+    m_Mirror: 0
+  m_EditorCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 10
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.1
+        value: 1
+        inSlope: 10
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_time
+    path: 
+    classID: 114
+    script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_EulerEditorCurves: []
+  m_HasGenericRootTransform: 0
+  m_HasMotionFloatCurves: 0
+  m_Events: []
 --- !u!114 &-779659738224968948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3678,6 +4058,7 @@ MonoBehaviour:
   m_Tracks:
   - {fileID: -7752880311682530481}
   - {fileID: -2010342597765252273}
+  - {fileID: -2694246629122872680}
   - {fileID: -770671612110236362}
   - {fileID: -7503995318602643688}
   - {fileID: 9100365308841388424}
@@ -4310,7 +4691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
   m_Name: StreamingImageSequencePlayableAsset
   m_EditorClassIdentifier: 
-  m_folder: Assets/StreamingAssets/ShortSceneFootage
+  m_folder: Assets/StreamingAssets/ShortSceneFootage/PNG
   m_imageFileNames: []
   m_imageFiles:
   - m_name: ShortSceneFootage_00000.png
@@ -4325,9 +4706,10 @@ MonoBehaviour:
     m_size: 71104
   - m_name: ShortSceneFootage_00005.png
     m_size: 78746
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
-  m_time: 1
-  m_timelineDefaultAsset: {fileID: 102900000, guid: 28ebc38bfdd481147934ea04bfc829bb,
+  m_time: 0
+  m_timelineDefaultAsset: {fileID: 102900000, guid: dabdbde2f66edf2478c29f237e908df4,
     type: 3}
 --- !u!114 &2896927653460402434
 MonoBehaviour:
@@ -4449,7 +4831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
   m_Name: StreamingImageSequencePlayableAsset(Clone)
   m_EditorClassIdentifier: 
-  m_folder: Assets/StreamingAssets/ShortSceneFootage
+  m_folder: Assets/StreamingAssets/ShortSceneFootage/PNG
   m_imageFileNames: []
   m_imageFiles:
   - m_name: ShortSceneFootage_00000.png
@@ -4464,9 +4846,10 @@ MonoBehaviour:
     m_size: 71104
   - m_name: ShortSceneFootage_00005.png
     m_size: 78746
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
-  m_time: 1
-  m_timelineDefaultAsset: {fileID: 102900000, guid: 28ebc38bfdd481147934ea04bfc829bb,
+  m_time: 0
+  m_timelineDefaultAsset: {fileID: 102900000, guid: dabdbde2f66edf2478c29f237e908df4,
     type: 3}
 --- !u!114 &3475972923081664493
 MonoBehaviour:
@@ -6134,7 +6517,7 @@ MonoBehaviour:
   m_Children: []
   m_Clips:
   - m_Version: 1
-    m_Start: 0.18333333333333332
+    m_Start: 0.016666666666666666
     m_ClipIn: 0
     m_Asset: {fileID: 6841054709206305135}
     m_Duration: 5
