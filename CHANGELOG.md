@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.6.1-preview] - 2020-10-27
+* chore: republish 0.6.0-preview as 0.6.1-preview
+
 ## [0.6.0-preview] - 2020-10-26
 
 * feat: add default StreamingImageSequencePlayableAsset FPS setting in Preferences 
