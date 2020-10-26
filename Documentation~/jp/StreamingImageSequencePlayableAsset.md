@@ -76,7 +76,12 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
   各フレームのフレームマーカーの表示・非表示を切り替えます。
   * **Reset**  
     フレームマーカーの編集をリセットします。
-* **Reset Curve**.  
+* **Background Colors**.  
+  画像の背景色。
+  * **In Timeline Window**  
+    Timeline ウィンドウのプレビュー画像の背景色。
+
+* **Reset Curve**。
   プレイアブルアセット内の曲線のタイミングをリニアにリセットします。
 
 
