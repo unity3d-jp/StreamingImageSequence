@@ -74,7 +74,11 @@ Refer to [FrameMarkers](FrameMarkers.md) for more details.
   from being rewritten, which is useful to maintain custom manipulation 
   to previous cached images.  
   ![RenderCache_LockFrames](../images/RenderCache_LockFrames.png)
-
+* **Background Colors**.  
+  * **In Game window (Update)**  
+    The background color of the Game window when updating RenderCache.    
+  * **In Timeline Window**  
+    The background color of the preview images in the Timeline window.    
 * **Update Render Cache**  
   Render and cache the results as images.
 

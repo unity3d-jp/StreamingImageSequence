@@ -106,7 +106,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             ++EditorGUI.indentLevel;
             Color updateBGColor = m_asset.GetUpdateBGColor();
             Color timelineBgColor = m_asset.GetTimelineBGColor();
-            m_asset.SetUpdateBGColor(EditorGUILayout.ColorField("When updating", updateBGColor));
+            m_asset.SetUpdateBGColor(EditorGUILayout.ColorField("In Game Window (Update)", updateBGColor));
             m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("In Timeline Window", timelineBgColor));
             --EditorGUI.indentLevel;
             GUILayout.Space(15);
