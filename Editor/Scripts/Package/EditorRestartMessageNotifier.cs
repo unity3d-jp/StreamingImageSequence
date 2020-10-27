@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEditor;
+using UnityEngine;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 
@@ -24,6 +25,7 @@ internal static class EditorRestartMessageNotifier {
         }
 
         if (m_onLoadPackageRequesters.Count <= 0) {
+            Debug.Log("WaitUntilNotify() ended. No notification");
             EditorApplication.update -= WaitUntilNotify;            
             return;            
         }
@@ -31,19 +33,22 @@ internal static class EditorRestartMessageNotifier {
         StringBuilder sb = new StringBuilder();
         sb.AppendLine("Please restart editor because the following packages have been updated: ");
         foreach (PackageInfo packageInfo in m_onLoadPackageRequesters) {
-            sb.AppendLine($"- {packageInfo.name}@{packageInfo.version}");
+            sb.AppendLine($"-{packageInfo.name}@{packageInfo.version}");
         }
 
+        Debug.Log("WaitUntilNotify() ended. Displaying dialog");
         if (EditorUtility.DisplayDialog("Warning", sb.ToString(), "Exit Unity now", "Later")) {
             EditorApplication.Exit(0);
         }
                     
         m_onLoadPackageRequesters.Clear();
         EditorApplication.update -= WaitUntilNotify;            
+        
     }
 
 
     internal static void RequestOnLoadNotification(PackageInfo packageInfo) {
+        Debug.Log("RequestOnLoadNotification()");
         m_onLoadPackageRequesters.Add(packageInfo);
         m_notifyTime = EditorApplication.timeSinceStartup + WAIT_THRESHOLD;
         
@@ -53,7 +58,7 @@ internal static class EditorRestartMessageNotifier {
 
     private static readonly List<PackageInfo> m_onLoadPackageRequesters = new List<PackageInfo>();
     private static double m_notifyTime = 0;
-    private const double WAIT_THRESHOLD = 1.0f;
+    private const double WAIT_THRESHOLD = 3.0f;
 }
 
 } //end namespace
