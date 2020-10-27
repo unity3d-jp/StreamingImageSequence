@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEditor;
-using UnityEngine;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 
@@ -25,7 +24,6 @@ internal static class EditorRestartMessageNotifier {
         }
 
         if (m_onLoadPackageRequesters.Count <= 0) {
-            Debug.Log("WaitUntilNotify() ended. No notification");
             EditorApplication.update -= WaitUntilNotify;            
             return;            
         }
@@ -36,7 +34,6 @@ internal static class EditorRestartMessageNotifier {
             sb.AppendLine($"-{packageInfo.name}@{packageInfo.version}");
         }
 
-        Debug.Log("WaitUntilNotify() ended. Displaying dialog");
         if (EditorUtility.DisplayDialog("Warning", sb.ToString(), "Exit Unity now", "Later")) {
             EditorApplication.Exit(0);
         }
@@ -48,7 +45,6 @@ internal static class EditorRestartMessageNotifier {
 
 
     internal static void RequestOnLoadNotification(PackageInfo packageInfo) {
-        Debug.Log("RequestOnLoadNotification()");
         m_onLoadPackageRequesters.Add(packageInfo);
         m_notifyTime = EditorApplication.timeSinceStartup + WAIT_THRESHOLD;
         
