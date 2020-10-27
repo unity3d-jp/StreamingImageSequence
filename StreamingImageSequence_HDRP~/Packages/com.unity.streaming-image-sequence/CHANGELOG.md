@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.3-preview] - 2020-10-27
+* chore: remove debug logs when updating package for 2020.2 and above
+
+## [0.6.2-preview] - 2020-10-27
+* chore: add debug logs when updating package for 2020.2 and above
+
 ## [0.6.1-preview] - 2020-10-27
 * chore: republish 0.6.0-preview as 0.6.1-preview
 
