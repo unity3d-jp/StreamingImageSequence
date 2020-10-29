@@ -195,12 +195,10 @@ const ImageData* ImageCollection::LoadImage(const strType& imagePath) {
 
 //External/stb
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
-#define STBIR_DEFAULT_FILTER_DOWNSAMPLE  STBIR_FILTER_CATMULLROM
 
 //We free the resize buffer once when the program ends.
 #define STBIR_MALLOC(size,context) GetOrAllocateResizeBufferUnsafe(size, context)
 #define STBIR_FREE(ptr,context) 
-
 #include "stb/stb_image_resize.h"
 
 bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame, const ImageData* src, 
@@ -234,9 +232,10 @@ bool ImageCollection::AddImageFromSrc(const strType& imagePath, const int frame,
     //    resizedImageData.RawData, w, h, 0, LoaderConstants::NUM_BYTES_PER_TEXEL);
 
     stbir__resize_arbitrary(/*STBIR_MALLOC context = */ &m_csType, src->RawData, src->Width, src->Height, 0,
-                            resizedImageData.RawData, w, h, 0,
-                            0,0,1,1,nullptr, LoaderConstants::NUM_BYTES_PER_TEXEL,-1,0, 
-                            STBIR_TYPE_UINT8, STBIR_FILTER_DEFAULT, STBIR_FILTER_DEFAULT,
+                            resizedImageData.RawData, w, h, /*output_stride_in_bytes=*/0,
+                            /*s0=*/ 0, /*t0=*/0, /*s1=*/ 1, /*t1=*/ 1, /*transform=*/ nullptr, 
+                            LoaderConstants::NUM_BYTES_PER_TEXEL, /*alpha_channel=*/3,/*flags=*/ 0, 
+                            /*type=*/ STBIR_TYPE_UINT8, STBIR_FILTER_CATMULLROM, STBIR_FILTER_CATMULLROM,
                             STBIR_EDGE_CLAMP, STBIR_EDGE_CLAMP, STBIR_COLORSPACE_LINEAR);
 
     //Register to map
