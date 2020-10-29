@@ -1,8 +1,8 @@
 ﻿#if UNITY_2020_2
 
+using Unity.AnimeToolbox.Editor;
 using UnityEditor;
 using UnityEditor.PackageManager;
-using UnityEngine;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 
 
@@ -28,7 +28,7 @@ internal static class PackageEventSubscriber {
         if (null == curPackage) {
             return;
         }        
-        EditorRestartMessageNotifier.RequestOnLoadNotification(curPackage);                    
+        EditorRestartMessageNotifier.RequestNotificationOnLoad(curPackage);                    
     }
 }
 
