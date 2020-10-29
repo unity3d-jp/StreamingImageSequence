@@ -331,7 +331,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: ShortSceneFootage
+    m_DisplayName: PNG
   m_Markers:
     m_Objects: []
   m_serializedSISDataCollection:
@@ -962,7 +962,7 @@ MonoBehaviour:
     m_size: 7072844
   m_timelineBGColor: {r: 1, g: 1, b: 1, a: 1}
   m_version: 3
-  m_time: 0
+  m_time: 1
   m_timelineDefaultAsset: {fileID: 102900000, guid: 67edb59e9580c004880641a59428f148,
     type: 3}
 --- !u!114 &-5691368852703808938
@@ -1828,7 +1828,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: PNG
+    m_DisplayName: TGA
   m_Markers:
     m_Objects: []
   m_serializedSISDataCollection:
@@ -2236,7 +2236,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: ShortSceneFootage
+    m_DisplayName: PNG SphereMeshRenderer
   m_Markers:
     m_Objects: []
   m_serializedSISDataCollection:
@@ -4708,7 +4708,7 @@ MonoBehaviour:
     m_size: 78746
   m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
-  m_time: 0
+  m_time: 1
   m_timelineDefaultAsset: {fileID: 102900000, guid: dabdbde2f66edf2478c29f237e908df4,
     type: 3}
 --- !u!114 &2896927653460402434
@@ -4848,7 +4848,7 @@ MonoBehaviour:
     m_size: 78746
   m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
-  m_time: 0
+  m_time: 1
   m_timelineDefaultAsset: {fileID: 102900000, guid: dabdbde2f66edf2478c29f237e908df4,
     type: 3}
 --- !u!114 &3475972923081664493
