@@ -146,7 +146,7 @@ void* ImageMemoryAllocator::AllocateInternal(const size_t memSize) {
         return nullptr;
     }
 
-    std::memset(buffer,0,memSize);
+    //std::memset(buffer,0,memSize);
     m_allocatedBuffers[buffer] = memSize;
     IncUsedMem(memSize);
     return buffer;
