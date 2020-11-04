@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
 using UnityEngine;
 
@@ -51,7 +52,12 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
         tempTex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0, false);
         tempTex.Apply();
 
-        File.WriteAllBytes(outputFilePath, tempTex.EncodeToPNG());
+        try {
+            File.WriteAllBytes(outputFilePath, tempTex.EncodeToPNG());
+        } catch (Exception e) {
+            Debug.LogError($"[SIS] Can't write to file: {outputFilePath}." + Environment.NewLine 
+                + $"Error: {e.ToString()}"); 
+        }
         
         //Cleanup
         ObjectUtility.Destroy(tempTex);
