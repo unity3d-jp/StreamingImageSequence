@@ -102,7 +102,7 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
     enum RenderCachePlayableAssetVersion {
         INITIAL_0_0 = 1, //initial for version 0.0.0-preview (obsolete)
         WATCHED_FILE_0_4,   //watched_file for version 0.4.0-preview
-        CONFIG_0_7,         //Config for version 0.0.0-preview
+        CONFIG_0_7,         //Config for version 0.7.0-preview
     
         
     }
