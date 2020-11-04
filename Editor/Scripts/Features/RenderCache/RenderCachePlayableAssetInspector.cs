@@ -114,21 +114,42 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             --EditorGUI.indentLevel;
             GUILayout.Space(15);
         }
-        
-        if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {
+
+
+        using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
+            RenderCachePlayableAssetEditorConfig editorConfig = m_asset.GetEditorConfig();
             
-            PlayableDirector director = TimelineEditor.inspectedDirector;
-            if (null == director) {
-                EditorUtility.DisplayDialog("Streaming Image Sequence",
-                    "PlayableAsset is not loaded in scene. Please load the correct scene before doing this operation.",
-                    "Ok");
-                return;
-            }            
+            bool captureAllFrames = EditorGUILayout.Toggle("Capture All Frames", editorConfig.GetCaptureAllFrames());
+            editorConfig.SetCaptureAllFrames(captureAllFrames);
+            if (!captureAllFrames) {
+                
+            }
+
+            EditorGUI.BeginDisabledGroup(!captureAllFrames);
+            ++EditorGUI.indentLevel;
+            EditorGUILayout.IntField("From", 0);
+            EditorGUILayout.IntField("To", 0);
+            --EditorGUI.indentLevel;                        
+            EditorGUI.EndDisabledGroup();                       
             
-            //Loop time             
-            EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(director, m_asset), this);
+            
+            if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {
+            
+                
+                PlayableDirector director = TimelineEditor.inspectedDirector;
+                if (null == director) {
+                    EditorUtility.DisplayDialog("Streaming Image Sequence",
+                        "PlayableAsset is not loaded in scene. Please load the correct scene before doing this operation.",
+                        "Ok");
+                    return;
+                }            
+            
+                //Loop time             
+                EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(director, m_asset), this);
                         
+            }
         }
+
     }
     
 //----------------------------------------------------------------------------------------------------------------------
