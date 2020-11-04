@@ -104,9 +104,12 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
             EditorGUILayout.LabelField("Background Colors");
             ++EditorGUI.indentLevel;
-            Color updateBGColor = m_asset.GetUpdateBGColor();
+
+            RenderCachePlayableAssetEditorConfig editorConfig = m_asset.GetEditorConfig();
+                        
+            Color updateBGColor = editorConfig.GetUpdateBGColor();
             Color timelineBgColor = m_asset.GetTimelineBGColor();
-            m_asset.SetUpdateBGColor(EditorGUILayout.ColorField("In Game Window (Update)", updateBGColor));
+            editorConfig.SetUpdateBGColor(EditorGUILayout.ColorField("In Game Window (Update)", updateBGColor));
             m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("In Timeline Window", timelineBgColor));
             --EditorGUI.indentLevel;
             GUILayout.Space(15);
@@ -176,8 +179,9 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         }
 
         //Show progress in game view
-        Texture capturerTex = renderCapturer.GetInternalTexture();        
-        GameObject blitterGO  = CreateBlitter(capturerTex, renderCachePlayableAsset.GetUpdateBGColor()); 
+        Texture capturerTex = renderCapturer.GetInternalTexture();
+        RenderCachePlayableAssetEditorConfig editorConfig = renderCachePlayableAsset.GetEditorConfig();
+        GameObject blitterGO  = CreateBlitter(capturerTex, editorConfig.GetUpdateBGColor()); 
 
         TimelineClip timelineClip = timelineClipSISData.GetOwner();
         double timePerFrame = 1.0f / track.timelineAsset.editorSettings.fps;

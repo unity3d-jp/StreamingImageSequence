@@ -406,7 +406,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     }
 
     public void OnAfterDeserialize() {
-        if (m_version < (int) SISPlayableAssetVersion.WATCHED_FILE_1_0) {
+        if (m_version < (int) SISPlayableAssetVersion.WATCHED_FILE_0_4) {
             if (null != m_imageFileNames && m_imageFileNames.Count > 0) {
                 m_imageFiles = WatchedFileInfo.CreateList(m_folder, m_imageFileNames);
                 m_imageFileNames.Clear();
@@ -485,13 +485,13 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
 
 //----------------------------------------------------------------------------------------------------------------------
     
-    private const int CUR_SIS_PLAYABLE_ASSET_VERSION = (int) SISPlayableAssetVersion.WATCHED_FILE_1_0;
+    private const int CUR_SIS_PLAYABLE_ASSET_VERSION = (int) SISPlayableAssetVersion.WATCHED_FILE_0_4;
             
 
     enum SISPlayableAssetVersion {
         INITIAL        = 1, //initial
-        FOLDER_MD5_1_0,       //For version 1.0.0-preview, (obsolete)
-        WATCHED_FILE_1_0,     //For version 1.0.0-preview, with watched file, instead of folder
+        FOLDER_MD5_0_3,       //For version 0_3.0-preview, (obsolete)
+        WATCHED_FILE_0_4,     //For version 0.4.0-preview, with watched file, instead of folder
 
     }
 }

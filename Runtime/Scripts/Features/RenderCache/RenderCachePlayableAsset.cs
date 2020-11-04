@@ -47,15 +47,25 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
 
     public void OnAfterDeserialize() {
 
-        if (m_version < (int) RenderCachePlayableAssetVersion.WATCHED_FILE_1_0) {
+        if (null == m_editorConfig) {
+            m_editorConfig = new RenderCachePlayableAssetEditorConfig();                 
+        }
+        
+
+        if (m_version < (int) RenderCachePlayableAssetVersion.WATCHED_FILE_0_4) {
 
             if (null != m_imageFileNames && m_imageFileNames.Count > 0) {
                 m_imageFiles = WatchedFileInfo.CreateList(m_folder, m_imageFileNames);
                 m_imageFileNames.Clear();
             }             
         }
+
+        if (m_version < (int) RenderCachePlayableAssetVersion.CONFIG_0_7) {
+            m_editorConfig.SetUpdateBGColor(m_updateBGColor);
+        }
         
-        m_version = CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION;
+        m_version = CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION;        
+
     }
         
     #endregion ISerializationCallbackReceiver
@@ -64,8 +74,7 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
 
     internal void SetImageFiles(List<WatchedFileInfo> imageFiles) { m_imageFiles = imageFiles; }
 
-    internal void  SetUpdateBGColor(Color color) { m_updateBGColor = color; }
-    internal Color GetUpdateBGColor()            { return m_updateBGColor; }
+    internal RenderCachePlayableAssetEditorConfig GetEditorConfig() { return m_editorConfig;}
     
 //----------------------------------------------------------------------------------------------------------------------
     
@@ -75,11 +84,13 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
 #endif
     
 //----------------------------------------------------------------------------------------------------------------------
-    
+
+    //[TODO-sin: 2020-11-4] Obsolete 
     [HideInInspector][SerializeField] private Color m_updateBGColor = Color.black;
     
     [HideInInspector][SerializeField] private int m_version = CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION;
-    private const int CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION = (int) RenderCachePlayableAssetVersion.WATCHED_FILE_1_0;
+    [HideInInspector][SerializeField] private RenderCachePlayableAssetEditorConfig m_editorConfig;
+    private const int CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION = (int) RenderCachePlayableAssetVersion.CONFIG_0_7;
     
 #if UNITY_EDITOR
     private static readonly string[] m_imageFilePatterns = {
@@ -89,9 +100,11 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
     
     
     enum RenderCachePlayableAssetVersion {
-        INITIAL_1_0 = 1, //initial for version 1.0.0-preview (obsolete)
-        WATCHED_FILE_1_0, //watched_file for version 1.0.0-preview
+        INITIAL_0_0 = 1, //initial for version 0.0.0-preview (obsolete)
+        WATCHED_FILE_0_4,   //watched_file for version 0.4.0-preview
+        CONFIG_0_7,         //Config for version 0.7.0-preview
     
+        
     }
 }
 
