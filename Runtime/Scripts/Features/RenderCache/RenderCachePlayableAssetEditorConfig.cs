@@ -23,7 +23,7 @@ internal class RenderCachePlayableAssetEditorConfig {
     [HideInInspector][SerializeField] private Color m_updateBGColor = Color.black;
     [HideInInspector][SerializeField] private int m_captureStartFrame = 0;
     [HideInInspector][SerializeField] private int m_captureEndFrame = 0;
-    [HideInInspector][SerializeField] private bool m_captureAllFrames;
+    [HideInInspector][SerializeField] private bool m_captureAllFrames = true;
 }
 
 
