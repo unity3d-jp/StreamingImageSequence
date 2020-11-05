@@ -143,6 +143,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             --EditorGUI.indentLevel;                        
             EditorGUI.EndDisabledGroup();                       
             
+            GUILayout.Space(5);
             
             if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {            
                 
