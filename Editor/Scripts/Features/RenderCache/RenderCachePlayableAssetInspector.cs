@@ -125,16 +125,20 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                 
             }
 
-            EditorGUI.BeginDisabledGroup(!captureAllFrames);
+            EditorGUI.BeginDisabledGroup(captureAllFrames);
             ++EditorGUI.indentLevel;
-            EditorGUILayout.IntField("From", 0);
-            EditorGUILayout.IntField("To", 0);
+            editorConfig.SetCaptureStartFrame(EditorGUILayout.IntField("From", editorConfig.GetCaptureStartFrame()));
+
+            int endFrame = editorConfig.GetCaptureEndFrame();
+            if (endFrame < 0) {
+                endFrame = TimelineUtility.CalculateNumFrames(TimelineEditor.selectedClip);
+            } 
+            editorConfig.SetCaptureEndFrame(EditorGUILayout.IntField("To", endFrame));
             --EditorGUI.indentLevel;                        
             EditorGUI.EndDisabledGroup();                       
             
             
-            if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {
-            
+            if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {            
                 
                 PlayableDirector director = TimelineEditor.inspectedDirector;
                 if (null == director) {
