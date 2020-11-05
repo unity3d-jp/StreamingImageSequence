@@ -109,9 +109,9 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             editorConfig.SetUpdateBGColor(EditorGUILayout.ColorField("In Game Window (Update)", updateBGColor));
             m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("In Timeline Window", timelineBgColor));
             --EditorGUI.indentLevel;
-            GUILayout.Space(15);
-        }
-        
+            GUILayout.Space(5);
+        }       
+        GUILayout.Space(15);
         DrawUpdateRenderCacheGUI();
 
     }
@@ -143,7 +143,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             --EditorGUI.indentLevel;                        
             EditorGUI.EndDisabledGroup();                       
             
-            GUILayout.Space(5);
+            GUILayout.Space(10);
             
             if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {            
                 
