@@ -80,6 +80,8 @@ Refer to [FrameMarkers](FrameMarkers.md) for more details.
   * **In Timeline Window**  
     The background color of the preview images in the Timeline window.    
 * **Update Render Cache**  
-  Render and cache the results as images.
+  Render and cache the results as images.  
+  If **Capture All Frames** is unchecked, then the capturing will only be performed 
+  for the specified frames.
 
 
