@@ -96,9 +96,6 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             DrawCaptureSelectedFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
             DrawLockFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
         }
-
-        ShortcutBinding updateRenderCacheShortcut 
-            = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_UPDATE_RENDER_CACHE);            
         
         GUILayout.Space(15);
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
@@ -112,23 +109,58 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             editorConfig.SetUpdateBGColor(EditorGUILayout.ColorField("In Game Window (Update)", updateBGColor));
             m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("In Timeline Window", timelineBgColor));
             --EditorGUI.indentLevel;
-            GUILayout.Space(15);
+            GUILayout.Space(5);
+        }       
+        GUILayout.Space(15);
+        DrawUpdateRenderCacheGUI();
+
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+
+    private void DrawUpdateRenderCacheGUI() {
+        ShortcutBinding updateRenderCacheShortcut 
+            = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_UPDATE_RENDER_CACHE);            
+
+        using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
+            RenderCachePlayableAssetEditorConfig editorConfig = m_asset.GetEditorConfig();
+            
+            bool captureAllFrames = EditorGUILayout.Toggle("Capture All Frames", editorConfig.GetCaptureAllFrames());
+            editorConfig.SetCaptureAllFrames(captureAllFrames);
+
+            EditorGUI.BeginDisabledGroup(captureAllFrames);
+            ++EditorGUI.indentLevel;
+
+
+            int captureStartFrame = Math.Max(0,editorConfig.GetCaptureStartFrame());
+            int captureEndFrame   = editorConfig.GetCaptureEndFrame();
+            if (captureEndFrame < 0) {
+                captureEndFrame = TimelineUtility.CalculateNumFrames(TimelineEditor.selectedClip);
+            } 
+            
+            editorConfig.SetCaptureStartFrame(EditorGUILayout.IntField("From", captureStartFrame));
+            editorConfig.SetCaptureEndFrame(EditorGUILayout.IntField("To", captureEndFrame));
+            --EditorGUI.indentLevel;                        
+            EditorGUI.EndDisabledGroup();                       
+            
+            GUILayout.Space(10);
+            
+            if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {            
+                
+                PlayableDirector director = TimelineEditor.inspectedDirector;
+                if (null == director) {
+                    EditorUtility.DisplayDialog("Streaming Image Sequence",
+                        "PlayableAsset is not loaded in scene. Please load the correct scene before doing this operation.",
+                        "Ok");
+                    return;
+                }            
+            
+                //Loop time             
+                EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(director, m_asset), this);
+                        
+            }
         }
         
-        if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {
-            
-            PlayableDirector director = TimelineEditor.inspectedDirector;
-            if (null == director) {
-                EditorUtility.DisplayDialog("Streaming Image Sequence",
-                    "PlayableAsset is not loaded in scene. Please load the correct scene before doing this operation.",
-                    "Ok");
-                return;
-            }            
-            
-            //Loop time             
-            EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(director, m_asset), this);
-                        
-        }
     }
     
 //----------------------------------------------------------------------------------------------------------------------
@@ -186,9 +218,20 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         TimelineClip timelineClip = timelineClipSISData.GetOwner();
         double timePerFrame = 1.0f / track.timelineAsset.editorSettings.fps;
         
-        int  fileCounter = 0;
-        int numFiles = (int) Math.Ceiling(timelineClip.duration / timePerFrame) + 1;
-        int numDigits = MathUtility.GetNumDigits(numFiles);
+        //initial calculation of loop vars
+        bool captureAllFrames = editorConfig.GetCaptureAllFrames();
+        int  fileCounter      = 0;
+        int  numFiles         = (int) Math.Ceiling(timelineClip.duration / timePerFrame) + 1;
+        int  numDigits        = MathUtility.GetNumDigits(numFiles);
+        if (!captureAllFrames) {
+            fileCounter = editorConfig.GetCaptureStartFrame();
+            numFiles    = (editorConfig.GetCaptureEndFrame() - fileCounter) + 1;
+            if (numFiles <= 0) {
+                EditorUtility.DisplayDialog("Streaming Image Sequence", "Invalid Start/End Frame Settings", "Ok");
+                yield break;                                            
+            }
+        }
+        int captureStartFrame = fileCounter;
         
         string prefix = $"{timelineClip.displayName}_";
         List<WatchedFileInfo> imageFiles = new List<WatchedFileInfo>(numFiles);
@@ -196,14 +239,17 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         //Store old files that has the same pattern
         string[] existingFiles = Directory.GetFiles (outputFolder, $"*.png");
         HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
-        
+       
         bool cancelled = false;
-        while (!cancelled) {
+        while (!cancelled) {            
             
             //Always recalculate from start to avoid floating point errors
             double directorTime = timelineClip.start + (fileCounter * timePerFrame);
             if (directorTime > timelineClip.end)
                 break;
+
+            if (!captureAllFrames && fileCounter > editorConfig.GetCaptureEndFrame())
+                break;            
             
             string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
             string outputFilePath = Path.Combine(outputFolder, fileName);
@@ -237,10 +283,9 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             
             imageFiles.Add(new WatchedFileInfo(fileName, fileInfo.Length));
 
-            ++fileCounter;
-        
+            ++fileCounter;        
             cancelled = EditorUtility.DisplayCancelableProgressBar(
-                "StreamingImageSequence", "Caching render results", ((float)fileCounter / numFiles));
+                "StreamingImageSequence", "Caching render results", ((float)(fileCounter - captureStartFrame) / numFiles));
         }
 
         if (!cancelled) {
