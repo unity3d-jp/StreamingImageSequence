@@ -127,19 +127,19 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             
             bool captureAllFrames = EditorGUILayout.Toggle("Capture All Frames", editorConfig.GetCaptureAllFrames());
             editorConfig.SetCaptureAllFrames(captureAllFrames);
-            if (!captureAllFrames) {
-                
-            }
 
             EditorGUI.BeginDisabledGroup(captureAllFrames);
             ++EditorGUI.indentLevel;
-            editorConfig.SetCaptureStartFrame(EditorGUILayout.IntField("From", editorConfig.GetCaptureStartFrame()));
 
-            int endFrame = editorConfig.GetCaptureEndFrame();
-            if (endFrame < 0) {
-                endFrame = TimelineUtility.CalculateNumFrames(TimelineEditor.selectedClip);
+
+            int captureStartFrame = Math.Max(0,editorConfig.GetCaptureStartFrame());
+            int captureEndFrame   = editorConfig.GetCaptureEndFrame();
+            if (captureEndFrame < 0) {
+                captureEndFrame = TimelineUtility.CalculateNumFrames(TimelineEditor.selectedClip);
             } 
-            editorConfig.SetCaptureEndFrame(EditorGUILayout.IntField("To", endFrame));
+            
+            editorConfig.SetCaptureStartFrame(EditorGUILayout.IntField("From", captureStartFrame));
+            editorConfig.SetCaptureEndFrame(EditorGUILayout.IntField("To", captureEndFrame));
             --EditorGUI.indentLevel;                        
             EditorGUI.EndDisabledGroup();                       
             
