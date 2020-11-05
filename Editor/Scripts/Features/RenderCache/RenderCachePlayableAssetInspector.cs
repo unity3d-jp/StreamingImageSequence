@@ -96,9 +96,6 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             DrawCaptureSelectedFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
             DrawLockFramesGUI(TimelineEditor.selectedClip, timelineClipSISData);
         }
-
-        ShortcutBinding updateRenderCacheShortcut 
-            = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_UPDATE_RENDER_CACHE);            
         
         GUILayout.Space(15);
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
@@ -114,7 +111,16 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             --EditorGUI.indentLevel;
             GUILayout.Space(15);
         }
+        
+        DrawUpdateRenderCacheGUI();
 
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+
+    private void DrawUpdateRenderCacheGUI() {
+        ShortcutBinding updateRenderCacheShortcut 
+            = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_UPDATE_RENDER_CACHE);            
 
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
             RenderCachePlayableAssetEditorConfig editorConfig = m_asset.GetEditorConfig();
@@ -153,7 +159,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                         
             }
         }
-
+        
     }
     
 //----------------------------------------------------------------------------------------------------------------------
