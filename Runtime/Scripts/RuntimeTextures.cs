@@ -9,20 +9,13 @@ internal static class RuntimeTextures {
 //----------------------------------------------------------------------------------------------------------------------
 
     internal static Texture GetTransparentTexture() {
-        if (m_transparentTexture.IsNullRef()) {
-            LoadTextures();
+        if (!m_transparentTexture.IsNullRef()) {
+            return m_transparentTexture;
         }
-        return m_transparentTexture;
-    }
-    
-    
-//----------------------------------------------------------------------------------------------------------------------
-
-    static void LoadTextures() {
-        
         m_transparentTexture = new Texture2D (1, 1, TextureFormat.ARGB32, false); 
         m_transparentTexture.SetPixel(0,0, Color.clear);
         m_transparentTexture.Apply();            
+        return m_transparentTexture;
     }
     
 //----------------------------------------------------------------------------------------------------------------------
