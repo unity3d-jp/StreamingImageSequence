@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using Unity.AnimeToolbox;
 using UnityEngine;
-using UnityEngine.Assertions;
 using UnityEngine.Playables;
-using UnityEngine.UI;
 using UnityEngine.Timeline;
 
 namespace Unity.StreamingImageSequence {
@@ -12,6 +10,7 @@ namespace Unity.StreamingImageSequence {
 internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<StreamingImageSequencePlayableAsset> {
 
     public StreamingImageSequencePlayableMixer() {
+        m_sisRenderer = null;
     }
 
     
@@ -114,111 +113,31 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
         int index = asset.GlobalTimeToImageIndex(activeClip, directorTime);
         Texture2D tex  = asset.RequestLoadImage(index);
         if (!tex.IsNullRef()) {
-            UpdateRendererTexture(asset, tex);
+            m_sisRenderer.UpdateRendererTexture(tex);
         }
 
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-
-    void Reset() {
-        m_spriteRenderer    = null;
-        m_image             = null;
-        m_meshRenderer      = null;
-    }
 //---------------------------------------------------------------------------------------------------------------------
 
     protected override void InitInternalV(GameObject gameObject) {
-        bool ret = (null!=gameObject && InitRenderers(gameObject));
-        if (!ret) {
-            Reset();
+        if (null!=gameObject) {
+            m_sisRenderer = gameObject.GetComponent<StreamingImageSequenceRenderer>();            
         }
     }
-
-
-//---------------------------------------------------------------------------------------------------------------------
-    private bool InitRenderers(GameObject go) {
-        Assert.IsNotNull(go);
-
-        m_spriteRenderer= go.GetComponent<SpriteRenderer>();
-        m_meshRenderer  = go.GetComponent<MeshRenderer>();
-        if (null == m_meshRenderer) {
-            m_meshRenderer = go.GetComponent<SkinnedMeshRenderer>();                
-        }
-        
-        m_image         = go.GetComponent<Image>();
-        m_sisRenderer = go.GetComponent<StreamingImageSequenceRenderer>();
-        return (null!= m_sisRenderer);
-    }
-
 
 //---------------------------------------------------------------------------------------------------------------------
     protected override void ShowObjectV(bool show) {
-        if (null!=m_spriteRenderer) {
-            m_spriteRenderer.enabled = show;
-        } else if (null != m_meshRenderer) {
-            m_meshRenderer.enabled = show;
-        } else if (null!=m_image) {
-            m_image.enabled = show;
-        } 
+        if (m_sisRenderer.IsNullRef())
+            return;
+        
+        m_sisRenderer.ShowRenderer(show);
     }
     
-//---------------------------------------------------------------------------------------------------------------------
-
-    //[TODO-sin: 2020-7-22] This should be moved to StreamingImageSequenceRenderer
-    void UpdateRendererTexture(StreamingImageSequencePlayableAsset asset, Texture2D tex) {
-        const int NO_MATERIAL_OUTPUT = -1;
-
-        RenderTexture rt = m_sisRenderer.GetTargetTexture();
-        if (null != rt) {
-            Graphics.Blit(tex, rt);                
-        }
-                    
-        if (null!=m_spriteRenderer ) {
-            Sprite sprite = m_spriteRenderer.sprite;
-            if (sprite.texture != tex) {
-                m_spriteRenderer.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 2, SpriteMeshType.FullRect);
-            }
-            
-        } else if (null!=m_meshRenderer) {
-            Material mat;
-            int materialIndex = m_sisRenderer.GetMaterialIndexToUpdate();
-            if (materialIndex <= NO_MATERIAL_OUTPUT) {
-                return;
-            }
-            
-            int materialsLength = m_meshRenderer.sharedMaterials.Length;
-            
-            // Debug.Log(m_meshRenderer.sharedMaterial + "single material");
-            if (materialsLength > 1 && materialIndex < materialsLength) {
-                mat = m_meshRenderer.sharedMaterials[materialIndex];
-            } else  {                    
-               mat = m_meshRenderer.sharedMaterial;
-            }
-#if AT_USE_HDRP
-            mat.SetTexture(m_hdrpBaseColorMap,tex);
-#else
-            mat.mainTexture = tex;
-#endif            
-            
-        }else if (null!= m_image) {
-            Sprite sprite = m_image.sprite;
-            if (null==sprite || sprite.texture != tex) {
-                m_image.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 1, SpriteMeshType.FullRect);
-            }
-        }
-
-    }
-
 //---------------------------------------------------------------------------------------------------------------------
    
-    private SpriteRenderer  m_spriteRenderer = null;
-    private Renderer        m_meshRenderer = null;
-    private Image           m_image = null;
     private StreamingImageSequenceRenderer m_sisRenderer = null;
-
-    private static readonly int m_hdrpBaseColorMap = Shader.PropertyToID("_BaseColorMap");
-    
+   
 #if UNITY_EDITOR
     SISPlayableMixerEditorUpdateTask m_editorUpdateTask;
 #endif
