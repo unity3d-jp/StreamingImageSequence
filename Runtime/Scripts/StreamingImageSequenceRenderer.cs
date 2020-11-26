@@ -79,19 +79,23 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
             
         } else if (null!=m_meshRenderer) {
             Material mat;
-            int      materialIndex = m_materialIndexToUpdate;
-            if (materialIndex <= NO_MATERIAL_OUTPUT) {
+            int      materialIndex   = m_materialIndexToUpdate;
+            int      materialsLength = m_meshRenderer.sharedMaterials.Length;
+            if (materialIndex <= NO_MATERIAL_OUTPUT || materialsLength <=0) {
                 return;
-            }
+            }            
             
-            int materialsLength = m_meshRenderer.sharedMaterials.Length;
-            
-            // Debug.Log(m_meshRenderer.sharedMaterial + "single material");
+            //Debug.Log(m_meshRenderer.sharedMaterial + "single material");
             if (materialsLength > 1 && materialIndex < materialsLength) {
                 mat = m_meshRenderer.sharedMaterials[materialIndex];
             } else  {                    
                 mat = m_meshRenderer.sharedMaterial;
             }
+
+            if (null == mat) {
+                return;
+            }
+            
 #if AT_USE_HDRP
             mat.SetTexture(m_hdrpBaseColorMap,tex);
 #else
