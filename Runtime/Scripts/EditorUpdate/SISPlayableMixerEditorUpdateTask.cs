@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Timeline;
@@ -26,10 +27,19 @@ internal class SISPlayableMixerEditorUpdateTask : IUpdateTask {
         
         Assert.IsNotNull(m_mixer);
 
-        var clipAssets = m_mixer.GetClipAssets();
+        var  clipAssets   = m_mixer.GetClipAssets();
+        bool needsRefresh = false;
         foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
             StreamingImageSequencePlayableAsset sisAsset = kv.Value;
             sisAsset.ContinuePreloadingImages();
+
+            if (sisAsset.UpdateTextureWithRequestedImage()) {
+                needsRefresh = true;
+            }
+        }
+
+        if (needsRefresh) {
+            TimelineEditor.Refresh(RefreshReason.ContentsModified);            
         }
 
     }

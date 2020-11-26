@@ -193,7 +193,55 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
 #endregion    
     
    
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+    internal Texture2D GetTexture() { return m_texture;}
+    
+//----------------------------------------------------------------------------------------------------------------------
+
+    internal void RequestLoadImage(int index) {
+        int numImages = m_imageFiles.Count;
+        
+        if (null == m_imageFiles || index < 0 || index >= numImages 
+            || string.IsNullOrEmpty(m_imageFiles[index].GetName())) {
+            return;
+        }
+
+        m_primaryImageIndex = index;
+
+        if (QueueImageLoadTask(index, out ImageData readResult)) {
+            m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, numImages - 1);
+            m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);                
+        } else {
+            //If we can't queue, try from the primary index again
+            m_forwardPreloadImageIndex = m_backwardPreloadImageIndex = index;
+        }
+
+        if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus && index > 1) {
+            UpdateTexture(readResult, index);
+        }
+
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+           
+    //returns false if the texture is not changed, true otherwise    
+    internal bool UpdateTextureWithRequestedImage() {
+        if (m_lastCopiedImageIndex == m_primaryImageIndex)
+            return false;
+        
+        string fullPath = GetImageFilePath(m_primaryImageIndex);
+        if (string.IsNullOrEmpty(fullPath) || !File.Exists(fullPath))
+            return false;
+
+        ImageLoader.GetImageDataInto(fullPath,StreamingImageSequenceConstants.IMAGE_TYPE_FULL,out ImageData imageData);
+        if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS != imageData.ReadStatus)
+            return false;
+        
+        UpdateTexture(imageData, m_primaryImageIndex);
+        return true;
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
 
     internal void ContinuePreloadingImages() {
 
@@ -227,10 +275,10 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     }
 
 
-//----------------------------------------------------------------------------------------------------------------------        
+//----------------------------------------------------------------------------------------------------------------------
+   
     //return true if we should continue preloading the next image. False otherwise
     private bool QueueImageLoadTask(int index, out ImageData imageData) {
-        const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;
         string fullPath = GetImageFilePath(index);
 
         if (!File.Exists(fullPath)) {
@@ -238,7 +286,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
             return true;
         }
 
-        ImageLoader.GetImageDataInto(fullPath,TEX_TYPE,out imageData);
+        ImageLoader.GetImageDataInto(fullPath,StreamingImageSequenceConstants.IMAGE_TYPE_FULL,out imageData);
         //Debug.Log("imageData.readStatus " + imageData.readStatus + "Loading " + filename);
         
         switch (imageData.ReadStatus) {
@@ -254,45 +302,24 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
                    
         return true;
     }
-//----------------------------------------------------------------------------------------------------------------------        
+
     
-
-    internal Texture2D RequestLoadImage(int index) {
-        int numImages = m_imageFiles.Count;
-        
-        if (null == m_imageFiles || index < 0 || index >= numImages 
-            || string.IsNullOrEmpty(m_imageFiles[index].GetName())) {
-            return null;
+//---------------------------------------------------------------------------------------------------------------------
+    Texture2D UpdateTexture(ImageData readResult, int index) {
+        if (m_texture.IsNullRef()) {
+            m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
         }
 
-        m_primaryImageIndex         = index;
+        if (m_lastCopiedImageIndex == index)
+            return m_texture;
 
-        if (QueueImageLoadTask(index, out ImageData readResult)) {
-            m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, numImages - 1);
-            m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);                
-        } else {
-            //If we can't queue, try from the primary index again
-            m_forwardPreloadImageIndex = m_backwardPreloadImageIndex = index;
-        }
-
-        if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus) {            
-            if (m_texture.IsNullRef()) {
-                m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
-            }
-
-            if (m_lastCopiedImageIndex != index) {
-                m_texture.name = "Full: " + m_imageFiles[index].GetName();
-                readResult.CopyBufferToTexture(m_texture);
-                UpdateResolution(ref readResult);
-                
-                m_lastCopiedImageIndex = index;
-            }
-
-            return m_texture;            
-        }
-
-        return null;
-    }        
+        m_texture.name = "Full: " + m_imageFiles[index].GetName();
+        readResult.CopyBufferToTexture(m_texture);
+        UpdateResolution(ref readResult);                
+        m_lastCopiedImageIndex = index;
+        return m_texture;
+    }
+    
 
 //---------------------------------------------------------------------------------------------------------------------
     void ResetTexture() {

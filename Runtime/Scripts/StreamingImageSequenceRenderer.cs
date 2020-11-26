@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace Unity.StreamingImageSequence  {
@@ -65,6 +66,7 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     
     internal void UpdateTexture(Texture2D tex) {
         const int NO_MATERIAL_OUTPUT = -1;
+        Assert.IsNotNull(tex);
 
         RenderTexture rt = m_targetTexture;
         if (null != rt) {
