@@ -37,7 +37,7 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     public void SetTargetTexture(RenderTexture tex) { m_targetTexture = tex;}
     
 //----------------------------------------------------------------------------------------------------------------------
-    internal void InitRenderers() {
+    internal void Init() {
 
         m_spriteRenderer = GetComponent<SpriteRenderer>();
         m_meshRenderer   = GetComponent<MeshRenderer>();
@@ -51,7 +51,7 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal void ShowRenderer(bool show) {
+    internal void Show(bool show) {
         if (null!=m_spriteRenderer) {
             m_spriteRenderer.enabled = show;
         } else if (null != m_meshRenderer) {
@@ -63,7 +63,7 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     
 //----------------------------------------------------------------------------------------------------------------------
     
-    internal void UpdateRendererTexture(Texture2D tex) {
+    internal void UpdateTexture(Texture2D tex) {
         const int NO_MATERIAL_OUTPUT = -1;
 
         RenderTexture rt = m_targetTexture;

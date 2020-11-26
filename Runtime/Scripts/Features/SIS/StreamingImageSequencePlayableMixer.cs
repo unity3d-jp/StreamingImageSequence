@@ -113,7 +113,7 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
         int index = asset.GlobalTimeToImageIndex(activeClip, directorTime);
         Texture2D tex  = asset.RequestLoadImage(index);
         if (!tex.IsNullRef()) {
-            m_sisRenderer.UpdateRendererTexture(tex);
+            m_sisRenderer.UpdateTexture(tex);
         }
 
     }
@@ -123,7 +123,7 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
     protected override void InitInternalV(GameObject gameObject) {
         if (null!=gameObject) {
             m_sisRenderer = gameObject.GetComponent<StreamingImageSequenceRenderer>();
-            m_sisRenderer.InitRenderers();
+            m_sisRenderer.Init();
         }
     }
 
@@ -132,7 +132,7 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
         if (m_sisRenderer.IsNullRef())
             return;
         
-        m_sisRenderer.ShowRenderer(show);
+        m_sisRenderer.Show(show);
     }
     
 //---------------------------------------------------------------------------------------------------------------------
