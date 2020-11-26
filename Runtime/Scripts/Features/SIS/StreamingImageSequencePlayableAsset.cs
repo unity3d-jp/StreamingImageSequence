@@ -4,6 +4,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
 using System.Collections.Generic;
+using Unity.AnimeToolbox;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
@@ -275,7 +276,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
         }
 
         if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus) {
-            if (null == m_texture) {
+            
+            if (m_texture.IsNullRef()) {
                 m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
             }
 
@@ -288,12 +290,12 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
             }
         }
         
-        return null!=m_texture;
+        return !m_texture.IsNullRef();
     }        
 
 //---------------------------------------------------------------------------------------------------------------------
     void ResetTexture() {
-        if (null != m_texture) {
+        if (!m_texture.IsNullRef()) {
             ObjectUtility.Destroy(m_texture);
             m_texture = null;
         }
