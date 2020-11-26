@@ -216,7 +216,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
             m_forwardPreloadImageIndex = m_backwardPreloadImageIndex = index;
         }
 
-        if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus && index > 1) {
+        if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus) {
             UpdateTexture(readResult, index);
         }
 
