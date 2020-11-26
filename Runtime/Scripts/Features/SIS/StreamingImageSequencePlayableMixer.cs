@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Unity.AnimeToolbox;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Playables;
@@ -111,9 +112,9 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
             return;
         
         int index = asset.GlobalTimeToImageIndex(activeClip, directorTime);
-        bool texReady = asset.RequestLoadImage(index);
-        if (texReady) {
-            UpdateRendererTexture(asset);
+        Texture2D tex  = asset.RequestLoadImage(index);
+        if (!tex.IsNullRef()) {
+            UpdateRendererTexture(asset, tex);
         }
 
     }
@@ -165,9 +166,7 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
 //---------------------------------------------------------------------------------------------------------------------
 
     //[TODO-sin: 2020-7-22] This should be moved to StreamingImageSequenceRenderer
-    void UpdateRendererTexture(StreamingImageSequencePlayableAsset asset) {
-        Texture2D tex = asset.GetTexture();
-
+    void UpdateRendererTexture(StreamingImageSequencePlayableAsset asset, Texture2D tex) {
         const int NO_MATERIAL_OUTPUT = -1;
 
         RenderTexture rt = m_sisRenderer.GetTargetTexture();
