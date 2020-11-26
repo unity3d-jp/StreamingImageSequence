@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Unity.StreamingImageSequence  {
 
@@ -35,11 +36,90 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     /// <param name="tex">the target RenderTexture for copying</param>
     public void SetTargetTexture(RenderTexture tex) { m_targetTexture = tex;}
     
-//----------------------------------------------------------------------------------------------------------------------    
+//----------------------------------------------------------------------------------------------------------------------
+    internal void Init() {
+
+        m_spriteRenderer = GetComponent<SpriteRenderer>();
+        m_meshRenderer   = GetComponent<MeshRenderer>();
+        if (null == m_meshRenderer) {
+            m_meshRenderer = GetComponent<SkinnedMeshRenderer>();                
+        }
+        
+        m_image = GetComponent<Image>();
+        
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+
+    internal void Show(bool show) {
+        if (null!=m_spriteRenderer) {
+            m_spriteRenderer.enabled = show;
+        } else if (null != m_meshRenderer) {
+            m_meshRenderer.enabled = show;
+        } else if (null!=m_image) {
+            m_image.enabled = show;
+        } 
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    
+    internal void UpdateTexture(Texture2D tex) {
+        const int NO_MATERIAL_OUTPUT = -1;
+
+        RenderTexture rt = m_targetTexture;
+        if (null != rt) {
+            Graphics.Blit(tex, rt);                
+        }
+                    
+        if (null!=m_spriteRenderer ) {
+            Sprite sprite = m_spriteRenderer.sprite;
+            if (sprite.texture != tex) {
+                m_spriteRenderer.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 2, SpriteMeshType.FullRect);
+            }
+            
+        } else if (null!=m_meshRenderer) {
+            Material mat;
+            int      materialIndex = m_materialIndexToUpdate;
+            if (materialIndex <= NO_MATERIAL_OUTPUT) {
+                return;
+            }
+            
+            int materialsLength = m_meshRenderer.sharedMaterials.Length;
+            
+            // Debug.Log(m_meshRenderer.sharedMaterial + "single material");
+            if (materialsLength > 1 && materialIndex < materialsLength) {
+                mat = m_meshRenderer.sharedMaterials[materialIndex];
+            } else  {                    
+                mat = m_meshRenderer.sharedMaterial;
+            }
+#if AT_USE_HDRP
+            mat.SetTexture(m_hdrpBaseColorMap,tex);
+#else
+            mat.mainTexture = tex;
+#endif            
+            
+        }else if (null!= m_image) {
+            Sprite sprite = m_image.sprite;
+            if (null==sprite || sprite.texture != tex) {
+                m_image.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 1, SpriteMeshType.FullRect);
+            }
+        }
+
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    
     
     [SerializeField] private int m_materialIndexToUpdate;
     [SerializeField] private RenderTexture m_targetTexture;
 
+//----------------------------------------------------------------------------------------------------------------------
+    
+    private SpriteRenderer m_spriteRenderer = null;
+    private Renderer       m_meshRenderer   = null;
+    private Image          m_image          = null;
+    
+    private static readonly int m_hdrpBaseColorMap = Shader.PropertyToID("_BaseColorMap");
 
 }
 

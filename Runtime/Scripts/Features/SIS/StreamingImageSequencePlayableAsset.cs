@@ -4,6 +4,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
 using System.Collections.Generic;
+using Unity.AnimeToolbox;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
@@ -84,9 +85,19 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     /// Constructor
     /// </summary>
     public StreamingImageSequencePlayableAsset() {
-        m_lastCopiedImageIndex = -1;            
+        m_lastCopiedImageIndex = -1;
     }
-    
+
+//----------------------------------------------------------------------------------------------------------------------
+
+    void OnEnable() {
+        m_texture = null;       
+    }
+
+    private void OnDisable() {
+        ResetTexture();
+    }
+       
 //----------------------------------------------------------------------------------------------------------------------
 
     //[Note-sin: 2020-7-17] This is also called when the TimelineClip in TimelineWindow is deleted, instead of just
@@ -140,16 +151,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
         GetAndValidateAnimationCurve(clip, out AnimationCurve curve);                       
         return curve.Evaluate((float)(localTime));
     }
-    
-//----------------------------------------------------------------------------------------------------------------------
-
-
-    /// <summary>
-    /// Returns the texture that contains the active image according to the PlayableDirector's time.
-    /// </summary>
-    /// <returns></returns>
-    public Texture2D GetTexture() { return m_texture; }        
-                    
     
 //----------------------------------------------------------------------------------------------------------------------        
     private void Reset() {
@@ -256,12 +257,12 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
 //----------------------------------------------------------------------------------------------------------------------        
     
 
-    internal bool RequestLoadImage(int index) {
+    internal Texture2D RequestLoadImage(int index) {
         int numImages = m_imageFiles.Count;
         
         if (null == m_imageFiles || index < 0 || index >= numImages 
             || string.IsNullOrEmpty(m_imageFiles[index].GetName())) {
-            return false;
+            return null;
         }
 
         m_primaryImageIndex         = index;
@@ -274,8 +275,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
             m_forwardPreloadImageIndex = m_backwardPreloadImageIndex = index;
         }
 
-        if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus) {
-            if (null == m_texture) {
+        if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus) {            
+            if (m_texture.IsNullRef()) {
                 m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
             }
 
@@ -286,14 +287,16 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
                 
                 m_lastCopiedImageIndex = index;
             }
+
+            return m_texture;            
         }
-        
-        return null!=m_texture;
+
+        return null;
     }        
 
 //---------------------------------------------------------------------------------------------------------------------
     void ResetTexture() {
-        if (null != m_texture) {
+        if (!m_texture.IsNullRef()) {
             ObjectUtility.Destroy(m_texture);
             m_texture = null;
         }
@@ -469,7 +472,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
         "*.png",
         "*.tga"             
     };
-
     
 #endif
    
@@ -479,9 +481,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     private int m_primaryImageIndex         = 0;
     private int m_forwardPreloadImageIndex  = 0;
     private int m_backwardPreloadImageIndex = 0;
-    
 
-    Texture2D m_texture = null;
+
+    Texture2D    m_texture       = null;
 
 //----------------------------------------------------------------------------------------------------------------------
     
