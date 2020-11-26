@@ -288,11 +288,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
                 m_lastCopiedImageIndex = index;
             }
 
-            m_textureLoaded = true;
             return m_texture;            
         }
 
-        m_textureLoaded = false;
         return null;
     }        
 
@@ -485,7 +483,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     private int m_backwardPreloadImageIndex = 0;
 
 
-    private bool m_textureLoaded = false;
     Texture2D    m_texture       = null;
 
 //----------------------------------------------------------------------------------------------------------------------
