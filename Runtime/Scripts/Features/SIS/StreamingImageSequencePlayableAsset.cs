@@ -194,16 +194,14 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     
    
 //----------------------------------------------------------------------------------------------------------------------
-    internal Texture2D GetTexture() { return m_texture;}
-    
-//----------------------------------------------------------------------------------------------------------------------
 
-    internal void RequestLoadImage(int index) {
+    //return Texture2D if the image has been loaded successfully, null otherwise
+    internal Texture2D RequestLoadImage(int index) {
         int numImages = m_imageFiles.Count;
         
         if (null == m_imageFiles || index < 0 || index >= numImages 
             || string.IsNullOrEmpty(m_imageFiles[index].GetName())) {
-            return;
+            return null;
         }
 
         m_primaryImageIndex = index;
@@ -216,10 +214,11 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
             m_forwardPreloadImageIndex = m_backwardPreloadImageIndex = index;
         }
 
-        if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus && index > 1) {
-            UpdateTexture(readResult, index);
+        if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus) {
+            return UpdateTexture(readResult, index);
         }
 
+        return null;
     }
     
 //----------------------------------------------------------------------------------------------------------------------
