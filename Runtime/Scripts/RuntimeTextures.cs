@@ -8,7 +8,7 @@ internal static class RuntimeTextures {
    
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal static Texture GetTransparentTexture() {
+    internal static Texture2D GetTransparentTexture() {
         if (!m_transparentTexture.IsNullRef()) {
             return m_transparentTexture;
         }
