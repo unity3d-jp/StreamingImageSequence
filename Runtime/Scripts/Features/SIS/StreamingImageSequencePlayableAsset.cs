@@ -4,6 +4,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Unity.AnimeToolbox;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -194,14 +195,17 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     
    
 //----------------------------------------------------------------------------------------------------------------------
+    [CanBeNull]
+    internal Texture2D GetTexture() { return m_primaryImageIndex == m_lastCopiedImageIndex ? m_texture : null;}
+    
+//----------------------------------------------------------------------------------------------------------------------
 
-    //return Texture2D if the image has been loaded successfully, null otherwise
-    internal Texture2D RequestLoadImage(int index) {
+    internal void RequestLoadImage(int index) {
         int numImages = m_imageFiles.Count;
         
         if (null == m_imageFiles || index < 0 || index >= numImages 
             || string.IsNullOrEmpty(m_imageFiles[index].GetName())) {
-            return null;
+            return;
         }
 
         m_primaryImageIndex = index;
@@ -215,10 +219,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
         }
 
         if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus) {
-            return UpdateTexture(readResult, index);
+            UpdateTexture(readResult, index);
         }
 
-        return null;
     }
     
 //----------------------------------------------------------------------------------------------------------------------
