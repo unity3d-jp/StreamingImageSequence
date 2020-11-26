@@ -85,9 +85,19 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     /// Constructor
     /// </summary>
     public StreamingImageSequencePlayableAsset() {
-        m_lastCopiedImageIndex = -1;            
+        m_lastCopiedImageIndex = -1;
     }
-    
+
+//----------------------------------------------------------------------------------------------------------------------
+
+    void OnEnable() {
+        m_texture = null;       
+    }
+
+    private void OnDisable() {
+        ResetTexture();
+    }
+       
 //----------------------------------------------------------------------------------------------------------------------
 
     //[Note-sin: 2020-7-17] This is also called when the TimelineClip in TimelineWindow is deleted, instead of just
