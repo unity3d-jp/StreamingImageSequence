@@ -4,6 +4,7 @@ using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Unity.AnimeToolbox;
 using UnityEngine;
 #if UNITY_EDITOR
@@ -194,7 +195,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     
    
 //----------------------------------------------------------------------------------------------------------------------
-    internal Texture2D GetTexture() { return m_texture;}
+    [CanBeNull]
+    internal Texture2D GetTexture() { return m_primaryImageIndex == m_lastCopiedImageIndex ? m_texture : null;}
     
 //----------------------------------------------------------------------------------------------------------------------
 
