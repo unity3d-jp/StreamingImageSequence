@@ -152,16 +152,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
         return curve.Evaluate((float)(localTime));
     }
     
-//----------------------------------------------------------------------------------------------------------------------
-
-
-    /// <summary>
-    /// Returns the texture that contains the active image according to the PlayableDirector's time.
-    /// </summary>
-    /// <returns></returns>
-    public Texture2D GetTexture() { return m_texture; }        
-                    
-    
 //----------------------------------------------------------------------------------------------------------------------        
     private void Reset() {
         
@@ -267,12 +257,12 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
 //----------------------------------------------------------------------------------------------------------------------        
     
 
-    internal bool RequestLoadImage(int index) {
+    internal Texture2D RequestLoadImage(int index) {
         int numImages = m_imageFiles.Count;
         
         if (null == m_imageFiles || index < 0 || index >= numImages 
             || string.IsNullOrEmpty(m_imageFiles[index].GetName())) {
-            return false;
+            return null;
         }
 
         m_primaryImageIndex         = index;
@@ -285,8 +275,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
             m_forwardPreloadImageIndex = m_backwardPreloadImageIndex = index;
         }
 
-        if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus) {
-            
+        if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus) {            
             if (m_texture.IsNullRef()) {
                 m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
             }
@@ -298,9 +287,13 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
                 
                 m_lastCopiedImageIndex = index;
             }
+
+            m_textureLoaded = true;
+            return m_texture;            
         }
-        
-        return !m_texture.IsNullRef();
+
+        m_textureLoaded = false;
+        return null;
     }        
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -481,7 +474,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
         "*.png",
         "*.tga"             
     };
-
     
 #endif
    
@@ -491,9 +483,10 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     private int m_primaryImageIndex         = 0;
     private int m_forwardPreloadImageIndex  = 0;
     private int m_backwardPreloadImageIndex = 0;
-    
 
-    Texture2D m_texture = null;
+
+    private bool m_textureLoaded = false;
+    Texture2D    m_texture       = null;
 
 //----------------------------------------------------------------------------------------------------------------------
     
