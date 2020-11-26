@@ -122,7 +122,8 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
 
     protected override void InitInternalV(GameObject gameObject) {
         if (null!=gameObject) {
-            m_sisRenderer = gameObject.GetComponent<StreamingImageSequenceRenderer>();            
+            m_sisRenderer = gameObject.GetComponent<StreamingImageSequenceRenderer>();
+            m_sisRenderer.InitRenderers();
         }
     }
 
