@@ -7,6 +7,7 @@ namespace Unity.StreamingImageSequence  {
 /// <summary>
 /// A component that stores the output of StreamingImageSequence 
 /// </summary>
+[ExecuteAlways]
 public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     
     
@@ -37,16 +38,15 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     public void SetTargetTexture(RenderTexture tex) { m_targetTexture = tex;}
     
 //----------------------------------------------------------------------------------------------------------------------
-    internal void Init() {
 
+    void Awake() {
         m_spriteRenderer = GetComponent<SpriteRenderer>();
         m_meshRenderer   = GetComponent<MeshRenderer>();
         if (null == m_meshRenderer) {
             m_meshRenderer = GetComponent<SkinnedMeshRenderer>();                
         }
         
-        m_image = GetComponent<Image>();
-        
+        m_image = GetComponent<Image>();        
     }
     
 //----------------------------------------------------------------------------------------------------------------------
