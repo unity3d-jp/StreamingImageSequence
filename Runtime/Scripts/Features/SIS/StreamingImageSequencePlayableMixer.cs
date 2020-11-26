@@ -107,7 +107,7 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
 #endregion        
 
 
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
     protected override void ProcessActiveClipV(StreamingImageSequencePlayableAsset asset,
         double directorTime, TimelineClip activeClip) 
     {
@@ -116,7 +116,8 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
             return;
         
         int index = asset.GlobalTimeToImageIndex(activeClip, directorTime);
-        Texture2D tex  = asset.RequestLoadImage(index);
+        asset.RequestLoadImage(index);
+        Texture2D tex = asset.GetTexture();
         if (tex.IsNullRef()) {
             tex = RuntimeTextures.GetTransparentTexture();
         }
@@ -124,7 +125,7 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
         m_sisRenderer.UpdateTexture(tex);
     }
 
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
 
     protected override void InitInternalV(GameObject gameObject) {
     }
