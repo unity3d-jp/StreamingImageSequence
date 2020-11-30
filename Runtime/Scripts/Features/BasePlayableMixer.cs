@@ -111,7 +111,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal double GetDirectorTime() { return m_playableDirector.time; }
+    internal double GetDirectorTime() { return null!= m_playableDirector ?  m_playableDirector.time : 0; } 
     
 //----------------------------------------------------------------------------------------------------------------------
 
