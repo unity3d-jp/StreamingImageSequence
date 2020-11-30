@@ -14,7 +14,8 @@ internal static class EditorTextures {
             return m_checkedTexture;
         }
         const string CHECKED_TEX_FULL_PATH = "Packages/com.unity.streaming-image-sequence/Editor/Textures/Checked.png";
-        m_checkedTexture = AssetDatabase.LoadAssetAtPath<Texture>(CHECKED_TEX_FULL_PATH);            
+        m_checkedTexture           = AssetDatabase.LoadAssetAtPath<Texture>(CHECKED_TEX_FULL_PATH);
+        m_checkedTexture.hideFlags = HideFlags.DontSave;
         return m_checkedTexture;
     }
 
@@ -23,7 +24,8 @@ internal static class EditorTextures {
             return m_inactiveCheckedTexture;
         }
         const string TEX_FULL_PATH = "Packages/com.unity.streaming-image-sequence/Editor/Textures/InactiveChecked.png";
-        m_inactiveCheckedTexture = AssetDatabase.LoadAssetAtPath<Texture>(TEX_FULL_PATH);            
+        m_inactiveCheckedTexture           = AssetDatabase.LoadAssetAtPath<Texture>(TEX_FULL_PATH);
+        m_inactiveCheckedTexture.hideFlags = HideFlags.DontSave;
         return m_inactiveCheckedTexture;
     }
 
@@ -35,7 +37,8 @@ internal static class EditorTextures {
         const string STYLESHEET_IMAGE_PATH = "Packages/com.unity.streaming-image-sequence/Editor/StyleSheets/Images";
         string       skin                  = EditorGUIUtility.isProSkin ? "DarkSkin" : "LightSkin";
         string       lockTexFullPath       = Path.Combine(STYLESHEET_IMAGE_PATH, skin, "FrameMarkerLock.png");
-        m_lockTexture = AssetDatabase.LoadAssetAtPath<Texture>(lockTexFullPath);                    
+        m_lockTexture           = AssetDatabase.LoadAssetAtPath<Texture>(lockTexFullPath);
+        m_lockTexture.hideFlags = HideFlags.DontSave;
         return m_lockTexture;
     }
 
@@ -46,7 +49,7 @@ internal static class EditorTextures {
             return m_previewBGTexture;
         
         m_previewBGTexture           = new Texture2D(1,1, TextureFormat.ARGB32,false);
-        m_previewBGTexture.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
+        m_previewBGTexture.hideFlags = HideFlags.DontSave;
         return m_previewBGTexture;
     }
     
