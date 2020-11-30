@@ -33,6 +33,8 @@ internal class RenderCacheTrack : BaseTimelineClipSISDataTrack<RenderCachePlayab
     
     private void OnDestroy() {
         m_trackMixer?.Destroy();
+        m_trackMixer = null;
+        
     }
 
 //----------------------------------------------------------------------------------------------------------------------
