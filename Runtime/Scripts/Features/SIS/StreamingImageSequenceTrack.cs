@@ -40,6 +40,7 @@ internal class StreamingImageSequenceTrack : BaseTimelineClipSISDataTrack<Stream
 //----------------------------------------------------------------------------------------------------------------------
     private void OnDestroy() {
         m_trackMixer?.Destroy();
+        m_trackMixer = null;
     }
     
     
