@@ -199,7 +199,7 @@ Track.prototype.outputJson = function(isContinue)
         this.jsonExporter.jsonNameAndValue("Start", avlayer.startTime,true);    
         var duration = avlayer.outPoint - avlayer.startTime;
         this.jsonExporter.jsonNameAndValue("Duration",duration,true);    
-        var  footageFileName = saveFile.path.convertToWindowsDirname() +  "/" + this.findFootage(avlayer.source.name);
+        var  footageFileName = this.findFootage(avlayer.source.name);
         this.jsonExporter.jsonNameAndString("Footage",footageFileName,false);        
         this.jsonExporter.jsonKokka(isContinue);  
         
