@@ -1,73 +1,62 @@
 ﻿// May 03 2018 Toshiyuki Mori 
 
-
 //
 // String
 //
-String.prototype.convertToWindowsDirname = function()
-{
-    var str = this;
+String.prototype.convertToWindowsDirname = function() {
+    var str = this.toString();   
     var re = /^\/[A-z]\//;
-    if (str.match(re))
-    {
+    if (str.match(re)) {
         str = str.charAt(1) + ":" + str.substring(2,str.length);
     }
-
     return str;
 }
 
-String.prototype.dirname = function()
-{
-     var OS = $.os;  
-     var str = this;
+String.prototype.dirname = function() {
+    var OS = $.os;  
+    var str = this;
     if (OS.search("Windows") != -1) {  
         str = this.convertToWindowsDirname();
     } 
 
     var index = str.lastIndexOf("/");
-    if ( index < 0 )
-    {
+    if ( index < 0 ) {
         return str;
     }
     return str.substring(0,index);
 }
 
-String.prototype.filename = function()
-{
+String.prototype.filename = function() {
     var index = this.lastIndexOf("/");
-    if ( index < 0 )
-    {
+    if ( index < 0 ) {
         return this;
     }
     return this.substring(index+1,this.length);
 }
 
-String.prototype.basename = function(ext)
-{
+String.prototype.basename = function(ext) {
     var slashIndex = lastIndexOf(this, "/" );
     var ret = this.substring(slashIndex + 1, this.length);
-    if ( ext )
-    {
+    if ( ext ) {
         var extIndex = lastIndexOf(ret, ext);
-        if ( extIndex > 0 )
-        {
+        if ( extIndex > 0 ) {
             ret = ret.substring(0,extIndex);
         }
     }
     return ret;
 }
 
-String.prototype.extname = function()
-{
+String.prototype.extname = function() {
     var periodIndex = this.lastIndexOf('.');
-    if ( periodIndex < 0)
-    {
+    if ( periodIndex < 0) {
         return null;
     }
     var ret = this.substring(periodIndex,this.length);
     
     return ret;
 }
+
+//---------------------------------------------------------------------------------------------------------------------
 
 //
 // JsonExporter
@@ -383,7 +372,7 @@ main = function()
     }
     var folder = saveFile.path;
     
-   for ( i = 0; i < allFootagees.length; i++)
+    for ( i = 0; i < allFootagees.length; i++)
     {
         var footage = new Footage( allFootagees[i],exporter);
         footages.push(footage);
