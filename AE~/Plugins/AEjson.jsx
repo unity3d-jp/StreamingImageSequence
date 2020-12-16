@@ -251,14 +251,13 @@ Comp.prototype.outputJSTIMELINE = function()
     
  }
 
+
 var Footage = function(item, exporter ) // constructor
 {
     this.jsonExporter = exporter;
     this.item = item;
     this.footageDisplayName = item.name;
-    this.firstFilePath  = String(item.file);
-
-    this.dirname = this.firstFilePath.dirname();
+    this.firstFilePath  = String(item.file);             
     this.filename = this.firstFilePath.filename();
     this.extname = this.filename.extname();
     
@@ -294,16 +293,16 @@ var Footage = function(item, exporter ) // constructor
     {
         return ; // not sequential pictures.
     }
-   this.startNumberString = this.numberString.substring(0,indexOfHyphen);
-   this.endNumberString =  this.numberString.substring(indexOfHyphen+1, this.numberString.length);  
+    this.startNumberString = this.numberString.substring(0,indexOfHyphen);
+    this.endNumberString =  this.numberString.substring(indexOfHyphen+1, this.numberString.length);  
 
     this.startNumber = parseInt(this.startNumberString, 10);
     this.endNumber = parseInt(this.endNumberString, 10);    
     
-    for ( var i =  this.startNumber; i <= this.endNumber; i++)
-    {
+    var relativeFolder = this.firstFilePath.dirname().relativeTo(saveFile.path);    
+    for ( var i =  this.startNumber; i <= this.endNumber; i++) {
         var filename = this.filename;
-        this.filenameArray.push(this.dirname + "/" + this.getfileNameWithIndex(i,idxOpen));
+        this.filenameArray.push(relativeFolder + "/" + this.getfileNameWithIndex(i,idxOpen));
     }
 }    
 
