@@ -7,7 +7,9 @@
         "com.unity.anime-toolbox": "0.3.1-preview",
         "com.unity.editorcoroutines": "1.0.0",
         "com.unity.ext.nunit": "1.0.0",        
-        "com.unity.modules.animation": "1.0.0",             
+        "com.unity.modules.animation": "1.0.0",                    
+        "com.unity.modules.director": "1.0.0",
+        "com.unity.modules.particlesystem": "1.0.0",
         "com.unity.ugui": "1.0.0",
         "com.unity.timeline": "1.2.14"
     }, 
