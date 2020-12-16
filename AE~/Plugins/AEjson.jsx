@@ -26,6 +26,24 @@ String.prototype.dirname = function() {
     return str.substring(0,index);
 }
 
+String.prototype.relativeTo = function(relStr) {
+    var str = this.toString();
+    
+    //Doesn't start with
+    if (str.indexOf(relStr)!=0) {
+        return str;
+    }
+    
+    var startSlicePos = relStr.length;
+    var strLength = str.length;
+    if (str.length > relStr.length && str[startSlicePos]=='/') {
+        ++startSlicePos;
+    }
+   
+    return str.slice(startSlicePos,str.length);
+}
+
+
 String.prototype.filename = function() {
     var index = this.lastIndexOf("/");
     if ( index < 0 ) {
