@@ -15,11 +15,19 @@ internal static class PreviewUtility {
         double visibleLocalStartTime = clipInfo.VisibleLocalStartTime;
         double visibleLocalEndTime   = clipInfo.VisibleLocalEndTime;
         Rect   visibleRect           = clipInfo.VisibleRect;
+
+        //[Note-sin: 2020-12-16] Only support fixed height atm. Dynamic heights will make it more a lot more complex to:
+        //- calculate the position/width/height of each image and if they should be shrunk in one dimension
+        //- allocate memory for preview images
+        const int FIXED_HEIGHT = 25;
+        visibleRect.y      = (visibleRect.height-FIXED_HEIGHT) + 1;
+        visibleRect.height = FIXED_HEIGHT;
+        
         double visibleDuration       = visibleLocalEndTime - visibleLocalStartTime;
         double scaledFramePerSecond  = clipInfo.FramePerSecond / clipInfo.TimeScale; 
-        double scaledClipDuration    = clipInfo.Duration * clipInfo.TimeScale; 
-        
+        double scaledClipDuration    = clipInfo.Duration * clipInfo.TimeScale;         
         //Calculate rect for one image.
+        
         float dimensionRatio        = clipInfo.ImageDimensionRatio;
         int   widthPerPreviewImage  = (int) (dimensionRatio * visibleRect.height);
         int   heightPerPreviewImage = (int)visibleRect.height;
