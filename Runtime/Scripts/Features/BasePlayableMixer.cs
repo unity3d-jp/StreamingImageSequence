@@ -35,8 +35,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
             return;
         }
 
-        GetActiveTimelineClipInto(m_clips, m_playableDirector.time, out TimelineClip clip, out T activePlayableAsset);        ;
-//        GetActiveTimelineClipInto(m_clipAssets, m_playableDirector.time, out TimelineClip clip, out T activePlayableAsset);
+        GetActiveTimelineClipInto(m_clips, m_playableDirector.time, out TimelineClip clip, out T activePlayableAsset);        
         if (null == clip)
             return;
         
