@@ -189,7 +189,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
 #region PlayableAsset functions override
     /// <inheritdoc/>
     public sealed override Playable CreatePlayable(PlayableGraph graph, GameObject go) {
-        return Playable.Null;
+        return Playable.Create(graph);
     }
    
 #endregion    
