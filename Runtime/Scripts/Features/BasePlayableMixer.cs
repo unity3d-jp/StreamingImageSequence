@@ -47,30 +47,10 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
 
     #endregion IPlayableBehaviour interfaces
     
-//----------------------------------------------------------------------------------------------------------------------
-
-    public static void GetActiveTimelineClipInto( IEnumerable<TimelineClip> clips, double directorTime, 
-        out TimelineClip outClip, out T outAsset) {
-        
-        foreach (TimelineClip clip in clips) {
-            T asset = clip.asset as T;
-            if (null == asset)
-                continue;
-
-            if ( directorTime >= clip.start && directorTime <= clip.end) {
-                outClip = clip;
-                outAsset = asset;
-                return;
-            }
-        }
-
-        outClip = null;
-        outAsset = null;
-    }
 
 //----------------------------------------------------------------------------------------------------------------------
     
-    private static void GetActiveTimelineClipInto( IList<TimelineClip> sortedClips, double directorTime, 
+    internal static void GetActiveTimelineClipInto( IList<TimelineClip> sortedClips, double directorTime, 
         out TimelineClip outClip, out T outAsset) {
 
         TimelineClip prevClipWithPostExtrapolation = null;
