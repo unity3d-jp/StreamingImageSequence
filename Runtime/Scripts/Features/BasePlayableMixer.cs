@@ -76,7 +76,7 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
                 
         foreach (TimelineClip clip in sortedClips) {
 
-            if (clip.start > directorTime)
+            if (directorTime < clip.start)
                 continue;
 
             if (clip.end < directorTime)
