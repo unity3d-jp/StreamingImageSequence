@@ -30,11 +30,13 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
             return; // it doesn't work as mixer.
         }
 
+        
         if (m_boundGameObject== null ) {
             return;
         }
-        
-        GetActiveTimelineClipInto(m_clipAssets, m_playableDirector.time, out TimelineClip clip, out T activePlayableAsset);
+
+        GetActiveTimelineClipInto(m_clips, m_playableDirector.time, out TimelineClip clip, out T activePlayableAsset);        ;
+//        GetActiveTimelineClipInto(m_clipAssets, m_playableDirector.time, out TimelineClip clip, out T activePlayableAsset);
         if (null == clip)
             return;
         
@@ -68,6 +70,27 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
     }
 
 //----------------------------------------------------------------------------------------------------------------------
+    
+    private static void GetActiveTimelineClipInto( IList<TimelineClip> clips, double directorTime, 
+        out TimelineClip outClip, out T outAsset) {
+                
+        foreach (TimelineClip clip in clips) {
+
+            if (clip.start > directorTime)
+                continue;
+
+            if (clip.end < directorTime)
+                continue;
+
+            outClip  = clip;
+            outAsset = clip.asset as T;
+            return;
+        }
+
+        outClip  = null;
+        outAsset = null;
+    }
+    
     private static void GetActiveTimelineClipInto( IDictionary<TimelineClip, T> clipAssets, double directorTime, 
         out TimelineClip outClip, out T outAsset) {
         
