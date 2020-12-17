@@ -92,7 +92,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
 //----------------------------------------------------------------------------------------------------------------------
 
     void OnEnable() {
-        m_texture = null;       
+        m_texture              = null;
+        m_lastCopiedImageIndex = -1;
     }
 
     private void OnDisable() {
@@ -188,7 +189,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
 #region PlayableAsset functions override
     /// <inheritdoc/>
     public sealed override Playable CreatePlayable(PlayableGraph graph, GameObject go) {
-        return Playable.Null;
+        return Playable.Create(graph);
     }
    
 #endregion    
