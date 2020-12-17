@@ -91,23 +91,6 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
         outAsset = null;
     }
     
-    private static void GetActiveTimelineClipInto( IDictionary<TimelineClip, T> clipAssets, double directorTime, 
-        out TimelineClip outClip, out T outAsset) {
-        
-        foreach (KeyValuePair<TimelineClip, T> clipAsset in clipAssets) {
-            TimelineClip clip = clipAsset.Key;
-            T asset = clipAsset.Value;
-
-            if ( directorTime >= clip.start && directorTime <= clip.end) {
-                outClip  = clip;
-                outAsset = asset;
-                return;
-            }
-        }
-
-        outClip  = null;
-        outAsset = null;
-    }
 //----------------------------------------------------------------------------------------------------------------------
 
     internal void Init(GameObject go, PlayableDirector director, IEnumerable<TimelineClip> clips) {
