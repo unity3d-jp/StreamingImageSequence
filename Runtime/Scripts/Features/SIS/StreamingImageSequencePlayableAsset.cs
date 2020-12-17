@@ -92,7 +92,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
 //----------------------------------------------------------------------------------------------------------------------
 
     void OnEnable() {
-        m_texture = null;       
+        m_texture              = null;
+        m_lastCopiedImageIndex = -1;
     }
 
     private void OnDisable() {
