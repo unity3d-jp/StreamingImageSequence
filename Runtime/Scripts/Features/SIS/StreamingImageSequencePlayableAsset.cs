@@ -129,7 +129,10 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
             double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;            
       
             //Try to check if this frame is "dropped", so that we should use the image in the prev frame
-            int              playableFrameIndex = Mathf.RoundToInt((float) localTime / (float)scaledTimePerFrame);
+            int playableFrameIndex = Mathf.RoundToInt((float) localTime / (float)scaledTimePerFrame);
+            if (playableFrameIndex < 0)
+                return 0;
+                
             SISPlayableFrame playableFrame      = timelineSISData.GetPlayableFrame(playableFrameIndex);
             while (playableFrameIndex > 0 && !playableFrame.IsUsed()) {
                 --playableFrameIndex;
