@@ -71,10 +71,10 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
 
 //----------------------------------------------------------------------------------------------------------------------
     
-    private static void GetActiveTimelineClipInto( IList<TimelineClip> clips, double directorTime, 
+    private static void GetActiveTimelineClipInto( IList<TimelineClip> sortedClips, double directorTime, 
         out TimelineClip outClip, out T outAsset) {
                 
-        foreach (TimelineClip clip in clips) {
+        foreach (TimelineClip clip in sortedClips) {
 
             if (clip.start > directorTime)
                 continue;
