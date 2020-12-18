@@ -30,11 +30,12 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
             return; // it doesn't work as mixer.
         }
 
+        
         if (m_boundGameObject== null ) {
             return;
         }
-        
-        GetActiveTimelineClipInto(m_clipAssets, m_playableDirector.time, out TimelineClip clip, out T activePlayableAsset);
+
+        GetActiveTimelineClipInto(m_clips, m_playableDirector.time, out TimelineClip clip, out T activePlayableAsset);        
         if (null == clip)
             return;
         
@@ -46,45 +47,59 @@ internal abstract class BasePlayableMixer<T> : PlayableBehaviour where T: Playab
 
     #endregion IPlayableBehaviour interfaces
     
-//----------------------------------------------------------------------------------------------------------------------
 
-    public static void GetActiveTimelineClipInto( IEnumerable<TimelineClip> clips, double directorTime, 
+//----------------------------------------------------------------------------------------------------------------------
+    
+    internal static void GetActiveTimelineClipInto( IList<TimelineClip> sortedClips, double directorTime, 
         out TimelineClip outClip, out T outAsset) {
-        
-        foreach (TimelineClip clip in clips) {
-            T asset = clip.asset as T;
-            if (null == asset)
+
+        TimelineClip prevClipWithPostExtrapolation = null;
+        TimelineClip nextClipWithPreExtrapolation  = null;
+        bool         nextClipChecked               = false; 
+               
+        foreach (TimelineClip clip in sortedClips) {
+
+
+            if (directorTime < clip.start) {
+                //must check only once since we loop from the start
+                if (!nextClipChecked) { 
+                    //store next direct clip which has PreExtrapolation
+                    nextClipWithPreExtrapolation = clip.hasPreExtrapolation ? clip : null;
+                    nextClipChecked              = true;
+                }
+
                 continue;
-
-            if ( directorTime >= clip.start && directorTime <= clip.end) {
-                outClip = clip;
-                outAsset = asset;
-                return;
             }
+
+            if (clip.end < directorTime) {
+                //store prev direct clip which has PostExtrapolation
+                prevClipWithPostExtrapolation = clip.hasPostExtrapolation ? clip : null;
+                continue;                
+            }
+
+            outClip  = clip;
+            outAsset = clip.asset as T;
+            return;
         }
-
-        outClip = null;
-        outAsset = null;
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-    private static void GetActiveTimelineClipInto( IDictionary<TimelineClip, T> clipAssets, double directorTime, 
-        out TimelineClip outClip, out T outAsset) {
         
-        foreach (KeyValuePair<TimelineClip, T> clipAsset in clipAssets) {
-            TimelineClip clip = clipAsset.Key;
-            T asset = clipAsset.Value;
-
-            if ( directorTime >= clip.start && directorTime <= clip.end) {
-                outClip  = clip;
-                outAsset = asset;
-                return;
-            }
+        
+        //check for post-extrapolation
+        if (null != prevClipWithPostExtrapolation) {
+            outClip  = prevClipWithPostExtrapolation;
+            outAsset = prevClipWithPostExtrapolation.asset as T;
+            return;
         }
 
+        //check pre-extrapolation for the first clip
+        if (null!=nextClipWithPreExtrapolation) {
+            outClip  = nextClipWithPreExtrapolation;
+            outAsset = nextClipWithPreExtrapolation.asset as T;
+            return;
+        }        
         outClip  = null;
         outAsset = null;
     }
+    
 //----------------------------------------------------------------------------------------------------------------------
 
     internal void Init(GameObject go, PlayableDirector director, IEnumerable<TimelineClip> clips) {
