@@ -7,7 +7,7 @@
 1. [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
 
 
-# クイックスタート
+## クイックスタート
 
 空のシーンから以下を行ってください。
 
@@ -42,14 +42,14 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 画像をインポートする他の方法については、
 [画像をインポート](ImportingImages.md) を参照してください。
 
-# サポートされている画像形式
+## サポートされている画像形式
 
 |             | Windows            | Mac                | Linux              |
 | ----------- | ------------------ | ------------------ | ------------------ |
 | png         | :white_check_mark: | :white_check_mark: | :white_check_mark: |       
 | tga         | :white_check_mark: | :white_check_mark: | :white_check_mark: |    
 
-# フレームマーカー
+## フレームマーカー
 
 すべてのフレームが [フレームマーカー](FrameMarkers.md) を持っています。
 これは特定のフレームに割り当てられた画像をスキップし、
@@ -59,7 +59,7 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 
 詳細に関しては[フレームマーカー](FrameMarkers.md)を参照してください。
 
-# 曲線の編集（エディターのみ）
+## 曲線の編集（エディターのみ）
 
 エディターでは、再生のタイミングを次のように変更できます。
 1. 曲線のセクションを開く
@@ -70,13 +70,13 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 
 ![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
 
-# StreamingImageSequencePlayableAsset
+## StreamingImageSequencePlayableAsset
 
 StreamingImageSequencePlayableAsset は、
 [Unity Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest) で
 連番画像を再生する為に使われる
 [PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html) です。  
-インスペクターで下記のプロパティを表示または変更することができます。
+インスペクターで下記のプロパティを確認または変更することができます。
 
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)
 

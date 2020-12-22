@@ -7,7 +7,7 @@
 1. [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
 
 
-# Quick Start
+## Quick Start
 
 From an empty scene, do the following:
 
@@ -40,14 +40,14 @@ as we play the Timeline or drag the time slider of the Timeline window.
 
 For other ways for importing images, see [ImportingImages](ImportingImages.md).
 
-# Supported Image Formats
+## Supported Image Formats
 
 |             | Windows            | Mac                | Linux              |
 | ----------- | ------------------ | ------------------ | ------------------ |
 | png         | :white_check_mark: | :white_check_mark: | :white_check_mark: |       
 | tga         | :white_check_mark: | :white_check_mark: | :white_check_mark: |    
 
-# FrameMarker
+## FrameMarker
 
 Each frame has a [FrameMarker](FrameMarkers.md), 
 which can be used to skip the image assigned to that particular frame, 
@@ -57,7 +57,7 @@ and show the last used image instead.
 
 Refer to [FrameMarkers](FrameMarkers.md) for more details. 
 
-# Curve Editing (Editor only)
+## Curve Editing (Editor only)
 
 In the editor, we can modify the timing of the playback by 
 1. opening the curve section
@@ -69,7 +69,7 @@ and the playback timing will always be linear in runtime.
 
 ![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
 
-# StreamingImageSequencePlayableAsset
+## StreamingImageSequencePlayableAsset
 
 StreamingImageSequencePlayableAsset is a type of 
 [PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html)
