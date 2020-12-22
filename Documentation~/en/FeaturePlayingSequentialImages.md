@@ -11,23 +11,24 @@
 
 From an empty scene, do the following:
 
-1. Create an empty **GameObject** and add a **Director** component to it
-1. Copy the sequential images in a folder inside the Unity project, preferably under *StreamingAssets*
-   > Copying to a folder under *StreamingAssets* will save us from the process to import those images in Unity, which may take a long time if there are a lot of images
-1. Open the [Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest) window, if not opened yet
-1. Add a **StreamingImageSequenceTrack** in the Timeline Window
+1. Create an empty **GameObject** and add a **Director** component to it.
+1. Copy the sequential images in a folder inside the Unity project, preferably under *StreamingAssets*.
+   > Copying to a folder under *StreamingAssets* will save us from the process to import those images in Unity, which may take a long time if there are a lot of images.
+1. Open the [Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest) window.
+1. Add a **StreamingImageSequenceTrack** in the Timeline Window.
 
    ![AddStreamingImageSequenceTrack](../images/AddStreamingImageSequenceTrack.png)
    
 1. Drag and drop the sequential images folder to the **StreamingImageSequenceTrack** added previously. 
-   This will automatically create a [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset).
+   This will automatically create a [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
+   using the images in the folder.
  
    ![DragAndDropFolder](../images/DragAndDropFolder.png)
    
-1. Create an **Image** object by clicking the menu: GameObject > UI > Image
+1. Create an **Image** object by clicking the menu: GameObject > UI > Image.
 
 1. Drag and drop the **Image** object to the object property of the **StreamingImageSequenceTrack**, 
-   and click *Create StreamingImageSequenceRenderer on Image* 
+   and click *Create StreamingImageSequenceRenderer on Image*.
 
    ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceRenderer.png)
 
