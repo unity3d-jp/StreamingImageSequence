@@ -70,12 +70,12 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 
 ![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
 
-# インスペクター
+# StreamingImageSequencePlayableAsset
 
 StreamingImageSequencePlayableAsset は、
 [Unity Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest) で
 連番画像を再生する為に使われる
-[PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html です。
+[PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html) です。  
 インスペクターで下記のプロパティを表示または変更することができます。
 
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)
