@@ -6,7 +6,7 @@
 
 ## クイックスタート
 
-空のシーンから以下を行ってください。
+空のシーンから、次の手順を実行して下さい。
 
 1. Timeline 上で、アニメーションを作成する。例：
    [Creating Keyframed Animation in Timeline](https://learn.unity.com/tutorial/creating-keyframed-animation-in-timeline)
