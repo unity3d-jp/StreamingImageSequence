@@ -11,7 +11,7 @@
 
 From an empty scene, do the following:
 
-1. Create an empty *GameObject* and add a *Director* component to it
+1. Create an empty **GameObject** and add a **Director** component to it
 1. Copy the sequential images in a folder inside the Unity project, preferably under *StreamingAssets*
    > Copying to a folder under *StreamingAssets* will save us from the process to import those images in Unity, which may take a long time if there are a lot of images
 1. Open the Timeline window, if not opened yet
@@ -19,20 +19,21 @@ From an empty scene, do the following:
 
    ![AddStreamingImageSequenceTrack](../images/AddStreamingImageSequenceTrack.png)
    
-1. Drag and Drop the sequential images folder to the **StreamingImageSequenceTrack** added previously
+1. Drag and drop the sequential images folder to the **StreamingImageSequenceTrack** added previously. 
+   This will automatically create a [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset).
  
    ![DragAndDropFolder](../images/DragAndDropFolder.png)
    
-1. Create an *Image* object by clicking the menu: GameObject > UI > Image
+1. Create an **Image** object by clicking the menu: GameObject > UI > Image
 
-1. Drag and drop the *Image* object to the object property of the **StreamingImageSequenceTrack**, 
+1. Drag and drop the **Image** object to the object property of the **StreamingImageSequenceTrack**, 
    and click *Create StreamingImageSequenceRenderer on Image* 
 
    ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceRenderer.png)
 
 
-The image sequences in the folder will then be shown inside the *Image* object, 
-and the renderer component of the *Image* object will be played/enabled/disabled 
+The image sequences in the folder will then be shown inside the **Image** object, 
+and the renderer component of the **Image** object will be played/enabled/disabled 
 as we play the Timeline or drag the time slider of the Timeline window.
 
 
@@ -69,7 +70,11 @@ and the playback timing will always be linear in runtime.
 
 # StreamingImageSequencePlayableAsset
 
-A playable asset for playing sequential image sequences in Unity Timeline.
+StreamingImageSequencePlayableAsset is a type of 
+[PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html)
+which is used for playing sequential image sequences in 
+[Unity Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest).
+Its inspector displays the following information:
 
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)
 
