@@ -43,13 +43,6 @@ as we play the Timeline or drag the time slider of the Timeline window.
 For other ways for importing images, see [ImportingImages](ImportingImages.md).
 
 
-# Curve
-
-The timing of the playback is determined by the curve of the asset, which can be adjusted by
-opening the curve section, right clicking on the curve to add keys, and moving them accordingly.
-
-![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
-
 # FrameMarker
 
 Each frame has a [FrameMarker](FrameMarkers.md), 
@@ -60,6 +53,17 @@ and show the last used image instead.
 
 Refer to [FrameMarkers](FrameMarkers.md) for more details. 
 
+# Curve Editing (Editor only)
+
+In the editor, we can modify the timing of the playback by 
+1. opening the curve section
+2. right clicking on the curve to add keys
+3. moving the keys accordingly
+
+This is currently only supported in the editor, 
+and the playback timing will always be linear in runtime.
+
+![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
 
 # Inspector
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)
