@@ -12,7 +12,7 @@
 ![ReleaseBadge](https://badge-proxy.cds.internal.unity3d.com/84b887b2-1e62-4962-848e-9d6c07023710)
  
 
-Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Timeline で一連の画像シーケンスを
+Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Timeline で連番画像を
 簡単に再生するためのパッケージです。
 
 **Timeline 1.4.x 以降のご利用を推奨いたします。**

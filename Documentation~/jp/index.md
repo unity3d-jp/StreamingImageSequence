@@ -1,6 +1,6 @@
 # Streaming Image Sequence
 
-Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Timeline で一連の画像シーケンスを
+Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Timeline で連番画像を
 簡単に再生するためのパッケージで、下記の要件を満たすように設計されています。
 
 1. [StreamingAssets](https://docs.unity3d.com/ja/current/Manual/StreamingAssets.html) 
