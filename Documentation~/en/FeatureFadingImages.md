@@ -1,8 +1,9 @@
-# FaderPlayableAsset
+# Fading Image objects
 
-A playable asset for fading Image component in Unity Timeline.
+1. [Quick Start](#quick-start)
+1. [FaderPlayableAsset](#faderplayableasset)
 
-# Tutorial 
+# Quick Start
 
 From an empty scene, do the following:
 
@@ -23,14 +24,17 @@ From an empty scene, do the following:
 1. Drag and drop the Image object to the object property of the FaderTrack 
 
 
-
 The Image object will be faded in/out as we play the Timeline or drag the time slider of the Timeline window.
 
 
 
-# Inspector
+# FaderPlayableAsset
 
-![FaderPlayableAsset](../images/FaderPlayableAsset.png)
+FaderPlayableAsset is a type of 
+[PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html)
+which is used for fading Image component in
+[Unity Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest).
+We can view or modify the following properties through the inspector.
 
 * **Color**   
   The color to be applied to the Image component attached to the track.

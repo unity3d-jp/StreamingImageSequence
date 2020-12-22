@@ -1,10 +1,11 @@
-# FaderPlayableAsset
+# Image オブジェクトをフェードさせる
 
-Unity Timeline 内で Image コンポーネントをフェードさせるためのプレイアブルアセットです。
+1. [クイックスタート](#クイックスタート)
+1. [FaderPlayableAsset](#faderplayableasset)
 
-# チュートリアル
+## クイックスタート
 
-空のシーンから以下を行ってください。
+空のシーンから、次の手順を実行して下さい。
 
 1. 空の *GameObject* を作成し、*Director* コンポーネントを追加してください。
 1. Unity プロジェクト内のフォルダー（*StreamingAssets* 配下のフォルダーが推奨されます）内の画像シーケンスをコピーしてください。
@@ -22,13 +23,15 @@ Unity Timeline 内で Image コンポーネントをフェードさせるため�
 
 1. FaderTrack のオブジェクトプロパティに Image オブジェクトをドラッグアンドドロップしてください。
 
-
-
 Timeline を再生したり Timeline ウィンドウでタイムスライダーをドラッグすると、Image オブジェクトがフェードイン／フェードアウトします。
 
+## FaderPlayableAsset
 
-
-# インスペクター
+FaderPlayableAsset は、
+[Unity Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest) で
+Image コンポーネントをフェードさせるための
+[PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html) です。  
+インスペクターで下記のプロパティを確認または変更することができます。
 
 ![FaderPlayableAsset](../images/FaderPlayableAsset.png)
 
