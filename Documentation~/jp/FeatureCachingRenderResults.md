@@ -1,19 +1,10 @@
-# RenderCachePlayableAsset
+# 描画の結果のキャッシュを生成する
 
-描画の結果を、キャッシュとして画像ファイルに書き込む為のプレイアブルアセットです。
-この描画のキャッシュを [StreamingImageSequencePlayableAsset](FeaturePlayingSequentialImages.md)
-で再生することができます。
+1. [クイックスタート](#クイックスタート)
+1. [フレームマーカー](#フレームマーカー)
+1. [RenderCachePlayableAsset](#rendercacheplayableasset)
 
-RenderCachePlayableAsset は RenderCapturer コンポネントと連携しています。
-RenderCapturer は実際のキャプチャと画像ファイルへの描画を担当し、
-現在 StreamingImageSequence は下記のスクリプトを提供します。
-1. **CameraRenderCapturer** コンポネント   
-   Camera コンポネントの描画の結果のキャッシュを生成する。
-1. **BaseRenderCapturer** クラス。  
-   拡張可能のアブストラクトクラス。
-   キャプチャなどのプロセスをカストマイズするためのクラスです。
-
-# チュートリアル
+## クイックスタート
 
 空のシーンから以下を行ってください。
 
@@ -40,7 +31,7 @@ RenderCapturer は実際のキャプチャと画像ファイルへの描画を�
 1. **RenderCachePlayableAsset** を選択し、Inspector 上に *Update Render Cache* をクリックする。
 
 
-# フレームマーカー
+## フレームマーカー
 
 すべてのフレームが [フレームマーカー](FrameMarkers.md) を持っています。
 これは特定のフレームのキャプチャをスキップする、
@@ -60,7 +51,24 @@ RenderCapturer は実際のキャプチャと画像ファイルへの描画を�
 
 詳細に関しては[フレームマーカー](FrameMarkers.md)を参照してください。
 
-# インスペクター
+## RenderCachePlayableAsset
+
+RenderCachePlayableAsset は
+描画の結果を、キャッシュとして画像ファイルに書き込む為の
+[PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html) です。
+この描画のキャッシュを [StreamingImageSequencePlayableAsset](FeaturePlayingSequentialImages.md)
+で再生することができます。
+
+RenderCachePlayableAsset は RenderCapturer コンポネントと連携しています。
+RenderCapturer は実際のキャプチャと画像ファイルへの描画を担当し、
+現在 StreamingImageSequence は下記のスクリプトを提供します。
+1. **CameraRenderCapturer** コンポネント   
+   Camera コンポネントの描画の結果のキャッシュを生成する。
+1. **BaseRenderCapturer** クラス。  
+   拡張可能のアブストラクトクラス。
+   キャプチャなどのプロセスをカストマイズするためのクラスです。
+
+インスペクターで下記のプロパティを確認または変更することができます。
 
 ![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)
 

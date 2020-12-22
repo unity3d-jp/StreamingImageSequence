@@ -1,19 +1,10 @@
-# RenderCachePlayableAsset
+# Caching Render Results
 
-A playable asset for caching render results to image files for playback by 
-[StreamingImageSequencePlayableAsset](FeaturePlayingSequentialImages.md).
+1. [Quick Start](#quick-start)
+1. [FrameMarker](#framemarker)
+1. [RenderCachePlayableAsset](#rendercacheplayableasset)
 
-RenderCachePlayableAsset works together with RenderCapturer components, which execute the actual capturing process and
-decide what gets rendered into image files. Currently, StreamingImageSequence provides: 
-1. **CameraRenderCapturer** component.   
-   Caches the render result of a Camera component.
-1. **BaseRenderCapturer** class.  
-   An extensible abstract class, which is used to customize the capturing process.
-
-
-
-
-# Tutorial 
+## Quick Start
 
 From an empty scene, do the following:
 
@@ -38,7 +29,7 @@ From an empty scene, do the following:
 
 1. Select the **RenderCachePlayableAsset** and click *Update Render Cache* in the inspector.
 
-# FrameMarker
+## FrameMarker
 
 Each frame has a [FrameMarker](FrameMarkers.md), 
 which can be used to skip capturing the image for that particular frame, 
@@ -58,7 +49,21 @@ Right clicking on a FrameMarker will bring up a popup menu.
 Refer to [FrameMarkers](FrameMarkers.md) for more details. 
 
 
-# Inspector
+## RenderCachePlayableAsset
+
+RenderCachePlayableAssetis a type of 
+[PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html)
+which is used for caching render results to image files for playback by 
+[StreamingImageSequencePlayableAsset](FeaturePlayingSequentialImages.md).
+
+RenderCachePlayableAsset works together with RenderCapturer components, which execute the actual capturing process and
+decide what gets rendered into image files. Currently, StreamingImageSequence provides: 
+1. **CameraRenderCapturer** component.   
+   Caches the render result of a Camera component.
+1. **BaseRenderCapturer** class.  
+   An extensible abstract class, which is used to customize the capturing process.
+
+We can view or modify the following properties through the inspector.
 
 ![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)
 
