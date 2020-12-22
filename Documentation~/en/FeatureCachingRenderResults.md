@@ -19,7 +19,8 @@ From an empty scene, do the following:
  
    ![AddRenderCachePlayableAsset](../images/AddRenderCachePlayableAsset.png)
 
-1. Adjust the length of the **RenderCachePlayableAsset** according to the length of the animation.
+1. Adjust the length of the [**RenderCachePlayableAsset**](#rendercacheplayableasset) 
+   according to the length of the animation.
 
 1. Create a **GameObject** and add **CameraRenderCapturer** component.
 
@@ -51,7 +52,7 @@ Refer to [FrameMarkers](FrameMarkers.md) for more details.
 
 ## RenderCachePlayableAsset
 
-RenderCachePlayableAssetis a type of 
+RenderCachePlayableAsset is a type of 
 [PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html)
 which is used for caching render results to image files for playback by 
 [StreamingImageSequencePlayableAsset](FeaturePlayingSequentialImages.md).
