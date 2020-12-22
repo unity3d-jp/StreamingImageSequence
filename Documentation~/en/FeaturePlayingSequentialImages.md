@@ -75,7 +75,7 @@ StreamingImageSequencePlayableAsset is a type of
 [PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html)
 which is used for playing sequential image sequences in 
 [Unity Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest).
-We can view or modify its properties through the inspector.
+We can view or modify the following properties through the inspector.
 
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)
 
