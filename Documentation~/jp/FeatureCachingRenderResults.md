@@ -16,7 +16,7 @@
 
    ![AddRenderCacheTrack](../images/AddRenderCacheTrack.png)
    
-1. **RenderCacheTrack** 上に右クリックし、*Add Render Cache Playable Asset* をクリックす。
+1. **RenderCacheTrack** 上に右クリックし、*Add Render Cache Playable Asset* をクリックする。
  
    ![AddRenderCachePlayableAsset](../images/AddRenderCachePlayableAsset.png)
 
