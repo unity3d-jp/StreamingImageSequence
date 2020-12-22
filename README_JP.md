@@ -49,15 +49,15 @@ Streaming Image Sequence は現在プレビューパッケージとして存在�
 
 ## 機能
 
-1. #### [一連の画像を生成する](./Documentation~/jp/StreamingImageSequencePlayableAsset.md)
+1. #### [一連の画像を生成する](./Documentation~/jp/FeaturePlayingSequentialImages.md)
 
    ![StreamingImageSequenceDemo](Documentation~/images/StreamingImageSequenceDemo.gif)
 
-2. #### [描画の結果のキャッシュを生成する](./Documentation~/jp/RenderCachePlayableAsset.md)
+2. #### [描画の結果のキャッシュを生成する](./Documentation~/jp/FeatureCachingRenderResults.md)
 
    ![RenderCacheDemo](Documentation~/images/RenderCacheDemo.gif)
 
-3. #### [Image オブジェクトをフェードさせる](./Documentation~/jp/FaderPlayableAsset.md)
+3. #### [Image オブジェクトをフェードさせる](./Documentation~/jp/FeatureFadingImages.md)
 
    ![FaderDemo](Documentation~/images/FaderDemo.gif)
 
