@@ -1,17 +1,13 @@
-# StreamingImageSequencePlayableAsset
+# Playing Sequential Images
 
-A playable asset for playing sequential image sequences in Unity Timeline.
-
-# Supported Image Formats
-
-
-|             | Windows            | Mac                | Linux              |
-| ----------- | ------------------ | ------------------ | ------------------ |
-| png         | :white_check_mark: | :white_check_mark: | :white_check_mark: |       
-| tga         | :white_check_mark: | :white_check_mark: | :white_check_mark: |    
+1. [Quick Start](#quick-start)
+1. [Supported Image Formats](#supported-image-formats)
+1. [FrameMarker](#framemarker)
+1. [Curve Editing (Editor only)](#curve-editing-editor-only)
+1. [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
 
 
-# Tutorial 
+# Quick Start
 
 From an empty scene, do the following:
 
@@ -42,6 +38,12 @@ as we play the Timeline or drag the time slider of the Timeline window.
 
 For other ways for importing images, see [ImportingImages](ImportingImages.md).
 
+# Supported Image Formats
+
+|             | Windows            | Mac                | Linux              |
+| ----------- | ------------------ | ------------------ | ------------------ |
+| png         | :white_check_mark: | :white_check_mark: | :white_check_mark: |       
+| tga         | :white_check_mark: | :white_check_mark: | :white_check_mark: |    
 
 # FrameMarker
 
@@ -53,7 +55,22 @@ and show the last used image instead.
 
 Refer to [FrameMarkers](FrameMarkers.md) for more details. 
 
-# Inspector
+# Curve Editing (Editor only)
+
+In the editor, we can modify the timing of the playback by 
+1. opening the curve section
+2. right clicking on the curve to add keys
+3. moving the keys accordingly
+
+This is currently only supported in the editor, 
+and the playback timing will always be linear in runtime.
+
+![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
+
+# StreamingImageSequencePlayableAsset
+
+A playable asset for playing sequential image sequences in Unity Timeline.
+
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)
 
 * **Resolution** (Read Only)  
@@ -75,14 +92,3 @@ Refer to [FrameMarkers](FrameMarkers.md) for more details.
 
 
 
-# Curve Editing (Editor only)
-
-In the editor, we can modify the timing of the playback by 
-1. opening the curve section
-2. right clicking on the curve to add keys
-3. moving the keys accordingly
-
-This is currently only supported in the editor, 
-and the playback timing will always be linear in runtime.
-
-![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
