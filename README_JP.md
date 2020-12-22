@@ -49,7 +49,7 @@ Streaming Image Sequence は現在プレビューパッケージとして存在�
 
 ## 機能
 
-1. #### [一連の画像を生成する](./Documentation~/jp/FeaturePlayingSequentialImages.md)
+1. #### [連番画像を再生する](./Documentation~/jp/FeaturePlayingSequentialImages.md)
 
    ![StreamingImageSequenceDemo](Documentation~/images/StreamingImageSequenceDemo.gif)
 
