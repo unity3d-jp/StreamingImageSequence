@@ -44,14 +44,6 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 [画像をインポート](ImportingImages.md) を参照してください。
 
 
-# 曲線
-
-プレイバックのタイミングはアセットの曲線によって決まります。
-これは曲線のセクションを開いて曲線の上で右クリックしてキーを追加し、
-追加したキーを動かすことで調節することができます。
-
-![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
-
 # フレームマーカー
 
 すべてのフレームが [フレームマーカー](FrameMarkers.md) を持っています。
@@ -85,3 +77,13 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 
 
 
+# 曲線の編集　（エディターのみ）
+
+エディターでは、再生のタイミングを次のように変更できます。
+1. 曲線のセクションを開く
+2. 曲線を右クリックして、キーを追加する
+3. 追加されたキーを動かす  
+
+現状、この機能はエディターでのみサポートされており、実行時の再生のタイミングは常にリニアになります。
+
+![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
