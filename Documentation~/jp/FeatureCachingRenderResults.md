@@ -22,9 +22,9 @@
 
 1. **RenderCachePlayableAsset** の長さをアニメーションと同じように調整する。
 
-1. *GameObject* を作成し、*CameraRenderCapturer* コンポネントを追加する。
+1. **GameObject** を作成し、**CameraRenderCapturer** コンポネントを追加する。
 
-1. 追加した **RenderCacheTrack** のオブジェクトプロパティに GameObject をドラッグアンドドロップする。
+1. 追加した **RenderCacheTrack** のオブジェクトプロパティに **GameObject** をドラッグアンドドロップする。
 
    ![AssignRenderCapturer](../images/AssignRenderCapturer.png)
 
