@@ -19,7 +19,7 @@ Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Time
 
 ## 機能
 
-1. #### [一連の画像を生成する](FeaturePlayingSequentialImages.md)
+1. #### [連番画像を再生する](FeaturePlayingSequentialImages.md)
 
    ![StreamingImageSequenceDemo](../images/StreamingImageSequenceDemo.gif)
 
