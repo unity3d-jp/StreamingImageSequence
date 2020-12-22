@@ -11,25 +11,25 @@
 
 空のシーンから、次の手順を実行して下さい。
 
-1. 空の **GameObject** を作成し、**Director** コンポーネントを追加してください。
-1. Unity プロジェクト内のフォルダー（*StreamingAssets* 配下のフォルダーが推奨されます）内の画像シーケンスをコピーしてください。
+1. 空の **GameObject** を作成し、**Director** コンポーネントを追加する。
+1. Unity プロジェクト内のフォルダー（*StreamingAssets* 配下のフォルダーが推奨されます）内の画像シーケンスをコピーする。
    > *StreamingAssets* 配下のフォルダーにコピーすると、これらの画像を Unity にインポートするプロセスを省くことができます（画像の数が多い場合にはこのインポートプロセスに時間が掛かる場合があります）。
 1. [Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest) 
-   ウィンドウを開いてください。
-1. Timeline ウィンドウに **StreamingImageSequenceTrack** を追加してください。
+   ウィンドウを開く。
+1. Timeline ウィンドウに **StreamingImageSequenceTrack** を追加する。
 
    ![AddStreamingImageSequenceTrack](../images/AddStreamingImageSequenceTrack.png)
    
-1. 追加した **StreamingImageSequenceTrack** に画像シーケンスの入ったフォルダーをドラッグアンドドロップしてください。
+1. 追加した **StreamingImageSequenceTrack** に画像シーケンスの入ったフォルダーをドラッグアンドドロップする。
    これにより、フォルダー内の画像を使った 
    [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset) が自動的に生成されます。
  
    ![DragAndDropFolder](../images/DragAndDropFolder.png)
    
-1. メニューを GameObject > UI > Image の順にクリックして **Image** オブジェクトを作成してください。
+1. メニューを GameObject > UI > Image の順にクリックして **Image** オブジェクトを作成する。
 
 1. 作成した **Image** オブジェクトを、**StreamingImageSequenceTrack** のオブジェクトプロパティーにドラッグアンドドロップし
-   *Create StreamingImageSequenceRenderer on Image* をクリックしてください。
+   *Create StreamingImageSequenceRenderer on Image* をクリックする。
 
    ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceRenderer.png)
 

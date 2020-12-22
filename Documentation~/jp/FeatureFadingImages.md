@@ -7,23 +7,24 @@
 
 空のシーンから、次の手順を実行して下さい。
 
-1. 空の **GameObject** を作成し、**Director** コンポーネントを追加してください。
-1. Unity プロジェクト内のフォルダー（*StreamingAssets* 配下のフォルダーが推奨されます）内の画像シーケンスをコピーしてください。
+1. 空の **GameObject** を作成し、**Director** コンポーネントを追加する。
+1. Unity プロジェクト内のフォルダー（*StreamingAssets* 配下のフォルダーが推奨されます）内の画像シーケンスをコピーする。
    > *StreamingAssets* 配下のフォルダーにコピーすると、これらの画像を Unity にインポートするプロセスを省くことができます（画像の数が多い場合にはこのインポートプロセスに時間が掛かる場合があります）。
-1. Timeline ウィンドウを開いてください。
-1. Timeline ウィンドウ内で、**FaderTrack** を追加してください。
+1. Timeline ウィンドウを開く。
+1. Timeline ウィンドウ内で、**FaderTrack** を追加する。
 
    ![AddFaderTrack](../images/AddFaderTrack.png)
    
-1. Timeline ウィンドウ上で右クリックし「*Add Fader Playable Asset*」をクリックしてください。
+1. Timeline ウィンドウ上で右クリックし「*Add Fader Playable Asset*」をクリックする。
  
    ![AddFaderPlayableAsset](../images/AddFaderPlayableAsset.png)
    
-1. メニューを GameObject -> UI -> Image の順にクリックして **Image** オブジェクトを作成してください。
+1. メニューを GameObject -> UI -> Image の順にクリックして **Image** オブジェクトを作成する。
 
-1. FaderTrack のオブジェクトプロパティに **Image** オブジェクトをドラッグアンドドロップしてください。
+1. FaderTrack のオブジェクトプロパティに **Image** オブジェクトをドラッグアンドドロップする。
 
-Timeline を再生したり Timeline ウィンドウでタイムスライダーをドラッグすると、Image オブジェクトがフェードイン／フェードアウトします。
+Timeline を再生したり、Timeline ウィンドウでタイムスライダーをドラッグすると、
+Image オブジェクトがフェードイン／フェードアウトします。
 
 ## FaderPlayableAsset
 
