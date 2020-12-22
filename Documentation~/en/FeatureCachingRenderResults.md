@@ -1,7 +1,7 @@
 # RenderCachePlayableAsset
 
 A playable asset for caching render results to image files for playback by 
-[StreamingImageSequencePlayableAsset](StreamingImageSequencePlayableAsset.md).
+[StreamingImageSequencePlayableAsset](FeaturePlayingSequentialImages.md).
 
 RenderCachePlayableAsset works together with RenderCapturer components, which execute the actual capturing process and
 decide what gets rendered into image files. Currently, StreamingImageSequence provides: 

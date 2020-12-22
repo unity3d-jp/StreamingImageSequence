@@ -1,7 +1,7 @@
 # RenderCachePlayableAsset
 
 描画の結果を、キャッシュとして画像ファイルに書き込む為のプレイアブルアセットです。
-この描画のキャッシュを [StreamingImageSequencePlayableAsset](StreamingImageSequencePlayableAsset.md)
+この描画のキャッシュを [StreamingImageSequencePlayableAsset](FeaturePlayingSequentialImages.md)
 で再生することができます。
 
 RenderCachePlayableAsset は RenderCapturer コンポネントと連携しています。
