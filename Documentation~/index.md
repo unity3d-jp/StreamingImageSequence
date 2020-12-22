@@ -20,15 +20,15 @@ It is designed with the following principles in mind:
 
 ## Features
 
-1. #### [Playing Sequential Images](en/StreamingImageSequencePlayableAsset.md)
+1. #### [Playing Sequential Images](en/FeaturePlayingSequentialImages.md)
 
    ![StreamingImageSequenceDemo](images/StreamingImageSequenceDemo.gif)
 
-2. #### [Caching Render Results](en/RenderCachePlayableAsset.md)
+2. #### [Caching Render Results](en/FeatureCachingRenderResults.md)
 
    ![RenderCacheDemo](images/RenderCacheDemo.gif)
 
-3. #### [Fading Image objects](en/FaderPlayableAsset.md)
+3. #### [Fading Image objects](en/FeatureFadingImages.md)
 
    ![FaderDemo](images/FaderDemo.gif)
 
