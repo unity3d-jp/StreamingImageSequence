@@ -36,6 +36,8 @@ which is used for fading Image component in
 [Unity Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest).  
 We can view or modify the following properties through the inspector.
 
+![FaderPlayableAsset](../images/FaderPlayableAsset.png)
+
 * **Color**   
   The color to be applied to the Image component attached to the track.
 * **Fade Type**  
