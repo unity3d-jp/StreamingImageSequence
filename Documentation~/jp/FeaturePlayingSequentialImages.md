@@ -1,41 +1,40 @@
 # StreamingImageSequencePlayableAsset
 
-一連の画像シーケンスを Unity Timeline で再生するためのプレイアブルアセットです。
-
-# 対応の画像形式
-
-
-|             | Windows            | Mac                | Linux              |
-| ----------- | ------------------ | ------------------ | ------------------ |
-| png         | :white_check_mark: | :white_check_mark: | :white_check_mark: |       
-| tga         | :white_check_mark: | :white_check_mark: | :white_check_mark: |    
+1. [クイックスタート](#クイックスタート)
+1. [サポートされている画像形式](#サポートされている画像形式)
+1. [フレームマーカー](#フレームマーカー)
+1. [曲線の編集　（エディターのみ）](#曲線の編集-エディターのみ)
+1. [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
 
 
-# チュートリアル
+# クイックスタート
 
 空のシーンから以下を行ってください。
 
-1. 空の *GameObject* を作成し、*Director* コンポーネントを追加してください。
+1. 空の **GameObject** を作成し、**Director** コンポーネントを追加してください。
 1. Unity プロジェクト内のフォルダー（*StreamingAssets* 配下のフォルダーが推奨されます）内の画像シーケンスをコピーしてください。
    > *StreamingAssets* 配下のフォルダーにコピーすると、これらの画像を Unity にインポートするプロセスを省くことができます（画像の数が多い場合にはこのインポートプロセスに時間が掛かる場合があります）。
-1. Timeline ウィンドウが開かれていない場合は、これを開いてください。
+1. [Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest) 
+   ウィンドウを開いてください。
 1. Timeline ウィンドウに **StreamingImageSequenceTrack** を追加してください。
 
    ![AddStreamingImageSequenceTrack](../images/AddStreamingImageSequenceTrack.png)
    
 1. 追加した **StreamingImageSequenceTrack** に画像シーケンスの入ったフォルダーをドラッグアンドドロップしてください。
+   これにより、フォルダー内の画像を使った 
+   [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset) が自動的に生成されます。
  
    ![DragAndDropFolder](../images/DragAndDropFolder.png)
    
-1. メニューを GameObject > UI > Image の順にクリックして *Image* オブジェクトを作成してください。
+1. メニューを GameObject > UI > Image の順にクリックして **Image** オブジェクトを作成してください。
 
-1. 作成した *Image* オブジェクトを、**StreamingImageSequenceTrack** のオブジェクトプロパティーにドラッグアンドドロップし
+1. 作成した **Image** オブジェクトを、**StreamingImageSequenceTrack** のオブジェクトプロパティーにドラッグアンドドロップし
    *Create StreamingImageSequenceRenderer on Image* をクリックしてください。
 
    ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceRenderer.png)
 
 
-フォルダー内の画像シーケンスが *Image* オブジェクトの中に表示されます。
+フォルダー内の画像シーケンスが **Image** オブジェクトの中に表示されます。
 Timeline を再生したり、Timeline ウィンドウのタイムスライダーをドラッグすると、
 *Image* オブジェクトの *Renderer* コンポネントが再生、有効化、または無効化されます。
 
@@ -43,6 +42,12 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 画像をインポートする他の方法については、
 [画像をインポート](ImportingImages.md) を参照してください。
 
+# サポートされている画像形式
+
+|             | Windows            | Mac                | Linux              |
+| ----------- | ------------------ | ------------------ | ------------------ |
+| png         | :white_check_mark: | :white_check_mark: | :white_check_mark: |       
+| tga         | :white_check_mark: | :white_check_mark: | :white_check_mark: |    
 
 # フレームマーカー
 
@@ -54,7 +59,25 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 
 詳細に関しては[フレームマーカー](FrameMarkers.md)を参照してください。
 
+# 曲線の編集　（エディターのみ）
+
+エディターでは、再生のタイミングを次のように変更できます。
+1. 曲線のセクションを開く
+2. 曲線を右クリックして、キーを追加する
+3. 追加されたキーを動かす  
+
+現状、この機能はエディターでのみサポートされており、実行時の再生のタイミングは常にリニアになります。
+
+![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
+
 # インスペクター
+
+StreamingImageSequencePlayableAsset は、
+[Unity Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest) で
+連番画像を再生する為に使われる
+[PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html です。
+インスペクターで下記のプロパティを表示または変更することができます。
+
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)
 
 * **Resolution**（読み取り専用）  
@@ -77,13 +100,3 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 
 
 
-# 曲線の編集　（エディターのみ）
-
-エディターでは、再生のタイミングを次のように変更できます。
-1. 曲線のセクションを開く
-2. 曲線を右クリックして、キーを追加する
-3. 追加されたキーを動かす  
-
-現状、この機能はエディターでのみサポートされており、実行時の再生のタイミングは常にリニアになります。
-
-![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
