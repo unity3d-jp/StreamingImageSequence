@@ -53,18 +53,6 @@ and show the last used image instead.
 
 Refer to [FrameMarkers](FrameMarkers.md) for more details. 
 
-# Curve Editing (Editor only)
-
-In the editor, we can modify the timing of the playback by 
-1. opening the curve section
-2. right clicking on the curve to add keys
-3. moving the keys accordingly
-
-This is currently only supported in the editor, 
-and the playback timing will always be linear in runtime.
-
-![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
-
 # Inspector
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)
 
@@ -87,3 +75,14 @@ and the playback timing will always be linear in runtime.
 
 
 
+# Curve Editing (Editor only)
+
+In the editor, we can modify the timing of the playback by 
+1. opening the curve section
+2. right clicking on the curve to add keys
+3. moving the keys accordingly
+
+This is currently only supported in the editor, 
+and the playback timing will always be linear in runtime.
+
+![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)

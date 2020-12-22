@@ -54,18 +54,6 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 
 詳細に関しては[フレームマーカー](FrameMarkers.md)を参照してください。
 
-# 曲線の編集　（エディターのみ）
-
-エディターでは、再生のタイミングを次のように変更できます。
-1. 曲線のセクションを開く
-2. 曲線を右クリックして、キーを追加する
-3. 追加されたキーを動かす  
-
-現状、この機能はエディターでのみサポートされており、実行時の再生のタイミングは常にリニアになります。
-
-![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
-
-
 # インスペクター
 ![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)
 
@@ -89,3 +77,13 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 
 
 
+# 曲線の編集　（エディターのみ）
+
+エディターでは、再生のタイミングを次のように変更できます。
+1. 曲線のセクションを開く
+2. 曲線を右クリックして、キーを追加する
+3. 追加されたキーを動かす  
+
+現状、この機能はエディターでのみサポートされており、実行時の再生のタイミングは常にリニアになります。
+
+![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
