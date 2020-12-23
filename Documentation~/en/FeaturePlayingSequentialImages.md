@@ -3,6 +3,7 @@
 1. [Quick Start](#quick-start)
 1. [Supported Image Formats](#supported-image-formats)
 1. [FrameMarker](#framemarker)
+1. [Gap Extrapolation](#gap-extrapolation)
 1. [Curve Editing (Editor only)](#curve-editing-editor-only)
 1. [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
 
@@ -34,7 +35,7 @@ From an empty scene, do the following:
 
 
 The image sequences in the folder will then be shown inside the **Image** object, 
-and the renderer component of the **Image** object will be played/enabled/disabled 
+and the **Renderer** component of the **Image** object will be played/enabled/disabled 
 as we play the Timeline or drag the time slider of the Timeline window.
 
 
@@ -56,6 +57,22 @@ and show the last used image instead.
 ![FrameMarker](../images/StreamingImageSequence_FrameMarker.png)
 
 Refer to [FrameMarkers](FrameMarkers.md) for more details. 
+
+## Gap Extrapolation
+
+![StreamingImageSequencePlayableAssetExtrapolation](../images/StreamingImageSequencePlayableAssetExtrapolation.png)
+
+The behaviour of a gap before or after a StreamingImageSequence clip can be set in a similar way to 
+[setting gap extrapolation for Animation clips](https://docs.unity3d.com/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)
+using one of the following options:
+1. **None** (default): hide the bound object by deactivating its **Renderer** component.
+1. **Hold**: hold and show the first/last frame of the image sequence in the gap.
+2. **Loop**: loop the entire image sequence with the same clip duration.
+3. **Ping Pong**: loop the entire image sequence backwards, then forwards, and so forth, with the same clip duration.
+3. **Continue**: same as **Hold**
+
+By default, StreamingImageSequence sets both Pre-Extrapolate and Post-Extrapolate properties to **None**.
+
 
 ## Curve Editing (Editor only)
 
