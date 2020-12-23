@@ -65,7 +65,7 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 ![StreamingImageSequencePlayableAssetExtrapolation](../images/StreamingImageSequencePlayableAssetExtrapolation.png)
 
 StreamingImageSequence クリップの前後のギャップの動作は、
-[Animation クリップのギャップの外挿を設定する](https://docs.unity3d.com/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)のと同様、
+[Animation クリップのギャップの外挿の設定](https://docs.unity3d.com/ja/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)のと同様、
 下記のオプションで設定できます：
 1. **None** (デフォルト): **Renderer** コンポーネントを非アクティブにし、バインドされたオブジェクトを非表示にする。
 1. **Hold**: ギャップ内に連番の最初、または最後のフレームを表示し続ける。
