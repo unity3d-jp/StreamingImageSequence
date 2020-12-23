@@ -35,7 +35,7 @@ From an empty scene, do the following:
 
 
 The image sequences in the folder will then be shown inside the **Image** object, 
-and the **Renderer** component of the **Image** object will be played/enabled/disabled 
+and the **Renderer** component of the **Image** object will be updated
 as we play the Timeline or drag the time slider of the Timeline window.
 
 
@@ -67,9 +67,9 @@ The behaviour of a gap before or after a StreamingImageSequence clip can be set 
 using one of the following options:
 1. **None** (default): hide the bound object by deactivating its **Renderer** component.
 1. **Hold**: hold and show the first/last frame of the image sequence in the gap.
-2. **Loop**: loop the entire image sequence with the same clip duration.
-3. **Ping Pong**: loop the entire image sequence backwards, then forwards, and so forth, with the same clip duration.
-3. **Continue**: same as **Hold**
+1. **Loop**: loop the entire image sequence with the same clip duration.
+1. **Ping Pong**: loop the entire image sequence backwards, then forwards, and so forth, with the same clip duration.
+1. **Continue**: same as **Hold**
 
 By default, StreamingImageSequence sets both Pre-Extrapolate and Post-Extrapolate properties to **None**.
 
