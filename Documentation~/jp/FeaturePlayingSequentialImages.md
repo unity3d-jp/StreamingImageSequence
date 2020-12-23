@@ -3,6 +3,7 @@
 1. [クイックスタート](#クイックスタート)
 1. [サポートされている画像形式](#サポートされている画像形式)
 1. [フレームマーカー](#フレームマーカー)
+1. [ギャップの外挿](#ギャップの外挿)
 1. [曲線の編集　（エディターのみ）](#曲線の編集エディターのみ)
 1. [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
 
@@ -36,7 +37,7 @@
 
 フォルダー内の画像シーケンスが **Image** オブジェクトの中に表示されます。
 Timeline を再生したり、Timeline ウィンドウのタイムスライダーをドラッグすると、
-*Image* オブジェクトの *Renderer* コンポネントが再生、有効化、または無効化されます。
+**Image** オブジェクトの **Renderer** コンポネントが更新されます。
 
 
 画像をインポートする他の方法については、
@@ -58,6 +59,21 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 ![FrameMarker](../images/StreamingImageSequence_FrameMarker.png)
 
 詳細に関しては[フレームマーカー](FrameMarkers.md)を参照してください。
+
+## ギャップの外挿
+
+![StreamingImageSequencePlayableAssetExtrapolation](../images/StreamingImageSequencePlayableAssetExtrapolation.png)
+
+StreamingImageSequence クリップの前後のギャップの動作は、
+[Animation クリップのギャップの外挿の設定](https://docs.unity3d.com/ja/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)のと同様、
+下記のオプションで設定できます：
+1. **None** (デフォルト): **Renderer** コンポーネントを非アクティブにし、バインドされたオブジェクトを非表示にする。
+1. **Hold**: ギャップ内に連番の最初、または最後のフレームを表示し続ける。
+1. **Loop**: 同じクリップの長さで、連番をループする。
+1. **Ping Pong**: 同じクリップの長さで、連番を逆方向にループし、次に順方向にループする。
+1. **Continue**: **Hold** と同じ。
+
+デフォルトでは、StreamingImageSequence は Pre-Extrapolate と Post-Extrapolate プロパティの両方を **None** に設定します。
 
 ## 曲線の編集（エディターのみ）
 
