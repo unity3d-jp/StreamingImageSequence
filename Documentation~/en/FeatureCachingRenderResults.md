@@ -1,19 +1,10 @@
-# RenderCachePlayableAsset
+# Caching Render Results
 
-A playable asset for caching render results to image files for playback by 
-[StreamingImageSequencePlayableAsset](StreamingImageSequencePlayableAsset.md).
+1. [Quick Start](#quick-start)
+1. [FrameMarker](#framemarker)
+1. [RenderCachePlayableAsset](#rendercacheplayableasset)
 
-RenderCachePlayableAsset works together with RenderCapturer components, which execute the actual capturing process and
-decide what gets rendered into image files. Currently, StreamingImageSequence provides: 
-1. **CameraRenderCapturer** component.   
-   Caches the render result of a Camera component.
-1. **BaseRenderCapturer** class.  
-   An extensible abstract class, which is used to customize the capturing process.
-
-
-
-
-# Tutorial 
+## Quick Start
 
 From an empty scene, do the following:
 
@@ -28,17 +19,18 @@ From an empty scene, do the following:
  
    ![AddRenderCachePlayableAsset](../images/AddRenderCachePlayableAsset.png)
 
-1. Adjust the length of the **RenderCachePlayableAsset** according to the length of the animation.
+1. Adjust the length of the [**RenderCachePlayableAsset**](#rendercacheplayableasset) 
+   according to the length of the animation.
 
-1. Create a *GameObject* and add *CameraRenderCapturer* component.
+1. Create a **GameObject** and add **CameraRenderCapturer** component.
 
-1. Drag and drop the GameObject to the object property of the **RenderCacheTrack**.
+1. Drag and drop the **GameObject** to the object property of the **RenderCacheTrack**.
 
    ![AssignRenderCapturer](../images/AssignRenderCapturer.png)
 
 1. Select the **RenderCachePlayableAsset** and click *Update Render Cache* in the inspector.
 
-# FrameMarker
+## FrameMarker
 
 Each frame has a [FrameMarker](FrameMarkers.md), 
 which can be used to skip capturing the image for that particular frame, 
@@ -58,7 +50,21 @@ Right clicking on a FrameMarker will bring up a popup menu.
 Refer to [FrameMarkers](FrameMarkers.md) for more details. 
 
 
-# Inspector
+## RenderCachePlayableAsset
+
+RenderCachePlayableAsset is a type of 
+[PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html)
+which is used for caching render results to image files for playback by 
+[StreamingImageSequencePlayableAsset](FeaturePlayingSequentialImages.md).
+
+RenderCachePlayableAsset works together with RenderCapturer components, which execute the actual capturing process and
+decide what gets rendered into image files. Currently, StreamingImageSequence provides: 
+1. **CameraRenderCapturer** component.   
+   Caches the render result of a Camera component.
+1. **BaseRenderCapturer** class.  
+   An extensible abstract class, which is used to customize the capturing process.
+
+We can view or modify the following properties through the inspector.
 
 ![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)
 

@@ -12,7 +12,7 @@
 ![ReleaseBadge](https://badge-proxy.cds.internal.unity3d.com/84b887b2-1e62-4962-848e-9d6c07023710)
  
 
-Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Timeline で一連の画像シーケンスを
+Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Timeline で連番画像を
 簡単に再生するためのパッケージです。
 
 **Timeline 1.4.x 以降のご利用を推奨いたします。**
@@ -49,15 +49,15 @@ Streaming Image Sequence は現在プレビューパッケージとして存在�
 
 ## 機能
 
-1. #### [一連の画像を生成する](./Documentation~/jp/StreamingImageSequencePlayableAsset.md)
+1. #### [連番画像を再生する](./Documentation~/jp/FeaturePlayingSequentialImages.md)
 
    ![StreamingImageSequenceDemo](Documentation~/images/StreamingImageSequenceDemo.gif)
 
-2. #### [描画の結果のキャッシュを生成する](./Documentation~/jp/RenderCachePlayableAsset.md)
+2. #### [描画の結果のキャッシュを生成する](./Documentation~/jp/FeatureCachingRenderResults.md)
 
    ![RenderCacheDemo](Documentation~/images/RenderCacheDemo.gif)
 
-3. #### [Image オブジェクトをフェードさせる](./Documentation~/jp/FaderPlayableAsset.md)
+3. #### [Image オブジェクトをフェードさせる](./Documentation~/jp/FeatureFadingImages.md)
 
    ![FaderDemo](Documentation~/images/FaderDemo.gif)
 

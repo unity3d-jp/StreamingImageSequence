@@ -1,21 +1,12 @@
-# RenderCachePlayableAsset
+# 描画の結果のキャッシュを生成する
 
-描画の結果を、キャッシュとして画像ファイルに書き込む為のプレイアブルアセットです。
-この描画のキャッシュを [StreamingImageSequencePlayableAsset](StreamingImageSequencePlayableAsset.md)
-で再生することができます。
+1. [クイックスタート](#クイックスタート)
+1. [フレームマーカー](#フレームマーカー)
+1. [RenderCachePlayableAsset](#rendercacheplayableasset)
 
-RenderCachePlayableAsset は RenderCapturer コンポネントと連携しています。
-RenderCapturer は実際のキャプチャと画像ファイルへの描画を担当し、
-現在 StreamingImageSequence は下記のスクリプトを提供します。
-1. **CameraRenderCapturer** コンポネント   
-   Camera コンポネントの描画の結果のキャッシュを生成する。
-1. **BaseRenderCapturer** クラス。  
-   拡張可能のアブストラクトクラス。
-   キャプチャなどのプロセスをカストマイズするためのクラスです。
+## クイックスタート
 
-# チュートリアル
-
-空のシーンから以下を行ってください。
+空のシーンから、次の手順を実行して下さい。
 
 1. Timeline 上で、アニメーションを作成する。例：
    [Creating Keyframed Animation in Timeline](https://learn.unity.com/tutorial/creating-keyframed-animation-in-timeline)
@@ -25,22 +16,22 @@ RenderCapturer は実際のキャプチャと画像ファイルへの描画を�
 
    ![AddRenderCacheTrack](../images/AddRenderCacheTrack.png)
    
-1. **RenderCacheTrack** 上に右クリックし、*Add Render Cache Playable Asset* をクリックす。
+1. **RenderCacheTrack** 上に右クリックし、*Add Render Cache Playable Asset* をクリックする。
  
    ![AddRenderCachePlayableAsset](../images/AddRenderCachePlayableAsset.png)
 
-1. **RenderCachePlayableAsset** の長さをアニメーションと同じように調整する。
+1. [**RenderCachePlayableAsset**](#rendercacheplayableasset) の長さをアニメーションと同じように調整する。
 
-1. *GameObject* を作成し、*CameraRenderCapturer* コンポネントを追加する。
+1. **GameObject** を作成し、**CameraRenderCapturer** コンポネントを追加する。
 
-1. 追加した **RenderCacheTrack** のオブジェクトプロパティに GameObject をドラッグアンドドロップする。
+1. 追加した **RenderCacheTrack** のオブジェクトプロパティに **GameObject** をドラッグアンドドロップする。
 
    ![AssignRenderCapturer](../images/AssignRenderCapturer.png)
 
 1. **RenderCachePlayableAsset** を選択し、Inspector 上に *Update Render Cache* をクリックする。
 
 
-# フレームマーカー
+## フレームマーカー
 
 すべてのフレームが [フレームマーカー](FrameMarkers.md) を持っています。
 これは特定のフレームのキャプチャをスキップする、
@@ -60,7 +51,24 @@ RenderCapturer は実際のキャプチャと画像ファイルへの描画を�
 
 詳細に関しては[フレームマーカー](FrameMarkers.md)を参照してください。
 
-# インスペクター
+## RenderCachePlayableAsset
+
+RenderCachePlayableAsset は
+描画の結果を、キャッシュとして画像ファイルに書き込む為の
+[PlayableAsset](https://docs.unity3d.com/ScriptReference/Playables.PlayableAsset.html) です。
+この描画のキャッシュを [StreamingImageSequencePlayableAsset](FeaturePlayingSequentialImages.md)
+で再生することができます。
+
+RenderCachePlayableAsset は RenderCapturer コンポネントと連携しています。
+RenderCapturer は実際のキャプチャと画像ファイルへの描画を担当し、
+現在 StreamingImageSequence は下記のスクリプトを提供します。
+1. **CameraRenderCapturer** コンポネント   
+   Camera コンポネントの描画の結果のキャッシュを生成する。
+1. **BaseRenderCapturer** クラス。  
+   拡張可能のアブストラクトクラス。
+   キャプチャなどのプロセスをカストマイズするためのクラスです。
+
+インスペクターで下記のプロパティを確認または変更することができます。
 
 ![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)
 
