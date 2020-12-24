@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.7.0-preview] - 2020-12-24
+* feat: add extrapolation support for SISPlayableAsset 
+* feat: specify frames when updating RenderCache 
+* fix: specify alpha channel and use CatmullRom filter when creating preview images 
+* fix: handle RenderCache file output error 
+* fix: package dependencies to ensure the package works in isolation 
+* fix: set a fixed height value for the preview images 
+* fix: null static textures after reopening an existing scene 
+* fix: "The object of type 'PlayableDirector' has been destroyed but you are still trying to access it." in BasePlayableMixer 
+* fix: show the requested image of StreamingImageSequencePlayableAsset after successfully loaded 
+* fix: don't show previously loaded image of StreamingImageSequencePlayableAsset if the requested one is not successfully loaded
+* fix: error when there is no material in the MeshRenderer of the GameObject bound to StreamingImageSequenceTrack
+* doc: add a section about gap extrapolation for StreamingImageSequence clips 
+* doc: add an item about capturing specified frames in RenderCachePlayableAsset 
+* doc: update the curve section of SISPlayableAsset 
+* doc: arrange docs and put features as the focus instead of PlayableAsset types
+* opt: minor optimization in loading images by removing memset when allocating memory for them 
+
 ## [0.6.3-preview] - 2020-10-27
 * chore: remove debug logs when updating package for 2020.2 and above
 
