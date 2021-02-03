@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
-using Unity.AnimeToolbox;
+using Unity.FilmInternalUtilities;
 using UnityEngine;
 using UnityEngine.Playables;
 using Unity.StreamingImageSequence.Editor;
