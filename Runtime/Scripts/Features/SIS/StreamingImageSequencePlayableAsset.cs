@@ -363,11 +363,15 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     private static bool GetAndValidateAnimationCurve(TimelineClip clip, out AnimationCurve animationCurve) {
         
         //[TODO-sin: 2020-7-30] Support getting animation curve in Runtime
-#if UNITY_EDITOR
-        animationCurve = AnimationUtility.GetEditorCurve(clip.curves, m_timelineEditorCurveBinding);
-#else 
         animationCurve = null;
-#endif
+#if UNITY_EDITOR
+        if (clip.curves) {
+            animationCurve = AnimationUtility.GetEditorCurve(clip.curves, m_timelineEditorCurveBinding);
+        } else {            
+            clip.CreateCurves("Curves: " + clip.displayName); //[Note-sin: 2021-2-3] for handling older versions of SIS 
+        }
+#endif        
+        
         bool newlyCreated = false;
         if (null == animationCurve) {
             animationCurve = new AnimationCurve();
