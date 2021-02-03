@@ -1,4 +1,4 @@
-﻿using Unity.AnimeToolbox;
+﻿using Unity.FilmInternalUtilities;
 using UnityEngine;
 
 namespace Unity.StreamingImageSequence {

@@ -5,7 +5,7 @@ using UnityEngine.Timeline;
 using UnityEngine.Assertions;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Unity.AnimeToolbox;
+using Unity.FilmInternalUtilities;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
