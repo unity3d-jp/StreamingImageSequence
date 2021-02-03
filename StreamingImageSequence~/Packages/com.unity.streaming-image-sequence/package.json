@@ -2,7 +2,7 @@
     "displayName": "Streaming Image Sequence",
     "name": "com.unity.streaming-image-sequence",
     "unity": "2019.4",
-    "version": "0.7.0-preview",
+    "version": "0.8.0-preview",
     "dependencies": {
         "com.unity.film-internal-utilities": "0.6.0-preview",
         "com.unity.editorcoroutines": "1.0.0",
