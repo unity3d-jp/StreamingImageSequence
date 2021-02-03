@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.8.0-preview] - 2021-02-03
+* chore: use com.unity.film-internal-utilities@0.6.0-preview
+
 ## [0.7.0-preview] - 2020-12-24
 * feat: add extrapolation support for SISPlayableAsset 
 * feat: specify frames when updating RenderCache 
