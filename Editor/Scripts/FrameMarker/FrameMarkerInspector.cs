@@ -2,7 +2,6 @@
 using NUnit.Framework;
 using UnityEditor.ShortcutManagement;
 using UnityEngine;
-using Unity.StreamingImageSequence;
 using UnityEditor;
 using UnityObject = UnityEngine.Object;
 
@@ -100,19 +99,31 @@ internal class FrameMarkerInspector: UnityEditor.Editor {
             return;
         }        
                     
-        string fullPath = Path.GetFullPath(filePath);
-        playableFrame.SetLocked(true);
-        string imageAppPath = EditorPrefs.GetString("kImagesDefaultApp");
-        if (string.IsNullOrEmpty(imageAppPath) || !File.Exists(imageAppPath)) {
-            System.Diagnostics.Process.Start(fullPath);
-            return;
-        }
-        
-        System.Diagnostics.Process.Start(imageAppPath, fullPath);
+        LaunchImageApplicationExternalTool(Path.GetFullPath(filePath));
       
     } 
     
 
+    internal static void EditPlayableFrame(SISPlayableFrame playableFrame, 
+        StreamingImageSequencePlayableAsset sisPlayableAsset) 
+    {
+        int playableFrameIndex = playableFrame.GetIndex();
+        int numPlayableFrames  = sisPlayableAsset.GetBoundTimelineClipSISData().GetNumPlayableFrames();
+        
+        int numImages = sisPlayableAsset.GetNumImages();
+        int index     = Mathf.FloorToInt(playableFrameIndex * ((float) numImages / numPlayableFrames));
+        
+        string filePath  = sisPlayableAsset.GetImageFilePath(index);
+        if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath)) {
+            EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER,
+                "File does not exist: " + filePath,
+                "Ok");
+            return;
+        }
+
+        LaunchImageApplicationExternalTool(Path.GetFullPath(filePath));
+    } 
+    
 //----------------------------------------------------------------------------------------------------------------------
     private static void SetMarkerValueByContext(FrameMarker frameMarker, bool value) {
         SISPlayableFrame    playableFrame       = frameMarker.GetOwner();
@@ -174,6 +185,19 @@ internal class FrameMarkerInspector: UnityEditor.Editor {
         }
         
     }
+    
+//----------------------------------------------------------------------------------------------------------------------
+
+    private static void LaunchImageApplicationExternalTool(string imageFullPath) {
+        string imageAppPath = EditorPrefs.GetString("kImagesDefaultApp");
+        if (string.IsNullOrEmpty(imageAppPath) || !File.Exists(imageAppPath)) {
+            System.Diagnostics.Process.Start(imageFullPath);
+            return;
+        }
+        
+        System.Diagnostics.Process.Start(imageAppPath, imageFullPath);              
+    }
+    
     
 //----------------------------------------------------------------------------------------------------------------------
     private FrameMarker[] m_assets = null;
