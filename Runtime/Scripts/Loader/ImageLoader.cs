@@ -88,7 +88,26 @@ internal static class ImageLoader  {
 
     internal static void GetImageDataInto(string fileName, int imageType, out ImageData readResult) {
         StreamingImageSequencePlugin.GetImageDataInto(fileName,imageType, GetCurrentFrame(), 
-            out readResult);            
+            out readResult);
+
+        //Display not enough memory warning.
+        switch (readResult.ReadStatus) {
+            case StreamingImageSequenceConstants.READ_STATUS_OUT_OF_MEMORY: {
+                if (m_showWarningOnOOM) {
+                    Debug.LogWarning("[SIS] Out of memory when loading images");
+                    m_showWarningOnOOM = false;
+                }
+                break;
+            }
+            case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
+                m_showWarningOnOOM = true; 
+                break;
+            }
+            default: {
+                break;
+            };
+        }
+
     }
 
    
@@ -104,6 +123,8 @@ internal static class ImageLoader  {
 
 
 #endif
+
+    private static bool m_showWarningOnOOM = true;
 }
 
 } //end namespace
