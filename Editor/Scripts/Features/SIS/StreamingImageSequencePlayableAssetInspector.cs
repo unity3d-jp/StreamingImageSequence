@@ -74,8 +74,8 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                 if (0 == numImages)
                     EditorGUILayout.IntField("FPS", 0);
                 else {
-                    TimelineClip clip = m_asset.GetBoundTimelineClipSISData().GetOwner();
-                    //When loading initially, the asset might not have the clip assigned yet
+                    TimelineClip clip = m_asset.GetBoundTimelineClipSISData()?.GetOwner();
+                    //There is no assigned clip if the playableAsset is not loaded in TimelineWindow
                     if (null != clip) { 
                         float prevFps = numImages / (float)(clip.duration); 
                         float fps     = EditorGUILayout.FloatField("FPS", prevFps);
