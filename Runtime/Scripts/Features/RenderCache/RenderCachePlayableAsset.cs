@@ -42,6 +42,7 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
     #region ISerializationCallbackReceiver
 
     public void OnBeforeSerialize() {
+        m_version = CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION;        
             
     }
 
@@ -88,7 +89,7 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset, ITimelineCli
     //[TODO-sin: 2020-11-4] Obsolete 
     [HideInInspector][SerializeField] private Color m_updateBGColor = Color.black;
     
-    [HideInInspector][SerializeField] private int m_version = CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION;
+    [HideInInspector][SerializeField] private int m_version = (int) RenderCachePlayableAssetVersion.INITIAL_0_0;
     [HideInInspector][SerializeField] private RenderCachePlayableAssetEditorConfig m_editorConfig;
     private const int CUR_RENDER_CACHE_PLAYABLE_ASSET_VERSION = (int) RenderCachePlayableAssetVersion.CONFIG_0_7;
     

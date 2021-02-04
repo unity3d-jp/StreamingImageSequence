@@ -363,11 +363,15 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     private static bool GetAndValidateAnimationCurve(TimelineClip clip, out AnimationCurve animationCurve) {
         
         //[TODO-sin: 2020-7-30] Support getting animation curve in Runtime
-#if UNITY_EDITOR
-        animationCurve = AnimationUtility.GetEditorCurve(clip.curves, m_timelineEditorCurveBinding);
-#else 
         animationCurve = null;
-#endif
+#if UNITY_EDITOR
+        if (clip.curves) {
+            animationCurve = AnimationUtility.GetEditorCurve(clip.curves, m_timelineEditorCurveBinding);
+        } else {            
+            clip.CreateCurves("Curves: " + clip.displayName); //[Note-sin: 2021-2-3] for handling older versions of SIS 
+        }
+#endif        
+        
         bool newlyCreated = false;
         if (null == animationCurve) {
             animationCurve = new AnimationCurve();
@@ -438,7 +442,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
 #region ISerializationCallbackReceiver
 
     public void OnBeforeSerialize() {
-        
+        m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;        
     }
 
     public void OnAfterDeserialize() {
@@ -447,6 +451,11 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
                 m_imageFiles = WatchedFileInfo.CreateList(m_folder, m_imageFileNames);
                 m_imageFileNames.Clear();
             }             
+            
+            //Use the folder defined in older version if set
+            if (string.IsNullOrEmpty(m_folder) && !string.IsNullOrEmpty(Folder)) {
+                m_folder = Folder;
+            }            
         }
         
         m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;
@@ -488,8 +497,13 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    [HideInInspector][SerializeField] private int m_version = CUR_SIS_PLAYABLE_ASSET_VERSION;        
+    [HideInInspector][SerializeField] private int m_version = (int) SISPlayableAssetVersion.INITIAL;        
+    
     [SerializeField] double m_time;
+
+    
+    //[TODO-Sin: 2021-2-3] Obsolete. This is put here to deserialize old versions of SIS (MovieProxy)
+    [SerializeField] private string Folder; 
     
 
 #if UNITY_EDITOR
