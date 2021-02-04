@@ -107,6 +107,7 @@ internal class FrameMarkerInspector: UnityEditor.Editor {
     internal static void EditPlayableFrame(SISPlayableFrame playableFrame, 
         StreamingImageSequencePlayableAsset sisPlayableAsset) 
     {
+        //Find the correct imageIndex. The number of frames in the clip may be more/less than the number of images
         int playableFrameIndex = playableFrame.GetIndex();
         int numPlayableFrames  = sisPlayableAsset.GetBoundTimelineClipSISData().GetNumPlayableFrames();
         
