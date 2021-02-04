@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.8.2-preview] - 2021-02-05
+* fix: error when showing the inspector of SISPlayableAsset which is not loaded in TimelineWindow 
+* chore: make sure to open internals to VisualCompositor 
+
 ## [0.8.1-preview] - 2021-02-04
 * feat: add Edit action when right clicking on the FrameMarker of SISPlayableAsset 
 * feat: show OOM log warning when there is not enough memory for loading images
