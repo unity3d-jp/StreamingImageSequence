@@ -98,7 +98,8 @@ internal class FrameMarkerInspector: UnityEditor.Editor {
                 "Ok");
             return;
         }        
-                    
+                 
+        playableFrame.SetLocked(true);
         LaunchImageApplicationExternalTool(Path.GetFullPath(filePath));
       
     } 
