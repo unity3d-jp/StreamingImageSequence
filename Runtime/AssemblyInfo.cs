@@ -3,5 +3,8 @@
 [assembly: InternalsVisibleTo("Unity.StreamingImageSequence.Tests")]
 [assembly: InternalsVisibleTo("Unity.StreamingImageSequence.EditorTests")]
 
+
+[assembly: InternalsVisibleTo("Unity.VisualCompositor")]
+[assembly: InternalsVisibleTo("Unity.VisualCompositor.Tests")]
 [assembly: InternalsVisibleTo("Unity.VisualCompositor.Editor")]
 [assembly: InternalsVisibleTo("Unity.VisualCompositor.EditorTests")]
