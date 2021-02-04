@@ -118,7 +118,7 @@ internal class FrameMarkerInspector: UnityEditor.Editor {
         string filePath  = sisPlayableAsset.GetImageFilePath(index);
         if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath)) {
             EditorUtility.DisplayDialog(StreamingImageSequenceConstants.DIALOG_HEADER,
-                "File does not exist: " + filePath,
+                "Image does not exist: " + filePath,
                 "Ok");
             return;
         }
