@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.8.1-preview] - 2021-02-04
+* feat: add Edit action when right clicking on the FrameMarker of SISPlayableAsset 
+* feat: show OOM log warning when there is not enough memory for loading images
+* fix: deserialize older versions of SISPlayableAsset (MovieProxy) successfully
+* chore: update the VisualCompositor's assembly name 
+
 ## [0.8.0-preview] - 2021-02-03
 * chore: use com.unity.film-internal-utilities@0.6.0-preview
 
