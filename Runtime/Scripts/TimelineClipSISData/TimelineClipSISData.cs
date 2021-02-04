@@ -80,6 +80,8 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     
     internal TimelineClip GetOwner() { return m_clipOwner; }
 
+    internal int GetNumPlayableFrames() { return m_playableFrames.Count;}
+
 #if UNITY_EDITOR
     internal void SetInspectedProperty(PlayableFramePropertyID id) { m_inspectedPropertyID = id; }
 

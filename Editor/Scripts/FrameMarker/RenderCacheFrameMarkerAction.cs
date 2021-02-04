@@ -10,7 +10,7 @@ namespace Unity.StreamingImageSequence.Editor {
 
 [MenuEntry("Lock and Edit")]
 
-class LockAndEditFrameMarkerAction : MarkerAction
+internal class RenderCacheFrameMarkerAction_LockAndEdit : MarkerAction
 {
     ///<inheritdoc />
     public override bool Execute(IEnumerable<IMarker> markers) {
