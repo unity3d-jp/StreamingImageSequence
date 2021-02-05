@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.8.3-preview] - 2021-02-05
+* fix: errors when using HDRP on Unity 2019.4.18 and up
+
 ## [0.8.2-preview] - 2021-02-05
 * fix: error when showing the inspector of SISPlayableAsset which is not loaded in TimelineWindow 
 * chore: make sure to open internals to VisualCompositor 
