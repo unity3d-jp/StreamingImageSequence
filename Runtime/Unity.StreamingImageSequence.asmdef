@@ -9,6 +9,7 @@
     ],
     "includePlatforms": [
         "Editor",
+        "LinuxStandalone64",
         "macOSStandalone",
         "WindowsStandalone64"
     ],
