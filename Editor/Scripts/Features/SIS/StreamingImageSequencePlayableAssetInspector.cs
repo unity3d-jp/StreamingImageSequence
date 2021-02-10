@@ -14,6 +14,7 @@ namespace Unity.StreamingImageSequence.Editor {
 [CustomEditor(typeof(StreamingImageSequencePlayableAsset))]
 internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor {
 
+
 //----------------------------------------------------------------------------------------------------------------------
     void OnEnable() {
         m_isImageListDirty = true;
@@ -75,18 +76,20 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                 else {
                     TimelineClip clip = m_asset.GetBoundTimelineClipSISData()?.GetOwner();
                     //There is no assigned clip if the playableAsset is not loaded in TimelineWindow
-                    if (null != clip) { 
-                        float prevFps = numImages / (float)(clip.duration); 
+                    if (null != clip) {                         
+                        float prevFps = numImages / (float)(clip.duration);
                         
-                        EditorGUI.BeginChangeCheck();
-                        float fps = EditorGUILayout.FloatField("FPS", prevFps);
-                        if (EditorGUI.EndChangeCheck()) {
-                            Undo.RecordObject(m_asset, "StreamingImageSequencePlayableAssetInspector::OnInspectorGUI");
-                            double prevDuration = clip.duration;
-                            clip.duration  = numImages / fps;
-                            clip.timeScale = (prevDuration * clip.timeScale) / clip.duration;
-                            Debug.Log("Changed");
-                        }
+                        EditorGUIDrawerUtility2.DrawUndoableGUI(clip.parentTrack, "StreamingImageSequencePlayableAsset: Change FPS", prevFps,
+                            /*guiFunc=*/ (float prevValue)=>{
+                                return EditorGUILayout.FloatField("FPS", prevFps);                            
+                            }, 
+                            /*updateFunc=*/ (float newFPS) => {
+                                double prevDuration = clip.duration;
+                                clip.duration  = numImages / newFPS;
+                                clip.timeScale = (prevDuration * clip.timeScale) / clip.duration;
+                                
+                            }
+                        );
                     }                    
                 }
             }
