@@ -138,23 +138,32 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
             RenderCachePlayableAssetEditorConfig editorConfig = m_asset.GetEditorConfig();
             
+            EditorGUI.BeginChangeCheck();
+            
             bool captureAllFrames = EditorGUILayout.Toggle("Capture All Frames", editorConfig.GetCaptureAllFrames());
-            editorConfig.SetCaptureAllFrames(captureAllFrames);
-
             EditorGUI.BeginDisabledGroup(captureAllFrames);
             ++EditorGUI.indentLevel;
-
 
             int captureStartFrame = Math.Max(0,editorConfig.GetCaptureStartFrame());
             int captureEndFrame   = editorConfig.GetCaptureEndFrame();
             if (captureEndFrame < 0) {
                 captureEndFrame = TimelineUtility.CalculateNumFrames(TimelineEditor.selectedClip);
-            } 
-            
-            editorConfig.SetCaptureStartFrame(EditorGUILayout.IntField("From", captureStartFrame));
-            editorConfig.SetCaptureEndFrame(EditorGUILayout.IntField("To", captureEndFrame));
+            }
+
+            captureStartFrame = EditorGUILayout.IntField("From", captureStartFrame);
+            captureEndFrame   = EditorGUILayout.IntField("To", captureEndFrame);
+
             --EditorGUI.indentLevel;                        
-            EditorGUI.EndDisabledGroup();                       
+            EditorGUI.EndDisabledGroup();
+            
+            if (EditorGUI.EndChangeCheck()) {
+                Undo.RecordObject(m_asset,"Change Frames to Capture");
+                editorConfig.SetCaptureAllFrames(captureAllFrames);
+                editorConfig.SetCaptureStartFrame(captureStartFrame);
+                editorConfig.SetCaptureEndFrame(captureEndFrame);
+                
+            }
+            
             
             GUILayout.Space(10);
             
