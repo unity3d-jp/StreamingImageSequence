@@ -8,7 +8,7 @@ namespace Unity.StreamingImageSequence {
 internal class FaderPlayableAsset : PlayableAsset, ITimelineClipAsset {
     public ClipCaps clipCaps {
         get {
-            return ClipCaps.None;
+            return ClipCaps.Extrapolation;
         }
     }
 
