@@ -53,7 +53,7 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
         
 
         //This callback occurs before the clip is assigned to the track, but we need the track for creating curves.
-        clip.parentTrack = track; 
+        clip.TryMoveToTrack(track); 
         
         //If we have a default asset, and clonedFrom is NULL, which means this is created by user interaction,
         //such as Folder D&D

@@ -43,7 +43,7 @@ internal abstract class ImageFolderPlayableAssetEditor<T> : ClipEditor where T: 
                 Duration              = clip.duration,
                 TimeScale             = clip.timeScale,
                 ClipIn                = clip.clipIn,
-                FramePerSecond        = clip.parentTrack.timelineAsset.editorSettings.fps,
+                FramePerSecond        = clip.GetParentTrack().timelineAsset.editorSettings.fps,
                 ImageDimensionRatio   = curAsset.GetOrUpdateDimensionRatio(),
                 VisibleLocalStartTime =  region.startTime,
                 VisibleLocalEndTime   = region.endTime,

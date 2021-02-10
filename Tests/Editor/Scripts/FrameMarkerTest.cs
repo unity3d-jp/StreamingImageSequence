@@ -22,7 +22,7 @@ internal class FrameMarkerTest {
         //Show
         TimelineClipSISData timelineClipSISData = sisAsset.GetBoundTimelineClipSISData();
         
-        TrackAsset trackAsset = clip.parentTrack;
+        TrackAsset trackAsset = clip.GetParentTrack();
         timelineClipSISData.RequestFrameMarkers(true, true);
         TimelineEditor.Refresh(RefreshReason.ContentsModified);
         yield return null;
@@ -69,7 +69,7 @@ internal class FrameMarkerTest {
         sisAsset.ResetPlayableFrames();            
         yield return null;
         
-        StreamingImageSequenceTrack track = clip.parentTrack as StreamingImageSequenceTrack;
+        StreamingImageSequenceTrack track = clip.GetParentTrack() as StreamingImageSequenceTrack;
         Assert.IsNotNull(track);
         List<FrameMarker> frameMarkers = new List<FrameMarker>();
 
@@ -112,7 +112,7 @@ internal class FrameMarkerTest {
         yield return null;
         
         //Change image to false
-        StreamingImageSequenceTrack track = clip.parentTrack as StreamingImageSequenceTrack;
+        StreamingImageSequenceTrack track = clip.GetParentTrack() as StreamingImageSequenceTrack;
         Assert.IsNotNull(track);           
         foreach (var m in track.GetMarkers()) {
             FrameMarker marker = m as FrameMarker;

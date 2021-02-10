@@ -88,7 +88,7 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
             StreamingImageSequencePlayableAsset sisAsset = kv.Value;
 
             int numImages  = sisAsset.GetNumImages();
-            if (numImages <= 0|| null == clip.parentTrack)
+            if (numImages <= 0|| null == clip.GetParentTrack())
                 continue;
 
             double startTime = clip.start;
@@ -112,7 +112,7 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
         double directorTime, TimelineClip activeClip) 
     {
         int numImages  = asset.GetNumImages();
-        if (numImages <=0 || null == activeClip.parentTrack)
+        if (numImages <=0 || null == activeClip.GetParentTrack())
             return;
         
         int index = asset.GlobalTimeToImageIndex(activeClip, directorTime);

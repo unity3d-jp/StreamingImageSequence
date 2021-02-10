@@ -26,6 +26,11 @@
             "define": "AT_USE_TIMELINE_GE_1_4_0"
         },
         {
+            "name": "com.unity.timeline",
+            "expression": "1.5.0-preview",
+            "define": "AT_USE_TIMELINE_GE_1_5_0"
+        },
+        {
             "name": "com.unity.pencil-line",
             "expression": "",
             "define": "AT_USE_PENCILLINE"

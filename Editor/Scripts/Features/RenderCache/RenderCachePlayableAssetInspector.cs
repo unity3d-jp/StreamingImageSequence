@@ -177,7 +177,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             
         }           
 
-        TrackAsset track = renderCachePlayableAsset.GetBoundTimelineClipSISData().GetOwner().parentTrack;        
+        TrackAsset track = renderCachePlayableAsset.GetBoundTimelineClipSISData().GetOwner().GetParentTrack();        
         BaseRenderCapturer renderCapturer = director.GetGenericBinding(track) as BaseRenderCapturer;
         if (null == renderCapturer) {
             EditorUtility.DisplayDialog("Streaming Image Sequence",
@@ -351,7 +351,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 
     private void DrawCaptureSelectedFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
         bool         prevMarkersRequest = timelineClipSISData.AreFrameMarkersRequested();
-        TrackAsset   track              = timelineClip.parentTrack;
+        TrackAsset   track              = timelineClip.GetParentTrack();
         
         GUILayout.BeginHorizontal();
         bool markerVisibility = EditorGUILayout.Toggle("Show Frame Markers", prevMarkersRequest);
@@ -377,7 +377,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 
 
     private void DrawLockFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
-        TrackAsset track = timelineClip.parentTrack;
+        TrackAsset track = timelineClip.GetParentTrack();
         
         using(new EditorGUILayout.HorizontalScope()) {
             EditorGUILayout.PrefixLabel("Lock Frames");

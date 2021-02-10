@@ -81,7 +81,7 @@ internal class EditorUtilityTest {
     internal static void ResizeSISTimelineClip(TimelineClip clip, double duration) {
             
 #if UNITY_EDITOR            
-        Undo.RegisterCompleteObjectUndo(clip.parentTrack,"StreamingImageSequence: Set Duration");
+        Undo.RegisterCompleteObjectUndo(clip.GetParentTrack(),"StreamingImageSequence: Set Duration");
 #endif            
         clip.duration = duration;
             
@@ -139,7 +139,7 @@ internal class EditorUtilityTest {
     
 //----------------------------------------------------------------------------------------------------------------------                
     internal static void DestroyTestTimelineAssets(TimelineClip clip) {
-        TrackAsset    movieTrack    = clip.parentTrack;
+        TrackAsset    movieTrack    = clip.GetParentTrack();
         TimelineAsset timelineAsset = movieTrack.timelineAsset;
             
         string tempTimelineAssetPath = AssetDatabase.GetAssetPath(timelineAsset);

@@ -67,7 +67,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
             return;
         
 #if UNITY_EDITOR
-        Undo.RegisterCompleteObjectUndo(m_clipOwner.parentTrack,"StreamingImageSequence Show/Hide FrameMarker");
+        Undo.RegisterCompleteObjectUndo(m_clipOwner.GetParentTrack(),"StreamingImageSequence Show/Hide FrameMarker");
         m_forceShowFrameMarkers = forceShow && req;
 #endif        
         m_frameMarkersRequested = req;
@@ -144,7 +144,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     internal void RefreshPlayableFrames() {
         
         //Clip doesn't have parent. Might be because the clip is being moved 
-        if (null == m_clipOwner.parentTrack) {
+        if (null == m_clipOwner.GetParentTrack()) {
             return;
         }        
         
