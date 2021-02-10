@@ -372,14 +372,11 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 
 
     private void DrawCaptureSelectedFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
-        bool         prevMarkersRequest = timelineClipSISData.AreFrameMarkersRequested();
         TrackAsset   track              = timelineClip.GetParentTrack();
         
         GUILayout.BeginHorizontal();
-        bool markerVisibility = EditorGUILayout.Toggle("Show Frame Markers", prevMarkersRequest);
-        if (markerVisibility != prevMarkersRequest) {
-            timelineClipSISData.RequestFrameMarkers(markerVisibility);
-        }
+        bool markerVisibility = InspectorUtility.DrawFrameMarkersGUI(m_asset);
+        
         GUILayout.FlexibleSpace();
         EditorGUI.BeginDisabledGroup(!markerVisibility);        
         if (GUILayout.Button("Capture All", GUILayout.Width(80))) {
