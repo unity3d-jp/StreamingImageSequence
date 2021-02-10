@@ -115,8 +115,16 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
             EditorGUILayout.LabelField("Background Colors");
             ++EditorGUI.indentLevel;
-            Color timelineBgColor = m_asset.GetTimelineBGColor();
-            m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("In Timeline Window", timelineBgColor));
+            
+            EditorGUIDrawerUtility2.DrawUndoableGUI(m_asset, "Change BG Color", m_asset.GetTimelineBGColor(),
+                /*guiFunc=*/ (Color prevValue)=> {
+                    return EditorGUILayout.ColorField("In Timeline Window", prevValue);
+                }, 
+                /*updateFunc=*/ (Color newColor) => {                               
+                    m_asset.SetTimelineBGColor(newColor);                                
+                }
+            );
+            
             --EditorGUI.indentLevel;
             GUILayout.Space(15);
         }
