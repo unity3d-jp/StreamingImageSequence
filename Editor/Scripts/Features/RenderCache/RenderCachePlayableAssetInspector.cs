@@ -81,6 +81,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             AssetUtility.NormalizeAssetPath
         );
         if (newFolder != prevFolder) {
+            Undo.RecordObject(m_asset,"Change Output Folder");
             m_asset.SetFolder(AssetUtility.NormalizeAssetPath(newFolder));
             GUIUtility.ExitGUI();
         }
@@ -103,11 +104,23 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             ++EditorGUI.indentLevel;
 
             RenderCachePlayableAssetEditorConfig editorConfig = m_asset.GetEditorConfig();
-                        
-            Color updateBGColor = editorConfig.GetUpdateBGColor();
+            Color updateBGColor   = editorConfig.GetUpdateBGColor();
             Color timelineBgColor = m_asset.GetTimelineBGColor();
-            editorConfig.SetUpdateBGColor(EditorGUILayout.ColorField("In Game Window (Update)", updateBGColor));
-            m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("In Timeline Window", timelineBgColor));
+            
+            EditorGUIDrawerUtility2.DrawUndoableGUI(m_asset, "Change Update BG Color", updateBGColor,
+                /*guiFunc=*/ (Color prevColor)=> {
+                    return EditorGUILayout.ColorField("In Game Window (Update)", prevColor);
+                }, 
+                /*updateFunc=*/ (Color newColor) => { editorConfig.SetUpdateBGColor(newColor); }
+            );
+            
+            EditorGUIDrawerUtility2.DrawUndoableGUI(m_asset, "Change Timeline BG Color", timelineBgColor,
+                /*guiFunc=*/ (Color prevColor)=> {
+                    return EditorGUILayout.ColorField("In Timeline Window", prevColor);
+                }, 
+                /*updateFunc=*/ (Color newColor) => {  m_asset.SetTimelineBGColor(newColor); }
+            );
+            
             --EditorGUI.indentLevel;
             GUILayout.Space(5);
         }       
