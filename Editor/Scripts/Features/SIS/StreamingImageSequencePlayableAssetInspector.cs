@@ -80,10 +80,11 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                         float prevFps = numImages / (float)(clip.duration);
                         
                         EditorGUIDrawerUtility2.DrawUndoableGUI(clip.parentTrack, "Change FPS", prevFps,
-                            /*guiFunc=*/ (float prevValue)=>{
-                                return EditorGUILayout.FloatField("FPS", prevFps);                            
+                            /*guiFunc=*/ (float prevValue)=> {
+                                float val = EditorGUILayout.FloatField("FPS", prevFps); 
+                                return Mathf.Max(0.1f, val);
                             }, 
-                            /*updateFunc=*/ (float newFPS) => {
+                            /*updateFunc=*/ (float newFPS) => {                               
                                 double prevDuration = clip.duration;
                                 clip.duration  = numImages / newFPS;
                                 clip.timeScale = (prevDuration * clip.timeScale) / clip.duration;
