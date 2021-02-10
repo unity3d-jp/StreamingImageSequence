@@ -37,7 +37,6 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         if (null == m_asset)
             return;
         
-        Undo.RecordObject(m_asset, "StreamingImageSequencePlayableAssetInspector::OnInspectorGUI");
 
         using (new EditorGUILayout.VerticalScope (GUI.skin.box))  {
 
@@ -78,12 +77,16 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                     //There is no assigned clip if the playableAsset is not loaded in TimelineWindow
                     if (null != clip) { 
                         float prevFps = numImages / (float)(clip.duration); 
-                        float fps     = EditorGUILayout.FloatField("FPS", prevFps);
-                        if (!Mathf.Approximately(fps, prevFps) && !Mathf.Approximately(fps, 0.0f)) {
+                        
+                        EditorGUI.BeginChangeCheck();
+                        float fps = EditorGUILayout.FloatField("FPS", prevFps);
+                        if (EditorGUI.EndChangeCheck()) {
+                            Undo.RecordObject(m_asset, "StreamingImageSequencePlayableAssetInspector::OnInspectorGUI");
                             double prevDuration = clip.duration;
                             clip.duration  = numImages / fps;
                             clip.timeScale = (prevDuration * clip.timeScale) / clip.duration;
-                        }                        
+                            Debug.Log("Changed");
+                        }
                     }                    
                 }
             }
@@ -121,6 +124,17 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         }
     }
 
+    private void StartInpectorGUI() {
+        EditorGUI.BeginChangeCheck();
+        
+    }
+
+    private void EndInpectorGUI() {
+        if (EditorGUI.EndChangeCheck()) {
+            
+        }
+        
+    }
 //----------------------------------------------------------------------------------------------------------------------
 
     private void DrawFolderGUI() {
