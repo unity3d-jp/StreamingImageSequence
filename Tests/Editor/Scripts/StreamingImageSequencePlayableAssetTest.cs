@@ -23,7 +23,7 @@ internal class StreamingImageSequencePlayableAssetTest {
         Assert.IsNotNull(sisAsset);
         
         //Test the track immediately
-        StreamingImageSequenceTrack track = clip.parentTrack as StreamingImageSequenceTrack;
+        StreamingImageSequenceTrack track = clip.GetParentTrack() as StreamingImageSequenceTrack;
         Assert.IsNotNull(track);
         Assert.IsNotNull(track.GetActivePlayableAsset());
         
@@ -62,7 +62,7 @@ internal class StreamingImageSequencePlayableAssetTest {
         yield return null;
 
         //Original length
-        TrackAsset trackAsset = clip.parentTrack;
+        TrackAsset trackAsset = clip.GetParentTrack();
         Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
         double origClipDuration = clip.duration;
 
