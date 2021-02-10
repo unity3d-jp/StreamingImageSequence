@@ -1,6 +1,7 @@
 # Image オブジェクトをフェードさせる
 
 1. [クイックスタート](#クイックスタート)
+1. [ギャップの外挿](#ギャップの外挿)
 1. [FaderPlayableAsset](#faderplayableasset)
 
 ## クイックスタート
@@ -25,6 +26,22 @@
 
 Timeline を再生したり、Timeline ウィンドウでタイムスライダーをドラッグすると、
 Image オブジェクトがフェードイン／フェードアウトします。
+
+## ギャップの外挿
+
+![StreamingImageSequencePlayableAssetExtrapolation](../images/StreamingImageSequencePlayableAssetExtrapolation.png)
+
+FaderPlayableAsset クリップの前後のギャップの動作は、
+[Animation クリップのギャップの外挿の設定](https://docs.unity3d.com/ja/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)のと同様、
+下記のオプションで設定できます：
+1. **None** (デフォルト): **Renderer** コンポーネントを非アクティブにし、バインドされたオブジェクトを非表示にする。
+1. **Hold**: ギャップ内に最初、または最後のフェードの状態を表示し続ける。
+1. **Loop**: 同じクリップの長さで、フェードをループする。
+1. **Ping Pong**: 同じクリップの長さで、フェードを逆方向にループし、次に順方向にループする。
+1. **Continue**: **Hold** と同じ。
+
+デフォルトとして、FaderPlayableAsset は Pre-Extrapolate と Post-Extrapolate プロパティの両方を **None** 
+に設定します。
 
 ## FaderPlayableAsset
 

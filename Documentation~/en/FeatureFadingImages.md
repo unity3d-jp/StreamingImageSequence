@@ -1,6 +1,7 @@
 # Fading Image objects
 
 1. [Quick Start](#quick-start)
+1. [Gap Extrapolation](#gap-extrapolation)
 1. [FaderPlayableAsset](#faderplayableasset)
 
 ## Quick Start
@@ -26,6 +27,20 @@ From an empty scene, do the following:
 
 The Image object will be faded in/out as we play the Timeline or drag the time slider of the Timeline window.
 
+## Gap Extrapolation
+
+![StreamingImageSequencePlayableAssetExtrapolation](../images/StreamingImageSequencePlayableAssetExtrapolation.png)
+
+The behaviour of a gap before or after a clip with FaderPlayableAsset can be set in a similar way to 
+[setting gap extrapolation for Animation clips](https://docs.unity3d.com/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)
+using one of the following options:
+1. **None** (default): hide the bound object by deactivating its **Renderer** component.
+1. **Hold**: hold and show the first/last state of the fading in the gap.
+1. **Loop**: loop the entire fading with the same clip duration.
+1. **Ping Pong**: loop the entire fading backwards, then forwards, and so forth, with the same clip duration.
+1. **Continue**: same as **Hold**
+
+By default, FaderPlayableAsset sets both Pre-Extrapolate and Post-Extrapolate properties to **None**.
 
 
 ## FaderPlayableAsset
