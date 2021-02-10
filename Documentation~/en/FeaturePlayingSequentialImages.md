@@ -62,7 +62,7 @@ Refer to [FrameMarkers](FrameMarkers.md) for more details.
 
 ![StreamingImageSequencePlayableAssetExtrapolation](../images/StreamingImageSequencePlayableAssetExtrapolation.png)
 
-The behaviour of a gap before or after a StreamingImageSequence clip can be set in a similar way to 
+The behaviour of a gap before or after a StreamingImageSequencePlayableAsset clip can be set in a similar way to 
 [setting gap extrapolation for Animation clips](https://docs.unity3d.com/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)
 using one of the following options:
 1. **None** (default): hide the bound object by deactivating its **Renderer** component.
@@ -71,7 +71,7 @@ using one of the following options:
 1. **Ping Pong**: loop the entire image sequence backwards, then forwards, and so forth, with the same clip duration.
 1. **Continue**: same as **Hold**
 
-By default, StreamingImageSequence sets both Pre-Extrapolate and Post-Extrapolate properties to **None**.
+By default, StreamingImageSequencePlayableAsset sets both Pre-Extrapolate and Post-Extrapolate properties to **None**.
 
 
 ## Curve Editing (Editor only)

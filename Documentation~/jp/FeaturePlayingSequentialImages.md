@@ -64,7 +64,7 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 
 ![StreamingImageSequencePlayableAssetExtrapolation](../images/StreamingImageSequencePlayableAssetExtrapolation.png)
 
-StreamingImageSequence クリップの前後のギャップの動作は、
+StreamingImageSequencePlayableAsset クリップの前後のギャップの動作は、
 [Animation クリップのギャップの外挿の設定](https://docs.unity3d.com/ja/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)のと同様、
 下記のオプションで設定できます：
 1. **None** (デフォルト): **Renderer** コンポーネントを非アクティブにし、バインドされたオブジェクトを非表示にする。
@@ -73,7 +73,8 @@ StreamingImageSequence クリップの前後のギャップの動作は、
 1. **Ping Pong**: 同じクリップの長さで、連番を逆方向にループし、次に順方向にループする。
 1. **Continue**: **Hold** と同じ。
 
-デフォルトでは、StreamingImageSequence は Pre-Extrapolate と Post-Extrapolate プロパティの両方を **None** に設定します。
+デフォルトとして、StreamingImageSequencePlayableAsset は Pre-Extrapolate と Post-Extrapolate プロパティの両方を **None** 
+に設定します。
 
 ## 曲線の編集（エディターのみ）
 
