@@ -108,7 +108,14 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         GUILayout.Space(15);
         //Frame markers
         if (TimelineEditor.selectedClip.asset == m_asset) {
-            InspectorUtility.ShowFrameMarkersGUI(m_asset);
+
+            using (new EditorGUILayout.HorizontalScope()) {
+                InspectorUtility.DrawFrameMarkersGUI(m_asset);
+                if (GUILayout.Button("Reset", GUILayout.Width(50f))) {
+                    m_asset.ResetPlayableFrames();
+                }
+            }
+
         }
         GUILayout.Space(15);
         
