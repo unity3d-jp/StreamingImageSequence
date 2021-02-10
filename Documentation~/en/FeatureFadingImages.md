@@ -29,7 +29,7 @@ The Image object will be faded in/out as we play the Timeline or drag the time s
 
 ## Gap Extrapolation
 
-![StreamingImageSequencePlayableAssetExtrapolation](../images/StreamingImageSequencePlayableAssetExtrapolation.png)
+![FaderPlayableAssetExtrapolation](../images/FaderPlayableAssetExtrapolation.png)
 
 The behaviour of a gap before or after a clip with FaderPlayableAsset can be set in a similar way to 
 [setting gap extrapolation for Animation clips](https://docs.unity3d.com/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)

@@ -29,7 +29,7 @@ Image オブジェクトがフェードイン／フェードアウトします�
 
 ## ギャップの外挿
 
-![StreamingImageSequencePlayableAssetExtrapolation](../images/StreamingImageSequencePlayableAssetExtrapolation.png)
+![FaderPlayableAssetExtrapolation](../images/FaderPlayableAssetExtrapolation.png)
 
 FaderPlayableAsset クリップの前後のギャップの動作は、
 [Animation クリップのギャップの外挿の設定](https://docs.unity3d.com/ja/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)のと同様、
