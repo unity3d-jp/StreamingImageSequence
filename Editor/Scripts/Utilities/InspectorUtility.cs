@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.FilmInternalUtilities.Editor;
+using UnityEngine;
 using UnityEditor;
 
 namespace Unity.StreamingImageSequence.Editor {
@@ -14,10 +15,17 @@ internal static class InspectorUtility {
             bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersRequested();
 
             EditorGUILayout.BeginHorizontal();
-            bool markerVisibility = EditorGUILayout.Toggle("Show Frame Markers", prevMarkerVisibility);
-            if (markerVisibility != prevMarkerVisibility) {
-                timelineClipSISData.RequestFrameMarkers(markerVisibility);
-            }
+
+            EditorGUIDrawerUtility2.DrawUndoableGUI(timelineClipSISDataPlayableAsset, "Show Frame Markers",prevMarkerVisibility,
+                /*guiFunc=*/ (bool prevValue)=>{
+                    return EditorGUILayout.Toggle("Show Frame Markers", prevMarkerVisibility);;                            
+                }, 
+                /*updateFunc=*/ (bool newValue) => {
+                    timelineClipSISData.RequestFrameMarkers(newValue);
+                                
+                }                
+            );
+            
             if (GUILayout.Button("Reset", GUILayout.Width(50f))) {
                 timelineClipSISDataPlayableAsset.ResetPlayableFrames();
             }                    
