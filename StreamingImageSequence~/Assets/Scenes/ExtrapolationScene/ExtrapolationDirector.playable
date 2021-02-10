@@ -87,11 +87,11 @@ MonoBehaviour:
     m_Recordable: 0
     m_PostExtrapolationMode: 3
     m_PreExtrapolationMode: 3
-    m_PostExtrapolationTime: 1.5166666666666666
+    m_PostExtrapolationTime: 0.7333333333333334
     m_PreExtrapolationTime: 1
     m_DisplayName: StreamingImageSequencePlayableAsset
   - m_Version: 1
-    m_Start: 3.8833333333333333
+    m_Start: 3.1
     m_ClipIn: 0
     m_Asset: {fileID: -4846217427250720271}
     m_Duration: 1.3166666666666669
@@ -156,11 +156,11 @@ MonoBehaviour:
     m_Recordable: 0
     m_PostExtrapolationMode: 0
     m_PreExtrapolationMode: 0
-    m_PostExtrapolationTime: 1.25
+    m_PostExtrapolationTime: 0.7833333333333332
     m_PreExtrapolationTime: 0
     m_DisplayName: StreamingImageSequencePlayableAsset
   - m_Version: 1
-    m_Start: 6.45
+    m_Start: 5.2
     m_ClipIn: 0
     m_Asset: {fileID: -4327051678737651406}
     m_Duration: 1.0499999999999998
@@ -226,7 +226,7 @@ MonoBehaviour:
     m_PostExtrapolationMode: 2
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: Infinity
-    m_PreExtrapolationTime: 1.25
+    m_PreExtrapolationTime: 0.7833333333333332
     m_DisplayName: TGA
   m_Markers:
     m_Objects: []
@@ -1584,6 +1584,20 @@ MonoBehaviour:
       m_userNote: 
     m_frameMarkersRequested: 0
     m_version: 1
+--- !u!114 &-5142154398494202607
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1578cc5cf23154c9d06ef8dfa5d7f3, type: 3}
+  m_Name: FaderPlayableAsset
+  m_EditorClassIdentifier: 
+  m_color: {r: 0, g: 1, b: 0.030314207, a: 1}
+  m_fadeType: 0
 --- !u!114 &-4846217427250720271
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1717,7 +1731,8 @@ MonoBehaviour:
     m_size: 78094
   m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
-  m_time: 1
+  m_time: 0
+  Folder: 
   m_timelineDefaultAsset: {fileID: 102900000, guid: 8bcebc0ffe2c86e4f82055b17b71d654,
     type: 3}
 --- !u!114 &-4552814047021651770
@@ -1772,7 +1787,8 @@ MonoBehaviour:
     m_size: 7072844
   m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
-  m_time: 0
+  m_time: 0.4285714328289032
+  Folder: 
   m_timelineDefaultAsset: {fileID: 102900000, guid: 67edb59e9580c004880641a59428f148,
     type: 3}
 --- !u!74 &-3484395661165387582
@@ -1882,6 +1898,236 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events: []
+--- !u!114 &-2332175283472864258
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581e2ddc524e3894984b6952aaf03389, type: 3}
+  m_Name: Fader Track
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_AnimClip: {fileID: 0}
+  m_Locked: 0
+  m_Muted: 0
+  m_CustomPlayableFullTypename: 
+  m_Curves: {fileID: 0}
+  m_Parent: {fileID: 11400000}
+  m_Children: []
+  m_Clips:
+  - m_Version: 1
+    m_Start: 0.6
+    m_ClipIn: 0
+    m_Asset: {fileID: 5884850740506913887}
+    m_Duration: 3.283333333333333
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: -2332175283472864258}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: 0
+    m_BlendOutDuration: 0
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 1
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 1.3166666666666669
+    m_PreExtrapolationTime: 0.6
+    m_DisplayName: FaderPlayableAsset
+  - m_Version: 1
+    m_Start: 5.2
+    m_ClipIn: 0
+    m_Asset: {fileID: -5142154398494202607}
+    m_Duration: 2.3
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: -2332175283472864258}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: 0
+    m_BlendOutDuration: 0
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 2
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: 2.833333333333334
+    m_PreExtrapolationTime: 0
+    m_DisplayName: FaderPlayableAsset
+  - m_Version: 1
+    m_Start: 10.333333333333334
+    m_ClipIn: 0
+    m_Asset: {fileID: 5331041027872534370}
+    m_Duration: 1.6166666666666654
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: -2332175283472864258}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: 0
+    m_BlendOutDuration: 0
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 0}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: Infinity
+    m_PreExtrapolationTime: 0
+    m_DisplayName: FaderPlayableAsset
+  m_Markers:
+    m_Objects: []
 --- !u!114 &-2211535974385904853
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1956,6 +2202,7 @@ MonoBehaviour:
   m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
   m_time: 1
+  Folder: 
   m_timelineDefaultAsset: {fileID: 102900000, guid: 03c7029848f532949bbbc4d26c7915b1,
     type: 3}
 --- !u!74 &-1284727082092187750
@@ -2081,6 +2328,7 @@ MonoBehaviour:
   m_Tracks:
   - {fileID: -5425215997376181928}
   - {fileID: 8708551792938420064}
+  - {fileID: -2332175283472864258}
   m_FixedDuration: 0
   m_EditorSettings:
     m_Framerate: 60
@@ -2099,6 +2347,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fde0d25a170598d46a0b9dc16b4527a5, type: 3}
   m_Name: ActivationPlayableAsset
   m_EditorClassIdentifier: 
+--- !u!114 &5331041027872534370
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1578cc5cf23154c9d06ef8dfa5d7f3, type: 3}
+  m_Name: FaderPlayableAsset
+  m_EditorClassIdentifier: 
+  m_color: {r: 0, g: 0.16973758, b: 1, a: 1}
+  m_fadeType: 0
+--- !u!114 &5884850740506913887
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1578cc5cf23154c9d06ef8dfa5d7f3, type: 3}
+  m_Name: FaderPlayableAsset
+  m_EditorClassIdentifier: 
+  m_color: {r: 1, g: 0, b: 0, a: 1}
+  m_fadeType: 0
 --- !u!74 &8017500666624489364
 AnimationClip:
   m_ObjectHideFlags: 0
@@ -2231,7 +2507,7 @@ MonoBehaviour:
     m_Start: 0
     m_ClipIn: 0
     m_Asset: {fileID: 4887121831368367061}
-    m_Duration: 11.816666666666666
+    m_Duration: 11.95
     m_TimeScale: 1
     m_ParentTrack: {fileID: 8708551792938420064}
     m_EaseInDuration: 0
