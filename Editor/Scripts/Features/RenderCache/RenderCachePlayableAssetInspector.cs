@@ -380,11 +380,11 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         GUILayout.FlexibleSpace();
         EditorGUI.BeginDisabledGroup(!markerVisibility);        
         if (GUILayout.Button("Capture All", GUILayout.Width(80))) {
-            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
+            Undo.RegisterCompleteObjectUndo(track, "Capturing all frames");
             timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.USED, true);
         }
         if (GUILayout.Button("Reset", GUILayout.Width(50))) {
-            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frame");
+            Undo.RegisterCompleteObjectUndo(track, "Capturing no frames");
             timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.USED, false);            
         }
         EditorGUI.EndDisabledGroup();
@@ -414,11 +414,11 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             GUILayout.FlexibleSpace();
             EditorGUI.BeginDisabledGroup(!m_lockMode);        
             if (GUILayout.Button("Lock All", GUILayout.Width(80))) {
-                Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Locking all frames");
+                Undo.RegisterCompleteObjectUndo(track, "Locking all frames");
                 timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.LOCKED, true);
             }
             if (GUILayout.Button("Reset", GUILayout.Width(50))) {
-                Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Locking no frame");
+                Undo.RegisterCompleteObjectUndo(track, "Locking no frames");
                 timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.LOCKED, false);
             }
             EditorGUI.EndDisabledGroup();
