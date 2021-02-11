@@ -28,7 +28,7 @@ internal abstract class BaseTimelineClipSISDataPlayableAsset : PlayableAsset{
 
     internal void ResetPlayableFrames() {
 #if UNITY_EDITOR
-        Undo.RegisterCompleteObjectUndo(this, "TimelineClipSISDataPlayableAsset: Resetting PlayableFrames");
+        Undo.RegisterCompleteObjectUndo(this, "Resetting PlayableFrames");
 #endif
         m_timelineClipSISData.ResetPlayableFrames();
             

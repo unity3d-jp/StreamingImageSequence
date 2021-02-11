@@ -14,6 +14,7 @@ namespace Unity.StreamingImageSequence.Editor {
 [CustomEditor(typeof(StreamingImageSequencePlayableAsset))]
 internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor {
 
+
 //----------------------------------------------------------------------------------------------------------------------
     void OnEnable() {
         m_isImageListDirty = true;
@@ -37,7 +38,6 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         if (null == m_asset)
             return;
         
-        Undo.RecordObject(m_asset, "StreamingImageSequencePlayableAssetInspector::OnInspectorGUI");
 
         using (new EditorGUILayout.VerticalScope (GUI.skin.box))  {
 
@@ -76,14 +76,21 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                 else {
                     TimelineClip clip = m_asset.GetBoundTimelineClipSISData()?.GetOwner();
                     //There is no assigned clip if the playableAsset is not loaded in TimelineWindow
-                    if (null != clip) { 
-                        float prevFps = numImages / (float)(clip.duration); 
-                        float fps     = EditorGUILayout.FloatField("FPS", prevFps);
-                        if (!Mathf.Approximately(fps, prevFps) && !Mathf.Approximately(fps, 0.0f)) {
-                            double prevDuration = clip.duration;
-                            clip.duration  = numImages / fps;
-                            clip.timeScale = (prevDuration * clip.timeScale) / clip.duration;
-                        }                        
+                    if (null != clip) {                         
+                        float curFPS = numImages / (float)(clip.duration);
+                        
+                        EditorGUIDrawerUtility.DrawUndoableGUI(clip.GetParentTrack(), "Change FPS", curFPS,
+                            /*guiFunc=*/ (float prevFPS)=> {
+                                float val = EditorGUILayout.FloatField("FPS", prevFPS); 
+                                return Mathf.Max(0.1f, val);
+                            }, 
+                            /*updateFunc=*/ (float newFPS) => {                               
+                                double prevDuration = clip.duration;
+                                clip.duration  = numImages / newFPS;
+                                clip.timeScale = (prevDuration * clip.timeScale) / clip.duration;
+                                
+                            }
+                        );
                     }                    
                 }
             }
@@ -101,15 +108,28 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         GUILayout.Space(15);
         //Frame markers
         if (TimelineEditor.selectedClip.asset == m_asset) {
-            InspectorUtility.ShowFrameMarkersGUI(m_asset);
+            using (new EditorGUILayout.HorizontalScope()) {
+                InspectorUtility.DrawFrameMarkersGUI(m_asset);
+                if (GUILayout.Button("Reset", GUILayout.Width(50f))) {
+                    m_asset.ResetPlayableFrames();
+                }
+            }
         }
         GUILayout.Space(15);
         
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
             EditorGUILayout.LabelField("Background Colors");
             ++EditorGUI.indentLevel;
-            Color timelineBgColor = m_asset.GetTimelineBGColor();
-            m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("In Timeline Window", timelineBgColor));
+            
+            EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Change BG Color", m_asset.GetTimelineBGColor(),
+                /*guiFunc=*/ (Color prevValue)=> {
+                    return EditorGUILayout.ColorField("In Timeline Window", prevValue);
+                }, 
+                /*updateFunc=*/ (Color newColor) => {                               
+                    m_asset.SetTimelineBGColor(newColor);                                
+                }
+            );
+            
             --EditorGUI.indentLevel;
             GUILayout.Space(15);
         }
@@ -132,6 +152,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         );        
         
         if (newLoadPath != prevFolder) {
+            Undo.RecordObject(m_asset, "Change Image Sequence Folder");            
             ImportImages(newLoadPath);
             GUIUtility.ExitGUI();
         }

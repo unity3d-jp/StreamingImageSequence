@@ -81,6 +81,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             AssetUtility.NormalizeAssetPath
         );
         if (newFolder != prevFolder) {
+            Undo.RecordObject(m_asset,"Change Output Folder");
             m_asset.SetFolder(AssetUtility.NormalizeAssetPath(newFolder));
             GUIUtility.ExitGUI();
         }
@@ -103,11 +104,23 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             ++EditorGUI.indentLevel;
 
             RenderCachePlayableAssetEditorConfig editorConfig = m_asset.GetEditorConfig();
-                        
-            Color updateBGColor = editorConfig.GetUpdateBGColor();
+            Color updateBGColor   = editorConfig.GetUpdateBGColor();
             Color timelineBgColor = m_asset.GetTimelineBGColor();
-            editorConfig.SetUpdateBGColor(EditorGUILayout.ColorField("In Game Window (Update)", updateBGColor));
-            m_asset.SetTimelineBGColor(EditorGUILayout.ColorField("In Timeline Window", timelineBgColor));
+            
+            EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Change Update BG Color", updateBGColor,
+                /*guiFunc=*/ (Color prevColor)=> {
+                    return EditorGUILayout.ColorField("In Game Window (Update)", prevColor);
+                }, 
+                /*updateFunc=*/ (Color newColor) => { editorConfig.SetUpdateBGColor(newColor); }
+            );
+            
+            EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Change Timeline BG Color", timelineBgColor,
+                /*guiFunc=*/ (Color prevColor)=> {
+                    return EditorGUILayout.ColorField("In Timeline Window", prevColor);
+                }, 
+                /*updateFunc=*/ (Color newColor) => {  m_asset.SetTimelineBGColor(newColor); }
+            );
+            
             --EditorGUI.indentLevel;
             GUILayout.Space(5);
         }       
@@ -125,23 +138,32 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
             RenderCachePlayableAssetEditorConfig editorConfig = m_asset.GetEditorConfig();
             
+            EditorGUI.BeginChangeCheck();
+            
             bool captureAllFrames = EditorGUILayout.Toggle("Capture All Frames", editorConfig.GetCaptureAllFrames());
-            editorConfig.SetCaptureAllFrames(captureAllFrames);
-
             EditorGUI.BeginDisabledGroup(captureAllFrames);
             ++EditorGUI.indentLevel;
-
 
             int captureStartFrame = Math.Max(0,editorConfig.GetCaptureStartFrame());
             int captureEndFrame   = editorConfig.GetCaptureEndFrame();
             if (captureEndFrame < 0) {
                 captureEndFrame = TimelineUtility.CalculateNumFrames(TimelineEditor.selectedClip);
-            } 
-            
-            editorConfig.SetCaptureStartFrame(EditorGUILayout.IntField("From", captureStartFrame));
-            editorConfig.SetCaptureEndFrame(EditorGUILayout.IntField("To", captureEndFrame));
+            }
+
+            captureStartFrame = EditorGUILayout.IntField("From", captureStartFrame);
+            captureEndFrame   = EditorGUILayout.IntField("To", captureEndFrame);
+
             --EditorGUI.indentLevel;                        
-            EditorGUI.EndDisabledGroup();                       
+            EditorGUI.EndDisabledGroup();
+            
+            if (EditorGUI.EndChangeCheck()) {
+                Undo.RecordObject(m_asset,"Change Frames to Capture");
+                editorConfig.SetCaptureAllFrames(captureAllFrames);
+                editorConfig.SetCaptureStartFrame(captureStartFrame);
+                editorConfig.SetCaptureEndFrame(captureEndFrame);
+                
+            }
+            
             
             GUILayout.Space(10);
             
@@ -350,22 +372,19 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 
 
     private void DrawCaptureSelectedFramesGUI(TimelineClip timelineClip, TimelineClipSISData timelineClipSISData) {
-        bool         prevMarkersRequest = timelineClipSISData.AreFrameMarkersRequested();
         TrackAsset   track              = timelineClip.GetParentTrack();
         
         GUILayout.BeginHorizontal();
-        bool markerVisibility = EditorGUILayout.Toggle("Show Frame Markers", prevMarkersRequest);
-        if (markerVisibility != prevMarkersRequest) {
-            timelineClipSISData.RequestFrameMarkers(markerVisibility);
-        }
+        bool markerVisibility = InspectorUtility.DrawFrameMarkersGUI(m_asset);
+        
         GUILayout.FlexibleSpace();
         EditorGUI.BeginDisabledGroup(!markerVisibility);        
         if (GUILayout.Button("Capture All", GUILayout.Width(80))) {
-            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing all frames");
+            Undo.RegisterCompleteObjectUndo(track, "Capturing all frames");
             timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.USED, true);
         }
         if (GUILayout.Button("Reset", GUILayout.Width(50))) {
-            Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Capturing no frame");
+            Undo.RegisterCompleteObjectUndo(track, "Capturing no frames");
             timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.USED, false);            
         }
         EditorGUI.EndDisabledGroup();
@@ -395,11 +414,11 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             GUILayout.FlexibleSpace();
             EditorGUI.BeginDisabledGroup(!m_lockMode);        
             if (GUILayout.Button("Lock All", GUILayout.Width(80))) {
-                Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Locking all frames");
+                Undo.RegisterCompleteObjectUndo(track, "Locking all frames");
                 timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.LOCKED, true);
             }
             if (GUILayout.Button("Reset", GUILayout.Width(50))) {
-                Undo.RegisterCompleteObjectUndo(track, "RenderCachePlayableAsset: Locking no frame");
+                Undo.RegisterCompleteObjectUndo(track, "Locking no frames");
                 timelineClipSISData.SetAllPlayableFramesProperty(PlayableFramePropertyID.LOCKED, false);
             }
             EditorGUI.EndDisabledGroup();
