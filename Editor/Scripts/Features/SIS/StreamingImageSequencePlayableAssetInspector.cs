@@ -79,7 +79,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                     if (null != clip) {                         
                         float prevFps = numImages / (float)(clip.duration);
                         
-                        EditorGUIDrawerUtility2.DrawUndoableGUI(clip.parentTrack, "Change FPS", prevFps,
+                        EditorGUIDrawerUtility.DrawUndoableGUI(clip.parentTrack, "Change FPS", prevFps,
                             /*guiFunc=*/ (float prevValue)=> {
                                 float val = EditorGUILayout.FloatField("FPS", prevFps); 
                                 return Mathf.Max(0.1f, val);
@@ -121,7 +121,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
             EditorGUILayout.LabelField("Background Colors");
             ++EditorGUI.indentLevel;
             
-            EditorGUIDrawerUtility2.DrawUndoableGUI(m_asset, "Change BG Color", m_asset.GetTimelineBGColor(),
+            EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Change BG Color", m_asset.GetTimelineBGColor(),
                 /*guiFunc=*/ (Color prevValue)=> {
                     return EditorGUILayout.ColorField("In Timeline Window", prevValue);
                 }, 

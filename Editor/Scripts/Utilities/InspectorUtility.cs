@@ -14,7 +14,7 @@ internal static class InspectorUtility {
             return false;
 
         bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersRequested();        
-        bool showFrameMarkers = EditorGUIDrawerUtility2.DrawUndoableGUI(
+        bool showFrameMarkers = EditorGUIDrawerUtility.DrawUndoableGUI(
             timelineClipSISDataPlayableAsset, "Show Frame Markers",prevMarkerVisibility,
             /*guiFunc=*/ (bool prevValue)=>{
                 return EditorGUILayout.Toggle("Show Frame Markers", prevMarkerVisibility);;                            

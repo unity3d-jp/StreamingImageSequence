@@ -107,14 +107,14 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             Color updateBGColor   = editorConfig.GetUpdateBGColor();
             Color timelineBgColor = m_asset.GetTimelineBGColor();
             
-            EditorGUIDrawerUtility2.DrawUndoableGUI(m_asset, "Change Update BG Color", updateBGColor,
+            EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Change Update BG Color", updateBGColor,
                 /*guiFunc=*/ (Color prevColor)=> {
                     return EditorGUILayout.ColorField("In Game Window (Update)", prevColor);
                 }, 
                 /*updateFunc=*/ (Color newColor) => { editorConfig.SetUpdateBGColor(newColor); }
             );
             
-            EditorGUIDrawerUtility2.DrawUndoableGUI(m_asset, "Change Timeline BG Color", timelineBgColor,
+            EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Change Timeline BG Color", timelineBgColor,
                 /*guiFunc=*/ (Color prevColor)=> {
                     return EditorGUILayout.ColorField("In Timeline Window", prevColor);
                 }, 
