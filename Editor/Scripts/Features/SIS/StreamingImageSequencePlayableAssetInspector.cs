@@ -141,17 +141,6 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         }
     }
 
-    private void StartInpectorGUI() {
-        EditorGUI.BeginChangeCheck();
-        
-    }
-
-    private void EndInpectorGUI() {
-        if (EditorGUI.EndChangeCheck()) {
-            
-        }
-        
-    }
 //----------------------------------------------------------------------------------------------------------------------
 
     private void DrawFolderGUI() {
