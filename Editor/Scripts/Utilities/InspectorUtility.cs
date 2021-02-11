@@ -19,10 +19,7 @@ internal static class InspectorUtility {
             /*guiFunc=*/ (bool prevValue)=>{
                 return EditorGUILayout.Toggle("Show Frame Markers", prevMarkerVisibility);;                            
             }, 
-            /*updateFunc=*/ (bool newValue) => {
-                timelineClipSISData.RequestFrameMarkers(newValue);
-                            
-            }                
+            /*updateFunc=*/ (bool newValue) => { timelineClipSISData.RequestFrameMarkers(newValue); }                
         );
 
         return showFrameMarkers;
