@@ -48,10 +48,12 @@ internal class FaderPlayableMixer : BasePlayableMixer<FaderPlayableAsset> {
         if (null == m_image)
             return;
 
+        double localTime = activeClip.ToLocalTime(directorTime);
+        
         Color color = asset.GetColor();
         float maxFade = color.a;
 
-        float fade = (float)( ((directorTime - activeClip.start) / activeClip.duration ) * maxFade);
+        float fade = (float)( ((localTime) / activeClip.duration ) * maxFade);
         if ( asset.GetFadeType() == FadeType.FADE_OUT) {
             fade = maxFade - fade;
         }
