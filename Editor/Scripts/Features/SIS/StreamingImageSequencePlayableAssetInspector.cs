@@ -79,7 +79,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                     if (null != clip) {                         
                         float prevFps = numImages / (float)(clip.duration);
                         
-                        EditorGUIDrawerUtility.DrawUndoableGUI(clip.parentTrack, "Change FPS", prevFps,
+                        EditorGUIDrawerUtility.DrawUndoableGUI(clip.GetParentTrack(), "Change FPS", prevFps,
                             /*guiFunc=*/ (float prevValue)=> {
                                 float val = EditorGUILayout.FloatField("FPS", prevFps); 
                                 return Mathf.Max(0.1f, val);
