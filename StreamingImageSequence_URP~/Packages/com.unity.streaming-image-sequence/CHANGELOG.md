@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.8.4-preview] - 2021-02-12
+* feat: add extrapolation capability to FaderPlayableAsset 
+* fix: undo for StreamingImageSequencePlayableAsset and RenderCachePlayableAsset 
+* chore: handle warnings when using com.unity.timeline@1.5.0 and up
+* doc: add Gap Extrapolation section for RenderCachePlayableAsset
+
 ## [0.8.3-preview] - 2021-02-05
 * fix: errors when using HDRP on Unity 2019.4.18 and up
 
