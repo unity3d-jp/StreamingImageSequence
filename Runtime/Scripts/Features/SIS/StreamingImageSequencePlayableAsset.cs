@@ -410,10 +410,18 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
 //----------------------------------------------------------------------------------------------------------------------
 
     private static void SetTimelineClipCurve(TimelineClip clip, AnimationCurve curve) {
+#if UNITY_EDITOR
+        AnimationUtility.SetEditorCurve(clip.curves, m_timelineEditorCurveBinding, curve);
+        
+#if AT_USE_TIMELINE_GE_1_5_0                    
+        TimelineEditor.Refresh(RefreshReason.WindowNeedsRedraw );
+#else         
+        TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved ); //must use this for Pre- 1.5.0
+#endif //AT_USE_TIMELINE_GE_1_5_0            
+        
+#else         
         clip.curves.SetCurve("", typeof(StreamingImageSequencePlayableAsset), "m_time", curve);
-#if UNITY_EDITOR            
-        TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
-#endif            
+#endif //UNITY_EDITOR            
     }
 
 //----------------------------------------------------------------------------------------------------------------------        
