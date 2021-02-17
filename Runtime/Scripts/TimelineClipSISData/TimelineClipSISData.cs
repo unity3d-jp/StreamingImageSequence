@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.FilmInternalUtilities;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Serialization;
@@ -9,12 +10,10 @@ using UnityEngine.Timeline;
 using UnityEditor;
 #endif
 
-
-
 namespace Unity.StreamingImageSequence {
 
 [Serializable]
-internal class TimelineClipSISData : ISerializationCallbackReceiver {
+internal class TimelineClipSISData : BaseClipData {
 
     internal TimelineClipSISData(TimelineClip owner) {
         m_clipOwner = owner;
@@ -76,9 +75,6 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         }
     }
 
-    internal void SetOwner(TimelineClip clip) { m_clipOwner = clip;}
-    
-    internal TimelineClip GetOwner() { return m_clipOwner; }
 
     internal int GetNumPlayableFrames() { return m_playableFrames.Count;}
 
