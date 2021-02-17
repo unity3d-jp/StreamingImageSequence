@@ -56,7 +56,7 @@ internal class RenderCacheTrack : BaseTimelineClipSISDataTrack<RenderCachePlayab
  
 //----------------------------------------------------------------------------------------------------------------------
     
-    internal override SISTrackCaps GetCapsV() { return SISTrackCaps.IMAGE_FOLDER; }
+    internal override int GetCapsV() { return (int) SISTrackCaps.IMAGE_FOLDER; }
     
 //----------------------------------------------------------------------------------------------------------------------    
    

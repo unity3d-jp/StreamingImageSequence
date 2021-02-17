@@ -1,13 +1,15 @@
-﻿using System;
+﻿#if UNITY_EDITOR
+
+using System;
 using System.Collections.Generic;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 using UnityEngine.Timeline;
-#if UNITY_EDITOR
+
+using Unity.FilmInternalUtilities;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.Timeline;
-using UnityEngine.UI;
 
 namespace Unity.StreamingImageSequence
 {
@@ -138,11 +140,11 @@ internal class EditorUpdateManager {
 
         IEnumerable<TrackAsset> trackAssets = TimelineEditor.inspectedAsset.GetOutputTracks();            
         foreach (TrackAsset trackAsset in trackAssets) {
-            BaseSISTrack baseSISTrack = trackAsset as BaseSISTrack;
-            if (null == baseSISTrack)
+            BaseTrack baseTrack = trackAsset as BaseTrack;
+            if (null == baseTrack)
                 continue;
 
-            if (!BitUtility.IsSet((int)baseSISTrack.GetCapsV(), (int) SISTrackCaps.IMAGE_FOLDER))
+            if (!BitUtility.IsSet((int)baseTrack.GetCapsV(), (int) SISTrackCaps.IMAGE_FOLDER))
                 continue;
                        
             IEnumerable<TimelineClip> clips = trackAsset.GetClips();

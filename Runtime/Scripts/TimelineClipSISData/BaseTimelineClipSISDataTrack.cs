@@ -1,6 +1,7 @@
 ﻿using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using System.Collections.Generic;
+using Unity.FilmInternalUtilities;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -8,7 +9,7 @@ namespace Unity.StreamingImageSequence {
 /// <summary>
 /// A track which requires its TimelineClip to store TimelineClipSISData as an extension
 /// </summary>
-internal abstract class BaseTimelineClipSISDataTrack<T> : BaseSISTrack where T: BaseTimelineClipSISDataPlayableAsset {
+internal abstract class BaseTimelineClipSISDataTrack<T> : BaseTrack where T: BaseTimelineClipSISDataPlayableAsset {
    
     
     
