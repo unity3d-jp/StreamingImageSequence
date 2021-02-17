@@ -9,7 +9,7 @@ namespace Unity.StreamingImageSequence {
 /// <summary>
 /// A track which requires its TimelineClip to store TimelineClipSISData as an extension
 /// </summary>
-internal abstract class BaseTimelineClipSISDataTrack<T> : BaseTrack where T: BaseTimelineClipSISDataPlayableAsset {
+internal abstract class BaseTimelineClipSISDataTrack<T> : BaseTrack where T: BaseExtendedClipPlayableAsset<TimelineClipSISData> {
    
     
     
@@ -27,7 +27,7 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : BaseTrack where T: Bas
             } else {                
                 T sisPlayableAsset = clip.asset as T;
                 Assert.IsNotNull(sisPlayableAsset);                 
-                sisData = sisPlayableAsset.GetBoundTimelineClipSISData();
+                sisData = sisPlayableAsset.GetBoundClipData();
             }
 
             if (null == sisData) {
@@ -106,7 +106,7 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : BaseTrack where T: Bas
             T sisPlayableAsset = clip.asset as T;
             Assert.IsNotNull(sisPlayableAsset);               
             
-            TimelineClipSISData timelineClipSISData = sisPlayableAsset.GetBoundTimelineClipSISData();
+            TimelineClipSISData timelineClipSISData = sisPlayableAsset.GetBoundClipData();
             if (null == timelineClipSISData) {
                 timelineClipSISData = GetOrCreateTimelineClipSISData(clip);                
             } else {
@@ -117,7 +117,7 @@ internal abstract class BaseTimelineClipSISDataTrack<T> : BaseTrack where T: Bas
             
             //Make sure that the clip is the owner
             timelineClipSISData.SetOwner(clip);
-            sisPlayableAsset.BindTimelineClipSISData(timelineClipSISData);            
+            sisPlayableAsset.BindClipData(timelineClipSISData);            
         }
         
     }
