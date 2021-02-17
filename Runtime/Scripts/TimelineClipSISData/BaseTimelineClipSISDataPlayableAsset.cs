@@ -22,32 +22,6 @@ internal abstract class BaseTimelineClipSISDataPlayableAsset : PlayableAsset{
     internal void BindTimelineClipSISData(TimelineClipSISData sisData) { m_timelineClipSISData = sisData;}         
     internal TimelineClipSISData GetBoundTimelineClipSISData() { return m_timelineClipSISData; }
     
-//----------------------------------------------------------------------------------------------------------------------
-    
-    #region PlayableFrames
-
-    internal void ResetPlayableFrames() {
-#if UNITY_EDITOR
-        Undo.RegisterCompleteObjectUndo(this, "Resetting PlayableFrames");
-#endif
-        m_timelineClipSISData.ResetPlayableFrames();
-            
-#if UNITY_EDITOR 
-        TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
-#endif            
-           
-    }
-
-    internal void RefreshPlayableFrames() {
-            
-        //Haven't been assigned yet. May happen during recompile
-        if (null == m_timelineClipSISData)
-            return;
-                       
-        m_timelineClipSISData.RefreshPlayableFrames();            
-    }
-        
-    #endregion
     
 //----------------------------------------------------------------------------------------------------------------------
     

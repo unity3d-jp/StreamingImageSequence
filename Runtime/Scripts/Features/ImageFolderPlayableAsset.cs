@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using JetBrains.Annotations;
 using UnityEditor;
+using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -235,9 +236,36 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         StreamingImageSequencePlugin.UnloadImageAndNotify(imagePath);
     }
     
-//----------------------------------------------------------------------------------------------------------------------    
     
 #endif  //End #if UNITY_EDITOR Editor
+    
+//----------------------------------------------------------------------------------------------------------------------    
+    
+#region PlayableFrames
+
+    internal void ResetPlayableFrames() {
+#if UNITY_EDITOR
+        Undo.RegisterCompleteObjectUndo(this, "Resetting PlayableFrames");
+#endif
+        GetBoundTimelineClipSISData().ResetPlayableFrames();
+            
+#if UNITY_EDITOR 
+        TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
+#endif            
+           
+    }
+
+    internal void RefreshPlayableFrames() {
+
+        TimelineClipSISData timelineClipSISData = GetBoundTimelineClipSISData();
+        //Haven't been assigned yet. May happen during recompile
+        if (null == timelineClipSISData)
+            return;
+                       
+        timelineClipSISData.RefreshPlayableFrames();            
+    }
+        
+#endregion
     
 //----------------------------------------------------------------------------------------------------------------------    
     [HideInInspector][SerializeField] protected string       m_folder         = null;
