@@ -20,7 +20,7 @@ namespace Unity.StreamingImageSequence {
 [TrackBindingType(typeof(StreamingImageSequenceRenderer))]
 [TrackColor(0.776f, 0.263f, 0.09f)]
 [NotKeyable]
-internal class StreamingImageSequenceTrack : BaseTimelineClipSISDataTrack<StreamingImageSequencePlayableAsset> {
+internal class StreamingImageSequenceTrack : BaseTimelineClipSISDataTrack {
 
 #if UNITY_EDITOR        
     [InitializeOnLoadMethod]
@@ -48,6 +48,8 @@ internal class StreamingImageSequenceTrack : BaseTimelineClipSISDataTrack<Stream
 
     protected override Playable CreateTrackMixerInternal(PlayableGraph graph, GameObject go, int inputCount) {
 
+        DeleteInvalidMarkers();
+        
         InitTrackCurves();
         
         var              mixer    = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);
