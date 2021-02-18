@@ -35,17 +35,17 @@ internal class TimelineClipSISData : BaseClipData {
     
 //----------------------------------------------------------------------------------------------------------------------
     #region ISerializationCallbackReceiver
-    public void OnBeforeSerialize() {
+    public override void OnBeforeSerialize() {
     }
 
-    public void OnAfterDeserialize() {
+    public override void OnAfterDeserialize() {
         foreach (SISPlayableFrame playableFrame in m_playableFrames) {
             playableFrame.SetOwner(this);
         }
     }    
     #endregion
 //----------------------------------------------------------------------------------------------------------------------
-    internal void Destroy() {
+    internal override void Destroy() {
 
         foreach (SISPlayableFrame playableFrame in m_playableFrames) {
             playableFrame.Destroy();
