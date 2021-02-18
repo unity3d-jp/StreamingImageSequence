@@ -15,6 +15,10 @@ namespace Unity.StreamingImageSequence {
 [Serializable]
 internal class TimelineClipSISData : BaseClipData {
 
+    public TimelineClipSISData() {
+        m_playableFrames = new List<SISPlayableFrame>();
+    }
+
     internal TimelineClipSISData(TimelineClip owner) {
         m_clipOwner = owner;
         int numFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
