@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.FilmInternalUtilities;
 using Unity.FilmInternalUtilities.Editor;
 using UnityEngine;
 using UnityEditor;
@@ -6,10 +7,10 @@ using UnityEditor;
 namespace Unity.StreamingImageSequence.Editor {
 
 internal static class InspectorUtility {    
-    internal static bool DrawFrameMarkersGUI(BaseTimelineClipSISDataPlayableAsset timelineClipSISDataPlayableAsset) 
+    internal static bool DrawFrameMarkersGUI(BaseExtendedClipPlayableAsset<TimelineClipSISData> timelineClipSISDataPlayableAsset) 
     {        
 
-        TimelineClipSISData timelineClipSISData = timelineClipSISDataPlayableAsset.GetBoundTimelineClipSISData();
+        TimelineClipSISData timelineClipSISData = timelineClipSISDataPlayableAsset.GetBoundClipData();
         if (null == timelineClipSISData)
             return false;
 

@@ -86,7 +86,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             GUIUtility.ExitGUI();
         }
         
-        TimelineClipSISData timelineClipSISData = m_asset.GetBoundTimelineClipSISData();
+        TimelineClipSISData timelineClipSISData = m_asset.GetBoundClipData();
         if (null == timelineClipSISData)
             return;
                 
@@ -190,7 +190,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         Assert.IsNotNull(director);
         Assert.IsNotNull(renderCachePlayableAsset);
         
-        TimelineClipSISData timelineClipSISData = renderCachePlayableAsset.GetBoundTimelineClipSISData();
+        TimelineClipSISData timelineClipSISData = renderCachePlayableAsset.GetBoundClipData();
         if (null == timelineClipSISData) {
             EditorUtility.DisplayDialog("Streaming Image Sequence",
                 "RenderCachePlayableAsset is not ready",
@@ -199,7 +199,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             
         }           
 
-        TrackAsset track = renderCachePlayableAsset.GetBoundTimelineClipSISData().GetOwner().GetParentTrack();        
+        TrackAsset track = renderCachePlayableAsset.GetBoundClipData().GetOwner().GetParentTrack();        
         BaseRenderCapturer renderCapturer = director.GetGenericBinding(track) as BaseRenderCapturer;
         if (null == renderCapturer) {
             EditorUtility.DisplayDialog("Streaming Image Sequence",

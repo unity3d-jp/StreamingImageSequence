@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.FilmInternalUtilities;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Serialization;
@@ -9,16 +10,18 @@ using UnityEngine.Timeline;
 using UnityEditor;
 #endif
 
-
-
 namespace Unity.StreamingImageSequence {
 
 [Serializable]
-internal class TimelineClipSISData : ISerializationCallbackReceiver {
+internal class TimelineClipSISData : BaseClipData {
 
-    internal TimelineClipSISData(TimelineClip owner) {
-        m_clipOwner = owner;
-        int numFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
+    public TimelineClipSISData() {
+        m_playableFrames = new List<SISPlayableFrame>();
+    }
+
+    internal TimelineClipSISData(TimelineClip clipOwner) {
+        SetOwner(clipOwner);
+        int numFrames = TimelineUtility.CalculateNumFrames(clipOwner);
         m_playableFrames = new List<SISPlayableFrame>(numFrames);
     }
 
@@ -36,17 +39,17 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     
 //----------------------------------------------------------------------------------------------------------------------
     #region ISerializationCallbackReceiver
-    public void OnBeforeSerialize() {
+    public override void OnBeforeSerialize() {
     }
 
-    public void OnAfterDeserialize() {
+    public override void OnAfterDeserialize() {
         foreach (SISPlayableFrame playableFrame in m_playableFrames) {
             playableFrame.SetOwner(this);
         }
     }    
     #endregion
 //----------------------------------------------------------------------------------------------------------------------
-    internal void Destroy() {
+    internal override void Destroy() {
 
         foreach (SISPlayableFrame playableFrame in m_playableFrames) {
             playableFrame.Destroy();
@@ -67,7 +70,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
             return;
         
 #if UNITY_EDITOR
-        Undo.RegisterCompleteObjectUndo(m_clipOwner.GetParentTrack(),"StreamingImageSequence Show/Hide FrameMarker");
+        Undo.RegisterCompleteObjectUndo(GetOwner().GetParentTrack(),"StreamingImageSequence Show/Hide FrameMarker");
         m_forceShowFrameMarkers = forceShow && req;
 #endif        
         m_frameMarkersRequested = req;
@@ -76,9 +79,6 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         }
     }
 
-    internal void SetOwner(TimelineClip clip) { m_clipOwner = clip;}
-    
-    internal TimelineClip GetOwner() { return m_clipOwner; }
 
     internal int GetNumPlayableFrames() { return m_playableFrames.Count;}
 
@@ -116,7 +116,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         DestroyPlayableFrames();
 
         //Recalculate the number of frames and create the marker's ground truth data
-        int numFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
+        int numFrames = TimelineUtility.CalculateNumFrames(GetOwner());
         m_playableFrames = new List<SISPlayableFrame>(numFrames);
         UpdatePlayableFramesSize(numFrames);                
     }
@@ -142,13 +142,16 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
     
     //Resize PlayableFrames and used the previous values
     internal void RefreshPlayableFrames() {
+
+        TimelineClip clipOwner = GetOwner(); 
+            
         
         //Clip doesn't have parent. Might be because the clip is being moved 
-        if (null == m_clipOwner.GetParentTrack()) {
+        if (null == clipOwner.GetParentTrack()) {
             return;
         }        
         
-        int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
+        int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(clipOwner);
       
         //Change the size of m_playableFrames and reinitialize if necessary
         int prevNumPlayableFrames = m_playableFrames.Count;
@@ -173,7 +176,7 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
         }
         
         //Refresh all markers
-        double timePerFrame           = TimelineUtility.CalculateTimePerFrame(m_clipOwner);                
+        double timePerFrame           = TimelineUtility.CalculateTimePerFrame(clipOwner);                
         int    numPlayableFrames      = m_playableFrames.Count;
         for (int i = 0; i < numPlayableFrames; ++i) {                
             m_playableFrames[i].SetIndexAndLocalTime(i, i * timePerFrame);
@@ -197,9 +200,10 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 //----------------------------------------------------------------------------------------------------------------------
     
     private void UpdatePlayableFramesSize(int reqPlayableFramesSize) {
-        Assert.IsNotNull(m_clipOwner);
+        TimelineClip clipOwner = GetOwner();
+        Assert.IsNotNull(clipOwner);
 
-        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_clipOwner);
+        double timePerFrame = TimelineUtility.CalculateTimePerFrame(clipOwner);
         //Resize m_playableFrames
         if (m_playableFrames.Count < reqPlayableFramesSize) {
             int             numNewPlayableFrames = (reqPlayableFramesSize - m_playableFrames.Count);
@@ -244,14 +248,12 @@ internal class TimelineClipSISData : ISerializationCallbackReceiver {
 #endif
         return prevVisibility != m_frameMarkersVisibility;
     }
-    
+       
 //----------------------------------------------------------------------------------------------------------------------    
     
     //The ground truth for using/dropping an image in a particular frame. See the notes below
     [SerializeField] private List<SISPlayableFrame> m_playableFrames;
     [FormerlySerializedAs("m_frameMarkersVisibility")] [SerializeField] [HideInInspector] private bool m_frameMarkersRequested = false;
-
-    [NonSerialized] private TimelineClip  m_clipOwner = null;
 
 #pragma warning disable 414    
     [HideInInspector][SerializeField] private int m_version = CUR_TIMELINE_CLIP_SIS_DATA_VERSION;        

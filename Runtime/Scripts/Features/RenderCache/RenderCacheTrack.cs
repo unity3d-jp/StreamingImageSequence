@@ -15,7 +15,7 @@ namespace Unity.StreamingImageSequence  {
 [TrackClipType(typeof(RenderCachePlayableAsset))]
 [TrackBindingType(typeof(BaseRenderCapturer))]
 [TrackColor(0.263f, 0.776f, 0.09f)]
-internal class RenderCacheTrack : BaseTimelineClipSISDataTrack<RenderCachePlayableAsset> {
+internal class RenderCacheTrack : BaseTimelineClipSISDataTrack {
 
 #if UNITY_EDITOR        
     [InitializeOnLoadMethod]
@@ -41,6 +41,7 @@ internal class RenderCacheTrack : BaseTimelineClipSISDataTrack<RenderCachePlayab
 
     protected override Playable CreateTrackMixerInternal(PlayableGraph graph, GameObject go, int inputCount) {
 
+        DeleteInvalidMarkers();        
         ScriptPlayable<RenderCachePlayableMixer> mixer = ScriptPlayable<RenderCachePlayableMixer>.Create(graph, inputCount);
         PlayableDirector director = go.GetComponent<PlayableDirector>();
         m_trackMixer = mixer.GetBehaviour();
@@ -50,13 +51,14 @@ internal class RenderCacheTrack : BaseTimelineClipSISDataTrack<RenderCachePlayab
             BaseRenderCapturer capturer    = boundObject as BaseRenderCapturer;
             m_trackMixer.Init(null == capturer ? null : capturer.gameObject, director, GetClips());
         }
+
         return mixer;
     }     
     
  
 //----------------------------------------------------------------------------------------------------------------------
     
-    internal override SISTrackCaps GetCapsV() { return SISTrackCaps.IMAGE_FOLDER; }
+    internal override int GetCapsV() { return (int) SISTrackCaps.IMAGE_FOLDER; }
     
 //----------------------------------------------------------------------------------------------------------------------    
    

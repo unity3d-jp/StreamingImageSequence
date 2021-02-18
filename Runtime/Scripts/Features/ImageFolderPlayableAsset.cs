@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using JetBrains.Annotations;
+using Unity.FilmInternalUtilities;
 using UnityEditor;
+using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -12,7 +14,7 @@ namespace Unity.StreamingImageSequence {
 /// A PlayableAsset that points to a folder that contains images
 /// </summary>
 [System.Serializable]
-internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayableAsset {
+internal abstract class ImageFolderPlayableAsset : BaseExtendedClipPlayableAsset<TimelineClipSISData> {
     private void Awake() {
         //Find the used folder in runtime. Unused in the editor        
         const string EDITOR_STREAMING_ASSETS_PATH = "Assets/StreamingAssets/";  
@@ -235,9 +237,36 @@ internal abstract class ImageFolderPlayableAsset : BaseTimelineClipSISDataPlayab
         StreamingImageSequencePlugin.UnloadImageAndNotify(imagePath);
     }
     
-//----------------------------------------------------------------------------------------------------------------------    
     
 #endif  //End #if UNITY_EDITOR Editor
+    
+//----------------------------------------------------------------------------------------------------------------------    
+    
+#region PlayableFrames
+
+    internal void ResetPlayableFrames() {
+#if UNITY_EDITOR
+        Undo.RegisterCompleteObjectUndo(this, "Resetting PlayableFrames");
+#endif
+        GetBoundClipData().ResetPlayableFrames();
+            
+#if UNITY_EDITOR 
+        TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
+#endif            
+           
+    }
+
+    internal void RefreshPlayableFrames() {
+
+        TimelineClipSISData timelineClipSISData = GetBoundClipData();
+        //Haven't been assigned yet. May happen during recompile
+        if (null == timelineClipSISData)
+            return;
+                       
+        timelineClipSISData.RefreshPlayableFrames();            
+    }
+        
+#endregion
     
 //----------------------------------------------------------------------------------------------------------------------    
     [HideInInspector][SerializeField] protected string       m_folder         = null;

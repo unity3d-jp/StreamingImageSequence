@@ -80,7 +80,7 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
         
         if (null == clonedFrom) {
             sisData = new TimelineClipSISData(clip);
-            asset.BindTimelineClipSISData(sisData);
+            asset.BindClipData(sisData);
             return;
         }
 
@@ -88,9 +88,9 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
         StreamingImageSequencePlayableAsset clonedFromAsset = clonedFrom.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(clonedFromAsset);
         
-        TimelineClipSISData otherSISData = clonedFromAsset.GetBoundTimelineClipSISData();
+        TimelineClipSISData otherSISData = clonedFromAsset.GetBoundClipData();
         sisData = new TimelineClipSISData(clip, otherSISData);
-        asset.BindTimelineClipSISData(sisData);
+        asset.BindClipData(sisData);
         clip.displayName = clonedFrom.displayName + " (Cloned)";
 
     }
