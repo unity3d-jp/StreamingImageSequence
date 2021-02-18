@@ -19,9 +19,9 @@ internal class TimelineClipSISData : BaseClipData {
         m_playableFrames = new List<SISPlayableFrame>();
     }
 
-    internal TimelineClipSISData(TimelineClip owner) {
-        m_clipOwner = owner;
-        int numFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
+    internal TimelineClipSISData(TimelineClip clipOwner) {
+        SetOwner(clipOwner);
+        int numFrames = TimelineUtility.CalculateNumFrames(clipOwner);
         m_playableFrames = new List<SISPlayableFrame>(numFrames);
     }
 
@@ -70,7 +70,7 @@ internal class TimelineClipSISData : BaseClipData {
             return;
         
 #if UNITY_EDITOR
-        Undo.RegisterCompleteObjectUndo(m_clipOwner.GetParentTrack(),"StreamingImageSequence Show/Hide FrameMarker");
+        Undo.RegisterCompleteObjectUndo(GetOwner().GetParentTrack(),"StreamingImageSequence Show/Hide FrameMarker");
         m_forceShowFrameMarkers = forceShow && req;
 #endif        
         m_frameMarkersRequested = req;
@@ -116,7 +116,7 @@ internal class TimelineClipSISData : BaseClipData {
         DestroyPlayableFrames();
 
         //Recalculate the number of frames and create the marker's ground truth data
-        int numFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
+        int numFrames = TimelineUtility.CalculateNumFrames(GetOwner());
         m_playableFrames = new List<SISPlayableFrame>(numFrames);
         UpdatePlayableFramesSize(numFrames);                
     }
@@ -142,13 +142,16 @@ internal class TimelineClipSISData : BaseClipData {
     
     //Resize PlayableFrames and used the previous values
     internal void RefreshPlayableFrames() {
+
+        TimelineClip clipOwner = GetOwner(); 
+            
         
         //Clip doesn't have parent. Might be because the clip is being moved 
-        if (null == m_clipOwner.GetParentTrack()) {
+        if (null == clipOwner.GetParentTrack()) {
             return;
         }        
         
-        int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(m_clipOwner);
+        int numIdealNumPlayableFrames = TimelineUtility.CalculateNumFrames(clipOwner);
       
         //Change the size of m_playableFrames and reinitialize if necessary
         int prevNumPlayableFrames = m_playableFrames.Count;
@@ -173,7 +176,7 @@ internal class TimelineClipSISData : BaseClipData {
         }
         
         //Refresh all markers
-        double timePerFrame           = TimelineUtility.CalculateTimePerFrame(m_clipOwner);                
+        double timePerFrame           = TimelineUtility.CalculateTimePerFrame(clipOwner);                
         int    numPlayableFrames      = m_playableFrames.Count;
         for (int i = 0; i < numPlayableFrames; ++i) {                
             m_playableFrames[i].SetIndexAndLocalTime(i, i * timePerFrame);
@@ -197,9 +200,10 @@ internal class TimelineClipSISData : BaseClipData {
 //----------------------------------------------------------------------------------------------------------------------
     
     private void UpdatePlayableFramesSize(int reqPlayableFramesSize) {
-        Assert.IsNotNull(m_clipOwner);
+        TimelineClip clipOwner = GetOwner();
+        Assert.IsNotNull(clipOwner);
 
-        double timePerFrame = TimelineUtility.CalculateTimePerFrame(m_clipOwner);
+        double timePerFrame = TimelineUtility.CalculateTimePerFrame(clipOwner);
         //Resize m_playableFrames
         if (m_playableFrames.Count < reqPlayableFramesSize) {
             int             numNewPlayableFrames = (reqPlayableFramesSize - m_playableFrames.Count);
@@ -244,14 +248,12 @@ internal class TimelineClipSISData : BaseClipData {
 #endif
         return prevVisibility != m_frameMarkersVisibility;
     }
-    
+       
 //----------------------------------------------------------------------------------------------------------------------    
     
     //The ground truth for using/dropping an image in a particular frame. See the notes below
     [SerializeField] private List<SISPlayableFrame> m_playableFrames;
     [FormerlySerializedAs("m_frameMarkersVisibility")] [SerializeField] [HideInInspector] private bool m_frameMarkersRequested = false;
-
-    [NonSerialized] private TimelineClip  m_clipOwner = null;
 
 #pragma warning disable 414    
     [HideInInspector][SerializeField] private int m_version = CUR_TIMELINE_CLIP_SIS_DATA_VERSION;        
