@@ -9,7 +9,7 @@ namespace Unity.StreamingImageSequence {
 /// <summary>
 /// A track which requires its TimelineClip to store SISClipData as an extension
 /// </summary>
-internal abstract class BaseTimelineClipSISDataTrack: BaseExtendedClipTrack<BaseExtendedClipPlayableAsset<SISClipData>, SISClipData>   
+internal abstract class FrameMarkerTrack: BaseExtendedClipTrack<BaseExtendedClipPlayableAsset<SISClipData>, SISClipData>   
 {
 
     protected void DeleteInvalidMarkers() {
