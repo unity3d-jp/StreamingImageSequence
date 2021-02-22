@@ -248,7 +248,7 @@ internal abstract class ImageFolderPlayableAsset : BaseExtendedClipPlayableAsset
 #if UNITY_EDITOR
         Undo.RegisterCompleteObjectUndo(this, "Resetting PlayableFrames");
 #endif
-        GetBoundClipData().ResetPlayableFrames();
+        GetBoundClipData()?.ResetPlayableFrames(); //Null check. the data might not have been bound during recompile
             
 #if UNITY_EDITOR 
         TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
@@ -258,12 +258,8 @@ internal abstract class ImageFolderPlayableAsset : BaseExtendedClipPlayableAsset
 
     internal void RefreshPlayableFrames() {
 
-        TimelineClipSISData timelineClipSISData = GetBoundClipData();
-        //Haven't been assigned yet. May happen during recompile
-        if (null == timelineClipSISData)
-            return;
-                       
-        timelineClipSISData.RefreshPlayableFrames();            
+        TimelineClipSISData timelineClipSISData = GetBoundClipData();               
+        timelineClipSISData?.RefreshPlayableFrames(); //Null check. the data might not have been bound during recompile            
     }
         
 #endregion
