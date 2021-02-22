@@ -53,10 +53,12 @@ internal class StreamingImageSequencePlayableAssetTest {
         TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
-        SISClipData timelineClipSISData = sisAsset.GetBoundClipData();
+        SISClipData sisClipData = sisAsset.GetBoundClipData();
         yield return null;
         
-        timelineClipSISData.RequestFrameMarkers(true, true); 
+        Assert.IsNotNull(sisClipData);
+        
+        sisClipData.RequestFrameMarkers(true, true); 
         Undo.IncrementCurrentGroup(); //the base of undo is here. FrameMarkerVisibility is still true after undo
         TimelineEditor.Refresh(RefreshReason.ContentsModified);
         yield return null;

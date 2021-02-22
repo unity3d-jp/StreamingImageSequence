@@ -20,10 +20,10 @@ internal class FrameMarkerTest {
         yield return null;
         
         //Show
-        SISClipData timelineClipSISData = sisAsset.GetBoundClipData();
+        SISClipData sisClipData = sisAsset.GetBoundClipData();
         
         TrackAsset trackAsset = clip.GetParentTrack();
-        timelineClipSISData.RequestFrameMarkers(true, true);
+        sisClipData.RequestFrameMarkers(true, true);
         TimelineEditor.Refresh(RefreshReason.ContentsModified);
         yield return null;
         
@@ -33,7 +33,7 @@ internal class FrameMarkerTest {
 
         //Undo showing FrameMarkers
         EditorUtilityTest.UndoAndRefreshTimelineEditor(); yield return null;
-        Assert.False(timelineClipSISData.AreFrameMarkersRequested());
+        Assert.False(sisClipData.AreFrameMarkersRequested());
         Assert.AreEqual(0, trackAsset.GetMarkerCount());
         
         
@@ -49,8 +49,9 @@ internal class FrameMarkerTest {
         TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
-        SISClipData timelineClipSISData = sisAsset.GetBoundClipData();
-        timelineClipSISData.RequestFrameMarkers(true, true);
+        SISClipData sisClipData = sisAsset.GetBoundClipData();
+        Assert.IsNotNull(sisClipData);
+        sisClipData.RequestFrameMarkers(true, true);
         yield return null;
 
         double timePerFrame = TimelineUtility.CalculateTimePerFrame(clip);
@@ -107,8 +108,9 @@ internal class FrameMarkerTest {
         TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
-        SISClipData timelineClipSISData = sisAsset.GetBoundClipData();
-        timelineClipSISData.RequestFrameMarkers(true);
+        SISClipData sisClipData = sisAsset.GetBoundClipData();
+        Assert.IsNotNull(sisClipData);
+        sisClipData.RequestFrameMarkers(true);
         yield return null;
         
         //Change image to false
