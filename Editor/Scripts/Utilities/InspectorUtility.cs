@@ -7,10 +7,10 @@ using UnityEditor;
 namespace Unity.StreamingImageSequence.Editor {
 
 internal static class InspectorUtility {    
-    internal static bool DrawFrameMarkersGUI(BaseExtendedClipPlayableAsset<TimelineClipSISData> timelineClipSISDataPlayableAsset) 
+    internal static bool DrawFrameMarkersGUI(BaseExtendedClipPlayableAsset<SISClipData> timelineClipSISDataPlayableAsset) 
     {        
 
-        TimelineClipSISData timelineClipSISData = timelineClipSISDataPlayableAsset.GetBoundClipData();
+        SISClipData timelineClipSISData = timelineClipSISDataPlayableAsset.GetBoundClipData();
         if (null == timelineClipSISData)
             return false;
 

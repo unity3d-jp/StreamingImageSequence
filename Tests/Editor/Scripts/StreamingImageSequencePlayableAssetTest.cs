@@ -53,7 +53,7 @@ internal class StreamingImageSequencePlayableAssetTest {
         TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
-        TimelineClipSISData timelineClipSISData = sisAsset.GetBoundClipData();
+        SISClipData timelineClipSISData = sisAsset.GetBoundClipData();
         yield return null;
         
         timelineClipSISData.RequestFrameMarkers(true, true); 

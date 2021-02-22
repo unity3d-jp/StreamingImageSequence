@@ -7,9 +7,9 @@ using UnityEngine.Assertions;
 
 namespace Unity.StreamingImageSequence { 
 /// <summary>
-/// A track which requires its TimelineClip to store TimelineClipSISData as an extension
+/// A track which requires its TimelineClip to store SISClipData as an extension
 /// </summary>
-internal abstract class BaseTimelineClipSISDataTrack: BaseExtendedClipTrack<BaseExtendedClipPlayableAsset<TimelineClipSISData>, TimelineClipSISData>   
+internal abstract class BaseTimelineClipSISDataTrack: BaseExtendedClipTrack<BaseExtendedClipPlayableAsset<SISClipData>, SISClipData>   
 {
 
     protected void DeleteInvalidMarkers() {

@@ -123,7 +123,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     //Calculate the used image index for the passed localTime
     internal int LocalTimeToImageIndex(TimelineClip clip, double localTime) {
 
-        TimelineClipSISData timelineSISData = GetBoundClipData();
+        SISClipData timelineSISData = GetBoundClipData();
 
         if (null != timelineSISData) {
             double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;            
