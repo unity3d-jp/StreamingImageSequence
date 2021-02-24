@@ -13,7 +13,7 @@ using UnityEditor;
 namespace Unity.StreamingImageSequence {
 
 [Serializable]
-internal class PlayableFrameClipData : BaseClipData {
+internal abstract class PlayableFrameClipData : BaseClipData {
 
     protected PlayableFrameClipData() {
         m_playableFrames = new List<SISPlayableFrame>();
