@@ -137,7 +137,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         
         if (GUILayout.Button("Reset Curve (Not Undoable)")) {
             //AnimationClip.SetCurve() doesn't seem to be undoable
-            StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(TimelineEditor.selectedClip);
+            StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(m_asset);
         }
     }
 

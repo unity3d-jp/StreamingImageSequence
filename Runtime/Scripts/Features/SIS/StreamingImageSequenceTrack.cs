@@ -49,9 +49,7 @@ internal class StreamingImageSequenceTrack : FrameMarkerTrack<SISClipData> {
     protected override Playable CreateTrackMixerInternal(PlayableGraph graph, GameObject go, int inputCount) {
 
         DeleteInvalidMarkers();
-        
-        InitTrackCurves();
-        
+                
         var              mixer    = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);
         PlayableDirector director = go.GetComponent<PlayableDirector>();
         m_trackMixer = mixer.GetBehaviour();
@@ -80,17 +78,6 @@ internal class StreamingImageSequenceTrack : FrameMarkerTrack<SISClipData> {
     public override string ToString() { return name; }
 
     internal override int GetCapsV() { return (int) SISTrackCaps.IMAGE_FOLDER; }
-
-
-//----------------------------------------------------------------------------------------------------------------------
-    private void InitTrackCurves() {
-        //Initialize the curves of TimelineClips       
-        foreach (TimelineClip clip in  GetClips()) {            
-            StreamingImageSequencePlayableAsset sisPlayableAsset = clip.asset as StreamingImageSequencePlayableAsset;
-            Assert.IsNotNull(sisPlayableAsset);
-            sisPlayableAsset.InitTimelineClipCurve(clip);
-        }        
-    }
 
 //----------------------------------------------------------------------------------------------------------------------
 

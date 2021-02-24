@@ -64,7 +64,7 @@ internal class FrameMarkerTest {
         Assert.AreEqual(numImages, numFrames);
         
         //Reset: make sure that the curve is a simple straight line from 0 to 1
-        StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(clip);
+        StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(sisAsset);
         yield return null;
         
         sisAsset.ResetPlayableFrames();            

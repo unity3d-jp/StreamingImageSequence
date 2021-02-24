@@ -78,7 +78,6 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
 
 
         SISClipData sisData = null;
-        asset.InitTimelineClipCurve(clip);
         
         if (null == clonedFrom) {
             sisData = new SISClipData(clip);

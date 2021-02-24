@@ -124,8 +124,13 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     internal int LocalTimeToImageIndex(TimelineClip clip, double localTime) {
 
         SISClipData clipData = GetBoundClipData();
+        if (null == clipData) {
+            return 0;
+        }
 
-        if (null != clipData) {
+
+        {
+            //drop disabled frames            
             double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;            
       
             //Try to check if this frame is "dropped", so that we should use the image in the prev frame
@@ -141,8 +146,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
             }                
         }
 
+        AnimationCurve curve = clipData.GetAnimationCurve();
+        double imageSequenceTime = curve.Evaluate((float) localTime);
 
-        double imageSequenceTime = LocalTimeToCurveTime(clip, localTime);
         int count = m_imageFiles.Count;
         
         //Can't round up, because if the time for the next frame hasn't been reached, then we should stick 
@@ -151,11 +157,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         return index;
     }
 
-//----------------------------------------------------------------------------------------------------------------------
-    private static double LocalTimeToCurveTime(TimelineClip clip, double localTime) {
-        GetAndValidateAnimationCurve(clip, out AnimationCurve curve);                       
-        return curve.Evaluate((float)(localTime));
-    }
     
 //----------------------------------------------------------------------------------------------------------------------        
     private void Reset() {
@@ -337,74 +338,21 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    //Make sure to set the curve of the TimelineClip 
-    internal void InitTimelineClipCurve(TimelineClip clip) {
-        Assert.IsNotNull(clip);                        
-        bool curveChanged = GetAndValidateAnimationCurve(clip, out AnimationCurve curve);
-        if (curveChanged) {
-            SetTimelineClipCurve(clip, curve);
-        }
-    }
     
-    internal static void ResetTimelineClipCurve(TimelineClip clip) {
-        
+    internal static void ResetTimelineClipCurve<T>(BaseExtendedClipPlayableAsset<T> playableAsset) 
+        where T: BaseClipData, IAnimationCurveOwner
+    {
+                
+        T clipData = playableAsset.GetBoundClipData();        
+        Assert.IsNotNull(clipData);
+
+        TimelineClip clip = clipData.GetOwner();
         Assert.IsNotNull(clip);
-        AnimationCurve animationCurve = new AnimationCurve();
-        ValidateAnimationCurve(ref animationCurve, (float) (clip.duration * clip.timeScale));
+        
+        AnimationCurve animationCurve = AnimationCurve.Linear(0, 0, (float) (clip.duration * clip.timeScale),1 );
+        clipData.SetAnimationCurve(animationCurve);        
         SetTimelineClipCurve(clip, animationCurve);
         clip.clipIn = 0;
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-    //Get the animation curve from the TimelineClip.  
-    //Returns:
-    //- true : if the animationCurve of the clip was changed or validated
-    //- false: if the animationCurve was already valid        
-    private static bool GetAndValidateAnimationCurve(TimelineClip clip, out AnimationCurve animationCurve) {
-        
-        //[TODO-sin: 2020-7-30] Support getting animation curve in Runtime
-        animationCurve = null;
-#if UNITY_EDITOR
-        if (clip.curves) {
-            animationCurve = AnimationUtility.GetEditorCurve(clip.curves, m_timeCurveBinding);
-        } else {            
-            clip.CreateCurves("Curves: " + clip.displayName); //[Note-sin: 2021-2-3] for handling older versions of SIS 
-        }
-#endif        
-        
-        bool newlyCreated = false;
-        if (null == animationCurve) {
-            animationCurve = new AnimationCurve();
-            newlyCreated   = true;
-        }
-
-        bool validated = ValidateAnimationCurve(ref animationCurve, (float) clip.duration);
-        return newlyCreated || validated;
-        
-    }
-
-//----------------------------------------------------------------------------------------------------------------------
-    //Validate: make sure we have at least two keys
-    //Returns:
-    //- true : if the animationCurve was invalid, and has been validated
-    //- false: if the animationCurve was already valid        
-    private static bool ValidateAnimationCurve(ref AnimationCurve animationCurve, float clipDuration) {
-        int numKeys = animationCurve.keys.Length;
-        switch (numKeys) {
-            case 0: {
-                animationCurve = AnimationCurve.Linear(0, 0, clipDuration,1 );
-                break;
-            }
-            case 1: {
-                animationCurve.keys[0] = new Keyframe(0.0f,0.0f);
-                animationCurve.AddKey(clipDuration, 1.0f);
-                break;
-            }
-            default: 
-                return false; 
-        }
-
-        return true;
     }
     
 //----------------------------------------------------------------------------------------------------------------------
