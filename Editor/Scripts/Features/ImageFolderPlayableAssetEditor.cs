@@ -55,7 +55,7 @@ internal abstract class ImageFolderPlayableAssetEditor<T> : ClipEditor where T: 
             });
             
             //For hiding frame marker automatically
-            SISClipData sisClipData = curAsset.GetBoundClipData();
+            PlayableFrameClipData sisClipData = curAsset.GetBoundClipData();
             if (null != sisClipData) {                
                 sisClipData.UpdateTimelineWidthPerFrame(rect.width, region.endTime-region.startTime, 
                     clipInfo.FramePerSecond, clipInfo.TimeScale);

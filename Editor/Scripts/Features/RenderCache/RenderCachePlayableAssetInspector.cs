@@ -86,7 +86,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             GUIUtility.ExitGUI();
         }
         
-        SISClipData sisClipData = m_asset.GetBoundClipData();
+        PlayableFrameClipData sisClipData = m_asset.GetBoundClipData();
         if (null == sisClipData)
             return;
                 
@@ -190,7 +190,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         Assert.IsNotNull(director);
         Assert.IsNotNull(renderCachePlayableAsset);
         
-        SISClipData sisClipData = renderCachePlayableAsset.GetBoundClipData();
+        PlayableFrameClipData sisClipData = renderCachePlayableAsset.GetBoundClipData();
         if (null == sisClipData) {
             EditorUtility.DisplayDialog("Streaming Image Sequence",
                 "RenderCachePlayableAsset is not ready",
@@ -371,7 +371,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 //----------------------------------------------------------------------------------------------------------------------
 
 
-    private void DrawCaptureSelectedFramesGUI(TimelineClip timelineClip, SISClipData sisClipData) {
+    private void DrawCaptureSelectedFramesGUI(TimelineClip timelineClip, PlayableFrameClipData sisClipData) {
         TrackAsset   track              = timelineClip.GetParentTrack();
         
         GUILayout.BeginHorizontal();
@@ -395,7 +395,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 //----------------------------------------------------------------------------------------------------------------------
 
 
-    private void DrawLockFramesGUI(TimelineClip timelineClip, SISClipData sisClipData) {
+    private void DrawLockFramesGUI(TimelineClip timelineClip, PlayableFrameClipData sisClipData) {
         TrackAsset track = timelineClip.GetParentTrack();
         
         using(new EditorGUILayout.HorizontalScope()) {
@@ -459,7 +459,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    static void LockSISData(SISClipData sisClipData) {
+    static void LockSISData(PlayableFrameClipData sisClipData) {
         m_inspectedSISDataForLocking = sisClipData;
         m_inspectedSISDataForLocking.SetInspectedProperty(PlayableFramePropertyID.LOCKED);
         m_lockMode = true;
@@ -483,7 +483,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
     
     private                 RenderCachePlayableAsset m_asset                      = null;
     private static          bool                     m_lockMode                   = false;
-    private static          SISClipData      m_inspectedSISDataForLocking = null;
+    private static          PlayableFrameClipData      m_inspectedSISDataForLocking = null;
     private static readonly int                      m_bgColorProperty            = Shader.PropertyToID("_BGColor");
 }
 

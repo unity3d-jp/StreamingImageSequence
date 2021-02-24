@@ -119,7 +119,7 @@ internal class EditorUtilityTest {
         Assert.IsNotNull(sisAsset);
 
         clip.CreateCurves("Curves: " + clip.displayName);
-        SISClipData sisData = new SISClipData(clip);
+        PlayableFrameClipData sisData = new PlayableFrameClipData(clip);
         sisAsset.InitTimelineClipCurve(clip);
         sisAsset.BindClipData(sisData);           
 
