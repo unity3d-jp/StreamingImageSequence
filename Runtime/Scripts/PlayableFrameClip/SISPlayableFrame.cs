@@ -13,12 +13,12 @@ namespace Unity.StreamingImageSequence {
 [Serializable]
 internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
-    internal SISPlayableFrame(SISClipData owner) {
+    internal SISPlayableFrame(PlayableFrameClipData owner) {
         m_clipDataOwner = owner;        
         m_boolProperties = new Dictionary<PlayableFramePropertyID, PlayableFrameBoolProperty>();  
     }
 
-    internal SISPlayableFrame(SISClipData owner, SISPlayableFrame otherFrame) {
+    internal SISPlayableFrame(PlayableFrameClipData owner, SISPlayableFrame otherFrame) {
         m_clipDataOwner = owner;
         m_boolProperties = otherFrame.m_boolProperties;
         m_localTime = otherFrame.m_localTime;
@@ -67,9 +67,9 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void SetOwner(SISClipData owner) {  m_clipDataOwner = owner;}
-    internal SISClipData GetOwner() {  return m_clipDataOwner; }    
-    internal double GetLocalTime()                 { return m_localTime; }
+    internal void        SetOwner(PlayableFrameClipData owner) {  m_clipDataOwner = owner;}
+    internal PlayableFrameClipData GetOwner()                             {  return m_clipDataOwner; }    
+    internal double      GetLocalTime()                                   { return m_localTime; }
 
     internal int GetIndex() { return m_index; }
     internal void   SetIndexAndLocalTime(int index, double localTime) {
@@ -164,7 +164,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     [HideInInspector][SerializeField] private double                          m_localTime;    
     [HideInInspector][SerializeField] private FrameMarker                     m_marker = null;
     [HideInInspector][SerializeField] private string                          m_userNote;
-    [NonSerialized]                   private SISClipData                     m_clipDataOwner = null;
+    [NonSerialized]                   private PlayableFrameClipData           m_clipDataOwner = null;
 
     private int m_index;
     
