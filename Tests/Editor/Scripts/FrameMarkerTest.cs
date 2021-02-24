@@ -20,7 +20,7 @@ internal class FrameMarkerTest {
         yield return null;
         
         //Show
-        PlayableFrameClipData clipData = sisAsset.GetBoundClipData();
+        SISClipData clipData = sisAsset.GetBoundClipData();
         
         TrackAsset trackAsset = clip.GetParentTrack();
         clipData.RequestFrameMarkers(true, true);
@@ -49,7 +49,7 @@ internal class FrameMarkerTest {
         TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
-        PlayableFrameClipData clipData = sisAsset.GetBoundClipData();
+        SISClipData clipData = sisAsset.GetBoundClipData();
         Assert.IsNotNull(clipData);
         clipData.RequestFrameMarkers(true, true);
         yield return null;
@@ -108,7 +108,7 @@ internal class FrameMarkerTest {
         TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
-        PlayableFrameClipData clipData = sisAsset.GetBoundClipData();
+        SISClipData clipData = sisAsset.GetBoundClipData();
         Assert.IsNotNull(clipData);
         clipData.RequestFrameMarkers(true);
         yield return null;

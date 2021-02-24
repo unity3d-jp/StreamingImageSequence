@@ -6,13 +6,13 @@ using UnityEngine.Timeline;
 
 namespace Unity.StreamingImageSequence.Editor {
 
-internal abstract class ImageFolderPlayableAssetEditor<T> : ClipEditor where T: ImageFolderPlayableAsset{
+internal abstract class ImageFolderPlayableAssetEditor<T> : ClipEditor where T: PlayableFrameClipData{
 
     //Called when a clip is changed by the Editor. (TrimStart, TrimEnd, etc)    
     public override void OnClipChanged(TimelineClip clip) {       
         base.OnClipChanged(clip);
                         
-        T imageFolderPlayableAsset = clip.asset as T;
+        ImageFolderPlayableAsset<T> imageFolderPlayableAsset = clip.asset as ImageFolderPlayableAsset<T>;
         Assert.IsNotNull(imageFolderPlayableAsset);
         imageFolderPlayableAsset.RefreshPlayableFrames();            
     }
@@ -27,7 +27,7 @@ internal abstract class ImageFolderPlayableAssetEditor<T> : ClipEditor where T: 
         if (rect.width <= SISEditorConstants.MIN_PREVIEW_REGION_WIDTH)
             return;
 
-        T curAsset = clip.asset as T;
+        ImageFolderPlayableAsset<T> curAsset = clip.asset as ImageFolderPlayableAsset<T>;
         if (null == curAsset)
             return;
         
@@ -68,7 +68,7 @@ internal abstract class ImageFolderPlayableAssetEditor<T> : ClipEditor where T: 
 //----------------------------------------------------------------------------------------------------------------------
     
     protected abstract void DrawPreviewImageV(ref PreviewDrawInfo drawInfo, TimelineClip clip,
-        T playableAsset); 
+        ImageFolderPlayableAsset<T> playableAsset); 
 
 //----------------------------------------------------------------------------------------------------------------------
     void DrawBackgroundTexture(Rect rect, Color color) {

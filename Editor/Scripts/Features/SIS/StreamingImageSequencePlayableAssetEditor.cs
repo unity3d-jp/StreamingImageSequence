@@ -9,7 +9,7 @@ using UnityEditor;
 namespace Unity.StreamingImageSequence.Editor {
 
 [CustomTimelineEditor(typeof(StreamingImageSequencePlayableAsset)), UsedImplicitly]
-internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAssetEditor<StreamingImageSequencePlayableAsset> 
+internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAssetEditor<SISClipData> 
 {
     private const string NO_FOLDER_ASSIGNED_ERROR = "No Folder assigned";
     private const string FOLDER_MISSING_ERROR = "Assigned folder does not exist.";
@@ -75,11 +75,11 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
         }
 
 
-        PlayableFrameClipData sisData = null;
+        SISClipData sisData = null;
         asset.InitTimelineClipCurve(clip);
         
         if (null == clonedFrom) {
-            sisData = new PlayableFrameClipData(clip);
+            sisData = new SISClipData(clip);
             asset.BindClipData(sisData);
             return;
         }
@@ -88,8 +88,8 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
         StreamingImageSequencePlayableAsset clonedFromAsset = clonedFrom.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(clonedFromAsset);
         
-        PlayableFrameClipData otherSISData = clonedFromAsset.GetBoundClipData();
-        sisData = new PlayableFrameClipData(clip, otherSISData);
+        SISClipData otherSISData = clonedFromAsset.GetBoundClipData();
+        sisData = new SISClipData(clip, otherSISData);
         asset.BindClipData(sisData);
         clip.displayName = clonedFrom.displayName + " (Cloned)";
 
@@ -108,8 +108,11 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
     
 //----------------------------------------------------------------------------------------------------------------------
     protected override void DrawPreviewImageV(ref PreviewDrawInfo drawInfo, TimelineClip clip, 
-        StreamingImageSequencePlayableAsset sisAsset) 
+        ImageFolderPlayableAsset<SISClipData> playableAsset) 
     {
+        StreamingImageSequencePlayableAsset sisAsset = playableAsset as StreamingImageSequencePlayableAsset;
+        Assert.IsNotNull(sisAsset);
+        
         int imageIndex = sisAsset.LocalTimeToImageIndex(clip, drawInfo.LocalTime);       
         string imagePath = sisAsset.GetImageFilePath(imageIndex);
         PreviewUtility.DrawPreviewImage(ref drawInfo, imagePath);

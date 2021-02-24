@@ -63,6 +63,32 @@ internal class WatchedFileInfo {
 
     }
     
+    internal static List<WatchedFileInfo> FindFiles(string path, string[] filePatterns) {
+        Assert.IsFalse(string.IsNullOrEmpty(path), "Path is null or empty");
+        Assert.IsTrue(Directory.Exists(path),$"Path {path} does not exist");
+
+        //Convert path to folder here
+        string fullSrcPath = Path.GetFullPath(path).Replace("\\", "/");
+
+        //Enumerate all files with the supported extensions and sort
+        List<WatchedFileInfo> watchedFileInfos = new List<WatchedFileInfo>();
+        foreach (string pattern in filePatterns) {
+            IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.TopDirectoryOnly);
+            foreach (string filePath in files) {
+                string   fileName = Path.GetFileName(filePath);
+                FileInfo fileInfo = new FileInfo(filePath);
+                watchedFileInfos.Add(new WatchedFileInfo(fileName, fileInfo.Length));
+            }
+        }
+        watchedFileInfos.Sort(FileNameComparer);
+        
+        return watchedFileInfos;
+    }        
+    
+
+    private static int FileNameComparer(WatchedFileInfo  x, WatchedFileInfo y) {
+        return string.Compare(x.GetName(), y.GetName(), StringComparison.InvariantCultureIgnoreCase);
+    }
     
     
 //----------------------------------------------------------------------------------------------------------------------    

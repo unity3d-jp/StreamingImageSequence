@@ -15,7 +15,14 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
-  m_version: 2
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_version: 3
+  m_editorConfig:
+    m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+    m_captureStartFrame: 0
+    m_captureEndFrame: -1
+    m_captureAllFrames: 1
 --- !u!114 &-9150772167116543736
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -776,208 +783,215 @@ MonoBehaviour:
   m_imageFileNames: []
   m_imageFiles:
   - m_name: RenderCacheScene_000.png
-    m_size: 0
+    m_size: 414103
   - m_name: RenderCacheScene_001.png
-    m_size: 0
+    m_size: 412410
   - m_name: RenderCacheScene_002.png
-    m_size: 0
+    m_size: 412580
   - m_name: RenderCacheScene_003.png
-    m_size: 0
+    m_size: 413189
   - m_name: RenderCacheScene_004.png
-    m_size: 0
+    m_size: 414103
   - m_name: RenderCacheScene_005.png
-    m_size: 0
+    m_size: 413533
   - m_name: RenderCacheScene_006.png
-    m_size: 0
+    m_size: 409058
   - m_name: RenderCacheScene_007.png
-    m_size: 0
+    m_size: 404588
   - m_name: RenderCacheScene_008.png
-    m_size: 0
+    m_size: 421028
   - m_name: RenderCacheScene_009.png
-    m_size: 0
+    m_size: 432899
   - m_name: RenderCacheScene_010.png
-    m_size: 0
+    m_size: 443730
   - m_name: RenderCacheScene_011.png
-    m_size: 0
+    m_size: 447691
   - m_name: RenderCacheScene_012.png
-    m_size: 0
+    m_size: 451744
   - m_name: RenderCacheScene_013.png
-    m_size: 0
+    m_size: 454635
   - m_name: RenderCacheScene_014.png
-    m_size: 0
+    m_size: 457480
   - m_name: RenderCacheScene_015.png
-    m_size: 0
+    m_size: 461675
   - m_name: RenderCacheScene_016.png
-    m_size: 0
+    m_size: 469653
   - m_name: RenderCacheScene_017.png
-    m_size: 0
+    m_size: 474821
   - m_name: RenderCacheScene_018.png
-    m_size: 0
+    m_size: 479315
   - m_name: RenderCacheScene_019.png
-    m_size: 0
+    m_size: 483001
   - m_name: RenderCacheScene_020.png
-    m_size: 0
+    m_size: 482545
   - m_name: RenderCacheScene_021.png
-    m_size: 0
+    m_size: 484037
   - m_name: RenderCacheScene_022.png
-    m_size: 0
+    m_size: 484375
   - m_name: RenderCacheScene_023.png
-    m_size: 0
+    m_size: 483344
   - m_name: RenderCacheScene_024.png
-    m_size: 0
+    m_size: 481593
   - m_name: RenderCacheScene_025.png
-    m_size: 0
+    m_size: 477545
   - m_name: RenderCacheScene_026.png
-    m_size: 0
+    m_size: 474096
   - m_name: RenderCacheScene_027.png
-    m_size: 0
+    m_size: 467665
   - m_name: RenderCacheScene_028.png
-    m_size: 0
+    m_size: 459922
   - m_name: RenderCacheScene_029.png
-    m_size: 0
+    m_size: 449183
   - m_name: RenderCacheScene_030.png
-    m_size: 0
+    m_size: 436283
   - m_name: RenderCacheScene_031.png
-    m_size: 0
+    m_size: 419153
   - m_name: RenderCacheScene_032.png
-    m_size: 0
+    m_size: 400937
   - m_name: RenderCacheScene_033.png
-    m_size: 0
+    m_size: 386168
   - m_name: RenderCacheScene_034.png
-    m_size: 0
+    m_size: 369058
   - m_name: RenderCacheScene_035.png
-    m_size: 0
+    m_size: 357908
   - m_name: RenderCacheScene_036.png
-    m_size: 0
+    m_size: 346040
   - m_name: RenderCacheScene_037.png
-    m_size: 0
+    m_size: 334444
   - m_name: RenderCacheScene_038.png
-    m_size: 0
+    m_size: 326737
   - m_name: RenderCacheScene_039.png
-    m_size: 0
+    m_size: 316326
   - m_name: RenderCacheScene_040.png
-    m_size: 0
+    m_size: 309330
   - m_name: RenderCacheScene_041.png
-    m_size: 0
+    m_size: 303611
   - m_name: RenderCacheScene_042.png
-    m_size: 0
+    m_size: 298397
   - m_name: RenderCacheScene_043.png
-    m_size: 0
+    m_size: 293716
   - m_name: RenderCacheScene_044.png
-    m_size: 0
+    m_size: 289863
   - m_name: RenderCacheScene_045.png
-    m_size: 0
+    m_size: 283242
   - m_name: RenderCacheScene_046.png
-    m_size: 0
+    m_size: 282065
   - m_name: RenderCacheScene_047.png
-    m_size: 0
+    m_size: 278051
   - m_name: RenderCacheScene_048.png
-    m_size: 0
+    m_size: 271733
   - m_name: RenderCacheScene_049.png
-    m_size: 0
+    m_size: 275002
   - m_name: RenderCacheScene_050.png
-    m_size: 0
+    m_size: 274648
   - m_name: RenderCacheScene_051.png
-    m_size: 0
+    m_size: 275130
   - m_name: RenderCacheScene_052.png
-    m_size: 0
+    m_size: 276051
   - m_name: RenderCacheScene_053.png
-    m_size: 0
+    m_size: 278221
   - m_name: RenderCacheScene_054.png
-    m_size: 0
+    m_size: 281673
   - m_name: RenderCacheScene_055.png
-    m_size: 0
+    m_size: 283311
   - m_name: RenderCacheScene_056.png
-    m_size: 0
+    m_size: 290351
   - m_name: RenderCacheScene_057.png
-    m_size: 0
+    m_size: 292559
   - m_name: RenderCacheScene_058.png
-    m_size: 0
+    m_size: 296980
   - m_name: RenderCacheScene_059.png
-    m_size: 0
+    m_size: 304146
   - m_name: RenderCacheScene_060.png
-    m_size: 0
+    m_size: 312924
   - m_name: RenderCacheScene_061.png
-    m_size: 0
+    m_size: 321271
   - m_name: RenderCacheScene_062.png
-    m_size: 0
+    m_size: 329423
   - m_name: RenderCacheScene_063.png
-    m_size: 0
+    m_size: 341053
   - m_name: RenderCacheScene_064.png
-    m_size: 0
+    m_size: 349624
   - m_name: RenderCacheScene_065.png
-    m_size: 0
+    m_size: 361604
   - m_name: RenderCacheScene_066.png
-    m_size: 0
+    m_size: 374660
   - m_name: RenderCacheScene_067.png
-    m_size: 0
+    m_size: 390507
   - m_name: RenderCacheScene_068.png
-    m_size: 0
+    m_size: 406139
   - m_name: RenderCacheScene_069.png
-    m_size: 0
+    m_size: 424698
   - m_name: RenderCacheScene_070.png
-    m_size: 0
+    m_size: 442058
   - m_name: RenderCacheScene_071.png
-    m_size: 0
+    m_size: 453638
   - m_name: RenderCacheScene_072.png
-    m_size: 0
+    m_size: 463319
   - m_name: RenderCacheScene_073.png
-    m_size: 0
+    m_size: 472207
   - m_name: RenderCacheScene_074.png
-    m_size: 0
+    m_size: 478945
   - m_name: RenderCacheScene_075.png
-    m_size: 0
+    m_size: 483554
   - m_name: RenderCacheScene_076.png
-    m_size: 0
+    m_size: 481974
   - m_name: RenderCacheScene_077.png
-    m_size: 0
+    m_size: 483830
   - m_name: RenderCacheScene_078.png
-    m_size: 0
+    m_size: 485324
   - m_name: RenderCacheScene_079.png
-    m_size: 0
+    m_size: 483245
   - m_name: RenderCacheScene_080.png
-    m_size: 0
+    m_size: 485145
   - m_name: RenderCacheScene_081.png
-    m_size: 0
+    m_size: 480759
   - m_name: RenderCacheScene_082.png
-    m_size: 0
+    m_size: 479158
   - m_name: RenderCacheScene_083.png
-    m_size: 0
+    m_size: 475235
   - m_name: RenderCacheScene_084.png
-    m_size: 0
+    m_size: 467206
   - m_name: RenderCacheScene_085.png
-    m_size: 0
+    m_size: 459606
   - m_name: RenderCacheScene_086.png
-    m_size: 0
+    m_size: 454883
   - m_name: RenderCacheScene_087.png
-    m_size: 0
+    m_size: 450352
   - m_name: RenderCacheScene_088.png
-    m_size: 0
+    m_size: 444761
   - m_name: RenderCacheScene_089.png
-    m_size: 0
+    m_size: 440139
   - m_name: RenderCacheScene_090.png
-    m_size: 0
+    m_size: 436173
   - m_name: RenderCacheScene_091.png
-    m_size: 0
+    m_size: 428999
   - m_name: RenderCacheScene_092.png
-    m_size: 0
+    m_size: 415753
   - m_name: RenderCacheScene_093.png
-    m_size: 0
+    m_size: 400852
   - m_name: RenderCacheScene_094.png
-    m_size: 0
+    m_size: 406426
   - m_name: RenderCacheScene_095.png
-    m_size: 0
+    m_size: 409408
   - m_name: RenderCacheScene_096.png
-    m_size: 0
+    m_size: 409020
   - m_name: RenderCacheScene_097.png
-    m_size: 0
+    m_size: 407104
   - m_name: RenderCacheScene_098.png
-    m_size: 0
+    m_size: 406058
   - m_name: RenderCacheScene_099.png
-    m_size: 0
+    m_size: 406582
   - m_name: RenderCacheScene_100.png
-    m_size: 0
-  m_version: 2
+    m_size: 408905
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_version: 3
+  m_editorConfig:
+    m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+    m_captureStartFrame: 0
+    m_captureEndFrame: -1
+    m_captureAllFrames: 1
 --- !u!114 &-3813218842542960322
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1286,615 +1300,416 @@ MonoBehaviour:
     m_Recordable: 0
     m_PostExtrapolationMode: 0
     m_PreExtrapolationMode: 0
-    m_PostExtrapolationTime: 0
-    m_PreExtrapolationTime: 0
+    m_PostExtrapolationTime: Infinity
+    m_PreExtrapolationTime: 1.6666666666666667
     m_DisplayName: StreamingImageSequencePlayableAsset
   m_Markers:
     m_Objects: []
-  m_serializedSISDataCollection:
-  - m_playableFrames:
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+  m_serializedDataCollection:
+  - m_baseClipDataVersion: 1
+    m_playableFrames:
+    - m_serializedBoolProperties: []
       m_localTime: 0
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.016666666666666666
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.03333333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.05
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.06666666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.08333333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.1
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.11666666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.13333333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.15
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.16666666666666666
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.18333333333333332
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.2
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.21666666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.23333333333333334
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.25
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.26666666666666666
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.2833333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.3
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.31666666666666665
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.3333333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.35
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.36666666666666664
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.3833333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.4
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.4166666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.43333333333333335
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.45
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.4666666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.48333333333333334
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.5
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.5166666666666666
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.5333333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.55
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.5666666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.5833333333333334
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.6
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.6166666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.6333333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.65
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.6666666666666666
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.6833333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.7
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.7166666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.7333333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.75
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.7666666666666666
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.7833333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.8
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.8166666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.8333333333333334
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.85
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.8666666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.8833333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.9
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.9166666666666666
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.9333333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.95
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.9666666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.9833333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.0166666666666666
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.0333333333333332
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.05
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.0666666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.0833333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.1
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.1166666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.1333333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.15
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.1666666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.1833333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.2
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.2166666666666666
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.2333333333333334
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.25
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.2666666666666666
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.2833333333333332
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.3
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.3166666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.3333333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.35
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.3666666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.3833333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.4
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.4166666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.4333333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.45
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.4666666666666666
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.4833333333333334
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.5
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.5166666666666666
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.5333333333333332
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.55
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.5666666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.5833333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.6
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.6166666666666667
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.6333333333333333
       m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 0
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 1.65
       m_marker: {fileID: 0}
       m_userNote: 
     m_frameMarkersRequested: 0
-    m_version: 0
+    m_version: 1
 --- !u!114 &-543303976048869336
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1990,7 +1805,14 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
-  m_version: 2
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_version: 3
+  m_editorConfig:
+    m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+    m_captureStartFrame: 0
+    m_captureEndFrame: -1
+    m_captureAllFrames: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2053,7 +1875,7 @@ MonoBehaviour:
   m_Clips: []
   m_Markers:
     m_Objects: []
-  m_serializedSISDataCollection: []
+  m_serializedDataCollection: []
 --- !u!114 &329456072186374067
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2127,551 +1949,412 @@ MonoBehaviour:
     m_PreExtrapolationTime: 0
     m_DisplayName: RenderCacheScene
   m_Markers:
-    m_Objects:
-    - {fileID: 6601782462792493063}
-    - {fileID: -7057461593969105511}
-    - {fileID: 2566223991044541969}
-    - {fileID: -1063878614669889749}
-    - {fileID: -6180975368542882397}
-    - {fileID: 3243782166415161634}
-    - {fileID: 4074930281839881781}
-    - {fileID: -2762224813127661858}
-    - {fileID: 8658740578978802481}
-    - {fileID: 8378291931054108713}
-    - {fileID: -5708861789937028630}
-    - {fileID: -8173568068390567318}
-    - {fileID: 3254971379317225125}
-    - {fileID: -2552826052408201314}
-    - {fileID: -5627873784554784978}
-    - {fileID: -3813218842542960322}
-    - {fileID: 6413972618269320555}
-    - {fileID: -9127700791923479909}
-    - {fileID: -8723414691862355486}
-    - {fileID: 7481802857427353763}
-    - {fileID: -2223887025398524004}
-    - {fileID: 9003972360568930851}
-    - {fileID: -4133642084807829636}
-    - {fileID: 4958511455921416614}
-    - {fileID: -2649890776486626324}
-    - {fileID: 8591569804257307570}
-    - {fileID: 1577151663409382631}
-    - {fileID: 4977894495684401602}
-    - {fileID: -210073136172056736}
-    - {fileID: 5901006717654632455}
-    - {fileID: 3200191430935962924}
-    - {fileID: 5384015200014334471}
-    - {fileID: 3737892306026527933}
-    - {fileID: 3451637614625881678}
-    - {fileID: 7674527889133961008}
-    - {fileID: 5645775936675016511}
-    - {fileID: 6708289039449708270}
-    - {fileID: 6549142928512508260}
-    - {fileID: 7872987571919927440}
-    - {fileID: 2490837385828578220}
-    - {fileID: -381752928002494096}
-    - {fileID: -6645608965749636179}
-    - {fileID: 2725446911758761777}
-    - {fileID: -9126361837181679429}
-    - {fileID: 5987951493438516007}
-    - {fileID: 4145598277067993712}
-    - {fileID: -4368394649989726583}
-    - {fileID: -5866831694944709078}
-    - {fileID: -836056939397467839}
-    - {fileID: -7440629638899737769}
-    - {fileID: -5795950990658801955}
-    - {fileID: -9150772167116543736}
-    - {fileID: 4943477550317337813}
-    - {fileID: 2225487785386639363}
-    - {fileID: -2169754456752798159}
-    - {fileID: -4021140416966475391}
-    - {fileID: -5948034328558751427}
-    - {fileID: 1802920430184701360}
-    - {fileID: 814924354514096433}
-    - {fileID: -8067148832755199710}
-    - {fileID: -6648989862290861257}
-    - {fileID: 6705343515219963049}
-    - {fileID: -7871744638977204093}
-    - {fileID: 3929863448871390683}
-    - {fileID: 126978743693385327}
-    - {fileID: 3269113524175189920}
-    - {fileID: -4362211127613693126}
-    - {fileID: -703618829040226062}
-    - {fileID: -8624428006890679141}
-    - {fileID: -2976843159528097950}
-    - {fileID: -3606594049879600472}
-    - {fileID: 4782040244731471445}
-    - {fileID: -6645679017923021122}
-    - {fileID: 1896089657768658008}
-    - {fileID: -5482471604111894231}
-    - {fileID: -8863102374073726618}
-    - {fileID: 8562780498679968394}
-    - {fileID: -9112167551441567564}
-    - {fileID: -334220498470127141}
-    - {fileID: 7750403603665119836}
-    - {fileID: 6478648938042901411}
-    - {fileID: -3257729609487071988}
-    - {fileID: 7261814684699689166}
-    - {fileID: -4812914948374327736}
-    - {fileID: 5791623522159439608}
-    - {fileID: -951559927457047869}
-    - {fileID: 8884139651011541275}
-    - {fileID: -1621769707455854015}
-    - {fileID: -1392126192208462568}
-    - {fileID: -7932753063035588087}
-    - {fileID: 4730484818687163507}
-    - {fileID: -7916902636122139743}
-    - {fileID: 1641745704318481964}
-    - {fileID: -3648255867187209147}
-    - {fileID: -1463052001966106066}
-    - {fileID: 8785344332126061434}
-    - {fileID: 9221133811058615184}
-    - {fileID: 2258271819221263512}
-    - {fileID: -5627353177279100168}
-    - {fileID: 3163602623830581257}
-  m_serializedSISDataCollection:
-  - m_playableFrames:
+    m_Objects: []
+  m_serializedDataCollection:
+  - m_baseClipDataVersion: 1
+    m_playableFrames:
     - m_serializedBoolProperties: []
       m_localTime: 0
-      m_marker: {fileID: 6601782462792493063}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.016666666666666666
-      m_marker: {fileID: -7057461593969105511}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.03333333333333333
-      m_marker: {fileID: 2566223991044541969}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.05
-      m_marker: {fileID: -1063878614669889749}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.06666666666666667
-      m_marker: {fileID: -6180975368542882397}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.08333333333333333
-      m_marker: {fileID: 3243782166415161634}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.1
-      m_marker: {fileID: 4074930281839881781}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.11666666666666667
-      m_marker: {fileID: -2762224813127661858}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.13333333333333333
-      m_marker: {fileID: 8658740578978802481}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.15
-      m_marker: {fileID: 8378291931054108713}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.16666666666666666
-      m_marker: {fileID: -5708861789937028630}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.18333333333333332
-      m_marker: {fileID: -8173568068390567318}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.2
-      m_marker: {fileID: 3254971379317225125}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.21666666666666667
-      m_marker: {fileID: -2552826052408201314}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.23333333333333334
-      m_marker: {fileID: -5627873784554784978}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.25
-      m_marker: {fileID: -3813218842542960322}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.26666666666666666
-      m_marker: {fileID: 6413972618269320555}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.2833333333333333
-      m_marker: {fileID: -9127700791923479909}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.3
-      m_marker: {fileID: -8723414691862355486}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.31666666666666665
-      m_marker: {fileID: 7481802857427353763}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.3333333333333333
-      m_marker: {fileID: -2223887025398524004}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.35
-      m_marker: {fileID: 9003972360568930851}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.36666666666666664
-      m_marker: {fileID: -4133642084807829636}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.3833333333333333
-      m_marker: {fileID: 4958511455921416614}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.4
-      m_marker: {fileID: -2649890776486626324}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.4166666666666667
-      m_marker: {fileID: 8591569804257307570}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.43333333333333335
-      m_marker: {fileID: 1577151663409382631}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.45
-      m_marker: {fileID: 4977894495684401602}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.4666666666666667
-      m_marker: {fileID: -210073136172056736}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.48333333333333334
-      m_marker: {fileID: 5901006717654632455}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.5
-      m_marker: {fileID: 3200191430935962924}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.5166666666666666
-      m_marker: {fileID: 5384015200014334471}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.5333333333333333
-      m_marker: {fileID: 3737892306026527933}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.55
-      m_marker: {fileID: 3451637614625881678}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.5666666666666667
-      m_marker: {fileID: 7674527889133961008}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.5833333333333334
-      m_marker: {fileID: 5645775936675016511}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.6
-      m_marker: {fileID: 6708289039449708270}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.6166666666666667
-      m_marker: {fileID: 6549142928512508260}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.6333333333333333
-      m_marker: {fileID: 7872987571919927440}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.65
-      m_marker: {fileID: 2490837385828578220}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.6666666666666666
-      m_marker: {fileID: -381752928002494096}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.6833333333333333
-      m_marker: {fileID: -6645608965749636179}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.7
-      m_marker: {fileID: 2725446911758761777}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.7166666666666667
-      m_marker: {fileID: -9126361837181679429}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.7333333333333333
-      m_marker: {fileID: 5987951493438516007}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.75
-      m_marker: {fileID: 4145598277067993712}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.7666666666666666
-      m_marker: {fileID: -4368394649989726583}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.7833333333333333
-      m_marker: {fileID: -5866831694944709078}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.8
-      m_marker: {fileID: -836056939397467839}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.8166666666666667
-      m_marker: {fileID: -7440629638899737769}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.8333333333333334
-      m_marker: {fileID: -5795950990658801955}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.85
-      m_marker: {fileID: -9150772167116543736}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.8666666666666667
-      m_marker: {fileID: 4943477550317337813}
+      m_marker: {fileID: 0}
       m_userNote: 
-    - m_serializedBoolProperties:
-      - m_propertyID: 1
-        m_propertyValue: 1
+    - m_serializedBoolProperties: []
       m_localTime: 0.8833333333333333
-      m_marker: {fileID: 2225487785386639363}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.9
-      m_marker: {fileID: -2169754456752798159}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.9166666666666666
-      m_marker: {fileID: -4021140416966475391}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.9333333333333333
-      m_marker: {fileID: -5948034328558751427}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.95
-      m_marker: {fileID: 1802920430184701360}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.9666666666666667
-      m_marker: {fileID: 814924354514096433}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 0.9833333333333333
-      m_marker: {fileID: -8067148832755199710}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1
-      m_marker: {fileID: -6648989862290861257}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.0166666666666666
-      m_marker: {fileID: 6705343515219963049}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.0333333333333332
-      m_marker: {fileID: -7871744638977204093}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.05
-      m_marker: {fileID: 3929863448871390683}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.0666666666666667
-      m_marker: {fileID: 126978743693385327}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.0833333333333333
-      m_marker: {fileID: 3269113524175189920}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.1
-      m_marker: {fileID: -4362211127613693126}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.1166666666666667
-      m_marker: {fileID: -703618829040226062}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.1333333333333333
-      m_marker: {fileID: -8624428006890679141}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.15
-      m_marker: {fileID: -2976843159528097950}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.1666666666666667
-      m_marker: {fileID: -3606594049879600472}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.1833333333333333
-      m_marker: {fileID: 4782040244731471445}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.2
-      m_marker: {fileID: -6645679017923021122}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.2166666666666666
-      m_marker: {fileID: 1896089657768658008}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.2333333333333334
-      m_marker: {fileID: -5482471604111894231}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.25
-      m_marker: {fileID: -8863102374073726618}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.2666666666666666
-      m_marker: {fileID: 8562780498679968394}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.2833333333333332
-      m_marker: {fileID: -9112167551441567564}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.3
-      m_marker: {fileID: -334220498470127141}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.3166666666666667
-      m_marker: {fileID: 7750403603665119836}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.3333333333333333
-      m_marker: {fileID: 6478648938042901411}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.35
-      m_marker: {fileID: -3257729609487071988}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.3666666666666667
-      m_marker: {fileID: 7261814684699689166}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.3833333333333333
-      m_marker: {fileID: -4812914948374327736}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.4
-      m_marker: {fileID: 5791623522159439608}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.4166666666666667
-      m_marker: {fileID: -951559927457047869}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.4333333333333333
-      m_marker: {fileID: 8884139651011541275}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.45
-      m_marker: {fileID: -1621769707455854015}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.4666666666666666
-      m_marker: {fileID: -1392126192208462568}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.4833333333333334
-      m_marker: {fileID: -7932753063035588087}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.5
-      m_marker: {fileID: 4730484818687163507}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.5166666666666666
-      m_marker: {fileID: -7916902636122139743}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.5333333333333332
-      m_marker: {fileID: 1641745704318481964}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.55
-      m_marker: {fileID: -3648255867187209147}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.5666666666666667
-      m_marker: {fileID: -1463052001966106066}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.5833333333333333
-      m_marker: {fileID: 8785344332126061434}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.6
-      m_marker: {fileID: 9221133811058615184}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.6166666666666667
-      m_marker: {fileID: 2258271819221263512}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.6333333333333333
-      m_marker: {fileID: -5627353177279100168}
+      m_marker: {fileID: 0}
       m_userNote: 
     - m_serializedBoolProperties: []
       m_localTime: 1.65
-      m_marker: {fileID: 3163602623830581257}
+      m_marker: {fileID: 0}
       m_userNote: 
-    m_frameMarkersRequested: 1
-    m_version: 0
+    m_frameMarkersRequested: 0
+    m_version: 1
 --- !u!114 &400056948223873377
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2687,7 +2370,14 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
-  m_version: 2
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_version: 3
+  m_editorConfig:
+    m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+    m_captureStartFrame: 0
+    m_captureEndFrame: -1
+    m_captureAllFrames: 1
 --- !u!114 &814924354514096433
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2794,7 +2484,14 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
-  m_version: 2
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_version: 3
+  m_editorConfig:
+    m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+    m_captureStartFrame: 0
+    m_captureEndFrame: -1
+    m_captureAllFrames: 1
 --- !u!114 &2490837385828578220
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2940,7 +2637,14 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
-  m_version: 2
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_version: 3
+  m_editorConfig:
+    m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+    m_captureStartFrame: 0
+    m_captureEndFrame: -1
+    m_captureAllFrames: 1
 --- !u!114 &3929863448871390683
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2983,209 +2687,211 @@ MonoBehaviour:
   m_imageFileNames: []
   m_imageFiles:
   - m_name: RenderCacheScene_000.png
-    m_size: 0
+    m_size: 414103
   - m_name: RenderCacheScene_001.png
-    m_size: 0
+    m_size: 412410
   - m_name: RenderCacheScene_002.png
-    m_size: 0
+    m_size: 412580
   - m_name: RenderCacheScene_003.png
-    m_size: 0
+    m_size: 413189
   - m_name: RenderCacheScene_004.png
-    m_size: 0
+    m_size: 414103
   - m_name: RenderCacheScene_005.png
-    m_size: 0
+    m_size: 413533
   - m_name: RenderCacheScene_006.png
-    m_size: 0
+    m_size: 409058
   - m_name: RenderCacheScene_007.png
-    m_size: 0
+    m_size: 404588
   - m_name: RenderCacheScene_008.png
-    m_size: 0
+    m_size: 421028
   - m_name: RenderCacheScene_009.png
-    m_size: 0
+    m_size: 432899
   - m_name: RenderCacheScene_010.png
-    m_size: 0
+    m_size: 443730
   - m_name: RenderCacheScene_011.png
-    m_size: 0
+    m_size: 447691
   - m_name: RenderCacheScene_012.png
-    m_size: 0
+    m_size: 451744
   - m_name: RenderCacheScene_013.png
-    m_size: 0
+    m_size: 454635
   - m_name: RenderCacheScene_014.png
-    m_size: 0
+    m_size: 457480
   - m_name: RenderCacheScene_015.png
-    m_size: 0
+    m_size: 461675
   - m_name: RenderCacheScene_016.png
-    m_size: 0
+    m_size: 469653
   - m_name: RenderCacheScene_017.png
-    m_size: 0
+    m_size: 474821
   - m_name: RenderCacheScene_018.png
-    m_size: 0
+    m_size: 479315
   - m_name: RenderCacheScene_019.png
-    m_size: 0
+    m_size: 483001
   - m_name: RenderCacheScene_020.png
-    m_size: 0
+    m_size: 482545
   - m_name: RenderCacheScene_021.png
-    m_size: 0
+    m_size: 484037
   - m_name: RenderCacheScene_022.png
-    m_size: 0
+    m_size: 484375
   - m_name: RenderCacheScene_023.png
-    m_size: 0
+    m_size: 483344
   - m_name: RenderCacheScene_024.png
-    m_size: 0
+    m_size: 481593
   - m_name: RenderCacheScene_025.png
-    m_size: 0
+    m_size: 477545
   - m_name: RenderCacheScene_026.png
-    m_size: 0
+    m_size: 474096
   - m_name: RenderCacheScene_027.png
-    m_size: 0
+    m_size: 467665
   - m_name: RenderCacheScene_028.png
-    m_size: 0
+    m_size: 459922
   - m_name: RenderCacheScene_029.png
-    m_size: 0
+    m_size: 449183
   - m_name: RenderCacheScene_030.png
-    m_size: 0
+    m_size: 436283
   - m_name: RenderCacheScene_031.png
-    m_size: 0
+    m_size: 419153
   - m_name: RenderCacheScene_032.png
-    m_size: 0
+    m_size: 400937
   - m_name: RenderCacheScene_033.png
-    m_size: 0
+    m_size: 386168
   - m_name: RenderCacheScene_034.png
-    m_size: 0
+    m_size: 369058
   - m_name: RenderCacheScene_035.png
-    m_size: 0
+    m_size: 357908
   - m_name: RenderCacheScene_036.png
-    m_size: 0
+    m_size: 346040
   - m_name: RenderCacheScene_037.png
-    m_size: 0
+    m_size: 334444
   - m_name: RenderCacheScene_038.png
-    m_size: 0
+    m_size: 326737
   - m_name: RenderCacheScene_039.png
-    m_size: 0
+    m_size: 316326
   - m_name: RenderCacheScene_040.png
-    m_size: 0
+    m_size: 309330
   - m_name: RenderCacheScene_041.png
-    m_size: 0
+    m_size: 303611
   - m_name: RenderCacheScene_042.png
-    m_size: 0
+    m_size: 298397
   - m_name: RenderCacheScene_043.png
-    m_size: 0
+    m_size: 293716
   - m_name: RenderCacheScene_044.png
-    m_size: 0
+    m_size: 289863
   - m_name: RenderCacheScene_045.png
-    m_size: 0
+    m_size: 283242
   - m_name: RenderCacheScene_046.png
-    m_size: 0
+    m_size: 282065
   - m_name: RenderCacheScene_047.png
-    m_size: 0
+    m_size: 278051
   - m_name: RenderCacheScene_048.png
-    m_size: 0
+    m_size: 271733
   - m_name: RenderCacheScene_049.png
-    m_size: 0
+    m_size: 275002
   - m_name: RenderCacheScene_050.png
-    m_size: 0
+    m_size: 274648
   - m_name: RenderCacheScene_051.png
-    m_size: 0
+    m_size: 275130
   - m_name: RenderCacheScene_052.png
-    m_size: 0
+    m_size: 276051
   - m_name: RenderCacheScene_053.png
-    m_size: 0
+    m_size: 278221
   - m_name: RenderCacheScene_054.png
-    m_size: 0
+    m_size: 281673
   - m_name: RenderCacheScene_055.png
-    m_size: 0
+    m_size: 283311
   - m_name: RenderCacheScene_056.png
-    m_size: 0
+    m_size: 290351
   - m_name: RenderCacheScene_057.png
-    m_size: 0
+    m_size: 292559
   - m_name: RenderCacheScene_058.png
-    m_size: 0
+    m_size: 296980
   - m_name: RenderCacheScene_059.png
-    m_size: 0
+    m_size: 304146
   - m_name: RenderCacheScene_060.png
-    m_size: 0
+    m_size: 312924
   - m_name: RenderCacheScene_061.png
-    m_size: 0
+    m_size: 321271
   - m_name: RenderCacheScene_062.png
-    m_size: 0
+    m_size: 329423
   - m_name: RenderCacheScene_063.png
-    m_size: 0
+    m_size: 341053
   - m_name: RenderCacheScene_064.png
-    m_size: 0
+    m_size: 349624
   - m_name: RenderCacheScene_065.png
-    m_size: 0
+    m_size: 361604
   - m_name: RenderCacheScene_066.png
-    m_size: 0
+    m_size: 374660
   - m_name: RenderCacheScene_067.png
-    m_size: 0
+    m_size: 390507
   - m_name: RenderCacheScene_068.png
-    m_size: 0
+    m_size: 406139
   - m_name: RenderCacheScene_069.png
-    m_size: 0
+    m_size: 424698
   - m_name: RenderCacheScene_070.png
-    m_size: 0
+    m_size: 442058
   - m_name: RenderCacheScene_071.png
-    m_size: 0
+    m_size: 453638
   - m_name: RenderCacheScene_072.png
-    m_size: 0
+    m_size: 463319
   - m_name: RenderCacheScene_073.png
-    m_size: 0
+    m_size: 472207
   - m_name: RenderCacheScene_074.png
-    m_size: 0
+    m_size: 478945
   - m_name: RenderCacheScene_075.png
-    m_size: 0
+    m_size: 483554
   - m_name: RenderCacheScene_076.png
-    m_size: 0
+    m_size: 481974
   - m_name: RenderCacheScene_077.png
-    m_size: 0
+    m_size: 483830
   - m_name: RenderCacheScene_078.png
-    m_size: 0
+    m_size: 485324
   - m_name: RenderCacheScene_079.png
-    m_size: 0
+    m_size: 483245
   - m_name: RenderCacheScene_080.png
-    m_size: 0
+    m_size: 485145
   - m_name: RenderCacheScene_081.png
-    m_size: 0
+    m_size: 480759
   - m_name: RenderCacheScene_082.png
-    m_size: 0
+    m_size: 479158
   - m_name: RenderCacheScene_083.png
-    m_size: 0
+    m_size: 475235
   - m_name: RenderCacheScene_084.png
-    m_size: 0
+    m_size: 467206
   - m_name: RenderCacheScene_085.png
-    m_size: 0
+    m_size: 459606
   - m_name: RenderCacheScene_086.png
-    m_size: 0
+    m_size: 454883
   - m_name: RenderCacheScene_087.png
-    m_size: 0
+    m_size: 450352
   - m_name: RenderCacheScene_088.png
-    m_size: 0
+    m_size: 444761
   - m_name: RenderCacheScene_089.png
-    m_size: 0
+    m_size: 440139
   - m_name: RenderCacheScene_090.png
-    m_size: 0
+    m_size: 436173
   - m_name: RenderCacheScene_091.png
-    m_size: 0
+    m_size: 428999
   - m_name: RenderCacheScene_092.png
-    m_size: 0
+    m_size: 415753
   - m_name: RenderCacheScene_093.png
-    m_size: 0
+    m_size: 400852
   - m_name: RenderCacheScene_094.png
-    m_size: 0
+    m_size: 406426
   - m_name: RenderCacheScene_095.png
-    m_size: 0
+    m_size: 409408
   - m_name: RenderCacheScene_096.png
-    m_size: 0
+    m_size: 409020
   - m_name: RenderCacheScene_097.png
-    m_size: 0
+    m_size: 407104
   - m_name: RenderCacheScene_098.png
-    m_size: 0
+    m_size: 406058
   - m_name: RenderCacheScene_099.png
-    m_size: 0
+    m_size: 406582
   - m_name: RenderCacheScene_100.png
-    m_size: 0
+    m_size: 408905
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
   m_time: 0
+  Folder: 
   m_timelineDefaultAsset: {fileID: 102900000, guid: c386e7e2fde474d0ca1f8df00f186439,
     type: 3}
 --- !u!114 &4145598277067993712
@@ -3579,7 +3285,14 @@ MonoBehaviour:
   m_folder: 
   m_imageFileNames: []
   m_imageFiles: []
-  m_version: 2
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+  m_version: 3
+  m_editorConfig:
+    m_updateBGColor: {r: 0, g: 0, b: 0, a: 1}
+    m_captureStartFrame: 0
+    m_captureEndFrame: -1
+    m_captureAllFrames: 1
 --- !u!114 &7261814684699689166
 MonoBehaviour:
   m_ObjectHideFlags: 1

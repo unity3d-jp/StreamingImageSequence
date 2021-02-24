@@ -39,7 +39,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                 return;                
             }
 
-            if (m_inspectedSISDataForLocking != marker.GetOwner().GetOwner()) {
+            if (m_inspectedClipDataForLocking != marker.GetOwner().GetOwner()) {
                 UnlockSISData();
                 return;
             }
@@ -86,7 +86,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             GUIUtility.ExitGUI();
         }
         
-        PlayableFrameClipData clipData = m_asset.GetBoundClipData();
+        RenderCacheClipData clipData = m_asset.GetBoundClipData();
         if (null == clipData)
             return;
                 
@@ -460,15 +460,15 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 //----------------------------------------------------------------------------------------------------------------------
 
     static void LockSISData(PlayableFrameClipData clipData) {
-        m_inspectedSISDataForLocking = clipData;
-        m_inspectedSISDataForLocking.SetInspectedProperty(PlayableFramePropertyID.LOCKED);
+        m_inspectedClipDataForLocking = clipData;
+        m_inspectedClipDataForLocking.SetInspectedProperty(PlayableFramePropertyID.LOCKED);
         m_lockMode = true;
     }
     
     static void UnlockSISData() {
-        Assert.IsNotNull(m_inspectedSISDataForLocking);
-        m_inspectedSISDataForLocking.SetInspectedProperty(PlayableFramePropertyID.USED);
-        m_inspectedSISDataForLocking = null;
+        Assert.IsNotNull(m_inspectedClipDataForLocking);
+        m_inspectedClipDataForLocking.SetInspectedProperty(PlayableFramePropertyID.USED);
+        m_inspectedClipDataForLocking = null;
         m_lockMode = false;
     }
     
@@ -483,7 +483,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
     
     private                 RenderCachePlayableAsset m_asset                      = null;
     private static          bool                     m_lockMode                   = false;
-    private static          PlayableFrameClipData      m_inspectedSISDataForLocking = null;
+    private static          PlayableFrameClipData    m_inspectedClipDataForLocking = null;
     private static readonly int                      m_bgColorProperty            = Shader.PropertyToID("_BGColor");
 }
 

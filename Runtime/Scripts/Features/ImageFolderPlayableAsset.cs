@@ -14,7 +14,9 @@ namespace Unity.StreamingImageSequence {
 /// A PlayableAsset that points to a folder that contains images
 /// </summary>
 [System.Serializable]
-internal abstract class ImageFolderPlayableAsset : BaseExtendedClipPlayableAsset<PlayableFrameClipData> {
+internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAsset<T>, IReloader
+    where T: PlayableFrameClipData
+{
     private void Awake() {
         //Find the used folder in runtime. Unused in the editor        
         const string EDITOR_STREAMING_ASSETS_PATH = "Assets/StreamingAssets/";  
@@ -156,7 +158,7 @@ internal abstract class ImageFolderPlayableAsset : BaseExtendedClipPlayableAsset
      * 3. When Unity Editor Application becomes active
      */       
 
-    internal void Reload() {        
+    public void Reload() {        
         if (string.IsNullOrEmpty(m_folder) || !Directory.Exists(m_folder))
             return;
 
@@ -191,40 +193,13 @@ internal abstract class ImageFolderPlayableAsset : BaseExtendedClipPlayableAsset
         
     }
     
-    internal static List<WatchedFileInfo> FindFiles(string path, string[] filePatterns) {
-        return FindFilesInternal(path, filePatterns);
-    }
 
     internal List<WatchedFileInfo> FindImages(string path) {
-        return FindFilesInternal(path, GetSupportedImageFilePatternsV());
+        return WatchedFileInfo.FindFiles(path, GetSupportedImageFilePatternsV());
     }
 
     //Return WatchedFileInfos (with file names)
-    private static List<WatchedFileInfo> FindFilesInternal(string path, string[] filePatterns) {
-        Assert.IsFalse(string.IsNullOrEmpty(path), "Path is null or empty");
-        Assert.IsTrue(Directory.Exists(path),$"Path {path} does not exist");
-
-        //Convert path to folder here
-        string fullSrcPath = Path.GetFullPath(path).Replace("\\", "/");
-
-        //Enumerate all files with the supported extensions and sort
-        List<WatchedFileInfo> watchedFileInfos = new List<WatchedFileInfo>();
-        foreach (string pattern in filePatterns) {
-            IEnumerable<string> files = Directory.EnumerateFiles(fullSrcPath, pattern, SearchOption.TopDirectoryOnly);
-            foreach (string filePath in files) {
-                string fileName = Path.GetFileName(filePath);
-                FileInfo fileInfo = new FileInfo(filePath);
-                watchedFileInfos.Add(new WatchedFileInfo(fileName, fileInfo.Length));
-            }
-        }
-        watchedFileInfos.Sort(FileNameComparer);
         
-        return watchedFileInfos;
-    }        
-        
-    private static int FileNameComparer(WatchedFileInfo  x, WatchedFileInfo y) {
-        return string.Compare(x.GetName(), y.GetName(), StringComparison.InvariantCultureIgnoreCase);
-    }
 
     protected abstract string[] GetSupportedImageFilePatternsV();
     

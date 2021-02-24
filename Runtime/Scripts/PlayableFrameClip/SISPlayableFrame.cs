@@ -67,9 +67,9 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void SetOwner(PlayableFrameClipData owner) {  m_clipDataOwner = owner;}
-    internal PlayableFrameClipData GetOwner() {  return m_clipDataOwner; }    
-    internal double GetLocalTime()                 { return m_localTime; }
+    internal void        SetOwner(PlayableFrameClipData owner) {  m_clipDataOwner = owner;}
+    internal PlayableFrameClipData GetOwner()                             {  return m_clipDataOwner; }    
+    internal double      GetLocalTime()                                   { return m_localTime; }
 
     internal int GetIndex() { return m_index; }
     internal void   SetIndexAndLocalTime(int index, double localTime) {
@@ -164,7 +164,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     [HideInInspector][SerializeField] private double                          m_localTime;    
     [HideInInspector][SerializeField] private FrameMarker                     m_marker = null;
     [HideInInspector][SerializeField] private string                          m_userNote;
-    [NonSerialized]                   private PlayableFrameClipData                     m_clipDataOwner = null;
+    [NonSerialized]                   private PlayableFrameClipData           m_clipDataOwner = null;
 
     private int m_index;
     
