@@ -14,7 +14,9 @@ namespace Unity.StreamingImageSequence {
 /// A PlayableAsset that points to a folder that contains images
 /// </summary>
 [System.Serializable]
-internal abstract class ImageFolderPlayableAsset : BaseExtendedClipPlayableAsset<SISClipData>, IReloader {
+internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAsset<T>, IReloader
+    where T: PlayableFrameClipData
+{
     private void Awake() {
         //Find the used folder in runtime. Unused in the editor        
         const string EDITOR_STREAMING_ASSETS_PATH = "Assets/StreamingAssets/";  

@@ -25,7 +25,7 @@ namespace Unity.StreamingImageSequence {
 /// - ISerializationCallbackReceiver: to perform version upgrade, if necessary
 /// </summary>
 [System.Serializable]
-internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, ITimelineClipAsset
+internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SISClipData>, ITimelineClipAsset
                                                  , IPlayableBehaviour, IObserver<string>, ISerializationCallbackReceiver
 {      
     

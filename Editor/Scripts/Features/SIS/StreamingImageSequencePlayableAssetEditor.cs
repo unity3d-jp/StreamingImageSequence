@@ -9,7 +9,7 @@ using UnityEditor;
 namespace Unity.StreamingImageSequence.Editor {
 
 [CustomTimelineEditor(typeof(StreamingImageSequencePlayableAsset)), UsedImplicitly]
-internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAssetEditor<StreamingImageSequencePlayableAsset> 
+internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAssetEditor<SISClipData> 
 {
     private const string NO_FOLDER_ASSIGNED_ERROR = "No Folder assigned";
     private const string FOLDER_MISSING_ERROR = "Assigned folder does not exist.";
@@ -108,8 +108,11 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
     
 //----------------------------------------------------------------------------------------------------------------------
     protected override void DrawPreviewImageV(ref PreviewDrawInfo drawInfo, TimelineClip clip, 
-        StreamingImageSequencePlayableAsset sisAsset) 
+        ImageFolderPlayableAsset<SISClipData> playableAsset) 
     {
+        StreamingImageSequencePlayableAsset sisAsset = playableAsset as StreamingImageSequencePlayableAsset;
+        Assert.IsNotNull(sisAsset);
+        
         int imageIndex = sisAsset.LocalTimeToImageIndex(clip, drawInfo.LocalTime);       
         string imagePath = sisAsset.GetImageFilePath(imageIndex);
         PreviewUtility.DrawPreviewImage(ref drawInfo, imagePath);
