@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using System.IO;
+using Unity.FilmInternalUtilities;
 using UnityEditor.Timeline;
 using UnityEngine.Timeline;
 using UnityEngine;
@@ -71,7 +72,8 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
                 clip.duration = (double) (numImages) / (userSettings.GetDefaultSISPlayableAssetFPS()); 
                 clip.displayName = Path.GetFileName(asset.GetFolder());
             }
-            clip.CreateCurves("Curves: " + clip.displayName);
+
+            CreateClipCurve(clip,StreamingImageSequencePlayableAsset.GetTimeCurveBinding());
         }
 
 
@@ -95,6 +97,56 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
 
     }
 
+    
+//----------------------------------------------------------------------------------------------------------------------
+    //Called when a clip is changed by the Editor. (TrimStart, TrimEnd, etc)    
+    public override void OnClipChanged(TimelineClip clip) {       
+        base.OnClipChanged(clip);
+
+        EditorCurveBinding curveBinding = StreamingImageSequencePlayableAsset.GetTimeCurveBinding();
+        int retCode = SetAnimationCurveFromClip<SISClipData>(clip, curveBinding);
+
+        if (ANIMATION_CURVE_INVALID_ASSET == retCode) {
+            Debug.LogError("[SIS] Clip Internal Error: Invalid Asset");
+        } 
+        
+    }
+
+//----------------------------------------------------------------------------------------------------------------------    
+    internal const int ANIMATION_CURVE_INVALID_ASSET     = 0;
+    internal const int ANIMATION_CURVE_UNBOUND_CLIP_DATA = 1;
+    internal const int ANIMATION_CURVE_OK                = 2;
+    
+    static int SetAnimationCurveFromClip<T>(TimelineClip clip, EditorCurveBinding curveBinding) 
+        where T: BaseClipData, IAnimationCurveOwner
+    {
+        BaseExtendedClipPlayableAsset<T> playableAsset = clip.asset as BaseExtendedClipPlayableAsset<T>;
+        if (null == playableAsset) {
+            Debug.LogWarning("[MeshSync] Clip Internal Error: Asset is not SceneCache");
+            return ANIMATION_CURVE_INVALID_ASSET;            
+        }
+
+        //Check if the curves is null, which may happen if the clip is created using code ?
+        if (null == clip.curves) {
+            CreateClipCurve(clip, curveBinding);
+        }        
+        
+        SISClipData clipData = playableAsset.GetBoundClipData() as SISClipData;
+        if (null == clipData) {
+            //The clip is not ready. Not deserialized yet
+            return ANIMATION_CURVE_UNBOUND_CLIP_DATA;
+        }
+        
+        
+        //Always apply clipCurves to clipData
+        AnimationCurve curve = AnimationUtility.GetEditorCurve(clip.curves, curveBinding);        
+        clipData.SetAnimationCurve(curve);
+        return ANIMATION_CURVE_OK;
+    }
+    
+    
+    
+    
 //----------------------------------------------------------------------------------------------------------------------
 
     private static void InitializeAssetFromDefaultAsset(StreamingImageSequencePlayableAsset playableAsset,
@@ -104,6 +156,18 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
         const bool ASK_TO_COPY = false;
         ImageSequenceImporter.ImportImages(path, playableAsset, ASK_TO_COPY);
     }
+    
+    private static void CreateClipCurve(TimelineClip clip, EditorCurveBinding curveBinding) {        
+        clip.CreateCurves("Curves: " + clip.displayName);
+        
+        //Init initial linear curve
+        AnimationCurve curve = AnimationCurve.Linear(0f,0f,(float)clip.duration,1f);
+        AnimationUtility.SetEditorCurve(clip.curves, curveBinding,curve);
+        TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
+        
+        
+    }
+    
 
     
 //----------------------------------------------------------------------------------------------------------------------

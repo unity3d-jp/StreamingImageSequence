@@ -366,7 +366,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         animationCurve = null;
 #if UNITY_EDITOR
         if (clip.curves) {
-            animationCurve = AnimationUtility.GetEditorCurve(clip.curves, m_timelineEditorCurveBinding);
+            animationCurve = AnimationUtility.GetEditorCurve(clip.curves, m_timeCurveBinding);
         } else {            
             clip.CreateCurves("Curves: " + clip.displayName); //[Note-sin: 2021-2-3] for handling older versions of SIS 
         }
@@ -411,7 +411,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     private static void SetTimelineClipCurve(TimelineClip clip, AnimationCurve curve) {
 #if UNITY_EDITOR
-        AnimationUtility.SetEditorCurve(clip.curves, m_timelineEditorCurveBinding, curve);
+        AnimationUtility.SetEditorCurve(clip.curves, m_timeCurveBinding, curve);
         
 #if AT_USE_TIMELINE_GE_1_5_0                    
         TimelineEditor.Refresh(RefreshReason.WindowNeedsRedraw );
@@ -497,8 +497,10 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     protected override string[] GetSupportedImageFilePatternsV() { return m_imageFilePatterns; }
 
     internal static string[] GetSupportedImageFilePatterns() { return m_imageFilePatterns;}
-    
-    
+
+    internal static EditorCurveBinding GetTimeCurveBinding() { return m_timeCurveBinding; }
+
+
 #endif //end #if UNITY_EDITOR        
     
 #endregion
@@ -516,7 +518,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
 #if UNITY_EDITOR
     [SerializeField] private UnityEditor.DefaultAsset m_timelineDefaultAsset = null; //Folder D&D. See notes below
-    private static EditorCurveBinding m_timelineEditorCurveBinding =  
+    private static EditorCurveBinding m_timeCurveBinding =  
         new EditorCurveBinding() {
             path         = "",
             type         = typeof(StreamingImageSequencePlayableAsset),
