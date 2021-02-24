@@ -13,19 +13,19 @@ using UnityEditor;
 namespace Unity.StreamingImageSequence {
 
 [Serializable]
-internal class PlayableFrameClipData : BaseClipData {
+internal class SISClipData : BaseClipData {
 
-    public PlayableFrameClipData() {
+    public SISClipData() {
         m_playableFrames = new List<SISPlayableFrame>();
     }
 
-    internal PlayableFrameClipData(TimelineClip clipOwner) {
+    internal SISClipData(TimelineClip clipOwner) {
         SetOwner(clipOwner);
         int numFrames = TimelineUtility.CalculateNumFrames(clipOwner);
         m_playableFrames = new List<SISPlayableFrame>(numFrames);
     }
 
-    internal PlayableFrameClipData(TimelineClip owner, PlayableFrameClipData other) : this(owner){
+    internal SISClipData(TimelineClip owner, SISClipData other) : this(owner){
         Assert.IsNotNull(m_playableFrames);
         
         foreach (SISPlayableFrame otherFrame in other.m_playableFrames) {
@@ -103,7 +103,7 @@ internal class PlayableFrameClipData : BaseClipData {
 #endif    
     
 //----------------------------------------------------------------------------------------------------------------------    
-    private static SISPlayableFrame CreatePlayableFrame(PlayableFrameClipData owner, int index, double timePerFrame) 
+    private static SISPlayableFrame CreatePlayableFrame(SISClipData owner, int index, double timePerFrame) 
     {
         SISPlayableFrame playableFrame = new SISPlayableFrame(owner);
         playableFrame.SetIndexAndLocalTime(index, timePerFrame * index);

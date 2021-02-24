@@ -20,7 +20,7 @@ class FrameMarkerEditor : MarkerEditor {
         if (null == playableFrame)
             return;
         
-        PlayableFrameClipData clipData = playableFrame.GetOwner();
+        SISClipData clipData = playableFrame.GetOwner();
         PlayableFramePropertyID inspectedPropertyID = clipData.GetInspectedProperty();
         switch (inspectedPropertyID) {
             case PlayableFramePropertyID.USED: {

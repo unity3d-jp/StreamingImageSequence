@@ -141,7 +141,7 @@ internal class JstimelineImporter : ScriptedImporter
             clip.duration = track.Duration;
             clip.CreateCurves("Curves: " + clip.displayName);
             
-            PlayableFrameClipData sisData = new PlayableFrameClipData(clip);
+            SISClipData sisData = new SISClipData(clip);
             sisAsset.InitTimelineClipCurve(clip);
             sisAsset.BindClipData(sisData);
 

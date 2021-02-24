@@ -20,7 +20,7 @@ internal class RenderCachePlayableAssetEditor : ImageFolderPlayableAssetEditor<R
 
         clip.TryMoveToTrack(track); 
         
-        PlayableFrameClipData sisData = new PlayableFrameClipData(clip);        
+        SISClipData sisData = new SISClipData(clip);        
         asset.BindClipData(sisData);
     }
     
