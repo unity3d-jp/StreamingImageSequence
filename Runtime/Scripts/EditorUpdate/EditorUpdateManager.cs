@@ -149,7 +149,7 @@ internal class EditorUpdateManager {
                        
             IEnumerable<TimelineClip> clips = trackAsset.GetClips();
             foreach (TimelineClip clip in clips) {
-                ImageFolderPlayableAsset imageFolderPlayableAsset = clip.asset as ImageFolderPlayableAsset;
+                IReloader imageFolderPlayableAsset = clip.asset as IReloader;
                 Assert.IsNotNull(imageFolderPlayableAsset);
                 imageFolderPlayableAsset.Reload();                
             }
