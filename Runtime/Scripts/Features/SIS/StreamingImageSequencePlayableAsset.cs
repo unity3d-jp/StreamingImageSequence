@@ -123,9 +123,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
     //Calculate the used image index for the passed localTime
     internal int LocalTimeToImageIndex(TimelineClip clip, double localTime) {
 
-        PlayableFrameClipData sisClipData = GetBoundClipData();
+        PlayableFrameClipData clipData = GetBoundClipData();
 
-        if (null != sisClipData) {
+        if (null != clipData) {
             double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;            
       
             //Try to check if this frame is "dropped", so that we should use the image in the prev frame
@@ -133,10 +133,10 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset, I
             if (playableFrameIndex < 0)
                 return 0;
                 
-            SISPlayableFrame playableFrame      = sisClipData.GetPlayableFrame(playableFrameIndex);
+            SISPlayableFrame playableFrame      = clipData.GetPlayableFrame(playableFrameIndex);
             while (playableFrameIndex > 0 && !playableFrame.IsUsed()) {
                 --playableFrameIndex;
-                playableFrame = sisClipData.GetPlayableFrame(playableFrameIndex);
+                playableFrame = clipData.GetPlayableFrame(playableFrameIndex);
                 localTime     = playableFrameIndex * scaledTimePerFrame;
             }                
         }

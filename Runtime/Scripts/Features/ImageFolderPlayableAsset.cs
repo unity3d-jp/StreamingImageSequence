@@ -258,8 +258,8 @@ internal abstract class ImageFolderPlayableAsset : BaseExtendedClipPlayableAsset
 
     internal void RefreshPlayableFrames() {
 
-        PlayableFrameClipData sisClipData = GetBoundClipData();               
-        sisClipData?.RefreshPlayableFrames(); //Null check. the data might not have been bound during recompile            
+        PlayableFrameClipData clipData = GetBoundClipData();               
+        clipData?.RefreshPlayableFrames(); //Null check. the data might not have been bound during recompile            
     }
         
 #endregion
