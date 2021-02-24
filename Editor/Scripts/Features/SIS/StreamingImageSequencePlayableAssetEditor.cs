@@ -73,7 +73,7 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
                 clip.displayName = Path.GetFileName(asset.GetFolder());
             }
 
-            ExtendedClipEditorUtility.CreateClipCurve(clip,StreamingImageSequencePlayableAsset.GetTimeCurveBinding());
+            ExtendedClipEditorUtility.CreateTimelineClipCurve(clip,StreamingImageSequencePlayableAsset.GetTimeCurveBinding());
         }
 
 
@@ -101,9 +101,10 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
     //Called when a clip is changed by the Editor. (TrimStart, TrimEnd, etc)    
     public override void OnClipChanged(TimelineClip clip) {       
         base.OnClipChanged(clip);
-
-        EditorCurveBinding curveBinding = StreamingImageSequencePlayableAsset.GetTimeCurveBinding();
-        ExtendedClipCurveStatus status  = ExtendedClipEditorUtility.SetClipDataCurve<SISClipData>(clip, curveBinding);
+       
+        EditorCurveBinding      curveBinding = StreamingImageSequencePlayableAsset.GetTimeCurveBinding();
+        AnimationCurve          curve = ExtendedClipEditorUtility.ValidateTimelineClipCurve(clip, curveBinding);
+        ExtendedClipCurveStatus status  = ExtendedClipEditorUtility.SetClipDataCurve<SISClipData>(clip, curve, curveBinding);
 
         if (ExtendedClipCurveStatus.INVALID_ASSET == status) {
             Debug.LogError("[SIS] Clip Internal Error: Invalid Asset");

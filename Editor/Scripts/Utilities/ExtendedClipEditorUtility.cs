@@ -24,42 +24,65 @@ internal static class ExtendedClipEditorUtility {
         clip.clipIn = 0;
     }
     
+//----------------------------------------------------------------------------------------------------------------------
+    
 //----------------------------------------------------------------------------------------------------------------------    
     
-    internal static ExtendedClipCurveStatus SetClipDataCurve<T>(TimelineClip srcClip, EditorCurveBinding srcCurveBinding) 
+    
+    internal static ExtendedClipCurveStatus SetClipDataCurve<T>(TimelineClip srcClip, AnimationCurve srcCurve, 
+        EditorCurveBinding srcCurveBinding) 
         where T: BaseClipData, IAnimationCurveOwner
     {
         BaseExtendedClipPlayableAsset<T> playableAsset = srcClip.asset as BaseExtendedClipPlayableAsset<T>;
         if (null == playableAsset) {
             return ExtendedClipCurveStatus.INVALID_ASSET;            
         }
-
-        //Check if the curves is null, which may happen if the srcClip is created using code ?
-        if (null == srcClip.curves) {
-            CreateClipCurve(srcClip, srcCurveBinding);
-        }        
         
         IAnimationCurveOwner clipData = playableAsset.GetBoundClipData() as IAnimationCurveOwner;
         if (null == clipData) {
             //The srcClip is not ready. Not deserialized yet
             return ExtendedClipCurveStatus.CLIP_DATA_NOT_BOUND;
         }
-        
-        
-        //Always apply clipCurves to clipData
-        AnimationCurve curve = AnimationUtility.GetEditorCurve(srcClip.curves, srcCurveBinding);        
-        clipData.SetAnimationCurve(curve);
+               
+        clipData.SetAnimationCurve(srcCurve);            
         return ExtendedClipCurveStatus.OK;
     }
+
     
 //----------------------------------------------------------------------------------------------------------------------    
     
-    internal static void CreateClipCurve(TimelineClip clip, EditorCurveBinding curveBinding) {        
+    internal static void CreateTimelineClipCurve(TimelineClip clip, EditorCurveBinding curveBinding) {        
         clip.CreateCurves("Curves: " + clip.displayName);
-        
+                
         //Init initial linear srcCurve
-        AnimationCurve curve = AnimationCurve.Linear(0f,0f,(float)clip.duration,1f);
+        AnimationCurve curve = CreateDefaultAnimationCurve(clip);
         SetTimelineClipCurve(clip,curve, curveBinding);
+
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------    
+
+    //Make sure that TimelineClip has a curve set
+    internal static AnimationCurve ValidateTimelineClipCurve(TimelineClip clip, EditorCurveBinding curveBinding)         
+    {
+        AnimationCurve curve = null;
+        if (null == clip.curves) {
+            clip.CreateCurves("Curves: " + clip.displayName);
+        } else {
+            curve = AnimationUtility.GetEditorCurve(clip.curves, curveBinding);            
+        }        
+        
+        if (null == curve) {
+            curve = CreateDefaultAnimationCurve(clip);
+            SetTimelineClipCurve(clip,curve, curveBinding);
+        }
+
+        return curve;
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    private static AnimationCurve CreateDefaultAnimationCurve(TimelineClip clip) {
+        return AnimationCurve.Linear(0f,0f,(float)(clip.duration * clip.timeScale),1f);        
     }
     
 //----------------------------------------------------------------------------------------------------------------------
