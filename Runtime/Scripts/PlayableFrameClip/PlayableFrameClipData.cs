@@ -256,7 +256,7 @@ internal abstract class PlayableFrameClipData : BaseClipData {
     [FormerlySerializedAs("m_frameMarkersVisibility")] [SerializeField] [HideInInspector] private bool m_frameMarkersRequested = false;
 
 #pragma warning disable 414    
-    [HideInInspector][SerializeField] private int m_version = CUR_TIMELINE_CLIP_SIS_DATA_VERSION;        
+    [HideInInspector][SerializeField] private int m_playableFrameClipDataVersion = CUR_PLAYABLE_FRAME_CLIP_DATA_VERSION;        
 #pragma warning restore 414    
     
 #if UNITY_EDITOR    
@@ -267,7 +267,7 @@ internal abstract class PlayableFrameClipData : BaseClipData {
 
     private       bool   m_frameMarkersVisibility           = false;
     
-    private const int    CUR_TIMELINE_CLIP_SIS_DATA_VERSION = 1;
+    private const int    CUR_PLAYABLE_FRAME_CLIP_DATA_VERSION = 1;
     
 }
 
