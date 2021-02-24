@@ -7,18 +7,18 @@ using UnityEditor;
 namespace Unity.StreamingImageSequence.Editor {
 
 internal static class InspectorUtility {    
-    internal static bool DrawFrameMarkersGUI(BaseExtendedClipPlayableAsset<TimelineClipSISData> timelineClipSISDataPlayableAsset) 
+    internal static bool DrawFrameMarkersGUI(BaseExtendedClipPlayableAsset<SISClipData> sisClipDataPlayableAsset) 
     {        
 
-        TimelineClipSISData timelineClipSISData = timelineClipSISDataPlayableAsset.GetBoundClipData();
-        if (null == timelineClipSISData)
+        SISClipData sisClipData = sisClipDataPlayableAsset.GetBoundClipData();
+        if (null == sisClipData)
             return false;
 
-        bool prevMarkerVisibility = timelineClipSISData.AreFrameMarkersRequested();        
+        bool prevMarkerVisibility = sisClipData.AreFrameMarkersRequested();        
         bool showFrameMarkers = EditorGUIDrawerUtility.DrawUndoableGUI(
-            timelineClipSISDataPlayableAsset, "Show Frame Markers",prevMarkerVisibility,
+            sisClipDataPlayableAsset, "Show Frame Markers",prevMarkerVisibility,
             /*guiFunc=*/ (bool prevValue)=>{ return EditorGUILayout.Toggle("Show Frame Markers", prevValue); }, 
-            /*updateFunc=*/ (bool newValue) => { timelineClipSISData.RequestFrameMarkers(newValue); }                
+            /*updateFunc=*/ (bool newValue) => { sisClipData.RequestFrameMarkers(newValue); }                
         );
 
         return showFrameMarkers;

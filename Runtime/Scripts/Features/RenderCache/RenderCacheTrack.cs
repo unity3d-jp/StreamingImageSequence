@@ -15,7 +15,7 @@ namespace Unity.StreamingImageSequence  {
 [TrackClipType(typeof(RenderCachePlayableAsset))]
 [TrackBindingType(typeof(BaseRenderCapturer))]
 [TrackColor(0.263f, 0.776f, 0.09f)]
-internal class RenderCacheTrack : BaseTimelineClipSISDataTrack {
+internal class RenderCacheTrack : FrameMarkerTrack {
 
 #if UNITY_EDITOR        
     [InitializeOnLoadMethod]

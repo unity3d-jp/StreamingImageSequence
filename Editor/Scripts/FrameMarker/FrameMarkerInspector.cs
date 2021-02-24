@@ -129,8 +129,8 @@ internal class FrameMarkerInspector: UnityEditor.Editor {
 //----------------------------------------------------------------------------------------------------------------------
     private static void SetMarkerValueByContext(FrameMarker frameMarker, bool value) {
         SISPlayableFrame    playableFrame       = frameMarker.GetOwner();
-        TimelineClipSISData timelineClipSISData = playableFrame.GetOwner();
-        PlayableFramePropertyID inspectedPropertyID = timelineClipSISData.GetInspectedProperty();
+        SISClipData sisClipData = playableFrame.GetOwner();
+        PlayableFramePropertyID inspectedPropertyID = sisClipData.GetInspectedProperty();
         switch (inspectedPropertyID) {
             case PlayableFramePropertyID.USED: {
                 playableFrame.SetUsed(value);
@@ -148,8 +148,8 @@ internal class FrameMarkerInspector: UnityEditor.Editor {
 
     internal static void ToggleMarkerValueByContext(FrameMarker frameMarker) {
         SISPlayableFrame    playableFrame         = frameMarker.GetOwner();
-        TimelineClipSISData timelineClipSISData   = playableFrame.GetOwner();
-        PlayableFramePropertyID inspectedPropertyID = timelineClipSISData.GetInspectedProperty();
+        SISClipData sisClipData = playableFrame.GetOwner();
+        PlayableFramePropertyID inspectedPropertyID = sisClipData.GetInspectedProperty();
         switch (inspectedPropertyID) {
             case PlayableFramePropertyID.USED: {
                 playableFrame.SetUsed(!playableFrame.IsUsed());

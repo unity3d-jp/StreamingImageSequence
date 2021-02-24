@@ -14,7 +14,7 @@ namespace Unity.StreamingImageSequence {
 /// A PlayableAsset that points to a folder that contains images
 /// </summary>
 [System.Serializable]
-internal abstract class ImageFolderPlayableAsset : BaseExtendedClipPlayableAsset<TimelineClipSISData> {
+internal abstract class ImageFolderPlayableAsset : BaseExtendedClipPlayableAsset<SISClipData> {
     private void Awake() {
         //Find the used folder in runtime. Unused in the editor        
         const string EDITOR_STREAMING_ASSETS_PATH = "Assets/StreamingAssets/";  
@@ -248,7 +248,7 @@ internal abstract class ImageFolderPlayableAsset : BaseExtendedClipPlayableAsset
 #if UNITY_EDITOR
         Undo.RegisterCompleteObjectUndo(this, "Resetting PlayableFrames");
 #endif
-        GetBoundClipData().ResetPlayableFrames();
+        GetBoundClipData()?.ResetPlayableFrames(); //Null check. the data might not have been bound during recompile
             
 #if UNITY_EDITOR 
         TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved );
@@ -258,12 +258,8 @@ internal abstract class ImageFolderPlayableAsset : BaseExtendedClipPlayableAsset
 
     internal void RefreshPlayableFrames() {
 
-        TimelineClipSISData timelineClipSISData = GetBoundClipData();
-        //Haven't been assigned yet. May happen during recompile
-        if (null == timelineClipSISData)
-            return;
-                       
-        timelineClipSISData.RefreshPlayableFrames();            
+        SISClipData sisClipData = GetBoundClipData();               
+        sisClipData?.RefreshPlayableFrames(); //Null check. the data might not have been bound during recompile            
     }
         
 #endregion

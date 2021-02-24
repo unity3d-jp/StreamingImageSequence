@@ -20,7 +20,7 @@ namespace Unity.StreamingImageSequence {
 [TrackBindingType(typeof(StreamingImageSequenceRenderer))]
 [TrackColor(0.776f, 0.263f, 0.09f)]
 [NotKeyable]
-internal class StreamingImageSequenceTrack : BaseTimelineClipSISDataTrack {
+internal class StreamingImageSequenceTrack : FrameMarkerTrack {
 
 #if UNITY_EDITOR        
     [InitializeOnLoadMethod]

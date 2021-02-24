@@ -13,13 +13,13 @@ namespace Unity.StreamingImageSequence {
 [Serializable]
 internal class SISPlayableFrame : ISerializationCallbackReceiver {
 
-    internal SISPlayableFrame(TimelineClipSISData owner) {
-        m_timelineClipSISDataOwner = owner;        
+    internal SISPlayableFrame(SISClipData owner) {
+        m_sisClipDataOwner = owner;        
         m_boolProperties = new Dictionary<PlayableFramePropertyID, PlayableFrameBoolProperty>();  
     }
 
-    internal SISPlayableFrame(TimelineClipSISData owner, SISPlayableFrame otherFrame) {
-        m_timelineClipSISDataOwner = owner;
+    internal SISPlayableFrame(SISClipData owner, SISPlayableFrame otherFrame) {
+        m_sisClipDataOwner = owner;
         m_boolProperties = otherFrame.m_boolProperties;
         m_localTime = otherFrame.m_localTime;
     }       
@@ -67,8 +67,8 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
-    internal void SetOwner(TimelineClipSISData owner) {  m_timelineClipSISDataOwner = owner;}
-    internal TimelineClipSISData GetOwner() {  return m_timelineClipSISDataOwner; }    
+    internal void SetOwner(SISClipData owner) {  m_sisClipDataOwner = owner;}
+    internal SISClipData GetOwner() {  return m_sisClipDataOwner; }    
     internal double GetLocalTime()                 { return m_localTime; }
 
     internal int GetIndex() { return m_index; }
@@ -78,7 +78,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     }
 
     internal TimelineClip GetClipOwner() {
-        TimelineClip clip = m_timelineClipSISDataOwner?.GetOwner();
+        TimelineClip clip = m_sisClipDataOwner?.GetOwner();
         return clip;
     }
 
@@ -114,7 +114,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     
 //----------------------------------------------------------------------------------------------------------------------
     internal void Refresh(bool frameMarkerVisibility) {
-        TrackAsset trackAsset = m_timelineClipSISDataOwner.GetOwner()?.GetParentTrack();
+        TrackAsset trackAsset = m_sisClipDataOwner.GetOwner()?.GetParentTrack();
         //Delete Marker first if it's not in the correct track (e.g: after the TimelineClip was moved)
         if (null!= m_marker && m_marker.parent != trackAsset) {
             DeleteMarker();
@@ -128,14 +128,14 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
         }
 
         if (m_marker) {
-            TimelineClip clipOwner = m_timelineClipSISDataOwner.GetOwner();
+            TimelineClip clipOwner = m_sisClipDataOwner.GetOwner();
             m_marker.Init(this, clipOwner.start + m_localTime);
         }
     }
 //----------------------------------------------------------------------------------------------------------------------
 
     void CreateMarker() {
-        TimelineClip clipOwner = m_timelineClipSISDataOwner.GetOwner();
+        TimelineClip clipOwner = m_sisClipDataOwner.GetOwner();
         TrackAsset trackAsset = clipOwner?.GetParentTrack();
                        
         Assert.IsNotNull(trackAsset);
@@ -164,7 +164,7 @@ internal class SISPlayableFrame : ISerializationCallbackReceiver {
     [HideInInspector][SerializeField] private double                          m_localTime;    
     [HideInInspector][SerializeField] private FrameMarker                     m_marker = null;
     [HideInInspector][SerializeField] private string                          m_userNote;
-    [NonSerialized]                   private TimelineClipSISData             m_timelineClipSISDataOwner = null;
+    [NonSerialized]                   private SISClipData                     m_sisClipDataOwner = null;
 
     private int m_index;
     
