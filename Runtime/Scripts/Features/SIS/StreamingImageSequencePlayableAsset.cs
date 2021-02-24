@@ -337,40 +337,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     }
 
-//----------------------------------------------------------------------------------------------------------------------
+   
     
-    internal static void ResetTimelineClipCurve<T>(BaseExtendedClipPlayableAsset<T> playableAsset) 
-        where T: BaseClipData, IAnimationCurveOwner
-    {
-                
-        T clipData = playableAsset.GetBoundClipData();        
-        Assert.IsNotNull(clipData);
-
-        TimelineClip clip = clipData.GetOwner();
-        Assert.IsNotNull(clip);
-        
-        AnimationCurve animationCurve = AnimationCurve.Linear(0, 0, (float) (clip.duration * clip.timeScale),1 );
-        clipData.SetAnimationCurve(animationCurve);        
-        SetTimelineClipCurve(clip, animationCurve);
-        clip.clipIn = 0;
-    }
-    
-//----------------------------------------------------------------------------------------------------------------------
-
-    private static void SetTimelineClipCurve(TimelineClip clip, AnimationCurve curve) {
-#if UNITY_EDITOR
-        AnimationUtility.SetEditorCurve(clip.curves, m_timeCurveBinding, curve);
-        
-#if AT_USE_TIMELINE_GE_1_5_0                    
-        TimelineEditor.Refresh(RefreshReason.WindowNeedsRedraw );
-#else         
-        TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved ); //must use this for Pre- 1.5.0
-#endif //AT_USE_TIMELINE_GE_1_5_0            
-        
-#else         
-        clip.curves.SetCurve("", typeof(StreamingImageSequencePlayableAsset), "m_time", curve);
-#endif //UNITY_EDITOR            
-    }
 
 //----------------------------------------------------------------------------------------------------------------------        
 #region Observer

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Unity.FilmInternalUtilities.Editor;
 using UnityEngine.Playables;
-using Unity.StreamingImageSequence;
+using UnityEditor;
 using UnityEngine.TestTools;
 using UnityEngine.Timeline;
 using UnityEditor.Timeline;
@@ -63,8 +64,9 @@ internal class FrameMarkerTest {
         int numFrames = TimelineUtility.CalculateNumFrames(clip);
         Assert.AreEqual(numImages, numFrames);
         
-        //Reset: make sure that the curve is a simple straight line from 0 to 1
-        StreamingImageSequencePlayableAsset.ResetTimelineClipCurve(sisAsset);
+        //Reset: make sure that the curve is a simple straight line from 0 to 1        
+        EditorCurveBinding curveBinding = StreamingImageSequencePlayableAsset.GetTimeCurveBinding();                 
+        ExtendedClipEditorUtility.ResetClipDataCurve(sisAsset, curveBinding);
         yield return null;
         
         sisAsset.ResetPlayableFrames();            
