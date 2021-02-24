@@ -23,29 +23,23 @@ internal static class ExtendedClipEditorUtility {
         SetTimelineClipCurve(clip, animationCurve, curveBinding);
         clip.clipIn = 0;
     }
-    
-//----------------------------------------------------------------------------------------------------------------------
-    
+       
 //----------------------------------------------------------------------------------------------------------------------    
     
     
-    internal static ExtendedClipCurveStatus SetClipDataCurve<T>(TimelineClip srcClip, AnimationCurve srcCurve, 
-        EditorCurveBinding srcCurveBinding) 
+    internal static bool SetClipDataCurve<T>(BaseExtendedClipPlayableAsset<T> playableAsset, 
+        AnimationCurve srcCurve) 
         where T: BaseClipData, IAnimationCurveOwner
     {
-        BaseExtendedClipPlayableAsset<T> playableAsset = srcClip.asset as BaseExtendedClipPlayableAsset<T>;
-        if (null == playableAsset) {
-            return ExtendedClipCurveStatus.INVALID_ASSET;            
-        }
-        
+       
         IAnimationCurveOwner clipData = playableAsset.GetBoundClipData() as IAnimationCurveOwner;
         if (null == clipData) {
             //The srcClip is not ready. Not deserialized yet
-            return ExtendedClipCurveStatus.CLIP_DATA_NOT_BOUND;
+            return false;
         }
                
         clipData.SetAnimationCurve(srcCurve);            
-        return ExtendedClipCurveStatus.OK;
+        return true;
     }
 
     
