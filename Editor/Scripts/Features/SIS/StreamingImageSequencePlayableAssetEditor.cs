@@ -87,9 +87,8 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
         
         SISClipData otherSISData = clonedFromAsset.GetBoundClipData();
 
-        if (null == otherSISData) {
-            //[Note-sin: 2021-2-25] otherSISData can be null during copy and paste
-            asset.BindClipData(new SISClipData(clip));
+        if (null == otherSISData) {            
+            asset.BindClipData(new SISClipData(clip)); //[Note-sin: 2021-2-25] can be null during copy and paste
             return;
         }
         
