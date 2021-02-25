@@ -21,7 +21,7 @@ internal class SISPlayableMixerUpdateTask : IUpdateTask {
 
 //----------------------------------------------------------------------------------------------------------------------    
 
-    //[Note-sin: 2021-2-5] There should be only one task that accesses the same SISPlayableMixer
+    //[Note-sin: 2021-2-25] There should be only one task that accesses the same SISPlayableMixer
     //So, overwrite equals to help that check    
     public static bool operator== (SISPlayableMixerUpdateTask obj1, SISPlayableMixerUpdateTask obj2) {
                
