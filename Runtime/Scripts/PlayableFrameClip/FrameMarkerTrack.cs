@@ -9,7 +9,7 @@ namespace Unity.StreamingImageSequence {
 /// <summary>
 /// A track which requires its TimelineClip to store PlayableFrameClipData as an extension
 /// </summary>
-internal abstract class FrameMarkerTrack<T>: BaseExtendedClipTrack<BaseExtendedClipPlayableAsset<T>, T>
+internal abstract class FrameMarkerTrack<T>: BaseExtendedClipTrack<T>
 where T: PlayableFrameClipData, new()
 {
 
