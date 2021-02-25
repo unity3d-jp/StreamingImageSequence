@@ -7,15 +7,30 @@ using UnityEngine.Timeline;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEditor;
+using UnityEngine.Playables;
 
 namespace Unity.StreamingImageSequence.Editor {
 
 [CustomTimelineEditor(typeof(StreamingImageSequencePlayableAsset)), UsedImplicitly]
 internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAssetEditor<SISClipData> 
 {
-    private const string NO_FOLDER_ASSIGNED_ERROR = "No Folder assigned";
-    private const string FOLDER_MISSING_ERROR = "Assigned folder does not exist.";
-    private const string NO_PICTURES_ASSIGNED_ERROR = "No Pictures assigned";
+    [InitializeOnLoadMethod]
+    static void StreamingImageSequencePlayableAssetEditor_OnEditorLoad() {
+        StreamingImageSequencePlayableMixer.OnPlayableCreated   += OnSISPlayableCreated;
+        StreamingImageSequencePlayableMixer.OnPlayableDestroyed += OnSISPlayableDestroyed;
+    }
+
+    static void OnSISPlayableCreated(Playable playable, StreamingImageSequencePlayableMixer mixer) {
+        EditorUpdateManager.AddEditorUpdateTask( new SISPlayableMixerEditorUpdateTask(mixer));
+        
+    }
+    
+    static void OnSISPlayableDestroyed(Playable playable, StreamingImageSequencePlayableMixer mixer) {
+        EditorUpdateManager.RemoveEditorUpdateTask( new SISPlayableMixerEditorUpdateTask(mixer));        
+        
+    }
+    
+    
 
 //----------------------------------------------------------------------------------------------------------------------
     /// <inheritdoc/>
@@ -151,6 +166,10 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
 
 //----------------------------------------------------------------------------------------------------------------------
 
+    private const string NO_FOLDER_ASSIGNED_ERROR   = "No Folder assigned";
+    private const string FOLDER_MISSING_ERROR       = "Assigned folder does not exist.";
+    private const string NO_PICTURES_ASSIGNED_ERROR = "No Pictures assigned";
+    
 }
 
 } //end namespace
