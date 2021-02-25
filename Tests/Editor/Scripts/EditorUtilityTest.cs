@@ -120,8 +120,8 @@ internal class EditorUtilityTest {
 
         clip.CreateCurves("Curves: " + clip.displayName);
         SISClipData sisData = new SISClipData(clip);
-        sisAsset.InitTimelineClipCurve(clip);
         sisAsset.BindClipData(sisData);           
+        ExtendedClipEditorUtility.ResetClipDataCurve(sisAsset, StreamingImageSequencePlayableAsset.GetTimeCurveBinding());        
 
         //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
         EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
