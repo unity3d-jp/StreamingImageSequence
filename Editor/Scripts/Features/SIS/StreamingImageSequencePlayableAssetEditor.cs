@@ -111,8 +111,8 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
         
         EditorCurveBinding      curveBinding = StreamingImageSequencePlayableAsset.GetTimeCurveBinding();
         AnimationCurve          curve = ExtendedClipEditorUtility.ValidateTimelineClipCurve(clip, curveBinding);
-        
-        
+                
+        //Always set the curve to clipData
         ExtendedClipEditorUtility.SetClipDataCurve<SISClipData>(sisAsset, curve);
 
         
