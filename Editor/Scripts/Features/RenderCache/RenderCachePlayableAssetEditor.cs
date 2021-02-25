@@ -17,8 +17,6 @@ internal class RenderCachePlayableAssetEditor : ImageFolderPlayableAssetEditor<R
     public override void OnCreate(TimelineClip clip, TrackAsset track, TimelineClip clonedFrom) {
         RenderCachePlayableAsset asset = clip.asset as RenderCachePlayableAsset;
         Assert.IsNotNull(asset);
-
-        clip.TryMoveToTrack(track); 
         
         RenderCacheClipData sisData = new RenderCacheClipData(clip);        
         asset.BindClipData(sisData);
