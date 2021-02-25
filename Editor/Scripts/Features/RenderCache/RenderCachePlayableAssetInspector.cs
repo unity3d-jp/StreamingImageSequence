@@ -132,6 +132,11 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 //----------------------------------------------------------------------------------------------------------------------
 
     private void DrawUpdateRenderCacheGUI() {
+        RenderCacheClipData clipData = m_asset.GetBoundClipData();
+        Assert.IsNotNull(clipData);
+        if (clipData.GetOwner().GetParentTrack().IsNullRef())
+            return;
+        
         ShortcutBinding updateRenderCacheShortcut 
             = ShortcutManager.instance.GetShortcutBinding(SISEditorConstants.SHORTCUT_UPDATE_RENDER_CACHE);            
 
