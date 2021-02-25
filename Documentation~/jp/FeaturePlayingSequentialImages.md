@@ -4,7 +4,7 @@
 1. [サポートされている画像形式](#サポートされている画像形式)
 1. [フレームマーカー](#フレームマーカー)
 1. [ギャップの外挿](#ギャップの外挿)
-1. [曲線の編集　（エディターのみ）](#曲線の編集エディターのみ)
+1. [曲線の編集](#曲線の編集)
 1. [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
 
 
@@ -76,14 +76,12 @@ StreamingImageSequencePlayableAsset クリップの前後のギャップの動�
 デフォルトとして、StreamingImageSequencePlayableAsset は Pre-Extrapolate と Post-Extrapolate プロパティの両方を **None** 
 に設定します。
 
-## 曲線の編集（エディターのみ）
+## 曲線の編集
 
 エディターでは、再生のタイミングを次のように変更できます。
 1. 曲線のセクションを開く
 2. 曲線を右クリックして、キーを追加する
 3. 追加されたキーを動かす  
-
-現状、この機能はエディターでのみサポートされており、実行時の再生のタイミングは常にリニアになります。
 
 ![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
 
