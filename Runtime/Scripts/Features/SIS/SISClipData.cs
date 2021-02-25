@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using Unity.FilmInternalUtilities;
 using UnityEngine;
 using UnityEngine.Timeline;
@@ -11,12 +12,14 @@ internal class SISClipData : PlayableFrameClipData, IAnimationCurveOwner {
 
     public SISClipData() : base() { }
 
-    internal SISClipData(TimelineClip clipOwner) : base (clipOwner) {}
+    internal SISClipData(TimelineClip clipOwner) : base(clipOwner) { }
 
-    internal SISClipData(TimelineClip owner, SISClipData other) : base(owner, other) {}
+    internal SISClipData(TimelineClip owner, SISClipData other) : base(owner, other) { }
 
 //----------------------------------------------------------------------------------------------------------------------    
     public  void           SetAnimationCurve(AnimationCurve curve) { m_animationCurve = curve; }
+    
+    [CanBeNull]
     public  AnimationCurve GetAnimationCurve()                     {  return m_animationCurve; }
     
 
