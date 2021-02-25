@@ -21,8 +21,7 @@ internal abstract class PlayableFrameClipData : BaseClipData {
 
     protected PlayableFrameClipData(TimelineClip clipOwner) {
         SetOwner(clipOwner);
-        int numFrames = TimelineUtility.CalculateNumFrames(clipOwner);
-        m_playableFrames = new List<SISPlayableFrame>(numFrames);
+        m_playableFrames = new List<SISPlayableFrame>();
     }
 
     protected PlayableFrameClipData(TimelineClip owner, PlayableFrameClipData other) : this(owner){

@@ -49,13 +49,12 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
             Debug.LogError("Asset is not a StreamingImageSequencePlayableAsset: " + clip.asset);
             return;
         }
-        
-        StreamingImageSequenceTrack sisTrack = track as StreamingImageSequenceTrack;
-        Assert.IsNotNull(sisTrack);
-        
 
-        //This callback occurs before the clip is assigned to the track, but we need the track for creating curves.
-        clip.TryMoveToTrack(track); 
+        //[Note-sin: 2021-2-25] Track can be null during copy and paste
+        if (null == track) {
+            //This callback occurs before the clip is assigned to the track, but we need the track for creating curves.
+            clip.TryMoveToTrack(track);             
+        }
         
         //If we have a default asset, and clonedFrom is NULL, which means this is created by user interaction,
         //such as Folder D&D
@@ -76,13 +75,9 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
 
             ExtendedClipEditorUtility.CreateTimelineClipCurve(clip,StreamingImageSequencePlayableAsset.GetTimeCurveBinding());
         }
-
-
-        SISClipData sisData = null;
         
         if (null == clonedFrom) {
-            sisData = new SISClipData(clip);
-            asset.BindClipData(sisData);
+            asset.BindClipData(new SISClipData(clip));
             return;
         }
 
@@ -91,7 +86,14 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
         Assert.IsNotNull(clonedFromAsset);
         
         SISClipData otherSISData = clonedFromAsset.GetBoundClipData();
-        sisData = new SISClipData(clip, otherSISData);
+
+        if (null == otherSISData) {
+            //[Note-sin: 2021-2-25] otherSISData can be null during copy and paste
+            asset.BindClipData(new SISClipData(clip));
+            return;
+        }
+        
+        SISClipData sisData = new SISClipData(clip, otherSISData);
         asset.BindClipData(sisData);
         clip.displayName = clonedFrom.displayName + " (Cloned)";
 
