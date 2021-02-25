@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.FilmInternalUtilities;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -8,6 +9,9 @@ namespace Unity.StreamingImageSequence {
 
 // A PlayableBehaviour that is attached to a Track via CreateTrackMixer() 
 internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<StreamingImageSequencePlayableAsset> {
+
+    public static event Action<Playable, StreamingImageSequencePlayableMixer> OnPlayableCreated;
+    public static event Action<Playable, StreamingImageSequencePlayableMixer> OnPlayableDestroyed;
 
     public StreamingImageSequencePlayableMixer() {
         m_sisRenderer = null;
@@ -24,11 +28,7 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
 #region IPlayableBehaviour interfaces
 
     public override void OnPlayableCreate(Playable playable) {
-#if UNITY_EDITOR            
-        m_editorUpdateTask = new SISPlayableMixerEditorUpdateTask(this);
-        EditorUpdateManager.AddEditorUpdateTask( m_editorUpdateTask);
-#endif //UNITY_EDITOR          
-       
+        OnPlayableCreated?.Invoke(playable, this);
     }
 
     public override void OnPlayableDestroy(Playable playable) {
@@ -40,10 +40,9 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
         }
         
         base.OnPlayableDestroy(playable);
+
+        OnPlayableDestroyed?.Invoke(playable, this);
         
-#if UNITY_EDITOR            
-        EditorUpdateManager.RemoveEditorUpdateTask( m_editorUpdateTask);        
-#endif //UNITY_EDITOR          
     }
 
     
@@ -141,10 +140,6 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
 //---------------------------------------------------------------------------------------------------------------------
    
     private StreamingImageSequenceRenderer m_sisRenderer = null;
-   
-#if UNITY_EDITOR
-    SISPlayableMixerEditorUpdateTask m_editorUpdateTask;
-#endif
 
 }
 
