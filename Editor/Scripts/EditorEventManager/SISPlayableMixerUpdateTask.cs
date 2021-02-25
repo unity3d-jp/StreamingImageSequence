@@ -8,9 +8,9 @@ using UnityEngine.Timeline;
 
 namespace Unity.StreamingImageSequence.Editor
 {
-internal class SISPlayableMixerEditorUpdateTask : IUpdateTask { 
+internal class SISPlayableMixerUpdateTask : IUpdateTask { 
 
-    public SISPlayableMixerEditorUpdateTask(StreamingImageSequencePlayableMixer mixer) : base() {
+    public SISPlayableMixerUpdateTask(StreamingImageSequencePlayableMixer mixer) : base() {
         m_mixer = mixer;
     }
 
@@ -23,7 +23,7 @@ internal class SISPlayableMixerEditorUpdateTask : IUpdateTask {
 
     //[Note-sin: 2021-2-5] There should be only one task that accesses the same SISPlayableMixer
     //So, overwrite equals to help that check    
-    public static bool operator== (SISPlayableMixerEditorUpdateTask obj1, SISPlayableMixerEditorUpdateTask obj2) {
+    public static bool operator== (SISPlayableMixerUpdateTask obj1, SISPlayableMixerUpdateTask obj2) {
                
         Assert.IsNotNull(obj1);
         Assert.IsNotNull(obj2);
@@ -31,7 +31,7 @@ internal class SISPlayableMixerEditorUpdateTask : IUpdateTask {
         return (obj1.m_mixer == obj2.m_mixer); 
     }
     
-    public static bool operator!= (SISPlayableMixerEditorUpdateTask obj1, SISPlayableMixerEditorUpdateTask obj2) {
+    public static bool operator!= (SISPlayableMixerUpdateTask obj1, SISPlayableMixerUpdateTask obj2) {
         Assert.IsNotNull(obj1);
         Assert.IsNotNull(obj2);
                 
@@ -43,7 +43,7 @@ internal class SISPlayableMixerEditorUpdateTask : IUpdateTask {
         if (ReferenceEquals(this, obj)) return true;
         if (obj.GetType() != this.GetType()) return false;
 
-        SISPlayableMixerEditorUpdateTask otherTask = obj as SISPlayableMixerEditorUpdateTask;
+        SISPlayableMixerUpdateTask otherTask = obj as SISPlayableMixerUpdateTask;
         Assert.IsNotNull(otherTask);
         return (this.m_mixer == otherTask.m_mixer); 
     }
