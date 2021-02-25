@@ -1,5 +1,4 @@
 ﻿
-#if UNITY_EDITOR        
 
 using System.Collections.Generic;
 using UnityEditor.Timeline;
@@ -7,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Timeline;
 
-namespace Unity.StreamingImageSequence
+namespace Unity.StreamingImageSequence.Editor
 {
 internal class SISPlayableMixerEditorUpdateTask : IUpdateTask { 
 
@@ -90,4 +89,3 @@ internal class SISPlayableMixerEditorUpdateTask : IUpdateTask {
 
 } //end namespace
 
-#endif //UNITY_EDITOR
