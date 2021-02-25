@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using JetBrains.Annotations;
 using Unity.FilmInternalUtilities;
-using UnityEditor;
-using UnityEditor.Timeline;
+
 using UnityEngine;
 using UnityEngine.Assertions;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.Timeline;
+#endif
+
 
 namespace Unity.StreamingImageSequence {
 

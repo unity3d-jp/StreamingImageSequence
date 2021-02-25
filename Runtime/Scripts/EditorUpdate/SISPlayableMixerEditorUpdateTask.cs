@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿
+#if UNITY_EDITOR        
+
+using System.Collections.Generic;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Timeline;
-
-#if UNITY_EDITOR        
 
 namespace Unity.StreamingImageSequence
 {
