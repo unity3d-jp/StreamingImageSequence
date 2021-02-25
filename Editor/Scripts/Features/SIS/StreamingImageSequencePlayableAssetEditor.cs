@@ -51,7 +51,7 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
         }
 
         //[Note-sin: 2021-2-25] Track can be null during copy and paste
-        if (null == track) {
+        if (null != track) {
             //This callback occurs before the clip is assigned to the track, but we need the track for creating curves.
             clip.TryMoveToTrack(track);             
         }
