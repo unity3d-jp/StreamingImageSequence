@@ -1,15 +1,12 @@
-﻿using UnityEngine.Playables;
-using UnityEngine.Timeline;
+﻿using UnityEngine.Timeline;
 using System.Collections.Generic;
 using Unity.FilmInternalUtilities;
-using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Unity.StreamingImageSequence { 
 /// <summary>
-/// A track which requires its TimelineClip to store PlayableFrameClipData as an extension
+/// A track which has FrameMarkers and stores extra ClipData for TimelineClips inside Track
 /// </summary>
-internal abstract class FrameMarkerTrack<T>: BaseExtendedClipTrack<BaseExtendedClipPlayableAsset<T>, T>
+internal abstract class FrameMarkerTrack<T>: BaseExtendedClipTrack<T>
 where T: PlayableFrameClipData, new()
 {
 
