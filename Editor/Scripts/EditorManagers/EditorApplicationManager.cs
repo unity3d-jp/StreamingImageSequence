@@ -64,4 +64,13 @@ static class EditorApplicationManager  {
 
 }
 
+/* [Note-sin: 2021-2-26]
+ * In EditMode, the user can move the time slider as he/she wishes, so we have to try to load everything, while trying
+ *     to optimize (deleting old requested tasks, etc). This is done by calling SetImageLoadTaskHandler()
+ * In Playmode, the images are loaded sequentially, so the optimization is not necessary, and what is requested should
+ *     be loaded.
+ *
+ * Ref: SISPlayableMixerUpdateTask
+ */ 
+
 } //end namespace
