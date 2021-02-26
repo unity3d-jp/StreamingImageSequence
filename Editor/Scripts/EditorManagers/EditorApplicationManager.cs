@@ -34,17 +34,16 @@ static class EditorApplicationManager  {
         InitImageLoaderForEditMode();
         StreamingImageSequencePlugin.ResetImageLoadOrder();
     }
-    
-//----------------------------------------------------------------------------------------------------------------------    
-#region Image Loading
-    
-    internal static void ResetImageLoading() {
-        ThreadManager.Reset();
-        StreamingImageSequencePlugin.ResetPlugin();        
+
+    internal static void Reset() {        
         foreach (IUpdateTask job in m_mainThreadPeriodJobs) {
             job.Reset();
         }
     }    
+    
+//----------------------------------------------------------------------------------------------------------------------    
+#region Image Loading
+    
     
     static void InitImageLoaderForEditMode() {
         for (int i = 0; i < StreamingImageSequenceConstants.MAX_IMAGE_TYPES; ++i) {
