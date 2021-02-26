@@ -65,15 +65,15 @@ internal static class ImageLoader  {
     }
 //----------------------------------------------------------------------------------------------------------------------   
     
-    private static bool RequestLoadImageInternal(int index, BaseImageLoadBGTask imageLoadBGTask) {
+    private static bool RequestLoadImageInternal(int imageType, BaseImageLoadBGTask imageLoadBGTask) {
                
         imageLoadBGTask.SetRequestFrame(GetCurrentFrame());
         
 #if UNITY_EDITOR        
         if (!Application.isPlaying) {
-            if (null == m_imageLoadEditorUpdateTasks[index])
+            if (null == m_imageLoadEditorUpdateTasks[imageType])
                 return false;
-            return m_imageLoadEditorUpdateTasks[index].RequestLoadImage(imageLoadBGTask);            
+            return m_imageLoadEditorUpdateTasks[imageType].RequestLoadImage(imageLoadBGTask);            
         }
 #endif
 
