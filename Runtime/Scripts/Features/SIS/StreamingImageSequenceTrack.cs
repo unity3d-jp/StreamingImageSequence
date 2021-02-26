@@ -49,6 +49,7 @@ internal class StreamingImageSequenceTrack : FrameMarkerTrack<SISClipData> {
     protected override Playable CreateTrackMixerInternal(PlayableGraph graph, GameObject go, int inputCount) {
 
         DeleteInvalidMarkers();
+        ValidateClipDataCurves();
                 
         var              mixer    = ScriptPlayable<StreamingImageSequencePlayableMixer>.Create(graph, inputCount);
         PlayableDirector director = go.GetComponent<PlayableDirector>();
@@ -71,7 +72,32 @@ internal class StreamingImageSequenceTrack : FrameMarkerTrack<SISClipData> {
         
         return mixer;
     }     
+//----------------------------------------------------------------------------------------------------------------------
 
+    private void ValidateClipDataCurves() {
+        foreach (TimelineClip clip in  GetClips()) {            
+            StreamingImageSequencePlayableAsset sisPlayableAsset = clip.asset as StreamingImageSequencePlayableAsset;
+            Assert.IsNotNull(sisPlayableAsset);
+
+            SISClipData clipData = sisPlayableAsset.GetBoundClipData();
+            Assert.IsNotNull(clipData);
+            AnimationCurve curve = clipData.GetAnimationCurve();
+            if (null != curve)
+                continue;
+            
+            EditorCurveBinding curveBinding = StreamingImageSequencePlayableAsset.GetTimeCurveBinding();
+            
+#if UNITY_EDITOR 
+            curve = AnimationUtility.GetEditorCurve(clip.curves, curveBinding);
+#else
+            Debug.LogWarning("[SIS] ClipData does not have AnimationCurve. Need to resave track: " + name);
+            curve = AnimationCurve.Linear(0f,0f,(float)(clip.duration * clip.timeScale),1f);        
+#endif            
+            clipData.SetAnimationCurve(curve);
+            
+        }        
+    }    
+    
 //----------------------------------------------------------------------------------------------------------------------
 
     /// <inheritdoc/>
