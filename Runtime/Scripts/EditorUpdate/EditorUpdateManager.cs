@@ -20,9 +20,6 @@ internal class EditorUpdateManager {
 
     static EditorUpdateManager() {
         EditorApplication.update           += EditorUpdateManager_Update;
-        EditorSceneManager.sceneClosed     += EditorUpdateManager_OnSceneClosed;
-        EditorSceneManager.newSceneCreated += EditorUpdateManager_OnSceneCreated;
-        EditorSceneManager.sceneOpened     += EditorUpdateManager_OnSceneOpened;
 
         OnUnityEditorFocus += UpdateImageFolderPlayableAsset;
 
@@ -32,23 +29,6 @@ internal class EditorUpdateManager {
         StreamingImageSequencePlugin.ResetPlugin();        
     }
 
-    private static void EditorUpdateManager_OnSceneClosed(Scene scene) {
-        //Reset all imageLoading process when closing the scene
-        ResetImageLoading();
-    }
-
-    private static void EditorUpdateManager_OnSceneCreated( Scene scene, NewSceneSetup setup, NewSceneMode mode) {
-        //Reset all imageLoading process when creating a new scene
-        ResetImageLoading();        
-    }
-
-    private static void EditorUpdateManager_OnSceneOpened( Scene scene, OpenSceneMode mode) {
-        if (OpenSceneMode.Single != mode)
-            return;
-        
-        
-        ResetImageLoading();         
-    }
    
 //----------------------------------------------------------------------------------------------------------------------        
 
@@ -85,7 +65,7 @@ internal class EditorUpdateManager {
 
     internal static void ResetImageLoading() {
         ThreadManager.Reset();
-        StreamingImageSequencePlugin.ResetPlugin();
+        StreamingImageSequencePlugin.ResetPlugin();        
         foreach (IUpdateTask job in m_mainThreadPeriodJobs) {
             job.Reset();
         }
