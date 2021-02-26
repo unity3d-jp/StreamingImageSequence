@@ -1,54 +1,20 @@
-﻿using UnityEditor;
+﻿using System;
 using UnityEngine;
 
 namespace Unity.StreamingImageSequence {
 
 
 internal static class ImageLoader  {
-
+   
     
-#if UNITY_EDITOR
-    [InitializeOnLoadMethod]
-    static void ImageLoaderOnLoad() {
-        
-        EditorApplication.playModeStateChanged += ImageLoader_PlayModeStateChanged;
-        
-        bool isPlayingOrWillChangePlaymode = EditorApplication.isPlayingOrWillChangePlaymode;
-        if (!isPlayingOrWillChangePlaymode) {
-            InitImageLoaderInEditor();
-        }        
-    }
-    
-
-    static void ImageLoader_PlayModeStateChanged(PlayModeStateChange state) {
-        if (PlayModeStateChange.EnteredEditMode != state)
-            return;
-
-        InitImageLoaderInEditor();
-        StreamingImageSequencePlugin.ResetImageLoadOrder();
-    }
-    
-
-    static void InitImageLoaderInEditor() {
-        for (int i = 0; i < StreamingImageSequenceConstants.MAX_IMAGE_TYPES; ++i) {
-            if (null != m_imageLoadEditorUpdateTasks[i]) {
-                //Just in case: Elements of m_imageLoadEditorUpdateTasks should be back to null after entering edit mode
-                continue;                 
-            }
-            
-            ImageLoadEditorUpdateTask task = new ImageLoadEditorUpdateTask();
-            EditorUpdateManager.AddEditorUpdateTask(task);
-            m_imageLoadEditorUpdateTasks[i] = task;
-        }
-
-    }
-    
-#endif
-    
-//----------------------------------------------------------------------------------------------------------------------   
     [RuntimeInitializeOnLoadMethod]
-    internal static void ImageLoaderOnRuntimeLoad() {
+    static void ImageLoaderOnRuntimeLoad() {
         StreamingImageSequencePlugin.ResetImageLoadOrder();
+    }
+//----------------------------------------------------------------------------------------------------------------------   
+
+    internal static void SetImageLoadTaskHandler(Func<int, BaseImageLoadBGTask, bool> taskHandler) {
+        m_imageLoadTaskHandler = taskHandler;
     }
     
 //----------------------------------------------------------------------------------------------------------------------   
@@ -63,21 +29,18 @@ internal static class ImageLoader  {
         PreviewImageLoadBGTask task = new PreviewImageLoadBGTask(imagePath, width, height);
         return RequestLoadImageInternal(StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW, task);
     }
-//----------------------------------------------------------------------------------------------------------------------   
+//----------------------------------------------------------------------------------------------------------------------
+    
+     
     
     private static bool RequestLoadImageInternal(int imageType, BaseImageLoadBGTask imageLoadBGTask) {
                
         imageLoadBGTask.SetRequestFrame(GetCurrentFrame());
-        
-#if UNITY_EDITOR        
-        if (!Application.isPlaying) {
-            if (null == m_imageLoadEditorUpdateTasks[imageType])
-                return false;
-            return m_imageLoadEditorUpdateTasks[imageType].RequestLoadImage(imageLoadBGTask);            
+
+        if (null != m_imageLoadTaskHandler) {
+            return m_imageLoadTaskHandler(imageType, imageLoadBGTask);
         }
-#endif
-
-
+        
         ThreadManager.QueueBackGroundTask(imageLoadBGTask);
         return true;
     }
@@ -117,13 +80,8 @@ internal static class ImageLoader  {
     
 //----------------------------------------------------------------------------------------------------------------------
 
-#if UNITY_EDITOR
-    private static readonly ImageLoadEditorUpdateTask[] m_imageLoadEditorUpdateTasks 
-        = new ImageLoadEditorUpdateTask[StreamingImageSequenceConstants.MAX_IMAGE_TYPES];
-
-
-#endif
-
+    private static Func<int, BaseImageLoadBGTask, bool> m_imageLoadTaskHandler = null;
+    
     private static bool m_showWarningOnOOM = true;
 }
 
