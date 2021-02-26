@@ -15,17 +15,17 @@ internal class EditorSceneEventManager {
 
 
     private static void EditorSceneEventManager_OnSceneClosed(Scene scene) {        
-        EditorUpdateManager.ResetImageLoading(); 
+        EditorApplicationManager.ResetImageLoading(); 
     }
 
     private static void EditorSceneEventManager_OnSceneCreated( Scene scene, NewSceneSetup setup, NewSceneMode mode) {
-        EditorUpdateManager.ResetImageLoading();         
+        EditorApplicationManager.ResetImageLoading();         
     }
 
     private static void EditorSceneEventManager_OnSceneOpened( Scene scene, OpenSceneMode mode) {
         if (OpenSceneMode.Single != mode)
             return;
-        EditorUpdateManager.ResetImageLoading();         
+        EditorApplicationManager.ResetImageLoading();         
     }
    
     
