@@ -11,7 +11,7 @@ namespace Unity.StreamingImageSequence.Tests {
 
         [UnityTest]
         public IEnumerator QueueFullImageLoadTask() {
-            EditorUpdateManager.ResetImageLoading();
+            ResetThreadsAndPlugin();
             const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
             string fullPath = Path.GetFullPath(PKG_PATH);
             Assert.IsTrue(File.Exists(fullPath));
@@ -33,7 +33,7 @@ namespace Unity.StreamingImageSequence.Tests {
         [UnityTest]
         public IEnumerator QueuePreviewImageLoadTask() {
             
-            EditorUpdateManager.ResetImageLoading();
+            ResetThreadsAndPlugin();
             const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
             string fullPath = Path.GetFullPath(PKG_PATH);
             Assert.IsTrue(File.Exists(fullPath));
@@ -59,7 +59,7 @@ namespace Unity.StreamingImageSequence.Tests {
         [UnityTest]
         public IEnumerator LoadUnavailableImages() {
             
-            EditorUpdateManager.ResetImageLoading();
+            ResetThreadsAndPlugin();
             const string PKG_PATH = "ThisImageDoesNotExist.png";
             string       fullPath = Path.GetFullPath(PKG_PATH);
             Assert.IsFalse(File.Exists(fullPath));
@@ -106,6 +106,13 @@ namespace Unity.StreamingImageSequence.Tests {
             Assert.AreEqual(requiredStatus, readResult.ReadStatus, assertMessage);
             return readResult;
 
+        }
+
+//----------------------------------------------------------------------------------------------------------------------
+        
+        private void ResetThreadsAndPlugin() {
+            ThreadManager.Reset();
+            StreamingImageSequencePlugin.ResetPlugin();                    
         }
 
 //----------------------------------------------------------------------------------------------------------------------

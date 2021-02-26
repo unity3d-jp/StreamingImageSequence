@@ -1,4 +1,4 @@
-﻿namespace Unity.StreamingImageSequence
+﻿namespace Unity.StreamingImageSequence.Editor
 {
     
 internal interface IUpdateTask : ITask {

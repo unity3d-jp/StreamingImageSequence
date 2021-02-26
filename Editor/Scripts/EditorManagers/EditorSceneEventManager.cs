@@ -15,21 +15,28 @@ internal class EditorSceneEventManager {
 
 
     private static void EditorSceneEventManager_OnSceneClosed(Scene scene) {        
-        EditorUpdateManager.ResetImageLoading(); 
+        ResetPluginAndTasks();         
     }
 
     private static void EditorSceneEventManager_OnSceneCreated( Scene scene, NewSceneSetup setup, NewSceneMode mode) {
-        EditorUpdateManager.ResetImageLoading();         
+        ResetPluginAndTasks();         
     }
 
     private static void EditorSceneEventManager_OnSceneOpened( Scene scene, OpenSceneMode mode) {
         if (OpenSceneMode.Single != mode)
             return;
-        EditorUpdateManager.ResetImageLoading();         
+        ResetPluginAndTasks();         
+    }
+//----------------------------------------------------------------------------------------------------------------------
+
+    internal static void ResetPluginAndTasks() {
+        ThreadManager.Reset();
+        StreamingImageSequencePlugin.ResetPlugin();
+        EditorApplicationManager.Reset();
+        
     }
    
     
-//----------------------------------------------------------------------------------------------------------------------
    
        
 }

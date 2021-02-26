@@ -38,7 +38,7 @@ namespace Unity.StreamingImageSequence.Editor {
         [MenuItem(StreamingImageSequenceConstants.MENU_PATH + "Reset",false,50)]
         private static void Reset()
         {
-            EditorUpdateManager.ResetImageLoading();
+            EditorSceneEventManager.ResetPluginAndTasks(); 
             PreviewTextureFactory.Reset();            
         }
 

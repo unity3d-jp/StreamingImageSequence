@@ -21,12 +21,12 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
     }
 
     static void OnSISPlayableCreated(Playable playable, StreamingImageSequencePlayableMixer mixer) {
-        EditorUpdateManager.AddEditorUpdateTask( new SISPlayableMixerUpdateTask(mixer));
+        EditorApplicationManager.AddUpdateTask( new SISPlayableMixerUpdateTask(mixer));
         
     }
     
     static void OnSISPlayableDestroyed(Playable playable, StreamingImageSequencePlayableMixer mixer) {
-        EditorUpdateManager.RemoveEditorUpdateTask( new SISPlayableMixerUpdateTask(mixer));        
+        EditorApplicationManager.RemoveUpdateTask( new SISPlayableMixerUpdateTask(mixer));        
         
     }
     
