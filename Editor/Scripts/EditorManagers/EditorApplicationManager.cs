@@ -1,6 +1,6 @@
-﻿using System;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Unity.StreamingImageSequence.Editor {
 
@@ -43,11 +43,13 @@ static class EditorApplicationManager  {
         }
         
     
-        ImageLoader.SetImageLoadTaskHandler(RequestLoadImageInEditor);
+        ImageLoader.SetImageLoadTaskHandler(RequestLoadImageInEditMode);
     }
 
 //----------------------------------------------------------------------------------------------------------------------    
-    static bool RequestLoadImageInEditor(int imageType, BaseImageLoadBGTask task) {
+    static bool RequestLoadImageInEditMode(int imageType, BaseImageLoadBGTask task) {
+
+        Assert.IsFalse(Application.isPlaying);
         
         if (null == m_imageLoadEditorUpdateTasks[imageType])
             return false;
