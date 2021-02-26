@@ -62,7 +62,7 @@ internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAs
                 break;
             }
             case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
-                UpdateResolution(ref imageData);
+                UpdateResolution(imageData);
                 break;
             }
             default: {
@@ -77,7 +77,7 @@ internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAs
         m_dimensionRatio = 0;
     }
     
-    protected void UpdateResolution(ref ImageData imageData) {
+    protected void UpdateResolution(ImageData imageData) {
         m_resolution.Width  = imageData.Width;
         m_resolution.Height = imageData.Height;
         if (m_resolution.Width > 0 && m_resolution.Height > 0) {
