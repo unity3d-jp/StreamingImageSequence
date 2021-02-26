@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Assertions;
 
 
 namespace Unity.StreamingImageSequence.Editor {
@@ -121,32 +122,38 @@ internal static class PreviewUtility {
     {
         if (!File.Exists(imagePath))
             return;
-        
-        ImageLoader.GetImageDataInto(imagePath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
-            , out ImageData readResult);
+
+        Texture2D tex = null;
+        if (imagePath.IsRegularAssetPath()) {
+            tex = AssetDatabase.LoadAssetAtPath<Texture2D>(imagePath);
+        } else {
+            ImageLoader.GetImageDataInto(imagePath, StreamingImageSequenceConstants.IMAGE_TYPE_PREVIEW
+                , out ImageData readResult);
             
-        switch (readResult.ReadStatus) {
-            case StreamingImageSequenceConstants.READ_STATUS_LOADING:
-                break;
-            case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
-                Texture2D tex = PreviewTextureFactory.GetOrCreate(imagePath, ref readResult);
-                if (null == tex)
-                    return;
-
-                if (PlayerSettings.colorSpace == ColorSpace.Linear) {
-                    Material mat = GetOrCreateLinearToGammaMaterial();
-                    Graphics.DrawTexture(drawInfo.DrawRect, tex, mat);
-                } else {                    
-                    Graphics.DrawTexture(drawInfo.DrawRect, tex);
+            switch (readResult.ReadStatus) {
+                case StreamingImageSequenceConstants.READ_STATUS_LOADING:
+                    break;
+                case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
+                    tex = PreviewTextureFactory.GetOrCreate(imagePath, ref readResult);                
+                    break;
                 }
-                
-                break;
-            }
-            default: {
-                ImageLoader.RequestLoadPreviewImage(imagePath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height);                    
-                break;
-            }
+                default: {
+                    ImageLoader.RequestLoadPreviewImage(imagePath, (int) drawInfo.DrawRect.width, (int) drawInfo.DrawRect.height);                    
+                    break;
+                }
 
+            }            
+        }
+
+        
+        if (null == tex)
+            return;
+
+        if (PlayerSettings.colorSpace == ColorSpace.Linear) {
+            Material mat = GetOrCreateLinearToGammaMaterial();
+            Graphics.DrawTexture(drawInfo.DrawRect, tex, mat);
+        } else {                    
+            Graphics.DrawTexture(drawInfo.DrawRect, tex);
         }
         
     }
