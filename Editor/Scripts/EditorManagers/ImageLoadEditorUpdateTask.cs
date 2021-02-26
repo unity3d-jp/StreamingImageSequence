@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 
-#if UNITY_EDITOR        
 
-namespace Unity.StreamingImageSequence
+namespace Unity.StreamingImageSequence.Editor
 {
 internal class ImageLoadEditorUpdateTask : IUpdateTask {
 
@@ -72,4 +71,3 @@ internal class ImageLoadEditorUpdateTask : IUpdateTask {
 
 } //end namespace
 
-#endif //UNITY_EDITOR
