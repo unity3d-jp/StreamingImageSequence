@@ -273,6 +273,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         if (null == m_imageFiles || 0== m_imageFiles.Count)
             return;
 
+        if (m_folder.IsRegularAssetPath())
+            return;
+
         const int NUM_IMAGES = 2;
 
         //forward
