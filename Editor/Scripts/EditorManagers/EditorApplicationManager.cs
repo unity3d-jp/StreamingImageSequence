@@ -36,7 +36,7 @@ static class EditorApplicationManager  {
     }
 
     internal static void Reset() {        
-        foreach (IUpdateTask job in m_mainThreadPeriodJobs) {
+        foreach (IEditorTask job in m_activeEditorTasks) {
             job.Reset();
         }
     }    
@@ -52,7 +52,7 @@ static class EditorApplicationManager  {
                 continue;                 
             }
             
-            ImageLoadEditorUpdateTask task = new ImageLoadEditorUpdateTask();
+            ImageLoadEditorTask task = new ImageLoadEditorTask();
             AddUpdateTask(task);
             m_imageLoadEditorUpdateTasks[i] = task;
         }
@@ -88,19 +88,19 @@ static class EditorApplicationManager  {
         m_lastUpdateInEditorTime = time;
 
         //add requested jobs
-        foreach (IUpdateTask job in m_requestedTasks) {
-            m_mainThreadPeriodJobs.Add(job);
+        foreach (IEditorTask job in m_requestedTasks) {
+            m_activeEditorTasks.Add(job);
         }           
         m_requestedTasks.Clear();
         
         //Remove jobs
-        foreach (IUpdateTask job in m_toRemoveTasks) {
-            m_mainThreadPeriodJobs.Remove(job);
+        foreach (IEditorTask job in m_toRemoveTasks) {
+            m_activeEditorTasks.Remove(job);
         }           
         m_toRemoveTasks.Clear();
         
         //Execute
-        foreach (IUpdateTask job in m_mainThreadPeriodJobs) {
+        foreach (IEditorTask job in m_activeEditorTasks) {
             job.Execute();
         }
         
@@ -108,18 +108,18 @@ static class EditorApplicationManager  {
     }
 
 
-    internal static void AddUpdateTask(IUpdateTask job) {
+    internal static void AddUpdateTask(IEditorTask job) {
         m_requestedTasks.Add(job);  
     }
 
-    internal static void RemoveUpdateTask(IUpdateTask job) {
+    internal static void RemoveUpdateTask(IEditorTask job) {
         //Check if the job hasn't been actually added yet
         if (m_requestedTasks.Contains(job)) {
             m_requestedTasks.Remove(job);
             return;
         }
         
-        Assert.IsTrue(m_mainThreadPeriodJobs.Contains(job));
+        Assert.IsTrue(m_activeEditorTasks.Contains(job));
         m_toRemoveTasks.Add(job);
     }
 
@@ -172,16 +172,16 @@ static class EditorApplicationManager  {
     
 //----------------------------------------------------------------------------------------------------------------------
     
-    private static readonly ImageLoadEditorUpdateTask[] m_imageLoadEditorUpdateTasks 
-        = new ImageLoadEditorUpdateTask[StreamingImageSequenceConstants.MAX_IMAGE_TYPES];
+    private static readonly ImageLoadEditorTask[] m_imageLoadEditorUpdateTasks 
+        = new ImageLoadEditorTask[StreamingImageSequenceConstants.MAX_IMAGE_TYPES];
 
     
     private static double m_lastUpdateInEditorTime;
        
     //"Jobs" are higher level than tasks
-    private static readonly HashSet<IUpdateTask> m_mainThreadPeriodJobs = new HashSet<IUpdateTask>();
-    private static readonly List<IUpdateTask>    m_requestedTasks       = new List<IUpdateTask>();
-    private static readonly HashSet<IUpdateTask> m_toRemoveTasks        = new HashSet<IUpdateTask>();
+    private static readonly HashSet<IEditorTask> m_activeEditorTasks    = new HashSet<IEditorTask>();
+    private static readonly List<IEditorTask>    m_requestedTasks       = new List<IEditorTask>();
+    private static readonly HashSet<IEditorTask> m_toRemoveTasks        = new HashSet<IEditorTask>();
     
     private static event Action<bool> OnUnityEditorFocus;
     private static bool               m_editorFocused;    
@@ -194,7 +194,7 @@ static class EditorApplicationManager  {
  * In Playmode, the images are loaded sequentially, so the optimization is not necessary, and what is requested should
  *     be loaded.
  *
- * Ref: SISPlayableMixerUpdateTask
+ * Ref: SISPlayableMixerEditorTask
  */ 
 
 } //end namespace

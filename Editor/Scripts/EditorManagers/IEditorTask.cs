@@ -1,7 +1,7 @@
 ﻿namespace Unity.StreamingImageSequence.Editor
 {
     
-internal interface IUpdateTask : ITask {
+internal interface IEditorTask : ITask {
     void Reset();
 }
 

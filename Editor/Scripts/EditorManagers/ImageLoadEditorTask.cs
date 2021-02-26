@@ -3,7 +3,7 @@
 
 namespace Unity.StreamingImageSequence.Editor
 {
-internal class ImageLoadEditorUpdateTask : IUpdateTask {
+internal class ImageLoadEditorTask : IEditorTask {
 
     public void Reset() {
         m_requestedImageLoadBGTasks.Clear();
