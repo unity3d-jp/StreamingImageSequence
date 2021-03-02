@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.FilmInternalUtilities;
+using UnityEngine;
 using UnityEngine.Timeline;
 
 namespace Unity.StreamingImageSequence {

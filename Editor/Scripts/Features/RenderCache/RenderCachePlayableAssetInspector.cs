@@ -457,7 +457,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         string assetName = string.IsNullOrEmpty(m_asset.name) ? "RenderCachePlayableAsset" : m_asset.name;               
         //Generate unique folder
         string baseFolder = Path.Combine(Application.streamingAssetsPath, assetName);
-        string folder = PathUtility.GenerateUniqueFolder(baseFolder); 
+        string folder = Unity.FilmInternalUtilities.PathUtility.GenerateUniqueFolder(baseFolder); 
         m_asset.SetFolder(AssetUtility.NormalizeAssetPath(folder).Replace('\\','/'));
         Repaint();        
     }

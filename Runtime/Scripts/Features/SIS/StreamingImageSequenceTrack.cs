@@ -85,9 +85,9 @@ internal class StreamingImageSequenceTrack : FrameMarkerTrack<SISClipData> {
             if (null != curve)
                 continue;
             
-            EditorCurveBinding curveBinding = StreamingImageSequencePlayableAsset.GetTimeCurveBinding();
             
 #if UNITY_EDITOR 
+            EditorCurveBinding curveBinding = StreamingImageSequencePlayableAsset.GetTimeCurveBinding();
             curve = AnimationUtility.GetEditorCurve(clip.curves, curveBinding);
 #else
             Debug.LogWarning("[SIS] ClipData does not have AnimationCurve. Need to resave track: " + name);
