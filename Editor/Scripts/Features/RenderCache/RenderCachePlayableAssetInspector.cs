@@ -316,7 +316,6 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         }
 
         if (!cancelled) {
-            renderCachePlayableAsset.SetImageFiles(imageFiles);        
 
             //Delete old files
             if (AssetDatabase.IsValidFolder(outputFolder)) {
@@ -337,9 +336,11 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         //Cleanup
         EditorUtility.ClearProgressBar();
         renderCapturer.EndCapture();
-        ObjectUtility.Destroy(blitterGO);
-        
+        ObjectUtility.Destroy(blitterGO);        
         AssetDatabase.Refresh();
+        renderCachePlayableAsset.Reload();;
+        
+        
         
         yield return null;
 
