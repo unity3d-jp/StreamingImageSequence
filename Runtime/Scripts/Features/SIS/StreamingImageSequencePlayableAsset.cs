@@ -208,12 +208,22 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     internal void RequestLoadImage(int index) {
         int numImages = m_imageFiles.Count;
         
-        if (null == m_imageFiles || index < 0 || index >= numImages 
-            || string.IsNullOrEmpty(m_imageFiles[index].GetName())) {
+        if (null == m_imageFiles || index < 0 || index >= numImages) 
             return;
-        }
+
+        string fullPath = GetImageFilePath(index);
+        if (string.IsNullOrEmpty(fullPath))
+            return;
 
         m_primaryImageIndex = index;
+        
+#if UNITY_EDITOR        
+        if (fullPath.IsRegularAssetPath()) {
+            UpdateTextureAsRegularAssetInEditor(fullPath, m_primaryImageIndex);
+            return;
+        }
+#endif        
+        
 
         if (QueueImageLoadTask(index, out ImageData readResult)) {
             m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, numImages - 1);
@@ -240,6 +250,13 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         if (string.IsNullOrEmpty(fullPath) || !File.Exists(fullPath))
             return false;
 
+#if UNITY_EDITOR        
+        if (fullPath.IsRegularAssetPath()) {
+            return UpdateTextureAsRegularAssetInEditor(fullPath, m_primaryImageIndex);
+        }
+#endif        
+        
+        
         ImageLoader.GetImageDataInto(fullPath,StreamingImageSequenceConstants.IMAGE_TYPE_FULL,out ImageData imageData);
         if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS != imageData.ReadStatus)
             return false;
@@ -248,11 +265,15 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         return true;
     }
     
+    
 //----------------------------------------------------------------------------------------------------------------------
 
     internal void ContinuePreloadingImages() {
 
         if (null == m_imageFiles || 0== m_imageFiles.Count)
+            return;
+
+        if (m_folder.IsRegularAssetPath())
             return;
 
         const int NUM_IMAGES = 2;
@@ -312,20 +333,40 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     
 //---------------------------------------------------------------------------------------------------------------------
-    Texture2D UpdateTexture(ImageData readResult, int index) {
+    Texture2D UpdateTexture(ImageData imageData, int index) {
         if (m_texture.IsNullRef()) {
-            m_texture = readResult.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
+            m_texture = imageData.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
         }
 
         if (m_lastCopiedImageIndex == index)
             return m_texture;
 
         m_texture.name = "Full: " + m_imageFiles[index].GetName();
-        readResult.CopyBufferToTexture(m_texture);
-        UpdateResolution(ref readResult);                
+        imageData.CopyBufferToTexture(m_texture);
+        UpdateResolution(imageData);                
         m_lastCopiedImageIndex = index;
         return m_texture;
     }
+
+    Texture2D UpdateTexture(Texture2D srcTex, int index) {
+        if (m_texture.IsNullRef()) {
+            m_texture = new Texture2D(srcTex.width, srcTex.height, srcTex.format, false, false) {
+                filterMode = FilterMode.Bilinear,
+                hideFlags  = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor,
+            };
+        }
+
+        if (m_lastCopiedImageIndex == index)
+            return m_texture;
+        
+        m_texture.name = "Full: " + m_imageFiles[index].GetName();
+        Graphics.CopyTexture(srcTex, /*element=*/ 0, /*mip=*/ 0, m_texture, /*element=*/ 0, /*mip=*/0);
+        UpdateResolution(new ImageDimensionInt() { Width = m_texture.width, Height = m_texture.height}) ;
+        m_lastCopiedImageIndex = index;
+        return m_texture;
+        
+    }    
+    
     
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -417,6 +458,19 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     internal static EditorCurveBinding GetTimeCurveBinding() { return m_timeCurveBinding; }
 
 
+    private bool UpdateTextureAsRegularAssetInEditor(string fullPath, int imageIndex) {
+        Assert.IsTrue(fullPath.IsRegularAssetPath());
+            
+        
+        Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
+        Assert.IsNotNull(tex);
+        
+        UpdateTexture(tex, imageIndex);
+        Resources.UnloadAsset(tex);
+        return true;
+        
+    }
+    
 #endif //end #if UNITY_EDITOR        
     
 #endregion
