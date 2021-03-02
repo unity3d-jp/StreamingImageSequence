@@ -3,6 +3,8 @@
 namespace Unity.StreamingImageSequence {
 
     internal static class StreamingImageSequenceConstants {
+
+        internal const string PACKAGE_NAME = "com.unity.streaming-image-sequence";        
         
         public const string DIALOG_HEADER = "StreamingImageSequence";
 
