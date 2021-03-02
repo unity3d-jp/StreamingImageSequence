@@ -334,7 +334,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     
 //---------------------------------------------------------------------------------------------------------------------
     Texture2D UpdateTexture(ImageData imageData, int index) {
-        if (m_texture.IsNullRef()) {
+        if (m_texture.IsNullRef() || !imageData.IsTextureCompatible(m_texture)) {
             m_texture = imageData.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
         }
 
