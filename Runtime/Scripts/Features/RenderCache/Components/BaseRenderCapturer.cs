@@ -99,6 +99,21 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
     /// <param name="err">The error message</param>
     protected void SetErrorMessage(string err) { m_errorMessage = err;}
 
+
+//----------------------------------------------------------------------------------------------------------------------
+    
+#if UNITY_EDITOR    
+    /// <summary>
+    /// Get or create the material for blitting camera's target texture to the screen in the editor
+    /// Default is null: will blit as is.
+    /// </summary>
+    public virtual Material GetOrCreateBlitToScreenEditorMaterialV() {
+        return null;
+    }
+    
+    
+#endif    
+    
 //----------------------------------------------------------------------------------------------------------------------    
 
     private string m_errorMessage;

@@ -239,8 +239,18 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 
         //Show progress in game view
         Texture capturerTex = renderCapturer.GetInternalTexture();
-        RenderCachePlayableAssetEditorConfig editorConfig = renderCachePlayableAsset.GetEditorConfig();
-        GameObject blitterGO  = CreateBlitter(capturerTex, editorConfig.GetUpdateBGColor()); 
+        RenderCachePlayableAssetEditorConfig editorConfig = renderCachePlayableAsset.GetEditorConfig();        
+        BaseTextureBlitter blitter = CreateBlitter(capturerTex);
+        Material blitToScreenMat = renderCapturer.GetOrCreateBlitToScreenEditorMaterialV();
+        if (!blitToScreenMat.IsNullRef()) {
+            blitToScreenMat.SetColor(m_bgColorProperty, editorConfig.GetUpdateBGColor());
+            blitter.SetBlitMaterial(blitToScreenMat);            
+        }
+        
+        GameObject blitterGO = blitter.gameObject;
+        
+        
+        
 
         TimelineClip timelineClip = clipData.GetOwner();
         double timePerFrame = 1.0f / track.timelineAsset.editorSettings.fps;
@@ -348,7 +358,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    private static GameObject CreateBlitter(Texture texToBlit, Color bgColor) {
+    private static BaseTextureBlitter CreateBlitter(Texture texToBlit) {
         GameObject           blitterGO = new GameObject("Blitter");
 
 #if AT_USE_HDRP        
@@ -361,15 +371,8 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 #endif        
         blitter.SetSrcTexture(texToBlit);
         blitter.SetCameraDepth(int.MaxValue);
-
-        //Setup blitMaterial
-        Shader blitShader = AssetDatabase.LoadAssetAtPath<Shader>(SISEditorConstants.TRANSPARENT_BG_COLOR_SHADER_PATH);            
-        Material blitMaterial = new Material(blitShader);
-        blitMaterial.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
-        blitMaterial.SetColor(m_bgColorProperty, bgColor);
-        blitter.SetBlitMaterial(blitMaterial);
         
-        return blitterGO;
+        return blitter;
     } 
     
     
