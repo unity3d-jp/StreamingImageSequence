@@ -73,8 +73,6 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset<RenderCacheCl
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal void SetImageFiles(List<WatchedFileInfo> imageFiles) { m_imageFiles = imageFiles; }
-
     internal RenderCachePlayableAssetEditorConfig GetEditorConfig() { return m_editorConfig;}
     
 //----------------------------------------------------------------------------------------------------------------------
