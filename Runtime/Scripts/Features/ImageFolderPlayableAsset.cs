@@ -144,7 +144,7 @@ internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAs
 
         const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;        
 
-        string fullPath = Path.GetFullPath(Path.Combine(m_folder, m_imageFiles[0].GetName()));
+        string fullPath = GetImageFilePath(0);
         ImageLoader.GetImageDataInto(fullPath,TEX_TYPE, out imageData);
         return fullPath;               
     }
