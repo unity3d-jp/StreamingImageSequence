@@ -66,19 +66,6 @@ internal static class PathUtility {
  
 //----------------------------------------------------------------------------------------------------------------------
 
-    //[TODO-sin: 2020-10-9] Move to anime-toolbox
-    internal static string GenerateUniqueFolder(string folder) {
-        string baseFolder   = folder;
-        int    index        = 1;
-        while (Directory.Exists(folder)) {
-            folder = $"{baseFolder} {index.ToString()}";
-            ++index;
-        }
-                
-        Directory.CreateDirectory(folder);
-        return folder;
-
-    }
     
 }
 
