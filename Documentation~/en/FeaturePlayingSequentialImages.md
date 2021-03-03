@@ -55,17 +55,17 @@ The behaviour of [StreamingImageSequencePlayableAsset](#streamingimagesequencepl
 differs based on the folder where the images are stored.  
 Please refer to the following table for more details.
 
-|                                   | Outside Unity Project                                              | Inside Assets, outside StreamingAssets                 | Inside StreamingAssets|
-| --------------------------------- | ----------------------------------------------- | ------------------------------------------------------ | ------------------ |
-| Tex import time                   | None                                            | Varies according to tex size and tex importer settings | None |       
-| Tex quality                       | RGBA 32 bit, no POT scaling                     | Varies according to tex size and tex importer settings | RGBA 32 bit, no POT scaling |    
-| CPU to GPU tex upload cost        | Everytime the active tex changed                | None                                                   | Everytime the active tex changed |    
-| CPU mem. usage of tex in Editor   | See [Editor Memory Usage](#editor-memory-usage) | None                                                   | See [Editor Memory Usage](#editor-memory-usage) |    
-| CPU mem. usage of tex in Runtime  | Not supported in Runtime                        | Not supported in Runtime                               | Textures up to a certain number of frames in advance are preloaded |    
+|                                   | Outside Unity Project                                                                                    | Inside Assets, outside StreamingAssets                 | Inside StreamingAssets|
+| --------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | ------------------ |
+| Tex import time                   | None                                                                                                     | Varies according to tex size and tex importer settings | None |       
+| Tex quality                       | RGBA 32 bit, no POT scaling                                                                              | Varies according to tex size and tex importer settings | RGBA 32 bit, no POT scaling |    
+| CPU to GPU tex upload cost        | Everytime the active tex changed                                                                         | None                                                   | Everytime the active tex changed |    
+| CPU mem. usage of tex in Editor   | Textures are preloaded as much as possible. See [Editor Memory Usage](#editor-memory-usage) for details. | None                                                   | Textures are preloaded as much as possible. See [Editor Memory Usage](#editor-memory-usage) for details. |    
+| CPU mem. usage of tex in Runtime  | Not supported in Runtime                                                                                 | Not supported in Runtime                               | Textures up to a certain number of frames in advance are preloaded |    
 
 ### Editor Memory Usage
 
-For applicable image folders, StreamingImageSequence allocates CPU memory to preload as many texture as possible, 
+For applicable image folders, StreamingImageSequence allocates CPU memory to preload as many images as possible, 
 ensuring smooth image playback in the Editor.    
 This allocation is set to satisfy the following requirements:
 1. Does not exceed 90% of the total physical memory of the system.
