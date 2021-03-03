@@ -2,6 +2,7 @@
 
 1. [Quick Start](#quick-start)
 1. [Supported Image Formats](#supported-image-formats)
+1. [Folder Tradeoffs](#folder-tradeoffs)
 1. [FrameMarker](#framemarker)
 1. [Gap Extrapolation](#gap-extrapolation)
 1. [Curve Editing](#curve-editing)
@@ -47,6 +48,29 @@ For other ways for importing images, see [ImportingImages](ImportingImages.md).
 | ----------- | ------------------ | ------------------ | ------------------ |
 | png         | :white_check_mark: | :white_check_mark: | :white_check_mark: |       
 | tga         | :white_check_mark: | :white_check_mark: | :white_check_mark: |    
+
+## Folder Tradeoffs
+
+The behaviour of [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
+differs based on the folder where the images are stored.  
+Please refer to the following table for more details.
+
+|                                   | Outside Unity Project                                                                                    | Inside Assets, outside StreamingAssets                 | Inside StreamingAssets|
+| --------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ | ------------------ |
+| Tex import time                   | None                                                                                                     | Varies according to tex size and tex importer settings | None |       
+| Tex quality                       | RGBA 32 bit, no POT scaling                                                                              | Varies according to tex size and tex importer settings | RGBA 32 bit, no POT scaling |    
+| CPU to GPU tex upload cost        | Everytime the active tex changed                                                                         | None                                                   | Everytime the active tex changed |    
+| CPU mem. usage of tex in Editor   | Textures are preloaded as much as possible. See [Editor Memory Usage](#editor-memory-usage) for details. | None                                                   | Textures are preloaded as much as possible. See [Editor Memory Usage](#editor-memory-usage) for details. |    
+| CPU mem. usage of tex in Runtime  | Not supported in Runtime                                                                                 | Not supported in Runtime                               | Textures up to a certain number of frames in advance are preloaded |    
+
+### Editor Memory Usage
+
+For applicable image folders, StreamingImageSequence allocates CPU memory to preload as many images as possible, 
+ensuring smooth image playback in the Editor.    
+This allocation is set to satisfy the following requirements:
+1. Does not exceed 90% of the total physical memory of the system.
+2. Does not exceed the maximum amount of memory, which can be configured in [Preferences](Preferences.md).
+
 
 ## FrameMarker
 

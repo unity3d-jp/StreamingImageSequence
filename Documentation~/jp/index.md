@@ -31,12 +31,6 @@ Streaming Image Sequence は、Unity 2D Sprite を作成せずに Unity の Time
 
    ![FaderDemo](../images/FaderDemo.gif)
 
-## エディタでのメモリ使用量
-
-StreamingImageSequence は、スムーズな画像再生を提供するために、エディタで物理メモリを確保します。  
-この確保は、次の要件を満たすように設定されています:
-1. システムの物理メモリの合計の 90％ を超えない。
-1. [環境設定](Preferences.md)で設定できるメモリの最大量を超えない。
 
 
 ## その他の言語
