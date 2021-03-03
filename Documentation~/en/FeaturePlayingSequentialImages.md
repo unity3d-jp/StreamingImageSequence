@@ -65,7 +65,7 @@ Please refer to the following table for more details.
 
 ### Editor Memory Usage
 
-When applicable, StreamingImageSequence allocates CPU memory to preload as many texture as possible, 
+For applicable image folders, StreamingImageSequence allocates CPU memory to preload as many texture as possible, 
 ensuring smooth image playback in the Editor.    
 This allocation is set to satisfy the following requirements:
 1. Does not exceed 90% of the total physical memory of the system.
