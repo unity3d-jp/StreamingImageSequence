@@ -16,9 +16,6 @@ namespace Unity.StreamingImageSequence {
 /// </summary>
 [System.Serializable]
 internal class RenderCachePlayableAsset : ImageFolderPlayableAsset<RenderCacheClipData>, ITimelineClipAsset, ISerializationCallbackReceiver {
-    protected override void ReloadInternalInEditorV() {
-        ResetResolution();            
-    }        
     
 //----------------------------------------------------------------------------------------------------------------------
     public void OnGraphStart(Playable playable) {
@@ -78,13 +75,15 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset<RenderCacheCl
 //----------------------------------------------------------------------------------------------------------------------
     
 #if UNITY_EDITOR
+    protected override void ReloadInternalInEditorV() {
+        ResetResolution();            
+    }        
     protected override string[] GetSupportedImageFilePatternsV() { return m_imageFilePatterns; }
     
-#endif
+#endif //UNITY_EDITOR
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    //[TODO-sin: 2020-11-4] Obsolete 
     [HideInInspector][SerializeField] private Color m_updateBGColor = Color.black;
     
     [HideInInspector][SerializeField] private int m_version = (int) RenderCachePlayableAssetVersion.INITIAL_0_0;
