@@ -18,7 +18,7 @@ namespace Unity.StreamingImageSequence {
 internal class PencilLineRenderCapturer : BaseRenderCapturer {
 
 
-    public override bool CanCapture() {
+    public override bool CanCaptureV() {
 #if AT_USE_PENCILLINE
         if (null == m_pencilLineEffect) {
             SetErrorMessage("PencilLineEffect is not set on " + gameObject.name);
@@ -42,7 +42,7 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
     }
     
     /// <inheritdoc/>
-    public override IEnumerator BeginCapture() {
+    public override IEnumerator BeginCaptureV() {
 #if AT_USE_PENCILLINE
 
         Assert.IsNotNull(m_pencilLineEffect);
@@ -66,7 +66,7 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
     }
 
     /// <inheritdoc/>
-    public override void EndCapture() {        
+    public override void EndCaptureV() {        
 #if AT_USE_PENCILLINE
         Assert.IsNotNull(m_pencilLineEffect);
         m_pencilLineEffect.enabled = m_prevPencilLineEffectEnabled;
@@ -78,7 +78,7 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
 //----------------------------------------------------------------------------------------------------------------------
 
     /// <inheritdoc/>
-    protected override RenderTexture UpdateRenderTexture() {
+    protected override RenderTexture UpdateRenderTextureV() {
 #if AT_USE_PENCILLINE
         Graphics.Blit(m_pencilTex, m_rt);
 #endif
