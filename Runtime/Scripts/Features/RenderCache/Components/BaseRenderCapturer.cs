@@ -15,20 +15,20 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
     /// Can the capturer perform the capturing process
     /// </summary>
     /// <returns>True if capturing can be executed, false otherwise</returns>
-    public abstract bool CanCapture();
+    public abstract bool CanCaptureV();
 
     
     /// <summary>
     /// Prepare the component for capturing. May require several frames
     /// </summary>
     /// <returns>The current position of the begin process</returns>
-    public abstract IEnumerator BeginCapture();
+    public abstract IEnumerator BeginCaptureV();
 
 
     /// <summary>
     /// Clean up the component after capturing
     /// </summary>
-    public abstract void EndCapture();
+    public abstract void EndCaptureV();
 
     /// <summary>
     /// Gets the internal texture used for the capturing process
@@ -45,7 +45,7 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
         
         RenderTexture prevRenderTexture = RenderTexture.active;
 
-        RenderTexture rt = UpdateRenderTexture();
+        RenderTexture rt = UpdateRenderTextureV();
         RenderTexture.active = rt;
 
         Texture2D tempTex = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
@@ -71,7 +71,7 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
     /// Updates the render texture used for the capturing process
     /// </summary>
     /// <returns>The updated render texture</returns>
-    protected abstract RenderTexture UpdateRenderTexture();
+    protected abstract RenderTexture UpdateRenderTextureV();
     
     
     /// <summary>

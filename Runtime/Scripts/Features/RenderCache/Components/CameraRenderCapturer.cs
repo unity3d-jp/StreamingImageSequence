@@ -11,7 +11,7 @@ internal class CameraRenderCapturer : BaseRenderCapturer {
 
 
     /// <inheritdoc/>
-    public override bool CanCapture() {
+    public override bool CanCaptureV() {
         if (null == m_camera) {
             SetErrorMessage("Camera has not been assigned to " + this.name);
             return false;
@@ -27,7 +27,7 @@ internal class CameraRenderCapturer : BaseRenderCapturer {
     }
 
     /// <inheritdoc/>
-    public override IEnumerator BeginCapture() {
+    public override IEnumerator BeginCaptureV() {
 
         Assert.IsNotNull(m_camera);
         m_origCameraTargetTexture = m_camera.targetTexture;
@@ -41,14 +41,14 @@ internal class CameraRenderCapturer : BaseRenderCapturer {
     }
 
     /// <inheritdoc/>
-    public override void EndCapture() {        
+    public override void EndCaptureV() {        
         m_camera.targetTexture = m_origCameraTargetTexture;
         ReleaseRenderTexture();
     }
     
     /// <inheritdoc/>
     [CanBeNull]
-    protected override RenderTexture UpdateRenderTexture() {
+    protected override RenderTexture UpdateRenderTextureV() {
         return m_rt;
     }
 

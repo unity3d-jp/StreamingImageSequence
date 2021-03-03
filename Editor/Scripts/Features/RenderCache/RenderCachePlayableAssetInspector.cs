@@ -223,7 +223,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         }
 
         //Check if we can capture
-        bool canCapture = renderCapturer.CanCapture();
+        bool canCapture = renderCapturer.CanCaptureV();
         if (!canCapture) {
             EditorUtility.DisplayDialog("Streaming Image Sequence",
                 renderCapturer.GetLastErrorMessage(),
@@ -232,7 +232,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         }
 
         //begin capture
-        IEnumerator beginCapture = renderCapturer.BeginCapture();
+        IEnumerator beginCapture = renderCapturer.BeginCaptureV();
         while (beginCapture.MoveNext()) {
             yield return beginCapture.Current;
         }
@@ -345,7 +345,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                
         //Cleanup
         EditorUtility.ClearProgressBar();
-        renderCapturer.EndCapture();
+        renderCapturer.EndCaptureV();
         ObjectUtility.Destroy(blitterGO);        
         AssetDatabase.Refresh();
         renderCachePlayableAsset.Reload();;
