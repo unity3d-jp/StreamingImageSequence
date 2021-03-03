@@ -16,7 +16,7 @@ namespace Unity.StreamingImageSequence {
 /// </summary>
 [System.Serializable]
 internal class RenderCachePlayableAsset : ImageFolderPlayableAsset<RenderCacheClipData>, ITimelineClipAsset, ISerializationCallbackReceiver {
-    protected override void ReloadInternalV() {
+    protected override void ReloadInternalInEditorV() {
         ResetResolution();            
     }        
     

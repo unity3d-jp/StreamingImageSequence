@@ -171,7 +171,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     }
 
 //----------------------------------------------------------------------------------------------------------------------        
-    protected override void ReloadInternalV() {
+    protected override void ReloadInternalInEditorV() {
         m_lastCopiedImageIndex = -1;
         ResetResolution();
         RequestLoadImage(m_primaryImageIndex);
