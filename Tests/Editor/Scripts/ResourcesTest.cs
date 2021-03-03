@@ -10,8 +10,8 @@ internal class ResourcesTest {
     
     [Test]
     public void VerifyShaders() {
-        Assert.IsTrue(IsShaderValid(SISEditorConstants.TRANSPARENT_BG_COLOR_SHADER_PATH));
-        Assert.IsTrue(IsShaderValid(SISEditorConstants.LINEAR_TO_GAMMA_SHADER_PATH));
+        Assert.IsTrue(IsShaderValid(StreamingImageSequenceConstants.TRANSPARENT_BG_COLOR_SHADER_PATH));
+        Assert.IsTrue(IsShaderValid(StreamingImageSequenceConstants.LINEAR_TO_GAMMA_SHADER_PATH));
     }
     
 //----------------------------------------------------------------------------------------------------------------------

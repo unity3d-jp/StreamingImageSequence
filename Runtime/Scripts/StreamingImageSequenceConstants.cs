@@ -1,6 +1,11 @@
-﻿namespace Unity.StreamingImageSequence {
+﻿using System.IO;
+
+namespace Unity.StreamingImageSequence {
 
     internal static class StreamingImageSequenceConstants {
+
+        internal const string PACKAGE_NAME = "com.unity.streaming-image-sequence";        
+        
         public const string DIALOG_HEADER = "StreamingImageSequence";
 
         public const int READ_STATUS_UNAVAILABLE   = -1;
@@ -19,6 +24,12 @@
 
         internal const string MENU_PATH = "Assets/Streaming Image Sequence/";
 
+        
+        
+        private const string SHADERS_PATH = "Packages/com.unity.streaming-image-sequence/Runtime/Shaders";
+        internal static readonly string TRANSPARENT_BG_COLOR_SHADER_PATH = Path.Combine(SHADERS_PATH, "TransparentBGColor.shader");
+        internal static readonly string LINEAR_TO_GAMMA_SHADER_PATH = Path.Combine(SHADERS_PATH, "LinearToGamma.shader");
+        
 
     }
 

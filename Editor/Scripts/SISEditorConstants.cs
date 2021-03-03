@@ -3,9 +3,6 @@
 namespace Unity.StreamingImageSequence.Editor {
 
 internal static class SISEditorConstants {
-    internal const string PACKAGE_NAME = "com.unity.streaming-image-sequence";
-    
-    private const string SHADERS_PATH = "Packages/com.unity.streaming-image-sequence/Runtime/Shaders";
 
     private const string USER_SETTINGS_PATH = "Packages/com.unity.streaming-image-sequence/Editor/UIElements/UserSettings";
     
@@ -20,8 +17,6 @@ internal static class SISEditorConstants {
     internal const string SHORTCUT_LOCK_AND_EDIT_FRAME = "StreamingImageSequence/Lock and Edit Frame";
     internal const string SHORTCUT_UPDATE_RENDER_CACHE = "StreamingImageSequence/Update Render Cache";
     
-    internal static readonly string TRANSPARENT_BG_COLOR_SHADER_PATH = Path.Combine(SHADERS_PATH, "TransparentBGColor.shader");
-    internal static readonly string LINEAR_TO_GAMMA_SHADER_PATH = Path.Combine(SHADERS_PATH, "LinearToGamma.shader");
     
         
 

@@ -19,10 +19,10 @@ internal static class PackageEventSubscriber {
     
     static void OnPackagesRegistered(PackageRegistrationEventArgs packageRegistrationEventArgs) {
        
-        PackageInfo curPackage = packageRegistrationEventArgs.removed.FindPackage(SISEditorConstants.PACKAGE_NAME);
+        PackageInfo curPackage = packageRegistrationEventArgs.removed.FindPackage(StreamingImageSequenceConstants.PACKAGE_NAME);
 
         if (null == curPackage) {
-            curPackage = packageRegistrationEventArgs.changedTo.FindPackage(SISEditorConstants.PACKAGE_NAME);
+            curPackage = packageRegistrationEventArgs.changedTo.FindPackage(StreamingImageSequenceConstants.PACKAGE_NAME);
         }
 
         if (null == curPackage) {

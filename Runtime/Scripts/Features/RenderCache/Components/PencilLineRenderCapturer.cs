@@ -5,7 +5,10 @@ using UnityEngine.Assertions;
 
 #if AT_USE_PENCILLINE
 using Pencil_4;
+#endif
 
+#if UNITY_EDITOR
+using UnityEditor;
 #endif
 
 namespace Unity.StreamingImageSequence {
@@ -82,12 +85,34 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
         return m_rt;
     }
     
+//----------------------------------------------------------------------------------------------------------------------
+
+#if UNITY_EDITOR
+    
+    public override Material GetOrCreateBlitToScreenEditorMaterialV() {
+        if (null != m_blitToScreenEditorMaterial)
+            return m_blitToScreenEditorMaterial;
+        
+        //Setup blitMaterial
+        Shader blitShader = AssetDatabase.LoadAssetAtPath<Shader>(StreamingImageSequenceConstants.TRANSPARENT_BG_COLOR_SHADER_PATH);            
+        m_blitToScreenEditorMaterial = new Material(blitShader);
+        m_blitToScreenEditorMaterial.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
+        return m_blitToScreenEditorMaterial;
+    }
+    
+
+#endif //UNITY_EDITOR    
     
 //----------------------------------------------------------------------------------------------------------------------
+
 #if AT_USE_PENCILLINE
     [SerializeField] private PencilLineEffect m_pencilLineEffect        = null;
     private                  Texture2D        m_pencilTex               = null;
     private                  bool             m_prevPencilLineEffectEnabled = false;
+#endif
+
+#if UNITY_EDITOR
+    private static Material m_blitToScreenEditorMaterial = null;
 #endif
 
 

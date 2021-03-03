@@ -163,7 +163,7 @@ internal static class PreviewUtility {
         if (null != m_linearToGammaMaterial)
             return m_linearToGammaMaterial;
         
-        Shader shader = AssetDatabase.LoadAssetAtPath<Shader>(SISEditorConstants.LINEAR_TO_GAMMA_SHADER_PATH);
+        Shader shader = AssetDatabase.LoadAssetAtPath<Shader>(StreamingImageSequenceConstants.LINEAR_TO_GAMMA_SHADER_PATH);
         m_linearToGammaMaterial = new Material(shader); 
         m_linearToGammaMaterial.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
         return m_linearToGammaMaterial;
