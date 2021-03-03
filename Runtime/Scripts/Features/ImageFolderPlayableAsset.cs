@@ -31,10 +31,7 @@ internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAs
         
     }
     
-//----------------------------------------------------------------------------------------------------------------------
-
-    protected abstract void ReloadInternalV();
-    
+   
 //----------------------------------------------------------------------------------------------------------------------
     
 #region Resolution    
@@ -192,10 +189,12 @@ internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAs
         }
 
         m_imageFiles = newImageFiles;
-        ReloadInternalV();
+        ReloadInternalInEditorV();
         EditorUtility.SetDirty(this);
         
     }
+
+    protected abstract void ReloadInternalInEditorV();
     
 
     internal List<WatchedFileInfo> FindImages(string path) {

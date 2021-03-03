@@ -171,13 +171,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     }
 
 //----------------------------------------------------------------------------------------------------------------------        
-    protected override void ReloadInternalV() {
-        m_lastCopiedImageIndex = -1;
-        ResetResolution();
-        RequestLoadImage(m_primaryImageIndex);
-        
-    }        
-//----------------------------------------------------------------------------------------------------------------------        
     
     /// <inheritdoc/>
     public ClipCaps clipCaps {
@@ -435,7 +428,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 #region Unity Editor code
 
 #if UNITY_EDITOR         
-    internal void InitFolder(string folder, List<WatchedFileInfo> imageFiles, ImageDimensionInt res = new ImageDimensionInt()) 
+    internal void InitFolderInEditor(string folder, List<WatchedFileInfo> imageFiles, ImageDimensionInt res = new ImageDimensionInt()) 
     {
         m_folder     = folder;
         m_imageFiles = imageFiles;
@@ -450,6 +443,13 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         ResetTexture();
         EditorUtility.SetDirty(this);
     }
+
+    protected override void ReloadInternalInEditorV() {
+        m_lastCopiedImageIndex = -1;
+        ResetResolution();
+        RequestLoadImage(m_primaryImageIndex);
+        
+    }        
     
     internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
     
