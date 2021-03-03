@@ -52,7 +52,8 @@ For other ways for importing images, see [ImportingImages](ImportingImages.md).
 ## Folder Tradeoffs
 
 The behaviour of [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
-differs based on where the images are stored. Please refer to the following table for more details.
+differs based on the folder where the images are stored.  
+Please refer to the following table for more details.
 
 |                                   | Outside Unity Project                      | Inside Assets, outside StreamingAssets                 | Inside StreamingAssets|
 | --------------------------------- | ------------------------------------------ | ------------------------------------------------------ | ------------------ |
