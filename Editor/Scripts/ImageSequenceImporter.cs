@@ -106,7 +106,7 @@ namespace Unity.StreamingImageSequence.Editor {
                 );
             }
             
-            playableAsset.InitFolder(destFolder, param.ImageFiles);
+            playableAsset.InitFolderInEditor(destFolder, param.ImageFiles);
             if (param.CopyToStreamingAssets) {
                 AssetDatabase.Refresh();
             }

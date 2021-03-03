@@ -428,7 +428,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 #region Unity Editor code
 
 #if UNITY_EDITOR         
-    internal void InitFolder(string folder, List<WatchedFileInfo> imageFiles, ImageDimensionInt res = new ImageDimensionInt()) 
+    internal void InitFolderInEditor(string folder, List<WatchedFileInfo> imageFiles, ImageDimensionInt res = new ImageDimensionInt()) 
     {
         m_folder     = folder;
         m_imageFiles = imageFiles;
