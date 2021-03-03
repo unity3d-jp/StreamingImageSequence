@@ -62,13 +62,6 @@ Streaming Image Sequence は現在プレビューパッケージとして存在�
    ![FaderDemo](Documentation~/images/FaderDemo.gif)
 
 
-## エディタでのメモリ使用量
-
-StreamingImageSequence は、スムーズな画像再生を提供するために、エディタで物理メモリを確保します。  
-この確保は、次の要件を満たすように設定されています:
-1. システムの物理メモリの合計の 90％ を超えない。
-1. [環境設定](Documentation~/jp/Preferences.md)で設定できるメモリの最大量を超えない。
-
 ## プラグイン
 * [ビルド](Plugins~/Docs/en/BuildPlugins.md)
 
