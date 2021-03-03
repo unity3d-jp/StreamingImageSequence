@@ -32,9 +32,6 @@ namespace Unity.StreamingImageSequence.Editor {
             //Estimate the asset name. Use the filename without numbers at the end
             string assetName =  EstimateAssetName(relFilePaths[0].GetName());
 
-            // set dest folder
-            string streamingAssetsPath = AssetUtility.NormalizeAssetPath( Application.streamingAssetsPath);
-
             //Set importer param
             ImageFileImporterParam importerParam = new ImageFileImporterParam {
                 strSrcFolder = folder,
@@ -43,13 +40,13 @@ namespace Unity.StreamingImageSequence.Editor {
                 TargetAsset = targetAsset
             };
 
-
-            //Import immediately if the assets are already under StreamingAssets
-            if (folder.StartsWith(streamingAssetsPath) || !askToCopy) {
+            //Import immediately if the assets are already under Assets
+            if (folder =="Assets" || folder.StartsWith("Assets/") || !askToCopy) {
                 importerParam.strDstFolder = importerParam.strSrcFolder;
                 importerParam.CopyToStreamingAssets = false;
                 ImageSequenceImporter.Import(importerParam);
             } else {
+                string streamingAssetsPath = AssetUtility.NormalizeAssetPath( Application.streamingAssetsPath);
                 importerParam.strDstFolder = Path.Combine(streamingAssetsPath, assetName).Replace("\\", "/");
                 ImageSequenceImportWindow.Show(importerParam);
             }
