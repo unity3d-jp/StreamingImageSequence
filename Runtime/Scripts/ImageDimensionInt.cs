@@ -9,6 +9,9 @@
             return Width / (float) Height;
         }
 
+        public override string ToString() {
+            return $"({Width}, {Height})";
+        }
     }
 
 } //end namespace

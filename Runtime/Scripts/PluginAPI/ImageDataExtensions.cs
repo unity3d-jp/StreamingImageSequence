@@ -23,6 +23,15 @@ internal static class ImageDataExtensions {
 
         return tex;
     }
+
+//----------------------------------------------------------------------------------------------------------------------
+    
+    public static bool IsTextureCompatible(this ImageData imageData, Texture2D tex) {
+        return imageData.Width == tex.width && imageData.Height == tex.height
+            && ((imageData.Format == StreamingImageSequenceConstants.IMAGE_FORMAT_BGRA32 && tex.format == TextureFormat.BGRA32) 
+                || tex.format == TextureFormat.RGBA32);
+
+    }
     
 //----------------------------------------------------------------------------------------------------------------------
     

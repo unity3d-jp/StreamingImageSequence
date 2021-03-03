@@ -334,7 +334,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     
 //---------------------------------------------------------------------------------------------------------------------
     Texture2D UpdateTexture(ImageData imageData, int index) {
-        if (m_texture.IsNullRef()) {
+        if (m_texture.IsNullRef() || !imageData.IsTextureCompatible(m_texture)) {
             m_texture = imageData.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
         }
 
@@ -349,7 +349,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     }
 
     Texture2D UpdateTexture(Texture2D srcTex, int index) {
-        if (m_texture.IsNullRef()) {
+        if (m_texture.IsNullRef() || m_texture.width!=srcTex.width || m_texture.height!=srcTex.height 
+            || m_texture.format!=srcTex.format) 
+        {
             m_texture = new Texture2D(srcTex.width, srcTex.height, srcTex.format, false, false) {
                 filterMode = FilterMode.Bilinear,
                 hideFlags  = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor,
