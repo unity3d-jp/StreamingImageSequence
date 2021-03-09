@@ -32,7 +32,7 @@ internal class RenderCachePlayableAssetTest {
     
 //----------------------------------------------------------------------------------------------------------------------                
     [UnityTest]
-    public IEnumerator UpdatePNGRenderCacheInStreamingAssets() {
+    public IEnumerator UpdateRenderCachePNGInStreamingAssets() {
         PlayableDirector director   = EditorUtilityTest.NewSceneWithDirector();
         TimelineClip     clip       = EditorUtilityTest.CreateTestRenderCacheTimelineClip(director);
         TimelineAsset timelineAsset = director.playableAsset as TimelineAsset;        
