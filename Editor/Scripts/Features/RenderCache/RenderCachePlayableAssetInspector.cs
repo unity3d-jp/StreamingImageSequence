@@ -284,7 +284,14 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         //Store old files that has the same pattern
         string[] existingFiles = Directory.GetFiles (outputFolder, $"*.png");
         HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
-       
+
+        RenderCacheOutputFormat outputFormat = renderCachePlayableAsset.GetOutputFormat();
+        string                  outputExt    = null;
+        switch (outputFormat) {
+            case RenderCacheOutputFormat.EXR: outputExt = "exr"; break;
+            default:                          outputExt = "png"; break;;
+        }
+        
         bool cancelled = false;
         while (!cancelled) {            
             
@@ -296,7 +303,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             if (!captureAllFrames && fileCounter > editorConfig.GetCaptureEndFrame())
                 break;            
             
-            string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
+            string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.{outputExt}";
             string outputFilePath = Path.Combine(outputFolder, fileName);
 
             SISPlayableFrame playableFrame = clipData.GetPlayableFrame(fileCounter);                
@@ -320,7 +327,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                 
                 //Unload texture because it may be overwritten
                 StreamingImageSequencePlugin.UnloadImageAndNotify(outputFilePath);
-                renderCapturer.CaptureToFile(outputFilePath);
+                renderCapturer.CaptureToFile(outputFilePath, outputFormat);
                 
             } 
             Assert.IsTrue(File.Exists(outputFilePath));
