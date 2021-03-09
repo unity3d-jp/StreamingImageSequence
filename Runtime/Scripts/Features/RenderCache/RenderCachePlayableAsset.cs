@@ -71,6 +71,9 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset<RenderCacheCl
 //----------------------------------------------------------------------------------------------------------------------
 
     internal RenderCachePlayableAssetEditorConfig GetEditorConfig() { return m_editorConfig;}
+
+    internal RenderCacheOutputFormat GetOutputFormat()                  { return m_outputFormat;        }
+    internal void SetOutputFormat(RenderCacheOutputFormat outputFormat) { m_outputFormat = outputFormat;}
     
 //----------------------------------------------------------------------------------------------------------------------
     
@@ -84,7 +87,8 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset<RenderCacheCl
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    [HideInInspector][SerializeField] private Color m_updateBGColor = Color.black;
+    [HideInInspector][SerializeField] private RenderCacheOutputFormat m_outputFormat  = RenderCacheOutputFormat.PNG;
+    [HideInInspector][SerializeField] private Color                   m_updateBGColor = Color.black;
     
     [HideInInspector][SerializeField] private int m_version = (int) RenderCachePlayableAssetVersion.INITIAL_0_0;
     [HideInInspector][SerializeField] private RenderCachePlayableAssetEditorConfig m_editorConfig;

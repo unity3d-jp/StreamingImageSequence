@@ -86,6 +86,14 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             GUIUtility.ExitGUI();
         }
         
+        //Output Format
+        EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Output Format", m_asset.GetOutputFormat(),
+            /*guiFunc=*/ (RenderCacheOutputFormat prevOutputFormat)=> {
+                return (RenderCacheOutputFormat) EditorGUILayout.EnumPopup("OutputFormat:", prevOutputFormat);;
+            }, 
+            /*updateFunc=*/ (RenderCacheOutputFormat newOutputFormat) => { m_asset.SetOutputFormat(newOutputFormat); }
+        );
+                
         RenderCacheClipData clipData = m_asset.GetBoundClipData();
         if (null == clipData)
             return;
@@ -488,12 +496,13 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
     }        
 
 //----------------------------------------------------------------------------------------------------------------------
-
+ 
     
-    private                 RenderCachePlayableAsset m_asset                      = null;
-    private static          bool                     m_lockMode                   = false;
+    private                 RenderCachePlayableAsset m_asset                       = null;
+    private static          bool                     m_lockMode                    = false;
     private static          PlayableFrameClipData    m_inspectedClipDataForLocking = null;
-    private static readonly int                      m_bgColorProperty            = Shader.PropertyToID("_BGColor");
+    private static readonly int                      m_bgColorProperty             = Shader.PropertyToID("_BGColor");
+    
 }
 
 }
