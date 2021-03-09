@@ -105,8 +105,8 @@ internal class EditorUtilityTest {
     
 
 //----------------------------------------------------------------------------------------------------------------------                
-    internal static TimelineClip CreateTestTimelineClip(PlayableDirector director) {
-        string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempTimelineForTestRunner.playable");
+    internal static TimelineClip CreateTestSISTimelineClip(PlayableDirector director) {
+        string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempSISTimelineForTestRunner.playable");
 
         //Create timeline asset
         TimelineAsset timelineAsset = ScriptableObject.CreateInstance<TimelineAsset>();
