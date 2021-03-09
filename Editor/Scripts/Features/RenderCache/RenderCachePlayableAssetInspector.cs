@@ -87,9 +87,9 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         }
         
         //Output Format
-        EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Output Format", m_asset.GetOutputFormat(),
+        EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "RenderCache Output Format", m_asset.GetOutputFormat(),
             /*guiFunc=*/ (RenderCacheOutputFormat prevOutputFormat)=> {
-                return (RenderCacheOutputFormat) EditorGUILayout.EnumPopup("OutputFormat:", prevOutputFormat);;
+                return (RenderCacheOutputFormat) EditorGUILayout.EnumPopup("Output Format:", prevOutputFormat);;
             }, 
             /*updateFunc=*/ (RenderCacheOutputFormat newOutputFormat) => { m_asset.SetOutputFormat(newOutputFormat); }
         );
