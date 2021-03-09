@@ -41,6 +41,7 @@ internal class RenderCachePlayableAssetTest {
         Assert.IsNotNull(timelineAsset);
         Assert.IsNotNull(renderCachePlayableAsset);
         Assert.IsNotNull(track);        
+        Assert.IsNotNull(Camera.main);        
         yield return null;
 
         clip.duration = (1.0f / timelineAsset.editorSettings.fps);
