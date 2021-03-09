@@ -1,6 +1,9 @@
 ﻿namespace Unity.StreamingImageSequence {
 
-internal enum RenderCacheOutputFormat {
+/// <summary>
+/// The supported formats for RenderCache output
+/// </summary>
+public enum RenderCacheOutputFormat {
     PNG = 0,
     EXR = 1,
 }
