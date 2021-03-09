@@ -499,6 +499,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     private static readonly string[] m_imageFilePatterns = {
         "*.png",
+        "*.exr",
         "*.tga"             
     };
     

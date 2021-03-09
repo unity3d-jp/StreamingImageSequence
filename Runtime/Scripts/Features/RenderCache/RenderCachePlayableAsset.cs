@@ -97,6 +97,7 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset<RenderCacheCl
 #if UNITY_EDITOR
     private static readonly string[] m_imageFilePatterns = {
         "*.png",
+        "*.exr",
     };        
 #endif
     
