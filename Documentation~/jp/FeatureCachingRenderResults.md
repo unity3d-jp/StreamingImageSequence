@@ -76,6 +76,8 @@ RenderCapturer は実際のキャプチャと画像ファイルへの描画を�
   出力される画像の解像度。このプロパティを変更するために、Game ウィンドウのサイズを変更します。
 * **Cache Output folder**  
   描画の結果のキャッシュを保存するための場所。
+* **Output Format**  
+  出力画像のフォーマット。
 * **Show Frame Markers**  
   キャプチャされるフレームを指定するための[フレームマーカ](FrameMarkers.md)。 
 * **Lock Frames**  
