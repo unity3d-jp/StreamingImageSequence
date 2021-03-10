@@ -86,6 +86,14 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             GUIUtility.ExitGUI();
         }
         
+        //Output Format
+        EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "RenderCache Output Format", m_asset.GetOutputFormat(),
+            /*guiFunc=*/ (RenderCacheOutputFormat prevOutputFormat)=> {
+                return (RenderCacheOutputFormat) EditorGUILayout.EnumPopup("Output Format:", prevOutputFormat);;
+            }, 
+            /*updateFunc=*/ (RenderCacheOutputFormat newOutputFormat) => { m_asset.SetOutputFormat(newOutputFormat); }
+        );
+                
         RenderCacheClipData clipData = m_asset.GetBoundClipData();
         if (null == clipData)
             return;
@@ -276,7 +284,14 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         //Store old files that has the same pattern
         string[] existingFiles = Directory.GetFiles (outputFolder, $"*.png");
         HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
-       
+
+        RenderCacheOutputFormat outputFormat = renderCachePlayableAsset.GetOutputFormat();
+        string                  outputExt    = null;
+        switch (outputFormat) {
+            case RenderCacheOutputFormat.EXR: outputExt = "exr"; break;
+            default:                          outputExt = "png"; break;;
+        }
+        
         bool cancelled = false;
         while (!cancelled) {            
             
@@ -288,7 +303,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             if (!captureAllFrames && fileCounter > editorConfig.GetCaptureEndFrame())
                 break;            
             
-            string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.png";
+            string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.{outputExt}";
             string outputFilePath = Path.Combine(outputFolder, fileName);
 
             SISPlayableFrame playableFrame = clipData.GetPlayableFrame(fileCounter);                
@@ -312,7 +327,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                 
                 //Unload texture because it may be overwritten
                 StreamingImageSequencePlugin.UnloadImageAndNotify(outputFilePath);
-                renderCapturer.CaptureToFile(outputFilePath);
+                renderCapturer.CaptureToFile(outputFilePath, outputFormat);
                 
             } 
             Assert.IsTrue(File.Exists(outputFilePath));
@@ -488,12 +503,13 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
     }        
 
 //----------------------------------------------------------------------------------------------------------------------
-
+ 
     
-    private                 RenderCachePlayableAsset m_asset                      = null;
-    private static          bool                     m_lockMode                   = false;
+    private                 RenderCachePlayableAsset m_asset                       = null;
+    private static          bool                     m_lockMode                    = false;
     private static          PlayableFrameClipData    m_inspectedClipDataForLocking = null;
-    private static readonly int                      m_bgColorProperty            = Shader.PropertyToID("_BGColor");
+    private static readonly int                      m_bgColorProperty             = Shader.PropertyToID("_BGColor");
+    
 }
 
 }

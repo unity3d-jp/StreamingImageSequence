@@ -40,20 +40,30 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
     /// Capture the contents of RenderTexture into file
     /// </summary>
     /// <param name="outputFilePath">The path of the file</param>
-    public void CaptureToFile(string outputFilePath) {
-        
-        
+    /// <param name="outputFormat">The output file format</param>
+    public void CaptureToFile(string outputFilePath, RenderCacheOutputFormat outputFormat = RenderCacheOutputFormat.PNG) 
+    {
         RenderTexture prevRenderTexture = RenderTexture.active;
 
         RenderTexture rt = UpdateRenderTextureV();
         RenderTexture.active = rt;
 
-        Texture2D tempTex = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
+        TextureFormat textureFormat = TextureFormat.RGBA32;
+        if (RenderCacheOutputFormat.EXR == outputFormat)
+            textureFormat = TextureFormat.RGBAFloat;
+                    
+        Texture2D tempTex = new Texture2D(rt.width, rt.height, textureFormat , false);
         tempTex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0, false);
         tempTex.Apply();
 
         try {
-            File.WriteAllBytes(outputFilePath, tempTex.EncodeToPNG());
+            byte[] encodedData = null;
+            switch (outputFormat) {
+                case RenderCacheOutputFormat.EXR: encodedData = tempTex.EncodeToEXR(); break;
+                default:                          encodedData = tempTex.EncodeToPNG(); break;
+            }
+            
+            File.WriteAllBytes(outputFilePath, encodedData);
         } catch (Exception e) {
             Debug.LogError($"[SIS] Can't write to file: {outputFilePath}." + Environment.NewLine 
                 + $"Error: {e.ToString()}"); 

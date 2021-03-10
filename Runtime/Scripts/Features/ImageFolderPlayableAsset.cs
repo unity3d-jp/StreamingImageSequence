@@ -52,8 +52,21 @@ internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAs
             || null == m_imageFiles || m_imageFiles.Count <= 0)
             return;
 
-        //Get the first image to update the resolution.    
-        string fullPath = GetFirstImageData(out ImageData imageData);
+        //Get the first image to update the resolution.       
+        string fullPath = GetImageFilePath(0);
+        
+        //Try to do direct image loading
+        if (m_folder.IsRegularAssetPath()) {        
+            Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
+            if (null != tex) {
+                UpdateResolution(tex);
+                Resources.UnloadAsset(tex);                
+                return;
+            }
+        }
+        
+        const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;        
+        ImageLoader.GetImageDataInto(fullPath,TEX_TYPE, out ImageData imageData);
         switch (imageData.ReadStatus) {
             case StreamingImageSequenceConstants.READ_STATUS_LOADING: {
                 break;
@@ -77,18 +90,27 @@ internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAs
     protected void UpdateResolution(ImageData imageData) {
         m_resolution.Width  = imageData.Width;
         m_resolution.Height = imageData.Height;
-        if (m_resolution.Width > 0 && m_resolution.Height > 0) {
-            m_dimensionRatio = m_resolution.CalculateRatio();
-        }
+        CalculateDimensionRatio();
     }
 
+    protected void UpdateResolution(Texture tex) {
+        m_resolution.Width  = tex.width;
+        m_resolution.Height = tex.height;
+        CalculateDimensionRatio();
+    }
+    
     protected void UpdateResolution(ImageDimensionInt res) {
         m_resolution = res;
         m_dimensionRatio = 0;
+        CalculateDimensionRatio();
+    }
+
+    private void CalculateDimensionRatio() {
         if (m_resolution.Width > 0 && m_resolution.Height > 0) {
             m_dimensionRatio = m_resolution.CalculateRatio();
-        }        
+        }                
     }
+    
     
 #endregion Resolution
     
@@ -132,20 +154,6 @@ internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAs
     }
 
 
-//----------------------------------------------------------------------------------------------------------------------    
-    
-    string GetFirstImageData(out ImageData imageData) {
-        Assert.IsFalse(string.IsNullOrEmpty(m_folder));
-        Assert.IsTrue(Directory.Exists(m_folder));
-        Assert.IsTrue(m_imageFiles.Count > 0);
-
-        const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;        
-
-        string fullPath = GetImageFilePath(0);
-        ImageLoader.GetImageDataInto(fullPath,TEX_TYPE, out imageData);
-        return fullPath;               
-    }
-    
 //----------------------------------------------------------------------------------------------------------------------    
 
 #if UNITY_EDITOR    

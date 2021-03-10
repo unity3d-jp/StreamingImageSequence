@@ -356,7 +356,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         
         m_texture.name = "Full: " + m_imageFiles[index].GetName();
         Graphics.CopyTexture(srcTex, /*element=*/ 0, /*mip=*/ 0, m_texture, /*element=*/ 0, /*mip=*/0);
-        UpdateResolution(new ImageDimensionInt() { Width = m_texture.width, Height = m_texture.height}) ;
+        UpdateResolution(m_texture) ;
         m_lastCopiedImageIndex = index;
         return m_texture;
         
@@ -499,6 +499,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     private static readonly string[] m_imageFilePatterns = {
         "*.png",
+        "*.exr",
         "*.tga"             
     };
     
