@@ -72,6 +72,8 @@ We can view or modify the following properties through the inspector.
   The resolution of the output images. Modify the size of the Game window to change this property.
 * **Cache Output folder**  
   Where the cached render results are stored.
+* **Output Format**  
+  The format of the output images.
 * **Show Frame Markers**  
   [FrameMarkers](FrameMarkers.md) are used to customize which frames to capture. 
 * **Lock Frames**  

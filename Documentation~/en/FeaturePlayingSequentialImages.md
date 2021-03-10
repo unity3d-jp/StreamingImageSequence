@@ -44,10 +44,13 @@ For other ways for importing images, see [ImportingImages](ImportingImages.md).
 
 ## Supported Image Formats
 
-|             | Windows            | Mac                | Linux              |
-| ----------- | ------------------ | ------------------ | ------------------ |
-| png         | :white_check_mark: | :white_check_mark: | :white_check_mark: |       
-| tga         | :white_check_mark: | :white_check_mark: | :white_check_mark: |    
+|             | Windows              | Mac                  | Linux                |
+| ----------- | -------------------- | -------------------- | -------------------- |
+| png         | :heavy_check_mark:   | :heavy_check_mark:   | :heavy_check_mark:   |       
+| tga         | :heavy_check_mark:   | :heavy_check_mark:   | :heavy_check_mark:   |    
+| exr         | :small_red_triangle: | :small_red_triangle: | :small_red_triangle: |    
+
+For exr support, please refer to [Folder Tradeoffs](#folder-tradeoffs).
 
 ## Folder Tradeoffs
 
@@ -62,6 +65,7 @@ Please refer to the following table for more details.
 | CPU to GPU tex upload cost        | Everytime the active tex changed                                                                         | None                                                   | Everytime the active tex changed |    
 | CPU mem. usage of tex in Editor   | Textures are preloaded as much as possible. See [Editor Memory Usage](#editor-memory-usage) for details. | None                                                   | Textures are preloaded as much as possible. See [Editor Memory Usage](#editor-memory-usage) for details. |    
 | CPU mem. usage of tex in Runtime  | Not supported in Runtime                                                                                 | Not supported in Runtime                               | Textures up to a certain number of frames in advance are preloaded |    
+| exr Support                       | No                                                                                                       | Editor only                                            | No |    
 
 ### Editor Memory Usage
 
