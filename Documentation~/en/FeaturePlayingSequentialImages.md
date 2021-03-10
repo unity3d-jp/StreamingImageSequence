@@ -44,10 +44,11 @@ For other ways for importing images, see [ImportingImages](ImportingImages.md).
 
 ## Supported Image Formats
 
-|             | Windows            | Mac                | Linux              |
-| ----------- | ------------------ | ------------------ | ------------------ |
-| png         | :white_check_mark: | :white_check_mark: | :white_check_mark: |       
-| tga         | :white_check_mark: | :white_check_mark: | :white_check_mark: |    
+|             | Windows              | Mac                  | Linux                |
+| ----------- | -------------------- | -------------------- | -------------------- |
+| png         | :heavy_check_mark:   | :heavy_check_mark:   | :heavy_check_mark:   |       
+| tga         | :heavy_check_mark:   | :heavy_check_mark:   | :heavy_check_mark:   |    
+| exr         | :small_red_triangle: | :small_red_triangle: | :small_red_triangle: |    
 
 For exr support, please refer to [Folder Tradeoffs](#folder-tradeoffs).
 

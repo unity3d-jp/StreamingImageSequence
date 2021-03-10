@@ -46,10 +46,11 @@ Timeline を再生したり、Timeline ウィンドウのタイムスライダ�
 
 ## サポートされている画像形式
 
-|             | Windows            | Mac                | Linux              |
-| ----------- | ------------------ | ------------------ | ------------------ |
-| png         | :white_check_mark: | :white_check_mark: | :white_check_mark: |       
-| tga         | :white_check_mark: | :white_check_mark: | :white_check_mark: |    
+|             | Windows              | Mac                  | Linux                |
+| ----------- | -------------------- | -------------------- | -------------------- |
+| png         | :heavy_check_mark:   | :heavy_check_mark:   | :heavy_check_mark:   |       
+| tga         | :heavy_check_mark:   | :heavy_check_mark:   | :heavy_check_mark:   |    
+| exr         | :small_red_triangle: | :small_red_triangle: | :small_red_triangle: |    
 
 exr のサポートについては、[フォルダーのトレードオフ](#フォルダーのトレードオフ)
 を参照してください。
