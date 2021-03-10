@@ -18,7 +18,7 @@ internal class StreamingImageSequencePlayableAssetTest {
     [UnityTest]
     public IEnumerator CreatePlayableAsset() {
         PlayableDirector director = EditorUtilityTest.NewSceneWithDirector();
-        TimelineClip clip = EditorUtilityTest.CreateTestTimelineClip(director);
+        TimelineClip clip = EditorUtilityTest.CreateTestSISTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
         
@@ -50,7 +50,7 @@ internal class StreamingImageSequencePlayableAssetTest {
     [UnityTest]
     public IEnumerator ResizePlayableAsset() {
         PlayableDirector director = EditorUtilityTest.NewSceneWithDirector();
-        TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
+        TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
         SISClipData clipData = sisAsset.GetBoundClipData();
@@ -95,7 +95,7 @@ internal class StreamingImageSequencePlayableAssetTest {
     [UnityTest]
     public IEnumerator ReloadPlayableAsset() {
         PlayableDirector                    director = EditorUtilityTest.NewSceneWithDirector();
-        TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
+        TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
         
@@ -137,7 +137,7 @@ internal class StreamingImageSequencePlayableAssetTest {
     [UnityTest]
     public IEnumerator ImportFromStreamingAssets() {
         PlayableDirector                    director = EditorUtilityTest.NewSceneWithDirector();
-        TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
+        TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
         

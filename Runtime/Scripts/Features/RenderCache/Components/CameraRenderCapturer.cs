@@ -53,6 +53,10 @@ internal class CameraRenderCapturer : BaseRenderCapturer {
     }
 
 //----------------------------------------------------------------------------------------------------------------------
+
+    internal void SetCamera(Camera cam) { m_camera = cam; }
+
+//----------------------------------------------------------------------------------------------------------------------
     [SerializeField] private Camera m_camera = null;
 
     private RenderTexture m_origCameraTargetTexture = null;

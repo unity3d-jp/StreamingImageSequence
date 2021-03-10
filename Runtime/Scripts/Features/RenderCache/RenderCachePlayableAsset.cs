@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using JetBrains.Annotations;
-using UnityEngine;
-using UnityEngine.Assertions;
+﻿using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
@@ -16,7 +12,10 @@ namespace Unity.StreamingImageSequence {
 /// </summary>
 [System.Serializable]
 internal class RenderCachePlayableAsset : ImageFolderPlayableAsset<RenderCacheClipData>, ITimelineClipAsset, ISerializationCallbackReceiver {
-    
+
+    RenderCachePlayableAsset() : base() {
+        m_editorConfig = new RenderCachePlayableAssetEditorConfig();                 
+    }
 //----------------------------------------------------------------------------------------------------------------------
     public void OnGraphStart(Playable playable) {
     }

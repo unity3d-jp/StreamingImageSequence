@@ -16,7 +16,7 @@ internal class FrameMarkerTest {
     [UnityTest]
     public IEnumerator ShowFrameMarkers() {
         PlayableDirector director = EditorUtilityTest.NewSceneWithDirector();
-        TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
+        TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
         yield return null;
@@ -48,7 +48,7 @@ internal class FrameMarkerTest {
     [UnityTest]
     public IEnumerator UncheckFrameMarkers() {
         PlayableDirector director = EditorUtilityTest.NewSceneWithDirector();
-        TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
+        TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
         SISClipData clipData = sisAsset.GetBoundClipData();
@@ -108,7 +108,7 @@ internal class FrameMarkerTest {
     [UnityTest]
     public IEnumerator ResetFrameMarkers() {
         PlayableDirector director = EditorUtilityTest.NewSceneWithDirector();
-        TimelineClip                        clip     = EditorUtilityTest.CreateTestTimelineClip(director);
+        TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
         SISClipData clipData = sisAsset.GetBoundClipData();

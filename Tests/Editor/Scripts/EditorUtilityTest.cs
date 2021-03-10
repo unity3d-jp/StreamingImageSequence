@@ -105,8 +105,8 @@ internal class EditorUtilityTest {
     
 
 //----------------------------------------------------------------------------------------------------------------------                
-    internal static TimelineClip CreateTestTimelineClip(PlayableDirector director) {
-        string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempTimelineForTestRunner.playable");
+    internal static TimelineClip CreateTestSISTimelineClip(PlayableDirector director) {
+        string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempSISTimelineForTestRunner.playable");
 
         //Create timeline asset
         TimelineAsset timelineAsset = ScriptableObject.CreateInstance<TimelineAsset>();
@@ -137,7 +137,28 @@ internal class EditorUtilityTest {
             
         return clip;
     }
-    
+
+    internal static TimelineClip CreateTestRenderCacheTimelineClip(PlayableDirector director) {
+        string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempRenderCacheTimelineForTestRunner.playable");
+
+        //Create timeline asset
+        TimelineAsset timelineAsset = ScriptableObject.CreateInstance<TimelineAsset>();
+        director.playableAsset = timelineAsset;
+        AssetDatabase.CreateAsset(timelineAsset, tempTimelineAssetPath);
+            
+        //Create empty asset
+        RenderCacheTrack renderCacheTrack  = timelineAsset.CreateTrack<RenderCacheTrack>(null, "Footage");
+        TimelineClip clip = renderCacheTrack.CreateDefaultClip();
+        RenderCachePlayableAsset sisAsset = clip.asset as RenderCachePlayableAsset;
+        Assert.IsNotNull(sisAsset);
+
+        //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
+        EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
+        Selection.activeObject = director;
+
+        return clip;
+    }
+        
 //----------------------------------------------------------------------------------------------------------------------                
     internal static void DestroyTestTimelineAssets(TimelineClip clip) {
         TrackAsset    movieTrack    = clip.GetParentTrack();
