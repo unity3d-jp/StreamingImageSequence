@@ -97,11 +97,11 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
             if (null == mat) {
                 return;
             }
-            
-#if AT_USE_HDRP
-            mat.SetTexture(m_hdrpBaseColorMap,tex);
-#else
             mat.mainTexture = tex;
+
+#if AT_USE_HDRP
+            mat.SetTexture(HDRP_LIT_BASE_COLOR_MAP,tex);
+            mat.SetTexture(HDRP_UNLIT_BASE_COLOR_MAP,tex);
 #endif            
             
         }else if (null!= m_image) {
@@ -125,7 +125,9 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     private Renderer       m_meshRenderer   = null;
     private Image          m_image          = null;
     
-    private static readonly int m_hdrpBaseColorMap = Shader.PropertyToID("_BaseColorMap");
+    private static readonly int HDRP_LIT_BASE_COLOR_MAP = Shader.PropertyToID("_BaseColorMap");
+    private static readonly int HDRP_UNLIT_BASE_COLOR_MAP = Shader.PropertyToID("_UnlitColorMap");
+    
 
 }
 
