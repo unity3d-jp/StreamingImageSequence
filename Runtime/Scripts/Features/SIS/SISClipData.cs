@@ -22,7 +22,7 @@ internal class SISClipData : PlayableFrameClipData, IAnimationCurveOwner {
     [CanBeNull]
     public  AnimationCurve GetAnimationCurve()                     {  return m_animationCurve; }
 
-    public float GetCurveDuration() {
+    public float CalculateCurveDuration() {
         if (null == m_animationCurve || m_animationCurve.length <= 0)
             return 0;
 
