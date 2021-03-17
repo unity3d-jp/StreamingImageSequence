@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.9.1-preview] - 2021-03-17
+* fix: set texture for HDRP/Unlit materials when playing StreamingImageSequence 
+* fix: used frame for SISPlayableAsset when the clipIn value is more than 0
+* fix: FPS calculation of SISPlayableAsset 
+* fix: auto-fill the camera field of CameraRenderCapturer 
+
 ## [0.9.0-preview] - 2021-03-10
 * feat: load images as Texture2D directly if they are regular Unity assets 
 * feat: make the SIS curve applicable in runtime 
