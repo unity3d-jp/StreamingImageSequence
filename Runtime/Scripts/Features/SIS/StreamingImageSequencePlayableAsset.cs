@@ -188,8 +188,18 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     public sealed override Playable CreatePlayable(PlayableGraph graph, GameObject go) {
         return Playable.Create(graph);
     }
-   
-#endregion    
+
+    public override double duration {
+        get {
+            SISClipData clipData = GetBoundClipData();
+            if (null == clipData)
+                return 0;
+
+            return clipData.CalculateCurveDuration();
+        }
+    }
+
+    #endregion    
     
    
 //----------------------------------------------------------------------------------------------------------------------
