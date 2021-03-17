@@ -17,6 +17,8 @@ internal class SISClipData : PlayableFrameClipData, IAnimationCurveOwner {
     internal SISClipData(TimelineClip owner, SISClipData other) : base(owner, other) { }
 
 //----------------------------------------------------------------------------------------------------------------------    
+    
+    //[Note-sin: 2021-3-17] Cache TimelineClip.curve. If the value differs, then it will be overwritten
     public  void           SetAnimationCurve(AnimationCurve curve) { m_animationCurve = curve; }
     
     [CanBeNull]
