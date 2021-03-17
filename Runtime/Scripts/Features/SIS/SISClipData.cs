@@ -21,6 +21,14 @@ internal class SISClipData : PlayableFrameClipData, IAnimationCurveOwner {
     
     [CanBeNull]
     public  AnimationCurve GetAnimationCurve()                     {  return m_animationCurve; }
+
+    public float GetCurveDuration() {
+        if (null == m_animationCurve || m_animationCurve.length <= 0)
+            return 0;
+
+        return Mathf.Abs(m_animationCurve.keys[m_animationCurve.length - 1].time - m_animationCurve.keys[0].time);
+
+    }
     
 
 //----------------------------------------------------------------------------------------------------------------------    
