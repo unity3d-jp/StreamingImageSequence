@@ -130,11 +130,11 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
 
         {
-            //drop disabled frames            
+            //drop disabled frames
             double scaledTimePerFrame = TimelineUtility.CalculateTimePerFrame(clip) * clip.timeScale;            
       
             //Try to check if this frame is "dropped", so that we should use the image in the prev frame
-            int playableFrameIndex = Mathf.RoundToInt((float) localTime / (float)scaledTimePerFrame);
+            int playableFrameIndex = Mathf.RoundToInt((float) (localTime - clip.clipIn) / (float)scaledTimePerFrame);
             if (playableFrameIndex < 0)
                 return 0;
                 
