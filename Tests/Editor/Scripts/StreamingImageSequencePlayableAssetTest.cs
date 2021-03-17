@@ -186,13 +186,25 @@ internal class StreamingImageSequencePlayableAssetTest {
         //Set animationCurve with half speed
         SISClipData sisClipData       = sisAsset.GetBoundClipData();
         Assert.IsNotNull(sisClipData);
-        float       origCurveDuration = sisClipData.CalculateCurveDuration();
-        sisClipData.SetAnimationCurve(AnimationCurve.Linear(0,0,origCurveDuration * 2, 1.0f));
+        float          origCurveDuration = sisClipData.CalculateCurveDuration();
+        AnimationCurve halfSpeedCurve    = AnimationCurve.Linear(0, 0, origCurveDuration * 2, 1.0f);        
+        AnimationUtility.SetEditorCurve(clip.curves, StreamingImageSequencePlayableAsset.GetTimeCurveBinding(), halfSpeedCurve);        
         yield return null;
         
-        float origFPS = SISPlayableAssetUtility.CalculateFPS(sisAsset);
-        SetFPSAndCheck(sisAsset, origFPS * 4);
+        float origFPS       = SISPlayableAssetUtility.CalculateFPS(sisAsset);
+        float origDuration  = (float) clip.duration;        
+        float origTimeScale = (float) clip.timeScale;        
+        SetFPSAndCheck(sisAsset, origFPS * 8.0f);
+        SetFPSAndCheck(sisAsset, origFPS / 16.0f);
         SetFPSAndCheck(sisAsset, origFPS * 0.25f);
+        SetFPSAndCheck(sisAsset, origFPS * 4.0f);
+        SetFPSAndCheck(sisAsset, origFPS);
+        yield return null;
+
+        //Check if we are back
+        Assert.IsTrue(Mathf.Approximately(origFPS, SISPlayableAssetUtility.CalculateFPS(sisAsset)));        
+        Assert.IsTrue(Mathf.Approximately(origDuration,  (float) clip.duration));
+        Assert.IsTrue(Mathf.Approximately(origTimeScale, (float) clip.timeScale));
         
         EditorUtilityTest.DestroyTestTimelineAssets(clip);
         yield return null;
