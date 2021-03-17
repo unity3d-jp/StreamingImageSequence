@@ -17,10 +17,20 @@ internal class SISClipData : PlayableFrameClipData, IAnimationCurveOwner {
     internal SISClipData(TimelineClip owner, SISClipData other) : base(owner, other) { }
 
 //----------------------------------------------------------------------------------------------------------------------    
+    
+    //[Note-sin: 2021-3-17] Cache TimelineClip.curve. If the value differs, then it will be overwritten
     public  void           SetAnimationCurve(AnimationCurve curve) { m_animationCurve = curve; }
     
     [CanBeNull]
     public  AnimationCurve GetAnimationCurve()                     {  return m_animationCurve; }
+
+    public float CalculateCurveDuration() {
+        if (null == m_animationCurve || m_animationCurve.length <= 0)
+            return 0;
+
+        return Mathf.Abs(m_animationCurve.keys[m_animationCurve.length - 1].time - m_animationCurve.keys[0].time);
+
+    }
     
 
 //----------------------------------------------------------------------------------------------------------------------    
