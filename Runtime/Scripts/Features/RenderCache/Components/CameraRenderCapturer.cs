@@ -9,7 +9,16 @@ namespace Unity.StreamingImageSequence {
 [ExecuteAlways]
 internal class CameraRenderCapturer : BaseRenderCapturer {
 
+    void OnValidate() {
+        if (null != m_camera)
+            return;
 
+        m_camera = Camera.main;
+    }
+    
+
+//----------------------------------------------------------------------------------------------------------------------
+    
     /// <inheritdoc/>
     public override bool CanCaptureV() {
         if (null == m_camera) {
