@@ -77,7 +77,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                     TimelineClip clip = m_asset.GetBoundClipData()?.GetOwner();
                     //There is no assigned clip if the playableAsset is not loaded in TimelineWindow
                     if (null != clip) {                         
-                        float fps = StreamingImageSequencePlayableAsset.CalculateFPS(m_asset);
+                        float fps = SISPlayableAssetUtility.CalculateFPS(m_asset);
                                                 
                         EditorGUIDrawerUtility.DrawUndoableGUI(clip.GetParentTrack(), "Change FPS", fps,
                             /*guiFunc=*/ (float prevFPS)=> {
@@ -85,7 +85,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                                 return Mathf.Max(0.1f, val);
                             }, 
                             /*updateFunc=*/ (float newFPS) => {
-                                StreamingImageSequencePlayableAsset.SetFPS(m_asset, newFPS);                                
+                                SISPlayableAssetUtility.SetFPS(m_asset, newFPS);                                
                             }
                         );
                     }                    
