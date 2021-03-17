@@ -114,7 +114,7 @@ internal class EditorUtilityTest {
         AssetDatabase.CreateAsset(timelineAsset, tempTimelineAssetPath);
             
         //Create empty asset
-        StreamingImageSequenceTrack sisTrack = timelineAsset.CreateTrack<StreamingImageSequenceTrack>(null, "Footage");
+        StreamingImageSequenceTrack sisTrack = timelineAsset.CreateTrack<StreamingImageSequenceTrack>(null, "SIS Track");
         TimelineClip clip = sisTrack.CreateDefaultClip();
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
