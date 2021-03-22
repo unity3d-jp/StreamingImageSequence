@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.9.2-preview] - 2021-03-22
+* chore: use com.unity.film-internal-utilities@0.8.4-preview 
+
 ## [0.9.1-preview] - 2021-03-17
 * fix: set texture for HDRP/Unlit materials when playing StreamingImageSequence 
 * fix: used frame for SISPlayableAsset when the clipIn value is more than 0
