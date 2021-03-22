@@ -104,9 +104,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     //[Note-sin: 2020-7-17] This is also called when the TimelineClip in TimelineWindow is deleted, instead of just
     //The TimelineClipAsset (on file, for example) is deleted
-    protected override void OnDestroy() {
-        base.OnDestroy();
-
+    protected override void OnDestroyInternalV() {
         Reset();
     }
     

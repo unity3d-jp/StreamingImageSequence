@@ -38,17 +38,17 @@ internal abstract class PlayableFrameClipData : BaseClipData {
     
 //----------------------------------------------------------------------------------------------------------------------
     #region ISerializationCallbackReceiver
-    public override void OnBeforeSerialize() {
+    protected override void OnBeforeSerializeInternalV() {
     }
 
-    public override void OnAfterDeserialize() {
+    protected override void OnAfterDeserializeInternalV() {
         foreach (SISPlayableFrame playableFrame in m_playableFrames) {
             playableFrame.SetOwner(this);
         }
     }    
     #endregion
 //----------------------------------------------------------------------------------------------------------------------
-    internal override void Destroy() {
+    internal override void DestroyV() {
 
         foreach (SISPlayableFrame playableFrame in m_playableFrames) {
             playableFrame.Destroy();
