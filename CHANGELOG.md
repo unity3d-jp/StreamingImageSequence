@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.9.3-preview] - 2021-03-29
+* fix: build error
+
 ## [0.9.2-preview] - 2021-03-22
 * chore: use com.unity.film-internal-utilities@0.8.4-preview 
 
