@@ -55,6 +55,7 @@ internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAs
         //Get the first image to update the resolution.       
         string fullPath = GetImageFilePath(0);
         
+#if UNITY_EDITOR        
         //Try to do direct image loading
         if (m_folder.IsRegularAssetPath()) {        
             Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
@@ -64,6 +65,7 @@ internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAs
                 return;
             }
         }
+#endif        
         
         const int TEX_TYPE = StreamingImageSequenceConstants.IMAGE_TYPE_FULL;        
         ImageLoader.GetImageDataInto(fullPath,TEX_TYPE, out ImageData imageData);
