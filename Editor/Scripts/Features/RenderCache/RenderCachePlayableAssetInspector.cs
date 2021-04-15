@@ -87,10 +87,8 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         }
         
         //Output Format
-        EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "RenderCache Output Format", m_asset.GetOutputFormat(),
-            /*guiFunc=*/ (RenderCacheOutputFormat prevOutputFormat)=> {
-                return (RenderCacheOutputFormat) EditorGUILayout.EnumPopup("Output Format:", prevOutputFormat);;
-            }, 
+        EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "RenderCache Output Format", 
+            /*guiFunc=*/ ()=> (RenderCacheOutputFormat) EditorGUILayout.EnumPopup("Output Format:", m_asset.GetOutputFormat()), 
             /*updateFunc=*/ (RenderCacheOutputFormat newOutputFormat) => { m_asset.SetOutputFormat(newOutputFormat); }
         );
                 
@@ -112,20 +110,14 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             ++EditorGUI.indentLevel;
 
             RenderCachePlayableAssetEditorConfig editorConfig = m_asset.GetEditorConfig();
-            Color updateBGColor   = editorConfig.GetUpdateBGColor();
-            Color timelineBgColor = m_asset.GetTimelineBGColor();
             
-            EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Change Update BG Color", updateBGColor,
-                /*guiFunc=*/ (Color prevColor)=> {
-                    return EditorGUILayout.ColorField("In Game Window (Update)", prevColor);
-                }, 
+            EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Change Update BG Color", 
+                /*guiFunc=*/ ()=> EditorGUILayout.ColorField("In Game Window (Update)", editorConfig.GetUpdateBGColor()), 
                 /*updateFunc=*/ (Color newColor) => { editorConfig.SetUpdateBGColor(newColor); }
             );
             
-            EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Change Timeline BG Color", timelineBgColor,
-                /*guiFunc=*/ (Color prevColor)=> {
-                    return EditorGUILayout.ColorField("In Timeline Window", prevColor);
-                }, 
+            EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Change Timeline BG Color", 
+                /*guiFunc=*/ ()=> EditorGUILayout.ColorField("In Timeline Window", m_asset.GetTimelineBGColor()), 
                 /*updateFunc=*/ (Color newColor) => {  m_asset.SetTimelineBGColor(newColor); }
             );
             
