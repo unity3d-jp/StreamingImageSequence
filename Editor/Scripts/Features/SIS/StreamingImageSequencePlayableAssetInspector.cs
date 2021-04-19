@@ -77,11 +77,11 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                     TimelineClip clip = m_asset.GetBoundClipData()?.GetOwner();
                     //There is no assigned clip if the playableAsset is not loaded in TimelineWindow
                     if (null != clip) {                         
-                        float fps = SISPlayableAssetUtility.CalculateFPS(m_asset);
                                                 
-                        EditorGUIDrawerUtility.DrawUndoableGUI(clip.GetParentTrack(), "Change FPS", fps,
-                            /*guiFunc=*/ (float prevFPS)=> {
-                                float val = EditorGUILayout.FloatField("FPS", prevFPS); 
+                        EditorGUIDrawerUtility.DrawUndoableGUI(clip.GetParentTrack(), "Change FPS", 
+                            /*guiFunc=*/ ()=> {
+                                float fps = SISPlayableAssetUtility.CalculateFPS(m_asset);
+                                float val = EditorGUILayout.FloatField("FPS", fps); 
                                 return Mathf.Max(0.1f, val);
                             }, 
                             /*updateFunc=*/ (float newFPS) => {
@@ -118,10 +118,8 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
             EditorGUILayout.LabelField("Background Colors");
             ++EditorGUI.indentLevel;
             
-            EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Change BG Color", m_asset.GetTimelineBGColor(),
-                /*guiFunc=*/ (Color prevValue)=> {
-                    return EditorGUILayout.ColorField("In Timeline Window", prevValue);
-                }, 
+            EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Change BG Color", 
+                /*guiFunc=*/ ()=> EditorGUILayout.ColorField("In Timeline Window", m_asset.GetTimelineBGColor()), 
                 /*updateFunc=*/ (Color newColor) => {                               
                     m_asset.SetTimelineBGColor(newColor);                                
                 }
