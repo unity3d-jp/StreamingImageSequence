@@ -172,11 +172,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     
     /// <inheritdoc/>
     public ClipCaps clipCaps {
-#if AT_USE_TIMELINE_GE_1_4_0            
-        get { return ClipCaps.ClipIn | ClipCaps.AutoScale | ClipCaps.Extrapolation; }
-#else            
         get { return ClipCaps.ClipIn | ClipCaps.SpeedMultiplier | ClipCaps.Extrapolation; }
-#endif            
     }
             
 //---------------------------------------------------------------------------------------------------------------------
