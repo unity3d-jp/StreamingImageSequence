@@ -6,6 +6,7 @@
 1. [フレームマーカー](#フレームマーカー)
 1. [ギャップの外挿](#ギャップの外挿)
 1. [曲線の編集](#曲線の編集)
+1. [ショートカット](#ショートカット)
 1. [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
 
 
@@ -113,6 +114,12 @@ StreamingImageSequencePlayableAsset クリップの前後のギャップの動�
 3. 追加されたキーを動かす  
 
 ![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
+
+## ショートカット
+* Shift キーを押しながら、クリップの開始または終了をドラッグすると、
+  クリップの再生速度が自動的に変更されます。
+
+
 
 ## StreamingImageSequencePlayableAsset
 

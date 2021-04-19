@@ -6,6 +6,7 @@
 1. [FrameMarker](#framemarker)
 1. [Gap Extrapolation](#gap-extrapolation)
 1. [Curve Editing](#curve-editing)
+1. [Shortcuts](#shortcuts)
 1. [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
 
 
@@ -110,6 +111,12 @@ In the editor, we can modify the timing of the playback by
 3. moving the keys accordingly
 
 ![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
+
+## Shortcuts
+* Press Shift while dragging the start or end of the clip to automatically 
+  change the play speed of the clip.
+
+
 
 ## StreamingImageSequencePlayableAsset
 
