@@ -1,5 +1,10 @@
 # Changelog
 
+
+## [0.10.0-preview] - 2021-04-22
+* spec: stop autoscaling by default when changing the length of SISPlayableAsset
+* chore: depend on com.unity.film-internal-utilities@0.9.0-preview
+
 ## [0.9.3-preview] - 2021-03-29
 * fix: build error
 
