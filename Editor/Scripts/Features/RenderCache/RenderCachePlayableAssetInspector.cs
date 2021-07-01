@@ -76,10 +76,11 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         string prevFolder = m_asset.GetFolder();
         
         string newFolder = EditorGUIDrawerUtility.DrawFolderSelectorGUI("Cache Output Folder", "Select Folder", 
-            prevFolder,
-            null,
-            AssetUtility.NormalizeAssetPath
+            prevFolder, null
         );
+
+        newFolder = AssetUtility.NormalizeAssetPath(newFolder);
+
         if (newFolder != prevFolder) {
             Undo.RecordObject(m_asset,"Change Output Folder");
             m_asset.SetFolder(AssetUtility.NormalizeAssetPath(newFolder));

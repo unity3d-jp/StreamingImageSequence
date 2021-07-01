@@ -143,9 +143,9 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
         string prevFolder = m_asset.GetFolder();
         string newLoadPath = EditorGUIDrawerUtility.DrawFolderSelectorGUI("Image Sequence", "Select Folder", 
             prevFolder,
-            ReloadFolder,
-            AssetUtility.NormalizeAssetPath
-        );        
+            ReloadFolder            
+        );
+        newLoadPath = AssetUtility.NormalizeAssetPath(newLoadPath); 
         
         if (newLoadPath != prevFolder) {
             Undo.RecordObject(m_asset, "Change Image Sequence Folder");            
