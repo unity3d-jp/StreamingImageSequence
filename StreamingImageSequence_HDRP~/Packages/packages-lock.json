@@ -24,11 +24,20 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "1.2.1",
+      "version": "3.0.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.test-framework": "1.1.1"
+        "com.unity.ext.nunit": "1.0.6"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ide.visualstudio": {
+      "version": "2.0.9",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.9"
       },
       "url": "https://packages.unity.com"
     },
@@ -49,7 +58,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.package-validation-suite": {
-      "version": "0.13.0-preview",
+      "version": "0.20.2-preview",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -58,21 +67,23 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.postprocessing": {
-      "version": "2.3.0",
+      "version": "3.1.1",
       "depth": 0,
       "source": "registry",
-      "dependencies": {},
+      "dependencies": {
+        "com.unity.modules.physics": "1.0.0"
+      },
       "url": "https://packages.unity.com"
     },
     "com.unity.quicksearch": {
-      "version": "1.5.0",
+      "version": "2.0.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.core": {
-      "version": "7.5.3",
+      "version": "7.6.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -82,35 +93,35 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.high-definition": {
-      "version": "7.5.3",
+      "version": "7.6.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.video": "1.0.0",
         "com.unity.modules.animation": "1.0.0",
         "com.unity.modules.imageconversion": "1.0.0",
-        "com.unity.render-pipelines.core": "7.5.3",
-        "com.unity.shadergraph": "7.5.3",
-        "com.unity.visualeffectgraph": "7.5.3",
-        "com.unity.render-pipelines.high-definition-config": "7.5.3"
+        "com.unity.render-pipelines.core": "7.6.0",
+        "com.unity.shadergraph": "7.6.0",
+        "com.unity.visualeffectgraph": "7.6.0",
+        "com.unity.render-pipelines.high-definition-config": "7.6.0"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.high-definition-config": {
-      "version": "7.5.3",
+      "version": "7.6.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.render-pipelines.core": "7.5.3"
+        "com.unity.render-pipelines.core": "7.6.0"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.shadergraph": {
-      "version": "7.5.3",
+      "version": "7.6.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.render-pipelines.core": "7.5.3"
+        "com.unity.render-pipelines.core": "7.6.0"
       },
       "url": "https://packages.unity.com"
     },
@@ -131,7 +142,7 @@
       }
     },
     "com.unity.test-framework": {
-      "version": "1.1.24",
+      "version": "1.1.27",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -142,7 +153,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
-      "version": "2.1.4",
+      "version": "2.1.6",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -151,7 +162,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.4.2",
+      "version": "1.6.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -172,11 +183,12 @@
       }
     },
     "com.unity.visualeffectgraph": {
-      "version": "7.5.3",
+      "version": "7.6.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.shadergraph": "7.5.3"
+        "com.unity.shadergraph": "7.6.0",
+        "com.unity.render-pipelines.core": "7.6.0"
       },
       "url": "https://packages.unity.com"
     },
