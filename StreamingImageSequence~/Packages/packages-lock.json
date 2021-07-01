@@ -66,14 +66,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.pencil-line": {
-      "version": "file:com.unity.pencil-line",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.postprocessing": "2.3.0"
-      }
-    },
     "com.unity.postprocessing": {
       "version": "3.1.1",
       "depth": 0,
