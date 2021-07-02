@@ -27,6 +27,7 @@ StreamingImageSequence*~/*.sln
 StreamingImageSequence*~/.idea/**
 StreamingImageSequence*~.meta
 StreamingImageSequence*~/Assets.meta
+StreamingImageSequence*~/UserSettings/**
 */Logs/**
 */UIElementsSchema/**
 .vs/
