@@ -86,7 +86,7 @@ internal abstract class PlayableFrameClipData : BaseClipData {
 
     internal PlayableFramePropertyID GetInspectedProperty() { return m_inspectedPropertyID; }
 
-    internal void UpdateTimelineWidthPerFrame(float visibleRectWidth, double visibleTime, float fps, double timeScale) {
+    internal void UpdateTimelineWidthPerFrame(float visibleRectWidth, double visibleTime, double fps, double timeScale) {
         int numFrames = Mathf.RoundToInt((float)
             ((visibleTime) * fps / timeScale) 
         );
