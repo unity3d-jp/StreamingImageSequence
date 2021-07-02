@@ -51,6 +51,10 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
             clipOptions.errorText = NO_PICTURES_ASSIGNED_ERROR;
         }
         clipOptions.tooltip = folder;
+
+#if AT_USE_TIMELINE_GE_1_6_0                                    
+        clipOptions.hideScaleIndicator = true;
+#endif        
         
         return clipOptions;
     }
