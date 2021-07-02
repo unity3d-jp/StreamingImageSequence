@@ -1,6 +1,11 @@
 # Changelog
 
 
+## [0.11.0-preview] - 2021-07-02
+* feat: hide scale indicators for SISPlayableAsset when using Timeline 1.6.x 
+* fix: change the default StreamingImageSequence TimelineClip fps to 24
+* deps: use com.unity.film-internal-utilities@0.10.1-preview
+
 ## [0.10.0-preview] - 2021-04-22
 * spec: stop autoscaling by default when changing the length of SISPlayableAsset
 * chore: depend on com.unity.film-internal-utilities@0.9.0-preview
