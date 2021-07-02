@@ -44,7 +44,7 @@ internal class RenderCachePlayableAssetTest {
         Assert.IsNotNull(Camera.main);        
         yield return null;
 
-        clip.duration = (1.0f / timelineAsset.editorSettings.fps);
+        clip.duration = (1.0f / timelineAsset.editorSettings.GetFPS());
         const string OUTPUT_FOLDER = "Asset/StreamingAssets/RenderCachePNGForTestRunner";
         Directory.CreateDirectory(OUTPUT_FOLDER);
         renderCachePlayableAsset.SetFolder(OUTPUT_FOLDER);        

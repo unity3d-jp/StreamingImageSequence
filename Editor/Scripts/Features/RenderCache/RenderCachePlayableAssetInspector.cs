@@ -254,7 +254,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         
 
         TimelineClip timelineClip = clipData.GetOwner();
-        double timePerFrame = 1.0f / track.timelineAsset.editorSettings.fps;
+        double timePerFrame = 1.0f / track.timelineAsset.editorSettings.GetFPS();
         
         //initial calculation of loop vars
         bool captureAllFrames = editorConfig.GetCaptureAllFrames();
