@@ -346,7 +346,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     }
 
     Texture2D UpdateTexture(Texture2D srcTex, int index) {
-        if (m_texture.IsNullRef() || !m_texture.IsEqual(srcTex)) {
+        if (m_texture.IsNullRef() || !m_texture.AreSizeAndFormatEqual(srcTex)) {
             FilmInternalUtilities.ObjectUtility.Destroy(m_texture);
             m_texture = TextureUtility.CreateTexture2D(srcTex, HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor); 
         }
