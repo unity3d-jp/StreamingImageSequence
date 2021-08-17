@@ -126,7 +126,7 @@ StreamingImageSequencePlayableAsset クリップの前後のギャップの動�
 <img align="right" width="400" src="../images/StreamingImageSequenceRendererInspector.png">
 
 StreamingImageSequenceRenderer は、
-下記のコンポーネントに再生中の画像の更新を自動的に適用するための　**GameObject**コンポーネントです。
+下記のコンポーネントに再生中の画像の更新を自動的に適用するための **GameObject** コンポーネントです。
 
 * [Sprite](https://docs.unity3d.com/ScriptReference/Sprite.html)
 * [UI Image](https://docs.unity3d.com/2018.3/Documentation/ScriptReference/UI.Image.html)
@@ -135,8 +135,8 @@ StreamingImageSequenceRenderer は、
 
  |**Property** |**Description** |
  |:---                      |:---|
- | Material Index to Update | ベースカラーテクスチャが更新されるマテリアルのインデックス。 MeshRendererとSkinnedMeshRendererにのみ適用されます。 |
- | Target Texture           | ロードされたイメージがコピーされるターゲットのレンダーテクスチャ。|
+ | Material Index to Update | ベースカラーテクスチャが更新されるマテリアルのインデックス。 MeshRenderer と SkinnedMeshRenderer にのみ適用されます。 |
+ | Target Texture           | コピー先のレンダーテクスチャ。|
  | Use Last Image On Load   | 現在のフレームの画像が正常に読み込まれなかった場合、最後に読み込まれた画像を使用するかどうかを選択します。|
 
 
