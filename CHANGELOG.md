@@ -54,81 +54,122 @@
 
 
 ## [0.8.4-preview] - 2021-02-12
-* feat: add extrapolation capability to FaderPlayableAsset 
-* fix: undo for StreamingImageSequencePlayableAsset and RenderCachePlayableAsset 
-* chore: handle warnings when using com.unity.timeline@1.5.0 and up
+
+### Added
+* add extrapolation capability to FaderPlayableAsset 
 * doc: add Gap Extrapolation section for RenderCachePlayableAsset
 
+### Fixed
+* fix undo for StreamingImageSequencePlayableAsset and RenderCachePlayableAsset 
+* handle warnings when using com.unity.timeline@1.5.0 and up
+
 ## [0.8.3-preview] - 2021-02-05
-* fix: errors when using HDRP on Unity 2019.4.18 and up
+
+### Fixed
+* fix errors when using HDRP on Unity 2019.4.18 and up
 
 ## [0.8.2-preview] - 2021-02-05
-* fix: error when showing the inspector of SISPlayableAsset which is not loaded in TimelineWindow 
-* chore: make sure to open internals to VisualCompositor 
+
+### Changed
+* make sure to open internals to VisualCompositor 
+
+### Fixed
+* fix errors when showing the inspector of SISPlayableAsset which is not loaded in TimelineWindow 
 
 ## [0.8.1-preview] - 2021-02-04
-* feat: add Edit action when right clicking on the FrameMarker of SISPlayableAsset 
-* feat: show OOM log warning when there is not enough memory for loading images
+
+### Added
+* add Edit action when right clicking on the FrameMarker of SISPlayableAsset 
+* show OOM log warning when there is not enough memory for loading images
+
+### Changed
+* update the VisualCompositor's assembly name 
+
+### Fixed
 * fix: deserialize older versions of SISPlayableAsset (MovieProxy) successfully
-* chore: update the VisualCompositor's assembly name 
 
 ## [0.8.0-preview] - 2021-02-03
-* chore: use com.unity.film-internal-utilities@0.6.0-preview
+
+### Changed
+* deps: use com.unity.film-internal-utilities@0.6.0-preview
 
 ## [0.7.0-preview] - 2020-12-24
-* feat: add extrapolation support for SISPlayableAsset 
-* feat: specify frames when updating RenderCache 
-* fix: specify alpha channel and use CatmullRom filter when creating preview images 
-* fix: handle RenderCache file output error 
-* fix: package dependencies to ensure the package works in isolation 
-* fix: set a fixed height value for the preview images 
-* fix: null static textures after reopening an existing scene 
-* fix: "The object of type 'PlayableDirector' has been destroyed but you are still trying to access it." in BasePlayableMixer 
-* fix: show the requested image of StreamingImageSequencePlayableAsset after successfully loaded 
-* fix: don't show previously loaded image of StreamingImageSequencePlayableAsset if the requested one is not successfully loaded
-* fix: error when there is no material in the MeshRenderer of the GameObject bound to StreamingImageSequenceTrack
+
+### Added
+* add extrapolation support for SISPlayableAsset 
+* specify frames when updating RenderCache 
 * doc: add a section about gap extrapolation for StreamingImageSequence clips 
 * doc: add an item about capturing specified frames in RenderCachePlayableAsset 
+
+### Changed
+* show the requested image of StreamingImageSequencePlayableAsset after successfully loaded 
+* don't show previously loaded image of StreamingImageSequencePlayableAsset if the requested one is not successfully loaded
 * doc: update the curve section of SISPlayableAsset 
 * doc: arrange docs and put features as the focus instead of PlayableAsset types
 * opt: minor optimization in loading images by removing memset when allocating memory for them 
 
+### Fixed
+* specify alpha channel and use CatmullRom filter when creating preview images 
+* handle RenderCache file output error 
+* fix package dependencies to ensure the package works in isolation 
+* set a fixed height value for the preview images 
+* fix null static textures after reopening an existing scene 
+* fix "The object of type 'PlayableDirector' has been destroyed but you are still trying to access it." in BasePlayableMixer 
+* fix errors when there is no material in the MeshRenderer of the GameObject bound to StreamingImageSequenceTrack
+
 ## [0.6.3-preview] - 2020-10-27
-* chore: remove debug logs when updating package for 2020.2 and above
+
+### Changed
+* remove debug logs when updating package for 2020.2 and above
 
 ## [0.6.2-preview] - 2020-10-27
-* chore: add debug logs when updating package for 2020.2 and above
+
+### Changed
+* add debug logs when updating package for 2020.2 and above
 
 ## [0.6.1-preview] - 2020-10-27
-* chore: republish 0.6.0-preview as 0.6.1-preview
+
+### Changed
+* republish 0.6.0-preview as 0.6.1-preview
 
 ## [0.6.0-preview] - 2020-10-26
 
-* feat: add default StreamingImageSequencePlayableAsset FPS setting in Preferences 
-* feat: enable the setting of background color in Timeline for SISPlayableAsset
-* feat: save Preferences immediately when the setting is changed 
-* feat: add FPS field in the inspector of StreamingImageSequencePlayableAsset to change its length
-* feat: support TGA on Mac by loading TGA images on all platforms using stb
-* feat: support Linux (PNG, TGA)
-* feat: Add a notifier to restart Unity if the package is updated
-* fix: crash when trying to load a preview of an image that is not available
-* fix: memory leak in loading PNG on Windows when an out of memory situation happened.
+### Added
+* add default StreamingImageSequencePlayableAsset FPS setting in Preferences 
+* enable the setting of background color in Timeline for SISPlayableAsset
+* add FPS field in the inspector of StreamingImageSequencePlayableAsset to change its length
+* support TGA on Mac by loading TGA images on all platforms using stb
+* support Linux (PNG, TGA)
+* add a notifier to restart Unity if the package is updated
+
+### Changed
+* save Preferences immediately when the setting is changed 
 * opt: optimize performance when loading PNG on Mac by using stb
 * doc: update that TGA is now supported on Windows and Mac 
 
+### Fixed
+* fix crash when trying to load a preview of an image that is not available
+* fix memory leak in loading PNG on Windows when an out of memory situation happened.
 
 ## [0.5.1-preview] - 2020-10-13
 
-* chore: update dependency to com.unity.anime-toolbox@0.2.1-preview
+### Changed
+* deps: update dependency to com.unity.anime-toolbox@0.2.1-preview
 
 ## [0.5.0-preview] - 2020-10-12
-* feat: set background color in the Game View when updating RenderCache 
-* feat: set the background color of RenderCachePlayableAsset clips in Timeline 
-* feat: add a texture blitter for URP and use it when updating RenderCache in URP projects
-* feat: show the updating of RenderCache in Game View for HDRP projects 
-* fix: add blending in LinearToGamma shader
-* fix: apply linear to gamma conversion for drawing preview textures if the project is using linear color space 
-* fix: RenderCachePlayable path errors when reloading, and show the path as a normalized path if possible 
+
+### Added
+* set background color in the Game View when updating RenderCache 
+* set the background color of RenderCachePlayableAsset clips in Timeline 
+* add a texture blitter for URP and use it when updating RenderCache in URP projects
+* show the updating of RenderCache in Game View for HDRP projects 
+
+### Changed
+* add blending in LinearToGamma shader
+
+### Fixed
+* apply linear to gamma conversion for drawing preview textures if the project is using linear color space 
+* fix RenderCachePlayable path errors when reloading, and show the path as a normalized path if possible 
 * fix: try to create the saved path of RenderCachePlayableAsset if it is invalid 
 * fix: set StreamingImageSequencePlayableAsset's texture properly for MeshRenderer in HDRP
 * fix: play sequential images in runtime builds 
