@@ -177,6 +177,7 @@
 
 ## [0.4.0-preview] - 2020-10-06
 
+### Added
 * feat: add RenderCache and RenderCapturer, which work together to cache render results to image files. Currently provides:
   ** CameraRenderCapturer: to cache the render results of a Camera component.
   ** BaseRenderCapturer: an extensible class that a user can use to customize the capturing process.
@@ -186,20 +187,24 @@
 * feat: auto hide/show FrameMarkers when the TimelineWindow is zoomed out/in
 * feat: add user notes in FrameMarkers
 * feat: check if we should reload the folder of StreamingImageSequencePlayableAsset or RenderCachePlayableAsset when the Editor Application is back in focus
-* fix: check if an image file exists before queuing to load it 
-* fix: import images directly for StramingImageSequencePlayableAsset when the source folder is already under StreamingAssets 
-* fix: prevent the internal texture from being destroyed when TimelineEditor is refreshed
-* fix: time rounding errors when calculating the image index of StreamingImageSequencePlayableAsset
-* fix: compile error in Unity 2020.2 
-* fix: open internals to com.unity.visual-compositor package
-* refactor: rename UseImageMarkers to FrameMarkers 
-* chore: change the plugin library name from Loader to StreamingImageSequence
-* chore: use com.unity.anime-toolbox@0.2.0-preview 
-* chore: change namespace to be exactly the same with the assembly name
-* doc: update about package installation in the Readme files on Github.
 * doc: add package badge
 * doc: add RenderCache and FrameMarker documentations
+
+### Changed
+* import images directly for StreamingImageSequencePlayableAsset when the source folder is already under StreamingAssets 
+* open internals to com.unity.visual-compositor package
+* rename UseImageMarkers to FrameMarkers 
+* change the plugin library name from Loader to StreamingImageSequence
+* deps: use com.unity.anime-toolbox@0.2.0-preview 
+* change namespace to be exactly the same with the assembly name
+* doc: update about package installation in the Readme files on Github.
 * doc: update StreamingImageSequencePlayableAsset's doc
+
+### Fixed
+* fix: check if an image file exists before queuing to load it 
+* fix: prevent the internal texture from being destroyed when TimelineEditor is refreshed
+* fix time rounding errors when calculating the image index of StreamingImageSequencePlayableAsset
+* fix compile errors in Unity 2020.2 
 
 ## [0.3.3-preview] - 2020-09-08
 
