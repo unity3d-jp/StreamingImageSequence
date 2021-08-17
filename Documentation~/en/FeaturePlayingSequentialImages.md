@@ -122,9 +122,9 @@ In the editor, we can modify the timing of the playback by
 
 <img align="right" width="400" src="../images/StreamingImageSequenceRendererInspector.png">
 
-StreamingImageSequenceRenderer is a component that is attached to a **GameObject** 
-to apply image updates automatically during playback, provided that the **GameObject**
-has one or more of the following components.
+StreamingImageSequenceRenderer is a **GameObject** component for 
+applying image updates automatically 
+to the following components during playback.
 * [Sprite](https://docs.unity3d.com/ScriptReference/Sprite.html)
 * [UI Image](https://docs.unity3d.com/2018.3/Documentation/ScriptReference/UI.Image.html)
 * [MeshRenderer](https://docs.unity3d.com/ScriptReference/MeshRenderer.html)
@@ -133,7 +133,7 @@ has one or more of the following components.
  |**Property** |**Description** |
  |:---                      |:---|
  | Material Index to Update | The index of the material which base color texture will be updated. Only applies to MeshRenderer and SkinnedMeshRenderer. |
- | Target Texture           | Destination render texture, to which the loaded image will be copied.|
+ | Target Texture           | Target render texture, to which the loaded image will be copied.|
  | Use Last Image On Load   | Choose whether the last loaded image should be used when the image for the current frame hasn't been successfully loaded.|
 
 ## StreamingImageSequencePlayableAsset
