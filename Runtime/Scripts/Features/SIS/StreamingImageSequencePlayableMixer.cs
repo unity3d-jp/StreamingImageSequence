@@ -119,9 +119,9 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
 
         Texture2D lastCopiedTex = asset.GetTexture();
         Texture2D tex           = lastCopiedTex;
-        bool      showLastImage = m_sisRenderer.ShouldShowLastImage();
+        bool      useLastImage = m_sisRenderer.ShouldUseLastImageOnLoad();
 
-        if (!showLastImage) {
+        if (!useLastImage) {
             tex = asset.IsRequestedImageReady() ? lastCopiedTex : RuntimeTextures.GetTransparentTexture(); 
         }
         

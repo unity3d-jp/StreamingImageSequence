@@ -115,7 +115,7 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
 
 //----------------------------------------------------------------------------------------------------------------------
     
-    internal bool ShouldShowLastImage() { return m_alwaysShowLastImage; }
+    internal bool ShouldUseLastImageOnLoad() { return m_useLastImageOnLoad; }
     
 //----------------------------------------------------------------------------------------------------------------------
     
@@ -123,7 +123,7 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
 
     private int           m_materialIndexToUpdate;
     [SerializeField] private RenderTexture m_targetTexture;
-    [SerializeField] bool m_alwaysShowLastImage = false;
+    [SerializeField] bool m_useLastImageOnLoad = false;
 
 //----------------------------------------------------------------------------------------------------------------------
     
