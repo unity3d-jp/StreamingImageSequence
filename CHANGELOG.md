@@ -2,38 +2,56 @@
 
 
 ## [0.11.0-preview] - 2021-07-02
-* feat: hide scale indicators for SISPlayableAsset when using Timeline 1.6.x 
-* fix: change the default StreamingImageSequence TimelineClip fps to 24
+
+### Added
+* hide scale indicators for SISPlayableAsset when using Timeline 1.6.x 
+
+### Changed
+* change the default StreamingImageSequence TimelineClip fps to 24
 * deps: use com.unity.film-internal-utilities@0.10.1-preview
 
 ## [0.10.0-preview] - 2021-04-22
-* spec: stop autoscaling by default when changing the length of SISPlayableAsset
-* chore: depend on com.unity.film-internal-utilities@0.9.0-preview
+
+### Changed
+* stop autoscaling by default when changing the length of SISPlayableAsset
+* deps: depend on com.unity.film-internal-utilities@0.9.0-preview
 
 ## [0.9.3-preview] - 2021-03-29
+
+### Fixed
 * fix: build error
 
 ## [0.9.2-preview] - 2021-03-22
-* chore: use com.unity.film-internal-utilities@0.8.4-preview 
+
+### Changed
+* deps: use com.unity.film-internal-utilities@0.8.4-preview 
 
 ## [0.9.1-preview] - 2021-03-17
+
+### Fixed
 * fix: set texture for HDRP/Unlit materials when playing StreamingImageSequence 
 * fix: used frame for SISPlayableAsset when the clipIn value is more than 0
 * fix: FPS calculation of SISPlayableAsset 
 * fix: auto-fill the camera field of CameraRenderCapturer 
 
 ## [0.9.0-preview] - 2021-03-10
-* feat: load images as Texture2D directly if they are regular Unity assets 
-* feat: make the SIS curve applicable in runtime 
-* feat: partially support EXR for SISPlayableAsset and RenderCachePlayableAsset 
-* fix: reset curves for Timeline 1.5.x and up
-* fix: errors when moving RenderCachePlayableAsset around in Timeline 
-* fix: errors when opening older SISPlayableAsset with no curves inside ClipData
-* fix: allow RenderCapturer classes to define their own Blit Material to screen
-* fix: errors when updating RenderCache while changing resolution 
-* chore: use com.unity.film-internal-utilities@0.8.1-preview
-* chore: update dependency to com.unity.film-internal-utilities@0.8.0-preview
+
+### Added
+* load images as Texture2D directly if they are regular Unity assets 
+* make the SIS curve applicable in runtime 
+* partially support EXR for SISPlayableAsset and RenderCachePlayableAsset 
+
+### Changed
+* allow RenderCapturer classes to define their own Blit Material to screen
+* deps: use com.unity.film-internal-utilities@0.8.1-preview
 * chore: Add V to indicate virtual functions in BaseRenderCapturer 
+
+### Fixed
+* reset curves for Timeline 1.5.x and up
+* fix errors when moving RenderCachePlayableAsset around in Timeline 
+* fix errors when opening older SISPlayableAsset with no curves inside ClipData
+* fix errors when updating RenderCache while changing resolution 
+
 
 ## [0.8.4-preview] - 2021-02-12
 * feat: add extrapolation capability to FaderPlayableAsset 
