@@ -7,6 +7,7 @@
 1. [Gap Extrapolation](#gap-extrapolation)
 1. [Curve Editing](#curve-editing)
 1. [Shortcuts](#shortcuts)
+1. [StreamingImageSequenceRenderer](#streamingimagesequencerenderer)
 1. [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
 
 
@@ -116,6 +117,18 @@ In the editor, we can modify the timing of the playback by
 * Press Shift while dragging the start or end of the clip to automatically 
   change the play speed of the clip.
 
+
+## StreamingImageSequenceRenderer
+
+<img align="right" width="400" src="../images/StreamingImageSequenceRendererInspector.png">
+
+StreamingImageSequenceRenderer is a component that is attached to a GameObject 
+to apply image updates automatically during playback, provided that the GameObject
+has one or more of the following components.
+* Sprite
+* Image
+* MeshRenderer
+* SkinnedMeshRenderer
 
 
 ## StreamingImageSequencePlayableAsset
