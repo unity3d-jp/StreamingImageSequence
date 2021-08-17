@@ -7,6 +7,7 @@
 1. [Gap Extrapolation](#gap-extrapolation)
 1. [Curve Editing](#curve-editing)
 1. [Shortcuts](#shortcuts)
+1. [StreamingImageSequenceRenderer](#streamingimagesequencerenderer)
 1. [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
 
 
@@ -31,7 +32,7 @@ From an empty scene, do the following:
 1. Create an **Image** object by clicking the menu: GameObject > UI > Image.
 
 1. Drag and drop the **Image** object to the object property of the **StreamingImageSequenceTrack**, 
-   and click *Create StreamingImageSequenceRenderer on Image*.
+   and click *Create [StreamingImageSequenceRenderer](#streamingimagesequencerenderer) on Image*.
 
    ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceRenderer.png)
 
@@ -117,6 +118,23 @@ In the editor, we can modify the timing of the playback by
   change the play speed of the clip.
 
 
+## StreamingImageSequenceRenderer
+
+<img align="right" width="400" src="../images/StreamingImageSequenceRendererInspector.png">
+
+StreamingImageSequenceRenderer is a **GameObject** component for 
+applying image updates automatically 
+to the following components during playback.
+* [Sprite](https://docs.unity3d.com/ScriptReference/Sprite.html)
+* [UI Image](https://docs.unity3d.com/2018.3/Documentation/ScriptReference/UI.Image.html)
+* [MeshRenderer](https://docs.unity3d.com/ScriptReference/MeshRenderer.html)
+* [SkinnedMeshRenderer](https://docs.unity3d.com/ScriptReference/SkinnedMeshRenderer.html)
+
+ |**Property** |**Description** |
+ |:---                      |:---|
+ | Material Index to Update | The index of the material which base color texture will be updated. Only applies to MeshRenderer and SkinnedMeshRenderer. |
+ | Target Texture           | Destination render texture.|
+ | Use Last Image On Load   | Choose whether the last loaded image should be used when the image for the current frame hasn't been successfully loaded.|
 
 ## StreamingImageSequencePlayableAsset
 

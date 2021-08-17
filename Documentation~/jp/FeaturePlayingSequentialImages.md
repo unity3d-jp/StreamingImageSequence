@@ -7,6 +7,7 @@
 1. [ギャップの外挿](#ギャップの外挿)
 1. [曲線の編集](#曲線の編集)
 1. [ショートカット](#ショートカット)
+1. [StreamingImageSequenceRenderer](#streamingimagesequencerenderer)
 1. [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
 
 
@@ -32,7 +33,7 @@
 1. メニューを GameObject > UI > Image の順にクリックして **Image** オブジェクトを作成する。
 
 1. 作成した **Image** オブジェクトを、**StreamingImageSequenceTrack** のオブジェクトプロパティーにドラッグアンドドロップし
-   *Create StreamingImageSequenceRenderer on Image* をクリックする。
+   *Create [StreamingImageSequenceRenderer](#streamingimagesequencerenderer) on Image* をクリックする。
 
    ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceRenderer.png)
 
@@ -119,6 +120,24 @@ StreamingImageSequencePlayableAsset クリップの前後のギャップの動�
 * Shift キーを押しながら、クリップの開始または終了をドラッグすると、
   クリップの再生速度が自動的に変更されます。
 
+
+## StreamingImageSequenceRenderer
+
+<img align="right" width="400" src="../images/StreamingImageSequenceRendererInspector.png">
+
+StreamingImageSequenceRenderer は、
+下記のコンポーネントに再生中の画像の更新を自動的に適用するための **GameObject** コンポーネントです。
+
+* [Sprite](https://docs.unity3d.com/ScriptReference/Sprite.html)
+* [UI Image](https://docs.unity3d.com/2018.3/Documentation/ScriptReference/UI.Image.html)
+* [MeshRenderer](https://docs.unity3d.com/ScriptReference/MeshRenderer.html)
+* [SkinnedMeshRenderer](https://docs.unity3d.com/ScriptReference/SkinnedMeshRenderer.html)
+
+ |**Property** |**Description** |
+ |:---                      |:---|
+ | Material Index to Update | ベースカラーテクスチャが更新されるマテリアルのインデックス。 MeshRenderer と SkinnedMeshRenderer にのみ適用されます。 |
+ | Target Texture           | コピー先のレンダーテクスチャ。|
+ | Use Last Image On Load   | 現在のフレームの画像が正常に読み込まれなかった場合、最後に読み込まれた画像を使用するかどうかを選択します。|
 
 
 ## StreamingImageSequencePlayableAsset
