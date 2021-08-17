@@ -117,13 +117,16 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
         int index = asset.GlobalTimeToImageIndex(activeClip, directorTime);
         asset.RequestLoadImage(index);
 
-        Texture2D lastCopiedTex = asset.GetTexture();
-        Texture2D tex           = lastCopiedTex;
+        Texture2D tex           = null;
         bool      useLastImage = m_sisRenderer.ShouldUseLastImageOnLoad();
 
-        if (!useLastImage) {
-            tex = asset.IsRequestedImageReady() ? lastCopiedTex : RuntimeTextures.GetTransparentTexture(); 
+        if (useLastImage || asset.IsRequestedImageReady()) {
+            tex = asset.GetTexture();
         }
+                
+        if (tex.IsNullRef()) {
+            tex = RuntimeTextures.GetTransparentTexture();
+        }        
         
         m_sisRenderer.UpdateTexture(tex);
     }
