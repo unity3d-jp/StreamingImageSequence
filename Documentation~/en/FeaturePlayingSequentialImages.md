@@ -133,7 +133,7 @@ has one or more of the following components.
  |**Property** |**Description** |
  |:---                      |:---|
  | Material Index to Update | The index of the material which base color texture will be updated. Only applies to MeshRenderer and SkinnedMeshRenderer. |
- | Target Texture           | Destination render texture as a copy of the loaded image.|
+ | Target Texture           | Destination render texture, to which the loaded image will be copied.|
  | Use Last Image On Load   | Choose whether the last loaded image should be used when the image for the current frame hasn't been successfully loaded.|
 
 ## StreamingImageSequencePlayableAsset
