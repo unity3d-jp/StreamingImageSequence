@@ -350,7 +350,10 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     Texture2D UpdateTexture(Texture2D srcTex, int index) {
         if (m_texture.IsNullRef() || !m_texture.AreSizeAndFormatEqual(srcTex)) {
-            m_texture = TextureUtility.CreateTexture2D(srcTex, HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor); 
+            m_texture = new Texture2D(srcTex.width, srcTex.height, srcTex.format, false, false) {
+                filterMode = FilterMode.Bilinear,
+                hideFlags  = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor,
+            };
         }
 
         if (m_lastCopiedImageIndex == index)
