@@ -130,6 +130,10 @@ has one or more of the following components.
 * MeshRenderer
 * SkinnedMeshRenderer
 
+ |**Property** |**Description** |
+ |:---                    |:---|
+ | Target Texture         | copies the loaded image into a RenderTexture if assigned.|
+ | Use Last Image On Load | will use the last loaded image when the image for the current frame hasn't been successfully loaded.|
 
 ## StreamingImageSequencePlayableAsset
 
