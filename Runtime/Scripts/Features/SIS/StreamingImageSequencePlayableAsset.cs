@@ -197,8 +197,11 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     
    
 //----------------------------------------------------------------------------------------------------------------------
+
+    internal bool IsRequestedImageReady() { return m_primaryImageIndex == m_lastCopiedImageIndex;}
+
     [CanBeNull]
-    internal Texture2D GetTexture() { return m_primaryImageIndex == m_lastCopiedImageIndex ? m_texture : null;}
+    internal Texture2D GetTexture() { return m_texture;}
     
 //----------------------------------------------------------------------------------------------------------------------
 
