@@ -355,7 +355,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
             return m_texture;
         
         m_texture.name = "Full: " + m_imageFiles[index].GetName();
-        Graphics.CopyTexture(srcTex, /*element=*/ 0, /*mip=*/ 0, m_texture, /*element=*/ 0, /*mip=*/0);
+        Graphics.CopyTexture(src: srcTex, dst:m_texture);
         UpdateResolution(m_texture) ;
         m_lastCopiedImageIndex = index;
         return m_texture;
