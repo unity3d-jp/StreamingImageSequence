@@ -65,7 +65,7 @@ Plugins~/Build/Tests/**
 Plugins~/Build/*.build/*
 
 # Custom embedded packages
-StreamingImageSequence*~/Packages/com.unity.*/**
+StreamingImageSequence*~/Packages/**
 !StreamingImageSequence*~/Packages/com.unity.streaming-image-sequence/**
 
 # Test RenderCache Images
