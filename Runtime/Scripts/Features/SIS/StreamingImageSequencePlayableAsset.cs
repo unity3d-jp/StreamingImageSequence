@@ -197,8 +197,11 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     
    
 //----------------------------------------------------------------------------------------------------------------------
+
+    internal bool IsRequestedImageReady() { return m_primaryImageIndex == m_lastCopiedImageIndex;}
+
     [CanBeNull]
-    internal Texture2D GetTexture() { return m_primaryImageIndex == m_lastCopiedImageIndex ? m_texture : null;}
+    internal Texture2D GetTexture() { return m_texture;}
     
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -329,7 +332,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     }
 
     
-//---------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
     Texture2D UpdateTexture(ImageData imageData, int index) {
         if (m_texture.IsNullRef() || !imageData.IsTextureCompatible(m_texture)) {
             m_texture = imageData.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
@@ -346,9 +349,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     }
 
     Texture2D UpdateTexture(Texture2D srcTex, int index) {
-        if (m_texture.IsNullRef() || m_texture.width!=srcTex.width || m_texture.height!=srcTex.height 
-            || m_texture.format!=srcTex.format) 
-        {
+        if (m_texture.IsNullRef() || !m_texture.AreSizeAndFormatEqual(srcTex)) {
             m_texture = new Texture2D(srcTex.width, srcTex.height, srcTex.format, false, false) {
                 filterMode = FilterMode.Bilinear,
                 hideFlags  = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor,
@@ -359,7 +360,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
             return m_texture;
         
         m_texture.name = "Full: " + m_imageFiles[index].GetName();
-        Graphics.CopyTexture(srcTex, /*element=*/ 0, /*mip=*/ 0, m_texture, /*element=*/ 0, /*mip=*/0);
+        Graphics.CopyTexture(src: srcTex, dst:m_texture);
         UpdateResolution(m_texture) ;
         m_lastCopiedImageIndex = index;
         return m_texture;
