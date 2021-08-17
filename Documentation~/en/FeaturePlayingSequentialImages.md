@@ -32,7 +32,7 @@ From an empty scene, do the following:
 1. Create an **Image** object by clicking the menu: GameObject > UI > Image.
 
 1. Drag and drop the **Image** object to the object property of the **StreamingImageSequenceTrack**, 
-   and click *Create StreamingImageSequenceRenderer on Image*.
+   and click *Create [StreamingImageSequenceRenderer](#streamingimagesequencerenderer) on Image*.
 
    ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceRenderer.png)
 
