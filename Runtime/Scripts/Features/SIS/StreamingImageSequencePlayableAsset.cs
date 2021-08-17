@@ -92,12 +92,12 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 //----------------------------------------------------------------------------------------------------------------------
 
     void OnEnable() {
-        m_texture              = null;
+        m_texture = m_cachedTexture = null;
         m_lastCopiedImageIndex = -1;
     }
 
     private void OnDisable() {
-        ResetTexture();
+        ResetTextures();
     }
        
 //----------------------------------------------------------------------------------------------------------------------
@@ -164,7 +164,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         m_backwardPreloadImageIndex = 0;
         
         m_lastCopiedImageIndex = -1;
-        ResetTexture();
+        ResetTextures();
         ResetResolution();
     }
 
@@ -364,12 +364,10 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     
 
 //---------------------------------------------------------------------------------------------------------------------
-    void ResetTexture() {
-        if (!m_texture.IsNullRef()) {
-            ObjectUtility.Destroy(m_texture);
-            m_texture = null;
-        }
-
+    void ResetTextures() {
+        ObjectUtility.Destroy(m_texture);
+        ObjectUtility.Destroy(m_cachedTexture);
+        m_texture = m_cachedTexture = null;
     }
 
    
@@ -439,7 +437,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
             m_timelineDefaultAsset = null;
         }
 
-        ResetTexture();
+        ResetTextures();
         EditorUtility.SetDirty(this);
     }
 
@@ -512,7 +510,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     private int m_backwardPreloadImageIndex = 0;
 
 
-    Texture2D    m_texture       = null;
+    private Texture2D m_texture         = null;
+    private Texture2D m_cachedTexture   = null;
+    
 
 //----------------------------------------------------------------------------------------------------------------------
     
