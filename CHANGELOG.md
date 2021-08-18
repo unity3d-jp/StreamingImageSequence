@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.12.0-preview] - 2021-08-17
+
+### Added
+* add an option to use the last loaded image when loading for SISRenderer
+* doc: add a section about StreamingImageSequenceRenderer 
+
+### Changed
+* deps: update dependencies to com.unity.film-internal-utilities@0.10.2-preview
+* convert the changelog format to semantics versioning
+
+### Fixed
+* support the official Pencil+4 Line package, instead of the temporary one
 
 ## [0.11.0-preview] - 2021-07-02
 
