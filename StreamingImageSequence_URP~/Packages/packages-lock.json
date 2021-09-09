@@ -33,7 +33,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.9",
+      "version": "2.0.11",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -42,7 +42,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.vscode": {
-      "version": "1.2.3",
+      "version": "1.2.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -66,14 +66,6 @@
       },
       "url": "https://packages.unity.com"
     },
-    "com.unity.pencil-line": {
-      "version": "file:com.unity.pencil-line",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {
-        "com.unity.postprocessing": "2.3.0"
-      }
-    },
     "com.unity.postprocessing": {
       "version": "3.1.1",
       "depth": 0,
@@ -91,7 +83,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.core": {
-      "version": "7.6.0",
+      "version": "7.7.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -101,21 +93,21 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.render-pipelines.universal": {
-      "version": "7.6.0",
+      "version": "7.7.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.render-pipelines.core": "7.6.0",
-        "com.unity.shadergraph": "7.6.0"
+        "com.unity.render-pipelines.core": "7.7.1",
+        "com.unity.shadergraph": "7.7.1"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.shadergraph": {
-      "version": "7.6.0",
+      "version": "7.7.1",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.render-pipelines.core": "7.6.0"
+        "com.unity.render-pipelines.core": "7.7.1"
       },
       "url": "https://packages.unity.com"
     },
@@ -136,7 +128,7 @@
       }
     },
     "com.unity.test-framework": {
-      "version": "1.1.27",
+      "version": "1.1.29",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -156,7 +148,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.6.1",
+      "version": "1.6.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
