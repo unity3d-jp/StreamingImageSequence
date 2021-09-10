@@ -29,14 +29,14 @@ internal class StreamingImageSequencePlayableAssetTest {
 
         EditorUtilityTest.SelectDirectorInTimelineWindow(director);
 
-        director.time = clip.start;
-        TimelineEditor.Refresh(RefreshReason.ContentsModified);
-        yield return null;
-        
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
         sisAsset.SetFolder("");
         yield return null;
+        
+        director.time = clip.start;
+        TimelineEditor.Refresh(RefreshReason.ContentsModified);
+        yield return null;        
         
         ScriptableObject editorClip = EditorUtilityTest.SelectTimelineClipInInspector(clip);
         yield return null;        
