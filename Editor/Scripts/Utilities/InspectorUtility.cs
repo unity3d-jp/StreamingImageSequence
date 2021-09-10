@@ -14,14 +14,13 @@ internal static class InspectorUtility {
         if (null == clipData)
             return false;
 
-        bool showFrameMarkers = EditorGUIDrawerUtility.DrawUndoableGUI(
+        EditorGUIDrawerUtility.DrawUndoableGUI(
             clipDataPlayableAsset, "Show Frame Markers",
             /*guiFunc=*/ () => EditorGUILayout.Toggle("Show Frame Markers", clipData.AreFrameMarkersRequested()), 
             /*updateFunc=*/ (bool newValue) => { clipData.RequestFrameMarkers(newValue); }                
         );
 
-        return showFrameMarkers;
-            
+        return clipData.AreFrameMarkersRequested();
     }
 
 }
