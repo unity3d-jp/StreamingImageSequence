@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using NUnit.Framework;
 using Unity.FilmInternalUtilities;
 using Unity.FilmInternalUtilities.Editor;
@@ -11,6 +13,8 @@ using UnityEditor;
 using UnityEngine.TestTools;
 using UnityEngine.Timeline;
 using UnityEditor.Timeline;
+using Object = UnityEngine.Object;
+using UnityEditorReflection = Unity.StreamingImageSequence.Editor.UnityEditorReflection;
 
 namespace Unity.StreamingImageSequence.EditorTests {
 
@@ -34,12 +38,8 @@ internal class StreamingImageSequencePlayableAssetTest {
         sisAsset.SetFolder("");
         yield return null;
         
-        
-        EditorClip editorClip = ScriptableObject.CreateInstance<EditorClip>();
-        editorClip.clip        = clip;
-        Selection.activeObject = editorClip;
-        yield return null;
-        
+        ScriptableObject editorClip = EditorUtilityTest.SelectTimelineClipInInspector(clip);
+        yield return null;        
         
         Object.DestroyImmediate(editorClip);
 
