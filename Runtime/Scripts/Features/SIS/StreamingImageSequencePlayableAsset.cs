@@ -98,7 +98,10 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         m_regularAssetMipmapCheckLogger = new OneTimeLogger(() => {
             Assert.IsNotNull(m_texture);
             return m_texture.mipmapCount != 1;
-        },$"Textures in {m_folder} should not have mipmap"); 
+        },$"Textures should not have mipmap. Folder: ");
+        
+        m_regularAssetLoadLogger = new OneTimeLogger(() => !m_regularAssetLoaded,
+            $"Can't load textures. Make sure their import settings are set to Texture2D. Folder: ");
         
     }
 
@@ -475,10 +478,14 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     private bool UpdateTextureAsRegularAssetInEditor(string fullPath, int imageIndex) {
         Assert.IsTrue(fullPath.IsRegularAssetPath());
-            
         
         Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
-        Assert.IsNotNull(tex);
+        m_regularAssetLoaded = (null!=tex);
+        m_regularAssetLoadLogger.Update("[SIS]", m_folder);
+        
+        if (null == tex) {
+            return false;
+        }
         
         UpdateTexture(tex, imageIndex);
         Resources.UnloadAsset(tex);
@@ -516,8 +523,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         "*.tga"             
     };
     
-#endif
-   
+#endif  
     
     private int m_lastCopiedImageIndex; //the index of the image copied to m_texture
 
@@ -528,6 +534,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     Texture2D    m_texture       = null;
 
     private OneTimeLogger m_regularAssetMipmapCheckLogger;
+    private OneTimeLogger m_regularAssetLoadLogger;
+    private bool          m_regularAssetLoaded = false;
     
 //----------------------------------------------------------------------------------------------------------------------
     
