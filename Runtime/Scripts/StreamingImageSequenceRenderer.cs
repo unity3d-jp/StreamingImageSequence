@@ -39,6 +39,11 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     public void SetTargetTexture(RenderTexture tex) { m_targetTexture = tex;}
     
 //----------------------------------------------------------------------------------------------------------------------
+    
+    void OnEnable() {
+        InitImageComponent();
+    }
+    
     internal void Init() {
 
         m_spriteRenderer = GetComponent<SpriteRenderer>();
@@ -47,11 +52,7 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
             m_meshRenderer = GetComponent<SkinnedMeshRenderer>();                
         }
         
-        m_image = GetComponent<Image>();
-        if (null != m_image) {
-            m_image.sprite = null;
-        }
-        
+        InitImageComponent();
     }
     
 //----------------------------------------------------------------------------------------------------------------------
@@ -117,22 +118,19 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
         }
 
     }
-
-    
-    void OnEnable() {
-//        Debug.Log($"OnEnable {gameObject.name} {m_image}");
-        
-        // m_image = GetComponent<Image>();
-        // if (null != m_image) {
-        //     m_image.sprite = null;
-        // }
-        
-    }
-    
     
 //----------------------------------------------------------------------------------------------------------------------
     
     internal bool ShouldUseLastImageOnLoad() { return m_useLastImageOnLoad; }
+    
+//----------------------------------------------------------------------------------------------------------------------
+
+    void InitImageComponent() {
+        m_image = GetComponent<Image>();
+        if (null != m_image) {
+            m_image.sprite = null;
+        }        
+    }
     
 //----------------------------------------------------------------------------------------------------------------------
     
