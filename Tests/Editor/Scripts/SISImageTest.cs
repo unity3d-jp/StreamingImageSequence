@@ -1,10 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using NUnit.Framework;
-using Unity.FilmInternalUtilities;
-using Unity.StreamingImageSequence.Editor;
-using UnityEditor;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Playables;
@@ -45,7 +39,37 @@ internal class SISImageTest {
 
 //----------------------------------------------------------------------------------------------------------------------
 
+    [UnityTest] public IEnumerator DuplicateExistingImageWithSISRenderer() {
+        PlayableDirector                    director = EditorUtilityTest.NewSceneWithDirector();
+        TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
+        StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+        Assert.IsNotNull(sisAsset);
 
+        TrackAsset track = clip.GetParentTrack();
+        director.time = clip.start;
+        Assert.IsNotNull(track);
+        
+        //Create Image        
+        UIImage image0 = CreateImageWithSISRenderer(out StreamingImageSequenceRenderer sisRenderer);            
+        director.SetGenericBinding(track, sisRenderer);
+        TimelineEditor.Refresh(RefreshReason.ContentsModified);
+        yield return null;
+
+
+        GameObject duplicatedGO    = Object.Instantiate(image0.gameObject);
+        UIImage    duplicatedImage = duplicatedGO.GetComponent<UIImage>();
+        Assert.IsNotNull(duplicatedImage);
+        yield return null;
+        
+        Assert.IsNull(duplicatedImage.sprite); //The sprite of the duplicated image MUST be null
+    
+        //Cleanup
+        EditorUtilityTest.DestroyTestTimelineAssets(clip);
+        yield return null;
+    }
+    
+//----------------------------------------------------------------------------------------------------------------------
+    
     UIImage CreateImageWithSISRenderer(out StreamingImageSequenceRenderer sisRenderer) {
         UIImage image = FilmInternalUtilities.ObjectUtility.CreateGameObjectWithComponent<UIImage>("");
         Assert.IsNotNull(image);
