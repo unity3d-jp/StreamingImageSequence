@@ -175,20 +175,8 @@ internal class StreamingImageSequencePlayableAssetTest {
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
         
-        //Copy test data to streamingAssetsPath
-        const string  DEST_FOLDER_NAME      = "ImportFromStreamingAssetsTest";
-        string        streamingAssetsFolder = AssetUtility.NormalizeAssetPath(Application.streamingAssetsPath);
-        string        destFolderGUID        = AssetDatabase.CreateFolder(streamingAssetsFolder, DEST_FOLDER_NAME);
-        string        destFolder            = AssetDatabase.GUIDToAssetPath(destFolderGUID);
-        int numImages = sisAsset.GetNumImages();
-        for (int i = 0; i < numImages; ++i) {
-            string src = sisAsset.GetImageFilePath(i);
-            Assert.IsNotNull(src);
-            string dest = Path.Combine(destFolder, Path.GetFileName(src));
-            File.Copy(src, dest,true);
-        }
-
-        AssetDatabase.Refresh();        
+        //Copy test data
+        string destFolder = CopySISImagesTo(sisAsset, Application.streamingAssetsPath, "ImportStreamingAssetsTest");          
         yield return null;
         
         ImageSequenceImporter.ImportImages(destFolder, sisAsset);
@@ -211,21 +199,8 @@ internal class StreamingImageSequencePlayableAssetTest {
         TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
-        
-        //Copy test data to streamingAssetsPath
-        const string DEST_FOLDER_NAME = "ImportFromAssetsTest";
-        string       assetsFolder     = AssetUtility.NormalizeAssetPath(Application.dataPath);
-        string       destFolderGUID   = AssetDatabase.CreateFolder(assetsFolder, DEST_FOLDER_NAME);
-        string       destFolder       = AssetDatabase.GUIDToAssetPath(destFolderGUID);
-        int          numImages        = sisAsset.GetNumImages();
-        for (int i = 0; i < numImages; ++i) {
-            string src = sisAsset.GetImageFilePath(i);
-            Assert.IsNotNull(src);
-            string dest = Path.Combine(destFolder, Path.GetFileName(src));
-            File.Copy(src, dest,true);
-        }
 
-        AssetDatabase.Refresh();        
+        string destFolder = CopySISImagesTo(sisAsset, Application.dataPath, "ImportFromAssetsTest"); //Copy test data 
         yield return null;
         
         ImageSequenceImporter.ImportImages(destFolder, sisAsset);
@@ -302,6 +277,24 @@ internal class StreamingImageSequencePlayableAssetTest {
         Assert.IsTrue(Mathf.Approximately(prevClipDuration  * timeMultiplier, (float) clip.duration));        
         Assert.IsTrue(Mathf.Approximately(prevTimeScale * fpsMultiplier, (float) clip.timeScale));
         
+    }
+
+//----------------------------------------------------------------------------------------------------------------------    
+
+    //Copy the images in SISPlayableAsset to a certain path
+    private static string CopySISImagesTo(StreamingImageSequencePlayableAsset sisAsset, string rootPath, string folderName) {
+        string       assetsFolder     = AssetUtility.NormalizeAssetPath(rootPath);
+        string       destFolderGUID   = AssetDatabase.CreateFolder(assetsFolder, folderName);
+        string       destFolder       = AssetDatabase.GUIDToAssetPath(destFolderGUID);
+        int          numImages        = sisAsset.GetNumImages();
+        for (int i = 0; i < numImages; ++i) {
+            string src = sisAsset.GetImageFilePath(i);
+            Assert.IsNotNull(src);
+            string dest = Path.Combine(destFolder, Path.GetFileName(src));
+            File.Copy(src, dest,true);
+        }
+        AssetDatabase.Refresh();
+        return destFolder;
     }
     
 }
