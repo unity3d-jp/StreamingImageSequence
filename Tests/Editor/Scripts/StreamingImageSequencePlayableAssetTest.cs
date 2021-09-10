@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 using Unity.FilmInternalUtilities;
+using Unity.FilmInternalUtilities.Editor;
 using UnityEngine;
 using UnityEngine.Playables;
 using Unity.StreamingImageSequence.Editor;
@@ -15,6 +16,26 @@ namespace Unity.StreamingImageSequence.EditorTests {
 
 internal class StreamingImageSequencePlayableAssetTest {
 
+    [UnityTest]
+    public IEnumerator CreateEmptyPlayableAsset() {
+        PlayableDirector  director  = EditorUtilityTest.NewSceneWithDirector();
+        TimelineAsset timelineAsset = TimelineEditorUtility.CreateAsset(SISTestConstants.TEST_TIMELINE_ASSET_PATH);
+        TimelineClip clip = TimelineEditorUtility.CreateTrackAndClip<StreamingImageSequenceTrack, StreamingImageSequencePlayableAsset>(
+            timelineAsset, "TrackWithEmptyDefaultClip");
+
+        EditorUtilityTest.SelectDirectorInTimelineWindow(director);
+
+        director.time = clip.start;
+        TimelineEditor.Refresh(RefreshReason.ContentsModified);
+        yield return null;
+        
+
+        EditorUtilityTest.DestroyTestTimelineAssets(clip);
+        yield return null;
+    }
+
+//----------------------------------------------------------------------------------------------------------------------                
+    
     [UnityTest]
     public IEnumerator CreatePlayableAsset() {
         PlayableDirector director = EditorUtilityTest.NewSceneWithDirector();
