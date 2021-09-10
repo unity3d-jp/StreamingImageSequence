@@ -200,7 +200,7 @@ internal class StreamingImageSequencePlayableAssetTest {
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
 
-        string destFolder = CopySISImagesTo(sisAsset, Application.dataPath, "ImportFromAssetsTest"); //Copy test data 
+        string destFolder = CopySISImagesTo(sisAsset, Application.dataPath, "ImportAssetsTest"); //Copy test data 
         yield return null;
         
         ImageSequenceImporter.ImportImages(destFolder, sisAsset);
