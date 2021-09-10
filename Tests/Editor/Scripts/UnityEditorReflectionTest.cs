@@ -16,7 +16,14 @@ internal class UnityEditorReflectionTest {
     public void VerifyReflectedTypes() {        
         Assert.IsNotNull(UnityEditorReflection.TIMELINE_EDITOR_CLIP_TYPE);
     }
+    
+//----------------------------------------------------------------------------------------------------------------------
 
+    [Test]
+    public void VerifyReflectedProperties() {        
+        Assert.IsNotNull(UnityEditorReflection.TIMELINE_EDITOR_CLIP_PROPERTY);
+    }
+    
 }
 
 } //end namespace
