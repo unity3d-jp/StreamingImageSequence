@@ -29,6 +29,19 @@ internal class StreamingImageSequencePlayableAssetTest {
         TimelineEditor.Refresh(RefreshReason.ContentsModified);
         yield return null;
         
+        StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+        Assert.IsNotNull(sisAsset);
+        sisAsset.SetFolder("");
+        yield return null;
+        
+        
+        EditorClip editorClip = ScriptableObject.CreateInstance<EditorClip>();
+        editorClip.clip        = clip;
+        Selection.activeObject = editorClip;
+        yield return null;
+        
+        
+        Object.DestroyImmediate(editorClip);
 
         EditorUtilityTest.DestroyTestTimelineAssets(clip);
         yield return null;
