@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using NUnit.Framework;
 using Unity.FilmInternalUtilities;
+using Unity.FilmInternalUtilities.Editor;
 using UnityEngine;
 using UnityEngine.Playables;
 using Unity.StreamingImageSequence.Editor;
@@ -10,11 +13,42 @@ using UnityEditor;
 using UnityEngine.TestTools;
 using UnityEngine.Timeline;
 using UnityEditor.Timeline;
+using Object = UnityEngine.Object;
+using UnityEditorReflection = Unity.StreamingImageSequence.Editor.UnityEditorReflection;
 
 namespace Unity.StreamingImageSequence.EditorTests {
 
 internal class StreamingImageSequencePlayableAssetTest {
 
+    [UnityTest]
+    public IEnumerator CreateEmptyPlayableAsset() {
+        PlayableDirector  director  = EditorUtilityTest.NewSceneWithDirector();
+        TimelineAsset timelineAsset = TimelineEditorUtility.CreateAsset(SISTestConstants.TEST_TIMELINE_ASSET_PATH);
+        TimelineClip clip = TimelineEditorUtility.CreateTrackAndClip<StreamingImageSequenceTrack, StreamingImageSequencePlayableAsset>(
+            timelineAsset, "TrackWithEmptyDefaultClip");
+
+        EditorUtilityTest.SelectDirectorInTimelineWindow(director);
+
+        StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+        Assert.IsNotNull(sisAsset);
+        sisAsset.SetFolder("");
+        yield return null;
+        
+        director.time = clip.start;
+        TimelineEditor.Refresh(RefreshReason.ContentsModified);
+        yield return null;        
+        
+        ScriptableObject editorClip = EditorUtilityTest.SelectTimelineClipInInspector(clip);
+        yield return null;        
+        
+        Object.DestroyImmediate(editorClip);
+
+        EditorUtilityTest.DestroyTestTimelineAssets(clip);
+        yield return null;
+    }
+
+//----------------------------------------------------------------------------------------------------------------------                
+    
     [UnityTest]
     public IEnumerator CreatePlayableAsset() {
         PlayableDirector director = EditorUtilityTest.NewSceneWithDirector();

@@ -11,6 +11,7 @@ using Unity.StreamingImageSequence.Editor;
 using UnityEditor;
 using UnityEngine.TestTools;
 using UnityEngine.Timeline;
+using UnityEditorReflection = Unity.StreamingImageSequence.Editor.UnityEditorReflection;
 
 namespace Unity.StreamingImageSequence.EditorTests {
 
@@ -76,6 +77,24 @@ internal class EditorUtilityTest {
         Directory.Delete(destFolder);
 
     }
+
+//----------------------------------------------------------------------------------------------------------------------                
+
+    //[TODO-sin: 2021-9-10] Move to FIU ?
+    internal static void SelectDirectorInTimelineWindow(PlayableDirector director) {
+        //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
+        EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
+        Selection.activeObject = director;        
+    }
+
+    //[TODO-sin: 2021-9-10] Move to FIU ?
+    //Returns an object with EditorClip type. This object should be manually destroyed
+    internal static ScriptableObject SelectTimelineClipInInspector(TimelineClip clip) {
+        ScriptableObject editorClip = ScriptableObject.CreateInstance(UnityEditorReflection.TIMELINE_EDITOR_CLIP_TYPE);
+        UnityEditorReflection.TIMELINE_EDITOR_CLIP_PROPERTY.SetValue(editorClip, clip);
+        Selection.activeObject = editorClip;
+        return editorClip;
+    }
     
 //----------------------------------------------------------------------------------------------------------------------                
 
@@ -119,11 +138,8 @@ internal class EditorUtilityTest {
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
 
-        //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
-        EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
-//            Selection.activeTransform = director.gameObject.transform;
-//            TimelineEditor.selectedClip = sisAsset.GetBoundTimelineClip();
-        Selection.activeObject = director;
+        
+        SelectDirectorInTimelineWindow(director);
 
 
         string fullPath = Path.GetFullPath(SRC_IMAGE_PATH);
@@ -134,7 +150,7 @@ internal class EditorUtilityTest {
     }
 
     internal static TimelineClip CreateTestRenderCacheTimelineClip(PlayableDirector director) {
-        string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempRenderCacheTimelineForTestRunner.playable");
+        string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath(SISTestConstants.TEST_TIMELINE_ASSET_PATH);
 
         //Create timeline asset
         TimelineAsset timelineAsset = ScriptableObject.CreateInstance<TimelineAsset>();
@@ -170,8 +186,8 @@ internal class EditorUtilityTest {
     
 //----------------------------------------------------------------------------------------------------------------------    
 
-    const string SRC_IMAGE_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
-
+    private const string SRC_IMAGE_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
+    
 }
 
 } //end namespace

@@ -47,5 +47,13 @@ public static class DebugMenu  {
     private static void RefreshTimelineEditor() {
         TimelineEditor.Refresh(RefreshReason.ContentsAddedOrRemoved);
     }
-    
+
+//----------------------------------------------------------------------------------------------------------------------    
+    [MenuItem("Debug/Log Selected Object")]
+    private static void LogSelectedObject() {
+        
+        Debug.Log(Selection.activeObject);
+        
+    }
+
 }
