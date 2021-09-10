@@ -76,6 +76,15 @@ internal class EditorUtilityTest {
         Directory.Delete(destFolder);
 
     }
+
+//----------------------------------------------------------------------------------------------------------------------                
+
+    //[TODO-sin: 2021-9-10] Move to FIU ?
+    internal static void SelectDirectorInTimelineWindow(PlayableDirector director) {
+        //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
+        EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
+        Selection.activeObject = director;        
+    }
     
 //----------------------------------------------------------------------------------------------------------------------                
 
@@ -119,11 +128,8 @@ internal class EditorUtilityTest {
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
 
-        //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
-        EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
-//            Selection.activeTransform = director.gameObject.transform;
-//            TimelineEditor.selectedClip = sisAsset.GetBoundTimelineClip();
-        Selection.activeObject = director;
+        
+        SelectDirectorInTimelineWindow(director);
 
 
         string fullPath = Path.GetFullPath(SRC_IMAGE_PATH);
