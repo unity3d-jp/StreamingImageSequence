@@ -362,8 +362,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
             };
         }
 
-        m_regularAssetMipmapCheckLogger.Update("[SIS]","");
-        
+        m_regularAssetMipmapCheckLogger.Update("[SIS]",m_folder);        
 
         if (m_lastCopiedImageIndex == index)
             return m_texture;
