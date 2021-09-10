@@ -194,7 +194,7 @@ internal class StreamingImageSequencePlayableAssetTest {
 //----------------------------------------------------------------------------------------------------------------------    
     
     [UnityTest]
-    public IEnumerator ImportFromAssets() {
+    public IEnumerator ImportFromRegularAssets() {
         PlayableDirector                    director = EditorUtilityTest.NewSceneWithDirector();
         TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
