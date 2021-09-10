@@ -176,7 +176,7 @@ internal class FrameMarkerInspector: UnityEditor.Editor {
             m_noteScroll, 
             EditorStyles.textArea            
         }; 
-        object userNoteObj = UnityEditorReflection.SCROLLABLE_TEXT_AREA_METHOD.Invoke(null,methodParams);
+        object userNoteObj = FilmInternalUtilities.Editor.UnityEditorReflection.SCROLLABLE_TEXT_AREA_METHOD.Invoke(null,methodParams);
         m_noteScroll = (Vector2) (methodParams[2]);
         string userNote = userNoteObj?.ToString();
         
