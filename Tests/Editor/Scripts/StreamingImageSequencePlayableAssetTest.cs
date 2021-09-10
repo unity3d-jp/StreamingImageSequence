@@ -206,6 +206,44 @@ internal class StreamingImageSequencePlayableAssetTest {
 //----------------------------------------------------------------------------------------------------------------------    
     
     [UnityTest]
+    public IEnumerator ImportFromAssets() {
+        PlayableDirector                    director = EditorUtilityTest.NewSceneWithDirector();
+        TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
+        StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
+        Assert.IsNotNull(sisAsset);
+        
+        //Copy test data to streamingAssetsPath
+        const string DEST_FOLDER_NAME = "ImportFromAssetsTest";
+        string       assetsFolder     = AssetUtility.NormalizeAssetPath(Application.dataPath);
+        string       destFolderGUID   = AssetDatabase.CreateFolder(assetsFolder, DEST_FOLDER_NAME);
+        string       destFolder       = AssetDatabase.GUIDToAssetPath(destFolderGUID);
+        int          numImages        = sisAsset.GetNumImages();
+        for (int i = 0; i < numImages; ++i) {
+            string src = sisAsset.GetImageFilePath(i);
+            Assert.IsNotNull(src);
+            string dest = Path.Combine(destFolder, Path.GetFileName(src));
+            File.Copy(src, dest,true);
+        }
+
+        AssetDatabase.Refresh();        
+        yield return null;
+        
+        ImageSequenceImporter.ImportImages(destFolder, sisAsset);
+        yield return null;
+               
+        Assert.AreEqual(destFolder, sisAsset.GetFolder());
+
+        //Cleanup
+        AssetDatabase.DeleteAsset(destFolder);       
+        EditorUtilityTest.DestroyTestTimelineAssets(clip);
+        yield return null;
+        
+    }
+
+    
+//----------------------------------------------------------------------------------------------------------------------    
+    
+    [UnityTest]
     public IEnumerator SetPlayableAssetFPS() {
         PlayableDirector                    director = EditorUtilityTest.NewSceneWithDirector();
         TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
