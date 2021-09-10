@@ -134,7 +134,7 @@ internal class EditorUtilityTest {
     }
 
     internal static TimelineClip CreateTestRenderCacheTimelineClip(PlayableDirector director) {
-        string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath("Assets/TempRenderCacheTimelineForTestRunner.playable");
+        string tempTimelineAssetPath = AssetDatabase.GenerateUniqueAssetPath(TEST_TIMELINE_ASSET_PATH);
 
         //Create timeline asset
         TimelineAsset timelineAsset = ScriptableObject.CreateInstance<TimelineAsset>();
@@ -170,7 +170,8 @@ internal class EditorUtilityTest {
     
 //----------------------------------------------------------------------------------------------------------------------    
 
-    const string SRC_IMAGE_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
+    private const string SRC_IMAGE_PATH           = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
+    private const string TEST_TIMELINE_ASSET_PATH = "Assets/TempSISTimelineForTestRunner.playable";
 
 }
 
