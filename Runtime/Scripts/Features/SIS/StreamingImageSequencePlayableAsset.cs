@@ -94,6 +94,12 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     void OnEnable() {
         m_texture              = null;
         m_lastCopiedImageIndex = -1;
+        
+        m_regularAssetMipmapCheckLogger = new OneTimeLogger(() => {
+            Assert.IsNotNull(m_texture);
+            return m_texture.mipmapCount != 1;
+        },$"Textures in {m_folder} should not have mipmap"); 
+        
     }
 
     private void OnDisable() {
@@ -347,14 +353,17 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         m_lastCopiedImageIndex = index;
         return m_texture;
     }
-
+    
     Texture2D UpdateTexture(Texture2D srcTex, int index) {
         if (m_texture.IsNullRef() || !m_texture.AreSizeAndFormatEqual(srcTex)) {
-            m_texture = new Texture2D(srcTex.width, srcTex.height, srcTex.format, false, false) {
+            m_texture = new Texture2D(srcTex.width, srcTex.height, srcTex.format, mipCount: srcTex.mipmapCount, linear: false) {
                 filterMode = FilterMode.Bilinear,
                 hideFlags  = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor,
             };
         }
+
+        m_regularAssetMipmapCheckLogger.Update("[SIS]","");
+        
 
         if (m_lastCopiedImageIndex == index)
             return m_texture;
@@ -517,9 +526,10 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     private int m_forwardPreloadImageIndex  = 0;
     private int m_backwardPreloadImageIndex = 0;
 
-
     Texture2D    m_texture       = null;
 
+    private OneTimeLogger m_regularAssetMipmapCheckLogger;
+    
 //----------------------------------------------------------------------------------------------------------------------
     
     private const int CUR_SIS_PLAYABLE_ASSET_VERSION = (int) SISPlayableAssetVersion.WATCHED_FILE_0_4;
