@@ -8,6 +8,7 @@ namespace Unity.StreamingImageSequence  {
 /// <summary>
 /// A component that stores the output of StreamingImageSequence 
 /// </summary>
+[ExecuteAlways]
 public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
     
     
@@ -47,6 +48,9 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
         }
         
         m_image = GetComponent<Image>();
+        if (null != m_image) {
+            m_image.sprite = null;
+        }
         
     }
     
@@ -106,6 +110,7 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
             
         }else if (null!= m_image) {
             Sprite sprite = m_image.sprite;
+//            Debug.Log($"{gameObject.name} {m_image.GetHashCode()}");
             if (null==sprite || sprite.texture != tex) {
                 m_image.sprite = Sprite.Create(tex, new Rect(0.0f, 0.0f, tex.width, tex.height), new Vector2(0.5f, 0.5f), 100.0f, 1, SpriteMeshType.FullRect);
             }
@@ -113,6 +118,18 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
 
     }
 
+    
+    void OnEnable() {
+//        Debug.Log($"OnEnable {gameObject.name} {m_image}");
+        
+        // m_image = GetComponent<Image>();
+        // if (null != m_image) {
+        //     m_image.sprite = null;
+        // }
+        
+    }
+    
+    
 //----------------------------------------------------------------------------------------------------------------------
     
     internal bool ShouldUseLastImageOnLoad() { return m_useLastImageOnLoad; }
