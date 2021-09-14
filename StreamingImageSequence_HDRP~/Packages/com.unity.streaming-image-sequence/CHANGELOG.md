@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.13.0-preview] - 2021-09-14
+
+### Changed
+* deps: update dependency to com.unity.film-internal-utilities@0.11.0-preview 
+
+### Fixed
+* fix: errors when inspecting an empty SISPlayableAsset
+* fix: lingering sprite when duplicating an Image which has a StreamingImageSequenceRenderer
+* fix: better error handling when attempting to load non-Texture2D images as regular Unity assets 
+
 ## [0.12.0-preview] - 2021-08-17
 
 ### Added
