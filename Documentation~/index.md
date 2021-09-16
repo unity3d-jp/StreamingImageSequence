@@ -20,22 +20,17 @@ It is designed with the following principles in mind:
 
 ## Features
 
-1. #### [Playing Sequential Images](en/FeaturePlayingSequentialImages.md)
+1. #### [Playing Sequential Images](FeaturePlayingSequentialImages.md)
 
    ![StreamingImageSequenceDemo](images/StreamingImageSequenceDemo.gif)
 
-2. #### [Caching Render Results](en/FeatureCachingRenderResults.md)
+2. #### [Caching Render Results](FeatureCachingRenderResults.md)
 
    ![RenderCacheDemo](images/RenderCacheDemo.gif)
 
-3. #### [Fading Image objects](en/FeatureFadingImages.md)
+3. #### [Fading Image objects](FeatureFadingImages.md)
 
    ![FaderDemo](images/FaderDemo.gif)
-
-
-## Other Languages
-- [日本語](jp/index.md)
-
 
 
 
