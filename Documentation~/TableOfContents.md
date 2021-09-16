@@ -1,9 +1,9 @@
 * [StreamingImageSequence](index.md)
 * Features
-    * [Playing Sequential Images](en/FeaturePlayingSequentialImages.md)
-        * [Importing Images](en/ImportingImages.md)
-    * [Caching Render Results](en/FeatureCachingRenderResults.md)
-    * [Fading Image Objects](en/FeatureFadingImages.md)
+    * [Playing Sequential Images](FeaturePlayingSequentialImages.md)
+        * [Importing Images](ImportingImages.md)
+    * [Caching Render Results](FeatureCachingRenderResults.md)
+    * [Fading Image Objects](FeatureFadingImages.md)
 * References
-    * [Preferences](en/Preferences.md)
-    * [FrameMarkers](en/FrameMarkers.md)
+    * [Preferences](Preferences.md)
+    * [FrameMarkers](FrameMarkers.md)
