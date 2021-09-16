@@ -21,20 +21,20 @@ From an empty scene, do the following:
 1. Open the [Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest) window.
 1. Add a **StreamingImageSequenceTrack** in the Timeline Window.
 
-   ![AddStreamingImageSequenceTrack](../images/AddStreamingImageSequenceTrack.png)
+   ![AddStreamingImageSequenceTrack](images/AddStreamingImageSequenceTrack.png)
    
 1. Drag and drop the sequential images folder to the **StreamingImageSequenceTrack** added previously. 
    This will automatically create a [StreamingImageSequencePlayableAsset](#streamingimagesequenceplayableasset)
    using the images in the folder.
  
-   ![DragAndDropFolder](../images/DragAndDropFolder.png)
+   ![DragAndDropFolder](images/DragAndDropFolder.png)
    
 1. Create an **Image** object by clicking the menu: GameObject > UI > Image.
 
 1. Drag and drop the **Image** object to the object property of the **StreamingImageSequenceTrack**, 
    and click *Create [StreamingImageSequenceRenderer](#streamingimagesequencerenderer) on Image*.
 
-   ![CreateStreamingImageSequenceNativeRenderer](../images/CreateStreamingImageSequenceRenderer.png)
+   ![CreateStreamingImageSequenceNativeRenderer](images/CreateStreamingImageSequenceRenderer.png)
 
 
 The image sequences in the folder will then be shown inside the **Image** object, 
@@ -84,13 +84,13 @@ Each frame has a [FrameMarker](FrameMarkers.md),
 which can be used to skip the image assigned to that particular frame, 
 and show the last used image instead.
 
-![FrameMarker](../images/StreamingImageSequence_FrameMarker.png)
+![FrameMarker](images/StreamingImageSequence_FrameMarker.png)
 
 Refer to [FrameMarkers](FrameMarkers.md) for more details. 
 
 ## Gap Extrapolation
 
-![StreamingImageSequencePlayableAssetExtrapolation](../images/StreamingImageSequencePlayableAssetExtrapolation.png)
+![StreamingImageSequencePlayableAssetExtrapolation](images/StreamingImageSequencePlayableAssetExtrapolation.png)
 
 The behaviour of a gap before or after a StreamingImageSequencePlayableAsset clip can be set in a similar way to 
 [setting gap extrapolation for Animation clips](https://docs.unity3d.com/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)
@@ -111,7 +111,7 @@ In the editor, we can modify the timing of the playback by
 2. right clicking on the curve to add keys
 3. moving the keys accordingly
 
-![StreamingImageSequenceCurve](../images/StreamingImageSequenceCurve.png)
+![StreamingImageSequenceCurve](images/StreamingImageSequenceCurve.png)
 
 ## Shortcuts
 * Press Shift while dragging the start or end of the clip to automatically 
@@ -120,7 +120,7 @@ In the editor, we can modify the timing of the playback by
 
 ## StreamingImageSequenceRenderer
 
-<img align="right" width="400" src="../images/StreamingImageSequenceRendererInspector.png">
+<img align="right" width="400" src="images/StreamingImageSequenceRendererInspector.png">
 
 StreamingImageSequenceRenderer is a **GameObject** component for 
 applying image updates automatically 
@@ -144,7 +144,7 @@ which is used for playing sequential image sequences in
 [Unity Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest).  
 We can view or modify the following properties through the inspector.
 
-![StreamingImageSequencePlayableAsset](../images/StreamingImageSequencePlayableAssetInspector.png)
+![StreamingImageSequencePlayableAsset](images/StreamingImageSequencePlayableAssetInspector.png)
 
 * **Resolution** (Read Only)  
   Shows the width and height of the first image in the folder

@@ -13,11 +13,11 @@ From an empty scene, do the following:
 
 1. Open the Timeline window and add a **RenderCacheTrack**.
  
-   ![AddRenderCacheTrack](../images/AddRenderCacheTrack.png)
+   ![AddRenderCacheTrack](images/AddRenderCacheTrack.png)
    
 1. Right click on the **RenderCacheTrack** and click *Add Render Cache Playable Asset*
  
-   ![AddRenderCachePlayableAsset](../images/AddRenderCachePlayableAsset.png)
+   ![AddRenderCachePlayableAsset](images/AddRenderCachePlayableAsset.png)
 
 1. Adjust the length of the [**RenderCachePlayableAsset**](#rendercacheplayableasset) 
    according to the length of the animation.
@@ -26,7 +26,7 @@ From an empty scene, do the following:
 
 1. Drag and drop the **GameObject** to the object property of the **RenderCacheTrack**.
 
-   ![AssignRenderCapturer](../images/AssignRenderCapturer.png)
+   ![AssignRenderCapturer](images/AssignRenderCapturer.png)
 
 1. Select the **RenderCachePlayableAsset** and click *Update Render Cache* in the inspector.
 
@@ -36,7 +36,7 @@ Each frame has a [FrameMarker](FrameMarkers.md),
 which can be used to skip capturing the image for that particular frame, 
 and to lock the frame in order to prevent it from being overwritten.
 
-![FrameMarker](../images/RenderCache_FrameMarker.png)
+![FrameMarker](images/RenderCache_FrameMarker.png)
 
 Right clicking on a FrameMarker will bring up a popup menu.
 * **Copy**: unused
@@ -66,7 +66,7 @@ decide what gets rendered into image files. Currently, StreamingImageSequence pr
 
 We can view or modify the following properties through the inspector.
 
-![RenderCachePlayableAsset](../images/RenderCachePlayableAssetInspector.png)
+![RenderCachePlayableAsset](images/RenderCachePlayableAssetInspector.png)
 
 * **Resolution** (Read Only)  
   The resolution of the output images. Modify the size of the Game window to change this property.
@@ -81,7 +81,7 @@ We can view or modify the following properties through the inspector.
   in order to prevent certain frames 
   from being rewritten, which is useful to maintain custom manipulation 
   to previous cached images.  
-  ![RenderCache_LockFrames](../images/RenderCache_LockFrames.png)
+  ![RenderCache_LockFrames](images/RenderCache_LockFrames.png)
 * **Background Colors**.  
   * **In Game window (Update)**  
     The background color of the Game window when updating RenderCache.    

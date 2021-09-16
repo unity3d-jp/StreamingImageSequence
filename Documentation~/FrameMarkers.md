@@ -1,6 +1,6 @@
 # FrameMarkers
 
-![FrameMarkers](../images/FrameMarkers.png)
+![FrameMarkers](images/FrameMarkers.png)
 
 FrameMarkers are markers that appear on top of the playable assets of StreamingImageSequence, 
 and are only visible if the Timeline window is zoomed in.
@@ -15,7 +15,7 @@ Keyboard shortcuts:
 
 # Inspector
 
-![FrameMarkersInspector](../images/FrameMarkersInspector.png)
+![FrameMarkersInspector](images/FrameMarkersInspector.png)
 
 * **Use Frame**   
   To activate/deactivate the processing in the frame.
