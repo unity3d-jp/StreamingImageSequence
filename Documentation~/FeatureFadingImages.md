@@ -14,11 +14,11 @@ From an empty scene, do the following:
 1. Open the Timeline window
 1. Add a **FaderTrack** in the Timeline Window
 
-   ![AddFaderTrack](../images/AddFaderTrack.png)
+   ![AddFaderTrack](images/AddFaderTrack.png)
    
 1. Right click on the timeline window and click *Add Fader Playable Asset*
  
-   ![AddFaderPlayableAsset](../images/AddFaderPlayableAsset.png)
+   ![AddFaderPlayableAsset](images/AddFaderPlayableAsset.png)
    
 1. Create an **Image** object by clicking the menu: GameObject -> UI -> Image
 
@@ -29,7 +29,7 @@ The Image object will be faded in/out as we play the Timeline or drag the time s
 
 ## Gap Extrapolation
 
-![FaderPlayableAssetExtrapolation](../images/FaderPlayableAssetExtrapolation.png)
+![FaderPlayableAssetExtrapolation](images/FaderPlayableAssetExtrapolation.png)
 
 The behaviour of a gap before or after a FaderPlayableAsset clip can be set in a similar way to 
 [setting gap extrapolation for Animation clips](https://docs.unity3d.com/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)
@@ -51,7 +51,7 @@ which is used for fading Image component in
 [Unity Timeline](https://docs.unity3d.com/Packages/com.unity.timeline@latest).  
 We can view or modify the following properties through the inspector.
 
-![FaderPlayableAsset](../images/FaderPlayableAsset.png)
+![FaderPlayableAsset](images/FaderPlayableAsset.png)
 
 * **Color**   
   The color to be applied to the Image component attached to the track.

@@ -1,6 +1,6 @@
 # Preferences
 
-![Preferences](../images/Preferences.png)
+![Preferences](images/Preferences.png)
 
 Open Preferences by clicking on **Edit > Preferences**.
 
