@@ -15,6 +15,7 @@ This is done by doing drag and drop of the sequential images folder to the Strea
 ## Setting the Folder via Inspector
 
 We can simply click the **Select** button, or we can also drag and drop a folder directly into the inspector.
+
 ![DragAndDropInspector](images/DragAndDropInspector.png)
 
 If the chosen folder is not under *StreamingAssets*, then the following import window will appear to confirm if we'd like to copy the images into *StreamingAssets*.   
