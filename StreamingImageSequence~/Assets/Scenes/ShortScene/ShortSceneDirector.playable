@@ -410,7 +410,32 @@ MonoBehaviour:
       m_marker: {fileID: 0}
       m_userNote: 
     m_frameMarkersRequested: 0
-    m_version: 1
+    m_playableFrameClipDataVersion: 1
+    m_sisClipDataVersion: 1
+    m_animationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 1.3333334
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.75
+        value: 1
+        inSlope: 1.3333334
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
 --- !u!114 &-7697309709549622590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1056,7 +1081,7 @@ MonoBehaviour:
   m_imageFiles: []
   m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
-  m_time: 0
+  m_time: 0.6100000143051147
   Folder: 
   m_timelineDefaultAsset: {fileID: 0}
 --- !u!114 &-5451482385808524462
@@ -1958,7 +1983,32 @@ MonoBehaviour:
       m_marker: {fileID: 0}
       m_userNote: 
     m_frameMarkersRequested: 0
-    m_version: 1
+    m_playableFrameClipDataVersion: 1
+    m_sisClipDataVersion: 1
+    m_animationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 10
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.1
+        value: 1
+        inSlope: 10
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
 --- !u!114 &-2670604802160313673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2271,7 +2321,32 @@ MonoBehaviour:
       m_marker: {fileID: 0}
       m_userNote: 
     m_frameMarkersRequested: 0
-    m_version: 1
+    m_playableFrameClipDataVersion: 1
+    m_sisClipDataVersion: 1
+    m_animationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 1.3333334
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 0.75
+        value: 1
+        inSlope: 1.3333334
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
 --- !u!114 &-1804809620719400680
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3939,7 +4014,32 @@ MonoBehaviour:
       m_marker: {fileID: 0}
       m_userNote: 
     m_frameMarkersRequested: 0
-    m_version: 1
+    m_playableFrameClipDataVersion: 1
+    m_sisClipDataVersion: 1
+    m_animationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0.2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 5
+        value: 1
+        inSlope: 0.2
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
 --- !u!114 &-769666719346421356
 MonoBehaviour:
   m_ObjectHideFlags: 0
