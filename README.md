@@ -50,15 +50,15 @@ differ based on the version of Unity.
 
 ## Features
 
-1. #### [Playing Sequential Images](./Documentation~/en/FeaturePlayingSequentialImages.md)
+1. #### [Playing Sequential Images](./Documentation~/FeaturePlayingSequentialImages.md)
 
    ![StreamingImageSequenceDemo](Documentation~/images/StreamingImageSequenceDemo.gif)
 
-2. #### [Caching Render Results](./Documentation~/en/FeatureCachingRenderResults.md)
+2. #### [Caching Render Results](./Documentation~/FeatureCachingRenderResults.md)
 
    ![RenderCacheDemo](Documentation~/images/RenderCacheDemo.gif)
 
-3. #### [Fading Image objects](./Documentation~/en/FeatureFadingImages.md)
+3. #### [Fading Image objects](./Documentation~/FeatureFadingImages.md)
 
    ![FaderDemo](Documentation~/images/FaderDemo.gif)
 
