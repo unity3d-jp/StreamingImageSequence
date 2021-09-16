@@ -1,5 +1,7 @@
-## Other Languages
-* [日本語](README_JP.md)
+# Latest official docs
+- [English](https://docs.unity3d.com/Packages/com.unity.streaming-image-sequence@latest)
+- [日本語](https://docs.unity3d.com/ja/Packages/com.unity.streaming-image-sequence@latest)
+
 
 # Streaming Image Sequence
 
