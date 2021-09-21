@@ -45,6 +45,7 @@ prerelease:
          sudo apt update
          sudo apt install gh
 
+         unset GITHUB_TOKEN
          echo "Creating release $packageVer"
          echo "$GH_YAMATO_DEPLOYMENT" > token.txt
          gh auth login --with-token < token.txt 
