@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.13.1-preview] - 2021-09-21
+
+### Fixed
+* fix: put SIS-related menu items at the bottom
+* doc: newline and image fixes 
+* doc: remove Japanese translation 
+* doc: rearrange the location of md files 
+
 ## [0.13.0-preview] - 2021-09-14
 
 ### Changed
