@@ -45,15 +45,17 @@ prerelease:
          sudo apt update
          sudo apt install gh
 
+         unset GITHUB_TOKEN
          echo "Creating release $packageVer"
          echo "$GH_YAMATO_DEPLOYMENT" > token.txt
          gh auth login --with-token < token.txt 
-         gh release create $packageVer $packageFilePath --title $packageVer --notes "$packageVer Release"  --prerelease 
+         gh release create $packageVer $packageFilePath --title $packageVer --notes "$packageVer Release"  --prerelease --target $GIT_BRANCH
        fi
        echo "End"
     
   dependencies:
     - .yamato/{{ yamato_name }}-publish.yml#publish
+
     
 publish_dry_run:
   name: Publish Dry Run {{ yamato_name }} to Internal Registry
