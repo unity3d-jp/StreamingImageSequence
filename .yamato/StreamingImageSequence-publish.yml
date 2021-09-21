@@ -5,11 +5,34 @@ publish:
   name: Publish {{ yamato_name }} to Internal Registry
   agent:
     type: Unity::VM
-    image: package-ci/win10:stable
+    image: package-ci/ubuntu:stable
     flavor: b1.large
   commands:
     - npm install upm-ci-utils@stable -g --registry https://artifactory.prd.cds.internal.unity3d.com/artifactory/api/npm/upm-npm
     - upm-ci package publish 
+    - |
+       echo off
+       packageFilePath=`find upm-ci~/packages -name "*.tgz" -print`
+       if [[ $packageFilePath =~ ^upm-ci~\/packages\/.*-([0-9]+)\.([0-9]+)\.([0-9]+)(-[0-9a-zA-Z]*)?\.tgz$ ]]; then
+         fullMatch="${BASH_REMATCH[0]}"
+         majorVer="${BASH_REMATCH[1]}"
+         minorVer="${BASH_REMATCH[2]}"
+         patchVer="${BASH_REMATCH[3]}"
+         packageVer="${majorVer}.${minorVer}.${patchVer}${tag}"
+         
+         echo "Installing gh"         
+         curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+         echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+         sudo apt update
+         sudo apt install gh
+
+         echo "Creating release $packageVer"
+         echo "$GH_YAMATO_DEPLOYMENT" > token.txt
+         gh auth login --with-token < token.txt 
+         gh release create $packageVer $packageFilePath --title $packageVer --notes "$packageVer Release"  --prerelease 
+       fi
+       echo "End"
+    
   triggers:
     tags:
       only:
