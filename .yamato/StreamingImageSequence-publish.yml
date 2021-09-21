@@ -33,10 +33,6 @@ publish:
        fi
        echo "End"
     
-  triggers:
-    tags:
-      only:
-        - /^(r|R)(c|C)-\d+\.\d+\.\d+(-preview(\.\d+)?)?$/
   artifacts:
     {{ yamato_name }}_publish_artifacts:
       paths:
