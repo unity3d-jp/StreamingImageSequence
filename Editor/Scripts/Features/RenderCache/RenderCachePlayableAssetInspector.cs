@@ -313,8 +313,6 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                 
             } 
             Assert.IsTrue(File.Exists(outputFilePath));
-            FileInfo fileInfo = new FileInfo(outputFilePath);
-            
 
             ++fileCounter;        
             cancelled = EditorUtility.DisplayCancelableProgressBar(
