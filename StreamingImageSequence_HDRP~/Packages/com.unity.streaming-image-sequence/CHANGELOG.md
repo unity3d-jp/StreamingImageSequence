@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.13.2-preview] - 2021-09-22
+
+### Fixed
+* fix: related files were deleted when updating RenderCache
+
 ## [0.13.1-preview] - 2021-09-21
 
 ### Fixed
