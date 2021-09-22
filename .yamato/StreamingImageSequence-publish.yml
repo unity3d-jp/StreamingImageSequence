@@ -45,11 +45,21 @@ prerelease:
          sudo apt update
          sudo apt install gh
 
+         hostName=`dirname $GIT_REPOSITORY_URL | cut -f1 -d":" | cut -f2 -d"@"`       
+         ownerName=`dirname $GIT_REPOSITORY_URL | cut -f2 -d":"`       
+         repoName=`basename $GIT_REPOSITORY_URL | sed "s/.git//"`
+         ownerRepo="$ownerName/$repoName"
+         echo "Git repository URL: $GIT_REPOSITORY_URL"
+         echo "Host: $hostName"
+         echo "Owner: $ownerName"
+         echo "Repo: $repoName"
+
          unset GITHUB_TOKEN
          echo "Creating release $packageVer"
          echo "$GH_YAMATO_DEPLOYMENT" > token.txt
-         gh auth login --with-token < token.txt 
-         gh release create $packageVer $packageFilePath --title $packageVer --notes "$packageVer Release"  --prerelease --target $GIT_BRANCH
+                  
+         gh auth login --hostname $hostName --with-token < token.txt 
+         gh release create $packageVer $packageFilePath --title $packageVer --notes "$packageVer Release"  --target $GIT_BRANCH --repo $ownerRepo
        fi
        echo "End"
     
