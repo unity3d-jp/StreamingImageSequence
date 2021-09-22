@@ -259,7 +259,8 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         //initial calculation of loop vars
         bool captureAllFrames = editorConfig.GetCaptureAllFrames();
         int  fileCounter      = 0;
-        int  numFiles         = (int) Math.Ceiling(timelineClip.duration / timePerFrame) + 1;
+        int  numFiles         = TimelineUtility.CalculateNumFrames(timelineClip);
+        int  maxFrame         = numFiles - 1;
         int  numDigits        = MathUtility.GetNumDigits(numFiles);
         if (!captureAllFrames) {
             fileCounter = editorConfig.GetCaptureStartFrame();
