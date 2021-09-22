@@ -249,9 +249,6 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         }
         
         GameObject blitterGO = blitter.gameObject;
-        
-        
-        
 
         TimelineClip timelineClip = clipData.GetOwner();
         double timePerFrame = 1.0f / track.timelineAsset.editorSettings.GetFPS();
