@@ -205,7 +205,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             
         }           
 
-        TrackAsset track = renderCachePlayableAsset.GetBoundClipData().GetOwner().GetParentTrack();        
+        TrackAsset track = clipData.GetOwner().GetParentTrack();
         BaseRenderCapturer renderCapturer = director.GetGenericBinding(track) as BaseRenderCapturer;
         if (null == renderCapturer) {
             EditorUtility.DisplayDialog("Streaming Image Sequence",
@@ -249,9 +249,6 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         }
         
         GameObject blitterGO = blitter.gameObject;
-        
-        
-        
 
         TimelineClip timelineClip = clipData.GetOwner();
         double timePerFrame = 1.0f / track.timelineAsset.editorSettings.GetFPS();
@@ -259,7 +256,8 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         //initial calculation of loop vars
         bool captureAllFrames = editorConfig.GetCaptureAllFrames();
         int  fileCounter      = 0;
-        int  numFiles         = (int) Math.Ceiling(timelineClip.duration / timePerFrame) + 1;
+        int  numFiles         = TimelineUtility.CalculateNumFrames(timelineClip);
+        int  maxFrame         = numFiles - 1;
         int  numDigits        = MathUtility.GetNumDigits(numFiles);
         if (!captureAllFrames) {
             fileCounter = editorConfig.GetCaptureStartFrame();
@@ -272,11 +270,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         int captureStartFrame = fileCounter;
         
         string prefix = $"{timelineClip.displayName}_";
-        List<WatchedFileInfo> imageFiles = new List<WatchedFileInfo>(numFiles);
  
-        //Store old files that has the same pattern
-        string[] existingFiles = Directory.GetFiles (outputFolder, $"*.png");
-        HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
 
         RenderCacheOutputFormat outputFormat = renderCachePlayableAsset.GetOutputFormat();
         string                  outputExt    = null;
@@ -296,18 +290,13 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             if (!captureAllFrames && fileCounter > editorConfig.GetCaptureEndFrame())
                 break;            
             
-            string fileName       = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.{outputExt}";
-            string outputFilePath = Path.Combine(outputFolder, fileName);
+            string outputFilePath = GenerateImageSequencePath(outputFolder, prefix, fileCounter, numDigits, outputExt); 
 
             SISPlayableFrame playableFrame = clipData.GetPlayableFrame(fileCounter);                
             bool captureFrame = (!clipData.AreFrameMarkersRequested() //if markers are not requested, capture
                 || !File.Exists(outputFilePath) //if file doesn't exist, capture
                 || (null!=playableFrame && playableFrame.IsUsed() && !playableFrame.IsLocked())
             );             
-            
-            if (filesToDelete.Contains(outputFilePath)) {
-                filesToDelete.Remove(outputFilePath);
-            }
             
            
             if (captureFrame) {
@@ -324,9 +313,6 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                 
             } 
             Assert.IsTrue(File.Exists(outputFilePath));
-            FileInfo fileInfo = new FileInfo(outputFilePath);
-            
-            imageFiles.Add(new WatchedFileInfo(fileName, fileInfo.Length));
 
             ++fileCounter;        
             cancelled = EditorUtility.DisplayCancelableProgressBar(
@@ -335,7 +321,14 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 
         if (!cancelled) {
 
-            //Delete old files
+            //Delete old files that has the same extension, and has fileCounter that is more than max 
+            string[]        existingFiles = Directory.GetFiles (outputFolder, $"*.{outputExt}");
+            HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
+            for (int i = 0; i <= maxFrame; ++i) {
+                string outputFilePath = GenerateImageSequencePath(outputFolder, prefix, i, numDigits, outputExt); 
+                filesToDelete.Remove(outputFilePath);                           
+            }
+
             if (AssetDatabase.IsValidFolder(outputFolder)) {
                 foreach (string oldFile in filesToDelete) {                
                     AssetDatabase.DeleteAsset(oldFile);
@@ -364,7 +357,6 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
 
     }
 
-    
 //----------------------------------------------------------------------------------------------------------------------
 
     private static BaseTextureBlitter CreateBlitter(Texture texToBlit) {
@@ -495,6 +487,13 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         TimelineEditor.Refresh(RefreshReason.SceneNeedsUpdate); 
     }        
 
+//----------------------------------------------------------------------------------------------------------------------
+    private static string GenerateImageSequencePath(string folder, string prefix, int fileCounter, int numDigits, string ext) {
+        string fileName = $"{prefix}{fileCounter.ToString($"D{numDigits}")}.{ext}";
+        return Path.Combine(folder, fileName);
+        
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
  
     
