@@ -53,7 +53,7 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
         }
 
         bool writeSuccess = rt.WriteToFile(outputFilePath, textureFormat, isPNG, isLinear: false);
-        if (writeSuccess) {
+        if (!writeSuccess) {
             Debug.LogError($"[SIS] Can't write to file: {outputFilePath}." + Environment.NewLine);             
         }
     }
