@@ -273,7 +273,6 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         int captureStartFrame = fileCounter;
         
         string prefix = $"{timelineClip.displayName}_";
-        List<WatchedFileInfo> imageFiles = new List<WatchedFileInfo>(numFiles);
  
         //Store old files that has the same pattern
         string[] existingFiles = Directory.GetFiles (outputFolder, $"*.png");
@@ -325,7 +324,6 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             Assert.IsTrue(File.Exists(outputFilePath));
             FileInfo fileInfo = new FileInfo(outputFilePath);
             
-            imageFiles.Add(new WatchedFileInfo(fileName, fileInfo.Length));
 
             ++fileCounter;        
             cancelled = EditorUtility.DisplayCancelableProgressBar(
