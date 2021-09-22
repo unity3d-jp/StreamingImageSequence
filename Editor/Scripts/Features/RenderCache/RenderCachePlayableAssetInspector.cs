@@ -205,7 +205,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             
         }           
 
-        TrackAsset track = renderCachePlayableAsset.GetBoundClipData().GetOwner().GetParentTrack();        
+        TrackAsset track = clipData.GetOwner().GetParentTrack();
         BaseRenderCapturer renderCapturer = director.GetGenericBinding(track) as BaseRenderCapturer;
         if (null == renderCapturer) {
             EditorUtility.DisplayDialog("Streaming Image Sequence",
