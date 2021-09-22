@@ -305,9 +305,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                 || (null!=playableFrame && playableFrame.IsUsed() && !playableFrame.IsLocked())
             );             
             
-            if (filesToDelete.Contains(outputFilePath)) {
-                filesToDelete.Remove(outputFilePath);
-            }
+            filesToDelete.Remove(outputFilePath);
             
            
             if (captureFrame) {
