@@ -59,7 +59,7 @@ prerelease:
          echo "$GH_YAMATO_DEPLOYMENT" > token.txt
                   
          gh auth login --hostname $hostName --with-token < token.txt 
-         gh release create $packageVer $packageFilePath --title $packageVer --notes "$packageVer Release"  --target $GIT_BRANCH --repo $ownerRepo
+         gh release create $packageVer $packageFilePath --title $packageVer --notes "$packageVer Release"  --prerelease --target $GIT_BRANCH --repo $ownerRepo
        fi
        echo "End"
     
