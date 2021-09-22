@@ -330,7 +330,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             string[]        existingFiles = Directory.GetFiles (outputFolder, $"*.{outputExt}");
             HashSet<string> filesToDelete = new HashSet<string>(existingFiles);
             for (int i = 0; i <= maxFrame; ++i) {
-                string outputFilePath = GenerateImageSequencePath(outputFolder, prefix, fileCounter, numDigits, outputExt); 
+                string outputFilePath = GenerateImageSequencePath(outputFolder, prefix, i, numDigits, outputExt); 
                 filesToDelete.Remove(outputFilePath);                           
             }
 
