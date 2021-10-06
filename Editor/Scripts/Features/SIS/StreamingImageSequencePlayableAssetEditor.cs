@@ -9,6 +9,7 @@ using UnityEngine.Assertions;
 using UnityEditor;
 using UnityEngine.Playables;
 
+
 namespace Unity.StreamingImageSequence.Editor {
 
 [CustomTimelineEditor(typeof(StreamingImageSequencePlayableAsset)), UsedImplicitly]
@@ -87,8 +88,10 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
             int numImages = asset.GetNumImages();
             if (numImages > 0) {
                 SISUserSettings userSettings = SISUserSettings.GetInstance();
+
+                double fps = track.timelineAsset.editorSettings.GetFPS();
                 
-                clip.duration = (double) (numImages) / (userSettings.GetDefaultSISPlayableAssetFPS()); 
+                clip.duration = (double) (numImages) / (fps); 
                 clip.displayName = Path.GetFileName(asset.GetFolder());
             }
 
