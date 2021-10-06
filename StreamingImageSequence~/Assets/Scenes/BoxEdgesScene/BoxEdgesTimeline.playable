@@ -1,0 +1,3877 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7895085281797094708
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588b3cca60f217d438ef96013ebfdb06, type: 3}
+  m_Name: Streaming Image Sequence Track (1)
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_AnimClip: {fileID: 0}
+  m_Locked: 0
+  m_Muted: 0
+  m_CustomPlayableFullTypename: 
+  m_Curves: {fileID: 0}
+  m_Parent: {fileID: 11400000}
+  m_Children: []
+  m_Clips:
+  - m_Version: 1
+    m_Start: 0
+    m_ClipIn: 0
+    m_Asset: {fileID: 2428087595432952503}
+    m_Duration: 5.8749998774379515
+    m_TimeScale: 0.8510638475418091
+    m_ParentTrack: {fileID: -7895085281797094708}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: 0
+    m_BlendOutDuration: 0
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: -6891782348220562945}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: Infinity
+    m_PreExtrapolationTime: 0
+    m_DisplayName: BoxEdgesChangeFolder
+  m_Markers:
+    m_Objects: []
+  m_serializedDataCollection:
+  - m_baseClipDataVersion: 1
+    m_playableFrames:
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.041666666666666664
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.08333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.16666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.20833333333333331
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.29166666666666663
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.3333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.41666666666666663
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.4583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.5416666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.5833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.6666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.7083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.7916666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.8333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.9166666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.9583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.0416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.0833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.1666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.2083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.2916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.3333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.4166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.4583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.5416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.5833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.6666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.7083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.7916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.8333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.9166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.9583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.0416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.1666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.208333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.2916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.4166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.458333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.5416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.6666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.708333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.7916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.9166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.958333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.0416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.1666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.208333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.2916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.4166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.458333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.5416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.6666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.708333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.7916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.9166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.958333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.041666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.166666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.208333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.291666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.416666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.458333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.541666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.708333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.791666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.916666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.958333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.041666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.166666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.208333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.291666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.416666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.458333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.541666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.708333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.791666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    m_frameMarkersRequested: 0
+    m_playableFrameClipDataVersion: 1
+    m_sisClipDataVersion: 1
+    m_animationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0.2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 5
+        value: 1
+        inSlope: 0.2
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+--- !u!74 &-6990571473059340823
+AnimationClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Curves: BoxEdges'
+  serializedVersion: 6
+  m_Legacy: 1
+  m_Compressed: 0
+  m_UseHighQualityCurve: 1
+  m_RotationCurves: []
+  m_CompressedRotationCurves: []
+  m_EulerCurves: []
+  m_PositionCurves: []
+  m_ScaleCurves: []
+  m_FloatCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0.21276596
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 4.7
+        value: 1
+        inSlope: 0.21276596
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_time
+    path: 
+    classID: 114
+    script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_PPtrCurves: []
+  m_SampleRate: 24
+  m_WrapMode: 0
+  m_Bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_ClipBindingConstant:
+    genericBindings: []
+    pptrCurveMapping: []
+  m_AnimationClipSettings:
+    serializedVersion: 2
+    m_AdditiveReferencePoseClip: {fileID: 0}
+    m_AdditiveReferencePoseTime: 0
+    m_StartTime: 0
+    m_StopTime: 4.7
+    m_OrientationOffsetY: 0
+    m_Level: 0
+    m_CycleOffset: 0
+    m_HasAdditiveReferencePose: 0
+    m_LoopTime: 0
+    m_LoopBlend: 0
+    m_LoopBlendOrientation: 0
+    m_LoopBlendPositionY: 0
+    m_LoopBlendPositionXZ: 0
+    m_KeepOriginalOrientation: 0
+    m_KeepOriginalPositionY: 1
+    m_KeepOriginalPositionXZ: 0
+    m_HeightFromFeet: 0
+    m_Mirror: 0
+  m_EditorCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0.21276596
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 4.7
+        value: 1
+        inSlope: 0.21276596
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_time
+    path: 
+    classID: 114
+    script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_EulerEditorCurves: []
+  m_HasGenericRootTransform: 0
+  m_HasMotionFloatCurves: 0
+  m_Events: []
+--- !u!74 &-6891782348220562945
+AnimationClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Curves: StreamingImageSequencePlayableAsset'
+  serializedVersion: 6
+  m_Legacy: 1
+  m_Compressed: 0
+  m_UseHighQualityCurve: 1
+  m_RotationCurves: []
+  m_CompressedRotationCurves: []
+  m_EulerCurves: []
+  m_PositionCurves: []
+  m_ScaleCurves: []
+  m_FloatCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0.2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 5
+        value: 1
+        inSlope: 0.2
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_time
+    path: 
+    classID: 114
+    script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_PPtrCurves: []
+  m_SampleRate: 24
+  m_WrapMode: 0
+  m_Bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_ClipBindingConstant:
+    genericBindings: []
+    pptrCurveMapping: []
+  m_AnimationClipSettings:
+    serializedVersion: 2
+    m_AdditiveReferencePoseClip: {fileID: 0}
+    m_AdditiveReferencePoseTime: 0
+    m_StartTime: 0
+    m_StopTime: 5
+    m_OrientationOffsetY: 0
+    m_Level: 0
+    m_CycleOffset: 0
+    m_HasAdditiveReferencePose: 0
+    m_LoopTime: 0
+    m_LoopBlend: 0
+    m_LoopBlendOrientation: 0
+    m_LoopBlendPositionY: 0
+    m_LoopBlendPositionXZ: 0
+    m_KeepOriginalOrientation: 0
+    m_KeepOriginalPositionY: 1
+    m_KeepOriginalPositionXZ: 0
+    m_HeightFromFeet: 0
+    m_Mirror: 0
+  m_EditorCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0.2
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 5
+        value: 1
+        inSlope: 0.2
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_time
+    path: 
+    classID: 114
+    script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_EulerEditorCurves: []
+  m_HasGenericRootTransform: 0
+  m_HasMotionFloatCurves: 0
+  m_Events: []
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfda56da833e2384a9677cd3c976a436, type: 3}
+  m_Name: BoxEdgesTimeline
+  m_EditorClassIdentifier: 
+  m_Version: 0
+  m_Tracks:
+  - {fileID: 7586678600065002055}
+  - {fileID: 2080136893015925386}
+  - {fileID: -7895085281797094708}
+  m_FixedDuration: 0
+  m_EditorSettings:
+    m_Framerate: 24
+    m_ScenePreview: 1
+  m_DurationMode: 0
+  m_MarkerTrack: {fileID: 0}
+--- !u!114 &2080136893015925386
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588b3cca60f217d438ef96013ebfdb06, type: 3}
+  m_Name: Streaming Image Sequence Track (2)
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_AnimClip: {fileID: 0}
+  m_Locked: 0
+  m_Muted: 0
+  m_CustomPlayableFullTypename: 
+  m_Curves: {fileID: 0}
+  m_Parent: {fileID: 11400000}
+  m_Children: []
+  m_Clips:
+  - m_Version: 1
+    m_Start: 0
+    m_ClipIn: 0
+    m_Asset: {fileID: 3924225402732875141}
+    m_Duration: 5.875000350177309
+    m_TimeScale: 0.7999999523162842
+    m_ParentTrack: {fileID: 2080136893015925386}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: 0
+    m_BlendOutDuration: 0
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: -6990571473059340823}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: Infinity
+    m_PreExtrapolationTime: 0
+    m_DisplayName: BoxEdgesDragDrop30FPS
+  m_Markers:
+    m_Objects: []
+  m_serializedDataCollection:
+  - m_baseClipDataVersion: 1
+    m_playableFrames:
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.041666666666666664
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.08333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.16666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.20833333333333331
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.29166666666666663
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.3333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.41666666666666663
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.4583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.5416666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.5833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.6666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.7083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.7916666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.8333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.9166666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 0.9583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.0416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.0833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.1666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.2083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.2916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.3333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.4166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.4583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.5416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.5833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.6666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.7083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.7916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.8333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.9166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 1.9583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.0416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.1666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.208333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.2916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.4166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.458333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.5416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.6666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.708333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.7916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.9166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 2.958333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.0416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.1666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.208333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.2916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.4166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.458333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.5416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.6666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.708333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.7916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.9166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 3.958333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.041666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.166666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.208333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.291666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.416666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.458333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.541666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.708333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.791666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.916666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 4.958333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.041666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.166666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.208333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.291666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.416666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.458333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.541666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.708333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.791666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties:
+      - m_propertyID: 0
+        m_propertyValue: 1
+      m_localTime: 5.833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    m_frameMarkersRequested: 0
+    m_playableFrameClipDataVersion: 1
+    m_sisClipDataVersion: 1
+    m_animationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0.21276596
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 4.7
+        value: 1
+        inSlope: 0.21276596
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+--- !u!114 &2428087595432952503
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_Name: StreamingImageSequencePlayableAsset
+  m_EditorClassIdentifier: 
+  m_folder: Assets/ImageSequences/BoxEdges
+  m_imageFileNames: []
+  m_imageFiles:
+  - m_name: BoxEdges_001.png
+    m_size: 37662
+  - m_name: BoxEdges_002.png
+    m_size: 37564
+  - m_name: BoxEdges_003.png
+    m_size: 37603
+  - m_name: BoxEdges_004.png
+    m_size: 37744
+  - m_name: BoxEdges_005.png
+    m_size: 37796
+  - m_name: BoxEdges_006.png
+    m_size: 37861
+  - m_name: BoxEdges_007.png
+    m_size: 38038
+  - m_name: BoxEdges_008.png
+    m_size: 38205
+  - m_name: BoxEdges_009.png
+    m_size: 38296
+  - m_name: BoxEdges_010.png
+    m_size: 38467
+  - m_name: BoxEdges_011.png
+    m_size: 38550
+  - m_name: BoxEdges_012.png
+    m_size: 38557
+  - m_name: BoxEdges_013.png
+    m_size: 38758
+  - m_name: BoxEdges_014.png
+    m_size: 38871
+  - m_name: BoxEdges_015.png
+    m_size: 39030
+  - m_name: BoxEdges_016.png
+    m_size: 39065
+  - m_name: BoxEdges_017.png
+    m_size: 39232
+  - m_name: BoxEdges_018.png
+    m_size: 39239
+  - m_name: BoxEdges_019.png
+    m_size: 39119
+  - m_name: BoxEdges_020.png
+    m_size: 39207
+  - m_name: BoxEdges_021.png
+    m_size: 39300
+  - m_name: BoxEdges_022.png
+    m_size: 39300
+  - m_name: BoxEdges_023.png
+    m_size: 39300
+  - m_name: BoxEdges_024.png
+    m_size: 39300
+  - m_name: BoxEdges_025.png
+    m_size: 39300
+  - m_name: BoxEdges_026.png
+    m_size: 39300
+  - m_name: BoxEdges_027.png
+    m_size: 39300
+  - m_name: BoxEdges_028.png
+    m_size: 39300
+  - m_name: BoxEdges_029.png
+    m_size: 39207
+  - m_name: BoxEdges_030.png
+    m_size: 39119
+  - m_name: BoxEdges_031.png
+    m_size: 39239
+  - m_name: BoxEdges_032.png
+    m_size: 39232
+  - m_name: BoxEdges_033.png
+    m_size: 39065
+  - m_name: BoxEdges_034.png
+    m_size: 39030
+  - m_name: BoxEdges_035.png
+    m_size: 38871
+  - m_name: BoxEdges_036.png
+    m_size: 38758
+  - m_name: BoxEdges_037.png
+    m_size: 38557
+  - m_name: BoxEdges_038.png
+    m_size: 38550
+  - m_name: BoxEdges_039.png
+    m_size: 38467
+  - m_name: BoxEdges_040.png
+    m_size: 38296
+  - m_name: BoxEdges_041.png
+    m_size: 38205
+  - m_name: BoxEdges_042.png
+    m_size: 38038
+  - m_name: BoxEdges_043.png
+    m_size: 37861
+  - m_name: BoxEdges_044.png
+    m_size: 37796
+  - m_name: BoxEdges_045.png
+    m_size: 37744
+  - m_name: BoxEdges_046.png
+    m_size: 37603
+  - m_name: BoxEdges_047.png
+    m_size: 37564
+  - m_name: BoxEdges_048.png
+    m_size: 37662
+  - m_name: BoxEdges_049.png
+    m_size: 37662
+  - m_name: BoxEdges_050.png
+    m_size: 37564
+  - m_name: BoxEdges_051.png
+    m_size: 37603
+  - m_name: BoxEdges_052.png
+    m_size: 37744
+  - m_name: BoxEdges_053.png
+    m_size: 37796
+  - m_name: BoxEdges_054.png
+    m_size: 37861
+  - m_name: BoxEdges_055.png
+    m_size: 38038
+  - m_name: BoxEdges_056.png
+    m_size: 38205
+  - m_name: BoxEdges_057.png
+    m_size: 38296
+  - m_name: BoxEdges_058.png
+    m_size: 38467
+  - m_name: BoxEdges_059.png
+    m_size: 38550
+  - m_name: BoxEdges_060.png
+    m_size: 38557
+  - m_name: BoxEdges_061.png
+    m_size: 38758
+  - m_name: BoxEdges_062.png
+    m_size: 38871
+  - m_name: BoxEdges_063.png
+    m_size: 39030
+  - m_name: BoxEdges_064.png
+    m_size: 39065
+  - m_name: BoxEdges_065.png
+    m_size: 39232
+  - m_name: BoxEdges_066.png
+    m_size: 39239
+  - m_name: BoxEdges_067.png
+    m_size: 39119
+  - m_name: BoxEdges_068.png
+    m_size: 39207
+  - m_name: BoxEdges_069.png
+    m_size: 39300
+  - m_name: BoxEdges_070.png
+    m_size: 39300
+  - m_name: BoxEdges_071.png
+    m_size: 39300
+  - m_name: BoxEdges_072.png
+    m_size: 39300
+  - m_name: BoxEdges_073.png
+    m_size: 39300
+  - m_name: BoxEdges_074.png
+    m_size: 39300
+  - m_name: BoxEdges_075.png
+    m_size: 39300
+  - m_name: BoxEdges_076.png
+    m_size: 39300
+  - m_name: BoxEdges_077.png
+    m_size: 39207
+  - m_name: BoxEdges_078.png
+    m_size: 39119
+  - m_name: BoxEdges_079.png
+    m_size: 39239
+  - m_name: BoxEdges_080.png
+    m_size: 39232
+  - m_name: BoxEdges_081.png
+    m_size: 39065
+  - m_name: BoxEdges_082.png
+    m_size: 39030
+  - m_name: BoxEdges_083.png
+    m_size: 38871
+  - m_name: BoxEdges_084.png
+    m_size: 38758
+  - m_name: BoxEdges_085.png
+    m_size: 38557
+  - m_name: BoxEdges_086.png
+    m_size: 38550
+  - m_name: BoxEdges_087.png
+    m_size: 38467
+  - m_name: BoxEdges_088.png
+    m_size: 38296
+  - m_name: BoxEdges_089.png
+    m_size: 38205
+  - m_name: BoxEdges_090.png
+    m_size: 38038
+  - m_name: BoxEdges_091.png
+    m_size: 37861
+  - m_name: BoxEdges_092.png
+    m_size: 37796
+  - m_name: BoxEdges_093.png
+    m_size: 37744
+  - m_name: BoxEdges_094.png
+    m_size: 37603
+  - m_name: BoxEdges_095.png
+    m_size: 37564
+  - m_name: BoxEdges_096.png
+    m_size: 37662
+  - m_name: BoxEdges_097.png
+    m_size: 37662
+  - m_name: BoxEdges_098.png
+    m_size: 37564
+  - m_name: BoxEdges_099.png
+    m_size: 37603
+  - m_name: BoxEdges_100.png
+    m_size: 37744
+  - m_name: BoxEdges_101.png
+    m_size: 37796
+  - m_name: BoxEdges_102.png
+    m_size: 37861
+  - m_name: BoxEdges_103.png
+    m_size: 38038
+  - m_name: BoxEdges_104.png
+    m_size: 38205
+  - m_name: BoxEdges_105.png
+    m_size: 38296
+  - m_name: BoxEdges_106.png
+    m_size: 38467
+  - m_name: BoxEdges_107.png
+    m_size: 38550
+  - m_name: BoxEdges_108.png
+    m_size: 38557
+  - m_name: BoxEdges_109.png
+    m_size: 38758
+  - m_name: BoxEdges_110.png
+    m_size: 38871
+  - m_name: BoxEdges_111.png
+    m_size: 39030
+  - m_name: BoxEdges_112.png
+    m_size: 39065
+  - m_name: BoxEdges_113.png
+    m_size: 39232
+  - m_name: BoxEdges_114.png
+    m_size: 39239
+  - m_name: BoxEdges_115.png
+    m_size: 39119
+  - m_name: BoxEdges_116.png
+    m_size: 39207
+  - m_name: BoxEdges_117.png
+    m_size: 39300
+  - m_name: BoxEdges_118.png
+    m_size: 39300
+  - m_name: BoxEdges_119.png
+    m_size: 39300
+  - m_name: BoxEdges_120.png
+    m_size: 39300
+  - m_name: BoxEdges_121.png
+    m_size: 39300
+  - m_name: BoxEdges_122.png
+    m_size: 39300
+  - m_name: BoxEdges_123.png
+    m_size: 39300
+  - m_name: BoxEdges_124.png
+    m_size: 39300
+  - m_name: BoxEdges_125.png
+    m_size: 39207
+  - m_name: BoxEdges_126.png
+    m_size: 39119
+  - m_name: BoxEdges_127.png
+    m_size: 39239
+  - m_name: BoxEdges_128.png
+    m_size: 39232
+  - m_name: BoxEdges_129.png
+    m_size: 39065
+  - m_name: BoxEdges_130.png
+    m_size: 39030
+  - m_name: BoxEdges_131.png
+    m_size: 38871
+  - m_name: BoxEdges_132.png
+    m_size: 38758
+  - m_name: BoxEdges_133.png
+    m_size: 38557
+  - m_name: BoxEdges_134.png
+    m_size: 38550
+  - m_name: BoxEdges_135.png
+    m_size: 38467
+  - m_name: BoxEdges_136.png
+    m_size: 38296
+  - m_name: BoxEdges_137.png
+    m_size: 38205
+  - m_name: BoxEdges_138.png
+    m_size: 38038
+  - m_name: BoxEdges_139.png
+    m_size: 37861
+  - m_name: BoxEdges_140.png
+    m_size: 37796
+  - m_name: BoxEdges_141.png
+    m_size: 37744
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_version: 3
+  m_time: 0
+  Folder: 
+  m_timelineDefaultAsset: {fileID: 102900000, guid: 36ecaff4d69b3424ba4b68f24304bfcc,
+    type: 3}
+--- !u!114 &3053029989179659791
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_Name: StreamingImageSequencePlayableAsset
+  m_EditorClassIdentifier: 
+  m_folder: Assets/ImageSequences/BoxEdges
+  m_imageFileNames: []
+  m_imageFiles:
+  - m_name: BoxEdges_001.png
+    m_size: 37662
+  - m_name: BoxEdges_002.png
+    m_size: 37564
+  - m_name: BoxEdges_003.png
+    m_size: 37603
+  - m_name: BoxEdges_004.png
+    m_size: 37744
+  - m_name: BoxEdges_005.png
+    m_size: 37796
+  - m_name: BoxEdges_006.png
+    m_size: 37861
+  - m_name: BoxEdges_007.png
+    m_size: 38038
+  - m_name: BoxEdges_008.png
+    m_size: 38205
+  - m_name: BoxEdges_009.png
+    m_size: 38296
+  - m_name: BoxEdges_010.png
+    m_size: 38467
+  - m_name: BoxEdges_011.png
+    m_size: 38550
+  - m_name: BoxEdges_012.png
+    m_size: 38557
+  - m_name: BoxEdges_013.png
+    m_size: 38758
+  - m_name: BoxEdges_014.png
+    m_size: 38871
+  - m_name: BoxEdges_015.png
+    m_size: 39030
+  - m_name: BoxEdges_016.png
+    m_size: 39065
+  - m_name: BoxEdges_017.png
+    m_size: 39232
+  - m_name: BoxEdges_018.png
+    m_size: 39239
+  - m_name: BoxEdges_019.png
+    m_size: 39119
+  - m_name: BoxEdges_020.png
+    m_size: 39207
+  - m_name: BoxEdges_021.png
+    m_size: 39300
+  - m_name: BoxEdges_022.png
+    m_size: 39300
+  - m_name: BoxEdges_023.png
+    m_size: 39300
+  - m_name: BoxEdges_024.png
+    m_size: 39300
+  - m_name: BoxEdges_025.png
+    m_size: 39300
+  - m_name: BoxEdges_026.png
+    m_size: 39300
+  - m_name: BoxEdges_027.png
+    m_size: 39300
+  - m_name: BoxEdges_028.png
+    m_size: 39300
+  - m_name: BoxEdges_029.png
+    m_size: 39207
+  - m_name: BoxEdges_030.png
+    m_size: 39119
+  - m_name: BoxEdges_031.png
+    m_size: 39239
+  - m_name: BoxEdges_032.png
+    m_size: 39232
+  - m_name: BoxEdges_033.png
+    m_size: 39065
+  - m_name: BoxEdges_034.png
+    m_size: 39030
+  - m_name: BoxEdges_035.png
+    m_size: 38871
+  - m_name: BoxEdges_036.png
+    m_size: 38758
+  - m_name: BoxEdges_037.png
+    m_size: 38557
+  - m_name: BoxEdges_038.png
+    m_size: 38550
+  - m_name: BoxEdges_039.png
+    m_size: 38467
+  - m_name: BoxEdges_040.png
+    m_size: 38296
+  - m_name: BoxEdges_041.png
+    m_size: 38205
+  - m_name: BoxEdges_042.png
+    m_size: 38038
+  - m_name: BoxEdges_043.png
+    m_size: 37861
+  - m_name: BoxEdges_044.png
+    m_size: 37796
+  - m_name: BoxEdges_045.png
+    m_size: 37744
+  - m_name: BoxEdges_046.png
+    m_size: 37603
+  - m_name: BoxEdges_047.png
+    m_size: 37564
+  - m_name: BoxEdges_048.png
+    m_size: 37662
+  - m_name: BoxEdges_049.png
+    m_size: 37662
+  - m_name: BoxEdges_050.png
+    m_size: 37564
+  - m_name: BoxEdges_051.png
+    m_size: 37603
+  - m_name: BoxEdges_052.png
+    m_size: 37744
+  - m_name: BoxEdges_053.png
+    m_size: 37796
+  - m_name: BoxEdges_054.png
+    m_size: 37861
+  - m_name: BoxEdges_055.png
+    m_size: 38038
+  - m_name: BoxEdges_056.png
+    m_size: 38205
+  - m_name: BoxEdges_057.png
+    m_size: 38296
+  - m_name: BoxEdges_058.png
+    m_size: 38467
+  - m_name: BoxEdges_059.png
+    m_size: 38550
+  - m_name: BoxEdges_060.png
+    m_size: 38557
+  - m_name: BoxEdges_061.png
+    m_size: 38758
+  - m_name: BoxEdges_062.png
+    m_size: 38871
+  - m_name: BoxEdges_063.png
+    m_size: 39030
+  - m_name: BoxEdges_064.png
+    m_size: 39065
+  - m_name: BoxEdges_065.png
+    m_size: 39232
+  - m_name: BoxEdges_066.png
+    m_size: 39239
+  - m_name: BoxEdges_067.png
+    m_size: 39119
+  - m_name: BoxEdges_068.png
+    m_size: 39207
+  - m_name: BoxEdges_069.png
+    m_size: 39300
+  - m_name: BoxEdges_070.png
+    m_size: 39300
+  - m_name: BoxEdges_071.png
+    m_size: 39300
+  - m_name: BoxEdges_072.png
+    m_size: 39300
+  - m_name: BoxEdges_073.png
+    m_size: 39300
+  - m_name: BoxEdges_074.png
+    m_size: 39300
+  - m_name: BoxEdges_075.png
+    m_size: 39300
+  - m_name: BoxEdges_076.png
+    m_size: 39300
+  - m_name: BoxEdges_077.png
+    m_size: 39207
+  - m_name: BoxEdges_078.png
+    m_size: 39119
+  - m_name: BoxEdges_079.png
+    m_size: 39239
+  - m_name: BoxEdges_080.png
+    m_size: 39232
+  - m_name: BoxEdges_081.png
+    m_size: 39065
+  - m_name: BoxEdges_082.png
+    m_size: 39030
+  - m_name: BoxEdges_083.png
+    m_size: 38871
+  - m_name: BoxEdges_084.png
+    m_size: 38758
+  - m_name: BoxEdges_085.png
+    m_size: 38557
+  - m_name: BoxEdges_086.png
+    m_size: 38550
+  - m_name: BoxEdges_087.png
+    m_size: 38467
+  - m_name: BoxEdges_088.png
+    m_size: 38296
+  - m_name: BoxEdges_089.png
+    m_size: 38205
+  - m_name: BoxEdges_090.png
+    m_size: 38038
+  - m_name: BoxEdges_091.png
+    m_size: 37861
+  - m_name: BoxEdges_092.png
+    m_size: 37796
+  - m_name: BoxEdges_093.png
+    m_size: 37744
+  - m_name: BoxEdges_094.png
+    m_size: 37603
+  - m_name: BoxEdges_095.png
+    m_size: 37564
+  - m_name: BoxEdges_096.png
+    m_size: 37662
+  - m_name: BoxEdges_097.png
+    m_size: 37662
+  - m_name: BoxEdges_098.png
+    m_size: 37564
+  - m_name: BoxEdges_099.png
+    m_size: 37603
+  - m_name: BoxEdges_100.png
+    m_size: 37744
+  - m_name: BoxEdges_101.png
+    m_size: 37796
+  - m_name: BoxEdges_102.png
+    m_size: 37861
+  - m_name: BoxEdges_103.png
+    m_size: 38038
+  - m_name: BoxEdges_104.png
+    m_size: 38205
+  - m_name: BoxEdges_105.png
+    m_size: 38296
+  - m_name: BoxEdges_106.png
+    m_size: 38467
+  - m_name: BoxEdges_107.png
+    m_size: 38550
+  - m_name: BoxEdges_108.png
+    m_size: 38557
+  - m_name: BoxEdges_109.png
+    m_size: 38758
+  - m_name: BoxEdges_110.png
+    m_size: 38871
+  - m_name: BoxEdges_111.png
+    m_size: 39030
+  - m_name: BoxEdges_112.png
+    m_size: 39065
+  - m_name: BoxEdges_113.png
+    m_size: 39232
+  - m_name: BoxEdges_114.png
+    m_size: 39239
+  - m_name: BoxEdges_115.png
+    m_size: 39119
+  - m_name: BoxEdges_116.png
+    m_size: 39207
+  - m_name: BoxEdges_117.png
+    m_size: 39300
+  - m_name: BoxEdges_118.png
+    m_size: 39300
+  - m_name: BoxEdges_119.png
+    m_size: 39300
+  - m_name: BoxEdges_120.png
+    m_size: 39300
+  - m_name: BoxEdges_121.png
+    m_size: 39300
+  - m_name: BoxEdges_122.png
+    m_size: 39300
+  - m_name: BoxEdges_123.png
+    m_size: 39300
+  - m_name: BoxEdges_124.png
+    m_size: 39300
+  - m_name: BoxEdges_125.png
+    m_size: 39207
+  - m_name: BoxEdges_126.png
+    m_size: 39119
+  - m_name: BoxEdges_127.png
+    m_size: 39239
+  - m_name: BoxEdges_128.png
+    m_size: 39232
+  - m_name: BoxEdges_129.png
+    m_size: 39065
+  - m_name: BoxEdges_130.png
+    m_size: 39030
+  - m_name: BoxEdges_131.png
+    m_size: 38871
+  - m_name: BoxEdges_132.png
+    m_size: 38758
+  - m_name: BoxEdges_133.png
+    m_size: 38557
+  - m_name: BoxEdges_134.png
+    m_size: 38550
+  - m_name: BoxEdges_135.png
+    m_size: 38467
+  - m_name: BoxEdges_136.png
+    m_size: 38296
+  - m_name: BoxEdges_137.png
+    m_size: 38205
+  - m_name: BoxEdges_138.png
+    m_size: 38038
+  - m_name: BoxEdges_139.png
+    m_size: 37861
+  - m_name: BoxEdges_140.png
+    m_size: 37796
+  - m_name: BoxEdges_141.png
+    m_size: 37744
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_version: 3
+  m_time: 0
+  Folder: 
+  m_timelineDefaultAsset: {fileID: 102900000, guid: 36ecaff4d69b3424ba4b68f24304bfcc,
+    type: 3}
+--- !u!114 &3924225402732875141
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_Name: StreamingImageSequencePlayableAsset
+  m_EditorClassIdentifier: 
+  m_folder: Assets/ImageSequences/BoxEdges
+  m_imageFileNames: []
+  m_imageFiles:
+  - m_name: BoxEdges_001.png
+    m_size: 37662
+  - m_name: BoxEdges_002.png
+    m_size: 37564
+  - m_name: BoxEdges_003.png
+    m_size: 37603
+  - m_name: BoxEdges_004.png
+    m_size: 37744
+  - m_name: BoxEdges_005.png
+    m_size: 37796
+  - m_name: BoxEdges_006.png
+    m_size: 37861
+  - m_name: BoxEdges_007.png
+    m_size: 38038
+  - m_name: BoxEdges_008.png
+    m_size: 38205
+  - m_name: BoxEdges_009.png
+    m_size: 38296
+  - m_name: BoxEdges_010.png
+    m_size: 38467
+  - m_name: BoxEdges_011.png
+    m_size: 38550
+  - m_name: BoxEdges_012.png
+    m_size: 38557
+  - m_name: BoxEdges_013.png
+    m_size: 38758
+  - m_name: BoxEdges_014.png
+    m_size: 38871
+  - m_name: BoxEdges_015.png
+    m_size: 39030
+  - m_name: BoxEdges_016.png
+    m_size: 39065
+  - m_name: BoxEdges_017.png
+    m_size: 39232
+  - m_name: BoxEdges_018.png
+    m_size: 39239
+  - m_name: BoxEdges_019.png
+    m_size: 39119
+  - m_name: BoxEdges_020.png
+    m_size: 39207
+  - m_name: BoxEdges_021.png
+    m_size: 39300
+  - m_name: BoxEdges_022.png
+    m_size: 39300
+  - m_name: BoxEdges_023.png
+    m_size: 39300
+  - m_name: BoxEdges_024.png
+    m_size: 39300
+  - m_name: BoxEdges_025.png
+    m_size: 39300
+  - m_name: BoxEdges_026.png
+    m_size: 39300
+  - m_name: BoxEdges_027.png
+    m_size: 39300
+  - m_name: BoxEdges_028.png
+    m_size: 39300
+  - m_name: BoxEdges_029.png
+    m_size: 39207
+  - m_name: BoxEdges_030.png
+    m_size: 39119
+  - m_name: BoxEdges_031.png
+    m_size: 39239
+  - m_name: BoxEdges_032.png
+    m_size: 39232
+  - m_name: BoxEdges_033.png
+    m_size: 39065
+  - m_name: BoxEdges_034.png
+    m_size: 39030
+  - m_name: BoxEdges_035.png
+    m_size: 38871
+  - m_name: BoxEdges_036.png
+    m_size: 38758
+  - m_name: BoxEdges_037.png
+    m_size: 38557
+  - m_name: BoxEdges_038.png
+    m_size: 38550
+  - m_name: BoxEdges_039.png
+    m_size: 38467
+  - m_name: BoxEdges_040.png
+    m_size: 38296
+  - m_name: BoxEdges_041.png
+    m_size: 38205
+  - m_name: BoxEdges_042.png
+    m_size: 38038
+  - m_name: BoxEdges_043.png
+    m_size: 37861
+  - m_name: BoxEdges_044.png
+    m_size: 37796
+  - m_name: BoxEdges_045.png
+    m_size: 37744
+  - m_name: BoxEdges_046.png
+    m_size: 37603
+  - m_name: BoxEdges_047.png
+    m_size: 37564
+  - m_name: BoxEdges_048.png
+    m_size: 37662
+  - m_name: BoxEdges_049.png
+    m_size: 37662
+  - m_name: BoxEdges_050.png
+    m_size: 37564
+  - m_name: BoxEdges_051.png
+    m_size: 37603
+  - m_name: BoxEdges_052.png
+    m_size: 37744
+  - m_name: BoxEdges_053.png
+    m_size: 37796
+  - m_name: BoxEdges_054.png
+    m_size: 37861
+  - m_name: BoxEdges_055.png
+    m_size: 38038
+  - m_name: BoxEdges_056.png
+    m_size: 38205
+  - m_name: BoxEdges_057.png
+    m_size: 38296
+  - m_name: BoxEdges_058.png
+    m_size: 38467
+  - m_name: BoxEdges_059.png
+    m_size: 38550
+  - m_name: BoxEdges_060.png
+    m_size: 38557
+  - m_name: BoxEdges_061.png
+    m_size: 38758
+  - m_name: BoxEdges_062.png
+    m_size: 38871
+  - m_name: BoxEdges_063.png
+    m_size: 39030
+  - m_name: BoxEdges_064.png
+    m_size: 39065
+  - m_name: BoxEdges_065.png
+    m_size: 39232
+  - m_name: BoxEdges_066.png
+    m_size: 39239
+  - m_name: BoxEdges_067.png
+    m_size: 39119
+  - m_name: BoxEdges_068.png
+    m_size: 39207
+  - m_name: BoxEdges_069.png
+    m_size: 39300
+  - m_name: BoxEdges_070.png
+    m_size: 39300
+  - m_name: BoxEdges_071.png
+    m_size: 39300
+  - m_name: BoxEdges_072.png
+    m_size: 39300
+  - m_name: BoxEdges_073.png
+    m_size: 39300
+  - m_name: BoxEdges_074.png
+    m_size: 39300
+  - m_name: BoxEdges_075.png
+    m_size: 39300
+  - m_name: BoxEdges_076.png
+    m_size: 39300
+  - m_name: BoxEdges_077.png
+    m_size: 39207
+  - m_name: BoxEdges_078.png
+    m_size: 39119
+  - m_name: BoxEdges_079.png
+    m_size: 39239
+  - m_name: BoxEdges_080.png
+    m_size: 39232
+  - m_name: BoxEdges_081.png
+    m_size: 39065
+  - m_name: BoxEdges_082.png
+    m_size: 39030
+  - m_name: BoxEdges_083.png
+    m_size: 38871
+  - m_name: BoxEdges_084.png
+    m_size: 38758
+  - m_name: BoxEdges_085.png
+    m_size: 38557
+  - m_name: BoxEdges_086.png
+    m_size: 38550
+  - m_name: BoxEdges_087.png
+    m_size: 38467
+  - m_name: BoxEdges_088.png
+    m_size: 38296
+  - m_name: BoxEdges_089.png
+    m_size: 38205
+  - m_name: BoxEdges_090.png
+    m_size: 38038
+  - m_name: BoxEdges_091.png
+    m_size: 37861
+  - m_name: BoxEdges_092.png
+    m_size: 37796
+  - m_name: BoxEdges_093.png
+    m_size: 37744
+  - m_name: BoxEdges_094.png
+    m_size: 37603
+  - m_name: BoxEdges_095.png
+    m_size: 37564
+  - m_name: BoxEdges_096.png
+    m_size: 37662
+  - m_name: BoxEdges_097.png
+    m_size: 37662
+  - m_name: BoxEdges_098.png
+    m_size: 37564
+  - m_name: BoxEdges_099.png
+    m_size: 37603
+  - m_name: BoxEdges_100.png
+    m_size: 37744
+  - m_name: BoxEdges_101.png
+    m_size: 37796
+  - m_name: BoxEdges_102.png
+    m_size: 37861
+  - m_name: BoxEdges_103.png
+    m_size: 38038
+  - m_name: BoxEdges_104.png
+    m_size: 38205
+  - m_name: BoxEdges_105.png
+    m_size: 38296
+  - m_name: BoxEdges_106.png
+    m_size: 38467
+  - m_name: BoxEdges_107.png
+    m_size: 38550
+  - m_name: BoxEdges_108.png
+    m_size: 38557
+  - m_name: BoxEdges_109.png
+    m_size: 38758
+  - m_name: BoxEdges_110.png
+    m_size: 38871
+  - m_name: BoxEdges_111.png
+    m_size: 39030
+  - m_name: BoxEdges_112.png
+    m_size: 39065
+  - m_name: BoxEdges_113.png
+    m_size: 39232
+  - m_name: BoxEdges_114.png
+    m_size: 39239
+  - m_name: BoxEdges_115.png
+    m_size: 39119
+  - m_name: BoxEdges_116.png
+    m_size: 39207
+  - m_name: BoxEdges_117.png
+    m_size: 39300
+  - m_name: BoxEdges_118.png
+    m_size: 39300
+  - m_name: BoxEdges_119.png
+    m_size: 39300
+  - m_name: BoxEdges_120.png
+    m_size: 39300
+  - m_name: BoxEdges_121.png
+    m_size: 39300
+  - m_name: BoxEdges_122.png
+    m_size: 39300
+  - m_name: BoxEdges_123.png
+    m_size: 39300
+  - m_name: BoxEdges_124.png
+    m_size: 39300
+  - m_name: BoxEdges_125.png
+    m_size: 39207
+  - m_name: BoxEdges_126.png
+    m_size: 39119
+  - m_name: BoxEdges_127.png
+    m_size: 39239
+  - m_name: BoxEdges_128.png
+    m_size: 39232
+  - m_name: BoxEdges_129.png
+    m_size: 39065
+  - m_name: BoxEdges_130.png
+    m_size: 39030
+  - m_name: BoxEdges_131.png
+    m_size: 38871
+  - m_name: BoxEdges_132.png
+    m_size: 38758
+  - m_name: BoxEdges_133.png
+    m_size: 38557
+  - m_name: BoxEdges_134.png
+    m_size: 38550
+  - m_name: BoxEdges_135.png
+    m_size: 38467
+  - m_name: BoxEdges_136.png
+    m_size: 38296
+  - m_name: BoxEdges_137.png
+    m_size: 38205
+  - m_name: BoxEdges_138.png
+    m_size: 38038
+  - m_name: BoxEdges_139.png
+    m_size: 37861
+  - m_name: BoxEdges_140.png
+    m_size: 37796
+  - m_name: BoxEdges_141.png
+    m_size: 37744
+  m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_version: 3
+  m_time: 0
+  Folder: 
+  m_timelineDefaultAsset: {fileID: 102900000, guid: 36ecaff4d69b3424ba4b68f24304bfcc,
+    type: 3}
+--- !u!74 &5518669206851809977
+AnimationClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Curves: BoxEdges'
+  serializedVersion: 6
+  m_Legacy: 1
+  m_Compressed: 0
+  m_UseHighQualityCurve: 1
+  m_RotationCurves: []
+  m_CompressedRotationCurves: []
+  m_EulerCurves: []
+  m_PositionCurves: []
+  m_ScaleCurves: []
+  m_FloatCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0.17021276
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 5.875
+        value: 1
+        inSlope: 0.17021276
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_time
+    path: 
+    classID: 114
+    script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_PPtrCurves: []
+  m_SampleRate: 24
+  m_WrapMode: 0
+  m_Bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_ClipBindingConstant:
+    genericBindings: []
+    pptrCurveMapping: []
+  m_AnimationClipSettings:
+    serializedVersion: 2
+    m_AdditiveReferencePoseClip: {fileID: 0}
+    m_AdditiveReferencePoseTime: 0
+    m_StartTime: 0
+    m_StopTime: 5.875
+    m_OrientationOffsetY: 0
+    m_Level: 0
+    m_CycleOffset: 0
+    m_HasAdditiveReferencePose: 0
+    m_LoopTime: 0
+    m_LoopBlend: 0
+    m_LoopBlendOrientation: 0
+    m_LoopBlendPositionY: 0
+    m_LoopBlendPositionXZ: 0
+    m_KeepOriginalOrientation: 0
+    m_KeepOriginalPositionY: 1
+    m_KeepOriginalPositionXZ: 0
+    m_HeightFromFeet: 0
+    m_Mirror: 0
+  m_EditorCurves:
+  - curve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0.17021276
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 5.875
+        value: 1
+        inSlope: 0.17021276
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_time
+    path: 
+    classID: 114
+    script: {fileID: 11500000, guid: 07c579aa4480ce64daff0ad6a9312d97, type: 3}
+  m_EulerEditorCurves: []
+  m_HasGenericRootTransform: 0
+  m_HasMotionFloatCurves: 0
+  m_Events: []
+--- !u!114 &7586678600065002055
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588b3cca60f217d438ef96013ebfdb06, type: 3}
+  m_Name: Streaming Image Sequence Track
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_AnimClip: {fileID: 0}
+  m_Locked: 0
+  m_Muted: 0
+  m_CustomPlayableFullTypename: 
+  m_Curves: {fileID: 0}
+  m_Parent: {fileID: 11400000}
+  m_Children: []
+  m_Clips:
+  - m_Version: 1
+    m_Start: 0
+    m_ClipIn: 0
+    m_Asset: {fileID: 3053029989179659791}
+    m_Duration: 5.875
+    m_TimeScale: 1
+    m_ParentTrack: {fileID: 7586678600065002055}
+    m_EaseInDuration: 0
+    m_EaseOutDuration: 0
+    m_BlendInDuration: 0
+    m_BlendOutDuration: 0
+    m_MixInCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_MixOutCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_BlendInCurveMode: 0
+    m_BlendOutCurveMode: 0
+    m_ExposedParameterNames: []
+    m_AnimationCurves: {fileID: 5518669206851809977}
+    m_Recordable: 0
+    m_PostExtrapolationMode: 0
+    m_PreExtrapolationMode: 0
+    m_PostExtrapolationTime: Infinity
+    m_PreExtrapolationTime: 0
+    m_DisplayName: BoxEdgesDragDrop24FPS
+  m_Markers:
+    m_Objects: []
+  m_serializedDataCollection:
+  - m_baseClipDataVersion: 1
+    m_playableFrames:
+    - m_serializedBoolProperties: []
+      m_localTime: 0
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.041666666666666664
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.08333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.16666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.20833333333333331
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.29166666666666663
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.3333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.41666666666666663
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.4583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.5416666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.5833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.6666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.7083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.7916666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.8333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.9166666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 0.9583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.0416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.0833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.1666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.2083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.2916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.3333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.4166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.4583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.5416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.5833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.6666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.7083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.7916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.8333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.9166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 1.9583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.0416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.1666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.208333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.2916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.4166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.458333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.5416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.6666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.708333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.7916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.9166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 2.958333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.0416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.1666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.208333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.2916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.4166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.458333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.5416666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.6666666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.708333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.7916666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.9166666666666665
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 3.958333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.041666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.166666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.208333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.291666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.416666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.458333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.541666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.708333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.791666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.875
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.916666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 4.958333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.041666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.083333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.125
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.166666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.208333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.25
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.291666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.333333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.375
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.416666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.458333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.5
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.541666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.583333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.625
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.666666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.708333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.75
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.791666666666666
+      m_marker: {fileID: 0}
+      m_userNote: 
+    - m_serializedBoolProperties: []
+      m_localTime: 5.833333333333333
+      m_marker: {fileID: 0}
+      m_userNote: 
+    m_frameMarkersRequested: 0
+    m_playableFrameClipDataVersion: 1
+    m_sisClipDataVersion: 1
+    m_animationCurve:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0.17021276
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 5.875
+        value: 1
+        inSlope: 0.17021276
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
