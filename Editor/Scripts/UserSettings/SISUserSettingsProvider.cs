@@ -38,7 +38,6 @@ internal class SISUserSettingsProvider : SettingsProvider {
 
             //Fields
             InitMaxMemoryForImagesField(content);
-            InitDefaultSISPlayableAssetFPSField(content);
             
             m_activated = true;
 
@@ -99,22 +98,6 @@ internal class SISUserSettingsProvider : SettingsProvider {
             userSettings.SaveUserSettings();            
         });
     }
-//----------------------------------------------------------------------------------------------------------------------
-
-    void InitDefaultSISPlayableAssetFPSField(VisualElement parent) {
-        //fps
-        VisualElement fieldContainer = UIElementsUtility.AddElement<VisualElement>(parent, /*className=*/"field-container");
-        SISUserSettings userSettings = SISUserSettings.GetInstance();
-        int defaultSISPlayableAssetFPS = userSettings.GetDefaultSISPlayableAssetFPS();
-
-        IntegerField defaultSISPlayableAssetFPSField = UIElementsUtility.AddField<IntegerField, int>(fieldContainer, 
-            Contents.DEFAULT_SIS_PLAYABLE_ASSET_FPS, defaultSISPlayableAssetFPS);
-        defaultSISPlayableAssetFPSField.RegisterValueChangedCallback((ChangeEvent<int> evt) => {
-            userSettings.SetDefaultSISPlayableAssetFPS(evt.newValue);
-            userSettings.SaveUserSettings();
-        });
-
-    }    
     
 
 //----------------------------------------------------------------------------------------------------------------------
