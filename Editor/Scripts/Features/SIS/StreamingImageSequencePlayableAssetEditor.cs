@@ -95,7 +95,6 @@ internal class StreamingImageSequencePlayableAssetEditor : ImageFolderPlayableAs
                 clip.displayName = Path.GetFileName(asset.GetFolder());
             }
 
-            ExtendedClipEditorUtility.CreateTimelineClipCurve(clip,StreamingImageSequencePlayableAsset.GetTimeCurveBinding());
         }
         
         if (null == clonedFrom) {
