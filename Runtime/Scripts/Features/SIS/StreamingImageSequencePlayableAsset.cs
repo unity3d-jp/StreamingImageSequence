@@ -158,10 +158,19 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
         int count = m_imageFiles.Count;
         
-        //Use round to get the nearest imageIndex. Ex: 0.999999 should use the image[1], instead of image[0] 
-        int index = Mathf.RoundToInt(count * (float) imageSequenceTime);
+        double floatingIndex = count * imageSequenceTime;       
+        int index = HalfRoundDown(floatingIndex);
         index = Mathf.Clamp(index, 0, count - 1);        
-        return index;
+         return index;
+    }
+
+    internal int HalfRoundDown(double val) {
+        //Half Round down. Subtract with 0.1, and use MidpointRounding.AwayFromZero
+        //3.5 -> 3
+        //3.6 -> 4
+        //4.5 -> 4
+        return (int) Math.Round(val - 0.1,0, MidpointRounding.AwayFromZero);
+        
     }
 
     
