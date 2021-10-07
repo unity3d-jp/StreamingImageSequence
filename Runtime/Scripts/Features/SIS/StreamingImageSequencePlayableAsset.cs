@@ -158,9 +158,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
         int count = m_imageFiles.Count;
         
-        //Can't round up, because if the time for the next frame hasn't been reached, then we should stick 
-        int index = Mathf.FloorToInt(count * (float) imageSequenceTime);
-        index = Mathf.Clamp(index, 0, count - 1);
+        //Use round to get the nearest imageIndex. Ex: 0.999999 should use the image[1], instead of image[0] 
+        int index = Mathf.RoundToInt(count * (float) imageSequenceTime);
+        index = Mathf.Clamp(index, 0, count - 1);        
         return index;
     }
 
