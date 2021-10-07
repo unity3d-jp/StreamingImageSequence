@@ -273,7 +273,7 @@ internal class StreamingImageSequencePlayableAssetTest {
         Assert.Greater(fpsMultiplier,0);
         float timeMultiplier = 1.0f / fpsMultiplier;
                 
-        SISPlayableAssetUtility.SetFPS(sisAsset, newFPS);
+        SISPlayableAssetEditorUtility.SetFPS(sisAsset, newFPS);
         Assert.IsTrue(Mathf.Approximately(prevClipDuration  * timeMultiplier, (float) clip.duration));        
         Assert.IsTrue(Mathf.Approximately(prevTimeScale * fpsMultiplier, (float) clip.timeScale));
         

@@ -85,7 +85,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                                 return Mathf.Max(0.1f, val);
                             }, 
                             /*updateFunc=*/ (float newFPS) => {
-                                SISPlayableAssetUtility.SetFPS(m_asset, newFPS);                                
+                                SISPlayableAssetEditorUtility.SetFPS(m_asset, newFPS);                                
                             }
                         );
                     }                    
