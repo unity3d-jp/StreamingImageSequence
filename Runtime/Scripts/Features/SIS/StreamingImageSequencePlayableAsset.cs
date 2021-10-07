@@ -164,12 +164,11 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
          return index;
     }
 
-    internal int HalfRoundDown(double val) {
-        //Half Round down. Subtract with 0.1, and use MidpointRounding.AwayFromZero
-        //3.5 -> 3
-        //3.6 -> 4
-        //4.5 -> 4
-        return (int) Math.Round(val - 0.1,0, MidpointRounding.AwayFromZero);
+    internal static int HalfRoundDown(double val) {
+        
+        //Half Round down. Subtract with 0.01, and use MidpointRounding.AwayFromZero
+        //Only works for positive integers, which is ok for SISPlayableAsset
+        return (int) Math.Round(val - 0.01,0, MidpointRounding.AwayFromZero);
         
     }
 
