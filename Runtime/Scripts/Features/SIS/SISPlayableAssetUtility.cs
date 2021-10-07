@@ -37,10 +37,9 @@ internal static class SISPlayableAssetUtility {
             return;            
         }
 
-        double prevTimeScale = clip.timeScale;        
-        float  clipTimeScale = (newFPS * sisClipData.CalculateCurveDuration() / numImages);
-        clip.timeScale = clipTimeScale;
-        clip.duration  = clip.duration * (prevTimeScale / clipTimeScale);
+        float newDuration = numImages / newFPS;
+        sisClipData.SetCurveDurationInEditor(newDuration);
+        clip.duration = newDuration;
     }
 
 
