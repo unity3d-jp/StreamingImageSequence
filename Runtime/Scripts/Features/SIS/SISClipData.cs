@@ -42,7 +42,7 @@ internal class SISClipData : PlayableFrameClipData, IAnimationCurveOwner {
         Assert.IsNotNull(clip);
 
         float prevCurveDuration = CalculateCurveDuration();
-        if (Mathf.Approximately(prevCurveDuration, 0))
+        if (Mathf.Approximately(prevCurveDuration, 0) || Mathf.Approximately(prevCurveDuration, newDuration))
             return;
         
         float timeScale = newDuration / prevCurveDuration;        
