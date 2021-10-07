@@ -49,7 +49,9 @@ internal class SISClipData : PlayableFrameClipData, IAnimationCurveOwner {
         Keyframe[] keys    = m_animationCurve.keys;
         int        numKeys = keys.Length;
         for (int i = 0; i < numKeys; ++i) {
-            keys[i].time *= timeScale;
+            keys[i].time       *= timeScale;
+            keys[i].inTangent  /= timeScale;
+            keys[i].outTangent /= timeScale;
         }
 
         m_animationCurve.keys = keys;
