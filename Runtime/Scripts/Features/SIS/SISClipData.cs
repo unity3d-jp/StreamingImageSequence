@@ -36,12 +36,13 @@ internal class SISClipData : PlayableFrameClipData, IAnimationCurveOwner {
 
     }
 
-    internal void SetCurveDurationInEditor(float newDuration) {
+    //returns prevCurveDuration
+    internal void SetCurveDurationInEditor(float newDuration, out float prevCurveDuration) {
 
         TimelineClip clip = GetOwner();
         Assert.IsNotNull(clip);
 
-        float prevCurveDuration = CalculateCurveDuration();
+        prevCurveDuration = CalculateCurveDuration();
         if (Mathf.Approximately(prevCurveDuration, 0) || Mathf.Approximately(prevCurveDuration, newDuration))
             return;
         
