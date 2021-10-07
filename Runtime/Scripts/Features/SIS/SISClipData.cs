@@ -46,13 +46,14 @@ internal class SISClipData : PlayableFrameClipData, IAnimationCurveOwner {
         if (Mathf.Approximately(prevCurveDuration, 0) || Mathf.Approximately(prevCurveDuration, newDuration))
             return;
         
-        float timeScale = newDuration / prevCurveDuration;        
-        Keyframe[] keys    = m_animationCurve.keys;
-        int        numKeys = keys.Length;
+        float      timeScale    = newDuration / prevCurveDuration;
+        float      invTimeScale = 1.0f / timeScale;
+        Keyframe[] keys         = m_animationCurve.keys;
+        int        numKeys      = keys.Length;
         for (int i = 0; i < numKeys; ++i) {
             keys[i].time       *= timeScale;
-            keys[i].inTangent  /= timeScale;
-            keys[i].outTangent /= timeScale;
+            keys[i].inTangent  *= invTimeScale;
+            keys[i].outTangent *= invTimeScale;
         }
 
         m_animationCurve.keys = keys;
