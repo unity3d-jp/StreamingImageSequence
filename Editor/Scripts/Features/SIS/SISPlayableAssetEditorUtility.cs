@@ -22,9 +22,14 @@ internal static class SISPlayableAssetEditorUtility {
             return;            
         }
 
-        float newDuration = numImages / newFPS;
-        sisClipData.SetCurveDurationInEditor(newDuration);
-        clip.duration = newDuration;
+        double prevClipDuration  = clip.duration;
+        float  prevCurveDuration = sisClipData.CalculateCurveDuration();
+        
+        float newCurveDuration = numImages / newFPS;
+        sisClipData.SetCurveDurationInEditor(newCurveDuration);
+
+        //The curve duration might not be same as the clip duration, so we need to consider it when scaling.
+        clip.duration = (newCurveDuration / prevCurveDuration) * prevClipDuration;
     }
 
 
