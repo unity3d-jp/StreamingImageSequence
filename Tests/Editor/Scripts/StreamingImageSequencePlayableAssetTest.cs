@@ -272,6 +272,31 @@ internal class StreamingImageSequencePlayableAssetTest {
 
 //----------------------------------------------------------------------------------------------------------------------    
 
+    [Test]
+    public void CalculateHalfRoundDown() {
+        //(expectedResult, value to round)
+        (int, double)[] valuesToCheck = new(int, double)[] {
+            (-1, -1),
+            (0, 0), 
+            (0, 0.5), 
+            (1, 0.6), 
+            (3, 3.5),
+            (4, 3.51),
+            (4, 3.6),
+            (4, 4.5),
+            (5, 4.6),
+        };
+        foreach ((int, double) v in valuesToCheck) {
+            VerifyHalfRoundDownResult(v.Item1, v.Item2);            
+        }
+    }
+
+    private void VerifyHalfRoundDownResult(int expectedRoundedVal, double val) {
+        Assert.AreEqual(expectedRoundedVal, StreamingImageSequencePlayableAsset.HalfRoundDown(val));        
+    }
+
+//----------------------------------------------------------------------------------------------------------------------    
+
     //Copy the images in SISPlayableAsset to a certain path
     private static string CopySISImagesTo(StreamingImageSequencePlayableAsset sisAsset, string rootPath, string folderName) {
         string       assetsFolder     = AssetUtility.NormalizeAssetPath(rootPath);

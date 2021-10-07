@@ -158,10 +158,18 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
         int count = m_imageFiles.Count;
         
-        //Can't round up, because if the time for the next frame hasn't been reached, then we should stick 
-        int index = Mathf.FloorToInt(count * (float) imageSequenceTime);
-        index = Mathf.Clamp(index, 0, count - 1);
-        return index;
+        double floatingIndex = count * imageSequenceTime;       
+        int index = HalfRoundDown(floatingIndex);
+        index = Mathf.Clamp(index, 0, count - 1);        
+         return index;
+    }
+
+    internal static int HalfRoundDown(double val) {
+        
+        //Half Round down. Subtract with 0.01, and use MidpointRounding.AwayFromZero
+        //Only works for positive integers, which is ok for SISPlayableAsset
+        return (int) Math.Round(val - 0.01,0, MidpointRounding.AwayFromZero);
+        
     }
 
     
