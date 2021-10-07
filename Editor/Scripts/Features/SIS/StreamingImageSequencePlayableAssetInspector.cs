@@ -81,11 +81,11 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
                         EditorGUIDrawerUtility.DrawUndoableGUI(clip.GetParentTrack(), "Change FPS", 
                             /*guiFunc=*/ ()=> {
                                 float fps = SISPlayableAssetUtility.CalculateFPS(m_asset);
-                                float val = EditorGUILayout.FloatField("FPS", fps); 
+                                float val = EditorGUILayout.DelayedFloatField("FPS", fps); 
                                 return Mathf.Max(0.1f, val);
                             }, 
                             /*updateFunc=*/ (float newFPS) => {
-                                SISPlayableAssetUtility.SetFPS(m_asset, newFPS);                                
+                                SISPlayableAssetEditorUtility.SetFPS(m_asset, newFPS);                                
                             }
                         );
                     }                    

@@ -2,8 +2,12 @@
 using JetBrains.Annotations;
 using Unity.FilmInternalUtilities;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Timeline;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Unity.StreamingImageSequence {
 
@@ -31,7 +35,40 @@ internal class SISClipData : PlayableFrameClipData, IAnimationCurveOwner {
         return Mathf.Abs(m_animationCurve.keys[m_animationCurve.length - 1].time - m_animationCurve.keys[0].time);
 
     }
-    
+
+    //returns prevCurveDuration
+    internal void SetCurveDurationInEditor(float newDuration, out float prevCurveDuration) {
+
+        TimelineClip clip = GetOwner();
+        Assert.IsNotNull(clip);
+
+        prevCurveDuration = CalculateCurveDuration();
+        if (Mathf.Approximately(prevCurveDuration, 0) || Mathf.Approximately(prevCurveDuration, newDuration))
+            return;
+        
+        float      timeScale    = newDuration / prevCurveDuration;
+        float      invTimeScale = 1.0f / timeScale;
+        Keyframe[] keys         = m_animationCurve.keys;
+        int        numKeys      = keys.Length;
+        for (int i = 0; i < numKeys; ++i) {
+            keys[i].time       *= timeScale;
+            keys[i].inTangent  *= invTimeScale;
+            keys[i].outTangent *= invTimeScale;
+        }
+
+        m_animationCurve.keys = keys;
+
+        //Set to clip
+#if UNITY_EDITOR        
+        EditorCurveBinding curveBinding = StreamingImageSequencePlayableAsset.GetTimeCurveBinding();                 
+        AnimationUtility.SetEditorCurve(clip.curves, curveBinding, m_animationCurve);
+#endif        
+        
+
+
+
+    }
+
 
 //----------------------------------------------------------------------------------------------------------------------    
     
