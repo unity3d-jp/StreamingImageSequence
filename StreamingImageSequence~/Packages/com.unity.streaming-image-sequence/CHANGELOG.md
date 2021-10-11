@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.14.0-preview] - 2021-10-11
+
+### Changed
+* use the timelineAsset FPS settings when creating a new StreamingImageSequencePlayableAsset 
+
+### Fixed
+* fix: fix the incorrect extra addition of curve key when dragging a folder to StreamingImageSequenceTrack 
+* fix: modify curve directly when changing the FPS of StreamingImageSequencePlayableAsset
+* fix: use half rounding down to get the image index of StreamingImageSequencePlayableAsset 
+
 ## [0.13.2-preview] - 2021-09-22
 
 ### Fixed
