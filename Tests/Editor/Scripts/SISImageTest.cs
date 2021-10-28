@@ -72,7 +72,7 @@ internal class SISImageTest {
 //----------------------------------------------------------------------------------------------------------------------
     
     UIImage CreateImageWithSISRenderer(out StreamingImageSequenceRenderer sisRenderer) {
-        UIImage image = FilmInternalUtilities.ObjectUtility.CreateGameObjectWithComponent<UIImage>("");
+        UIImage image = new GameObject().AddComponent<UIImage>();
         Assert.IsNotNull(image);
         
         sisRenderer = image.gameObject.AddComponent<StreamingImageSequenceRenderer>();       
