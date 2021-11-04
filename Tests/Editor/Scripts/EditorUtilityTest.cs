@@ -11,7 +11,6 @@ using Unity.StreamingImageSequence.Editor;
 using UnityEditor;
 using UnityEngine.TestTools;
 using UnityEngine.Timeline;
-using UnityEditorReflection = Unity.StreamingImageSequence.Editor.UnityEditorReflection;
 
 namespace Unity.StreamingImageSequence.EditorTests {
 
@@ -77,24 +76,6 @@ internal class EditorUtilityTest {
         Directory.Delete(destFolder);
 
     }
-
-//----------------------------------------------------------------------------------------------------------------------                
-
-    //[TODO-sin: 2021-9-10] Move to FIU ?
-    internal static void SelectDirectorInTimelineWindow(PlayableDirector director) {
-        //Select gameObject and open Timeline Window. This will trigger the TimelineWindow's update etc.
-        EditorApplication.ExecuteMenuItem("Window/Sequencing/Timeline");
-        Selection.activeObject = director;        
-    }
-
-    //[TODO-sin: 2021-9-10] Move to FIU ?
-    //Returns an object with EditorClip type. This object should be manually destroyed
-    internal static ScriptableObject SelectTimelineClipInInspector(TimelineClip clip) {
-        ScriptableObject editorClip = ScriptableObject.CreateInstance(UnityEditorReflection.TIMELINE_EDITOR_CLIP_TYPE);
-        UnityEditorReflection.TIMELINE_EDITOR_CLIP_PROPERTY.SetValue(editorClip, clip);
-        Selection.activeObject = editorClip;
-        return editorClip;
-    }
     
 //----------------------------------------------------------------------------------------------------------------------                
 
@@ -138,9 +119,7 @@ internal class EditorUtilityTest {
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
 
-        
-        SelectDirectorInTimelineWindow(director);
-
+        TimelineEditorUtility.SelectDirectorInTimelineWindow(director);        
 
         string fullPath = Path.GetFullPath(SRC_IMAGE_PATH);
         ImageSequenceImporter.ImportImages(fullPath, sisAsset,false);
