@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using Unity.FilmInternalUtilities;
+using Unity.FilmInternalUtilities.Editor;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEditor;
@@ -46,7 +47,7 @@ namespace Unity.StreamingImageSequence.Editor {
                 importerParam.CopyToStreamingAssets = false;
                 ImageSequenceImporter.Import(importerParam);
             } else {
-                string streamingAssetsPath = AssetUtility.NormalizeAssetPath( Application.streamingAssetsPath);
+                string streamingAssetsPath = AssetEditorUtility.NormalizePath( Application.streamingAssetsPath);
                 importerParam.strDstFolder = Path.Combine(streamingAssetsPath, assetName).Replace("\\", "/");
                 ImageSequenceImportWindow.Show(importerParam);
             }

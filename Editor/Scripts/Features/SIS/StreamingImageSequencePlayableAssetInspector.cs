@@ -145,7 +145,7 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
             prevFolder,
             ReloadFolder            
         );
-        newLoadPath = AssetUtility.NormalizeAssetPath(newLoadPath);
+        newLoadPath = AssetEditorUtility.NormalizePath(newLoadPath);
         if (string.IsNullOrEmpty(newLoadPath))
             return;
         

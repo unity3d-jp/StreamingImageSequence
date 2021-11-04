@@ -299,7 +299,7 @@ internal class StreamingImageSequencePlayableAssetTest {
 
     //Copy the images in SISPlayableAsset to a certain path
     private static string CopySISImagesTo(StreamingImageSequencePlayableAsset sisAsset, string rootPath, string folderName) {
-        string       assetsFolder     = AssetUtility.NormalizeAssetPath(rootPath);
+        string       assetsFolder     = AssetEditorUtility.NormalizePath(rootPath);
         string       destFolderGUID   = AssetDatabase.CreateFolder(assetsFolder, folderName);
         string       destFolder       = AssetDatabase.GUIDToAssetPath(destFolderGUID);
         int          numImages        = sisAsset.GetNumImages();

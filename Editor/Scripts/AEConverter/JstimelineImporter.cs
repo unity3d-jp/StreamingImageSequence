@@ -112,7 +112,7 @@ internal class JstimelineImporter : ScriptedImporter
                 string destFootageFolder = Application.streamingAssetsPath;
                 destFootageFolder = Path.Combine(destFootageFolder, strFootageName).Replace("\\", "/");
                 Directory.CreateDirectory(destFootageFolder); //make sure the directory exists
-                footageInfo.Folder = AssetUtility.NormalizeAssetPath(destFootageFolder);
+                footageInfo.Folder = AssetEditorUtility.NormalizePath(destFootageFolder);
 
                 for (int i=0;i<numImages;++i) {
                     string destFilePath = Path.Combine(destFootageFolder, footageInfo.Pictures[i]);

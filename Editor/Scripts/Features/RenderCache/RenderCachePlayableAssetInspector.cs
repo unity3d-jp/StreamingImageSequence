@@ -79,11 +79,11 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             prevFolder, null
         );
 
-        newFolder = AssetUtility.NormalizeAssetPath(newFolder);
+        newFolder = AssetEditorUtility.NormalizePath(newFolder);
 
         if (newFolder != prevFolder) {
             Undo.RecordObject(m_asset,"Change Output Folder");
-            m_asset.SetFolder(AssetUtility.NormalizeAssetPath(newFolder));
+            m_asset.SetFolder(AssetEditorUtility.NormalizePath(newFolder));
             GUIUtility.ExitGUI();
         }
         
@@ -462,7 +462,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         //Generate unique folder
         string baseFolder = Path.Combine(Application.streamingAssetsPath, assetName);
         string folder = Unity.FilmInternalUtilities.PathUtility.GenerateUniqueFolder(baseFolder); 
-        m_asset.SetFolder(AssetUtility.NormalizeAssetPath(folder).Replace('\\','/'));
+        m_asset.SetFolder(AssetEditorUtility.NormalizePath(folder).Replace('\\','/'));
         Repaint();        
     }
     
