@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using NUnit.Framework;
 using System.IO;
+using Unity.FilmInternalUtilities;
 using Unity.FilmInternalUtilities.Editor;
 using UnityEditor.SceneManagement;
 using UnityEditor.Timeline;
