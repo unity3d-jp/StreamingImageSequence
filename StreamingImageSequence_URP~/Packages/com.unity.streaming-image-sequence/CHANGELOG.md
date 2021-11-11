@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.14.2-preview] - 2021-11-11
+
+### Changed
+* deps: update dependency to com.unity.film-internal-utilities@0.12.2-preview
+
 ## [0.14.1-preview] - 2021-10-21
 
 ### Changed
