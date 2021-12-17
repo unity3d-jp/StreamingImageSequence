@@ -222,11 +222,11 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     internal Texture2D GetTexture() { return m_texture;}
 
     internal FilterMode GetTextureFilterMode() {
-        return m_textureFilterMode;        
+        return m_textureFilterMode;
     }
 
     internal void SetTextureFilterMode(FilterMode filterMode) {
-        m_textureFilterMode = filterMode;        
+        m_textureFilterMode = filterMode;
     }
     
 //----------------------------------------------------------------------------------------------------------------------
