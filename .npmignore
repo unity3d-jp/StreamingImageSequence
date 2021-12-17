@@ -6,6 +6,7 @@ Documentation/ApiDocs/**
 Documentation~/ApiDocs/**
 AE~/**
 StreamingImageSequence*~/**
+Scripts~/**
 .DS_Store
 .npmrc
 .npmignore
