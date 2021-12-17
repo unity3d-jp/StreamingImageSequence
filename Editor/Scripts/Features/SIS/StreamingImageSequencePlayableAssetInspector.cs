@@ -99,6 +99,12 @@ internal class StreamingImageSequencePlayableAssetInspector : UnityEditor.Editor
             }
         }
 
+        EditorGUIDrawerUtility.DrawUndoableGUI(m_asset, "Filter Mode", 
+            /*guiFunc=*/ ()=> (FilterMode) EditorGUILayout.EnumPopup("Filter Mode:", m_asset.GetTextureFilterMode()), 
+            /*updateFunc=*/ (FilterMode filterMode) => { m_asset.SetTextureFilterMode(filterMode); }
+        );
+        
+
         if (null == TimelineEditor.selectedClip) 
             return;
         
