@@ -11,6 +11,7 @@
     "com.unity.textmeshpro": "2.1.6",
     "com.unity.timeline": "1.6.4",
     "com.unity.ugui": "1.0.0",
+    "jp.co.psoft.pencil_4.line.unity": "https://github.com/psofthouse/Pencil-4-Line-for-Unity.git",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
