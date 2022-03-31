@@ -140,6 +140,13 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "jp.co.psoft.pencil_4.line.unity": {
+      "version": "https://github.com/psofthouse/Pencil-4-Line-for-Unity.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "18d46c77d4860c07cecff07cd13c1c9b9bc17e67"
+    },
     "nuget.mono-cecil": {
       "version": "0.1.6-preview",
       "depth": 2,
