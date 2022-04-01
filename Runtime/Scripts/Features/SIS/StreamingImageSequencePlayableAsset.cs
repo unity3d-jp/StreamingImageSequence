@@ -360,13 +360,13 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     
 //----------------------------------------------------------------------------------------------------------------------
     Texture2D UpdateTexture(ImageData imageData, int index) {
-        bool textureCreated = false;
+        bool textureRecreated = false;
         if (m_texture.IsNullRef() || !imageData.IsTextureCompatible(m_texture) || m_texture.filterMode != m_textureFilterMode) {
             m_texture = imageData.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor,m_textureFilterMode);
-            textureCreated = true;
+            textureRecreated = true;
         }
 
-        if (!textureCreated && m_lastCopiedImageIndex == index)
+        if (!textureRecreated && m_lastCopiedImageIndex == index)
             return m_texture;
 
         m_texture.name = "Full: " + m_imageFiles[index].GetName();
@@ -377,7 +377,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     }
     
     Texture2D UpdateTexture(Texture2D srcTex, int index) {
-        bool textureCreated = false;
+        bool textureRecreated = false;
         if (m_texture.IsNullRef() || !m_texture.AreSizeAndFormatEqual(srcTex) || m_texture.filterMode != m_textureFilterMode) {        
             m_texture = new Texture2D(srcTex.width, srcTex.height, srcTex.graphicsFormat, 
                 mipCount: srcTex.mipmapCount, TextureCreationFlags.MipChain) 
@@ -385,12 +385,12 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
                 filterMode = m_textureFilterMode,
                 hideFlags  = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor,
             };
-            textureCreated = true;
+            textureRecreated = true;
         }
 
         m_regularAssetMipmapCheckLogger.Update("[SIS]",m_folder);        
 
-        if (!textureCreated && m_lastCopiedImageIndex == index)
+        if (!textureRecreated && m_lastCopiedImageIndex == index)
             return m_texture;
         
         m_texture.name = "Full: " + m_imageFiles[index].GetName();
