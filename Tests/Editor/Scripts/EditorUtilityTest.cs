@@ -123,7 +123,7 @@ internal class EditorUtilityTest {
 
         string fullPath = Path.GetFullPath(SRC_IMAGE_PATH);
         ImageSequenceImporter.ImportImages(fullPath, sisAsset,false);
-            
+        Undo.ClearAll();
             
         return clip;
     }
