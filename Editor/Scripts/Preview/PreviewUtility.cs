@@ -118,8 +118,12 @@ internal static class PreviewUtility {
     
 //----------------------------------------------------------------------------------------------------------------------
     
-    internal static void DrawPreviewImage(ref PreviewDrawInfo drawInfo, string imagePath) 
-    {
+    internal static void DrawPreviewImage(ref PreviewDrawInfo drawInfo, string imagePath) {
+#if UNITY_EDITOR_OSX
+        //[TODO-sin: 2022-4-4] Disabling. There is a bug in Mac Silicon which causes crash when resizing images
+        if (IsUsingOSX_Silicon())
+            return;
+#endif        
         if (!File.Exists(imagePath))
             return;
 
@@ -157,7 +161,16 @@ internal static class PreviewUtility {
         }
         
     }
-    
+
+#if UNITY_EDITOR_OSX
+    static bool IsUsingOSX_Silicon() {
+#if UNITY_2021_2_OR_NEWER
+        return SystemInfo.processorType.StartsWith("Apple M");
+#else
+        return false;
+#endif
+    }    
+#endif
 //----------------------------------------------------------------------------------------------------------------------
     static Material GetOrCreateLinearToGammaMaterial() {
         if (null != m_linearToGammaMaterial)
