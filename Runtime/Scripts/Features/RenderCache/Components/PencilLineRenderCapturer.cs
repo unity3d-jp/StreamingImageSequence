@@ -55,9 +55,9 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
         Assert.IsNotNull(lineRenderer);
         
         ReleaseRenderTexture();
-        m_pencilTex = lineRenderer.Texture;
+        Texture2D pencilTex = lineRenderer.Texture;
 
-        m_rt = new RenderTexture(m_pencilTex.width, m_pencilTex.height, 0);
+        m_rt = new RenderTexture(pencilTex.width, pencilTex.height, 0);
         m_rt.Create();
        
 #else
@@ -80,7 +80,9 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
     /// <inheritdoc/>
     protected override RenderTexture UpdateRenderTextureV() {
 #if AT_USE_PENCILLINE
-        Graphics.Blit(m_pencilTex, m_rt);
+        PencilLineRenderer lineRenderer = m_pencilLineEffect.PencilRenderer;
+        Assert.IsNotNull(lineRenderer);
+        Graphics.Blit(lineRenderer.Texture, m_rt);
 #endif
         return m_rt;
     }
@@ -107,7 +109,6 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
 
 #if AT_USE_PENCILLINE
     [SerializeField] private PencilLineEffect m_pencilLineEffect        = null;
-    private                  Texture2D        m_pencilTex               = null;
     private                  bool             m_prevPencilLineEffectEnabled = false;
 #endif
 
