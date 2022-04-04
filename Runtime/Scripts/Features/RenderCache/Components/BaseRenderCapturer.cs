@@ -73,6 +73,10 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
     protected void ReleaseRenderTexture() {
         if (null == m_rt)
             return;
+
+        if (RenderTexture.active == m_rt)
+            RenderTexture.active = null;
+        
         m_rt.Release();
         m_rt = null;        
     }
