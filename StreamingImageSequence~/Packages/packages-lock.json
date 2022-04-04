@@ -96,7 +96,7 @@
         "com.unity.modules.imageconversion": "1.0.0",
         "com.unity.modules.particlesystem": "1.0.0",
         "com.unity.ugui": "1.0.0",
-        "com.unity.timeline": "1.2.14"
+        "com.unity.timeline": "1.2.18"
       }
     },
     "com.unity.test-framework": {
