@@ -8,7 +8,9 @@ namespace Unity.StreamingImageSequence {
 
 internal static class ImageDataExtensions {
 
-    public static Texture2D CreateCompatibleTexture(this ImageData imageData, HideFlags hideFlags) {
+    public static Texture2D CreateCompatibleTexture(this ImageData imageData,HideFlags hideFlags, 
+        FilterMode filterMode = FilterMode.Bilinear) 
+    {
         Assert.IsTrue(StreamingImageSequenceConstants.READ_STATUS_SUCCESS == imageData.ReadStatus);
                 
         TextureFormat textureFormat 
@@ -17,8 +19,8 @@ internal static class ImageDataExtensions {
             : TextureFormat.RGBA32;        
        
         Texture2D tex = new Texture2D(imageData.Width, imageData.Height, textureFormat, false, false) {
-            filterMode = FilterMode.Bilinear, 
-            hideFlags = hideFlags
+            hideFlags = hideFlags,
+            filterMode = filterMode, 
         };
 
         return tex;

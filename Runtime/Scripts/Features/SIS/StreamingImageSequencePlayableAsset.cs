@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using Unity.FilmInternalUtilities;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 #if UNITY_EDITOR
 using UnityEditor.Timeline;
 using UnityEditor;
@@ -219,6 +220,14 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     [CanBeNull]
     internal Texture2D GetTexture() { return m_texture;}
+
+    internal FilterMode GetTextureFilterMode() {
+        return m_textureFilterMode;
+    }
+
+    internal void SetTextureFilterMode(FilterMode filterMode) {
+        m_textureFilterMode = filterMode;
+    }
     
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -351,11 +360,13 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     
 //----------------------------------------------------------------------------------------------------------------------
     Texture2D UpdateTexture(ImageData imageData, int index) {
-        if (m_texture.IsNullRef() || !imageData.IsTextureCompatible(m_texture)) {
-            m_texture = imageData.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);                    
+        bool textureRecreated = false;
+        if (m_texture.IsNullRef() || !imageData.IsTextureCompatible(m_texture) || m_texture.filterMode != m_textureFilterMode) {
+            m_texture = imageData.CreateCompatibleTexture(HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor,m_textureFilterMode);
+            textureRecreated = true;
         }
 
-        if (m_lastCopiedImageIndex == index)
+        if (!textureRecreated && m_lastCopiedImageIndex == index)
             return m_texture;
 
         m_texture.name = "Full: " + m_imageFiles[index].GetName();
@@ -366,16 +377,20 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     }
     
     Texture2D UpdateTexture(Texture2D srcTex, int index) {
-        if (m_texture.IsNullRef() || !m_texture.AreSizeAndFormatEqual(srcTex)) {
-            m_texture = new Texture2D(srcTex.width, srcTex.height, srcTex.format, mipCount: srcTex.mipmapCount, linear: false) {
-                filterMode = FilterMode.Bilinear,
+        bool textureRecreated = false;
+        if (m_texture.IsNullRef() || !m_texture.AreSizeAndFormatEqual(srcTex) || m_texture.filterMode != m_textureFilterMode) {        
+            m_texture = new Texture2D(srcTex.width, srcTex.height, srcTex.graphicsFormat, 
+                mipCount: srcTex.mipmapCount, TextureCreationFlags.MipChain) 
+            {
+                filterMode = m_textureFilterMode,
                 hideFlags  = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor,
             };
+            textureRecreated = true;
         }
 
         m_regularAssetMipmapCheckLogger.Update("[SIS]",m_folder);        
 
-        if (m_lastCopiedImageIndex == index)
+        if (!textureRecreated && m_lastCopiedImageIndex == index)
             return m_texture;
         
         m_texture.name = "Full: " + m_imageFiles[index].GetName();
@@ -509,7 +524,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     [HideInInspector][SerializeField] private int m_version = (int) SISPlayableAssetVersion.INITIAL;        
     
-    [SerializeField] double m_time;
+    [SerializeField] private double     m_time;
+    [SerializeField] private FilterMode m_textureFilterMode = FilterMode.Bilinear;
 
     
     //[TODO-Sin: 2021-2-3] Obsolete. This is put here to deserialize old versions of SIS (MovieProxy)
