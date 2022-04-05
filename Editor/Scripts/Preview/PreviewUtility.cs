@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Assertions;
+using System.Runtime.InteropServices;
 
 
 namespace Unity.StreamingImageSequence.Editor {
@@ -118,8 +119,12 @@ internal static class PreviewUtility {
     
 //----------------------------------------------------------------------------------------------------------------------
     
-    internal static void DrawPreviewImage(ref PreviewDrawInfo drawInfo, string imagePath) 
-    {
+    internal static void DrawPreviewImage(ref PreviewDrawInfo drawInfo, string imagePath) {
+#if UNITY_EDITOR_OSX
+        //[TODO-sin: 2022-4-4] Disabling. There is a bug in Mac Silicon which causes crash when resizing images
+        if (IsUsingOSX_Silicon())
+            return;
+#endif        
         if (!File.Exists(imagePath))
             return;
 
@@ -155,9 +160,17 @@ internal static class PreviewUtility {
         } else {                    
             Graphics.DrawTexture(drawInfo.DrawRect, tex);
         }
-        
     }
-    
+
+#if UNITY_EDITOR_OSX
+    static bool IsUsingOSX_Silicon() {
+#if UNITY_2021_2_OR_NEWER
+        return (Architecture.Arm64 == RuntimeInformation.ProcessArchitecture);
+#else
+        return false;
+#endif
+    }    
+#endif
 //----------------------------------------------------------------------------------------------------------------------
     static Material GetOrCreateLinearToGammaMaterial() {
         if (null != m_linearToGammaMaterial)
