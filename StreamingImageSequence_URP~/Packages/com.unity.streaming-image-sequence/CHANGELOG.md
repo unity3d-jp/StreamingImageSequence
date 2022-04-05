@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.15.0-preview] - 2022-04-05
+
+### Added
+* feat: partial support for Mac Silicon 
+* feat: add TextureFilterMode property in SISPlayableAsset
+
+### Changed
+* deps: use com.unity.film-internal-utilities@0.14.1-preview
+* deps: use com.unity.timeline@1.2.18 
+
+### Fixed
+* fix: remove Scripts~ folder from the distributed package
+* fix: PencilLineRenderCapturer did not capture line results correctly 
+
 ## [0.14.2-preview] - 2021-11-11
 
 ### Changed
