@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Assertions;
+using System.Runtime.InteropServices;
 
 
 namespace Unity.StreamingImageSequence.Editor {
@@ -159,13 +160,12 @@ internal static class PreviewUtility {
         } else {                    
             Graphics.DrawTexture(drawInfo.DrawRect, tex);
         }
-        
     }
 
 #if UNITY_EDITOR_OSX
     static bool IsUsingOSX_Silicon() {
 #if UNITY_2021_2_OR_NEWER
-        return SystemInfo.processorType.StartsWith("Apple M");
+        return (Architecture.Arm64 == RuntimeInformation.ProcessArchitecture);
 #else
         return false;
 #endif
