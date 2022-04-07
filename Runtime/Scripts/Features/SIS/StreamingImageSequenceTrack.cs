@@ -115,7 +115,7 @@ internal class StreamingImageSequenceTrack : FrameMarkerTrack<SISClipData> {
     /// </returns>
     internal StreamingImageSequencePlayableAsset GetActivePlayableAsset() {
         double time = (null != m_trackMixer ) ? m_trackMixer.GetDirectorTime() : 0;
-        StreamingImageSequencePlayableMixer.GetActiveTimelineClipInto(m_Clips, time,
+        FilmInternalUtilities.TimelineUtility.GetActiveTimelineClipInto(m_Clips, time,
             out TimelineClip clip, out StreamingImageSequencePlayableAsset asset
         );
         return asset;
