@@ -155,6 +155,9 @@ We can view or modify the following properties through the inspector.
 * **Images**  
   The images inside the folder. 
   Can be reordered by dragging the image file name up/down.
+* **Filter Mode**  
+  Sets the [filtering mode](https://docs.unity3d.com/ScriptReference/FilterMode.html) of the output. 
+  Defaults to [Bilinear filtering](https://docs.unity3d.com/ScriptReference/FilterMode.Bilinear.html).
 * **Show FrameMarkers**.  
   Show/hide the [FrameMarker](FrameMarkers.md) of each frame.
   * **Reset**  
