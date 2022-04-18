@@ -68,4 +68,6 @@ Plugins~/Build/*.build/*
 StreamingImageSequence*~/Assets/StreamingAssets/RenderCachePlayableAsset*
 StreamingImageSequence*~/Assets/StreamingAssets/RenderCacheScene*
 
+# Rider User Settings ?
+**/ProjectSettings/RiderScriptEditorPersistedState.asset
 
