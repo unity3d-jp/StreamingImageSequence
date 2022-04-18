@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.15.1-preview] - 2022-04-18
+
+### Changed
+* deps: use com.unity.film-internal-utilities@0.14.2-preview
+* doc: mention support for Mac Silicon (#429)
+* doc: update the documentation on playing sequential images 
+
 ## [0.15.0-preview] - 2022-04-05
 
 ### Added
