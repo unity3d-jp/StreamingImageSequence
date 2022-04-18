@@ -14,7 +14,7 @@ It is designed with the following principles in mind:
 ## Supported Platforms
 
 1. Windows
-2. Mac
+2. Mac (Intel/Silicon)
 3. Linux
 
 
