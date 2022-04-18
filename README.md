@@ -45,7 +45,7 @@ differ based on the version of Unity.
 ## Supported Platforms
 
 1. Windows
-2. Mac
+2. Mac (Intel/Silicon)
 3. Linux
 
 ## Features
