@@ -6,7 +6,7 @@
     "dependencies": {
         "com.unity.film-internal-utilities": "0.14.2-preview",
         "com.unity.editorcoroutines": "1.0.0",
-        "com.unity.ext.nunit": "1.0.0",        
+        "com.unity.ext.nunit": "1.0.6",        
         "com.unity.modules.animation": "1.0.0",                    
         "com.unity.modules.director": "1.0.0",
         "com.unity.modules.imageconversion": "1.0.0",        
