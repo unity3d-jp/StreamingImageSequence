@@ -97,14 +97,14 @@ Refer to [FrameMarkers](FrameMarkers.md) for more details.
 The behaviour of a gap before or after a StreamingImageSequencePlayableAsset clip can be set in a similar way to 
 [setting gap extrapolation for Animation clips](https://docs.unity3d.com/Packages/com.unity.timeline@1.5/manual/clp_gap_extrap.html)
 using one of the following options:
-1. **None** (default): hide the bound object by deactivating its **Renderer** component.
-1. **Hold**: hold and show the first/last frame of the image sequence in the gap.
-1. **Loop**: loop the entire image sequence with the same clip duration.
-1. **Ping Pong**: loop the entire image sequence backwards, then forwards, and so forth, with the same clip duration.
-1. **Continue**: same as **Hold**
 
-By default, StreamingImageSequencePlayableAsset sets both Pre-Extrapolate and Post-Extrapolate properties to **None**.
-
+|**Option** |**Description** |
+|:---                       |:---|
+| **None** (default) | Hide the bound object by deactivating its **Renderer** component. |
+| **Hold**           | Hold and show the first/last frame of the image sequence in the gap.|
+| **Loop**          | Loop the entire image sequence with the same clip duration. |
+| **Ping Pong**     | Loop the entire image sequence backwards, then forwards, and so forth, with the same clip duration. |
+| **Continue**      | Same as **Hold**. |
 
 ## Curve Editing
 
@@ -155,6 +155,9 @@ We can view or modify the following properties through the inspector.
 * **Images**  
   The images inside the folder. 
   Can be reordered by dragging the image file name up/down.
+* **Filter Mode**  
+  Sets the [filtering mode](https://docs.unity3d.com/ScriptReference/FilterMode.html) of the output. 
+  Defaults to [Bilinear filtering](https://docs.unity3d.com/ScriptReference/FilterMode.Bilinear.html).
 * **Show FrameMarkers**.  
   Show/hide the [FrameMarker](FrameMarkers.md) of each frame.
   * **Reset**  
