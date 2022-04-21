@@ -1,4 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Unity.Storyboard.Runtime")]
+[assembly: InternalsVisibleTo("Unity.Storyboard.Editor")]
+[assembly: InternalsVisibleTo("Unity.Storyboard.Editor.Tests")]
+
 [assembly: InternalsVisibleTo("Unity.StreamingImageSequence.Editor")]
 [assembly: InternalsVisibleTo("Unity.StreamingImageSequence.Tests")]
 [assembly: InternalsVisibleTo("Unity.StreamingImageSequence.EditorTests")]
