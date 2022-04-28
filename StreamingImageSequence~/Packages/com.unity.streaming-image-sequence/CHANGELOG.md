@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.15.2-preview] - 2022-04-28
+
+### Changed
+* internal: open internal runtime API to Storyboard
+
 ## [0.15.1-preview] - 2022-04-18
 
 ### Changed
