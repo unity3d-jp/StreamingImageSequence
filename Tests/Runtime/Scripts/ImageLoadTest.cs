@@ -10,6 +10,9 @@ namespace Unity.StreamingImageSequence.Tests {
 
 
         [UnityTest]
+        [UnityPlatform(RuntimePlatform.WindowsEditor)]
+        [UnityPlatform(RuntimePlatform.OSXEditor)]
+        [UnityPlatform(RuntimePlatform.LinuxEditor)]
         public IEnumerator QueueFullImageLoadTask() {
             ResetThreadsAndPlugin();
             const string PKG_PATH = "Packages/com.unity.streaming-image-sequence/Tests/Data/png/A_00000.png";
@@ -31,6 +34,9 @@ namespace Unity.StreamingImageSequence.Tests {
 
 //----------------------------------------------------------------------------------------------------------------------
         [UnityTest]
+        [UnityPlatform(RuntimePlatform.WindowsEditor)]
+        [UnityPlatform(RuntimePlatform.OSXEditor)]
+        [UnityPlatform(RuntimePlatform.LinuxEditor)]
         public IEnumerator QueuePreviewImageLoadTask() {
             
             ResetThreadsAndPlugin();
@@ -57,6 +63,9 @@ namespace Unity.StreamingImageSequence.Tests {
 
 //----------------------------------------------------------------------------------------------------------------------
         [UnityTest]
+        [UnityPlatform(RuntimePlatform.WindowsEditor)]
+        [UnityPlatform(RuntimePlatform.OSXEditor)]
+        [UnityPlatform(RuntimePlatform.LinuxEditor)]
         public IEnumerator LoadUnavailableImages() {
             
             ResetThreadsAndPlugin();
