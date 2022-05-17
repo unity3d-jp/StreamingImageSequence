@@ -103,4 +103,5 @@ promotion_types:
     job_name: Prerelease and promote StreamingImageSequence to Production
     test_name_prefix: Prerelease and test StreamingImageSequence Promotion 
     test_dependencies:
+      - .yamato/StreamingImageSequence-pack.yml#pack
       - .yamato/StreamingImageSequence-publish.yml#prerelease
