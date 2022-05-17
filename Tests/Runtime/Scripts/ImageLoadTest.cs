@@ -34,9 +34,7 @@ namespace Unity.StreamingImageSequence.Tests {
 
 //----------------------------------------------------------------------------------------------------------------------
         [UnityTest]
-        [UnityPlatform(RuntimePlatform.WindowsEditor)]
-        [UnityPlatform(RuntimePlatform.OSXEditor)]
-        [UnityPlatform(RuntimePlatform.LinuxEditor)]
+        [UnityPlatform(RuntimePlatform.WindowsEditor, RuntimePlatform.OSXEditor, RuntimePlatform.LinuxEditor)]    
         public IEnumerator QueuePreviewImageLoadTask() {
             
             ResetThreadsAndPlugin();
@@ -63,9 +61,7 @@ namespace Unity.StreamingImageSequence.Tests {
 
 //----------------------------------------------------------------------------------------------------------------------
         [UnityTest]
-        [UnityPlatform(RuntimePlatform.WindowsEditor)]
-        [UnityPlatform(RuntimePlatform.OSXEditor)]
-        [UnityPlatform(RuntimePlatform.LinuxEditor)]
+        [UnityPlatform(RuntimePlatform.WindowsEditor, RuntimePlatform.OSXEditor, RuntimePlatform.LinuxEditor)]    
         public IEnumerator LoadUnavailableImages() {
             
             ResetThreadsAndPlugin();
