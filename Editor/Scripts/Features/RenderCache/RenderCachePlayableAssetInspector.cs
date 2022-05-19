@@ -218,7 +218,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         string outputFolder = renderCachePlayableAsset.GetFolder();
         if (string.IsNullOrEmpty(outputFolder) || !Directory.Exists(outputFolder)) {
             EditorUtility.DisplayDialog("Streaming Image Sequence",
-                "Invalid output folder",
+                $"Invalid output folder: {outputFolder}",
                 "Ok");
             yield break;                                
         }
