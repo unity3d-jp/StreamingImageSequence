@@ -67,7 +67,11 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         EditorGUILayout.Space(15f);
 
         //Check if the asset is actually inspected
-        if (null!=TimelineEditor.selectedClip && TimelineEditor.selectedClip.asset != m_asset) {
+        TimelineClip selectedClip = TimelineEditor.selectedClip;
+        if (null == selectedClip)
+            return;
+        
+        if (selectedClip.asset != m_asset) {
             return;
         }
 
@@ -101,8 +105,8 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         
         //Capture Selected Frames
         using (new EditorGUILayout.VerticalScope(GUI.skin.box)) {
-            DrawCaptureSelectedFramesGUI(TimelineEditor.selectedClip, clipData);
-            DrawLockFramesGUI(TimelineEditor.selectedClip, clipData);
+            DrawCaptureSelectedFramesGUI(selectedClip, clipData);
+            DrawLockFramesGUI(selectedClip, clipData);
         }
         
         GUILayout.Space(15);
@@ -126,13 +130,13 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             GUILayout.Space(5);
         }       
         GUILayout.Space(15);
-        DrawUpdateRenderCacheGUI();
+        DrawUpdateRenderCacheGUI(selectedClip);
 
     }
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    private void DrawUpdateRenderCacheGUI() {
+    private void DrawUpdateRenderCacheGUI(TimelineClip clip) {
         RenderCacheClipData clipData = m_asset.GetBoundClipData();
         Assert.IsNotNull(clipData);
         if (clipData.GetOwner().GetParentTrack().IsNullRef())
@@ -153,7 +157,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             int captureStartFrame = Math.Max(0,editorConfig.GetCaptureStartFrame());
             int captureEndFrame   = editorConfig.GetCaptureEndFrame();
             if (captureEndFrame < 0) {
-                captureEndFrame = TimelineUtility.CalculateNumFrames(TimelineEditor.selectedClip);
+                captureEndFrame = TimelineUtility.CalculateNumFrames(clip);
             }
 
             captureStartFrame = EditorGUILayout.IntField("From", captureStartFrame);
@@ -173,19 +177,11 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             
             GUILayout.Space(10);
             
+            PlayableDirector director = TimelineEditor.inspectedDirector;
+            if (null == director) 
+                return;
             if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {            
-                
-                PlayableDirector director = TimelineEditor.inspectedDirector;
-                if (null == director) {
-                    EditorUtility.DisplayDialog("Streaming Image Sequence",
-                        "PlayableAsset is not loaded in scene. Please load the correct scene before doing this operation.",
-                        "Ok");
-                    return;
-                }            
-            
-                //Loop time             
-                EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(director, m_asset), this);
-                        
+                EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(director, m_asset), this);                
             }
         }
         
