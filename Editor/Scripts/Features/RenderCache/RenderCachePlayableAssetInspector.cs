@@ -177,19 +177,11 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             
             GUILayout.Space(10);
             
+            PlayableDirector director = TimelineEditor.inspectedDirector;
+            if (null == director) 
+                return;
             if (GUILayout.Button($"Update Render Cache ({updateRenderCacheShortcut})")) {            
-                
-                PlayableDirector director = TimelineEditor.inspectedDirector;
-                if (null == director) {
-                    EditorUtility.DisplayDialog("Streaming Image Sequence",
-                        "PlayableAsset is not loaded in scene. Please load the correct scene before doing this operation.",
-                        "Ok");
-                    return;
-                }            
-            
-                //Loop time             
-                EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(director, m_asset), this);
-                        
+                EditorCoroutineUtility.StartCoroutine(UpdateRenderCacheCoroutine(director, m_asset), this);                
             }
         }
         
