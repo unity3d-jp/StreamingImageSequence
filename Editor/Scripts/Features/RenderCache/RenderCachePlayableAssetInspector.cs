@@ -130,7 +130,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             GUILayout.Space(5);
         }       
         GUILayout.Space(15);
-        DrawUpdateRenderCacheGUI();
+        DrawUpdateRenderCacheGUI(selectedClip);
 
     }
     
