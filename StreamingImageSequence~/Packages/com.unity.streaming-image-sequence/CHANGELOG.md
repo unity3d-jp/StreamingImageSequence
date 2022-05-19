@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.15.3-preview] - 2022-05-19
+
+### Changed
+* deps: use com.unity.film-internal-utilities@0.15.1-preview
+
+### Fixed
+* fix: show the invalid output folder (if applicable) when trying to update RenderCache
+* fix: hide the button to update RenderCache if the Director GameObject is not selected
+
 ## [0.15.2-preview] - 2022-04-28
 
 ### Changed
