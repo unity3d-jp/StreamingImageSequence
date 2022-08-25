@@ -23,7 +23,7 @@ platforms:
 pack_platform: &pack_platform_linux
   name: linux
   type: Unity::VM
-  image: package-ci/ubuntu:v2.0.0
+  image: package-ci/ubuntu:v3.6.0
   flavor: b1.medium
 
 publish_platform: *platform_win
