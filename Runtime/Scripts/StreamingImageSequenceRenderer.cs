@@ -118,11 +118,14 @@ public sealed class StreamingImageSequenceRenderer : MonoBehaviour {
 
     }
     
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    internal void SetUseLastImageOnLoad(bool useLastImageOnLoad) {
+        m_useLastImageOnLoad = useLastImageOnLoad;
+    }
+    internal bool ShouldUseLastImageOnLoad() => m_useLastImageOnLoad;
     
-    internal bool ShouldUseLastImageOnLoad() { return m_useLastImageOnLoad; }
-    
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     void InitImageComponent() {
         m_image = GetComponent<Image>();
