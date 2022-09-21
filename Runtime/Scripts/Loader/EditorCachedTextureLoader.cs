@@ -38,8 +38,11 @@ internal class EditorCachedTextureLoader {
             bool isTexReady = null != tex;
             if (!isCached || !isTexReady) {
                 m_cachedTexturesInEditor[fullPath] = tex = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
+                
+                isTexReady = null != tex;
             }
             
+            //Log
             m_regularAssetLoaded = isTexReady;
             m_regularAssetLoadLogger.Update("[SIS]", Path.GetDirectoryName(fullPath));
         
