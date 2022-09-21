@@ -20,7 +20,8 @@ internal class EditorCachedTextureLoader {
 
     internal EditorCachedTextureLoader() {
         EditorSceneManager.sceneClosed += OnSceneClosed;
-        
+        m_regularAssetLoadLogger = new OneTimeLogger(() => !m_regularAssetLoaded,
+            $"Can't load texture. Make sure its import setting is set to Texture2D. Path: ");
     }
 
     void OnSceneClosed(UnityEngine.SceneManagement.Scene scene) {
@@ -33,9 +34,18 @@ internal class EditorCachedTextureLoader {
 #if UNITY_EDITOR        
         if (fullPath.IsRegularAssetPath()) {
             
-            bool isCached = m_cachedTexturesInEditor.TryGetValue(fullPath, out tex);
-            if (!isCached || null == tex) {
+            bool isCached   = m_cachedTexturesInEditor.TryGetValue(fullPath, out tex);
+            bool isTexReady = null != tex;
+            if (!isCached || !isTexReady) {
                 m_cachedTexturesInEditor[fullPath] = tex = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
+            }
+            
+            m_regularAssetLoaded = isTexReady;
+            m_regularAssetLoadLogger.Update("[SIS]", fullPath);
+        
+            if (!m_regularAssetLoaded) {
+                imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_FAIL);
+                return false;
             }
             
             imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_USE_EDITOR_API);
@@ -60,7 +70,11 @@ internal class EditorCachedTextureLoader {
     }
     
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------    
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
+    private OneTimeLogger m_regularAssetLoadLogger;
+    private bool          m_regularAssetLoaded = false;
+    
     Dictionary<string,Texture2D> m_cachedTexturesInEditor = new Dictionary<string, Texture2D>(); //path -> Texture2D
     
 }
