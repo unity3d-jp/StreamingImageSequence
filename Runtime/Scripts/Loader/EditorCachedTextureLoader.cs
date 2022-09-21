@@ -18,13 +18,27 @@ namespace Unity.StreamingImageSequence {
 [System.Serializable]
 internal class EditorCachedTextureLoader {
 
+    internal EditorCachedTextureLoader() {
+        EditorSceneManager.sceneClosed += OnSceneClosed;
+        
+    }
+
+    void OnSceneClosed(UnityEngine.SceneManagement.Scene scene) {
+        UnloadAll();
+    }
+    
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------    
+
     internal bool Load(string fullPath, out ImageData imageData, out Texture2D tex) {
 #if UNITY_EDITOR        
         if (fullPath.IsRegularAssetPath()) {
-            tex       = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
+            
+            bool isCached = m_cachedTexturesInEditor.TryGetValue(fullPath, out tex);
+            if (!isCached || null == tex) {
+                m_cachedTexturesInEditor[fullPath] = tex = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
+            }
+            
             imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_USE_EDITOR_API);
-
-            m_cachedTexturesInEditor[fullPath] = tex;
             return true;
         }
 #endif
@@ -47,7 +61,7 @@ internal class EditorCachedTextureLoader {
     
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------    
-    Dictionary<string,Texture2D> m_cachedTexturesInEditor = new Dictionary<string, Texture2D>();
+    Dictionary<string,Texture2D> m_cachedTexturesInEditor = new Dictionary<string, Texture2D>(); //path -> Texture2D
     
 }
 
