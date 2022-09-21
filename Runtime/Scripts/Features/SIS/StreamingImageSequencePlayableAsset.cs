@@ -254,9 +254,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
         m_primaryImageIndex = index;
         
-        if (QueueImageLoadTask(fullPath, out ImageData readResult)) {
+        if (QueueImageLoadTask(fullPath, out ImageData readResult, out Texture2D tex)) {
             m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, numImages - 1);
-            m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);                
+            m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);
         } else {
             //If we can't queue, try from the primary index again
             m_forwardPreloadImageIndex = m_backwardPreloadImageIndex = index;
@@ -269,7 +269,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
             }
 #if UNITY_EDITOR
             case StreamingImageSequenceConstants.READ_STATUS_USE_EDITOR_API: {
-                UpdateTextureAsRegularAssetInEditor(fullPath, m_primaryImageIndex);
+                UpdateTexture(tex, m_primaryImageIndex);
                 break;
             }
 #endif
@@ -313,8 +313,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         int maxForwardPreloadIndex   = Mathf.Min(m_forwardPreloadImageIndex + numNeighboringImagesToLoad, m_imageFiles.Count) -1;
         int startForwardPreloadIndex = m_forwardPreloadImageIndex;
         for (int i = startForwardPreloadIndex; i <= maxForwardPreloadIndex; ++i) {
-            if (QueueImageLoadTask(i, out _)) {
-                ++m_forwardPreloadImageIndex;                    
+            if (QueueImageLoadTask(i, out _, out _)) {
+                ++m_forwardPreloadImageIndex;
             } else {
                 break;
             }
@@ -324,8 +324,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         int minBackwardPreloadIndex   = Mathf.Max((m_backwardPreloadImageIndex - numNeighboringImagesToLoad)+1, 0);
         int startBackwardPreloadIndex = m_backwardPreloadImageIndex;
         for (int i = startBackwardPreloadIndex; i >=minBackwardPreloadIndex; --i) {
-            if (QueueImageLoadTask(i, out _)) {
-                --m_backwardPreloadImageIndex;                    
+            if (QueueImageLoadTask(i, out _, out _)) {
+                --m_backwardPreloadImageIndex;
             } else {
                 break;
             }
@@ -335,19 +335,22 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
    
     //return true if we should continue preloading the next image. False otherwise
-    private bool QueueImageLoadTask(int index, out ImageData imageData) {
+    private bool QueueImageLoadTask(int index, out ImageData imageData, out Texture2D tex) {
         string fullPath = GetImageFilePath(index);
-        return QueueImageLoadTask(fullPath, out imageData);
+        return QueueImageLoadTask(fullPath, out imageData, out tex);
     }
 
 
     //return true if we should continue preloading the next image. False otherwise
-    private bool QueueImageLoadTask(string fullPath, out ImageData imageData) {
+    private bool QueueImageLoadTask(string fullPath, out ImageData imageData, out Texture2D tex) {
 
+        tex = null;
 #if UNITY_EDITOR
         if (fullPath.IsRegularAssetPath()) {
+            tex       = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
             imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_USE_EDITOR_API);
-            m_cachedTexturesInEditor[fullPath] = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
+            
+            m_cachedTexturesInEditor[fullPath] = tex;
             return true;
         }
 #endif
@@ -534,7 +537,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         m_regularAssetLoaded = (null!=tex);
         m_regularAssetLoadLogger.Update("[SIS]", m_folder);
         
-        if (null == tex) {
+        if (!m_regularAssetLoaded) {
             return false;
         }
         
