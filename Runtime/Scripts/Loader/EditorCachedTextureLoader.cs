@@ -21,7 +21,7 @@ internal class EditorCachedTextureLoader {
     internal EditorCachedTextureLoader() {
         EditorSceneManager.sceneClosed += OnSceneClosed;
         m_regularAssetLoadLogger = new OneTimeLogger(() => !m_regularAssetLoaded,
-            $"Can't load texture. Make sure its import setting is set to Texture2D. Path: ");
+            $"Can't load textures. Make sure their import settings are set to Texture2D. Folder: ");
     }
 
     void OnSceneClosed(UnityEngine.SceneManagement.Scene scene) {
@@ -41,7 +41,7 @@ internal class EditorCachedTextureLoader {
             }
             
             m_regularAssetLoaded = isTexReady;
-            m_regularAssetLoadLogger.Update("[SIS]", fullPath);
+            m_regularAssetLoadLogger.Update("[SIS]", Path.GetDirectoryName(fullPath));
         
             if (!m_regularAssetLoaded) {
                 imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_FAIL);
