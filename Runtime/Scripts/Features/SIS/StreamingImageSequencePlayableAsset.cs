@@ -100,8 +100,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
             return m_texture.mipmapCount != 1;
         },$"Textures should not have mipmap. Folder: ");
         
-        m_regularAssetLoadLogger = new OneTimeLogger(() => !m_regularAssetLoaded,
-            $"Can't load textures. Make sure their import settings are set to Texture2D. Folder: ");
     }
 
 
@@ -500,11 +498,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     private bool UpdateTextureAsRegularAssetInEditor(string fullPath, int imageIndex) {
         Assert.IsTrue(fullPath.IsRegularAssetPath());
 
-        m_editorCachedTextureLoader.GetOrLoad(fullPath, out _, out Texture2D tex);
-        m_regularAssetLoaded = (null!=tex);
-        m_regularAssetLoadLogger.Update("[SIS]", m_folder);
-        
-        if (!m_regularAssetLoaded) {
+        if (!m_editorCachedTextureLoader.GetOrLoad(fullPath, out _, out Texture2D tex)) {
             return false;
         }
         
@@ -554,8 +548,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     Texture2D    m_texture       = null;
 
     private OneTimeLogger m_regularAssetMipmapCheckLogger;
-    private OneTimeLogger m_regularAssetLoadLogger;
-    private bool          m_regularAssetLoaded = false;
 
 
     private EditorCachedTextureLoader m_editorCachedTextureLoader = new EditorCachedTextureLoader();
