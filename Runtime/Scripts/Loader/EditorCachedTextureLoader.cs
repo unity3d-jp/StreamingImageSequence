@@ -18,15 +18,18 @@ namespace Unity.StreamingImageSequence {
 [System.Serializable]
 internal class EditorCachedTextureLoader {
 
-    internal bool Load(string fullPath, out ImageData imageData) {
+    internal bool Load(string fullPath, out ImageData imageData, out Texture2D tex) {
 #if UNITY_EDITOR        
         if (fullPath.IsRegularAssetPath()) {
-            imageData                          = new ImageData(StreamingImageSequenceConstants.READ_STATUS_USE_EDITOR_API);
-            m_cachedTexturesInEditor[fullPath] = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
+            tex       = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
+            imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_USE_EDITOR_API);
+
+            m_cachedTexturesInEditor[fullPath] = tex;
             return true;
         }
 #endif
 
+        tex       = null;
         imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_FAIL);
         return false;
     }
