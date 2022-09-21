@@ -102,22 +102,11 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         
         m_regularAssetLoadLogger = new OneTimeLogger(() => !m_regularAssetLoaded,
             $"Can't load textures. Make sure their import settings are set to Texture2D. Folder: ");
-
-#if UNITY_EDITOR        
-        EditorSceneManager.sceneClosed += OnSceneClosed;
-#endif        
     }
 
-    void OnSceneClosed(UnityEngine.SceneManagement.Scene scene) {
-        UnloadCachedTextures();
-    }
 
     private void OnDisable() {
-#if UNITY_EDITOR
-        EditorSceneManager.sceneClosed -= OnSceneClosed;
-#endif
         ResetTexture();
-        UnloadCachedTextures();
     }
        
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -194,7 +183,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         m_lastCopiedImageIndex = -1;
         ResetTexture();
         ResetResolution();
-        UnloadCachedTextures();
+        m_editorCachedTextureLoader.UnloadAll();
     }
 
 //----------------------------------------------------------------------------------------------------------------------        
@@ -288,8 +277,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
             return false;
 
 #if UNITY_EDITOR        
-        if (fullPath.IsRegularAssetPath()) {
-            return UpdateTextureAsRegularAssetInEditor(fullPath, m_primaryImageIndex);
+        if (UpdateTextureAsRegularAssetInEditor(fullPath, m_primaryImageIndex)) {
+            return true;
         }
 #endif        
         
@@ -344,16 +333,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     //return true if we should continue preloading the next image. False otherwise
     private bool QueueImageLoadTask(string fullPath, out ImageData imageData, out Texture2D tex) {
 
-        tex = null;
-#if UNITY_EDITOR
-        if (fullPath.IsRegularAssetPath()) {
-            tex       = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
-            imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_USE_EDITOR_API);
-            
-            m_cachedTexturesInEditor[fullPath] = tex;
+        if (m_editorCachedTextureLoader.GetOrLoad(fullPath, out imageData, out tex))
             return true;
-        }
-#endif
         
         if (!File.Exists(fullPath)) {
             imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_FAIL);
@@ -375,16 +356,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         }
                    
         return true;
-    }
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-    void UnloadCachedTextures() {
-#if UNITY_EDITOR
-        foreach (KeyValuePair<string, Texture2D> kv in m_cachedTexturesInEditor) {
-            Resources.UnloadAsset(kv.Value);
-        }
-#endif
-        m_cachedTexturesInEditor.Clear();
     }
     
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -497,7 +468,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     {
         m_folder     = folder;
         m_imageFiles = imageFiles;
-        UnloadCachedTextures();
+        m_editorCachedTextureLoader.UnloadAll();
         UpdateResolution(res);
         
         if (null!=m_folder && m_folder.StartsWith("Assets")) {
@@ -512,7 +483,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     protected override void ReloadInternalInEditorV() {
         m_lastCopiedImageIndex = -1;
-        UnloadCachedTextures();
+        m_editorCachedTextureLoader.UnloadAll();
         ResetResolution();
         RequestLoadImage(m_primaryImageIndex);
     }        
@@ -529,11 +500,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     private bool UpdateTextureAsRegularAssetInEditor(string fullPath, int imageIndex) {
         Assert.IsTrue(fullPath.IsRegularAssetPath());
 
-        bool isCached = m_cachedTexturesInEditor.TryGetValue(fullPath, out Texture2D tex);
-        if (!isCached || null == tex) {
-            m_cachedTexturesInEditor[fullPath] = tex = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
-        }
-        
+        m_editorCachedTextureLoader.GetOrLoad(fullPath, out _, out Texture2D tex);
         m_regularAssetLoaded = (null!=tex);
         m_regularAssetLoadLogger.Update("[SIS]", m_folder);
         
@@ -589,8 +556,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     private OneTimeLogger m_regularAssetMipmapCheckLogger;
     private OneTimeLogger m_regularAssetLoadLogger;
     private bool          m_regularAssetLoaded = false;
-    
-    Dictionary<string,Texture2D> m_cachedTexturesInEditor = new Dictionary<string, Texture2D>();
+
+
+    private EditorCachedTextureLoader m_editorCachedTextureLoader = new EditorCachedTextureLoader();
     
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
     
