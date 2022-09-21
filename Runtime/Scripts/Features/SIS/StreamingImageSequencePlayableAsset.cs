@@ -268,7 +268,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
                 break;
             }
 #if UNITY_EDITOR
-            case READ_STATUS_USE_EDITOR_API: {
+            case StreamingImageSequenceConstants.READ_STATUS_USE_EDITOR_API: {
                 UpdateTextureAsRegularAssetInEditor(fullPath, m_primaryImageIndex);
                 break;
             }
@@ -346,7 +346,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
 #if UNITY_EDITOR
         if (fullPath.IsRegularAssetPath()) {
-            imageData = new ImageData(READ_STATUS_USE_EDITOR_API);
+            imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_USE_EDITOR_API);
             m_cachedTexturesInEditor[fullPath] = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
             return true;
         }
@@ -591,8 +591,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
     
-    private const int READ_STATUS_USE_EDITOR_API = 100;
-
     private const int CUR_SIS_PLAYABLE_ASSET_VERSION = (int) SISPlayableAssetVersion.WATCHED_FILE_0_4;
 
     enum SISPlayableAssetVersion {

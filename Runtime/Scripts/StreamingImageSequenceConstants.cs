@@ -8,12 +8,15 @@ namespace Unity.StreamingImageSequence {
         
         public const string DIALOG_HEADER = "StreamingImageSequence";
 
-        public const int READ_STATUS_UNAVAILABLE   = -1;
-        public const int READ_STATUS_IDLE          = 0;
-        public const int READ_STATUS_LOADING       = 1;
-        public const int READ_STATUS_SUCCESS       = 2;
-        public const int READ_STATUS_FAIL          = 3;
-        public const int READ_STATUS_OUT_OF_MEMORY = 4;
+        internal const int READ_STATUS_UNAVAILABLE   = -1;
+        internal const int READ_STATUS_IDLE          = 0;
+        internal const int READ_STATUS_LOADING       = 1;
+        internal const int READ_STATUS_SUCCESS       = 2;
+        internal const int READ_STATUS_FAIL          = 3;
+        internal const int READ_STATUS_OUT_OF_MEMORY = 4;
+        
+        internal const int READ_STATUS_USE_EDITOR_API = 100;
+        
 
         public const int IMAGE_FORMAT_RGBA32 = 0;
         public const int IMAGE_FORMAT_BGRA32 = 1;
