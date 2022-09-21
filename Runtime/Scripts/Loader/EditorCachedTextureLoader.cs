@@ -29,8 +29,17 @@ internal class EditorCachedTextureLoader {
 
         imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_FAIL);
         return false;
-
     }
+    
+    internal void UnloadAll() {
+#if UNITY_EDITOR
+        foreach (KeyValuePair<string, Texture2D> kv in m_cachedTexturesInEditor) {
+            Resources.UnloadAsset(kv.Value);
+        }
+        m_cachedTexturesInEditor.Clear();
+#endif
+    }
+    
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------    
     Dictionary<string,Texture2D> m_cachedTexturesInEditor = new Dictionary<string, Texture2D>();
