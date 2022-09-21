@@ -18,6 +18,9 @@ internal class SISPlayableMixerEditorTask : IEditorTask {
     public void Reset() {
     }
 
+    public float GetExecutionFrequency() {
+        return 1.0f / 10.0f;
+    }
 
 //----------------------------------------------------------------------------------------------------------------------    
 
@@ -67,7 +70,7 @@ internal class SISPlayableMixerEditorTask : IEditorTask {
         bool needsRefresh = false;
         foreach (KeyValuePair<TimelineClip, StreamingImageSequencePlayableAsset> kv in clipAssets) {
             StreamingImageSequencePlayableAsset sisAsset = kv.Value;
-            sisAsset.ContinuePreloadingImages();
+            sisAsset.ContinuePreloadingImages(numNeighboringImagesToLoad:1);
 
             if (sisAsset.UpdateTextureWithRequestedImage()) {
                 needsRefresh = true;

@@ -96,7 +96,7 @@ internal class StreamingImageSequencePlayableMixer : BasePlayableMixer<Streaming
 
             //Start to preload images before the clip is active
             if ( directorTime>= startTime - loadStartOffsetTime && directorTime < endTime) {
-                sisAsset.ContinuePreloadingImages();                    
+                sisAsset.ContinuePreloadingImages(numNeighboringImagesToLoad:1);
             }
 
         }

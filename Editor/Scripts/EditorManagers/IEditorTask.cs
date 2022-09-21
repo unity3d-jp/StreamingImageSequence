@@ -2,7 +2,8 @@
 {
     
 internal interface IEditorTask : ITask {
-    void Reset();
+    void  Reset();
+    float GetExecutionFrequency(); //once every xx in seconds
 }
 
 }

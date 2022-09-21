@@ -96,12 +96,19 @@ static class EditorApplicationManager  {
         //Remove jobs
         foreach (IEditorTask job in m_toRemoveTasks) {
             m_activeEditorTasks.Remove(job);
-        }           
+            m_lastTaskExecuteTime.Remove(job);
+        }
         m_toRemoveTasks.Clear();
         
         //Execute
         foreach (IEditorTask job in m_activeEditorTasks) {
+            if (m_lastTaskExecuteTime.TryGetValue(job, out double lastExecuteTime)) {
+                if ((time - lastExecuteTime) <= job.GetExecutionFrequency())
+                    continue;
+            }
+            
             job.Execute();
+            m_lastTaskExecuteTime[job] = time;
         }
         
 
@@ -182,6 +189,9 @@ static class EditorApplicationManager  {
     private static readonly HashSet<IEditorTask> m_activeEditorTasks    = new HashSet<IEditorTask>();
     private static readonly List<IEditorTask>    m_requestedTasks       = new List<IEditorTask>();
     private static readonly HashSet<IEditorTask> m_toRemoveTasks        = new HashSet<IEditorTask>();
+    
+    private static readonly Dictionary<IEditorTask, double> m_lastTaskExecuteTime = new Dictionary<IEditorTask, double>();
+    
     
     private static event Action<bool> OnUnityEditorFocus;
     private static bool               m_editorFocused;    
