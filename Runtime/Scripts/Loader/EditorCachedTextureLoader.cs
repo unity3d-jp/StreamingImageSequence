@@ -31,6 +31,8 @@ internal class EditorCachedTextureLoader {
         return false;
     }
     
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+    
     internal void UnloadAll() {
 #if UNITY_EDITOR
         foreach (KeyValuePair<string, Texture2D> kv in m_cachedTexturesInEditor) {
