@@ -29,7 +29,7 @@ internal class EditorCachedTextureLoader {
     
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------    
 
-    internal bool Load(string fullPath, out ImageData imageData, out Texture2D tex) {
+    internal bool GetOrLoad(string fullPath, out ImageData imageData, out Texture2D tex) {
 #if UNITY_EDITOR        
         if (fullPath.IsRegularAssetPath()) {
             
