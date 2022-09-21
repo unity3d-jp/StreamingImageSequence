@@ -496,8 +496,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
 
     private bool UpdateTextureAsRegularAssetInEditor(string fullPath, int imageIndex) {
-        Assert.IsTrue(fullPath.IsRegularAssetPath());
-
         if (!m_editorCachedTextureLoader.GetOrLoad(fullPath, out _, out Texture2D tex)) {
             return false;
         }
