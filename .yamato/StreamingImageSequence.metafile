@@ -51,7 +51,7 @@ upm_ci_test_types:
           arguments: --enable-code-coverage --code-coverage-options 'generateAdditionalMetrics;generateHtmlReport;assemblyFilters:+Unity.StreamingImageSequence,+Unity.StreamingImageSequence.Editor,-Unity.StreamingImageSequence.Tests,-Unity.StreamingImageSequence.EditorTests'
 
 test_configs:
-  - editor_version: 2020.3
+  - editor_version: 2020.3.39f1
     test_platforms:
       - platform_type: *platform_win
         test_type: *upm_ci_all
