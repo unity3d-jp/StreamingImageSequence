@@ -44,7 +44,7 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
     /// <param name="outputFilePath">The path of the file</param>
     /// <param name="outputFormat">The output file format</param>
     /// <returns>True if successful, false otherwise</returns>
-    public bool CaptureAndSave(string outputFilePath, RenderCacheOutputFormat outputFormat = RenderCacheOutputFormat.PNG) 
+    public bool TryCaptureToFile(string outputFilePath, RenderCacheOutputFormat outputFormat = RenderCacheOutputFormat.PNG) 
     {
         RenderTexture rt = UpdateRenderTextureV();
         if (null == rt)
@@ -70,11 +70,11 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
     /// </summary>
     /// <param name="outputFilePath">The path of the file</param>
     /// <param name="outputFormat">The output file format</param>    
-    [Obsolete("Replaced by CaptureAndSave()")]
+    [Obsolete("Replaced by TryCaptureToFile()")]
     public void CaptureToFile(string outputFilePath, RenderCacheOutputFormat outputFormat = RenderCacheOutputFormat.PNG) 
     {
         //[TODO-sin: 2022-9-26] Remove CaptureToFile() function in 0.17.x-preview
-        CaptureAndSave(outputFilePath, outputFormat);
+        TryCaptureToFile(outputFilePath, outputFormat);
     }
     
 //----------------------------------------------------------------------------------------------------------------------

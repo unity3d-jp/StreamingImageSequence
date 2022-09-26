@@ -306,7 +306,7 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                 
                 //Unload texture because it may be overwritten
                 StreamingImageSequencePlugin.UnloadImageAndNotify(outputFilePath);
-                captureSuccessful = renderCapturer.CaptureAndSave(outputFilePath, outputFormat);
+                captureSuccessful = renderCapturer.TryCaptureToFile(outputFilePath, outputFormat);
             } 
 
             ++fileCounter;        
