@@ -1,13 +1,7 @@
-﻿using System;
-using System.IO;
-using UnityEngine.Playables;
-using UnityEngine.Timeline;
-using UnityEngine.Assertions;
+﻿using System.IO;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using Unity.FilmInternalUtilities;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 #if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 using UnityEditor;
@@ -21,14 +15,16 @@ internal class EditorCachedTextureLoader {
     internal EditorCachedTextureLoader() {
 #if UNITY_EDITOR
         EditorSceneManager.sceneClosed += OnSceneClosed;
-#endif
         m_regularAssetLoadLogger = new OneTimeLogger(() => !m_regularAssetLoaded,
             $"Can't load textures. Make sure their import settings are set to Texture2D. Folder: ");
+#endif
     }
 
+#if UNITY_EDITOR
     void OnSceneClosed(UnityEngine.SceneManagement.Scene scene) {
         UnloadAll();
     }
+#endif
     
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------    
 
@@ -77,10 +73,12 @@ internal class EditorCachedTextureLoader {
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
     
+#if UNITY_EDITOR
     private OneTimeLogger m_regularAssetLoadLogger;
     private bool          m_regularAssetLoaded = false;
     
     Dictionary<string,Texture2D> m_cachedTexturesInEditor = new Dictionary<string, Texture2D>(); //path -> Texture2D
+#endif
     
 }
 
