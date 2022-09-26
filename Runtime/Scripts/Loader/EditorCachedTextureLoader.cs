@@ -19,7 +19,9 @@ namespace Unity.StreamingImageSequence {
 internal class EditorCachedTextureLoader {
 
     internal EditorCachedTextureLoader() {
+#if UNITY_EDITOR
         EditorSceneManager.sceneClosed += OnSceneClosed;
+#endif
         m_regularAssetLoadLogger = new OneTimeLogger(() => !m_regularAssetLoaded,
             $"Can't load textures. Make sure their import settings are set to Texture2D. Folder: ");
     }
@@ -31,7 +33,7 @@ internal class EditorCachedTextureLoader {
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------    
 
     internal bool GetOrLoad(string fullPath, out ImageData imageData, out Texture2D tex) {
-#if UNITY_EDITOR        
+#if UNITY_EDITOR
         if (fullPath.IsRegularAssetPath()) {
             
             bool isCached   = m_cachedTexturesInEditor.TryGetValue(fullPath, out tex);
