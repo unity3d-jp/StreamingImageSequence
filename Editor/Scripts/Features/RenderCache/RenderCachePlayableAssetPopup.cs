@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.FilmInternalUtilities;
 using Unity.StreamingImageSequence;
 using UnityEngine;
 using UnityEditor;
