@@ -33,6 +33,7 @@ internal class RenderCachePlayableAssetTest {
     
 //----------------------------------------------------------------------------------------------------------------------                
     [UnityTest]
+    [UnityPlatform(RuntimePlatform.OSXEditor, RuntimePlatform.WindowsEditor)]
     public IEnumerator UpdateRenderCachePNGInStreamingAssets() {
         PlayableDirector director   = EditorUtilityTest.NewSceneWithDirector();
         TimelineClip     clip       = EditorUtilityTest.CreateTestRenderCacheTimelineClip(director);
