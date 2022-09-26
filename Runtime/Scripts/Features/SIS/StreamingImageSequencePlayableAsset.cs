@@ -331,8 +331,10 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     //return true if we should continue preloading the next image. False otherwise
     private bool QueueImageLoadTask(string fullPath, out ImageData imageData, out Texture2D tex) {
 
+#if UNITY_EDITOR
         if (m_editorCachedTextureLoader.GetOrLoad(fullPath, out imageData, out tex))
             return true;
+#endif
         
         if (!File.Exists(fullPath)) {
             imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_FAIL);
