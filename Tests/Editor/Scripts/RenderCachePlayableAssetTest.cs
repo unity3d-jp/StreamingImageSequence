@@ -64,7 +64,7 @@ internal class RenderCachePlayableAssetTest {
         Assert.IsTrue(Directory.Exists(OUTPUT_FOLDER));
         
         //A hack to wait until the coroutine is finished
-        const int TIMEOUT_FRAMES = 60 * 5;
+        const int TIMEOUT_FRAMES = 60 * 10;
         yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(TIMEOUT_FRAMES);
         
         
