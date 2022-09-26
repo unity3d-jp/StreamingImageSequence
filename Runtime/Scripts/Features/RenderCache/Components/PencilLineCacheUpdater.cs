@@ -1,3 +1,5 @@
+#if AT_USE_PENCILLINE
+
 using System.Collections.Generic;
 using Unity.StreamingImageSequence;
 using UnityEngine;
@@ -35,3 +37,5 @@ public class PencilLineCacheUpdater : MonoBehaviour {
     [SerializeField] private bool                      m_updateSeparately;
     [SerializeField] private List<PencilLineCacheInfo> m_separateCacheInfoList;
 }
+
+#endif //AT_USE_PENCILLINE

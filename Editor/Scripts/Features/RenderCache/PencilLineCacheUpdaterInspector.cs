@@ -1,3 +1,5 @@
+#if AT_USE_PENCILLINE
+
 using System.Collections;
 using System.Collections.Generic;
 using Pencil_4;
@@ -167,3 +169,6 @@ internal class PencilLineCacheUpdaterInspector : Editor {
 
     private const string ASSIGN_TIMELINE_ASSET_MSG = "Please assign a TimelineAsset to the PlayableDirector.";
 }
+
+
+#endif //AT_USE_PENCILLINE
