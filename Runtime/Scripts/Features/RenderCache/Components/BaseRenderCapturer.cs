@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using JetBrains.Annotations;
 using Unity.FilmInternalUtilities;
 using UnityEngine;
 
@@ -42,9 +43,13 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
     /// </summary>
     /// <param name="outputFilePath">The path of the file</param>
     /// <param name="outputFormat">The output file format</param>
-    public void CaptureToFile(string outputFilePath, RenderCacheOutputFormat outputFormat = RenderCacheOutputFormat.PNG) 
+    /// <returns>True if successful, false otherwise</returns>
+    public bool CaptureAndSave(string outputFilePath, RenderCacheOutputFormat outputFormat = RenderCacheOutputFormat.PNG) 
     {
         RenderTexture rt = UpdateRenderTextureV();
+        if (null == rt)
+            return false;
+        
         TextureFormat textureFormat = TextureFormat.RGBA32;
         bool isPNG = true;
         if (RenderCacheOutputFormat.EXR == outputFormat) {
@@ -56,14 +61,29 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
         if (!writeSuccess) {
             Debug.LogError($"[SIS] Can't write to file: {outputFilePath}." + Environment.NewLine);             
         }
+
+        return true;
     }
 
+    /// <summary>
+    /// Capture the contents of RenderTexture into file
+    /// </summary>
+    /// <param name="outputFilePath">The path of the file</param>
+    /// <param name="outputFormat">The output file format</param>    
+    [Obsolete("Replaced by CaptureAndSave()")]
+    public void CaptureToFile(string outputFilePath, RenderCacheOutputFormat outputFormat = RenderCacheOutputFormat.PNG) 
+    {
+        //[TODO-sin: 2022-9-26] Remove CaptureToFile() function in 0.17.x-preview
+        CaptureAndSave(outputFilePath, outputFormat);
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------
     
     /// <summary>
     /// Updates the render texture used for the capturing process
     /// </summary>
-    /// <returns>The updated render texture</returns>
+    /// <returns>The updated render texture if successful, null otherwise</returns>
+    [CanBeNull]
     protected abstract RenderTexture UpdateRenderTextureV();
     
     

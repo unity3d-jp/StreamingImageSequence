@@ -81,7 +81,8 @@ internal class PencilLineRenderCapturer : BaseRenderCapturer {
     protected override RenderTexture UpdateRenderTextureV() {
 #if AT_USE_PENCILLINE
         PencilLineRenderer lineRenderer = m_pencilLineEffect.PencilRenderer;
-        Assert.IsNotNull(lineRenderer);
+        if (null == lineRenderer)
+            return null;
         Graphics.Blit(lineRenderer.Texture, m_rt);
 #endif
         return m_rt;
