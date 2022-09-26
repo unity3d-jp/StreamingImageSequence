@@ -3,6 +3,7 @@ using System.IO;
 using NUnit.Framework;
 using Unity.EditorCoroutines.Editor;
 using Unity.FilmInternalUtilities;
+using Unity.FilmInternalUtilities.Editor;
 using UnityEngine;
 using UnityEngine.Playables;
 using Unity.StreamingImageSequence.Editor;
@@ -58,25 +59,21 @@ internal class RenderCachePlayableAssetTest {
         //Update RenderCache              
         EditorCoroutineUtility.StartCoroutineOwnerless(
             RenderCachePlayableAssetInspector.UpdateRenderCacheCoroutine(director, renderCachePlayableAsset)
-        );        
+        );
+
+        Assert.IsTrue(Directory.Exists(OUTPUT_FOLDER));
         
         //A hack to wait until the coroutine is finished
-        const float TIMEOUT_SEC = 5.0f;
-        Assert.IsTrue(Directory.Exists(OUTPUT_FOLDER));
-        float  prevTime      = Time.realtimeSinceStartup;        
-        while (Time.realtimeSinceStartup - prevTime < TIMEOUT_SEC) {
-             yield return null;
-        }       
+        const int TIMEOUT_FRAMES = 60 * 5;
+        yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(TIMEOUT_FRAMES);
+        
         
         string imageFilePath = renderCachePlayableAsset.GetImageFilePath(0);
         Assert.IsTrue(File.Exists(imageFilePath));
         ImageLoader.RequestLoadFullImage(imageFilePath);
 
         //Another hack to wait until the load is finished
-        prevTime = Time.realtimeSinceStartup;
-        while (Time.realtimeSinceStartup - prevTime < TIMEOUT_SEC) {
-            yield return null;
-        }       
+        yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(TIMEOUT_FRAMES);
         
         ImageLoader.GetImageDataInto(imageFilePath,StreamingImageSequenceConstants.IMAGE_TYPE_FULL,out ImageData imageData);
         Assert.AreEqual(StreamingImageSequenceConstants.READ_STATUS_SUCCESS, imageData.ReadStatus);        
