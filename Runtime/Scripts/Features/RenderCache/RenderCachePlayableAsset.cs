@@ -48,15 +48,6 @@ internal class RenderCachePlayableAsset : ImageFolderPlayableAsset<RenderCacheCl
             m_editorConfig = new RenderCachePlayableAssetEditorConfig();                 
         }
         
-
-        if (m_version < (int) RenderCachePlayableAssetVersion.WATCHED_FILE_0_4) {
-
-            if (null != m_imageFileNames && m_imageFileNames.Count > 0) {
-                m_imageFiles = WatchedFileInfo.CreateList(m_folder, m_imageFileNames);
-                m_imageFileNames.Clear();
-            }             
-        }
-
         if (m_version < (int) RenderCachePlayableAssetVersion.CONFIG_0_7) {
             m_editorConfig.SetUpdateBGColor(m_updateBGColor);
         }

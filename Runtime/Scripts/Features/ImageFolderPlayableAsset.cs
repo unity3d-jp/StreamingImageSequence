@@ -254,10 +254,7 @@ internal abstract class ImageFolderPlayableAsset<T> : BaseExtendedClipPlayableAs
     
 //----------------------------------------------------------------------------------------------------------------------    
     [HideInInspector][SerializeField] protected string       m_folder         = null;
-    
-    //[TODO-sin: 2020-9-9] Obsolete, and should be removed completely before releasing
-    [HideInInspector][SerializeField] protected List<string> m_imageFileNames = null; //file names, not paths
-    
+        
     [HideInInspector][SerializeField] protected List<WatchedFileInfo> m_imageFiles = null; //store file names, not paths
 
     [HideInInspector][SerializeField] private Color m_timelineBGColor = Color.gray;
