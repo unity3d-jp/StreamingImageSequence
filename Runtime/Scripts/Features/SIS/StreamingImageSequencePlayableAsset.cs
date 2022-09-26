@@ -294,7 +294,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     
 //----------------------------------------------------------------------------------------------------------------------
 
-    internal void ContinuePreloadingImages() {
+    internal void ContinuePreloadingImages(int numNeighboringImagesToLoad) {
 
         if (null == m_imageFiles || 0== m_imageFiles.Count)
             return;
@@ -302,10 +302,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         if (m_folder.IsRegularAssetPath())
             return;
 
-        const int NUM_IMAGES = 2;
-
         //forward
-        int maxForwardPreloadIndex = Mathf.Min(m_forwardPreloadImageIndex + NUM_IMAGES, m_imageFiles.Count) -1;
+        int maxForwardPreloadIndex   = Mathf.Min(m_forwardPreloadImageIndex + numNeighboringImagesToLoad, m_imageFiles.Count) -1;
         int startForwardPreloadIndex = m_forwardPreloadImageIndex;
         for (int i = startForwardPreloadIndex; i <= maxForwardPreloadIndex; ++i) {
             if (QueueImageLoadTask(i, out _)) {
@@ -316,7 +314,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         }
         
         //backward
-        int minBackwardPreloadIndex = Mathf.Max((m_backwardPreloadImageIndex - NUM_IMAGES)+1, 0);
+        int minBackwardPreloadIndex   = Mathf.Max((m_backwardPreloadImageIndex - numNeighboringImagesToLoad)+1, 0);
         int startBackwardPreloadIndex = m_backwardPreloadImageIndex;
         for (int i = startBackwardPreloadIndex; i >=minBackwardPreloadIndex; --i) {
             if (QueueImageLoadTask(i, out _)) {

@@ -11,6 +11,10 @@ internal class ImageLoadEditorTask : IEditorTask {
         m_latestFrame = 0;        
     }
     
+    public float GetExecutionFrequency() {
+        return 0; //as soon as possible
+    }
+    
 //----------------------------------------------------------------------------------------------------------------------    
     public void Execute() {
 
