@@ -39,7 +39,7 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
     public Texture GetInternalTexture() { return m_rt;}
 
     /// <summary>
-    /// Capture the contents of RenderTexture into file
+    /// Capture the contents of RenderTexture to file
     /// </summary>
     /// <param name="outputFilePath">The path of the file</param>
     /// <param name="outputFormat">The output file format</param>
@@ -66,7 +66,7 @@ public abstract class BaseRenderCapturer : MonoBehaviour {
     }
 
     /// <summary>
-    /// Capture the contents of RenderTexture into file
+    /// Capture the contents of RenderTexture to file
     /// </summary>
     /// <param name="outputFilePath">The path of the file</param>
     /// <param name="outputFormat">The output file format</param>    
