@@ -9,7 +9,6 @@ using Unity.FilmInternalUtilities;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 #if UNITY_EDITOR
-using UnityEditor.SceneManagement;
 using UnityEditor;
 #endif
 
