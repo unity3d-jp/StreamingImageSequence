@@ -61,7 +61,7 @@ internal class RenderCachePlayableAssetTest {
         );        
         
         //A hack to wait until the coroutine is finished
-        const float TIMEOUT_SEC = 3.0f;
+        const float TIMEOUT_SEC = 5.0f;
         Assert.IsTrue(Directory.Exists(OUTPUT_FOLDER));
         float  prevTime      = Time.realtimeSinceStartup;        
         while (Time.realtimeSinceStartup - prevTime < TIMEOUT_SEC) {
