@@ -444,10 +444,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     public void OnAfterDeserialize() {
         if (m_version < (int) SISPlayableAssetVersion.WATCHED_FILE_0_4) {
-            if (null != m_imageFileNames && m_imageFileNames.Count > 0) {
-                m_imageFiles = WatchedFileInfo.CreateList(m_folder, m_imageFileNames);
-                m_imageFileNames.Clear();
-            }             
             
             //Use the folder defined in older version if set
             if (string.IsNullOrEmpty(m_folder) && !string.IsNullOrEmpty(Folder)) {
