@@ -275,8 +275,9 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             default:                          outputExt = "png"; break;;
         }
         
-        bool cancelled = false;
-        while (!cancelled) {            
+        bool cancelled      = false;
+        bool captureSuccessful = true;
+        while (!cancelled && captureSuccessful) {
             
             //Always recalculate from start to avoid floating point errors
             double directorTime = timelineClip.start + (fileCounter * timePerFrame);
@@ -305,10 +306,8 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                 
                 //Unload texture because it may be overwritten
                 StreamingImageSequencePlugin.UnloadImageAndNotify(outputFilePath);
-                renderCapturer.CaptureToFile(outputFilePath, outputFormat);
-                
+                captureSuccessful = renderCapturer.TryCaptureToFile(outputFilePath, outputFormat);
             } 
-            Assert.IsTrue(File.Exists(outputFilePath));
 
             ++fileCounter;        
             cancelled = EditorUtility.DisplayCancelableProgressBar(
@@ -335,6 +334,10 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
                 }
                 
             }            
+        }
+
+        if (!captureSuccessful) {
+            EditorUtility.DisplayDialog("Streaming Image Sequence", "Capturing failed", "Ok");
         }
         
         //Notify
