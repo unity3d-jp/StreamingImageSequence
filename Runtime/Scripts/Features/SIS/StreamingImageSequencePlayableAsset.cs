@@ -180,7 +180,10 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         m_lastCopiedImageIndex = -1;
         ResetTexture();
         ResetResolution();
+
+#if UNITY_EDITOR
         m_editorCachedTextureLoader.UnloadAll();
+#endif
     }
 
 //----------------------------------------------------------------------------------------------------------------------        
@@ -551,7 +554,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     private OneTimeLogger m_regularAssetMipmapCheckLogger;
 
 
+#if UNITY_EDITOR
     private EditorCachedTextureLoader m_editorCachedTextureLoader = new EditorCachedTextureLoader();
+#endif
     
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
     
