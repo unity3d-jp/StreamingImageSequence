@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.FilmInternalUtilities;
 using Unity.StreamingImageSequence;
 using UnityEngine;
 using UnityEditor;
@@ -54,8 +53,7 @@ internal class RenderCachePlayableAssetPopup : EditorWindow {
         Assert.IsNotNull(label);
         if (null == clip) {
             label.text = "None";
-        }
-        else {
+        } else {
             TrackAsset track = clip.GetParentTrack();
             label.text = $"{track.name}-{clip.displayName}";
         }
