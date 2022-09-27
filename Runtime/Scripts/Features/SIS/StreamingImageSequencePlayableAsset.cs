@@ -9,9 +9,7 @@ using Unity.FilmInternalUtilities;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 #if UNITY_EDITOR
-using UnityEditor.Timeline;
 using UnityEditor;
-
 #endif
 
 namespace Unity.StreamingImageSequence {
@@ -90,7 +88,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         m_lastCopiedImageIndex = -1;
     }
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     void OnEnable() {
         m_texture              = null;
@@ -101,16 +99,14 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
             return m_texture.mipmapCount != 1;
         },$"Textures should not have mipmap. Folder: ");
         
-        m_regularAssetLoadLogger = new OneTimeLogger(() => !m_regularAssetLoaded,
-            $"Can't load textures. Make sure their import settings are set to Texture2D. Folder: ");
-        
     }
+
 
     private void OnDisable() {
         ResetTexture();
     }
        
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     //[Note-sin: 2020-7-17] This is also called when the TimelineClip in TimelineWindow is deleted, instead of just
     //The TimelineClipAsset (on file, for example) is deleted
@@ -184,6 +180,10 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         m_lastCopiedImageIndex = -1;
         ResetTexture();
         ResetResolution();
+
+#if UNITY_EDITOR
+        m_editorCachedTextureLoader.UnloadAll();
+#endif
     }
 
 //----------------------------------------------------------------------------------------------------------------------        
@@ -243,26 +243,26 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
         m_primaryImageIndex = index;
         
-#if UNITY_EDITOR        
-        if (fullPath.IsRegularAssetPath()) {
-            UpdateTextureAsRegularAssetInEditor(fullPath, m_primaryImageIndex);
-            return;
-        }
-#endif        
-        
-
-        if (QueueImageLoadTask(index, out ImageData readResult)) {
+        if (QueueImageLoadTask(fullPath, out ImageData readResult, out Texture2D tex)) {
             m_forwardPreloadImageIndex  = Mathf.Min(m_primaryImageIndex + 1, numImages - 1);
-            m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);                
+            m_backwardPreloadImageIndex = Mathf.Max(m_primaryImageIndex - 1, 0);
         } else {
             //If we can't queue, try from the primary index again
             m_forwardPreloadImageIndex = m_backwardPreloadImageIndex = index;
         }
 
-        if (StreamingImageSequenceConstants.READ_STATUS_SUCCESS == readResult.ReadStatus) {
-            UpdateTexture(readResult, index);
+        switch (readResult.ReadStatus) {
+            case StreamingImageSequenceConstants.READ_STATUS_SUCCESS: {
+                UpdateTexture(readResult, index);
+                break;
+            }
+#if UNITY_EDITOR
+            case StreamingImageSequenceConstants.READ_STATUS_USE_EDITOR_API: {
+                UpdateTexture(tex, m_primaryImageIndex);
+                break;
+            }
+#endif
         }
-
     }
     
 //----------------------------------------------------------------------------------------------------------------------
@@ -277,8 +277,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
             return false;
 
 #if UNITY_EDITOR        
-        if (fullPath.IsRegularAssetPath()) {
-            return UpdateTextureAsRegularAssetInEditor(fullPath, m_primaryImageIndex);
+        if (UpdateTextureAsRegularAssetInEditor(fullPath, m_primaryImageIndex)) {
+            return true;
         }
 #endif        
         
@@ -290,24 +290,20 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         UpdateTexture(imageData, m_primaryImageIndex);
         return true;
     }
-    
-    
-//----------------------------------------------------------------------------------------------------------------------
+        
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
     internal void ContinuePreloadingImages(int numNeighboringImagesToLoad) {
 
         if (null == m_imageFiles || 0== m_imageFiles.Count)
             return;
 
-        if (m_folder.IsRegularAssetPath())
-            return;
-
         //forward
         int maxForwardPreloadIndex   = Mathf.Min(m_forwardPreloadImageIndex + numNeighboringImagesToLoad, m_imageFiles.Count) -1;
         int startForwardPreloadIndex = m_forwardPreloadImageIndex;
         for (int i = startForwardPreloadIndex; i <= maxForwardPreloadIndex; ++i) {
-            if (QueueImageLoadTask(i, out _)) {
-                ++m_forwardPreloadImageIndex;                    
+            if (QueueImageLoadTask(i, out _, out _)) {
+                ++m_forwardPreloadImageIndex;
             } else {
                 break;
             }
@@ -317,24 +313,35 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         int minBackwardPreloadIndex   = Mathf.Max((m_backwardPreloadImageIndex - numNeighboringImagesToLoad)+1, 0);
         int startBackwardPreloadIndex = m_backwardPreloadImageIndex;
         for (int i = startBackwardPreloadIndex; i >=minBackwardPreloadIndex; --i) {
-            if (QueueImageLoadTask(i, out _)) {
-                --m_backwardPreloadImageIndex;                    
+            if (QueueImageLoadTask(i, out _, out _)) {
+                --m_backwardPreloadImageIndex;
             } else {
                 break;
             }
         }
-        
+    }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+   
+    //return true if we should continue preloading the next image. False otherwise
+    private bool QueueImageLoadTask(int index, out ImageData imageData, out Texture2D tex) {
+        string fullPath = GetImageFilePath(index);
+        return QueueImageLoadTask(fullPath, out imageData, out tex);
     }
 
 
-//----------------------------------------------------------------------------------------------------------------------
-   
     //return true if we should continue preloading the next image. False otherwise
-    private bool QueueImageLoadTask(int index, out ImageData imageData) {
-        string fullPath = GetImageFilePath(index);
+    private bool QueueImageLoadTask(string fullPath, out ImageData imageData, out Texture2D tex) {
 
+        tex = null;
+        
+#if UNITY_EDITOR
+        if (m_editorCachedTextureLoader.GetOrLoad(fullPath, out imageData, out tex))
+            return true;
+#endif
+        
         if (!File.Exists(fullPath)) {
-            imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_FAIL);                
+            imageData = new ImageData(StreamingImageSequenceConstants.READ_STATUS_FAIL);
             return true;
         }
 
@@ -354,9 +361,8 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
                    
         return true;
     }
-
     
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
     Texture2D UpdateTexture(ImageData imageData, int index) {
         bool textureRecreated = false;
         if (m_texture.IsNullRef() || !imageData.IsTextureCompatible(m_texture) || m_texture.filterMode != m_textureFilterMode) {
@@ -410,9 +416,6 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     }
 
-   
-    
-
 //----------------------------------------------------------------------------------------------------------------------        
 #region Observer
     
@@ -465,6 +468,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     {
         m_folder     = folder;
         m_imageFiles = imageFiles;
+        m_editorCachedTextureLoader.UnloadAll();
         UpdateResolution(res);
         
         if (null!=m_folder && m_folder.StartsWith("Assets")) {
@@ -479,9 +483,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
     protected override void ReloadInternalInEditorV() {
         m_lastCopiedImageIndex = -1;
+        m_editorCachedTextureLoader.UnloadAll();
         ResetResolution();
         RequestLoadImage(m_primaryImageIndex);
-        
     }        
     
     internal UnityEditor.DefaultAsset GetTimelineDefaultAsset() { return m_timelineDefaultAsset; }
@@ -494,20 +498,12 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
 
     private bool UpdateTextureAsRegularAssetInEditor(string fullPath, int imageIndex) {
-        Assert.IsTrue(fullPath.IsRegularAssetPath());
-        
-        Texture2D tex = AssetDatabase.LoadAssetAtPath<Texture2D>(fullPath);
-        m_regularAssetLoaded = (null!=tex);
-        m_regularAssetLoadLogger.Update("[SIS]", m_folder);
-        
-        if (null == tex) {
+        if (!m_editorCachedTextureLoader.GetOrLoad(fullPath, out _, out Texture2D tex)) {
             return false;
         }
         
         UpdateTexture(tex, imageIndex);
-        Resources.UnloadAsset(tex);
         return true;
-        
     }
     
 #endif //end #if UNITY_EDITOR        
@@ -552,13 +548,15 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     Texture2D    m_texture       = null;
 
     private OneTimeLogger m_regularAssetMipmapCheckLogger;
-    private OneTimeLogger m_regularAssetLoadLogger;
-    private bool          m_regularAssetLoaded = false;
+
+
+#if UNITY_EDITOR
+    private EditorCachedTextureLoader m_editorCachedTextureLoader = new EditorCachedTextureLoader();
+#endif
     
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
     
     private const int CUR_SIS_PLAYABLE_ASSET_VERSION = (int) SISPlayableAssetVersion.WATCHED_FILE_0_4;
-            
 
     enum SISPlayableAssetVersion {
         INITIAL        = 1, //initial
@@ -570,7 +568,7 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
 
 } //end namespace
 
-//----------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 //[Note-Sin: 2019-12-23] We need two things, in order to enable folder drag/drop to the timeline Window
 //1. Derive this class from PlayableAsset
 //2. Declare UnityEditor.DefaultAsset variable 
