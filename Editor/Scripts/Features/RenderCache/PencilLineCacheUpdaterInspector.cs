@@ -81,7 +81,7 @@ internal class PencilLineCacheUpdaterInspector : Editor {
         fieldRect.xMin += EditorGUIUtility.labelWidth;
 
         if (null == director.playableAsset) {
-            EditorUtility.DisplayDialog("PencilLineCache", ASSIGN_TIMELINE_ASSET_MSG, "OK");
+            EditorUtility.DisplayDialog(SISEditorConstants.DIALOG_TITLE, ASSIGN_TIMELINE_ASSET_MSG, "OK");
             return;
         }
 
@@ -101,7 +101,7 @@ internal class PencilLineCacheUpdaterInspector : Editor {
 
         TimelineAsset timelineAsset = renderCachePlayableAsset.GetBoundClipData()?.GetOwner().GetParentTrack().timelineAsset;
         if (null == timelineAsset || timelineAsset != director.playableAsset) {
-            EditorUtility.DisplayDialog("PencilLineCache", "The RenderCachePlayableAsset does not exist in the specified Director object", "OK");
+            EditorUtility.DisplayDialog(SISEditorConstants.DIALOG_TITLE, "The RenderCachePlayableAsset does not exist in the specified Director object", "OK");
             return;
         }
 
@@ -113,7 +113,7 @@ internal class PencilLineCacheUpdaterInspector : Editor {
         yield return null;
 
         if (TimelineEditor.inspectedAsset != director.playableAsset) {
-            EditorUtility.DisplayDialog("PencilLineCache", "Can't show the specified Director in the Timeline Window. Please unlock it if it's locked.", "OK");
+            EditorUtility.DisplayDialog(SISEditorConstants.DIALOG_TITLE, "Can't show the specified Director in the Timeline Window. Please unlock it if it's locked.", "OK");
             yield break;
         }
 
