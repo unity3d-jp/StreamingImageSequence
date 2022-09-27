@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.FilmInternalUtilities; //Required when using Timeline 1.4.x or below
 using Unity.StreamingImageSequence;
 using UnityEngine;
 using UnityEditor;

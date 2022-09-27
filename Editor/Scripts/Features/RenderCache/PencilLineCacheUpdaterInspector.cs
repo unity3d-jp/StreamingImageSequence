@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Pencil_4;
 using Unity.EditorCoroutines.Editor;
-using Unity.FilmInternalUtilities;
+using Unity.FilmInternalUtilities; //Required when using Timeline 1.4.x or below
 using Unity.FilmInternalUtilities.Editor;
 using Unity.StreamingImageSequence;
 using Unity.StreamingImageSequence.Editor;
