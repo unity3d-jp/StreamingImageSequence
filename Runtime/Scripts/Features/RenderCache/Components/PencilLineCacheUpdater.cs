@@ -24,7 +24,7 @@ public class PencilLineCacheUpdater : MonoBehaviour {
 
 
     internal IEnumerable<PencilLineCacheInfo> EnumerateSeparateCacheInfo() {
-        foreach (var cacheInfo in m_separateCacheInfoList)
+        foreach (PencilLineCacheInfo cacheInfo in m_separateCacheInfoList)
             yield return cacheInfo;
     }
 
