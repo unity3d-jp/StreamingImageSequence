@@ -1,8 +1,19 @@
 # Changelog
 
-## [0.16.0-preview] - 2022-08-25
+## [0.16.0-preview] - 2022-09-28
 
-TBD
+### Added
+* feat: add components to make it easier to update PencilLineCache
+
+### Changed
+* opt: reduce the frequency of loading images in the Editor
+* opt: cache Asset textures in Editor to increase the playback speed 
+* deps: use com.unity.film-internal-utilities@0.16.0-preview 
+* internal: allow setting useLastImageOnLoad on StreamingImageSequenceRenderer 
+
+### Fixed
+* fix: refresh StreamingImageSequenceRenderer during OnEnable() 
+* fix: handle errors when capturing Render results to files
 
 ## [0.15.3-preview] - 2022-05-19
 
