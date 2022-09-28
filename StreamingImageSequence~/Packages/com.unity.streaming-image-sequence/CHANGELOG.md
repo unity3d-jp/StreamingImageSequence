@@ -8,6 +8,7 @@
 ### Changed
 * opt: reduce the frequency of loading images in the Editor
 * opt: cache Asset textures in Editor to increase the playback speed 
+* deps: use com.unity.film-internal-utilities@0.16.0-preview 
 * internal: allow setting useLastImageOnLoad on StreamingImageSequenceRenderer 
 
 ### Fixed
