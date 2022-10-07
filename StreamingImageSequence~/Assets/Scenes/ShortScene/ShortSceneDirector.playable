@@ -327,7 +327,7 @@ MonoBehaviour:
     m_ExposedParameterNames: []
     m_AnimationCurves: {fileID: 5150305638379584504}
     m_Recordable: 0
-    m_PostExtrapolationMode: 0
+    m_PostExtrapolationMode: 2
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: Infinity
     m_PreExtrapolationTime: 0
@@ -996,7 +996,6 @@ MonoBehaviour:
   m_Name: StreamingImageSequencePlayableAsset
   m_EditorClassIdentifier: 
   m_folder: Assets/StreamingAssets/ShortSceneFootage/TGA
-  m_imageFileNames: []
   m_imageFiles:
   - m_name: ShortSceneFootageTGA_01.tga
     m_size: 7072844
@@ -1012,7 +1011,8 @@ MonoBehaviour:
     m_size: 7072844
   m_timelineBGColor: {r: 1, g: 1, b: 1, a: 1}
   m_version: 3
-  m_time: 1
+  m_time: 0.25
+  m_textureFilterMode: 1
   Folder: 
   m_timelineDefaultAsset: {fileID: 102900000, guid: 67edb59e9580c004880641a59428f148,
     type: 3}
@@ -1077,11 +1077,11 @@ MonoBehaviour:
   m_Name: StreamingImageSequencePlayableAsset
   m_EditorClassIdentifier: 
   m_folder: 
-  m_imageFileNames: []
   m_imageFiles: []
   m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
   m_time: 0.6100000143051147
+  m_textureFilterMode: 1
   Folder: 
   m_timelineDefaultAsset: {fileID: 0}
 --- !u!114 &-5451482385808524462
@@ -1876,7 +1876,7 @@ MonoBehaviour:
     m_ExposedParameterNames: []
     m_AnimationCurves: {fileID: -809751682908227667}
     m_Recordable: 0
-    m_PostExtrapolationMode: 0
+    m_PostExtrapolationMode: 2
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: Infinity
     m_PreExtrapolationTime: 0
@@ -2262,7 +2262,7 @@ MonoBehaviour:
     m_ExposedParameterNames: []
     m_AnimationCurves: {fileID: -4458552029602863635}
     m_Recordable: 0
-    m_PostExtrapolationMode: 0
+    m_PostExtrapolationMode: 2
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: Infinity
     m_PreExtrapolationTime: 0.2
@@ -4774,7 +4774,6 @@ MonoBehaviour:
   m_Name: StreamingImageSequencePlayableAsset
   m_EditorClassIdentifier: 
   m_folder: Assets/StreamingAssets/ShortSceneFootage/PNG
-  m_imageFileNames: []
   m_imageFiles:
   - m_name: ShortSceneFootage_00000.png
     m_size: 58442
@@ -4790,7 +4789,8 @@ MonoBehaviour:
     m_size: 78746
   m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
-  m_time: 0
+  m_time: 0.5
+  m_textureFilterMode: 1
   Folder: 
   m_timelineDefaultAsset: {fileID: 102900000, guid: dabdbde2f66edf2478c29f237e908df4,
     type: 3}
@@ -4915,7 +4915,6 @@ MonoBehaviour:
   m_Name: StreamingImageSequencePlayableAsset(Clone)
   m_EditorClassIdentifier: 
   m_folder: Assets/StreamingAssets/ShortSceneFootage/PNG
-  m_imageFileNames: []
   m_imageFiles:
   - m_name: ShortSceneFootage_00000.png
     m_size: 58442
@@ -4932,6 +4931,7 @@ MonoBehaviour:
   m_timelineBGColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_version: 3
   m_time: 0
+  m_textureFilterMode: 1
   Folder: 
   m_timelineDefaultAsset: {fileID: 102900000, guid: dabdbde2f66edf2478c29f237e908df4,
     type: 3}
