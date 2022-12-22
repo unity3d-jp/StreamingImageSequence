@@ -4,7 +4,7 @@
     "unity": "2020.3",
     "version": "0.16.0-preview",
     "dependencies": {
-        "com.unity.film-internal-utilities": "0.16.0-preview",
+        "com.unity.film-internal-utilities": "0.17.0-preview",
         "com.unity.editorcoroutines": "1.0.0",
         "com.unity.ext.nunit": "1.0.6",        
         "com.unity.modules.animation": "1.0.0",                    
