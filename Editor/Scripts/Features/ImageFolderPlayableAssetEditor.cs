@@ -16,6 +16,7 @@ internal abstract class ImageFolderPlayableAssetEditor<T> : ClipEditor where T: 
         ImageFolderPlayableAsset<T> imageFolderPlayableAsset = clip.asset as ImageFolderPlayableAsset<T>;
         Assert.IsNotNull(imageFolderPlayableAsset);
 
+        //Use delayCall to prevent marker creation during undo/redo process
         EditorApplication.delayCall += () => {
             imageFolderPlayableAsset.RefreshPlayableFrames();
         };
