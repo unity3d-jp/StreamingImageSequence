@@ -20,7 +20,7 @@ internal class FrameMarkerTest {
         TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
-        yield return null;
+        yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(1);
         
         //Show
         SISClipData clipData = sisAsset.GetBoundClipData();
@@ -29,20 +29,22 @@ internal class FrameMarkerTest {
         TrackAsset trackAsset = clip.GetParentTrack();
         clipData.RequestFrameMarkers(true, true);
         TimelineEditor.Refresh(RefreshReason.ContentsModified);
-        yield return null;
+        yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(1);
         
         Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
-        yield return null;
+        yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(1);
 
 
         //Undo showing FrameMarkers
-        EditorUtilityTest.UndoAndRefreshTimelineEditor(); yield return null;
+        EditorUtilityTest.UndoAndRefreshTimelineEditor();
+        yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(1);
+        
         Assert.False(clipData.AreFrameMarkersRequested());
         Assert.AreEqual(0, trackAsset.GetMarkerCount());
         
         
         EditorUtilityTest.DestroyTestTimelineAssets(clip);
-        yield return null;
+        yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(1);
     }
     
     
