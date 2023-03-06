@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.FilmInternalUtilities;
+using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
@@ -18,10 +19,11 @@ internal class FaderTrack : TrackAsset {
         Assert.IsNotNull(director);
         
         //Initialize mixer
-        Image image = director.GetGenericBinding(this) as Image;           
+        Image              image = director.GetGenericBinding(this) as Image;
         FaderPlayableMixer mixer = mixerScriptPlayable.GetBehaviour();
         mixer.Init(null==image ? null : image.gameObject, director, GetClips());
         
+        AnalyticsSender.SendEventInEditor(new FaderTrackMixerEvent(mixer.GetClips().Count));
         
         return mixerScriptPlayable;
     }
