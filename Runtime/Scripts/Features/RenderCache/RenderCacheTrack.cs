@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.FilmInternalUtilities;
+using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 
@@ -50,6 +51,7 @@ internal class RenderCacheTrack : FrameMarkerTrack<RenderCacheClipData> {
             Object             boundObject = director.GetGenericBinding(this);
             BaseRenderCapturer capturer    = boundObject as BaseRenderCapturer;
             m_trackMixer.Init(null == capturer ? null : capturer.gameObject, director, GetClips());
+            AnalyticsSender.SendEventInEditor(new RenderCacheTrackMixerEvent(m_trackMixer.GetClips().Count));
         }
 
         return mixer;
