@@ -13,9 +13,9 @@ It is designed with the following principles in mind:
 
 ## Supported Unity Versions
 
-* Unity 2020.3.45 or higher.
-* Unity 2021.3.19 or higher.
-* Unity 2022.2.8 or higher.
+* Unity `2020.3.45` or higher.
+* Unity `2021.3.19` or higher.
+* Unity `2022.2.8` or higher.
 
 ## Supported Platforms
 
