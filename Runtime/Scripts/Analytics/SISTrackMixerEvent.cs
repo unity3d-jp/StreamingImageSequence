@@ -2,7 +2,7 @@ using Unity.FilmInternalUtilities;
 
 namespace Unity.StreamingImageSequence {
 
-internal class c : AnalyticsEvent<SISTrackMixerEvent.EventData> {
+internal class SISTrackMixerEvent : AnalyticsEvent<SISTrackMixerEvent.EventData> {
 
     internal SISTrackMixerEvent(int clips, bool query) : base(new EventData { numClips = clips, }) { }
     
