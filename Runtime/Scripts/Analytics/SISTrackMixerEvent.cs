@@ -4,7 +4,7 @@ namespace Unity.StreamingImageSequence {
 
 internal class SISTrackMixerEvent : AnalyticsEvent<SISTrackMixerEvent.EventData> {
 
-    internal SISTrackMixerEvent(int clips, bool query) : base(new EventData { numClips = clips, }) { }
+    internal SISTrackMixerEvent(int clips) : base(new EventData { numClips = clips, }) { }
     
     internal struct EventData {
         public int numClips;
