@@ -313,7 +313,13 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             cancelled = EditorUtility.DisplayCancelableProgressBar(
                 "StreamingImageSequence", "Caching render results", ((float)(fileCounter - captureStartFrame) / numFiles));
         }
-
+        
+        AnalyticsSender.SendEventInEditor(
+            new RenderCacheClipUpdateEvent(timelineClip.duration, clipData.AreFrameMarkersRequested(),
+                fileCounter - captureStartFrame + 1 , (int) outputFormat
+            )
+        );
+        
         if (!cancelled) {
 
             //Delete old files that has the same extension, and has fileCounter that is more than max 
