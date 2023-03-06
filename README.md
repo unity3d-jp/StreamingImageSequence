@@ -33,7 +33,13 @@ Streaming Image Sequence is currently a preview package and the following steps 
   2. Click the **+** button, and choose **Add package from git URL** 
   3. Type in `com.unity.streaming-image-sequence@` followed by the version.  
      For example: `com.unity.streaming-image-sequence@0.16.1-preview`
-  
+
+## Supported Unity Versions
+
+* Unity 2020.3.45 or higher.
+* Unity 2021.3.19 or higher.
+* Unity 2022.2.8 or higher.
+
 ## Supported Platforms
 
 1. Windows
