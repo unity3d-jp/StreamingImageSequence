@@ -201,7 +201,8 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             
         }           
 
-        TrackAsset track = clipData.GetOwner().GetParentTrack();
+        TimelineClip       timelineClip   = clipData.GetOwner();
+        TrackAsset         track          = timelineClip.GetParentTrack();
         BaseRenderCapturer renderCapturer = director.GetGenericBinding(track) as BaseRenderCapturer;
         if (null == renderCapturer) {
             EditorUtility.DisplayDialog("Streaming Image Sequence",
@@ -246,7 +247,6 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
         
         GameObject blitterGO = blitter.gameObject;
 
-        TimelineClip timelineClip = clipData.GetOwner();
         double timePerFrame = 1.0f / track.timelineAsset.editorSettings.GetFPS();
         
         //initial calculation of loop vars
@@ -313,7 +313,13 @@ internal class RenderCachePlayableAssetInspector : UnityEditor.Editor {
             cancelled = EditorUtility.DisplayCancelableProgressBar(
                 "StreamingImageSequence", "Caching render results", ((float)(fileCounter - captureStartFrame) / numFiles));
         }
-
+        
+        AnalyticsSender.SendEventInEditor(
+            new RenderCacheClipUpdateEvent(timelineClip.duration, clipData.AreFrameMarkersRequested(),
+                fileCounter - captureStartFrame + 1 , (int) outputFormat
+            )
+        );
+        
         if (!cancelled) {
 
             //Delete old files that has the same extension, and has fileCounter that is more than max 

@@ -44,10 +44,19 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
     /// <inheritdoc/>
     public void OnGraphStart(Playable playable) {
         
-#if UNITY_EDITOR            
+#if UNITY_EDITOR
         FolderContentsChangedNotifier.GetInstance().Subscribe(this);
-#endif            
+        
+        bool        showFrameMarkers = false;
+        SISClipData clipData         = GetBoundClipData();
+        if (null != clipData) {
+            showFrameMarkers = clipData.AreFrameMarkersRequested();
+        }
+        ImageDimensionInt res = GetResolution();
+        AnalyticsSender.SendEventInEditor(new SISClipEnableEvent(duration, showFrameMarkers, m_imageFiles.Count, res.Width, res.Height));        
+#endif
     }
+    
     
     
     /// <inheritdoc/>

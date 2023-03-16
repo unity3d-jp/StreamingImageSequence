@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.FilmInternalUtilities;
+using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Timeline;
 using UnityEngine.Assertions;
@@ -65,9 +66,9 @@ internal class StreamingImageSequenceTrack : FrameMarkerTrack<SISClipData> {
             } else {
                 m_trackMixer.Init(renderer.gameObject, director, GetClips());
                 renderer.Init();
-                m_trackMixer.SetRenderer(renderer);                
+                m_trackMixer.SetRenderer(renderer);
             }
-            
+            AnalyticsSender.SendEventInEditor(new SISTrackMixerEvent(m_trackMixer.GetClips().Count));
         }
         
         return mixer;
