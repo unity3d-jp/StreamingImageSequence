@@ -2,11 +2,11 @@ using Unity.FilmInternalUtilities;
 
 namespace Unity.StreamingImageSequence {
 
-internal class FaderTrackMixerEvent : AnalyticsEvent<FaderTrackMixerEvent.EventData> {
+internal class FaderTrackMixerEvent : AnalyticsEvent {
 
     internal FaderTrackMixerEvent(int clips) : base(new EventData { numClips = clips, }) { }
     
-    internal struct EventData {
+    private class EventData : AnalyticsEventData {
         public int numClips;
     }
 

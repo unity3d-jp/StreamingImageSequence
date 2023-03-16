@@ -2,7 +2,7 @@ using Unity.FilmInternalUtilities;
 
 namespace Unity.StreamingImageSequence {
 
-internal class SISClipEnableEvent : AnalyticsEvent<SISClipEnableEvent.EventData> {
+internal class SISClipEnableEvent : AnalyticsEvent {
 
     internal SISClipEnableEvent(double duration, bool frameMarkers, int images, int width, int height) : base(
         new EventData {
@@ -14,7 +14,7 @@ internal class SISClipEnableEvent : AnalyticsEvent<SISClipEnableEvent.EventData>
         }) 
     { }
     
-    internal struct EventData {
+    private class EventData : AnalyticsEventData {
         public double clipDuration;
         public bool   showFrameMarkers;
         public int    numImages;

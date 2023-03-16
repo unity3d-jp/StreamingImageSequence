@@ -2,7 +2,7 @@ using Unity.FilmInternalUtilities;
 
 namespace Unity.StreamingImageSequence  {
 
-internal class RenderCacheClipUpdateEvent : AnalyticsEvent<RenderCacheClipUpdateEvent.EventData> {
+internal class RenderCacheClipUpdateEvent : AnalyticsEvent {
 
     internal RenderCacheClipUpdateEvent(double duration, bool frameMarkers, int updatedFrames, int formatType) : base(
         new EventData {
@@ -12,8 +12,8 @@ internal class RenderCacheClipUpdateEvent : AnalyticsEvent<RenderCacheClipUpdate
             outputFormatType = formatType, 
         }) 
     { }
-    
-    internal struct EventData {
+
+    private class EventData : AnalyticsEventData {
         public double clipDuration;
         public bool   showFrameMarkers;
         public int    numUpdatedFrames;

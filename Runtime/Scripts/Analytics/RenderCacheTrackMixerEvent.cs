@@ -2,11 +2,11 @@ using Unity.FilmInternalUtilities;
 
 namespace Unity.StreamingImageSequence {
 
-internal class RenderCacheTrackMixerEvent : AnalyticsEvent<RenderCacheTrackMixerEvent.EventData> {
+internal class RenderCacheTrackMixerEvent : AnalyticsEvent {
 
     internal RenderCacheTrackMixerEvent(int clips) : base(new EventData { numClips = clips, }) { }
     
-    internal struct EventData {
+    private class EventData : AnalyticsEventData {
         public int numClips;
     }
     
