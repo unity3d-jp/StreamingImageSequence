@@ -52,8 +52,9 @@ internal class StreamingImageSequencePlayableAsset : ImageFolderPlayableAsset<SI
         if (null != clipData) {
             showFrameMarkers = clipData.AreFrameMarkersRequested();
         }
-        ImageDimensionInt res = GetResolution();
-        AnalyticsSender.SendEventInEditor(new SISClipEnableEvent(duration, showFrameMarkers, m_imageFiles.Count, res.Width, res.Height));        
+        ImageDimensionInt res           = GetResolution();
+        int               numImageFiles = null != m_imageFiles ? m_imageFiles.Count : 0;
+        AnalyticsSender.SendEventInEditor(new SISClipEnableEvent(duration, showFrameMarkers, numImageFiles, res.Width, res.Height));
 #endif
     }
     
