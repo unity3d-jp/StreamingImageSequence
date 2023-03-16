@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.17.0-preview] - 2023-03-16
+
+### Changed
+* deps: use com.unity.film-internal-utilities@0.18.3-preview 
+* doc: update minimum supported Unity versions
+
 ## [0.16.1-preview] - 2023-01-06
 
 ### Changed
