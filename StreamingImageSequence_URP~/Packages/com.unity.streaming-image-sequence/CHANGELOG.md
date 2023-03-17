@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.17.1-preview] - 2023-03-16
+
+### Fixed
+* fix: null error when creating StreamingImageSequencePlayableAsset 
+
 ## [0.17.0-preview] - 2023-03-16
 
 ### Changed
