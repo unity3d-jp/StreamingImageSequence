@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.17.2-preview] - 2023-03-30
+
+### Changed
+* deps: use com.unity.film-internal-utilities@0.18.4-preview
+
 ## [0.17.1-preview] - 2023-03-16
 
 ### Fixed
