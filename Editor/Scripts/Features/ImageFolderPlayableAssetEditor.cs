@@ -1,4 +1,5 @@
 ﻿using Unity.FilmInternalUtilities;
+using UnityEditor;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -14,7 +15,11 @@ internal abstract class ImageFolderPlayableAssetEditor<T> : ClipEditor where T: 
                         
         ImageFolderPlayableAsset<T> imageFolderPlayableAsset = clip.asset as ImageFolderPlayableAsset<T>;
         Assert.IsNotNull(imageFolderPlayableAsset);
-        imageFolderPlayableAsset.RefreshPlayableFrames();            
+
+        //Use delayCall to prevent marker creation during undo/redo process
+        EditorApplication.delayCall += () => {
+            imageFolderPlayableAsset.RefreshPlayableFrames();
+        };
     }
 
 //----------------------------------------------------------------------------------------------------------------------
