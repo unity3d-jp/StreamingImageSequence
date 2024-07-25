@@ -4,19 +4,19 @@ platforms:
   - platform_type: &platform_win
       name: win
       type: Unity::VM
-      image: package-ci/win10:v1.20.1
+      image: package-ci/win10:v4
       flavor: b1.medium
       cmd_prefix: 
   - platform_type: &platform_mac
       name: mac
       type: Unity::VM::osx
-      image: package-ci/mac:v1.20.0-1079282
+      image: package-ci/macos-13:v4
       flavor: m1.mac
       cmd_prefix: 
   - platform_type: &platform_linux
       name: linux
       type: Unity::VM
-      image: package-ci/ubuntu:v3.6.0
+      image: package-ci/ubuntu-20.04:v4
       flavor: b1.medium
       cmd_prefix: DISPLAY=:0.0
 
