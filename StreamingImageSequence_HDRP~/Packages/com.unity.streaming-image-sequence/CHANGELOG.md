@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.17.3-preview] - 2024-07-30
+
+### Fixed
+* fix: resolve merge conflict in Runtime/Scripts metadata file
+
 ## [0.17.2-preview] - 2023-03-30
 
 ### Changed
