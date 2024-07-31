@@ -16,39 +16,35 @@ internal class FrameMarkerTest {
     [UnityTest]
     public IEnumerator ShowFrameMarkers() {
         
-        //[Note-sin: 2022-12-21] Disabling test in Unity 2022 because this error "Assertion failed on expression: '!GetUndoManager().IsProcessing()'"
-        //The flow when this occurs:
-        //1. calling Undo.PerformUndo(); triggers ImageFolderPlayableAssetEditor.OnClipChanged()
-        //2. ImageFolderPlayableAssetEditor.OnClipChanged() may call TrackAsset.CreateMarker()  
-        //3. TrackAsset.CreateMarker() has Undo-related calls in it, which seems to be incompatible if it is called during an undo process        
-#if !UNITY_2022_2_OR_NEWER
         PlayableDirector director = EditorUtilityTest.NewSceneWithDirector();
         TimelineClip                        clip     = EditorUtilityTest.CreateTestSISTimelineClip(director);
         StreamingImageSequencePlayableAsset sisAsset = clip.asset as StreamingImageSequencePlayableAsset;
         Assert.IsNotNull(sisAsset);
-        yield return null;
+        yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(1);
         
         //Show
         SISClipData clipData = sisAsset.GetBoundClipData();
+        Assert.IsNotNull(clipData);
         
         TrackAsset trackAsset = clip.GetParentTrack();
         clipData.RequestFrameMarkers(true, true);
         TimelineEditor.Refresh(RefreshReason.ContentsModified);
-        yield return null;
+        yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(1);
         
         Assert.AreEqual(TimelineUtility.CalculateNumFrames(clip), trackAsset.GetMarkerCount());
-        yield return null;
+        yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(1);
 
 
         //Undo showing FrameMarkers
-        EditorUtilityTest.UndoAndRefreshTimelineEditor(); yield return null;
+        EditorUtilityTest.UndoAndRefreshTimelineEditor();
+        yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(1);
+        
         Assert.False(clipData.AreFrameMarkersRequested());
         Assert.AreEqual(0, trackAsset.GetMarkerCount());
         
         
         EditorUtilityTest.DestroyTestTimelineAssets(clip);
-#endif
-        yield return null;
+        yield return YieldEditorUtility.WaitForFramesAndIncrementUndo(1);
     }
     
     
