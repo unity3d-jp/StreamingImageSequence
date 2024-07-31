@@ -29,6 +29,64 @@ test_{{ platform_type.name }}_{{ editor_version }}_{{step.name}}:
 {% endfor %}
 {% endfor %}
 
+{% for editor in test_editors %}
+test_mac_silicon_{{ editor.version }}:
+  name : Test {{ yamato_name }} using {{ editor.version }} on Mac Silicon
+  agent:
+    type: Unity::VM::osx
+    image: package-ci/mac:stable
+    flavor: m1.mac
+  commands:
+    # Copy repository to Mac Mini
+    - rsync -uaqP --exclude=.git --inplace "$YAMATO_SOURCE_DIR"/ bokken@$BOKKEN_DEVICE_IP:~/repo
+
+    # Download NodeJS and copy to Mac Mini
+    - curl -fsSLo ./node.tgz https://nodejs.org/dist/v16.14.0/node-v16.14.0-darwin-arm64.tar.gz
+    - mkdir ./node
+    - tar -xzf ./node.tgz -C ./node --strip-components 1
+    - rsync -uaqP --inplace node bokken@$BOKKEN_DEVICE_IP:~/
+
+    # Download upm-ci and copy to Mac Mini
+    - npm install upm-ci-utils@stable --registry https://artifactory.prd.it.unity3d.com/artifactory/api/npm/upm-npm
+    - rsync -uaqP --inplace ./node_modules bokken@$BOKKEN_DEVICE_IP:~/
+
+    # Install/upgrade unity-downloader-cli
+    - python -m pip install unity-downloader-cli --upgrade --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple
+
+    # Download editor and copy to Mac Mini
+    - unity-downloader-cli --os macos --arch arm64 --wait --components editor --path ./editor --unity-version {{ editor.version }}
+    - rsync -uaqP --inplace ./editor bokken@$BOKKEN_DEVICE_IP:~/
+
+    # Run upm-ci on Mac Mini
+    - >
+      ssh bokken@$BOKKEN_DEVICE_IP
+      '
+      cd ~/repo;
+      export PATH=~/node/bin:"$PATH";
+      export TMPDIR=~/tmpdir;
+      mkdir "$TMPDIR";
+      ~/node_modules/.bin/upm-ci package test --unity-version ~/editor --platform standalone;
+      echo $? > .upm-ci-result;
+      '
+
+    # Copy test results back from Mac Mini
+    - rsync -uaqP --inplace bokken@$BOKKEN_DEVICE_IP:~/repo/upm-ci~/test-results/ ./upm-ci~/test-results/
+
+    # Copy exit code back from Mac Mini and return it
+    - scp -r bokken@$BOKKEN_DEVICE_IP:~/repo/.upm-ci-result ./.upm-ci-result
+    - |
+      UPMCI_RESULT=$(cat .upm-ci-result)
+      echo "upm-ci exit code: $UPMCI_RESULT"
+      exit $UPMCI_RESULT
+
+  artifacts:
+    {{ yamato_name }}_test_artifacts:
+      paths:
+        - "upm-ci~/test-results/**/*"
+  dependencies:
+    - .yamato/{{ yamato_name }}-pack.yml#pack
+{% endfor %}
+
 test_trigger:
   name: Tests Trigger for {{ yamato_name }}
   agent:
